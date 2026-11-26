@@ -354,7 +354,6 @@ internal fun TileCaption(text: String) {
         maxLines = 1,
         overflow = TextOverflow.Ellipsis,
         textAlign = TextAlign.Center,
-        style = TextStyle(shadow = LabelShadow),
     )
 }
 

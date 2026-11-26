@@ -4,6 +4,8 @@
 
 | Commit | Run | Result | Errors fixed / notes |
 |---|---:|---|---|
+| `9f4dbe9e5d4990c00a579f305b91114705952483` | [45805898559](https://github.com/Mamaliayda/eternal_vpn/actions/runs/45805898559) | Red | `assembleDebug` failed in `AppIcon.kt:346–357`: `TileCaption` had a stale second `style = TextStyle(...)` argument after the migration removed its import. Removed the duplicate argument and kept shadow in the typography copy; fix pushed in the next commit. Log download returned EOF; compiler detail came from check annotations. |
+| `9f4dbe9e5d4990c00a579f305b91114705952483` | [45805898603](https://github.com/Mamaliayda/eternal_vpn/actions/runs/45805898603) | Red | Release `compileReleaseKotlin` reported unresolved `TextStyle` and an invalid `Text` call at `AppIcon.kt:346–357`. Removed the duplicate argument and kept shadow in the typography copy; fix pushed in the next commit. Restore-cache warning (`go.mod` absent) was non-blocking. Log download returned EOF; compiler detail came from check annotations. |
 | `4e7bffab5213d0cfefee639105ecda047e61f0bc` | [45800616606](https://github.com/Mamaliayda/eternal_vpn/actions/runs/45800616606) | Green | `assembleDebug` passed; log and APK artifacts uploaded. |
 | `4e7bffab5213d0cfefee639105ecda047e61f0bc` | [45800616627](https://github.com/Mamaliayda/eternal_vpn/actions/runs/45800616627) | Green | Parallel release-APK build passed and uploaded APK artifacts. |
 | `8a732f9ab765ff64ae68c9e09f5965ae418064c4` | [45796255514](https://github.com/Mamaliayda/eternal_vpn/actions/runs/45796255514) | Red | Compiler errors: `IosSettings.kt` used invalid `TextStyle(color=..., style=...)` and named `textAlign` arguments at two `BasicTextField`s; changed both to `MaterialTheme.typography.*.copy(...)`. `IosAlerts.kt` lacked the `size` import used by its progress indicator. Fixed in `4e7bffa`. |
@@ -16,4 +18,4 @@
 
 ## Current state
 
-The required wrapper files are present. `.github/workflows/build.yml` runs `assembleDebug` on pushes and uploads the Gradle log even when the build fails. The latest push has green debug and release workflow results. Local Gradle compilation is unavailable because Java is not installed in this sandbox.
+The required wrapper files are present. `.github/workflows/build.yml` runs `assembleDebug` on pushes and uploads the Gradle log even when the build fails. Commit `9f4dbe9` is red in both workflows due to the `TileCaption` duplicate `style` argument; fixed locally and queued for the next push. Local Gradle compilation is unavailable because Java is not installed in this sandbox.
