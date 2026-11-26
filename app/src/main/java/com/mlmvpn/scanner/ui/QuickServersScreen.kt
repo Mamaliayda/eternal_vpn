@@ -9,7 +9,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -25,15 +24,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.mlmvpn.scanner.quick.*
-import com.mlmvpn.scanner.ui.settings.Ios
 import com.mlmvpn.scanner.ui.settings.IosAlert
 import com.mlmvpn.scanner.ui.settings.IosAlertAction
 import com.mlmvpn.scanner.ui.settings.IosScreen
@@ -41,8 +37,8 @@ import com.mlmvpn.scanner.ui.settings.SettingsFooter
 import com.mlmvpn.scanner.ui.settings.SettingsGroup
 import com.mlmvpn.scanner.ui.settings.SettingsRow
 import com.mlmvpn.scanner.ui.settings.SettingsSectionHeader
-import com.mlmvpn.scanner.ui.theme.ControlShape
-import com.mlmvpn.scanner.ui.theme.PanelShape
+import com.mlmvpn.scanner.ui.theme.DuskPill
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -232,38 +228,38 @@ fun QuickServersScreen(
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             CircularProgressIndicator(
                                 modifier = Modifier.size(15.dp),
-                                color = Ios.SecondaryLabel,
+                                color = DuskTheme.muted,
                                 strokeWidth = 2.dp,
                             )
                             Spacer(Modifier.width(10.dp))
                             Text(
                                 refreshTitle.ifBlank { S(R.string.fetching) },
-                                color = Ios.Label,
-                                fontSize = 14.sp,
+                                color = DuskTheme.onSurface,
+                                style = MaterialTheme.typography.bodyMedium,
                                 modifier = Modifier.weight(1f),
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis,
                             )
                             Text(
                                 S(R.string.source) + faCount(done) + S(R.string.of) + faCount(total),
-                                color = Ios.SecondaryLabel,
-                                fontSize = 12.sp,
+                                color = DuskTheme.muted,
+                                style = MaterialTheme.typography.bodySmall,
                             )
                         }
                         Spacer(Modifier.height(10.dp))
                         LinearProgressIndicator(
                             progress = fraction,
-                            color = Ios.Blue,
-                            trackColor = Color.White.copy(alpha = 0.12f),
-                            modifier = Modifier.fillMaxWidth().height(3.dp).clip(CircleShape),
+                            color = DuskTheme.primary,
+                            trackColor = DuskTheme.white.copy(alpha = 0.12f),
+                            modifier = Modifier.fillMaxWidth().height(3.dp).clip(DuskTheme.circleShape),
                         )
                     }
                 } else {
                     com.mlmvpn.scanner.ui.settings.SettingsActionRow(
                         label = if (catalog != null) S(R.string.refresh_list) else S(R.string.download_server_list),
                         icon = Icons.Default.CloudDownload,
-                        tint = if (catalog == null) Ios.Orange else Ios.Gray,
-                        labelColor = Ios.Label,
+                        tint = if (catalog == null) DuskTheme.accent else DuskTheme.muted,
+                        labelColor = DuskTheme.onSurface,
                         enabled = !scanning,
                     ) { refreshNow() }
                 }
@@ -345,17 +341,16 @@ fun QuickServersScreen(
             (loadError ?: sessionError)?.let {
                 Text(
                     it,
-                    color = Ios.Orange,
-                    fontSize = 13.sp,
-                    lineHeight = 21.sp,
+                    color = DuskTheme.accent,
+                    style = MaterialTheme.typography.bodySmall,
                     modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp),
                 )
             }
             catalog?.takeIf { it.stale }?.let {
                 Text(
                     S(R.string.showing_the_saved_list_the_fresh_download),
-                    color = Ios.Orange,
-                    fontSize = 12.sp,
+                    color = DuskTheme.accent,
+                    style = MaterialTheme.typography.bodySmall,
                     modifier = Modifier.padding(horizontal = 20.dp, vertical = 6.dp),
                 )
             }
@@ -423,7 +418,7 @@ fun QuickServersScreen(
                                 com.mlmvpn.scanner.ui.settings.SettingsActionRow(
                                     label = S(R.string.restore) + faCount(blocked) + S(R.string.deleted_servers),
                                     icon = Icons.Default.History,
-                                    tint = Ios.Gray,
+                                    tint = DuskTheme.muted,
                                 ) {
                                     QuickBlocklist.clear(context)
                                     QuickConnectRepository.invalidate()
@@ -500,8 +495,8 @@ private fun QuickCountryScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp)
-                    .clip(ControlShape)
-                    .background(Color.White.copy(alpha = 0.07f))
+                    .clip(DuskTheme.controlShape)
+                    .background(DuskTheme.white.copy(alpha = 0.07f))
                     .heightIn(min = 40.dp)
                     .padding(horizontal = 12.dp),
                 verticalAlignment = Alignment.CenterVertically,
@@ -509,7 +504,7 @@ private fun QuickCountryScreen(
                 Icon(
                     Icons.Default.Search,
                     contentDescription = null,
-                    tint = Ios.SecondaryLabel,
+                    tint = DuskTheme.muted,
                     modifier = Modifier.size(16.dp),
                 )
                 Spacer(Modifier.width(8.dp))
@@ -517,15 +512,15 @@ private fun QuickCountryScreen(
                     value = query,
                     onValueChange = { query = it },
                     singleLine = true,
-                    textStyle = TextStyle(color = Ios.Label, fontSize = 15.sp),
-                    cursorBrush = SolidColor(Ios.Blue),
+                    textStyle = MaterialTheme.typography.bodyLarge.copy(color = DuskTheme.onSurface),
+                    cursorBrush = SolidColor(DuskTheme.primary),
                     modifier = Modifier.weight(1f),
                     decorationBox = { inner ->
                         if (query.isEmpty()) {
                             Text(
                                 S(R.string.search_country),
-                                color = Ios.SecondaryLabel.copy(alpha = 0.7f),
-                                fontSize = 15.sp,
+                                color = DuskTheme.muted.copy(alpha = 0.7f),
+                                style = MaterialTheme.typography.bodyLarge,
                             )
                         }
                         inner()
@@ -571,7 +566,7 @@ private fun QuickCountryScreen(
                         com.mlmvpn.scanner.ui.settings.SettingsActionRow(
                             label = S(R.string.forget_verified_countries),
                             icon = Icons.Default.Refresh,
-                            tint = Ios.Gray,
+                            tint = DuskTheme.muted,
                         ) { onForgetVerified() }
                     }
                     SettingsFooter(
@@ -604,30 +599,30 @@ private fun QuickCountryRow(
             .padding(horizontal = 16.dp, vertical = 8.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Text(flag, fontSize = 21.sp)
+        Text(flag, style = MaterialTheme.typography.titleLarge)
         Spacer(Modifier.width(10.dp))
         Column(modifier = Modifier.weight(1f)) {
             Text(
                 name,
-                color = if (enabled) Ios.Label else Ios.SecondaryLabel,
-                fontSize = 16.sp,
+                color = if (enabled) DuskTheme.onSurface else DuskTheme.muted,
+                style = MaterialTheme.typography.bodyLarge,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
-            Text(detail, color = Ios.SecondaryLabel, fontSize = 12.sp)
+            Text(detail, color = DuskTheme.muted, style = MaterialTheme.typography.bodySmall)
         }
         if (selected) {
             Icon(
                 Icons.Default.Check,
                 contentDescription = null,
-                tint = Ios.Green,
+                tint = DuskTheme.success,
                 modifier = Modifier.size(19.dp),
             )
         } else if (chevron) {
             Icon(
                 Icons.Default.ChevronLeft,
                 contentDescription = null,
-                tint = Ios.Chevron,
+                tint = DuskTheme.disabled,
                 modifier = Modifier.size(18.dp),
             )
         }
@@ -658,11 +653,11 @@ private fun NumberRow(
         modifier = Modifier.fillMaxWidth().heightIn(min = 52.dp).padding(horizontal = 16.dp, vertical = 8.dp),
     ) {
         Column(modifier = Modifier.weight(1f)) {
-            Text(label, color = Ios.Label, fontSize = 16.sp)
+            Text(label, color = DuskTheme.onSurface, style = MaterialTheme.typography.bodyLarge)
             Text(
                 S(R.string.between) + faCount(min) + S(R.string.and) + faCount(max),
-                color = Ios.SecondaryLabel,
-                fontSize = 11.sp,
+                color = DuskTheme.muted,
+                style = MaterialTheme.typography.labelSmall,
             )
         }
         Stepper(Icons.Default.Remove, enabled && value > min) {
@@ -671,8 +666,8 @@ private fun NumberRow(
         Box(
             modifier = Modifier
                 .width(76.dp)
-                .clip(ControlShape)
-                .background(Color.White.copy(alpha = 0.08f))
+                .clip(DuskTheme.controlShape)
+                .background(DuskTheme.white.copy(alpha = 0.08f))
                 .padding(horizontal = 8.dp, vertical = 7.dp),
             contentAlignment = Alignment.Center,
         ) {
@@ -685,13 +680,12 @@ private fun NumberRow(
                 },
                 enabled = enabled,
                 singleLine = true,
-                textStyle = TextStyle(
-                    color = Ios.Label,
-                    fontSize = 15.sp,
+                textStyle = MaterialTheme.typography.bodyLarge.copy(
+                    color = DuskTheme.onSurface,
                     fontWeight = FontWeight.SemiBold,
                     textAlign = TextAlign.Center,
                 ),
-                cursorBrush = SolidColor(Ios.Blue),
+                cursorBrush = SolidColor(DuskTheme.primary),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 modifier = Modifier.fillMaxWidth(),
             )
@@ -711,15 +705,15 @@ private fun Stepper(
     Box(
         modifier = Modifier
             .size(32.dp)
-            .clip(CircleShape)
-            .background(Color.White.copy(alpha = if (enabled) 0.10f else 0.04f))
+            .clip(DuskTheme.circleShape)
+            .background(DuskTheme.white.copy(alpha = if (enabled) 0.10f else 0.04f))
             .clickable(enabled = enabled, onClick = onClick),
         contentAlignment = Alignment.Center,
     ) {
         Icon(
             icon,
             contentDescription = null,
-            tint = if (enabled) Ios.Label else Ios.SecondaryLabel.copy(alpha = 0.5f),
+            tint = if (enabled) DuskTheme.onSurface else DuskTheme.muted.copy(alpha = 0.5f),
             modifier = Modifier.size(16.dp),
         )
     }
@@ -743,14 +737,14 @@ private fun ResultRow(node: QuickNode, alreadySaved: Boolean, onDelete: () -> Un
             .padding(start = 16.dp, end = 8.dp, top = 8.dp, bottom = 8.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Text(node.flag ?: "🏳️", fontSize = 20.sp)
+        Text(node.flag ?: "🏳️", style = MaterialTheme.typography.titleLarge)
         Spacer(Modifier.width(10.dp))
         Column(modifier = Modifier.weight(1f)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
                     node.name,
-                    color = Ios.Label,
-                    fontSize = 15.sp,
+                    color = DuskTheme.onSurface,
+                    style = MaterialTheme.typography.bodyLarge,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                     modifier = Modifier.weight(1f, fill = false),
@@ -758,21 +752,21 @@ private fun ResultRow(node: QuickNode, alreadySaved: Boolean, onDelete: () -> Un
                 Spacer(Modifier.width(6.dp))
                 // "Already here" vs "new to you" -- so a second sweep of the same country
                 // shows at a glance what it actually added.
-                if (alreadySaved) Badge(S(R.string.tested), Ios.SecondaryLabel) else Badge(S(R.string.new_str), Ios.Green)
+                if (alreadySaved) DuskPill(S(R.string.tested), indicator = DuskTheme.muted, compact = true) else DuskPill(S(R.string.new_str), selected = true, indicator = DuskTheme.success, compact = true)
                 if (node.verified) {
                     Spacer(Modifier.width(5.dp))
                     Icon(
                         Icons.Default.Verified,
                         contentDescription = S(R.string.verified_country),
-                        tint = Ios.Green,
+                        tint = DuskTheme.success,
                         modifier = Modifier.size(13.dp),
                     )
                 }
             }
             Text(
                 listOfNotNull(node.countryName, node.protocol.uppercase()).joinToString(" · "),
-                color = Ios.SecondaryLabel,
-                fontSize = 11.sp,
+                color = DuskTheme.muted,
+                style = MaterialTheme.typography.labelSmall,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
@@ -781,21 +775,21 @@ private fun ResultRow(node: QuickNode, alreadySaved: Boolean, onDelete: () -> Un
         Text(
             if (node.delay > 0) faCount(node.delay) + " ms" else "—",
             color = when {
-                node.delay in 1..399 -> Ios.Green
-                node.delay in 400..999 -> Ios.Orange
-                node.delay > 0 -> Ios.Destructive
-                else -> Ios.SecondaryLabel
+                node.delay in 1..399 -> DuskTheme.success
+                node.delay in 400..999 -> DuskTheme.accent
+                node.delay > 0 -> DuskTheme.error
+                else -> DuskTheme.muted
             },
-            fontSize = 13.sp,
+            style = MaterialTheme.typography.bodySmall,
             fontWeight = FontWeight.SemiBold,
         )
         Icon(
             Icons.Default.Close,
             contentDescription = S(R.string.delete),
-            tint = Ios.Destructive,
+            tint = DuskTheme.error,
             modifier = Modifier
                 .size(30.dp)
-                .clip(CircleShape)
+                .clip(DuskTheme.circleShape)
                 .clickable(onClick = onDelete)
                 .padding(7.dp),
         )
@@ -819,8 +813,8 @@ private fun ScanStrip(p: QuickScanner.Progress, label: String, running: Boolean)
         if (label.isNotBlank()) {
             Text(
                 if (running) label else S(R.string.label_finished, label),
-                color = Ios.Label,
-                fontSize = 13.sp,
+                color = DuskTheme.onSurface,
+                style = MaterialTheme.typography.bodySmall,
                 fontWeight = FontWeight.SemiBold,
             )
             Spacer(Modifier.height(8.dp))
@@ -832,22 +826,22 @@ private fun ScanStrip(p: QuickScanner.Progress, label: String, running: Boolean)
                     p.stopped -> S(R.string.stopped) + faCount(p.found) + S(R.string.working_servers_kept)
                     else -> faCount(p.found) + S(R.string.working_servers_found)
                 },
-                color = if (p.empty) Ios.Orange else Ios.Green,
-                fontSize = 12.sp,
+                color = if (p.empty) DuskTheme.accent else DuskTheme.success,
+                style = MaterialTheme.typography.bodySmall,
             )
         } else {
             StageBar(
                 title = S(R.string.s_1_reachability),
                 detail = faCount(p.probed) + S(R.string.of) + faCount(p.total) + " · " + faCount(p.reachable) + S(R.string.responding),
                 fraction = if (p.total > 0) (p.probed.toFloat() / p.total).coerceIn(0f, 1f) else 0f,
-                color = Ios.Blue,
+                color = DuskTheme.primary,
             )
             Spacer(Modifier.height(10.dp))
             StageBar(
                 title = S(R.string.s_2_real_connection),
                 detail = faCount(p.realTested) + S(R.string.of) + faCount(p.reachable) + " · " + faCount(p.found) + S(R.string.working),
                 fraction = if (p.reachable > 0) (p.realTested.toFloat() / p.reachable).coerceIn(0f, 1f) else 0f,
-                color = Ios.Green,
+                color = DuskTheme.success,
             )
         }
     }
@@ -858,16 +852,16 @@ private fun ScanStrip(p: QuickScanner.Progress, label: String, running: Boolean)
 private fun StageBar(title: String, detail: String, fraction: Float, color: Color) {
     Column(modifier = Modifier.fillMaxWidth()) {
         Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-            Text(title, color = Ios.SecondaryLabel, fontSize = 11.sp)
+            Text(title, color = DuskTheme.muted, style = MaterialTheme.typography.labelSmall)
             Spacer(Modifier.weight(1f))
-            Text(detail, color = Ios.SecondaryLabel, fontSize = 11.sp)
+            Text(detail, color = DuskTheme.muted, style = MaterialTheme.typography.labelSmall)
         }
         Spacer(Modifier.height(5.dp))
         LinearProgressIndicator(
             progress = fraction,
             color = color,
-            trackColor = Color.White.copy(alpha = 0.12f),
-            modifier = Modifier.fillMaxWidth().height(3.dp).clip(CircleShape),
+            trackColor = DuskTheme.white.copy(alpha = 0.12f),
+            modifier = Modifier.fillMaxWidth().height(3.dp).clip(DuskTheme.circleShape),
         )
     }
 }
@@ -892,14 +886,14 @@ private fun QuickButton(
 ) {
     Row(
         modifier = modifier
-            .clip(PanelShape)
+            .clip(DuskTheme.cardShape)
             .background(
                 when {
-                    !enabled -> Color.White.copy(alpha = 0.05f)
-                    stop -> Ios.Orange.copy(alpha = 0.22f)
-                    destructive -> Ios.Destructive.copy(alpha = 0.18f)
-                    primary -> Ios.Blue.copy(alpha = 0.24f)
-                    else -> Color.White.copy(alpha = 0.09f)
+                    !enabled -> DuskTheme.white.copy(alpha = 0.05f)
+                    stop -> DuskTheme.accent.copy(alpha = 0.22f)
+                    destructive -> DuskTheme.error.copy(alpha = 0.18f)
+                    primary -> DuskTheme.primary.copy(alpha = 0.24f)
+                    else -> DuskTheme.white.copy(alpha = 0.09f)
                 }
             )
             .clickable(enabled = enabled, onClick = onClick)
@@ -910,8 +904,8 @@ private fun QuickButton(
     ) {
         Text(
             label,
-            color = if (enabled) Ios.Label else Ios.SecondaryLabel,
-            fontSize = 14.sp,
+            color = if (enabled) DuskTheme.onSurface else DuskTheme.muted,
+            style = MaterialTheme.typography.bodyMedium,
             fontWeight = FontWeight.SemiBold,
             maxLines = 1,
         )

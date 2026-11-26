@@ -3,7 +3,6 @@ package com.mlmvpn.scanner.ui
 import android.content.ClipboardManager
 import android.content.Context
 import android.net.Uri
-import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -18,6 +17,7 @@ import androidx.compose.material.icons.filled.Public
 import androidx.compose.material.icons.filled.QrCodeScanner
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.UploadFile
+import androidx.compose.material3.SnackbarDuration
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -32,7 +32,6 @@ import com.journeyapps.barcodescanner.ScanContract
 import com.journeyapps.barcodescanner.ScanOptions
 import com.mlmvpn.scanner.R
 import com.mlmvpn.scanner.models.VpnNode
-import com.mlmvpn.scanner.ui.settings.Ios
 import com.mlmvpn.scanner.ui.settings.IosScreen
 import com.mlmvpn.scanner.ui.settings.SettingsActionRow
 import com.mlmvpn.scanner.ui.settings.SettingsFooter
@@ -49,6 +48,8 @@ import java.io.InputStreamReader
 import java.net.URLEncoder
 import java.util.UUID
 import com.mlmvpn.scanner.utils.S
+import com.mlmvpn.scanner.ui.theme.DuskTheme
+import com.mlmvpn.scanner.ui.theme.LocalDuskSnackbarHostState
 
 // =================================================================================================
 // Adding a config.
@@ -86,6 +87,15 @@ fun AddNodeScreen(
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
+    val snackbarHostState = LocalDuskSnackbarHostState.current
+    fun showNotice(message: String, long: Boolean = false) {
+        scope.launch {
+            snackbarHostState.showSnackbar(
+                message = message,
+                duration = if (long) SnackbarDuration.Long else SnackbarDuration.Short,
+            )
+        }
+    }
     var page by remember { mutableStateOf<AddPage>(AddPage.Root) }
 
     BackHandler(enabled = page != AddPage.Root) { page = AddPage.Root }
@@ -97,14 +107,14 @@ fun AddNodeScreen(
                 val node = createNodeFromUri(uri)
                 node.groupTitle = selectedManualGroup
                 onNodesAdded(listOf(node))
-                Toast.makeText(context, context.getString(R.string.nodes_add_success), Toast.LENGTH_SHORT).show()
+                showNotice(context.getString(R.string.nodes_add_success))
                 onBack()
             } else if (uri.startsWith("http://") || uri.startsWith("https://")) {
                 onSubscriptionAdded?.invoke("Sub-${UUID.randomUUID().toString().substring(0, 4)}", uri)
-                Toast.makeText(context, context.getString(R.string.nodes_add_success), Toast.LENGTH_SHORT).show()
+                showNotice(context.getString(R.string.nodes_add_success))
                 onBack()
             } else {
-                Toast.makeText(context, context.getString(R.string.nodes_invalid_config), Toast.LENGTH_SHORT).show()
+                showNotice(context.getString(R.string.nodes_invalid_config))
             }
         }
     }
@@ -151,13 +161,13 @@ fun AddNodeScreen(
                 }
                 if (tooLarge) {
                     withContext(Dispatchers.Main) {
-                        Toast.makeText(context, context.getString(R.string.file_too_large_to_import), Toast.LENGTH_LONG).show()
+                        showNotice(context.getString(R.string.file_too_large_to_import), long = true)
                     }
                     return@launch
                 }
                 if (text.isNullOrBlank()) {
                     withContext(Dispatchers.Main) {
-                        Toast.makeText(context, context.getString(R.string.file_unreadable), Toast.LENGTH_LONG).show()
+                        showNotice(context.getString(R.string.file_unreadable), long = true)
                     }
                     return@launch
                 }
@@ -177,15 +187,15 @@ fun AddNodeScreen(
                     withContext(Dispatchers.Main) {
                         // Same reasoning as the clipboard path above.
                         if (nodesToAdd.isEmpty() && looksLikeJsonConfig(text)) {
-                            Toast.makeText(context, context.getString(R.string.json_looks_truncated), Toast.LENGTH_LONG).show()
+                            showNotice(context.getString(R.string.json_looks_truncated), long = true)
                             return@withContext
                         }
                         if (nodesToAdd.isNotEmpty()) {
                             onNodesAdded(nodesToAdd)
-                            Toast.makeText(context, context.getString(R.string.nodes_add_success), Toast.LENGTH_SHORT).show()
+                            showNotice(context.getString(R.string.nodes_add_success))
                             onBack()
                         } else {
-                            Toast.makeText(context, context.getString(R.string.nodes_invalid_config), Toast.LENGTH_SHORT).show()
+                            showNotice(context.getString(R.string.nodes_invalid_config))
                         }
                     }
                 } catch (e: Exception) {
@@ -193,7 +203,7 @@ fun AddNodeScreen(
                     // the same dead end for whoever has to fix it as for the user who sees it.
                     android.util.Log.e("AddNodeScreen", "file import failed for $uri", e)
                     withContext(Dispatchers.Main) {
-                        Toast.makeText(context, context.getString(R.string.nodes_add_failed), Toast.LENGTH_SHORT).show()
+                        showNotice(context.getString(R.string.nodes_add_failed))
                     }
                 }
             }
@@ -230,20 +240,20 @@ fun AddNodeScreen(
             // document across messages and only one piece gets copied. "Invalid config" is a
             // verdict on the config; this says what actually happened.
             if (nodesToAdd.isEmpty() && !subAdded && looksLikeJsonConfig(text)) {
-                Toast.makeText(context, context.getString(R.string.json_looks_truncated), Toast.LENGTH_LONG).show()
+                showNotice(context.getString(R.string.json_looks_truncated), long = true)
                 return
             }
             if (nodesToAdd.isNotEmpty() || subAdded) {
                 if (nodesToAdd.isNotEmpty()) {
                     onNodesAdded(nodesToAdd)
-                    Toast.makeText(context, context.getString(R.string.nodes_add_success), Toast.LENGTH_SHORT).show()
+                    showNotice(context.getString(R.string.nodes_add_success))
                 }
                 onBack()
             } else {
-                Toast.makeText(context, context.getString(R.string.nodes_invalid_config), Toast.LENGTH_SHORT).show()
+                showNotice(context.getString(R.string.nodes_invalid_config))
             }
         } else {
-            Toast.makeText(context, context.getString(R.string.nodes_invalid_config), Toast.LENGTH_SHORT).show()
+            showNotice(context.getString(R.string.nodes_invalid_config))
         }
     }
 
@@ -255,7 +265,7 @@ fun AddNodeScreen(
                     val node = createNodeFromUri(uri)
                     node.groupTitle = selectedManualGroup
                     onNodesAdded(listOf(node))
-                    Toast.makeText(context, context.getString(R.string.nodes_add_success), Toast.LENGTH_SHORT).show()
+                    showNotice(context.getString(R.string.nodes_add_success))
                     onBack()
                 },
                 onBack = { page = AddPage.Root },
@@ -297,7 +307,7 @@ fun AddNodeScreen(
             Separator()
             SettingsActionRow(S(R.string.from_a_file), Icons.Default.UploadFile) {
                 try { filePickerLauncher.launch(arrayOf("*/*")) }
-                catch (_: android.content.ActivityNotFoundException) { Toast.makeText(context, S(R.string.amz_no_file_picker), Toast.LENGTH_LONG).show() }
+                catch (_: android.content.ActivityNotFoundException) { showNotice(S(R.string.amz_no_file_picker), long = true) }
             }
         }
         SettingsFooter(
@@ -315,7 +325,7 @@ fun AddNodeScreen(
             SettingsRow(
                 title = S(R.string.add_a_subscription_link),
                 icon = Icons.Default.Link,
-                tint = Ios.Indigo,
+                tint = DuskTheme.indigo,
                 onClick = { page = AddPage.SubLink },
             )
             Separator()
@@ -339,7 +349,7 @@ fun AddNodeScreen(
                 SettingsRow(
                     title = label,
                     icon = Icons.Default.Edit,
-                    tint = Ios.Gray,
+                    tint = DuskTheme.secondary,
                     onClick = { page = AddPage.Manual(type) },
                 )
             }
@@ -449,7 +459,7 @@ private fun ManualEntryScreen(
             SettingsActionRow(
                 label = stringResource(R.string.common_save),
                 icon = Icons.Default.Check,
-                tint = Ios.Green,
+                tint = DuskTheme.success,
                 enabled = canSave,
             ) {
                 onSubmit(buildManualUri(formType, name, address, port, uuid, username, method, network, security, sni, host, path, flow, alpn))
@@ -577,7 +587,7 @@ private fun SubLinkAddScreen(onSubmit: (String, String) -> Unit, onBack: () -> U
             SettingsActionRow(
                 label = S(R.string.save_and_fetch),
                 icon = Icons.Default.Check,
-                tint = Ios.Green,
+                tint = DuskTheme.success,
                 enabled = urlOk,
             ) {
                 onSubmit(name.ifBlank { "Sub-${UUID.randomUUID().toString().take(4)}" }, url.trim())

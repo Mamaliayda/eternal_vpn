@@ -31,10 +31,13 @@ import androidx.compose.material.icons.filled.Timer
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -49,7 +52,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.mlmvpn.scanner.data.NodeManager
 import com.mlmvpn.scanner.models.VpnNode
-import com.mlmvpn.scanner.ui.settings.Ios
 import com.mlmvpn.scanner.ui.settings.IosScreen
 import com.mlmvpn.scanner.ui.settings.SettingsActionRow
 import com.mlmvpn.scanner.ui.settings.SettingsFooter
@@ -61,11 +63,15 @@ import com.mlmvpn.scanner.ui.settings.SettingsSlider
 import com.mlmvpn.scanner.ui.settings.SettingsTextRow
 import com.mlmvpn.scanner.ui.settings.SettingsToggle
 import com.mlmvpn.scanner.ui.theme.DuskCard
+import com.mlmvpn.scanner.ui.theme.DuskPill
+import com.mlmvpn.scanner.ui.theme.LocalDuskSnackbarHostState
 import com.mlmvpn.scanner.ui.theme.DuskTheme
 import com.mlmvpn.scanner.utils.Platform
 import com.mlmvpn.scanner.utils.VpnConfig
 import com.mlmvpn.scanner.R
 import com.mlmvpn.scanner.utils.S
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 // =================================================================================================
 // The pages the connection screen pushes.
@@ -95,19 +101,19 @@ fun nodeBadge(node: VpnNode): Pair<String, Color> {
     val isFree = node.engineType == "Manual" &&
         node.groupTitle == com.mlmvpn.scanner.engines.freeconfig.FreeConfigEngine.GROUP_NAME
     return when {
-        node.id.startsWith("default_mlmvpn") -> "MLMVPN" to Ios.Green
-        isSni -> "SNI" to Ios.Teal
-        isMitm -> S(R.string.fronting) to Ios.Teal
-        isFree -> S(R.string.free) to Ios.Purple
-        node.engineType == "EDG" -> "EDG" to Ios.Indigo
-        node.engineType == "NHN" -> "NHN" to Ios.Green
-        node.engineType == "MLM" -> "MLM" to Ios.Purple
-        node.engineType == "SPD" -> "Spider" to Ios.Pink
-        node.engineType == "NTR" -> "Netra" to Ios.Purple
-        node.engineType == "GZG" -> "Gozargah" to Ios.Teal
-        node.engineType == "NVA" -> "Nova" to Ios.Indigo
-        node.engineType == "Manual" -> S(R.string.manual) to Ios.Gray
-        else -> "BPB" to Ios.Blue
+        node.id.startsWith("default_mlmvpn") -> "MLMVPN" to DuskTheme.success
+        isSni -> "SNI" to DuskTheme.secondary
+        isMitm -> S(R.string.fronting) to DuskTheme.secondary
+        isFree -> S(R.string.free) to DuskTheme.purple
+        node.engineType == "EDG" -> "EDG" to DuskTheme.indigo
+        node.engineType == "NHN" -> "NHN" to DuskTheme.success
+        node.engineType == "MLM" -> "MLM" to DuskTheme.purple
+        node.engineType == "SPD" -> "Spider" to DuskTheme.accent
+        node.engineType == "NTR" -> "Netra" to DuskTheme.purple
+        node.engineType == "GZG" -> "Gozargah" to DuskTheme.secondary
+        node.engineType == "NVA" -> "Nova" to DuskTheme.indigo
+        node.engineType == "Manual" -> S(R.string.manual) to DuskTheme.muted
+        else -> "BPB" to DuskTheme.primary
     }
 }
 
@@ -123,11 +129,11 @@ fun nodeBadge(node: VpnNode): Pair<String, Color> {
 fun measurementTone(value: String, goodBelow: Int, okBelow: Int): Color {
     val number = value.replace("ms", "").replace(" MB/s", "").toDoubleOrNull()
     return when {
-        value == "Test" || value == "..." || value == "Cancelled" -> Ios.SecondaryLabel
-        number == null -> Ios.Red
-        number < goodBelow -> Ios.Green
-        number < okBelow -> Ios.Yellow
-        else -> Ios.Red
+        value == "Test" || value == "..." || value == "Cancelled" -> DuskTheme.muted
+        number == null -> DuskTheme.error
+        number < goodBelow -> DuskTheme.success
+        number < okBelow -> DuskTheme.accent
+        else -> DuskTheme.error
     }
 }
 
@@ -136,11 +142,11 @@ fun measurementTone(value: String, goodBelow: Int, okBelow: Int): Color {
 fun speedTone(value: String): Color {
     val mbps = value.replace(" MB/s", "").toDoubleOrNull()
     return when {
-        value == "Test" || value == "..." || value == "Cancelled" -> Ios.SecondaryLabel
-        mbps == null -> Ios.Red
-        mbps > 2.0 -> Ios.Green
-        mbps > 0.5 -> Ios.Yellow
-        else -> Ios.Red
+        value == "Test" || value == "..." || value == "Cancelled" -> DuskTheme.muted
+        mbps == null -> DuskTheme.error
+        mbps > 2.0 -> DuskTheme.success
+        mbps > 0.5 -> DuskTheme.accent
+        else -> DuskTheme.error
     }
 }
 
@@ -149,6 +155,12 @@ fun measurementLabel(value: String): String? = when (value) {
     "Test" -> null
     "..." -> "…"
     else -> value
+}
+
+private fun showDuskNotice(scope: CoroutineScope, hostState: SnackbarHostState, message: String) {
+    scope.launch {
+        hostState.showSnackbar(message = message, duration = SnackbarDuration.Short)
+    }
 }
 
 // -------------------------------------------------------------------------------------------
@@ -176,6 +188,8 @@ fun NodeDetailScreen(
 ) {
     val context = LocalContext.current
     val clipboard = LocalClipboardManager.current
+    val snackbarScope = rememberCoroutineScope()
+    val snackbarHostState = LocalDuskSnackbarHostState.current
     var confirmDelete by remember { mutableStateOf(false) }
 
     val config = remember(node.uri) { VpnConfig.parseUri(node.uri) }
@@ -197,7 +211,7 @@ fun NodeDetailScreen(
             }
             Text(
                 node.name,
-                color = Ios.Label,
+                color = DuskTheme.onSurface,
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.SemiBold,
                 textAlign = TextAlign.Center,
@@ -207,10 +221,10 @@ fun NodeDetailScreen(
             Row(verticalAlignment = Alignment.CenterVertically) {
                 NodePill(badge, badgeTint)
                 Spacer(Modifier.width(6.dp))
-                NodePill(node.type.uppercase(), Ios.Gray)
+                NodePill(node.type.uppercase(), DuskTheme.muted)
                 if (isActive) {
                     Spacer(Modifier.width(6.dp))
-                    NodePill(S(R.string.connected), Ios.Green)
+                    NodePill(S(R.string.connected), DuskTheme.success)
                 }
             }
             }
@@ -218,11 +232,11 @@ fun NodeDetailScreen(
 
         SettingsSectionHeader(S(R.string.measure))
         SettingsGroup {
-            MeasureRow(S(R.string.ping), Icons.Default.FlashOn, Ios.Teal, node.ping, measurementTone(node.ping, 150, 500), onPing)
+            MeasureRow(S(R.string.ping), Icons.Default.FlashOn, DuskTheme.secondary, node.ping, measurementTone(node.ping, 150, 500), onPing)
             Separator()
-            MeasureRow(S(R.string.real_delay), Icons.Default.AccessTime, Ios.Indigo, node.delay, measurementTone(node.delay, 300, 800), onDelay)
+            MeasureRow(S(R.string.real_delay), Icons.Default.AccessTime, DuskTheme.indigo, node.delay, measurementTone(node.delay, 300, 800), onDelay)
             Separator()
-            MeasureRow(S(R.string.speed), Icons.Default.Download, Ios.Orange, node.speed, speedTone(node.speed), onSpeed)
+            MeasureRow(S(R.string.speed), Icons.Default.Download, DuskTheme.accent, node.speed, speedTone(node.speed), onSpeed)
         }
         SettingsFooter(
             S(R.string.ping_only_tells_you_the_server_answers) +
@@ -235,7 +249,7 @@ fun NodeDetailScreen(
             SettingsRow(
                 title = S(R.string.address),
                 icon = Icons.Default.Public,
-                tint = Ios.Indigo,
+                tint = DuskTheme.indigo,
                 value = config?.let { "${it.address}:${it.port}" } ?: "—",
                 showChevron = false,
             )
@@ -243,7 +257,7 @@ fun NodeDetailScreen(
             SettingsRow(
                 title = S(R.string.transport),
                 icon = Icons.Default.SwapHoriz,
-                tint = Ios.Gray,
+                tint = DuskTheme.muted,
                 value = config?.network?.takeIf { it.isNotBlank() } ?: "—",
                 showChevron = false,
             )
@@ -251,7 +265,7 @@ fun NodeDetailScreen(
             SettingsRow(
                 title = S(R.string.country),
                 icon = Icons.Default.Language,
-                tint = Ios.Teal,
+                tint = DuskTheme.secondary,
                 value = node.countryCode?.let { "${getNodeFlagEmoji(it)} $it" } ?: S(R.string.unknown),
                 showChevron = false,
             )
@@ -260,7 +274,7 @@ fun NodeDetailScreen(
                 SettingsRow(
                     title = S(R.string.folder),
                     icon = Icons.Default.Folder,
-                    tint = Ios.Yellow,
+                    tint = DuskTheme.accent,
                     value = node.groupTitle,
                     showChevron = false,
                 )
@@ -278,8 +292,7 @@ fun NodeDetailScreen(
             SettingsGroup {
                 SettingsActionRow(S(R.string.copy_config_link), Icons.Default.ContentCopy) {
                     clipboard.setText(AnnotatedString(node.uri))
-                    android.widget.Toast
-                        .makeText(context, S(R.string.link_copied), android.widget.Toast.LENGTH_SHORT).show()
+                    showDuskNotice(snackbarScope, snackbarHostState, S(R.string.link_copied))
                 }
                 Separator()
                 SettingsActionRow(S(R.string.send_to_another_app), Icons.Default.Share) {
@@ -306,7 +319,7 @@ fun NodeDetailScreen(
                 SettingsActionRow(
                     label = if (confirmDelete) S(R.string.are_you_sure_tap_again_to_delete) else S(R.string.delete_this_config),
                     icon = Icons.Default.DeleteOutline,
-                    tint = Ios.Red,
+                    tint = DuskTheme.error,
                 ) {
                     if (confirmDelete) {
                         onDelete()
@@ -323,7 +336,7 @@ fun NodeDetailScreen(
                     title = S(R.string.built_in_config),
                     subtitle = S(R.string.cannot_be_edited_or_deleted),
                     icon = Icons.Default.Layers,
-                    tint = Ios.Gray,
+                    tint = DuskTheme.muted,
                     showChevron = false,
                 )
             }
@@ -358,17 +371,17 @@ private fun MeasureRow(
     ) {
         SettingsGlyph(icon, tint)
         Spacer(Modifier.width(12.dp))
-        Text(title, color = Ios.Label, style = MaterialTheme.typography.bodyLarge, modifier = Modifier.weight(1f))
+        Text(title, color = DuskTheme.onSurface, style = MaterialTheme.typography.bodyLarge, modifier = Modifier.weight(1f))
         if (busy) {
             CircularProgressIndicator(
                 modifier = Modifier.size(15.dp),
-                color = Ios.SecondaryLabel,
+                color = DuskTheme.muted,
                 strokeWidth = 2.dp,
             )
         } else {
             Text(
                 measurementLabel(raw) ?: S(R.string.not_measured),
-                color = if (measurementLabel(raw) == null) Ios.SecondaryLabel else valueTone,
+                color = if (measurementLabel(raw) == null) DuskTheme.muted else valueTone,
                 style = MaterialTheme.typography.bodyMedium,
                 fontWeight = if (measurementLabel(raw) == null) FontWeight.Normal else FontWeight.Medium,
             )
@@ -379,15 +392,7 @@ private fun MeasureRow(
 /** One small rounded label: the badge, the protocol, the live marker. */
 @Composable
 fun NodePill(text: String, tint: Color) {
-    Text(
-        text,
-        color = tint,
-        style = MaterialTheme.typography.labelSmall,
-        fontWeight = FontWeight.SemiBold,
-        modifier = Modifier
-            .background(tint.copy(alpha = 0.16f), DuskTheme.controlShape)
-            .padding(horizontal = 8.dp, vertical = 3.dp),
-    )
+    DuskPill(text = text, indicator = tint, compact = true)
 }
 
 /**
@@ -444,7 +449,7 @@ fun NodeQrCard(uri: String) {
             // carry, and the copy button beside it is the answer.
             Text(
                 S(R.string.this_config_is_too_long_for_a),
-                color = Ios.SecondaryLabel,
+                color = DuskTheme.muted,
                 style = MaterialTheme.typography.bodySmall,
                 textAlign = TextAlign.Center,
             )
@@ -472,7 +477,8 @@ fun NodeQrCard(uri: String) {
  */
 @Composable
 fun NodeEditScreen(node: VpnNode, onSave: (VpnConfig) -> Unit, onBack: () -> Unit) {
-    val context = LocalContext.current
+    val snackbarScope = rememberCoroutineScope()
+    val snackbarHostState = LocalDuskSnackbarHostState.current
     val config = remember(node.uri) { VpnConfig.parseUri(node.uri) }
 
     if (config == null) {
@@ -551,8 +557,7 @@ fun NodeEditScreen(node: VpnNode, onSave: (VpnConfig) -> Unit, onBack: () -> Uni
                 config.sni = sni.trim()
                 config.alpn = alpn.trim()
                 onSave(config)
-                android.widget.Toast
-                    .makeText(context, S(R.string.saved), android.widget.Toast.LENGTH_SHORT).show()
+                showDuskNotice(snackbarScope, snackbarHostState, S(R.string.saved))
                 onBack()
             }
         }
@@ -614,7 +619,7 @@ fun NodeListSettingsScreen(
                     checked = groupByPanel,
                     onCheckedChange = onGroupByPanel,
                     icon = Icons.Default.Layers,
-                    tint = Ios.Indigo,
+                    tint = DuskTheme.indigo,
                     subtitle = S(R.string.each_panel_gets_its_own_tab),
                 )
                 Separator()
@@ -624,7 +629,7 @@ fun NodeListSettingsScreen(
                 checked = platformMode,
                 onCheckedChange = onPlatformMode,
                 icon = Icons.Default.FlashOn,
-                tint = Ios.Teal,
+                tint = DuskTheme.secondary,
                 subtitle = S(R.string.measure_servers_against_one_specific_app),
             )
         }
@@ -638,7 +643,7 @@ fun NodeListSettingsScreen(
             SettingsRow(
                 title = S(R.string.auto_switch),
                 icon = Icons.Default.Timer,
-                tint = if (autoSwitchEnabled) Ios.Green else Ios.Gray,
+                tint = if (autoSwitchEnabled) DuskTheme.success else DuskTheme.muted,
                 value = if (autoSwitchEnabled) autoSwitchSummary else S(R.string.off),
                 onClick = onOpenAutoSwitch,
             )
@@ -647,7 +652,7 @@ fun NodeListSettingsScreen(
                 SettingsActionRow(
                     label = S(R.string.turn_auto_switch_off),
                     icon = Icons.Default.Timer,
-                    tint = Ios.Orange,
+                    tint = DuskTheme.accent,
                     onClick = onDisableAutoSwitch,
                 )
             }
@@ -661,7 +666,7 @@ fun NodeListSettingsScreen(
             SettingsRow(
                 title = S(R.string.configs_in_this_folder),
                 icon = Icons.Default.Layers,
-                tint = Ios.Gray,
+                tint = DuskTheme.muted,
                 value = faCount(visibleCount),
                 showChevron = false,
             )
@@ -669,7 +674,7 @@ fun NodeListSettingsScreen(
             SettingsActionRow(
                 label = S(R.string.nodes_copy_healthy, faCount(healthyCount)),
                 icon = Icons.Default.ContentCopy,
-                tint = Ios.Teal,
+                tint = DuskTheme.secondary,
                 enabled = healthyCount > 0,
                 onClick = onCopyHealthy,
             )
@@ -678,7 +683,7 @@ fun NodeListSettingsScreen(
                 label = if (confirmDead) S(R.string.are_you_sure_tap_again_to_clear)
                 else S(R.string.clear_dead_configs, faCount(deadCount)),
                 icon = Icons.Default.DeleteOutline,
-                tint = Ios.Orange,
+                tint = DuskTheme.accent,
                 enabled = deadCount > 0,
             ) {
                 if (confirmDead) { onCleanUp(); confirmDead = false } else confirmDead = true
@@ -688,7 +693,7 @@ fun NodeListSettingsScreen(
                 label = if (confirmAll) S(R.string.are_you_sure_all_configs_will_be, faCount(visibleCount))
                 else S(R.string.delete_every_config_in_this_folder),
                 icon = Icons.Default.DeleteOutline,
-                tint = Ios.Red,
+                tint = DuskTheme.error,
                 enabled = visibleCount > 0,
             ) {
                 if (confirmAll) { onDeleteAll(); confirmAll = false } else confirmAll = true
@@ -735,7 +740,7 @@ fun AutoSwitchScreen(
                 val key = if (index == 0) "None" else Platform.values()[index - 1].name
                 SettingsRow(
                     title = option,
-                    titleColor = Ios.Label,
+                    titleColor = DuskTheme.onSurface,
                     value = if (platform == key) "✓" else null,
                     showChevron = false,
                     onClick = { onPlatform(key) },
@@ -773,7 +778,7 @@ fun AutoSwitchScreen(
             SettingsActionRow(
                 label = if (enabled) S(R.string.update_and_keep_on) else S(R.string.turn_auto_switch_on),
                 icon = Icons.Default.Timer,
-                tint = Ios.Green,
+                tint = DuskTheme.success,
             ) {
                 onEnable()
                 onBack()

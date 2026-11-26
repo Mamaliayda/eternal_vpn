@@ -25,6 +25,7 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.StarBorder
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -34,26 +35,21 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.mlmvpn.core.tunnel.RegionMemory
 import com.mlmvpn.scanner.engines.vpngate.VpnGateGeo
 import com.mlmvpn.scanner.engines.vpngate.VpnGateServer
-import com.mlmvpn.scanner.ui.settings.Ios
 import com.mlmvpn.scanner.ui.settings.IosScreen
 import com.mlmvpn.scanner.ui.settings.SettingsFooter
 import com.mlmvpn.scanner.ui.settings.SettingsGlyph
 import com.mlmvpn.scanner.ui.settings.SettingsGroup
 import com.mlmvpn.scanner.ui.settings.SettingsSectionHeader
-import com.mlmvpn.scanner.ui.theme.BadgeShape
-import com.mlmvpn.scanner.ui.theme.ControlShape
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 import com.mlmvpn.scanner.R
 import com.mlmvpn.scanner.utils.S
 
@@ -146,10 +142,10 @@ fun VpnGateCountryScreen(
             if (selected.isNotEmpty()) {
                 Text(
                     S(R.string.clear_3),
-                    color = Ios.Label,
-                    fontSize = 16.sp,
+                    color = DuskTheme.onSurface,
+                    style = MaterialTheme.typography.bodyLarge,
                     modifier = Modifier
-                        .clip(ControlShape)
+                        .clip(DuskTheme.controlShape)
                         .clickable { onSelectedChange(emptySet()) }
                         .padding(horizontal = 6.dp, vertical = 4.dp),
                 )
@@ -160,8 +156,8 @@ fun VpnGateCountryScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp, vertical = 8.dp)
-                .clip(ControlShape)
-                .background(Color.White.copy(alpha = 0.10f))
+                .clip(DuskTheme.controlShape)
+                .background(DuskTheme.white.copy(alpha = 0.10f))
                 .heightIn(min = 36.dp)
                 .padding(horizontal = 10.dp),
             verticalAlignment = Alignment.CenterVertically,
@@ -169,7 +165,7 @@ fun VpnGateCountryScreen(
             Icon(
                 Icons.Default.Search,
                 contentDescription = null,
-                tint = Ios.SecondaryLabel,
+                tint = DuskTheme.muted,
                 modifier = Modifier.size(17.dp),
             )
             Spacer(Modifier.width(7.dp))
@@ -177,13 +173,13 @@ fun VpnGateCountryScreen(
                 value = query,
                 onValueChange = { query = it },
                 singleLine = true,
-                textStyle = TextStyle(color = Ios.Label, fontSize = 16.sp),
-                cursorBrush = SolidColor(Ios.Blue),
+                textStyle = MaterialTheme.typography.bodyLarge.copy(color = DuskTheme.onSurface),
+                cursorBrush = SolidColor(DuskTheme.primary),
                 modifier = Modifier.weight(1f),
                 decorationBox = { inner ->
                     Box {
                         if (query.isEmpty()) {
-                            Text(S(R.string.search_country_2), color = Ios.SecondaryLabel, fontSize = 16.sp)
+                            Text(S(R.string.search_country_2), color = DuskTheme.muted, style = MaterialTheme.typography.bodyLarge)
                         }
                         inner()
                     }
@@ -193,10 +189,10 @@ fun VpnGateCountryScreen(
                 Icon(
                     Icons.Default.Close,
                     contentDescription = S(R.string.clear_3),
-                    tint = Ios.SecondaryLabel,
+                    tint = DuskTheme.muted,
                     modifier = Modifier
                         .size(26.dp)
-                        .clip(BadgeShape)
+                        .clip(DuskTheme.controlShape)
                         .clickable { query = "" }
                         .padding(5.dp),
                 )
@@ -244,7 +240,7 @@ fun VpnGateCountryScreen(
                     CountryRow(
                         title = S(R.string.all_countries_2),
                         value = faCount(servers.size) + S(R.string.servers_8),
-                        leading = { SettingsGlyph(Icons.Default.Public, Ios.Gray) },
+                        leading = { SettingsGlyph(Icons.Default.Public, DuskTheme.muted) },
                         checked = selected.isEmpty(),
                         onClick = { onSelectedChange(emptySet()) },
                     )
@@ -320,7 +316,7 @@ private fun CountryCheckRow(
     CountryRow(
         title = com.mlmvpn.scanner.ui.tunnel.CountryLabel.localized(code),
         value = faCount(count) + S(R.string.servers_8),
-        leading = { Text(getNodeFlagEmoji(code), fontSize = 20.sp) },
+        leading = { Text(getNodeFlagEmoji(code), style = MaterialTheme.typography.titleLarge) },
         checked = checked,
         onClick = onClick,
         star = starred to onStar,
@@ -359,28 +355,28 @@ private fun CountryRow(
         Column(modifier = Modifier.weight(1f)) {
             Text(
                 title,
-                color = Ios.Label,
-                fontSize = 16.sp,
+                color = DuskTheme.onSurface,
+                style = MaterialTheme.typography.bodyLarge,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
             if (subtitle != null) {
                 Spacer(Modifier.height(2.dp))
-                Text(subtitle, color = Ios.SecondaryLabel, fontSize = 12.sp)
+                Text(subtitle, color = DuskTheme.muted, style = MaterialTheme.typography.bodySmall)
             }
         }
         if (value != null) {
-            Text(value, color = Ios.SecondaryLabel, fontSize = 14.sp)
+            Text(value, color = DuskTheme.muted, style = MaterialTheme.typography.bodyMedium)
             Spacer(Modifier.width(8.dp))
         }
         if (star != null) {
             Icon(
                 if (star.first) Icons.Default.Star else Icons.Default.StarBorder,
                 contentDescription = null,
-                tint = if (star.first) Ios.Yellow else Ios.SecondaryLabel.copy(alpha = 0.5f),
+                tint = if (star.first) DuskTheme.accent else DuskTheme.muted.copy(alpha = 0.5f),
                 modifier = Modifier
                     .size(30.dp)
-                    .clip(BadgeShape)
+                    .clip(DuskTheme.controlShape)
                     .clickable(onClick = star.second)
                     .padding(5.dp),
             )
@@ -390,7 +386,7 @@ private fun CountryRow(
             imageVector = if (checked) Icons.Default.CheckCircle
                           else Icons.Default.RadioButtonUnchecked,
             contentDescription = null,
-            tint = if (checked) Ios.Blue else Ios.SecondaryLabel.copy(alpha = 0.45f),
+            tint = if (checked) DuskTheme.primary else DuskTheme.muted.copy(alpha = 0.45f),
             modifier = Modifier.size(20.dp),
         )
     }

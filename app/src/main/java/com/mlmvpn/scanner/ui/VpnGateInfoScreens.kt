@@ -13,22 +13,22 @@ import androidx.compose.material.icons.filled.Public
 import androidx.compose.material.icons.filled.Sort
 import androidx.compose.material.icons.filled.TravelExplore
 import androidx.compose.material.icons.filled.VerifiedUser
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.mlmvpn.scanner.engines.vpngate.SoftEtherProbe
 import com.mlmvpn.scanner.engines.vpngate.VpnGateServer
-import com.mlmvpn.scanner.ui.settings.Ios
 import com.mlmvpn.scanner.ui.settings.IosScreen
 import com.mlmvpn.scanner.ui.settings.SettingsActionRow
 import com.mlmvpn.scanner.ui.settings.SettingsFooter
 import com.mlmvpn.scanner.ui.settings.SettingsGroup
 import com.mlmvpn.scanner.ui.settings.SettingsRow
 import com.mlmvpn.scanner.ui.settings.SettingsSectionHeader
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 import com.mlmvpn.scanner.R
 import com.mlmvpn.scanner.utils.S
 
@@ -74,7 +74,7 @@ fun GatewayServerDetailScreen(
             SettingsRow(
                 title = S(R.string.ping_r2),
                 icon = Icons.Default.NetworkPing,
-                tint = Ios.Gray,
+                tint = DuskTheme.muted,
                 value = when {
                     ping == null -> S(R.string.not_tested)
                     ping > 0 -> faCount(ping) + " ms"
@@ -86,7 +86,7 @@ fun GatewayServerDetailScreen(
             SettingsRow(
                 title = S(R.string.real_test),
                 icon = Icons.Default.VerifiedUser,
-                tint = Ios.Gray,
+                tint = DuskTheme.muted,
                 // The exact millisecond figure, which the row badge deliberately reduces to a
                 // band. This is the page that has room for it.
                 value = when (handshake) {
@@ -148,9 +148,8 @@ fun GatewayServerDetailScreen(
                 // note in its own card rather than woven into the app's own copy.
                 Text(
                     server.message,
-                    color = Ios.SecondaryLabel,
-                    fontSize = 13.sp,
-                    lineHeight = 21.sp,
+                    color = DuskTheme.muted,
+                    style = MaterialTheme.typography.bodySmall,
                     modifier = Modifier.padding(16.dp),
                 )
             }
@@ -172,7 +171,7 @@ fun GatewayServerDetailScreen(
             SettingsActionRow(
                 label = S(R.string.delete_this_server),
                 icon = Icons.Default.DeleteSweep,
-                tint = Ios.Red,
+                tint = DuskTheme.error,
             ) { onRemove(); onBack() }
         }
         SettingsFooter(
@@ -237,7 +236,7 @@ fun GatewayHelpScreen(onBack: () -> Unit) {
         SettingsGroup {
             HelpRow(
                 Icons.Default.Public,
-                Ios.Blue,
+                DuskTheme.primary,
                 S(R.string.my_list_r2),
                 S(R.string.the_list_the_connect_button_chooses_from) +
                     S(R.string.whatever_you_added_from_the_archive_minus),
@@ -245,7 +244,7 @@ fun GatewayHelpScreen(onBack: () -> Unit) {
             Separator()
             HelpRow(
                 Icons.Default.TravelExplore,
-                Ios.Teal,
+                DuskTheme.secondary,
                 S(R.string.archive_r2),
                 S(R.string.every_server_the_app_has_ever_seen) +
                     S(R.string.do_not_appear_in_the_connect_button),
@@ -256,7 +255,7 @@ fun GatewayHelpScreen(onBack: () -> Unit) {
         SettingsGroup {
             HelpRow(
                 Icons.Default.NetworkPing,
-                Ios.Gray,
+                DuskTheme.muted,
                 S(R.string.ping_r2),
                 S(R.string.only_measures_how_long_your_packet_takes) +
                     S(R.string.the_connection_will_succeed),
@@ -264,7 +263,7 @@ fun GatewayHelpScreen(onBack: () -> Unit) {
             Separator()
             HelpRow(
                 Icons.Default.VerifiedUser,
-                Ios.Green,
+                DuskTheme.success,
                 S(R.string.real_test),
                 S(R.string.actually_performs_the_handshake_with_the_server) +
                     S(R.string.your_own_line_it_is_slower_but) +
@@ -281,14 +280,14 @@ fun GatewayHelpScreen(onBack: () -> Unit) {
         SettingsGroup {
             HelpRow(
                 Icons.Default.Sort,
-                Ios.Gray,
+                DuskTheme.muted,
                 S(R.string.sorting),
                 S(R.string.the_default_is_tested_first_each_mode),
             )
             Separator()
             HelpRow(
                 Icons.Default.Public,
-                Ios.Gray,
+                DuskTheme.muted,
                 S(R.string.country_r2),
                 S(R.string.limits_the_list_to_one_or_more) +
                     S(R.string.stay_at_the_top_of_the_list),
@@ -296,7 +295,7 @@ fun GatewayHelpScreen(onBack: () -> Unit) {
             Separator()
             HelpRow(
                 Icons.Default.Bookmark,
-                Ios.Gray,
+                DuskTheme.muted,
                 S(R.string.select_r2),
                 S(R.string.the_select_button_at_the_top_lets) +
                     S(R.string.or_remove_them_together),
@@ -304,7 +303,7 @@ fun GatewayHelpScreen(onBack: () -> Unit) {
             Separator()
             HelpRow(
                 Icons.Default.DeleteSweep,
-                Ios.Red,
+                DuskTheme.error,
                 S(R.string.delete_dead_servers),
                 S(R.string.only_removes_servers_that_were_tested_and) +
                     S(R.string.never_deleted),

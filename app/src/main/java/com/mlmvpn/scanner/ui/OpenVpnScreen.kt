@@ -8,11 +8,9 @@ import android.view.WindowManager
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -20,17 +18,17 @@ import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -38,15 +36,15 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDirection
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
 import com.mlmvpn.scanner.R
 import com.mlmvpn.scanner.openvpn.*
 import com.mlmvpn.scanner.quick.GeoLabel
 import com.mlmvpn.scanner.store.tr
-import com.mlmvpn.scanner.ui.settings.Ios
 import com.mlmvpn.scanner.ui.settings.IosScreen
+import com.mlmvpn.scanner.ui.theme.DuskTheme
+import com.mlmvpn.scanner.ui.theme.LocalDuskSnackbarHostState
 import com.mlmvpn.scanner.ui.settings.SettingsActionRow
 import com.mlmvpn.scanner.ui.settings.SettingsFooter
 import com.mlmvpn.scanner.ui.settings.SettingsGroup
@@ -55,6 +53,7 @@ import com.mlmvpn.scanner.ui.settings.SettingsSectionHeader
 import com.mlmvpn.scanner.ui.settings.SettingsToggle
 import com.mlmvpn.scanner.ui.tunnel.DialCore
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.util.Locale
 
 /**
@@ -68,6 +67,13 @@ import java.util.Locale
 @Composable
 fun OpenVpnScreen(onBack: () -> Unit, onStore: () -> Unit, onIran: () -> Unit, visible: Boolean = true) {
     val context = LocalContext.current
+    val snackbarScope = rememberCoroutineScope()
+    val snackbarHostState = LocalDuskSnackbarHostState.current
+    fun showNotice(message: String) {
+        snackbarScope.launch {
+            snackbarHostState.showSnackbar(message = message, duration = SnackbarDuration.Long)
+        }
+    }
     val vm = remember(context) {
         val owner = generateSequence(context) { (it as? android.content.ContextWrapper)?.baseContext }
             .filterIsInstance<ViewModelStoreOwner>().first()
@@ -137,7 +143,7 @@ fun OpenVpnScreen(onBack: () -> Unit, onStore: () -> Unit, onIran: () -> Unit, v
             onImport = {
                 try { picker.launch(arrayOf("*/*")) }
                 catch (_: android.content.ActivityNotFoundException) {
-                    android.widget.Toast.makeText(context, context.getString(R.string.amz_no_file_picker), android.widget.Toast.LENGTH_LONG).show()
+                    showNotice(context.getString(R.string.amz_no_file_picker))
                 }
             },
         )
@@ -198,7 +204,6 @@ fun OpenVpnScreen(onBack: () -> Unit, onStore: () -> Unit, onIran: () -> Unit, v
 
 private enum class Page { MAIN, SERVERS, ACCOUNTS, ACCOUNT_EDIT, GUIDE }
 
-private val OpenVpnOrange = Color(0xFFEA7E20)
 
 // ── the main page ──────────────────────────────────────────────────────────────────────────────
 
@@ -229,12 +234,12 @@ private fun MainPage(
         Text(
             tr("سرورهای TunnelBear، مستقیم و بی‌واسطه: هیچ تونل دیگری زیر آن نیست.",
                 "TunnelBear's servers, connected directly: no other tunnel underneath."),
-            color = Ios.SecondaryLabel, fontSize = 13.sp, textAlign = TextAlign.Center,
+            color = DuskTheme.muted, style = MaterialTheme.typography.bodySmall, textAlign = TextAlign.Center,
             modifier = Modifier.fillMaxWidth().padding(horizontal = 32.dp),
         )
         Spacer(Modifier.height(18.dp))
         DialCore(
-            accent = when { running -> Ios.Green; failed -> Ios.Red; else -> OpenVpnOrange },
+            accent = when { running -> DuskTheme.success; failed -> DuskTheme.error; else -> DuskTheme.accent },
             working = working,
             running = running,
             progress = -1,
@@ -247,13 +252,13 @@ private fun MainPage(
             modifier = Modifier.fillMaxWidth(),
         ) {
             // A plain glyph, no artwork on the dial: the user asked for this here as for «گف».
-            Icon(Icons.Default.Power, null, tint = Color.White, modifier = Modifier.size(38.dp))
+            Icon(Icons.Default.Power, null, tint = DuskTheme.white, modifier = Modifier.size(38.dp))
         }
         Spacer(Modifier.height(14.dp))
         Text(
             headline(connection),
-            color = when { running -> Ios.Green; failed -> Ios.Red; working -> OpenVpnOrange; else -> Ios.SecondaryLabel },
-            fontSize = 17.sp, fontWeight = FontWeight.SemiBold, textAlign = TextAlign.Center,
+            color = when { running -> DuskTheme.success; failed -> DuskTheme.error; working -> DuskTheme.accent; else -> DuskTheme.muted },
+            style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold, textAlign = TextAlign.Center,
             modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp),
         )
         com.mlmvpn.scanner.ui.RouteChips()
@@ -265,7 +270,7 @@ private fun MainPage(
         }
         if (sub != null) {
             Spacer(Modifier.height(4.dp))
-            Text(sub, color = Ios.SecondaryLabel, fontSize = 13.sp, textAlign = TextAlign.Center,
+            Text(sub, color = DuskTheme.muted, style = MaterialTheme.typography.bodySmall, textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 28.dp))
         }
         Spacer(Modifier.height(18.dp))
@@ -277,7 +282,7 @@ private fun MainPage(
             if (profile != null) {
                 ServerRow(profile, fa, selected = false, busy = false, onClick = onServers, onFavorite = null, chevron = true)
             } else {
-                SettingsRow(tr("انتخاب سرور", "Choose a server"), Icons.Default.Public, Ios.Blue, onClick = onServers)
+                SettingsRow(tr("انتخاب سرور", "Choose a server"), Icons.Default.Public, DuskTheme.primary, onClick = onServers)
             }
         }
         SettingsFooter(tr("کشوری که سایت‌ها می‌بینند. تأخیرها از همان مسیری سنجیده می‌شوند که اتصال از آن می‌رود.",
@@ -288,7 +293,7 @@ private fun MainPage(
             SettingsRow(
                 title = account?.username ?: tr("افزودن حساب TunnelBear", "Add a TunnelBear account"),
                 icon = Icons.Default.AccountCircle,
-                tint = if (account == null) Ios.Orange else Ios.Blue,
+                tint = if (account == null) DuskTheme.accent else DuskTheme.primary,
                 subtitle = account?.let { accountText(it, System.currentTimeMillis()) },
                 onClick = onAccounts,
             )
@@ -296,9 +301,9 @@ private fun MainPage(
 
         SettingsSectionHeader(tr("بیشتر", "More"))
         SettingsGroup {
-            SettingsRow(tr("راهنمای ساخت حساب", "How to get an account"), Icons.Default.MenuBook, Ios.Teal, onClick = onGuide)
+            SettingsRow(tr("راهنمای ساخت حساب", "How to get an account"), Icons.Default.MenuBook, DuskTheme.secondary, onClick = onGuide)
             Separator()
-            SettingsActionRow(tr("افزودن پروفایل (.ovpn)", "Add profiles (.ovpn)"), Icons.Default.Add, Ios.Blue, onClick = onImport)
+            SettingsActionRow(tr("افزودن پروفایل (.ovpn)", "Add profiles (.ovpn)"), Icons.Default.Add, DuskTheme.primary, onClick = onImport)
         }
         SettingsFooter(tr("فایل‌های ovpn و CA وابسته را با هم انتخاب کنید.", "Select .ovpn files and their CA files together."))
         Spacer(Modifier.height(32.dp))
@@ -354,9 +359,13 @@ private fun LiveGroup(connection: OpenVpnConnection, fa: Boolean) {
 @Composable
 private fun Figure(label: String, value: String) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Text(value, color = Ios.Label, fontSize = 17.sp, fontWeight = FontWeight.SemiBold,
-            style = TextStyle(textDirection = TextDirection.Ltr))
-        Text(label, color = Ios.SecondaryLabel, fontSize = 12.sp)
+        Text(
+            value,
+            color = DuskTheme.onSurface,
+            style = MaterialTheme.typography.titleMedium.copy(textDirection = TextDirection.Ltr),
+            fontWeight = FontWeight.SemiBold,
+        )
+        Text(label, color = DuskTheme.muted, style = MaterialTheme.typography.bodySmall)
     }
 }
 
@@ -364,14 +373,14 @@ private fun Figure(label: String, value: String) {
 private fun Banner(text: String, onDismiss: () -> Unit) {
     Row(
         Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 6.dp)
-            .clip(RoundedCornerShape(16.dp)).background(Ios.Orange.copy(alpha = 0.16f))
+            .clip(DuskTheme.cardShape).background(DuskTheme.accent.copy(alpha = 0.16f))
             .padding(horizontal = 14.dp, vertical = 12.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Icon(Icons.Default.Info, null, tint = Ios.Orange, modifier = Modifier.size(20.dp))
+        Icon(Icons.Default.Info, null, tint = DuskTheme.accent, modifier = Modifier.size(20.dp))
         Spacer(Modifier.width(10.dp))
-        Text(text, color = Ios.Label, fontSize = 14.sp, modifier = Modifier.weight(1f))
-        Icon(Icons.Default.Close, tr("بستن", "Close"), tint = Ios.SecondaryLabel,
+        Text(text, color = DuskTheme.onSurface, style = MaterialTheme.typography.bodyMedium, modifier = Modifier.weight(1f))
+        Icon(Icons.Default.Close, tr("بستن", "Close"), tint = DuskTheme.muted,
             modifier = Modifier.size(20.dp).clickable(onClick = onDismiss))
     }
 }
@@ -397,10 +406,10 @@ private fun ServersPage(
         SettingsGroup {
             SettingsActionRow(
                 if (testing.isEmpty()) tr("سنجش تأخیر همه", "Measure all") else tr("توقف سنجش", "Stop measuring"),
-                Icons.Default.Speed, Ios.Blue, enabled = !connection.active, onClick = onTestAll,
+                Icons.Default.Speed, DuskTheme.primary, enabled = !connection.active, onClick = onTestAll,
             )
             Separator()
-            SettingsActionRow(tr("اتصال به سریع‌ترین", "Connect to the fastest"), Icons.Default.Bolt, Ios.Green,
+            SettingsActionRow(tr("اتصال به سریع‌ترین", "Connect to the fastest"), Icons.Default.Bolt, DuskTheme.success,
                 enabled = testing.isEmpty(), onClick = onFastest)
         }
         if (testing.isNotEmpty() && testTotal > 0) {
@@ -409,15 +418,15 @@ private fun ServersPage(
             val shown by androidx.compose.animation.core.animateFloatAsState(done.toFloat() / testTotal, label = "ovpn-progress")
             Column(Modifier.fillMaxWidth().padding(start = 20.dp, end = 20.dp, top = 12.dp)) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text(tr("در حال سنجش…", "Measuring…"), color = Ios.SecondaryLabel, fontSize = 13.sp, modifier = Modifier.weight(1f))
+                    Text(tr("در حال سنجش…", "Measuring…"), color = DuskTheme.muted, style = MaterialTheme.typography.bodySmall, modifier = Modifier.weight(1f))
                     Text(
                         if (fa) "${faDigits(done)} از ${faDigits(testTotal)}" else "$done of $testTotal",
-                        color = Ios.SecondaryLabel, fontSize = 13.sp, fontWeight = FontWeight.Medium,
+                        color = DuskTheme.muted, style = MaterialTheme.typography.bodySmall, fontWeight = FontWeight.Medium,
                     )
                 }
                 Spacer(Modifier.height(6.dp))
-                Box(Modifier.fillMaxWidth().height(6.dp).clip(RoundedCornerShape(3.dp)).background(Ios.Gray.copy(alpha = 0.25f))) {
-                    Box(Modifier.fillMaxWidth(shown).fillMaxHeight().clip(RoundedCornerShape(3.dp)).background(Ios.Blue))
+                Box(Modifier.fillMaxWidth().height(6.dp).clip(DuskTheme.controlShape).background(DuskTheme.muted.copy(alpha = 0.25f))) {
+                    Box(Modifier.fillMaxWidth(shown).fillMaxHeight().clip(DuskTheme.controlShape).background(DuskTheme.primary))
                 }
             }
         }
@@ -481,42 +490,41 @@ private fun ServerRow(
         Modifier.fillMaxWidth().clickable(onClick = onClick).padding(horizontal = 16.dp, vertical = 11.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Text(place.flag, fontSize = 26.sp)
+        Text(place.flag, style = MaterialTheme.typography.titleLarge)
         Spacer(Modifier.width(12.dp))
         Column(Modifier.weight(1f)) {
-            Text(place.name, color = Ios.Label, fontSize = 16.sp,
+            Text(place.name, color = DuskTheme.onSurface, style = MaterialTheme.typography.bodyLarge,
                 fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Normal, maxLines = 1)
             Text(
                 if (ProfileRuntime.isTunnelBear(p)) "TunnelBear" else p.remotes.first().host,
-                color = Ios.SecondaryLabel, fontSize = 12.sp, maxLines = 1,
+                color = DuskTheme.muted, style = MaterialTheme.typography.bodySmall, maxLines = 1,
             )
         }
         when {
-            busy -> CircularProgressIndicator(Modifier.size(16.dp), strokeWidth = 2.dp, color = Ios.SecondaryLabel)
+            busy -> CircularProgressIndicator(Modifier.size(16.dp), strokeWidth = 2.dp, color = DuskTheme.muted)
             fresh && millis != null -> Text(
-                "$millis ms", fontSize = 14.sp, fontWeight = FontWeight.Medium,
-                color = when { millis < 350 -> Ios.Green; millis < 800 -> Ios.Orange; else -> Ios.Red },
-                style = TextStyle(textDirection = TextDirection.Ltr),
+                "$millis ms", style = MaterialTheme.typography.bodyMedium.copy(textDirection = TextDirection.Ltr), fontWeight = FontWeight.Medium,
+                color = when { millis < 350 -> DuskTheme.success; millis < 800 -> DuskTheme.accent; else -> DuskTheme.error },
             )
-            fresh && probe?.error == "TLS_BLOCKED" -> Text(tr("مسدود", "Blocked"), fontSize = 13.sp, color = Ios.Red)
-            fresh -> Text(tr("پاسخ نداد", "No answer"), fontSize = 13.sp, color = Ios.Red)
+            fresh && probe?.error == "TLS_BLOCKED" -> Text(tr("مسدود", "Blocked"), style = MaterialTheme.typography.bodySmall, color = DuskTheme.error)
+            fresh -> Text(tr("پاسخ نداد", "No answer"), style = MaterialTheme.typography.bodySmall, color = DuskTheme.error)
         }
         if (selected) {
             Spacer(Modifier.width(8.dp))
-            Icon(Icons.Default.CheckCircle, null, tint = Ios.Blue, modifier = Modifier.size(20.dp))
+            Icon(Icons.Default.CheckCircle, null, tint = DuskTheme.primary, modifier = Modifier.size(20.dp))
         }
         if (onFavorite != null) {
             Spacer(Modifier.width(6.dp))
             Icon(
                 if (p.favorite) Icons.Default.Star else Icons.Default.StarBorder,
                 tr("علاقه‌مندی", "Favourite"),
-                tint = if (p.favorite) Ios.Yellow else Ios.Gray,
+                tint = if (p.favorite) DuskTheme.accent else DuskTheme.muted,
                 modifier = Modifier.size(24.dp).clickable(onClick = onFavorite),
             )
         }
         if (chevron) {
             Spacer(Modifier.width(6.dp))
-            Icon(Icons.Default.ChevronLeft, null, tint = Ios.Chevron, modifier = Modifier.size(20.dp))
+            Icon(Icons.Default.ChevronLeft, null, tint = DuskTheme.disabled, modifier = Modifier.size(20.dp))
         }
     }
 }
@@ -525,20 +533,20 @@ private fun ServerRow(
 private fun SearchBox(value: String, onChange: (String) -> Unit) {
     Row(
         Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp)
-            .clip(RoundedCornerShape(12.dp)).background(Ios.Gray.copy(alpha = 0.18f))
+            .clip(DuskTheme.controlShape).background(DuskTheme.muted.copy(alpha = 0.18f))
             .padding(horizontal = 12.dp, vertical = 10.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Icon(Icons.Default.Search, null, tint = Ios.SecondaryLabel, modifier = Modifier.size(18.dp))
+        Icon(Icons.Default.Search, null, tint = DuskTheme.muted, modifier = Modifier.size(18.dp))
         Spacer(Modifier.width(8.dp))
         BasicTextField(
             value = value, onValueChange = onChange, singleLine = true,
-            textStyle = TextStyle(color = Ios.Label, fontSize = 16.sp),
-            cursorBrush = SolidColor(Ios.Blue),
+            textStyle = MaterialTheme.typography.bodyLarge.copy(color = DuskTheme.onSurface),
+            cursorBrush = SolidColor(DuskTheme.primary),
             modifier = Modifier.weight(1f),
             decorationBox = { inner ->
                 Box {
-                    if (value.isEmpty()) Text(tr("جست‌وجوی کشور", "Search a country"), color = Ios.SecondaryLabel, fontSize = 16.sp)
+                    if (value.isEmpty()) Text(tr("جست‌وجوی کشور", "Search a country"), color = DuskTheme.muted, style = MaterialTheme.typography.bodyLarge)
                     inner()
                 }
             },
@@ -572,15 +580,19 @@ private fun AccountsPage(
                     ) {
                         Icon(
                             if (a.id == data.activeAccount) Icons.Default.CheckCircle else Icons.Default.AccountCircle, null,
-                            tint = if (a.id == data.activeAccount) Ios.Blue else Ios.Gray, modifier = Modifier.size(26.dp),
+                            tint = if (a.id == data.activeAccount) DuskTheme.primary else DuskTheme.muted, modifier = Modifier.size(26.dp),
                         )
                         Spacer(Modifier.width(12.dp))
                         Column(Modifier.weight(1f)) {
-                            Text(a.username, color = Ios.Label, fontSize = 16.sp, maxLines = 1,
-                                style = TextStyle(textDirection = TextDirection.Ltr))
-                            Text(accountText(a, now), color = if (a.usable(now)) Ios.SecondaryLabel else Ios.Orange, fontSize = 12.sp)
+                            Text(
+                                a.username,
+                                color = DuskTheme.onSurface,
+                                style = MaterialTheme.typography.bodyLarge.copy(textDirection = TextDirection.Ltr),
+                                maxLines = 1,
+                            )
+                            Text(accountText(a, now), color = if (a.usable(now)) DuskTheme.muted else DuskTheme.accent, style = MaterialTheme.typography.bodySmall)
                         }
-                        Icon(Icons.Outlined.Info, tr("ویرایش", "Edit"), tint = Ios.Blue,
+                        Icon(Icons.Outlined.Info, tr("ویرایش", "Edit"), tint = DuskTheme.primary,
                             modifier = Modifier.size(24.dp).clickable { onEdit(a) })
                     }
                 }
@@ -589,11 +601,11 @@ private fun AccountsPage(
                 "Tapping an account selects it; if connected, the same server reconnects with it."))
         }
         SettingsGroup {
-            SettingsActionRow(tr("افزودن حساب", "Add an account"), Icons.Default.PersonAdd, Ios.Blue, onClick = { onEdit(null) })
+            SettingsActionRow(tr("افزودن حساب", "Add an account"), Icons.Default.PersonAdd, DuskTheme.primary, onClick = { onEdit(null) })
             Separator()
-            SettingsActionRow(tr("ساخت حساب TunnelBear", "Create a TunnelBear account"), Icons.Default.OpenInNew, Ios.Teal, onClick = onCreate)
+            SettingsActionRow(tr("ساخت حساب TunnelBear", "Create a TunnelBear account"), Icons.Default.OpenInNew, DuskTheme.secondary, onClick = onCreate)
             Separator()
-            SettingsRow(tr("راهنمای ساخت حساب", "How to get an account"), Icons.Default.MenuBook, Ios.Teal, onClick = onGuide)
+            SettingsRow(tr("راهنمای ساخت حساب", "How to get an account"), Icons.Default.MenuBook, DuskTheme.secondary, onClick = onGuide)
         }
         SettingsSectionHeader(tr("چند حساب", "Several accounts"))
         SettingsGroup {
@@ -602,7 +614,7 @@ private fun AccountsPage(
                 checked = data.autoSwitch,
                 onCheckedChange = onAutoSwitch,
                 icon = Icons.Default.SwapHoriz,
-                tint = Ios.Indigo,
+                tint = DuskTheme.indigo,
             )
         }
         SettingsFooter(tr("اگر ورود حسابی رد شود یا سهمیه‌اش تمام شود، حساب دیگری امتحان می‌شود.",
@@ -646,14 +658,14 @@ private fun AccountEditPage(
                 "The email and password of your TunnelBear account. The password stays encrypted on this phone only.")
         )
         SettingsGroup {
-            SettingsActionRow(tr("ذخیره", "Save"), Icons.Default.CheckCircle, Ios.Blue,
+            SettingsActionRow(tr("ذخیره", "Save"), Icons.Default.CheckCircle, DuskTheme.primary,
                 enabled = !locked && username.isNotBlank() && password.isNotEmpty(),
                 onClick = { onSave(username.trim(), password); password = "" })
             if (account != null) {
                 Separator()
                 SettingsActionRow(
                     if (confirmDelete) tr("برای حذف دوباره بزنید", "Tap again to delete") else tr("حذف حساب", "Delete account"),
-                    Icons.Default.DeleteForever, Ios.Red, labelColor = Ios.Red, enabled = !locked,
+                    Icons.Default.DeleteForever, DuskTheme.error, labelColor = DuskTheme.error, enabled = !locked,
                     onClick = { if (confirmDelete) onDelete(account.id) else confirmDelete = true },
                 )
             }
@@ -666,11 +678,11 @@ private fun AccountEditPage(
 @Composable
 private fun Field(label: String, value: String, onChange: (String) -> Unit, type: KeyboardType, secret: Boolean) {
     Row(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 13.dp), verticalAlignment = Alignment.CenterVertically) {
-        Text(label, color = Ios.Label, fontSize = 16.sp, modifier = Modifier.width(72.dp))
+        Text(label, color = DuskTheme.onSurface, style = MaterialTheme.typography.bodyLarge, modifier = Modifier.width(72.dp))
         BasicTextField(
             value = value, onValueChange = onChange, singleLine = true,
-            textStyle = TextStyle(color = Ios.Label, fontSize = 16.sp, textDirection = TextDirection.Ltr),
-            cursorBrush = SolidColor(Ios.Blue),
+            textStyle = MaterialTheme.typography.bodyLarge.copy(color = DuskTheme.onSurface, textDirection = TextDirection.Ltr),
+            cursorBrush = SolidColor(DuskTheme.primary),
             visualTransformation = if (secret) PasswordVisualTransformation() else VisualTransformation.None,
             keyboardOptions = KeyboardOptions(keyboardType = type, autoCorrect = false),
             modifier = Modifier.weight(1f),
@@ -695,22 +707,22 @@ private fun GuidePage(onBack: () -> Unit, onIran: () -> Unit, onStore: () -> Uni
             steps.forEachIndexed { i, s ->
                 if (i > 0) Separator()
                 Row(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 12.dp), verticalAlignment = Alignment.CenterVertically) {
-                    Box(Modifier.size(26.dp).clip(RoundedCornerShape(13.dp)).background(OpenVpnOrange), contentAlignment = Alignment.Center) {
-                        Text(digits[i].toString(), color = Color.White, fontSize = 13.sp, fontWeight = FontWeight.Bold)
+                    Box(Modifier.size(26.dp).clip(DuskTheme.circleShape).background(DuskTheme.accent), contentAlignment = Alignment.Center) {
+                        Text(digits[i].toString(), color = DuskTheme.white, style = MaterialTheme.typography.bodySmall, fontWeight = FontWeight.Bold)
                     }
                     Spacer(Modifier.width(12.dp))
-                    Text(s, color = Ios.Label, fontSize = 15.sp, modifier = Modifier.weight(1f))
+                    Text(s, color = DuskTheme.onSurface, style = MaterialTheme.typography.bodyLarge, modifier = Modifier.weight(1f))
                 }
             }
         }
         SettingsFooter(tr("سهمیه و شرایط هر حساب را خود TunnelBear تعیین می‌کند. اندروید فقط یک VPN را هم‌زمان نگه می‌دارد؛ اتصال OpenVPN اتصال قبلی را جایگزین می‌کند.",
             "TunnelBear sets each account's quota and terms. Android keeps one VPN at a time; connecting OpenVPN replaces the previous one."))
         SettingsGroup {
-            SettingsRow(tr("باز کردن «کانفیگ ایران»", "Open «Iran config»"), Icons.Default.Flag, Ios.Green, onClick = onIran)
+            SettingsRow(tr("باز کردن «کانفیگ ایران»", "Open «Iran config»"), Icons.Default.Flag, DuskTheme.success, onClick = onIran)
             Separator()
-            SettingsActionRow(tr("صفحهٔ حساب TunnelBear", "TunnelBear account page"), Icons.Default.OpenInNew, Ios.Teal, onClick = onSite)
+            SettingsActionRow(tr("صفحهٔ حساب TunnelBear", "TunnelBear account page"), Icons.Default.OpenInNew, DuskTheme.secondary, onClick = onSite)
             Separator()
-            SettingsRow(tr("به‌روزرسانی هسته از استور", "Update the core from the Store"), Icons.Default.SystemUpdate, Ios.Blue, onClick = onStore)
+            SettingsRow(tr("به‌روزرسانی هسته از استور", "Update the core from the Store"), Icons.Default.SystemUpdate, DuskTheme.primary, onClick = onStore)
         }
         Spacer(Modifier.height(32.dp))
     }

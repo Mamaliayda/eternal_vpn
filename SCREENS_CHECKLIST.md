@@ -1,6 +1,6 @@
 # Eternal VPN — screen redesign checklist
 
-> **Progress: 202 / 1203 complete** — each checked row is fully migrated; unverified routes and states remain unchecked.
+> **Progress: 249 / 1203 complete** — each checked row is fully migrated; unverified routes and states remain unchecked.
 
 > Inventory generated from Kotlin source on 2026-11-26. A row is considered migrated only after its visible composition, nested states, and overlays are reviewed against the Soft Dusk tokens. Shared theme inheritance alone does **not** count as a completed visual redesign.
 
@@ -76,7 +76,7 @@ Found 230 screen-like public/internal composables across 133 Kotlin files (the f
 - [x] `ChangelogScreen` — `com/mlmvpn/scanner/ui/AboutScreen.kt`
 ### AddNodeScreen.kt
 
-- [ ] `AddNodeScreen` — `com/mlmvpn/scanner/ui/AddNodeScreen.kt`
+- [x] `AddNodeScreen` — `com/mlmvpn/scanner/ui/AddNodeScreen.kt`
 - [x] `ManualEntryScreen` — `com/mlmvpn/scanner/ui/AddNodeScreen.kt`
 - [x] `SubLinkAddScreen` — `com/mlmvpn/scanner/ui/AddNodeScreen.kt`
 ### AppScreen.kt
@@ -126,8 +126,8 @@ Found 230 screen-like public/internal composables across 133 Kotlin files (the f
 - [ ] `HelpFaqScreen` — `com/mlmvpn/scanner/ui/HelpCenterScreen.kt`
 ### NodesScreens.kt
 
-- [ ] `NodeDetailScreen` — `com/mlmvpn/scanner/ui/NodesScreens.kt`
-- [ ] `NodeEditScreen` — `com/mlmvpn/scanner/ui/NodesScreens.kt`
+- [x] `NodeDetailScreen` — `com/mlmvpn/scanner/ui/NodesScreens.kt`
+- [x] `NodeEditScreen` — `com/mlmvpn/scanner/ui/NodesScreens.kt`
 - [x] `NodeListSettingsScreen` — `com/mlmvpn/scanner/ui/NodesScreens.kt`
 - [x] `AutoSwitchScreen` — `com/mlmvpn/scanner/ui/NodesScreens.kt`
 ### NodesTab.kt
@@ -135,19 +135,19 @@ Found 230 screen-like public/internal composables across 133 Kotlin files (the f
 - [ ] `NodesTab` — `com/mlmvpn/scanner/ui/NodesTab.kt`
 ### OpenVpnScreen.kt
 
-- [ ] `OpenVpnScreen` — `com/mlmvpn/scanner/ui/OpenVpnScreen.kt`
-- [ ] `MainPage` — `com/mlmvpn/scanner/ui/OpenVpnScreen.kt`
-- [ ] `ServersPage` — `com/mlmvpn/scanner/ui/OpenVpnScreen.kt`
-- [ ] `AccountsPage` — `com/mlmvpn/scanner/ui/OpenVpnScreen.kt`
-- [ ] `AccountEditPage` — `com/mlmvpn/scanner/ui/OpenVpnScreen.kt`
-- [ ] `GuidePage` — `com/mlmvpn/scanner/ui/OpenVpnScreen.kt`
+- [x] `OpenVpnScreen` — `com/mlmvpn/scanner/ui/OpenVpnScreen.kt`
+- [x] `MainPage` — `com/mlmvpn/scanner/ui/OpenVpnScreen.kt`
+- [x] `ServersPage` — `com/mlmvpn/scanner/ui/OpenVpnScreen.kt`
+- [x] `AccountsPage` — `com/mlmvpn/scanner/ui/OpenVpnScreen.kt`
+- [x] `AccountEditPage` — `com/mlmvpn/scanner/ui/OpenVpnScreen.kt`
+- [x] `GuidePage` — `com/mlmvpn/scanner/ui/OpenVpnScreen.kt`
 ### QuickConnectTab.kt
 
 - [ ] `QuickConnectTab` — `com/mlmvpn/scanner/ui/QuickConnectTab.kt`
 ### QuickServersScreen.kt
 
-- [ ] `QuickServersScreen` — `com/mlmvpn/scanner/ui/QuickServersScreen.kt`
-- [ ] `QuickCountryScreen` — `com/mlmvpn/scanner/ui/QuickServersScreen.kt`
+- [x] `QuickServersScreen` — `com/mlmvpn/scanner/ui/QuickServersScreen.kt`
+- [x] `QuickCountryScreen` — `com/mlmvpn/scanner/ui/QuickServersScreen.kt`
 ### ScanGuardHost.kt
 
 - [x] `ScanGuardHost` — `com/mlmvpn/scanner/ui/ScanGuardHost.kt`
@@ -162,17 +162,17 @@ Found 230 screen-like public/internal composables across 133 Kotlin files (the f
 - [x] `SplashScreen` — `com/mlmvpn/scanner/ui/SplashScreen.kt`
 ### VpnGateCountryScreen.kt
 
-- [ ] `VpnGateCountryScreen` — `com/mlmvpn/scanner/ui/VpnGateCountryScreen.kt`
+- [x] `VpnGateCountryScreen` — `com/mlmvpn/scanner/ui/VpnGateCountryScreen.kt`
 ### VpnGateInfoScreens.kt
 
 - [ ] `GatewayServerDetailScreen` — `com/mlmvpn/scanner/ui/VpnGateInfoScreens.kt`
 - [ ] `GatewayHelpScreen` — `com/mlmvpn/scanner/ui/VpnGateInfoScreens.kt`
 ### VpnGateServersScreen.kt
 
-- [ ] `VpnGateServersScreen` — `com/mlmvpn/scanner/ui/VpnGateServersScreen.kt`
+- [x] `VpnGateServersScreen` — `com/mlmvpn/scanner/ui/VpnGateServersScreen.kt`
 ### VpnGateTab.kt
 
-- [ ] `VpnGateTab` — `com/mlmvpn/scanner/ui/VpnGateTab.kt`
+- [x] `VpnGateTab` — `com/mlmvpn/scanner/ui/VpnGateTab.kt`
 ### WireguardGuard.kt
 
 - [x] `WireguardConflictDialog` — `com/mlmvpn/scanner/ui/WireguardGuard.kt`
@@ -521,12 +521,12 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 - [x] `NodeConnectBar` — `com/mlmvpn/scanner/ui/NodesWidgets.kt`
 ### OpenVpnScreen.kt
 
-- [ ] `LiveGroup` — `com/mlmvpn/scanner/ui/OpenVpnScreen.kt`
-- [ ] `Figure` — `com/mlmvpn/scanner/ui/OpenVpnScreen.kt`
-- [ ] `Banner` — `com/mlmvpn/scanner/ui/OpenVpnScreen.kt`
-- [ ] `ServerRow` — `com/mlmvpn/scanner/ui/OpenVpnScreen.kt`
-- [ ] `SearchBox` — `com/mlmvpn/scanner/ui/OpenVpnScreen.kt`
-- [ ] `Field` — `com/mlmvpn/scanner/ui/OpenVpnScreen.kt`
+- [x] `LiveGroup` — `com/mlmvpn/scanner/ui/OpenVpnScreen.kt`
+- [x] `Figure` — `com/mlmvpn/scanner/ui/OpenVpnScreen.kt`
+- [x] `Banner` — `com/mlmvpn/scanner/ui/OpenVpnScreen.kt`
+- [x] `ServerRow` — `com/mlmvpn/scanner/ui/OpenVpnScreen.kt`
+- [x] `SearchBox` — `com/mlmvpn/scanner/ui/OpenVpnScreen.kt`
+- [x] `Field` — `com/mlmvpn/scanner/ui/OpenVpnScreen.kt`
 ### QuickConnectTab.kt
 
 - [ ] `ConnectOrb` — `com/mlmvpn/scanner/ui/QuickConnectTab.kt`
@@ -536,13 +536,13 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 - [ ] `Badge` — `com/mlmvpn/scanner/ui/QuickConnectTab.kt`
 ### QuickServersScreen.kt
 
-- [ ] `QuickCountryRow` — `com/mlmvpn/scanner/ui/QuickServersScreen.kt`
-- [ ] `NumberRow` — `com/mlmvpn/scanner/ui/QuickServersScreen.kt`
-- [ ] `Stepper` — `com/mlmvpn/scanner/ui/QuickServersScreen.kt`
-- [ ] `ResultRow` — `com/mlmvpn/scanner/ui/QuickServersScreen.kt`
-- [ ] `ScanStrip` — `com/mlmvpn/scanner/ui/QuickServersScreen.kt`
-- [ ] `StageBar` — `com/mlmvpn/scanner/ui/QuickServersScreen.kt`
-- [ ] `QuickButton` — `com/mlmvpn/scanner/ui/QuickServersScreen.kt`
+- [x] `QuickCountryRow` — `com/mlmvpn/scanner/ui/QuickServersScreen.kt`
+- [x] `NumberRow` — `com/mlmvpn/scanner/ui/QuickServersScreen.kt`
+- [x] `Stepper` — `com/mlmvpn/scanner/ui/QuickServersScreen.kt`
+- [x] `ResultRow` — `com/mlmvpn/scanner/ui/QuickServersScreen.kt`
+- [x] `ScanStrip` — `com/mlmvpn/scanner/ui/QuickServersScreen.kt`
+- [x] `StageBar` — `com/mlmvpn/scanner/ui/QuickServersScreen.kt`
+- [x] `QuickButton` — `com/mlmvpn/scanner/ui/QuickServersScreen.kt`
 ### RouteChips.kt
 
 - [x] `RouteChips` — `com/mlmvpn/scanner/ui/RouteChips.kt`
@@ -564,35 +564,35 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 - [x] `SubscriptionUsageCard` — `com/mlmvpn/scanner/ui/SubscriptionUsageCard.kt`
 ### VpnGateCountryScreen.kt
 
-- [ ] `CountryCheckRow` — `com/mlmvpn/scanner/ui/VpnGateCountryScreen.kt`
-- [ ] `CountryRow` — `com/mlmvpn/scanner/ui/VpnGateCountryScreen.kt`
+- [x] `CountryCheckRow` — `com/mlmvpn/scanner/ui/VpnGateCountryScreen.kt`
+- [x] `CountryRow` — `com/mlmvpn/scanner/ui/VpnGateCountryScreen.kt`
 ### VpnGateInfoScreens.kt
 
 - [ ] `HelpRow` — `com/mlmvpn/scanner/ui/VpnGateInfoScreens.kt`
 ### VpnGateServersScreen.kt
 
-- [ ] `SearchField` — `com/mlmvpn/scanner/ui/VpnGateServersScreen.kt`
-- [ ] `ScopeChips` — `com/mlmvpn/scanner/ui/VpnGateServersScreen.kt`
-- [ ] `ScopeChip` — `com/mlmvpn/scanner/ui/VpnGateServersScreen.kt`
-- [ ] `ListSummary` — `com/mlmvpn/scanner/ui/VpnGateServersScreen.kt`
-- [ ] `BottomBar` — `com/mlmvpn/scanner/ui/VpnGateServersScreen.kt`
+- [x] `SearchField` — `com/mlmvpn/scanner/ui/VpnGateServersScreen.kt`
+- [x] `ScopeChips` — `com/mlmvpn/scanner/ui/VpnGateServersScreen.kt`
+- [x] `ScopeChip` — `com/mlmvpn/scanner/ui/VpnGateServersScreen.kt`
+- [x] `ListSummary` — `com/mlmvpn/scanner/ui/VpnGateServersScreen.kt`
+- [x] `BottomBar` — `com/mlmvpn/scanner/ui/VpnGateServersScreen.kt`
 ### VpnGateSweepStrip.kt
 
-- [ ] `VpnGateSweepStrip` — `com/mlmvpn/scanner/ui/VpnGateSweepStrip.kt`
+- [x] `VpnGateSweepStrip` — `com/mlmvpn/scanner/ui/VpnGateSweepStrip.kt`
 ### VpnGateTab.kt
 
-- [ ] `StatusLine` — `com/mlmvpn/scanner/ui/VpnGateTab.kt`
+- [x] `StatusLine` — `com/mlmvpn/scanner/ui/VpnGateTab.kt`
 ### VpnGateWidgets.kt
 
-- [ ] `GatewayServerRow` — `com/mlmvpn/scanner/ui/VpnGateWidgets.kt`
-- [ ] `HandshakeBadge` — `com/mlmvpn/scanner/ui/VpnGateWidgets.kt`
-- [ ] `handshakeLabel` — `com/mlmvpn/scanner/ui/VpnGateWidgets.kt`
-- [ ] `PingBadge` — `com/mlmvpn/scanner/ui/VpnGateWidgets.kt`
-- [ ] `pingTone` — `com/mlmvpn/scanner/ui/VpnGateWidgets.kt`
-- [ ] `GatewayToolbar` — `com/mlmvpn/scanner/ui/VpnGateWidgets.kt`
-- [ ] `GateToolbarAction` — `com/mlmvpn/scanner/ui/VpnGateWidgets.kt`
-- [ ] `GatewayBarButton` — `com/mlmvpn/scanner/ui/VpnGateWidgets.kt`
-- [ ] `GatewaySnack` — `com/mlmvpn/scanner/ui/VpnGateWidgets.kt`
+- [x] `GatewayServerRow` — `com/mlmvpn/scanner/ui/VpnGateWidgets.kt`
+- [x] `HandshakeBadge` — `com/mlmvpn/scanner/ui/VpnGateWidgets.kt`
+- [x] `handshakeLabel` — `com/mlmvpn/scanner/ui/VpnGateWidgets.kt`
+- [x] `PingBadge` — `com/mlmvpn/scanner/ui/VpnGateWidgets.kt`
+- [x] `pingTone` — `com/mlmvpn/scanner/ui/VpnGateWidgets.kt`
+- [x] `GatewayToolbar` — `com/mlmvpn/scanner/ui/VpnGateWidgets.kt`
+- [x] `GateToolbarAction` — `com/mlmvpn/scanner/ui/VpnGateWidgets.kt`
+- [x] `GatewayBarButton` — `com/mlmvpn/scanner/ui/VpnGateWidgets.kt`
+- [x] `GatewaySnack` — `com/mlmvpn/scanner/ui/VpnGateWidgets.kt`
 - [x] `GatewayEmptyState` — `com/mlmvpn/scanner/ui/VpnGateWidgets.kt`
 ### WireguardTab.kt
 
@@ -1449,14 +1449,14 @@ Toast / short transient feedback call sites (OS-rendered surfaces; validate app 
 - [ ] `com/mlmvpn/scanner/engines/nahan/NahanSettingsScreen.kt` — Toast × 7
 - [ ] `com/mlmvpn/scanner/lan/LanNotification.kt` — Toast × 1
 - [ ] `com/mlmvpn/scanner/ui/AboutScreen.kt` — Toast × 1
-- [ ] `com/mlmvpn/scanner/ui/AddNodeScreen.kt` — Toast × 15
+- [x] `com/mlmvpn/scanner/ui/AddNodeScreen.kt` — Toast × 15
 - [ ] `com/mlmvpn/scanner/ui/AppScreen.kt` — Toast × 1
 - [ ] `com/mlmvpn/scanner/ui/CloudTab.kt` — Toast × 29
 - [ ] `com/mlmvpn/scanner/ui/CloudTroubleshootScreen.kt` — Toast × 1
 - [ ] `com/mlmvpn/scanner/ui/FixedIpScreen.kt` — Toast × 1
 - [ ] `com/mlmvpn/scanner/ui/GameTab.kt` — Toast × 6
 - [ ] `com/mlmvpn/scanner/ui/NodesTab.kt` — Toast × 19
-- [ ] `com/mlmvpn/scanner/ui/OpenVpnScreen.kt` — Toast × 1
+- [x] `com/mlmvpn/scanner/ui/OpenVpnScreen.kt` — Toast × 1
 - [ ] `com/mlmvpn/scanner/ui/QuickConnectTab.kt` — Toast × 1
 - [ ] `com/mlmvpn/scanner/ui/ScannerTab.kt` — Toast × 20
 - [ ] `com/mlmvpn/scanner/ui/aether/AetherScreen.kt` — Toast × 4

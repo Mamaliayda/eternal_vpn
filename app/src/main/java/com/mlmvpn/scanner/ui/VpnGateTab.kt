@@ -26,6 +26,7 @@ import androidx.compose.material.icons.filled.Public
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Restore
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -33,10 +34,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.mlmvpn.scanner.MyVpnService
 import com.mlmvpn.scanner.engines.vpngate.*
-import com.mlmvpn.scanner.ui.settings.Ios
 import com.mlmvpn.scanner.ui.settings.IosOption
 import com.mlmvpn.scanner.ui.settings.IosPickerScreen
 import com.mlmvpn.scanner.ui.settings.IosScreen
@@ -46,9 +45,9 @@ import com.mlmvpn.scanner.ui.settings.SettingsGlyph
 import com.mlmvpn.scanner.ui.settings.SettingsGroup
 import com.mlmvpn.scanner.ui.settings.SettingsRow
 import com.mlmvpn.scanner.ui.settings.SettingsToggle
-import com.mlmvpn.scanner.ui.theme.GreenOk
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 import com.mlmvpn.scanner.R
 import com.mlmvpn.scanner.utils.S
 
@@ -428,7 +427,7 @@ fun VpnGateTab(
                     else -> com.mlmvpn.scanner.ui.emergency.DialState.IDLE
                 },
                 // The indigo of this feature's home-screen tile.
-                idleAccent = Ios.Indigo,
+                idleAccent = DuskTheme.indigo,
                 idleIcon = Icons.Default.Power,
                 idleLabel = S(R.string.connect),
                 runningLabel = S(R.string.disconnect),
@@ -465,20 +464,20 @@ fun VpnGateTab(
                 ) {
                     val chosen = selected
                     if (chosen != null) {
-                        Text(getNodeFlagEmoji(chosen.countryShort), fontSize = 22.sp)
+                        Text(getNodeFlagEmoji(chosen.countryShort), style = MaterialTheme.typography.titleLarge)
                     } else {
-                        SettingsGlyph(Icons.Default.Public, Ios.Gray)
+                        SettingsGlyph(Icons.Default.Public, DuskTheme.muted)
                     }
                     Spacer(Modifier.width(12.dp))
                     Column(modifier = Modifier.weight(1f)) {
-                        Text(S(R.string.server), color = Ios.Label, fontSize = 16.sp)
+                        Text(S(R.string.server), color = DuskTheme.onSurface, style = MaterialTheme.typography.bodyLarge)
                         if (chosen != null) {
                             Spacer(Modifier.height(2.dp))
                             Text(
                                 if (chosen.isOfficialRelay) chosen.countryLong + S(R.string.official)
                                 else chosen.countryLong,
-                                color = Ios.SecondaryLabel,
-                                fontSize = 12.sp,
+                                color = DuskTheme.muted,
+                                style = MaterialTheme.typography.bodySmall,
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis,
                             )
@@ -489,18 +488,18 @@ fun VpnGateTab(
                         // A measurement is a state, so this one keeps its colour.
                         Text(
                             if (ping > 0) faCount(ping) + " ms" else S(R.string.no_response),
-                            color = if (ping > 0) GreenOk else Ios.Orange,
-                            fontSize = 14.sp,
+                            color = if (ping > 0) DuskTheme.success else DuskTheme.accent,
+                            style = MaterialTheme.typography.bodyMedium,
                             fontWeight = FontWeight.Medium,
                         )
                     } else if (chosen == null) {
-                        Text(S(R.string.not_selected), color = Ios.SecondaryLabel, fontSize = 15.sp)
+                        Text(S(R.string.not_selected), color = DuskTheme.muted, style = MaterialTheme.typography.bodyLarge)
                     }
                     Spacer(Modifier.width(6.dp))
                     Icon(
                         Icons.Default.ChevronLeft,
                         contentDescription = null,
-                        tint = Ios.Chevron,
+                        tint = DuskTheme.disabled,
                         modifier = Modifier.size(18.dp),
                     )
                 }
@@ -514,7 +513,7 @@ fun VpnGateTab(
                     title = if (loading) S(R.string.updating_2) else S(R.string.refresh_list),
                     value = if (loading) null else listAge(fetchedAt),
                     icon = Icons.Default.Refresh,
-                    tint = if (isListStale(fetchedAt)) Ios.Orange else Ios.Gray,
+                    tint = if (isListStale(fetchedAt)) DuskTheme.accent else DuskTheme.muted,
                     showChevron = false,
                     onClick = ::refreshList,
                 )
@@ -529,7 +528,7 @@ fun VpnGateTab(
                             else -> S(R.string.enable_updates)
                         },
                         icon = Icons.Default.Cloud,
-                        tint = Ios.Orange,
+                        tint = DuskTheme.accent,
                         enabled = !deployingRelay,
                     ) {
                         val account = relayAccount
@@ -622,7 +621,7 @@ fun VpnGateTab(
                         if (!isConnected && !isConnecting) VpnGateStore.setUdpAcceleration(context, it)
                     },
                     icon = Icons.Default.Bolt,
-                    tint = Ios.Gray,
+                    tint = DuskTheme.muted,
                 )
             }
 
@@ -686,12 +685,12 @@ private fun StatusLine(
         else -> S(R.string.disconnect)
     }
     val color = when {
-        isConnecting -> Ios.Yellow
-        isConnected -> Ios.Green
-        else -> Ios.SecondaryLabel
+        isConnecting -> DuskTheme.accent
+        isConnected -> DuskTheme.success
+        else -> DuskTheme.muted
     }
 
-    Text(label, color = color, fontSize = 15.sp, fontWeight = FontWeight.SemiBold)
+    Text(label, color = color, style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.SemiBold)
 
     AnimatedVisibility(visible = isConnected && connectedSince > 0L) {
         var elapsed by remember { mutableStateOf(0L) }
@@ -703,8 +702,8 @@ private fun StatusLine(
         }
         Text(
             text = formatDuration(elapsed),
-            color = Ios.SecondaryLabel,
-            fontSize = 13.sp,
+            color = DuskTheme.muted,
+            style = MaterialTheme.typography.bodySmall,
             modifier = Modifier.padding(top = 6.dp),
         )
     }

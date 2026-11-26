@@ -27,6 +27,7 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.DeleteSweep
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -36,25 +37,19 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.mlmvpn.scanner.engines.vpngate.SoftEtherProbe
 import com.mlmvpn.scanner.engines.vpngate.VpnGateServer
 import com.mlmvpn.scanner.ui.home.frostedGlass
-import com.mlmvpn.scanner.ui.settings.Ios
 import com.mlmvpn.scanner.ui.settings.IosAlert
 import com.mlmvpn.scanner.ui.settings.IosAlertAction
 import com.mlmvpn.scanner.ui.settings.IosScreen
-import com.mlmvpn.scanner.ui.theme.BadgeShape
-import com.mlmvpn.scanner.ui.theme.ControlShape
-import com.mlmvpn.scanner.ui.theme.PanelShape
+import com.mlmvpn.scanner.ui.theme.DuskPill
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 import com.mlmvpn.scanner.ui.tunnel.CountryLabel
-import java.util.Locale
 import com.mlmvpn.scanner.R
 import com.mlmvpn.scanner.utils.S
 
@@ -211,11 +206,11 @@ fun VpnGateServersScreen(
         trailing = {
             Text(
                 if (state.selecting) S(R.string.done) else S(R.string.select),
-                color = Ios.Label,
-                fontSize = 16.sp,
+                color = DuskTheme.onSurface,
+                style = MaterialTheme.typography.bodyLarge,
                 fontWeight = if (state.selecting) FontWeight.SemiBold else FontWeight.Normal,
                 modifier = Modifier
-                    .clip(ControlShape)
+                    .clip(DuskTheme.controlShape)
                     .clickable {
                         if (state.selecting) state.clearSelection() else state.selecting = true
                     }
@@ -282,7 +277,7 @@ fun VpnGateServersScreen(
                             .fillMaxWidth()
                             .weight(1f)
                             .padding(horizontal = 16.dp)
-                            .frostedGlass(PanelShape),
+                            .frostedGlass(DuskTheme.cardShape),
                         // Room for the floating bar, so the last row is never stuck under it.
                         contentPadding = PaddingValues(bottom = 88.dp),
                     ) {
@@ -381,8 +376,8 @@ private fun SearchField(query: String, onChange: (String) -> Unit, placeholder: 
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp)
-            .clip(ControlShape)
-            .background(Color.White.copy(alpha = 0.10f))
+            .clip(DuskTheme.controlShape)
+            .background(DuskTheme.white.copy(alpha = 0.10f))
             .heightIn(min = 36.dp)
             .padding(horizontal = 10.dp),
         verticalAlignment = Alignment.CenterVertically,
@@ -390,7 +385,7 @@ private fun SearchField(query: String, onChange: (String) -> Unit, placeholder: 
         Icon(
             Icons.Default.Search,
             contentDescription = null,
-            tint = Ios.SecondaryLabel,
+            tint = DuskTheme.muted,
             modifier = Modifier.size(17.dp),
         )
         Spacer(Modifier.width(7.dp))
@@ -398,13 +393,13 @@ private fun SearchField(query: String, onChange: (String) -> Unit, placeholder: 
             value = query,
             onValueChange = onChange,
             singleLine = true,
-            textStyle = TextStyle(color = Ios.Label, fontSize = 16.sp),
-            cursorBrush = SolidColor(Ios.Blue),
+            textStyle = MaterialTheme.typography.bodyLarge.copy(color = DuskTheme.onSurface),
+            cursorBrush = SolidColor(DuskTheme.primary),
             modifier = Modifier.weight(1f),
             decorationBox = { inner ->
                 Box {
                     if (query.isEmpty()) {
-                        Text(placeholder, color = Ios.SecondaryLabel, fontSize = 16.sp)
+                        Text(placeholder, color = DuskTheme.muted, style = MaterialTheme.typography.bodyLarge)
                     }
                     inner()
                 }
@@ -414,10 +409,10 @@ private fun SearchField(query: String, onChange: (String) -> Unit, placeholder: 
             Icon(
                 Icons.Default.Close,
                 contentDescription = S(R.string.clear_2),
-                tint = Ios.SecondaryLabel,
+                tint = DuskTheme.muted,
                 modifier = Modifier
                     .size(26.dp)
-                    .clip(BadgeShape)
+                    .clip(DuskTheme.controlShape)
                     .clickable { onChange("") }
                     .padding(5.dp),
             )
@@ -453,25 +448,12 @@ private fun ScopeChips(
 
 @Composable
 private fun ScopeChip(label: String, count: Int, selected: Boolean, onClick: () -> Unit) {
-    Row(
-        modifier = Modifier
-            .clip(BadgeShape)
-            .background(
-                if (selected) Color.White.copy(alpha = 0.20f) else Color.White.copy(alpha = 0.07f)
-            )
-            .clickable(onClick = onClick)
-            .padding(horizontal = 14.dp, vertical = 8.dp),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        Text(
-            label,
-            color = if (selected) Ios.Label else Ios.SecondaryLabel,
-            fontSize = 13.sp,
-            fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Normal,
-        )
-        Spacer(Modifier.width(6.dp))
-        Text(faCount(count), color = Ios.SecondaryLabel, fontSize = 12.sp)
-    }
+    DuskPill(
+        text = "$label · ${faCount(count)}",
+        selected = selected,
+        onClick = onClick,
+        compact = true,
+    )
 }
 
 /** What the list is showing right now, and a way out of whatever is narrowing it. */
@@ -494,15 +476,15 @@ private fun ListSummary(
                 shown == total -> faCount(total) + S(R.string.servers_2) + sort.label
                 else -> faCount(shown) + S(R.string.of) + faCount(total) + S(R.string.servers_2) + sort.label
             },
-            color = Ios.SecondaryLabel,
-            fontSize = 12.sp,
+            color = DuskTheme.muted,
+            style = MaterialTheme.typography.bodySmall,
             modifier = Modifier.weight(1f),
         )
         if (countries.isNotEmpty()) {
             Row(
                 modifier = Modifier
-                    .clip(BadgeShape)
-                    .background(Ios.Green.copy(alpha = 0.16f))
+                    .clip(DuskTheme.controlShape)
+                    .background(DuskTheme.success.copy(alpha = 0.16f))
                     .clickable(onClick = onClearCountries)
                     .padding(horizontal = 8.dp, vertical = 4.dp),
                 verticalAlignment = Alignment.CenterVertically,
@@ -510,14 +492,14 @@ private fun ListSummary(
                 Text(
                     if (countries.size == 1) getNodeFlagEmoji(countries.first())
                     else faCount(countries.size) + S(R.string.countries_2),
-                    color = Ios.Label,
-                    fontSize = 11.sp,
+                    color = DuskTheme.onSurface,
+                    style = MaterialTheme.typography.labelSmall,
                 )
                 Spacer(Modifier.width(4.dp))
                 Icon(
                     Icons.Default.Close,
                     contentDescription = S(R.string.clear_the_country_filter),
-                    tint = Ios.SecondaryLabel,
+                    tint = DuskTheme.muted,
                     modifier = Modifier.size(12.dp),
                 )
             }
@@ -572,7 +554,7 @@ private fun BottomBar(
                             label = if (checkedCount == 0) S(R.string.add)
                                     else S(R.string.add_2) + faCount(checkedCount) + ")",
                             enabled = checkedCount > 0,
-                            accent = Ios.Blue,
+                            accent = DuskTheme.primary,
                         )
                     }
                     GatewayBarButton(
@@ -582,7 +564,7 @@ private fun BottomBar(
                         label = if (checkedCount == 0) S(R.string.delete)
                                 else S(R.string.delete_4) + faCount(checkedCount) + ")",
                         enabled = checkedCount > 0,
-                        accent = if (checkedCount > 0) Ios.Red else null,
+                        accent = if (checkedCount > 0) DuskTheme.error else null,
                     )
                 }
             } else if (deadCount > 0 && !sweepRunning) {
@@ -592,7 +574,7 @@ private fun BottomBar(
                     icon = Icons.Default.DeleteSweep,
                     // Count in the label: this deletes in bulk, so the tap must not be blind.
                     label = S(R.string.delete_3) + faCount(deadCount) + S(R.string.dead_servers),
-                    accent = Ios.Red,
+                    accent = DuskTheme.error,
                 )
             }
         }

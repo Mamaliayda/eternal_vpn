@@ -7,11 +7,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -19,12 +19,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.mlmvpn.scanner.engines.vpngate.VpnGateSweep
-import com.mlmvpn.scanner.ui.settings.Ios
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 import com.mlmvpn.scanner.R
 import com.mlmvpn.scanner.utils.S
 
@@ -54,31 +52,31 @@ fun VpnGateSweepStrip(modifier: Modifier = Modifier) {
         ) {
             Text(
                 text = "${s.kind.labelFa} ${faCount(s.done)}/${faCount(s.total)}",
-                color = Ios.SecondaryLabel,
-                fontSize = 11.sp,
+                color = DuskTheme.muted,
+                style = MaterialTheme.typography.labelSmall,
                 fontWeight = FontWeight.Medium,
                 modifier = Modifier.padding(end = 10.dp),
             )
             LinearProgressIndicator(
                 progress = s.fraction,
-                modifier = Modifier.weight(1f).height(3.dp).clip(CircleShape),
-                color = Ios.Blue,
-                trackColor = Color.White.copy(alpha = 0.14f),
+                modifier = Modifier.weight(1f).height(3.dp).clip(DuskTheme.circleShape),
+                color = DuskTheme.primary,
+                trackColor = DuskTheme.white.copy(alpha = 0.14f),
             )
             Text(
                 text = faCount(s.percent) + S(R.string.str_4),
-                color = Ios.SecondaryLabel,
-                fontSize = 11.sp,
+                color = DuskTheme.muted,
+                style = MaterialTheme.typography.labelSmall,
                 modifier = Modifier.padding(start = 10.dp),
             )
             Icon(
                 imageVector = Icons.Default.Close,
                 contentDescription = S(R.string.stop_testing_2),
-                tint = Ios.SecondaryLabel,
+                tint = DuskTheme.muted,
                 modifier = Modifier
                     .padding(start = 10.dp)
                     .size(16.dp)
-                    .clip(CircleShape)
+                    .clip(DuskTheme.circleShape)
                     .clickable { VpnGateSweep.cancel() },
             )
         }

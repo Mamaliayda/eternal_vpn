@@ -31,6 +31,7 @@ import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Sort
 import androidx.compose.material.icons.filled.VerifiedUser
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -42,15 +43,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.mlmvpn.scanner.engines.vpngate.SoftEtherProbe
 import com.mlmvpn.scanner.engines.vpngate.VpnGateServer
 import com.mlmvpn.scanner.ui.home.frostedGlass
-import com.mlmvpn.scanner.ui.settings.Ios
-import com.mlmvpn.scanner.ui.theme.BadgeShape
-import com.mlmvpn.scanner.ui.theme.ControlShape
-import com.mlmvpn.scanner.ui.theme.PanelShape
 import com.mlmvpn.scanner.ui.theme.DuskCard
+import com.mlmvpn.scanner.ui.theme.DuskPill
 import com.mlmvpn.scanner.ui.theme.DuskTheme
 import com.mlmvpn.scanner.R
 import com.mlmvpn.scanner.utils.S
@@ -116,10 +113,10 @@ fun GatewayServerRow(
             // The checkbox LEADS the row, the way a list being edited does everywhere else in the
             // app; the tick TRAILS it, because that is a result rather than a control.
             val lead: Pair<ImageVector, Color>? = when (mark) {
-                is RowMark.Kept -> Icons.Default.Bookmark to Ios.Green
+                is RowMark.Kept -> Icons.Default.Bookmark to DuskTheme.success
                 is RowMark.Check ->
-                    if (mark.checked) Icons.Default.CheckCircle to Ios.Blue
-                    else Icons.Default.RadioButtonUnchecked to Ios.SecondaryLabel.copy(alpha = 0.45f)
+                    if (mark.checked) Icons.Default.CheckCircle to DuskTheme.primary
+                    else Icons.Default.RadioButtonUnchecked to DuskTheme.muted.copy(alpha = 0.45f)
                 else -> null
             }
             if (lead != null) {
@@ -132,13 +129,13 @@ fun GatewayServerRow(
                 Spacer(Modifier.width(10.dp))
             }
 
-            Text(getNodeFlagEmoji(server.countryShort), fontSize = 20.sp)
+            Text(getNodeFlagEmoji(server.countryShort), style = MaterialTheme.typography.titleLarge)
             Spacer(Modifier.width(12.dp))
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = server.countryLong.ifBlank { server.countryShort },
-                    color = Ios.Label,
-                    fontSize = 15.sp,
+                    color = DuskTheme.onSurface,
+                    style = MaterialTheme.typography.bodyLarge,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )
@@ -149,7 +146,7 @@ fun GatewayServerRow(
                 }
                 if (note != null) {
                     Spacer(Modifier.height(2.dp))
-                    Text(note, color = Ios.SecondaryLabel, fontSize = 11.sp)
+                    Text(note, color = DuskTheme.muted, style = MaterialTheme.typography.labelSmall)
                 }
             }
 
@@ -164,7 +161,7 @@ fun GatewayServerRow(
                 Icon(
                     Icons.Default.Check,
                     contentDescription = null,
-                    tint = Ios.Blue,
+                    tint = DuskTheme.primary,
                     modifier = Modifier.size(18.dp),
                 )
             }
@@ -175,7 +172,7 @@ fun GatewayServerRow(
                     .fillMaxWidth()
                     .padding(start = 46.dp)
                     .height(0.5.dp)
-                    .background(Ios.Separator)
+                    .background(DuskTheme.outline)
             )
         }
     }
@@ -194,33 +191,23 @@ fun GatewayServerRow(
 @Composable
 fun HandshakeBadge(result: SoftEtherProbe.Result) {
     val (label, color) = handshakeLabel(result)
-    Text(
-        text = label,
-        color = color,
-        fontSize = 10.sp,
-        fontWeight = FontWeight.Bold,
-        maxLines = 1,
-        modifier = Modifier
-            .clip(BadgeShape)
-            .background(color.copy(alpha = 0.14f))
-            .padding(horizontal = 5.dp, vertical = 2.dp),
-    )
+    DuskPill(text = label, indicator = color, compact = true)
 }
 
 /** The words and the tone [HandshakeBadge] uses, so the detail page can say the same thing. */
 @Composable
 fun handshakeLabel(result: SoftEtherProbe.Result): Pair<String, Color> = when (result) {
     is SoftEtherProbe.Result.Ok -> when {
-        result.ms <= 1000 -> S(R.string.fast) to Ios.Green
-        result.ms <= 2500 -> S(R.string.medium_2) to Ios.Yellow
-        else -> S(R.string.slow) to Ios.Orange
+        result.ms <= 1000 -> S(R.string.fast) to DuskTheme.success
+        result.ms <= 2500 -> S(R.string.medium_2) to DuskTheme.accent
+        else -> S(R.string.slow) to DuskTheme.accent
     }
     is SoftEtherProbe.Result.Failed -> when (result.reason) {
-        SoftEtherProbe.Failure.UNREACHABLE -> S(R.string.blocked_2) to Ios.Red
-        SoftEtherProbe.Failure.TLS_BLOCKED -> "TLS" to Ios.Red
-        SoftEtherProbe.Failure.NOT_SOFTETHER -> S(R.string.disabled) to Ios.Yellow
-        SoftEtherProbe.Failure.REFUSED -> S(R.string.failed_2) to Ios.Red
-        SoftEtherProbe.Failure.TIMEOUT -> S(R.string.no_response_2) to Ios.Red
+        SoftEtherProbe.Failure.UNREACHABLE -> S(R.string.blocked_2) to DuskTheme.error
+        SoftEtherProbe.Failure.TLS_BLOCKED -> "TLS" to DuskTheme.error
+        SoftEtherProbe.Failure.NOT_SOFTETHER -> S(R.string.disabled) to DuskTheme.accent
+        SoftEtherProbe.Failure.REFUSED -> S(R.string.failed_2) to DuskTheme.error
+        SoftEtherProbe.Failure.TIMEOUT -> S(R.string.no_response_2) to DuskTheme.error
     }
 }
 
@@ -236,9 +223,9 @@ fun PingBadge(ping: Int?) {
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.width(46.dp),
     ) {
-        Text(text, color = pingTone(ping), fontSize = 13.sp, fontWeight = FontWeight.Bold)
+        Text(text, color = pingTone(ping), style = MaterialTheme.typography.bodySmall, fontWeight = FontWeight.Bold)
         if (ping != null && ping > 0) {
-            Text("ms", color = Ios.SecondaryLabel.copy(alpha = 0.7f), fontSize = 8.sp)
+            Text("ms", color = DuskTheme.muted.copy(alpha = 0.7f), style = MaterialTheme.typography.labelSmall)
         }
     }
 }
@@ -252,11 +239,11 @@ fun PingBadge(ping: Int?) {
  */
 @Composable
 fun pingTone(ping: Int?): Color = when {
-    ping == null -> Ios.SecondaryLabel.copy(alpha = 0.55f)
-    ping <= 0 -> Ios.Red
-    ping < 150 -> Ios.Green
-    ping < 400 -> Ios.Yellow
-    else -> Ios.Red
+    ping == null -> DuskTheme.muted.copy(alpha = 0.55f)
+    ping <= 0 -> DuskTheme.error
+    ping < 150 -> DuskTheme.success
+    ping < 400 -> DuskTheme.accent
+    else -> DuskTheme.error
 }
 
 /**
@@ -287,7 +274,7 @@ fun GatewayToolbar(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp)
-            .frostedGlass(PanelShape)
+            .frostedGlass(DuskTheme.cardShape)
             .padding(vertical = 6.dp),
         horizontalArrangement = Arrangement.SpaceEvenly,
         verticalAlignment = Alignment.CenterVertically,
@@ -312,20 +299,20 @@ private fun GateToolbarAction(
     // White, like every other action label in the app. Colour on this screen means state, and the
     // state a toolbar button has is "this control is narrowing the list", which the accent says.
     val tint = when {
-        !enabled -> Ios.SecondaryLabel.copy(alpha = 0.45f)
-        active -> Ios.Green
-        else -> Ios.Label
+        !enabled -> DuskTheme.muted.copy(alpha = 0.45f)
+        active -> DuskTheme.success
+        else -> DuskTheme.onSurface
     }
     Column(
         modifier = Modifier
-            .clip(ControlShape)
+            .clip(DuskTheme.controlShape)
             .clickable(enabled = enabled, onClick = onClick)
             .padding(horizontal = 7.dp, vertical = 7.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Icon(icon, contentDescription = label, tint = tint, modifier = Modifier.size(20.dp))
         Spacer(Modifier.height(4.dp))
-        Text(label, color = tint, fontSize = 10.sp, maxLines = 1)
+        Text(label, color = tint, style = MaterialTheme.typography.labelSmall, maxLines = 1)
     }
 }
 
@@ -345,16 +332,16 @@ fun GatewayBarButton(
     accent: Color? = null,
 ) {
     val tone = when {
-        !enabled -> Color.White.copy(alpha = 0.05f)
+        !enabled -> DuskTheme.white.copy(alpha = 0.05f)
         accent != null -> accent.copy(alpha = 0.22f)
-        else -> Color.White.copy(alpha = 0.09f)
+        else -> DuskTheme.white.copy(alpha = 0.09f)
     }
     Row(
         modifier = modifier
-            .clip(PanelShape)
+            .clip(DuskTheme.cardShape)
             .background(tone)
             .then(
-                if (enabled && accent != null) Modifier.border(1.5.dp, accent, PanelShape)
+                if (enabled && accent != null) Modifier.border(1.5.dp, accent, DuskTheme.cardShape)
                 else Modifier
             )
             .clickable(enabled = enabled, onClick = onClick)
@@ -367,15 +354,15 @@ fun GatewayBarButton(
             Icon(
                 icon,
                 contentDescription = null,
-                tint = if (enabled) Ios.Label else Ios.SecondaryLabel.copy(alpha = 0.5f),
+                tint = if (enabled) DuskTheme.onSurface else DuskTheme.muted.copy(alpha = 0.5f),
                 modifier = Modifier.size(16.dp),
             )
             Spacer(Modifier.width(6.dp))
         }
         Text(
             label,
-            color = if (enabled) Ios.Label else Ios.SecondaryLabel,
-            fontSize = 13.sp,
+            color = if (enabled) DuskTheme.onSurface else DuskTheme.muted,
+            style = MaterialTheme.typography.bodySmall,
             fontWeight = FontWeight.SemiBold,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
@@ -385,16 +372,12 @@ fun GatewayBarButton(
 
 /** A tinted pill for the one-line notice these screens post after a bulk action. */
 @Composable
-fun GatewaySnack(text: String, tint: Color = Ios.Green) {
-    Text(
+fun GatewaySnack(text: String, tint: Color = DuskTheme.success) {
+    DuskPill(
         text = text,
-        color = tint,
-        fontSize = 12.sp,
-        modifier = Modifier
-            .fillMaxWidth()
-            .clip(ControlShape)
-            .background(tint.copy(alpha = 0.14f))
-            .padding(10.dp),
+        modifier = Modifier.fillMaxWidth(),
+        indicator = tint,
+        compact = true,
     )
 }
 
