@@ -1,0 +1,103 @@
+name: Android debug build
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  assemble-debug:
+    name: Assemble debug APK
+    runs-on: ubuntu-latest
+    timeout-minutes: 150
+    steps:
+      - name: Check out app
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - name: Check out pinned Xray Android library source
+        uses: actions/checkout@v4
+        with:
+          repository: 2dust/AndroidLibXrayLite
+          ref: 1314c9af79518a03300803019c8264c737bb3596
+          path: xray-library
+
+      - name: Check out pinned WSNet source
+        uses: actions/checkout@v4
+        with:
+          repository: Windscribe/wsnet
+          ref: aa297ca6a6d3238c236d42c165f7668ca897795d
+          fetch-depth: 0
+          path: wsnet
+
+      - name: Check out pinned WSNet vcpkg registry
+        uses: actions/checkout@v4
+        with:
+          repository: Windscribe/ws-vcpkg-registry
+          ref: 6e88a8e7aa1db0f0239f9b243c7667f2bbacf9a6
+          path: ws-vcpkg-registry
+
+      - name: Set up Java
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Go
+        uses: actions/setup-go@v6
+        with:
+          go-version-file: xray-library/go.mod
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+        with:
+          cmdline-tools-version: '11479570'
+          packages: platform-tools
+
+      - name: Install Android SDK packages
+        run: |
+          sdkmanager "platforms;android-36" "build-tools;35.0.0" "ndk;28.2.13676358"
+          echo "ANDROID_NDK_HOME=$ANDROID_HOME/ndk/28.2.13676358" >> "$GITHUB_ENV"
+
+      - name: Build Xray Android library
+        working-directory: xray-library
+        run: |
+          go install golang.org/x/mobile/cmd/gomobile@v0.0.0-20260508232728-bebd421c7fa8
+          echo "$(go env GOPATH)/bin" >> "$GITHUB_PATH"
+          export PATH="$(go env GOPATH)/bin:$PATH"
+          gomobile init
+          gomobile bind -v -androidapi 24 -trimpath -ldflags='-s -w -buildid=' ./
+          mkdir -p "$GITHUB_WORKSPACE/app/libs"
+          cp libv2ray.aar "$GITHUB_WORKSPACE/app/libs/libv2ray.aar"
+
+      - name: Install pinned vcpkg for WSNet
+        working-directory: ws-vcpkg-registry
+        env:
+          VCPKG_ROOT: ${{ runner.temp }}/vcpkg
+        run: bash install-vcpkg/vcpkg_install.sh "$VCPKG_ROOT"
+
+      - name: Build WSNet Android library
+        working-directory: wsnet/tools
+        env:
+          VCPKG_ROOT: ${{ runner.temp }}/vcpkg
+        run: |
+          ./build_android.sh
+          cp wsnet.aar "$GITHUB_WORKSPACE/app/libs/wsnet.aar"
+
+      - name: Configure Gradle cache
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Assemble debug APK
+        run: ./gradlew assembleDebug --stacktrace --console=plain
+
+      - name: Upload debug APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: eternal-vpn-debug-apk
+          path: app/build/outputs/apk/debug/*.apk
+          if-no-files-found: error
+          retention-days: 14
