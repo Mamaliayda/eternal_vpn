@@ -579,8 +579,6 @@
     <string name="home_store">استور</string>
     <string name="home_lan">شبکه محلی</string>
     <string name="home_tutorial">آموزش‌ها</string>
-    <string name="home_mlmchat">گره</string>
-    <string name="mlmchat_not_on_this_phone">گره روی این گوشی اجرا نمی‌شود: پردازندهٔ این گوشی پشتیبانی نمی‌شود.</string>
     <string name="home_emergency_2">گوگل اسکریپت</string>
     <string name="home_emergency_3">ضد فیلتر SNI</string>
     <string name="home_edit_hint">برای جابه‌جایی، آیکون را نگه دارید</string>
@@ -5644,35 +5642,10 @@
     <!-- Home-screen widgets and Widget Studio. -->
     <string name="home_widgetstudio">ویجت استدیو</string>
     <string name="widget_method_desc">یک لمس برای اتصال یا قطع</string>
-    <string name="widget_gereh_desc">پیام‌های تازهٔ گره، با یک لمس</string>
     <string name="widget_studio_desc">طرح دلخواه خودتان، ساخته‌شده در ویجت استدیو</string>
     <string name="widget_studio_small">ویجت استدیو · کوچک</string>
     <string name="widget_studio_medium">ویجت استدیو · متوسط</string>
     <string name="widget_studio_large">ویجت استدیو · بزرگ</string>
     <string name="screen_missing_on_device">این دستگاه صفحه‌ای را که اندروید برای این کار لازم دارد ندارد (برای VPN: پنجرهٔ اجازهٔ VPN سیستم). بعضی تی‌وی‌باکس‌ها و پروژکتورها آن را ندارند.</string>
     <string name="clip_too_large">این مقدار را نمی‌شود یک‌جا کپی کرد (کلیپ‌بورد اندروید حدود ۱ مگابایت جا دارد). موارد کمتری انتخاب کنید، یا به‌جای کپی در فایل ذخیره کنید.</string>
-    <string name="gereh_tile_menu_title">گره</string>
-    <string name="gereh_tile_background">گره در پس‌زمینه</string>
-    <string name="gereh_tile_background_info">خاموش: پیام‌ها فقط وقتی گره باز است می‌رسند، و گره بسته باتری مصرف نمی‌کند.</string>
-    <string name="gereh_tile_mute">بی‌صدا کردن همهٔ اعلان‌های گره</string>
-    <string name="gereh_tile_edit_home">ویرایش صفحهٔ اصلی</string>
-    <string name="gereh_tile_done">تمام</string>
-    <string name="gereh_wipe_clear">پاک کردن دادهٔ گره</string>
-    <string name="gereh_wipe_account">حذف حساب گره</string>
-    <string name="gereh_wipe_remove">حذف کامل گره</string>
-    <string name="gereh_wipe_clear_info">همهٔ پیام‌ها، عکس‌ها، ویدیوها و فایل‌های گره از این گوشی پاک می‌شود، با پست‌های کانال‌های تلگرامی که در گره دنبال می‌کنی. حساب، مخاطبان، گروه‌ها و کانال‌هایت خالی می‌مانند، و کانال و گروه رسمی پست‌هایشان را دارند. برگشت ندارد.</string>
-    <string name="gereh_wipe_account_info">این گوشی اول از همهٔ گروه‌ها و کانال‌هایت بیرون می‌رود (اعضا می‌بینند)، بعد همه‌چیز گره روی آن پاک می‌شود: حساب، مخاطبان، پیام‌ها و فایل‌ها. گره سرور ندارد، پس حسابت همین است؛ مخاطبانت کارت قدیمی‌ات را نگه می‌دارند. با باز کردن دوبارهٔ گره، حساب تازه ساخته می‌شود. برگشت ندارد.</string>
-    <string name="gereh_wipe_remove_info">مثل حذف حساب، و گره هم از MLMVPN بیرون می‌رود: نه کاشی، نه اعلان، نه کار در پس‌زمینه، مثل اینکه MLMVPN اصلاً گره نداشته. فایل‌های برنامهٔ گره (حدود ۳۶ مگابایت) جزو خود اپ نصب‌شده است و اندروید اجازهٔ پاک کردنشان را به اپ نمی‌دهد. از تنظیمات › «بازگرداندن گره» برمی‌گردد.</string>
-    <string name="gereh_wipe_yes">پاک کن</string>
-    <string name="gereh_wipe_no">انصراف</string>
-    <string name="gereh_wipe_clearing">در حال پاک کردن دادهٔ گره…</string>
-    <string name="gereh_wipe_deleting">در حال خروج از گروه‌ها و پاک کردن گره… (تا یک دقیقه)</string>
-    <string name="gereh_wipe_clear_done">پیام‌ها و فایل‌های گره پاک شد.</string>
-    <string name="gereh_wipe_account_done">حساب گره از این گوشی پاک شد.</string>
-    <string name="gereh_wipe_remove_done">گره حذف شد. از تنظیمات › «بازگرداندن گره» برمی‌گردد.</string>
-    <string name="gereh_wipe_failed">گره به‌موقع جواب نداد و چیزی پاک نشد. دوباره امتحان کن.</string>
-    <string name="gereh_removed_hint">گره حذف شده است. از تنظیمات › «بازگرداندن گره» برمی‌گردد.</string>
-    <string name="gereh_restore">بازگرداندن گره</string>
-    <string name="gereh_restore_info">از منوی کاشی‌اش حذف شده؛ مثل نصب اول برمی‌گردد</string>
-    <string name="gereh_restored">گره به صفحهٔ اصلی برگشت.</string>
 </resources>

@@ -6,12 +6,9 @@ import android.app.Application
  * Exists purely so the crash reporter is installed before any other app code runs — including
  * in the VPN service process, which is where several of the native crashes have originated.
  *
- * MLM CHAT (PLAN 13, T23): an APK has one Application class, and the Telegram fork's is
- * ApplicationLoader, so this extends it. Telegram starts only in the `:chat` process (see
- * [isTelegramProcess]); there none of the VPN app's own start-up runs. In every other process
- * ApplicationLoader does nothing and the app starts exactly as before.
+ * A regular Android Application; the app no longer relies on optional modules.
  */
-class MlmApp : org.telegram.messenger.ApplicationLoader() {
+class MlmApp : Application() {
     private val currentProcess: String? by lazy {
         if (android.os.Build.VERSION.SDK_INT >= 28) Application.getProcessName() else {
             val am = getSystemService(ACTIVITY_SERVICE) as android.app.ActivityManager
@@ -19,29 +16,7 @@ class MlmApp : org.telegram.messenger.ApplicationLoader() {
         }
     }
 
-    override fun isTelegramProcess(): Boolean = currentProcess == "$packageName:chat"
-
-    override fun onGetApplicationId(): String = BuildConfig.APPLICATION_ID
-
     override fun onCreate() {
-        if (isTelegramProcess()) {
-            CrashReporter.install(this)
-            // the home-screen widget Gereh's bridge tells when its unread count or network changes
-            org.mlmvpn.chat.bridge.GerehHost.setWidget(com.mlmvpn.scanner.widget.GerehWidget::class.java)
-            // the heart beside Gereh's menu: MLMVPN's support page
-            org.mlmvpn.chat.bridge.GerehHost.setSupport("https://donito.me/ehsan2noven")
-            super.onCreate() // Telegram's own start-up (ApplicationLoader)
-            // a stopped storage queue left every chat loading for good (S26, 27 Oct 2026)
-            CrashReporter.watchChatQueues(this)
-            // «گره»'s combined relay makes its Worker on the cloud section's Cloudflare account from
-            // here; what that needs of the app's start-up is done when it is first asked for
-            com.mlmvpn.scanner.data.GerehCloudLink.bind(this)
-            // configs in chats (n5): found and measured from here, moved into the sections by the main process
-            com.mlmvpn.scanner.data.GerehConfigLink.bind(this)
-            // the app's tiles and settings in chats (q11, q12): offered, named and opened from here
-            com.mlmvpn.scanner.data.GerehAppLinks.bind(this)
-            return
-        }
         super.onCreate()
         // Started before the first unlock after a reboot (a Xiaomi, mlmvpn/crashes #3220): every
         // setting lives in credential-encrypted storage, which does not exist until then, and
@@ -62,9 +37,6 @@ class MlmApp : org.telegram.messenger.ApplicationLoader() {
         // Off the main thread: the Keystore can take seconds to answer (it waits for its own
         // service after a reboot), and the app stood frozen at launch (ANR #542, #543).
         if (mainProcess) Thread({ runCatching { com.mlmvpn.scanner.data.CfIdentityFiles.sealKnown(this) } }, "seal-identities").start()
-        // «گره» listens for messages while the app is open or not (its own foreground service in the
-        // :chat process); started here too, so opening MLMVPN is enough after an update or a kill.
-        if (mainProcess) org.mlmvpn.chat.bridge.GerehService.startIfReady(this)
         // Which Cloudflare edges answer on this network, for every caller (see CfEdge).
         com.mlmvpn.scanner.data.CfEdge.init(this)
         // Read once, here, so the generator's copy is right before any screen or service can ask

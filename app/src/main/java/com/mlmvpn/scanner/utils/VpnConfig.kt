@@ -153,7 +153,7 @@ data class VpnConfig(
 
         /**
          * Tolerant base64: these links appear both padded and unpadded, URL-safe and not, and some
-         * lists escape the padding (`%3D`): an ss link with one could not be read (a «گره» chat test,
+         * lists escape the padding (`%3D`): an ss link with one could not be read (a parser regression test,
          * 28 Oct 2026). Only %XX is undone; a `+` stays a `+`.
          */
         private fun decodeB64(raw: String): String? {

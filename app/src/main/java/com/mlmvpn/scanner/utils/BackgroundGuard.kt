@@ -13,9 +13,9 @@ import java.io.File
  * screen nobody is looking at, with no VPN up. The kill then took the whole app with it.
  *
  * Two minutes after the last screen closes, if no foreground service of ours is running outside
- * `:chat` (no tunnel, no game boost, no Scout run: those keep their notification and their work),
+ * the app process (no tunnel, no game boost, no Scout run: those keep their notification and their work),
  * this stops the IP scan and ends every child process of this app and every helper process but the
- * main one and `:chat`. Coming back before then cancels it. Nothing runs while a VPN is up.
+ * main process. Coming back before then cancels it. Nothing runs while a VPN is up.
  */
 object BackgroundGuard {
     private const val TAG = "BackgroundGuard"
@@ -51,13 +51,12 @@ object BackgroundGuard {
         if (children + helpers > 0) Log.i(TAG, "app in background, no VPN: ended $children child and $helpers helper processes")
     }
 
-    /** A foreground service of ours in any process but `:chat` (Gereh keeps its own). */
+    /** A foreground service of ours. */
     private fun foregroundServiceRunning(context: Context): Boolean {
         val am = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
         @Suppress("DEPRECATION")
         val services = runCatching { am.getRunningServices(Int.MAX_VALUE) }.getOrNull() ?: return true
-        val chat = "${context.packageName}:chat"
-        return services.any { it.foreground && it.service.packageName == context.packageName && it.process != chat }
+        return services.any { it.foreground && it.service.packageName == context.packageName }
     }
 
     /** Any VPN up on the phone: a tunnel of ours may carry it even without a notification. */
@@ -88,10 +87,10 @@ object BackgroundGuard {
         return n
     }
 
-    /** Helper app processes (test and engine hosts); never the main process or `:chat`. */
+    /** Helper app processes (test and engine hosts); never the main process. */
     private fun killHelperProcesses(context: Context): Int {
         val am = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
-        val keep = setOf(context.packageName, "${context.packageName}:chat")
+        val keep = setOf(context.packageName)
         var n = 0
         am.runningAppProcesses?.forEach { p ->
             if (p.processName.startsWith(context.packageName) && p.processName !in keep && p.pid != android.os.Process.myPid()) {

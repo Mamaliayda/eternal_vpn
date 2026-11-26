@@ -3,7 +3,6 @@ package com.mlmvpn.scanner.ui.home
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AutoAwesome
 import androidx.compose.material.icons.filled.BarChart
-import androidx.compose.material.icons.filled.Forum
 import androidx.compose.material.icons.filled.Bolt
 import androidx.compose.material.icons.filled.Lightbulb
 import androidx.compose.material.icons.filled.Cloud
@@ -113,19 +112,6 @@ object HomeDestinations {
     )
 
     /**
-     * Destinations still being built (docs/URNETWORK-NPV-PLAN.md). They are on the board of a debug
-     * build, where the owner tests them, and in no release until each one really connects -- a tile
-     * that can only say «not yet» has no place on a user's phone. Remove an id here the day its
-     * engine works. «URnetwork» and «NPV» left on 2026-10-20: both connect, and a release carries them.
-     */
-    val IN_PROGRESS: Set<String> = setOf(
-        // «گره» left on 2026-10-22: one-to-one chat works on its core (two phones, one Wi-Fi),
-        // so a release carries it.
-    )
-
-    private val showInProgress = com.mlmvpn.scanner.BuildConfig.DEBUG
-
-    /**
      * Everything else, in its factory order. This replaces the hamburger drawer outright: every
      * entry that used to be hidden behind it is here, plus the tabs that lost their slot in the
      * old bottom bar.
@@ -152,9 +138,6 @@ object HomeDestinations {
         // «MLM Scout»: which of everything below really works on this line, and which is best. First,
         // because it is the answer to "where do I start" -- for a new user most of all.
         HomeApp("scout",             R.string.scout_title,        Icons.Default.Radar,         Blue, imageRes = R.drawable.ic_app_scout),
-        // «MLM CHAT»: phone-to-phone chat with no server, on the Telegram Android fork (mlm-chat/docs,
-        // T4/T23). It is not a page here: the tile opens the chat's own screen in its :chat process.
-        HomeApp(com.mlmvpn.scanner.chat.MlmChat.TILE_ID, R.string.home_mlmchat, Icons.Default.Forum, Blue, imageRes = R.drawable.gereh_logo),
         HomeApp("masque",            R.string.home_masque,        Icons.Default.Bolt,          Blue, imageRes = R.drawable.ic_app_masque),
         HomeApp("wireguard",         R.string.home_wireguard,     Icons.Default.VpnKey,        Green, imageRes = R.drawable.ic_app_wireguard),
         HomeApp("warp_on_warp",      R.string.home_warp_on_warp,  Icons.Default.Layers,        Orange, glyphRes = R.drawable.ic_glyph_layers),
@@ -270,7 +253,7 @@ object HomeDestinations {
         // shared proxy answered 402 and could not be revived from Iran.
         HomeApp("emergency_2", R.string.home_emergency_2, Icons.Default.FlashOn, Red, opensAsModal = true, imageRes = R.drawable.ic_app_gscript),
         HomeApp("emergency_3",       R.string.home_emergency_3,   Icons.Default.VpnLock,       Red,    opensAsModal = true),
-    ).filter { showInProgress || it.id !in IN_PROGRESS }
+    )
 
     /**
      * The folders a fresh board starts with, by key; members are destination ids, in order.
@@ -292,7 +275,7 @@ object HomeDestinations {
      * appends it -- so forgetting to list a new one costs its position, never its icon.
      */
     val BOARD_DEFAULT: List<String> = listOf(
-        "scout", "mlmchat",
+        "scout",
         "masque", "wireguard", "warp_on_warp", "warp",
         "psiphon", "tor", "geph", "lantern", "urnetwork", "quick", "mae", "flux", "fenix",
         "amnezia", "proton", "windscribe", "outline", "npv", "github", "freeconfig", "tgproxy",
@@ -319,7 +302,7 @@ object HomeDestinations {
         "masque", "wireguard", "warp_on_warp", "warp", "psiphon", "tor", "geph", "lantern", "urnetwork", "quick", "mae", "flux", "fenix",
         "amnezia", "proton", "windscribe", "outline", "npv", "github", "vpngate", "openvpn", "nodes" -> Category.CONNECT
         "freeconfig", "iran", "fronting", "sublink", "configstudio", "cloud" -> Category.CONFIGS
-        "fixed_ip", "lan", "usage", "tutorial", "store", "scanner", "settings", "scout", "tgproxy", "widgetstudio", "mlmchat" -> Category.TOOLS
+        "fixed_ip", "lan", "usage", "tutorial", "store", "scanner", "settings", "scout", "tgproxy", "widgetstudio" -> Category.TOOLS
         "game" -> Category.GAMES
         "emergency_2", "emergency_3", "antisanction" -> Category.EMERGENCY
         else -> null

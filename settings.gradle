@@ -1,6 +1,4 @@
 pluginManagement {
-    // MLM CHAT (T4, T23): Telegram's build plugin (its buildSrc), for the TMessagesProj module.
-    includeBuild('chat/build-logic')
     repositories {
         google()
         mavenCentral()
@@ -26,17 +24,4 @@ dependencyResolutionManagement {
 
 include ':app'
 
-// MLM CHAT (PLAN 13, T4/T23): the Telegram Android fork, opened from the "MLM CHAT" tile and run in
-// its own :chat process. GPL code from DrKLO/Telegram 13.0.3; every change in it is marked MLMCHAT:.
-include ':TMessagesProj'
-project(':TMessagesProj').projectDir = file('chat/TMessagesProj')
-include ':jlatexmath'
-project(':jlatexmath').projectDir = file('chat/TMessagesProj/lib/jlatexmath/jlatexmath')
-gradle.ext.androidxMediaModulePrefix = 'TMessagesProj_Modules:media3:media-'
-apply from: file('chat/TMessagesProj_Modules/media/core_settings.gradle')
-// MLM CHAT core for Android (Apache-2.0, PLAN 14.2): the Rust core behind a Kotlin API. In the team
-// repo it is the mlm-chat folder inside this project (team/README.fa.md); an older checkout has it
-// beside this project (../mlm-chat).
-include ':mlmchat-core'
-project(':mlmchat-core').projectDir = file(new File(rootDir, 'mlm-chat/android/core').isDirectory() ? 'mlm-chat/android/core' : '../mlm-chat/android/core')
 rootProject.name = "ip scanner"

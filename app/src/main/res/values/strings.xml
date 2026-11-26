@@ -583,8 +583,6 @@
     <string name="home_store">Store</string>
     <string name="home_lan">Local Network</string>
     <string name="home_tutorial">Tutorials</string>
-    <string name="home_mlmchat">Gereh</string>
-    <string name="mlmchat_not_on_this_phone">Gereh does not run on this phone: its processor is not supported.</string>
     <string name="home_emergency_2">Google Script</string>
     <string name="home_emergency_3">Anti-Filter SNI</string>
     <string name="home_edit_hint">Hold an icon to move it</string>
@@ -5652,35 +5650,10 @@ After that it builds the combinations itself, measures every one with a real req
     <!-- Home-screen widgets and Widget Studio. -->
     <string name="home_widgetstudio">Widget Studio</string>
     <string name="widget_method_desc">One tap to connect or disconnect</string>
-    <string name="widget_gereh_desc">New Gereh messages, one tap away</string>
     <string name="widget_studio_desc">A design of your own, made in Widget Studio</string>
     <string name="widget_studio_small">Widget Studio · Small</string>
     <string name="widget_studio_medium">Widget Studio · Medium</string>
     <string name="widget_studio_large">Widget Studio · Large</string>
     <string name="screen_missing_on_device">This device does not have the screen Android needs for this (for a VPN: the system\'s VPN permission dialog). Some TV boxes and projectors leave it out.</string>
     <string name="clip_too_large">Too much to copy at once (Android\'s clipboard takes about 1 MB). Select fewer items, or save them to a file instead.</string>
-    <string name="gereh_tile_menu_title">Gereh</string>
-    <string name="gereh_tile_background">Gereh in the background</string>
-    <string name="gereh_tile_background_info">Off: messages arrive only while Gereh is open, and Gereh uses no battery while closed.</string>
-    <string name="gereh_tile_mute">Mute all Gereh notifications</string>
-    <string name="gereh_tile_edit_home">Edit home screen</string>
-    <string name="gereh_tile_done">Done</string>
-    <string name="gereh_wipe_clear">Clear Gereh\'s data</string>
-    <string name="gereh_wipe_account">Delete Gereh account</string>
-    <string name="gereh_wipe_remove">Remove Gereh completely</string>
-    <string name="gereh_wipe_clear_info">Every message, photo, video and file in Gereh is deleted from this phone, with the posts of the Telegram channels you follow there. Your account, contacts, groups and channels stay, empty, and the official channel and group keep their posts. This cannot be undone.</string>
-    <string name="gereh_wipe_account_info">This phone first leaves all your groups and channels (their members see it), then everything of Gereh on it is deleted: account, contacts, messages and files. Gereh has no server, so this is your whole account; your contacts keep your old card. Opening Gereh again makes a new account. This cannot be undone.</string>
-    <string name="gereh_wipe_remove_info">Like deleting the account, and Gereh is taken out of MLMVPN: no tile, no notifications, nothing in the background, as if MLMVPN never had it. Gereh\'s program files (about 36 MB) are part of the installed app, and Android does not let an app delete those. Settings › Bring Gereh back returns it.</string>
-    <string name="gereh_wipe_yes">Delete</string>
-    <string name="gereh_wipe_no">Cancel</string>
-    <string name="gereh_wipe_clearing">Clearing Gereh\'s data…</string>
-    <string name="gereh_wipe_deleting">Leaving the groups and deleting Gereh… (up to a minute)</string>
-    <string name="gereh_wipe_clear_done">Gereh\'s messages and files are deleted.</string>
-    <string name="gereh_wipe_account_done">Your Gereh account is deleted from this phone.</string>
-    <string name="gereh_wipe_remove_done">Gereh is removed. Settings › Bring Gereh back returns it.</string>
-    <string name="gereh_wipe_failed">Gereh did not answer in time, so nothing was cleared. Try again.</string>
-    <string name="gereh_removed_hint">Gereh is removed. Settings › Bring Gereh back returns it.</string>
-    <string name="gereh_restore">Bring Gereh back</string>
-    <string name="gereh_restore_info">Removed from its tile\'s menu; it comes back as on a first install</string>
-    <string name="gereh_restored">Gereh is back on the home screen.</string>
 </resources>

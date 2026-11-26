@@ -30,28 +30,8 @@ object WidgetOpen {
         runCatching { context.startActivity(intent(context, tile)) }
     }
 
-    /** A row of Settings a chat's card names (GerehAppLinks key; q12): Settings opens on its page. */
-    const val EXTRA_OPEN_SETTING = "open_setting"
-
-    /** The settings row the app should show next; AppScreen consumes it. */
-    val pendingSetting = MutableStateFlow<String?>(null)
-
-    fun openSetting(context: Context, key: String) {
-        runCatching {
-            context.startActivity(
-                Intent(context, MainActivity::class.java)
-                    .putExtra(EXTRA_OPEN_SETTING, key)
-                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP),
-            )
-        }
-    }
-
     /** Called by MainActivity with every intent it receives; takes the request off it, once. */
     fun offer(intent: Intent?) {
-        intent?.getStringExtra(EXTRA_OPEN_SETTING)?.takeIf { it.isNotBlank() }?.let {
-            intent.removeExtra(EXTRA_OPEN_SETTING)
-            pendingSetting.value = it
-        }
         val tile = intent?.getStringExtra(EXTRA_OPEN_TILE)?.takeIf { it.isNotBlank() } ?: return
         intent.removeExtra(EXTRA_OPEN_TILE)
         pending.value = tile
