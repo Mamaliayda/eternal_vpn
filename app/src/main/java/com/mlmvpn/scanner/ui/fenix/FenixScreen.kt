@@ -72,6 +72,8 @@ import com.mlmvpn.scanner.engines.fenix.FenixEngine.SignIn
 import com.mlmvpn.scanner.ui.emergency.faDigits
 import com.mlmvpn.scanner.ui.home.frostedGlass
 import com.mlmvpn.scanner.ui.settings.Ios
+import com.mlmvpn.scanner.ui.theme.DuskPill
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 import com.mlmvpn.scanner.ui.settings.IosScreen
 import com.mlmvpn.scanner.ui.settings.SettingsActionRow
 import com.mlmvpn.scanner.ui.settings.SettingsFooter
@@ -488,21 +490,23 @@ private fun MozillaCheckPage(host: String, onDone: (Map<String, String?>, String
 
 @Composable
 private fun PrimaryButton(label: String, enabled: Boolean, busy: Boolean = false, onClick: () -> Unit) {
-    Box(
-        Modifier.fillMaxWidth().padding(horizontal = 16.dp).clip(RoundedCornerShape(12.dp))
-            .background(if (enabled) Ios.Orange else Ios.Gray.copy(alpha = 0.35f))
-            .clickable(enabled = enabled, role = Role.Button, onClick = onClick)
-            .padding(vertical = 13.dp),
-        contentAlignment = Alignment.Center,
-    ) {
-        Text(if (busy) stringResource(R.string.fenix_busy) else label, color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
-    }
+    DuskPill(
+        text = if (busy) stringResource(R.string.fenix_busy) else label,
+        modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+        selected = enabled,
+        enabled = enabled,
+        busy = busy,
+        onClick = onClick,
+    )
 }
 
 @Composable
 private fun ErrorText(f: Failure) {
     Text(
-        failureText(f), color = Ios.Orange, fontSize = 13.sp, textAlign = TextAlign.Center,
+        failureText(f),
+        color = DuskTheme.error,
+        style = androidx.compose.material3.MaterialTheme.typography.bodyMedium,
+        textAlign = TextAlign.Center,
         modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp, vertical = 6.dp),
     )
 }

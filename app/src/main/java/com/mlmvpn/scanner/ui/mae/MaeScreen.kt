@@ -25,6 +25,7 @@ import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.IntOffset
+import com.mlmvpn.scanner.ui.theme.DuskPill
 import com.mlmvpn.scanner.ui.theme.DuskTheme
 import com.mlmvpn.scanner.ui.collectWhileVisible
 import com.mlmvpn.scanner.ui.settings.SettingsFooter
@@ -635,30 +636,17 @@ private fun ServiceRow(
 /** A selectable chip for onboarding. */
 @Composable
 internal fun ServiceChip(label: String, selected: Boolean, highlighted: Boolean, def: ServiceDef? = null, onClick: () -> Unit) {
-    val bg = if (selected) Ios.Blue else Color.Transparent
-    val border = when {
-        selected -> Ios.Blue
-        highlighted -> Ios.Green
-        else -> Ios.Separator
-    }
-    Box(
-        modifier = Modifier
-            .padding(4.dp)
-            .clip(RoundedCornerShape(20.dp))
-            .background(bg)
-            .border(1.dp, border, RoundedCornerShape(20.dp))
-            .combinedClickableCompat(onClick)
-            .semantics { contentDescription = label }
-            .padding(start = if (def != null) 8.dp else 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp),
-    ) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            if (def != null) {
-                MaeAppIcon(def, label, 28.dp)
-                Spacer(Modifier.width(8.dp))
-            }
-            Text(label, color = Ios.Label, fontSize = 15.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
-        }
-    }
+    DuskPill(
+        text = label,
+        modifier = Modifier.padding(4.dp).semantics { contentDescription = label },
+        selected = selected,
+        onClick = onClick,
+        indicator = if (highlighted && !selected) DuskTheme.success else null,
+        compact = true,
+        leadingContent = if (def != null) {
+            { MaeAppIcon(def, label, 28.dp) }
+        } else null,
+    )
 }
 
 /**

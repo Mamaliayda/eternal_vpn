@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
@@ -52,6 +53,9 @@ import com.mlmvpn.scanner.ui.settings.Ios
 import com.mlmvpn.scanner.ui.settings.SettingsGroup
 import com.mlmvpn.scanner.ui.theme.CardShape
 import com.mlmvpn.scanner.ui.theme.ControlShape
+import com.mlmvpn.scanner.ui.theme.DuskCard
+import com.mlmvpn.scanner.ui.theme.DuskPill
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 import com.mlmvpn.scanner.ui.theme.PanelShape
 import com.mlmvpn.scanner.utils.S
 
@@ -304,35 +308,38 @@ fun EmptyState(
     actionLabel: String? = null,
     onAction: (() -> Unit)? = null,
 ) {
-    Column(
-        modifier = Modifier.fillMaxWidth().padding(horizontal = 32.dp, vertical = 36.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
+    DuskCard(
+        modifier = Modifier.fillMaxWidth().padding(horizontal = DuskTheme.space4, vertical = DuskTheme.space5),
+        contentPadding = PaddingValues(horizontal = DuskTheme.space5, vertical = DuskTheme.space6),
     ) {
-        Box(
-            modifier = Modifier.size(56.dp).clip(CircleShape).background(Ios.SecondaryLabel.copy(alpha = 0.14f)),
-            contentAlignment = Alignment.Center,
-        ) {
-            Icon(icon, contentDescription = null, tint = Ios.SecondaryLabel, modifier = Modifier.size(28.dp))
-        }
-        Spacer(Modifier.height(14.dp))
-        Text(title, color = Ios.Label, fontSize = StudioType.Headline, fontWeight = FontWeight.SemiBold, textAlign = TextAlign.Center)
-        if (body != null) {
-            Spacer(Modifier.height(6.dp))
-            Text(body, color = Ios.SecondaryLabel, fontSize = StudioType.Footnote, lineHeight = 21.sp, textAlign = TextAlign.Center)
-        }
-        if (actionLabel != null && onAction != null) {
-            Spacer(Modifier.height(16.dp))
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Box(
+                modifier = Modifier.size(56.dp).clip(DuskTheme.circleShape).background(DuskTheme.primary.copy(alpha = 0.14f)),
+                contentAlignment = Alignment.Center,
+            ) {
+                Icon(icon, contentDescription = null, tint = DuskTheme.primary, modifier = Modifier.size(28.dp))
+            }
+            Spacer(Modifier.height(DuskTheme.space3))
             Text(
-                actionLabel,
-                color = Color.White,
-                fontSize = StudioType.Callout,
+                title,
+                color = DuskTheme.onSurface,
+                style = androidx.compose.material3.MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
-                modifier = Modifier
-                    .background(Ios.Blue, ControlShape)
-                    .clip(ControlShape)
-                    .clickable(onClick = onAction)
-                    .padding(horizontal = 20.dp, vertical = 10.dp),
+                textAlign = TextAlign.Center,
             )
+            if (body != null) {
+                Spacer(Modifier.height(DuskTheme.space2))
+                Text(
+                    body,
+                    color = DuskTheme.muted,
+                    style = androidx.compose.material3.MaterialTheme.typography.bodyMedium,
+                    textAlign = TextAlign.Center,
+                )
+            }
+            if (actionLabel != null && onAction != null) {
+                Spacer(Modifier.height(DuskTheme.space4))
+                DuskPill(text = actionLabel, selected = true, onClick = onAction, compact = true)
+            }
         }
     }
 }

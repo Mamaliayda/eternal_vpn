@@ -70,6 +70,8 @@ import com.mlmvpn.scanner.data.CloudManager
 import com.mlmvpn.scanner.models.CloudAccount
 import com.mlmvpn.scanner.ui.LocalSystemBottomPadding
 import com.mlmvpn.scanner.ui.theme.TextPrimary
+import com.mlmvpn.scanner.ui.theme.DuskCard
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 import kotlinx.coroutines.launch
 import com.mlmvpn.scanner.utils.S
 
@@ -1111,35 +1113,36 @@ private fun EmptyBlock(
     body: String,
     tint: Color = Ios.SecondaryLabel,
 ) {
-    Column(
-        modifier = Modifier.fillMaxWidth().padding(top = 56.dp, start = 32.dp, end = 32.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
+    DuskCard(
+        modifier = Modifier.fillMaxWidth().padding(top = DuskTheme.space6, start = DuskTheme.space5, end = DuskTheme.space5),
+        contentPadding = androidx.compose.foundation.layout.PaddingValues(DuskTheme.space5),
     ) {
-        Box(
-            modifier = Modifier
-                .size(64.dp)
-                .clip(CircleShape)
-                .background(Color.White.copy(alpha = 0.07f)),
-            contentAlignment = Alignment.Center,
-        ) {
-            Icon(icon, contentDescription = null, tint = tint, modifier = Modifier.size(30.dp))
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Box(
+                modifier = Modifier
+                    .size(64.dp)
+                    .clip(DuskTheme.circleShape)
+                    .background(DuskTheme.primary.copy(alpha = 0.10f)),
+                contentAlignment = Alignment.Center,
+            ) {
+                Icon(icon, contentDescription = null, tint = tint, modifier = Modifier.size(30.dp))
+            }
+            Spacer(Modifier.height(DuskTheme.space4))
+            Text(
+                title,
+                color = DuskTheme.onSurface,
+                style = androidx.compose.material3.MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.SemiBold,
+                textAlign = TextAlign.Center,
+            )
+            Spacer(Modifier.height(DuskTheme.space2))
+            Text(
+                body,
+                color = DuskTheme.muted,
+                style = androidx.compose.material3.MaterialTheme.typography.bodyMedium,
+                textAlign = TextAlign.Center,
+            )
         }
-        Spacer(Modifier.height(16.dp))
-        Text(
-            title,
-            color = Ios.Label,
-            fontSize = 17.sp,
-            fontWeight = FontWeight.SemiBold,
-            textAlign = TextAlign.Center,
-        )
-        Spacer(Modifier.height(6.dp))
-        Text(
-            body,
-            color = Ios.SecondaryLabel,
-            fontSize = 13.sp,
-            lineHeight = 20.sp,
-            textAlign = TextAlign.Center,
-        )
     }
 }
 

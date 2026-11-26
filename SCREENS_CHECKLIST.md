@@ -1,6 +1,6 @@
 # Eternal VPN — screen redesign checklist
 
-> **Progress: 150 / 1203 complete** — each checked row is fully migrated; unverified routes and states remain unchecked.
+> **Progress: 158 / 1203 complete** — each checked row is fully migrated; unverified routes and states remain unchecked.
 
 > Inventory generated from Kotlin source on 2026-11-26. A row is considered migrated only after its visible composition, nested states, and overlays are reviewed against the Soft Dusk tokens. Shared theme inheritance alone does **not** count as a completed visual redesign.
 
@@ -593,7 +593,7 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 - [ ] `GateToolbarAction` — `com/mlmvpn/scanner/ui/VpnGateWidgets.kt`
 - [ ] `GatewayBarButton` — `com/mlmvpn/scanner/ui/VpnGateWidgets.kt`
 - [ ] `GatewaySnack` — `com/mlmvpn/scanner/ui/VpnGateWidgets.kt`
-- [ ] `GatewayEmptyState` — `com/mlmvpn/scanner/ui/VpnGateWidgets.kt`
+- [x] `GatewayEmptyState` — `com/mlmvpn/scanner/ui/VpnGateWidgets.kt`
 ### WireguardTab.kt
 
 - [ ] `FeatureRow` — `com/mlmvpn/scanner/ui/WireguardTab.kt`
@@ -763,7 +763,7 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 - [ ] `StudioStatTile` — `com/mlmvpn/scanner/ui/configstudio/design/StudioDesign.kt`
 - [ ] `StudioTilePair` — `com/mlmvpn/scanner/ui/configstudio/design/StudioDesign.kt`
 - [ ] `NoticeCard` — `com/mlmvpn/scanner/ui/configstudio/design/StudioDesign.kt`
-- [ ] `EmptyState` — `com/mlmvpn/scanner/ui/configstudio/design/StudioDesign.kt`
+- [x] `EmptyState` — `com/mlmvpn/scanner/ui/configstudio/design/StudioDesign.kt`
 - [ ] `ChoiceRow` — `com/mlmvpn/scanner/ui/configstudio/design/StudioDesign.kt`
 - [ ] `StudioSeparator` — `com/mlmvpn/scanner/ui/configstudio/design/StudioDesign.kt`
 - [ ] `SegmentedControl` — `com/mlmvpn/scanner/ui/configstudio/design/StudioDesign.kt`
@@ -847,13 +847,13 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 - [ ] `SniConfigRow` — `com/mlmvpn/scanner/ui/emergency/SniConfigPages.kt`
 ### fenix
 
-- [ ] `Welcome` — `com/mlmvpn/scanner/ui/fenix/FenixScreen.kt`
+- [x] `Welcome` — `com/mlmvpn/scanner/ui/fenix/FenixScreen.kt`
 - [ ] `Ready` — `com/mlmvpn/scanner/ui/fenix/FenixScreen.kt`
 - [ ] `AccountCard` — `com/mlmvpn/scanner/ui/fenix/FenixScreen.kt`
 - [ ] `resetLine` — `com/mlmvpn/scanner/ui/fenix/FenixScreen.kt`
 - [ ] `agoText` — `com/mlmvpn/scanner/ui/fenix/FenixScreen.kt`
-- [ ] `PrimaryButton` — `com/mlmvpn/scanner/ui/fenix/FenixScreen.kt`
-- [ ] `ErrorText` — `com/mlmvpn/scanner/ui/fenix/FenixScreen.kt`
+- [x] `PrimaryButton` — `com/mlmvpn/scanner/ui/fenix/FenixScreen.kt`
+- [x] `ErrorText` — `com/mlmvpn/scanner/ui/fenix/FenixScreen.kt`
 - [ ] `ConnectButton` — `com/mlmvpn/scanner/ui/fenix/FenixScreen.kt`
 - [ ] `statusText` — `com/mlmvpn/scanner/ui/fenix/FenixScreen.kt`
 - [ ] `failureText` — `com/mlmvpn/scanner/ui/fenix/FenixScreen.kt`
@@ -996,7 +996,7 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 - [ ] `MaeAppIcon` — `com/mlmvpn/scanner/ui/mae/MaeAppIcon.kt`
 - [ ] `MaeCloudGate` — `com/mlmvpn/scanner/ui/mae/MaeCloudGate.kt`
 - [ ] `rememberInstalledRegistryIds` — `com/mlmvpn/scanner/ui/mae/MaePages.kt`
-- [ ] `MaeOnboarding` — `com/mlmvpn/scanner/ui/mae/MaePages.kt`
+- [x] `MaeOnboarding` — `com/mlmvpn/scanner/ui/mae/MaePages.kt`
 - [ ] `MaeConfirmRemove` — `com/mlmvpn/scanner/ui/mae/MaePages.kt`
 - [ ] `ForeignExitsList` — `com/mlmvpn/scanner/ui/mae/MaePages.kt`
 - [ ] `ManageAppRow` — `com/mlmvpn/scanner/ui/mae/MaePages.kt`
@@ -1010,7 +1010,7 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 - [ ] `ConnectButton` — `com/mlmvpn/scanner/ui/mae/MaeScreen.kt`
 - [ ] `noteText` — `com/mlmvpn/scanner/ui/mae/MaeScreen.kt`
 - [ ] `ServiceRow` — `com/mlmvpn/scanner/ui/mae/MaeScreen.kt`
-- [ ] `ServiceChip` — `com/mlmvpn/scanner/ui/mae/MaeScreen.kt`
+- [x] `ServiceChip` — `com/mlmvpn/scanner/ui/mae/MaeScreen.kt`
 ### mitm
 
 - [ ] `MitmSetupCard` — `com/mlmvpn/scanner/ui/mitm/MitmSetupCard.kt`
@@ -1095,7 +1095,7 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 - [ ] `AccountTotals` — `com/mlmvpn/scanner/ui/settings/CloudResourcesScreens.kt`
 - [ ] `TotalCell` — `com/mlmvpn/scanner/ui/settings/CloudResourcesScreens.kt`
 - [ ] `TotalDivider` — `com/mlmvpn/scanner/ui/settings/CloudResourcesScreens.kt`
-- [ ] `EmptyBlock` — `com/mlmvpn/scanner/ui/settings/CloudResourcesScreens.kt`
+- [x] `EmptyBlock` — `com/mlmvpn/scanner/ui/settings/CloudResourcesScreens.kt`
 - [ ] `LtrText` — `com/mlmvpn/scanner/ui/settings/CloudResourcesScreens.kt`
 - [ ] `GeminiExitRow` — `com/mlmvpn/scanner/ui/settings/GeminiExitRow.kt`
 - [x] `IosAlert` — `com/mlmvpn/scanner/ui/settings/IosAlerts.kt`
@@ -1302,7 +1302,7 @@ Source inventory of Compose overlay hosts/call sites. Review each listed occurre
 - [x] `com/mlmvpn/scanner/ui/ScanGuardHost.kt` — AlertDialog × 1, Dialog × 1
 - [x] `com/mlmvpn/scanner/ui/ScannerTab.kt` — AlertDialog × 8, Dialog × 8
 - [x] `com/mlmvpn/scanner/ui/WireguardGuard.kt` — Dialog × 4
-- [x] `com/mlmvpn/scanner/ui/aether/AetherScreen.kt` — Dialog × 3, DropdownMenu × 1
+- [x] `com/mlmvpn/scanner/ui/aether/AetherScreen.kt` — Dialog × 1, DropdownMenu × 1
 - [x] `com/mlmvpn/scanner/ui/amnezia/AmzParts.kt` — Dialog × 1
 - [x] `com/mlmvpn/scanner/ui/cfwarp/CfWarpUi.kt` — AlertDialog × 1, Dialog × 1
 - [x] `com/mlmvpn/scanner/ui/cfwarp/Ipv4ExitUi.kt` — AlertDialog × 1, Dialog × 1

@@ -50,6 +50,8 @@ import com.mlmvpn.scanner.ui.settings.Ios
 import com.mlmvpn.scanner.ui.theme.BadgeShape
 import com.mlmvpn.scanner.ui.theme.ControlShape
 import com.mlmvpn.scanner.ui.theme.PanelShape
+import com.mlmvpn.scanner.ui.theme.DuskCard
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 import com.mlmvpn.scanner.R
 import com.mlmvpn.scanner.utils.S
 
@@ -405,20 +407,25 @@ fun GatewaySnack(text: String, tint: Color = Ios.Green) {
  */
 @Composable
 fun GatewayEmptyState(title: String, body: String) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 32.dp, vertical = 48.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
+    DuskCard(
+        modifier = Modifier.fillMaxWidth().padding(horizontal = DuskTheme.space4, vertical = DuskTheme.space6),
+        contentPadding = androidx.compose.foundation.layout.PaddingValues(DuskTheme.space5),
     ) {
-        Text(title, color = Ios.Label, fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
-        Spacer(Modifier.height(8.dp))
-        Text(
-            body,
-            color = Ios.SecondaryLabel,
-            fontSize = 13.sp,
-            lineHeight = 21.sp,
-            textAlign = TextAlign.Center,
-        )
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Text(
+                title,
+                color = DuskTheme.onSurface,
+                style = androidx.compose.material3.MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.SemiBold,
+                textAlign = TextAlign.Center,
+            )
+            Spacer(Modifier.height(DuskTheme.space2))
+            Text(
+                body,
+                color = DuskTheme.muted,
+                style = androidx.compose.material3.MaterialTheme.typography.bodyMedium,
+                textAlign = TextAlign.Center,
+            )
+        }
     }
 }

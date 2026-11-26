@@ -38,7 +38,6 @@ import androidx.compose.material.icons.filled.Apps
 import androidx.compose.material.icons.filled.CloudUpload
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -54,7 +53,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import com.mlmvpn.scanner.ui.theme.DuskPill
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 import com.mlmvpn.scanner.R
 import com.mlmvpn.scanner.engines.mae.MaeEngine
 import com.mlmvpn.scanner.engines.mae.model.ServiceDef
@@ -116,9 +116,11 @@ internal fun MaeOnboarding(
     val invalid = stringResource(R.string.mae_add_site_invalid)
 
     IosScreen(title = stringResource(R.string.mae_title), onBack = onBack, backLabel = stringResource(R.string.home)) {
-        Text(stringResource(R.string.mae_onboard_title), color = Ios.Label, fontSize = 22.sp,
+        Text(stringResource(R.string.mae_onboard_title), color = DuskTheme.onSurface,
+            style = androidx.compose.material3.MaterialTheme.typography.headlineSmall,
             modifier = Modifier.padding(start = 20.dp, end = 20.dp, top = 20.dp))
-        Text(stringResource(R.string.mae_onboard_subtitle), color = Ios.SecondaryLabel, fontSize = 14.sp,
+        Text(stringResource(R.string.mae_onboard_subtitle), color = DuskTheme.muted,
+            style = androidx.compose.material3.MaterialTheme.typography.bodyMedium,
             modifier = Modifier.padding(start = 20.dp, end = 20.dp, top = 8.dp))
 
         val onPhone = all.filter { it.id in installed }
@@ -158,13 +160,13 @@ internal fun MaeOnboarding(
         }
 
         Spacer(Modifier.height(24.dp))
-        Button(
-            onClick = { onDone(picked.toList(), sites) },
+        DuskPill(
+            text = stringResource(if (picked.isEmpty() && sites.isEmpty()) R.string.mae_onboard_pick_one else R.string.mae_onboard_continue),
+            selected = picked.isNotEmpty() || sites.isNotEmpty(),
             enabled = picked.isNotEmpty() || sites.isNotEmpty(),
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp).height(52.dp),
-        ) {
-            Text(stringResource(if (picked.isEmpty() && sites.isEmpty()) R.string.mae_onboard_pick_one else R.string.mae_onboard_continue))
-        }
+            onClick = { onDone(picked.toList(), sites) },
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp),
+        )
         Spacer(Modifier.height(40.dp))
     }
 }

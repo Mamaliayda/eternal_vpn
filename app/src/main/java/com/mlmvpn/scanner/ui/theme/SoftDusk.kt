@@ -140,20 +140,36 @@ fun DuskPill(
     indicator: Color? = null,
     busy: Boolean = false,
     compact: Boolean = false,
+    enabled: Boolean = true,
+    leadingContent: (@Composable () -> Unit)? = null,
 ) {
-    val fill = if (selected) DuskTheme.accent else DuskTheme.raisedSurface
-    val ink = if (selected) DuskTheme.onAccent else DuskTheme.primary
+    val fill = when {
+        !enabled -> DuskTheme.surface
+        selected -> DuskTheme.accent
+        else -> DuskTheme.raisedSurface
+    }
+    val ink = when {
+        !enabled -> DuskTheme.muted
+        selected -> DuskTheme.onAccent
+        else -> DuskTheme.primary
+    }
+    val outline = when {
+        !enabled -> DuskTheme.outline.copy(alpha = 0.30f)
+        selected -> DuskTheme.accent.copy(alpha = 0.65f)
+        else -> DuskTheme.accent.copy(alpha = 0.28f)
+    }
     Box(
         modifier = modifier
             .defaultMinSize(minHeight = if (compact) 32.dp else DuskTheme.navIconSize)
             .clip(DuskTheme.controlShape)
             .background(fill)
-            .border(1.dp, DuskTheme.accent.copy(alpha = if (selected) 0.65f else 0.28f), DuskTheme.controlShape)
-            .then(onClick?.let { Modifier.clickable(onClick = it) } ?: Modifier)
+            .border(1.dp, outline, DuskTheme.controlShape)
+            .then(onClick?.let { Modifier.clickable(enabled = enabled, onClick = it) } ?: Modifier)
             .padding(horizontal = DuskTheme.space4, vertical = if (compact) DuskTheme.space1 else DuskTheme.space2),
         contentAlignment = Alignment.Center,
     ) {
         Row(horizontalArrangement = Arrangement.spacedBy(DuskTheme.space2), verticalAlignment = Alignment.CenterVertically) {
+            leadingContent?.invoke()
             if (busy) {
                 CircularProgressIndicator(
                     modifier = Modifier.size(DuskTheme.space3),
