@@ -22,8 +22,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AltRoute
 import androidx.compose.material.icons.filled.Apps
@@ -54,6 +52,7 @@ import androidx.compose.material.icons.filled.VpnKey
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material.icons.filled.Wifi
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -67,11 +66,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.mlmvpn.scanner.R
 import com.mlmvpn.scanner.data.CloudManager
 import com.mlmvpn.scanner.ui.home.Appearance
@@ -82,7 +79,8 @@ import com.mlmvpn.scanner.ui.home.HomeDestinations
 import com.mlmvpn.scanner.ui.home.HomeWallpaper
 import com.mlmvpn.scanner.ui.home.WallpaperPreset
 import com.mlmvpn.scanner.ui.home.Wallpapers
-import com.mlmvpn.scanner.ui.home.frostedGlass
+import com.mlmvpn.scanner.ui.theme.DuskCard
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 import com.mlmvpn.scanner.utils.AppLocaleManager
 import com.mlmvpn.scanner.utils.LocalPort
 import com.mlmvpn.scanner.utils.NetworkSettings
@@ -792,7 +790,7 @@ private fun SettingsDetailPlaceholder() {
             Text(
                 stringResource(R.string.settings_pick_a_row),
                 color = Ios.SecondaryLabel,
-                fontSize = 15.sp,
+                style = MaterialTheme.typography.bodyMedium,
             )
         }
     }
@@ -865,19 +863,21 @@ private fun DisplayPage(
 
         // A live sample rather than a number alone: the slider is percent of whatever size the
         // grid computes for the screen, so the percentage on its own says nothing useful.
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp)
-                .frostedGlass(RoundedCornerShape(22.dp))
-                .padding(vertical = 18.dp),
-            horizontalArrangement = Arrangement.SpaceEvenly,
-            verticalAlignment = Alignment.CenterVertically,
+        DuskCard(
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+            shape = DuskTheme.chartShape,
+            contentPadding = androidx.compose.foundation.layout.PaddingValues(vertical = 18.dp),
         ) {
-            // The full cell, tile AND caption, so this one sample previews both size sliders
-            // at once -- the icon size above it and the caption size below.
-            HomeDestinations.GRID_DEFAULT.take(4).forEach { app ->
-                AppIconCell(app = app, tileSize = (56 * Appearance.iconScale / 100).dp)
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                // The full cell, tile AND caption, so this one sample previews both size sliders
+                // at once -- the icon size above it and the caption size below.
+                HomeDestinations.GRID_DEFAULT.take(4).forEach { app ->
+                    AppIconCell(app = app, tileSize = (56 * Appearance.iconScale / 100).dp)
+                }
             }
         }
 
@@ -893,7 +893,7 @@ private fun DisplayPage(
         Text(
             stringResource(R.string.settings_icon_size_desc),
             color = Ios.SecondaryLabel,
-            fontSize = 13.sp,
+            style = MaterialTheme.typography.bodySmall,
             modifier = Modifier.padding(start = 32.dp, end = 32.dp, top = 8.dp),
         )
 
@@ -925,7 +925,7 @@ private fun DisplayPage(
         Text(
             stringResource(R.string.settings_text_size_desc),
             color = Ios.SecondaryLabel,
-            fontSize = 13.sp,
+            style = MaterialTheme.typography.bodySmall,
             modifier = Modifier.padding(start = 32.dp, end = 32.dp, top = 8.dp),
         )
         }
@@ -943,7 +943,7 @@ private fun DisplayPage(
         Text(
             stringResource(R.string.settings_label_size_desc),
             color = Ios.SecondaryLabel,
-            fontSize = 13.sp,
+            style = MaterialTheme.typography.bodySmall,
             modifier = Modifier.padding(start = 32.dp, end = 32.dp, top = 8.dp),
         )
 
@@ -1011,8 +1011,8 @@ private fun WallpaperPage(
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp)
                     .aspectRatio(1.15f)
-                    .clip(RoundedCornerShape(16.dp))
-                    .border(1.dp, Color.White.copy(alpha = 0.12f), RoundedCornerShape(16.dp)),
+                    .clip(DuskTheme.chartShape)
+                    .border(1.dp, DuskTheme.outline.copy(alpha = 0.45f), DuskTheme.chartShape),
             ) {
                 HomeWallpaper(wallpaperId = current, blurPercent = blur)
             }
@@ -1052,7 +1052,7 @@ private fun WallpaperPage(
         Text(
             stringResource(R.string.wallpaper_blur_desc),
             color = Ios.SecondaryLabel,
-            fontSize = 13.sp,
+            style = MaterialTheme.typography.bodySmall,
             modifier = Modifier.padding(start = 32.dp, end = 32.dp, top = 8.dp),
         )
 
@@ -1095,12 +1095,12 @@ private fun PresetPickerPage(backLabel: String, onBack: () -> Unit) {
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .aspectRatio(0.62f)
-                                .clip(RoundedCornerShape(16.dp))
+                                .clip(DuskTheme.chartShape)
                                 .border(
                                     width = if (preset.id == current) 2.5.dp else 1.dp,
                                     color = if (preset.id == current) Ios.Blue
-                                    else Color.White.copy(alpha = 0.12f),
-                                    shape = RoundedCornerShape(16.dp),
+                                    else DuskTheme.outline.copy(alpha = 0.45f),
+                                    shape = DuskTheme.chartShape,
                                 )
                                 .clickable { Wallpapers.select(context, preset.id) },
                         ) {
@@ -1111,21 +1111,21 @@ private fun PresetPickerPage(backLabel: String, onBack: () -> Unit) {
                                         .align(Alignment.TopEnd)
                                         .padding(8.dp)
                                         .size(22.dp)
-                                        .clip(CircleShape)
+                                        .clip(DuskTheme.circleShape)
                                         .background(Ios.Blue),
                                     contentAlignment = Alignment.Center,
                                 ) {
                                     Icon(
                                         Icons.Default.Check,
                                         contentDescription = null,
-                                        tint = Color.White,
+                                        tint = DuskTheme.raisedSurface,
                                         modifier = Modifier.size(15.dp),
                                     )
                                 }
                             }
                         }
                         Spacer(Modifier.height(6.dp))
-                        Text(presetName(preset), color = Ios.Label, fontSize = 12.sp)
+                        Text(presetName(preset), color = Ios.Label, style = MaterialTheme.typography.labelMedium)
                     }
                 }
                 // Keeps a lone last preset the same width as the others instead of stretching it.

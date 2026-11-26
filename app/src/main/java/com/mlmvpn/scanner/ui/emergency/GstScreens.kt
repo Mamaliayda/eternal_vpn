@@ -53,12 +53,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.mlmvpn.scanner.engines.gst.GstConfigManager
 import com.mlmvpn.scanner.engines.gst.GstDiagnostics
 import com.mlmvpn.scanner.engines.gst.GstLog
 import com.mlmvpn.scanner.engines.gst.GstRelay
-import com.mlmvpn.scanner.ui.home.frostedGlass
 import com.mlmvpn.scanner.ui.settings.Ios
 import com.mlmvpn.scanner.ui.settings.IosScreen
 import com.mlmvpn.scanner.ui.settings.SettingsActionRow
@@ -66,8 +64,8 @@ import com.mlmvpn.scanner.ui.settings.SettingsFooter
 import com.mlmvpn.scanner.ui.settings.SettingsGroup
 import com.mlmvpn.scanner.ui.settings.SettingsRow
 import com.mlmvpn.scanner.ui.settings.SettingsSectionHeader
-import com.mlmvpn.scanner.ui.theme.CardShape
-import com.mlmvpn.scanner.ui.theme.ControlShape
+import com.mlmvpn.scanner.ui.theme.DuskCard
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 import com.mlmvpn.scanner.ui.tlsPing
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -488,8 +486,7 @@ fun GstLogScreen(onBack: () -> Unit) {
                 Text(
                     S(R.string.nothing_recorded_yet_nrun_measure_all_relays),
                     color = Ios.SecondaryLabel,
-                    fontSize = 14.sp,
-                    lineHeight = 24.sp,
+                    style = androidx.compose.material3.MaterialTheme.typography.bodyMedium,
                     textAlign = TextAlign.Center,
                 )
             }
@@ -501,28 +498,29 @@ fun GstLogScreen(onBack: () -> Unit) {
         // the wrong end of every line and the timestamps stop lining up. The Persian message text
         // inside a line still renders right-to-left within its own run, which is correct.
         CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
-            LazyColumn(
-                state = listState,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(horizontal = 16.dp)
-                    .frostedGlass(CardShape),
+            DuskCard(
+                modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp),
+                shape = DuskTheme.cardShape,
                 contentPadding = PaddingValues(12.dp),
             ) {
-                items(entries) { entry ->
-                    Text(
-                        entry.format(),
-                        color = when (entry.level) {
-                            GstLog.Level.E -> Ios.Red
-                            GstLog.Level.W -> Ios.Yellow
-                            GstLog.Level.I -> Ios.Label
-                            else -> Ios.SecondaryLabel
-                        },
-                        fontSize = 11.sp,
-                        lineHeight = 17.sp,
-                        fontFamily = FontFamily.Monospace,
-                        modifier = Modifier.padding(vertical = 1.dp),
-                    )
+                LazyColumn(
+                    state = listState,
+                    modifier = Modifier.fillMaxSize(),
+                    contentPadding = PaddingValues(0.dp),
+                ) {
+                    items(entries) { entry ->
+                        Text(
+                            entry.format(),
+                            color = when (entry.level) {
+                                GstLog.Level.E -> Ios.Red
+                                GstLog.Level.W -> Ios.Yellow
+                                GstLog.Level.I -> Ios.Label
+                                else -> Ios.SecondaryLabel
+                            },
+                            style = androidx.compose.material3.MaterialTheme.typography.labelSmall.copy(fontFamily = FontFamily.Monospace),
+                            modifier = Modifier.padding(vertical = 1.dp),
+                        )
+                    }
                 }
             }
         }
@@ -539,7 +537,7 @@ private fun LogChip(
 ) {
     Row(
         modifier = modifier
-            .background(tint.copy(alpha = 0.14f), ControlShape)
+            .background(tint.copy(alpha = 0.14f), DuskTheme.controlShape)
             .clickable(onClick = onClick)
             .padding(vertical = 10.dp),
         horizontalArrangement = Arrangement.Center,
@@ -547,7 +545,7 @@ private fun LogChip(
     ) {
         Icon(icon, contentDescription = null, tint = tint, modifier = Modifier.size(17.dp))
         Spacer(Modifier.width(6.dp))
-        Text(label, color = tint, fontSize = 14.sp)
+        Text(label, color = tint, style = androidx.compose.material3.MaterialTheme.typography.bodyMedium)
     }
 }
 

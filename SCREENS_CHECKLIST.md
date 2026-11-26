@@ -1,6 +1,6 @@
 # Eternal VPN — screen redesign checklist
 
-> **Progress: 42 / 1203 complete** — each checked row is fully migrated; unverified routes and states remain unchecked.
+> **Progress: 52 / 1203 complete** — each checked row is fully migrated; unverified routes and states remain unchecked.
 
 > Inventory generated from Kotlin source on 2026-11-26. A row is considered migrated only after its visible composition, nested states, and overlays are reviewed against the Soft Dusk tokens. Shared theme inheritance alone does **not** count as a completed visual redesign.
 
@@ -72,8 +72,8 @@ Found 230 screen-like public/internal composables across 133 Kotlin files (the f
 - [ ] `AddNahanUserDialog` — `com/mlmvpn/scanner/engines/nahan/NahanSettingsScreen.kt`
 ### AboutScreen.kt
 
-- [ ] `AboutScreen` — `com/mlmvpn/scanner/ui/AboutScreen.kt`
-- [ ] `ChangelogScreen` — `com/mlmvpn/scanner/ui/AboutScreen.kt`
+- [x] `AboutScreen` — `com/mlmvpn/scanner/ui/AboutScreen.kt`
+- [x] `ChangelogScreen` — `com/mlmvpn/scanner/ui/AboutScreen.kt`
 ### AddNodeScreen.kt
 
 - [ ] `AddNodeScreen` — `com/mlmvpn/scanner/ui/AddNodeScreen.kt`
@@ -255,7 +255,7 @@ Found 230 screen-like public/internal composables across 133 Kotlin files (the f
 - [ ] `EmergencyLevel3Screen` — `com/mlmvpn/scanner/ui/emergency/EmergencyLevel3Screen.kt`
 - [ ] `GstRelayScreen` — `com/mlmvpn/scanner/ui/emergency/GstScreens.kt`
 - [ ] `GstNetworkPathScreen` — `com/mlmvpn/scanner/ui/emergency/GstScreens.kt`
-- [ ] `GstLogScreen` — `com/mlmvpn/scanner/ui/emergency/GstScreens.kt`
+- [x] `GstLogScreen` — `com/mlmvpn/scanner/ui/emergency/GstScreens.kt`
 - [ ] `GstSetupWizard` — `com/mlmvpn/scanner/ui/emergency/GstSetupWizard.kt`
 - [ ] `SniConfigPickerPage` — `com/mlmvpn/scanner/ui/emergency/SniConfigPages.kt`
 - [ ] `SniBuildPage` — `com/mlmvpn/scanner/ui/emergency/SniConfigPages.kt`
@@ -347,9 +347,9 @@ Found 230 screen-like public/internal composables across 133 Kotlin files (the f
 - [ ] `ProxyModePage` — `com/mlmvpn/scanner/ui/settings/NetworkSettingPages.kt`
 - [ ] `AllowLanPage` — `com/mlmvpn/scanner/ui/settings/NetworkSettingPages.kt`
 - [ ] `SettingsScreen` — `com/mlmvpn/scanner/ui/settings/SettingsScreen.kt`
-- [ ] `DisplayPage` — `com/mlmvpn/scanner/ui/settings/SettingsScreen.kt`
-- [ ] `WallpaperPage` — `com/mlmvpn/scanner/ui/settings/SettingsScreen.kt`
-- [ ] `PresetPickerPage` — `com/mlmvpn/scanner/ui/settings/SettingsScreen.kt`
+- [x] `DisplayPage` — `com/mlmvpn/scanner/ui/settings/SettingsScreen.kt`
+- [x] `WallpaperPage` — `com/mlmvpn/scanner/ui/settings/SettingsScreen.kt`
+- [x] `PresetPickerPage` — `com/mlmvpn/scanner/ui/settings/SettingsScreen.kt`
 - [ ] `SmartIranPage` — `com/mlmvpn/scanner/ui/settings/SmartIranPage.kt`
 - [ ] `UsageScreen` — `com/mlmvpn/scanner/ui/settings/UsageScreen.kt`
 - [ ] `VpnSettingsScreen` — `com/mlmvpn/scanner/ui/settings/VpnSettingsScreen.kt`
@@ -395,7 +395,7 @@ Found 230 screen-like public/internal composables across 133 Kotlin files (the f
 - [ ] `SecretPage` — `com/mlmvpn/scanner/ui/tunnel/TransportAdvancedScreen.kt`
 - [ ] `TransportHost` — `com/mlmvpn/scanner/ui/tunnel/TransportHost.kt`
 - [ ] `TransportScreen` — `com/mlmvpn/scanner/ui/tunnel/TransportScreen.kt`
-- [ ] `TunnelLogScreen` — `com/mlmvpn/scanner/ui/tunnel/TunnelLogScreen.kt`
+- [x] `TunnelLogScreen` — `com/mlmvpn/scanner/ui/tunnel/TunnelLogScreen.kt`
 ### urnetwork
 
 - [ ] `UrnetworkLocationsScreen` — `com/mlmvpn/scanner/ui/urnetwork/UrnetworkUi.kt`
@@ -433,8 +433,8 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 - [ ] `NahanUserCard` — `com/mlmvpn/scanner/engines/nahan/NahanSettingsScreen.kt`
 ### AboutScreen.kt
 
-- [ ] `ReleaseHeader` — `com/mlmvpn/scanner/ui/AboutScreen.kt`
-- [ ] `ChangeCard` — `com/mlmvpn/scanner/ui/AboutScreen.kt`
+- [x] `ReleaseHeader` — `com/mlmvpn/scanner/ui/AboutScreen.kt`
+- [x] `ChangeCard` — `com/mlmvpn/scanner/ui/AboutScreen.kt`
 - [ ] `changelogText` — `com/mlmvpn/scanner/ui/AboutScreen.kt`
 ### AddNodeModal.kt
 
@@ -1229,7 +1229,7 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 - [ ] `Metric` — `com/mlmvpn/scanner/ui/tunnel/TransportScreen.kt`
 - [ ] `Divider` — `com/mlmvpn/scanner/ui/tunnel/TransportScreen.kt`
 - [ ] `regionLabel` — `com/mlmvpn/scanner/ui/tunnel/TransportScreen.kt`
-- [ ] `LogAction` — `com/mlmvpn/scanner/ui/tunnel/TunnelLogScreen.kt`
+- [x] `LogAction` — `com/mlmvpn/scanner/ui/tunnel/TunnelLogScreen.kt`
 - [ ] `IdentityBlockedCard` — `com/mlmvpn/scanner/ui/tunnel/WarpIdentityCard.kt`
 - [ ] `ColumnScope` — `com/mlmvpn/scanner/ui/tunnel/WarpIdentityCard.kt`
 ### urnetwork

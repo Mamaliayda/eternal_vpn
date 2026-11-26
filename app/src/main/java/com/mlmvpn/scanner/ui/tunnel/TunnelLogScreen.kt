@@ -21,6 +21,7 @@ import androidx.compose.material.icons.filled.DeleteOutline
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -33,13 +34,11 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.mlmvpn.core.tunnel.ConnectionLog
-import com.mlmvpn.scanner.ui.home.frostedGlass
 import com.mlmvpn.scanner.ui.settings.Ios
+import com.mlmvpn.scanner.ui.theme.DuskCard
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 import com.mlmvpn.scanner.ui.settings.IosScreen
-import com.mlmvpn.scanner.ui.theme.CardShape
-import com.mlmvpn.scanner.ui.theme.ControlShape
 import kotlinx.coroutines.delay
 import com.mlmvpn.scanner.R
 import com.mlmvpn.scanner.utils.S
@@ -121,8 +120,7 @@ fun TunnelLogScreen(onBack: () -> Unit) {
                 S(R.string.this_is_the_only_record_left_of) +
                     S(R.string.means_throwing_away_the_very_thing_that),
                 color = Ios.SecondaryLabel,
-                fontSize = 13.sp,
-                lineHeight = 21.sp,
+                style = MaterialTheme.typography.bodySmall,
                 modifier = Modifier.padding(horizontal = 24.dp, vertical = 4.dp),
             )
         }
@@ -135,31 +133,31 @@ fun TunnelLogScreen(onBack: () -> Unit) {
                 Text(
                     S(R.string.nothing_recorded_yet_nconnect_once_and_every),
                     color = Ios.SecondaryLabel,
-                    fontSize = 14.sp,
-                    lineHeight = 24.sp,
+                    style = MaterialTheme.typography.bodyMedium,
                     textAlign = TextAlign.Center,
                 )
             }
             return@IosScreen
         }
 
-        LazyColumn(
-            state = listState,
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(horizontal = 16.dp)
-                .frostedGlass(CardShape),
+        DuskCard(
+            modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp),
+            shape = DuskTheme.cardShape,
             contentPadding = PaddingValues(12.dp),
         ) {
-            items(lines) { line ->
-                Text(
-                    line,
-                    color = Ios.Label,
-                    fontSize = 11.sp,
-                    lineHeight = 17.sp,
-                    fontFamily = FontFamily.Monospace,
-                    modifier = Modifier.padding(vertical = 1.dp),
-                )
+            LazyColumn(
+                state = listState,
+                modifier = Modifier.fillMaxSize(),
+                contentPadding = PaddingValues(0.dp),
+            ) {
+                items(lines) { line ->
+                    Text(
+                        line,
+                        color = Ios.Label,
+                        style = MaterialTheme.typography.labelSmall.copy(fontFamily = FontFamily.Monospace),
+                        modifier = Modifier.padding(vertical = 1.dp),
+                    )
+                }
             }
         }
     }
@@ -175,7 +173,7 @@ private fun LogAction(
 ) {
     Row(
         modifier = modifier
-            .background(tint.copy(alpha = 0.14f), ControlShape)
+            .background(tint.copy(alpha = 0.14f), DuskTheme.controlShape)
             .clickable(onClick = onClick)
             .padding(vertical = 10.dp),
         horizontalArrangement = Arrangement.Center,
@@ -183,6 +181,6 @@ private fun LogAction(
     ) {
         Icon(icon, contentDescription = null, tint = tint, modifier = Modifier.size(17.dp))
         Spacer(Modifier.size(6.dp))
-        Text(label, color = tint, fontSize = 14.sp)
+        Text(label, color = tint, style = MaterialTheme.typography.bodyMedium)
     }
 }

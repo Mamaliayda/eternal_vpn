@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Code
@@ -23,6 +22,7 @@ import androidx.compose.material.icons.filled.NewReleases
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Send
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -44,9 +44,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.mlmvpn.scanner.R
-import com.mlmvpn.scanner.ui.home.frostedGlass
 import com.mlmvpn.scanner.ui.settings.Ios
 import com.mlmvpn.scanner.ui.settings.IosScreen
 import com.mlmvpn.scanner.ui.settings.SettingsFooter
@@ -54,8 +52,8 @@ import com.mlmvpn.scanner.ui.settings.SettingsGlyph
 import com.mlmvpn.scanner.ui.settings.SettingsGroup
 import com.mlmvpn.scanner.ui.settings.SettingsRow
 import com.mlmvpn.scanner.ui.settings.SettingsSectionHeader
-import com.mlmvpn.scanner.ui.theme.CardShape
-import com.mlmvpn.scanner.ui.theme.PanelShape
+import com.mlmvpn.scanner.ui.theme.DuskCard
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 import com.mlmvpn.scanner.utils.S
 
 /**
@@ -112,7 +110,7 @@ fun AboutScreen(
     val isFa = com.mlmvpn.scanner.utils.AppLocaleManager.getResolvedLocale().language == "fa"
     val versions = remember(isFa) { changelogVersions(isFa) }
 
-    fun open(url: String) {
+    fun openUrl(url: String) {
         try {
             context.startActivity(
                 android.content.Intent(
@@ -146,7 +144,7 @@ fun AboutScreen(
                     contentDescription = null,
                     // A squircle, not a circle: it is the same mark the home screen shows as a
                     // tile, and a circle here made it a different object from the one you tapped.
-                    modifier = Modifier.size(96.dp).clip(RoundedCornerShape(24.dp)),
+                    modifier = Modifier.size(96.dp).clip(DuskTheme.cardShape),
                 )
             } else {
                 Icon(
@@ -157,7 +155,7 @@ fun AboutScreen(
                 )
             }
             Spacer(Modifier.height(16.dp))
-            Text("MLMVPN", color = Ios.Label, fontSize = 26.sp, fontWeight = FontWeight.Bold)
+            Text("MLMVPN", color = Ios.Label, style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold)
             Spacer(Modifier.height(4.dp))
             // The version stays in Latin digits. It is an identifier people read back to us in a
             // bug report, not a measurement.
@@ -180,7 +178,7 @@ fun AboutScreen(
                     }
                 },
                 color = Ios.SecondaryLabel,
-                fontSize = 15.sp,
+                style = MaterialTheme.typography.bodyMedium,
             )
         }
 
@@ -207,18 +205,14 @@ fun AboutScreen(
         )
 
         SettingsSectionHeader(if (isFa) "دربارهٔ برنامه" else "ABOUT")
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp)
-                .frostedGlass(CardShape)
-                .padding(18.dp),
+        DuskCard(
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+            contentPadding = PaddingValues(18.dp),
         ) {
             Text(
                 stringResource(R.string.about_desc),
                 color = Ios.Label,
-                fontSize = 14.sp,
-                lineHeight = 25.sp,
+                style = MaterialTheme.typography.bodyMedium,
                 textAlign = TextAlign.Justify,
             )
         }
@@ -230,7 +224,7 @@ fun AboutScreen(
                 title = if (isFa) "حمایت از ما" else "Support us",
                 subtitle = "donito.me/ehsan2noven",
                 icon = Icons.Default.Favorite,
-                tint = androidx.compose.ui.graphics.Color(0xFFFF2D55),
+                tint = DuskTheme.coral,
                 onClick = { com.mlmvpn.scanner.utils.Donate.open(context) },
             )
         }
@@ -242,7 +236,7 @@ fun AboutScreen(
                 subtitle = "t.me/mlmvpn",
                 icon = Icons.Default.Send,
                 tint = Ios.Teal,
-                onClick = { open("https://t.me/mlmvpn") },
+                onClick = { openUrl("https://t.me/mlmvpn") },
             )
             Separator()
             SettingsRow(
@@ -250,7 +244,7 @@ fun AboutScreen(
                 subtitle = "github.com/mlmvpn",
                 icon = Icons.Default.Code,
                 tint = Ios.Gray,
-                onClick = { open("https://github.com/mlmvpn") },
+                onClick = { openUrl("https://github.com/mlmvpn") },
             )
             Separator()
             SettingsRow(
@@ -258,7 +252,7 @@ fun AboutScreen(
                 subtitle = "youtube.com/@marketmlm",
                 icon = Icons.Default.PlayArrow,
                 tint = Ios.Red,
-                onClick = { open("https://www.youtube.com/@marketmlm") },
+                onClick = { openUrl("https://www.youtube.com/@marketmlm") },
             )
         }
         SettingsFooter(
@@ -346,16 +340,16 @@ private fun ReleaseHeader(title: String, count: Int, isFa: Boolean, isLatest: Bo
             .padding(start = 20.dp, end = 20.dp, top = 26.dp, bottom = 10.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Text(title, color = Ios.Label, fontSize = 19.sp, fontWeight = FontWeight.Bold)
+        Text(title, color = Ios.Label, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
         if (isLatest) {
             Spacer(Modifier.width(8.dp))
             Text(
                 if (isFa) "تازه" else "NEW",
                 color = Ios.Green,
-                fontSize = 11.sp,
+                style = MaterialTheme.typography.labelSmall,
                 fontWeight = FontWeight.SemiBold,
                 modifier = Modifier
-                    .background(Ios.Green.copy(alpha = 0.16f), RoundedCornerShape(6.dp))
+                    .background(Ios.Green.copy(alpha = 0.16f), DuskTheme.controlShape)
                     .padding(horizontal = 7.dp, vertical = 2.dp),
             )
         }
@@ -363,7 +357,7 @@ private fun ReleaseHeader(title: String, count: Int, isFa: Boolean, isLatest: Bo
         Text(
             if (isFa) "${faNum(count)} مورد" else "$count items",
             color = Ios.SecondaryLabel,
-            fontSize = 13.sp,
+            style = MaterialTheme.typography.bodySmall,
         )
     }
 }
@@ -371,32 +365,29 @@ private fun ReleaseHeader(title: String, count: Int, isFa: Boolean, isLatest: Bo
 /** One change: the glyph tile every list in this app uses, a title, and the paragraph. */
 @Composable
 private fun ChangeCard(item: ChangelogItem) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 5.dp)
-            .frostedGlass(PanelShape)
-            .padding(16.dp),
-        verticalAlignment = Alignment.Top,
+    DuskCard(
+        modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 5.dp),
+        shape = DuskTheme.chartShape,
+        contentPadding = PaddingValues(16.dp),
     ) {
-        SettingsGlyph(item.icon, Ios.Gray)
-        Spacer(Modifier.width(14.dp))
-        Column(modifier = Modifier.weight(1f)) {
-            Text(
-                item.title,
-                color = Ios.Label,
-                fontSize = 15.sp,
-                fontWeight = FontWeight.SemiBold,
-                lineHeight = 24.sp,
-            )
-            Spacer(Modifier.height(6.dp))
-            Text(
-                changelogText(item.description),
-                color = Ios.SecondaryLabel,
-                fontSize = 13.sp,
-                lineHeight = 23.sp,
-                textAlign = TextAlign.Justify,
-            )
+        Row(verticalAlignment = Alignment.Top) {
+            SettingsGlyph(item.icon, Ios.Gray)
+            Spacer(Modifier.width(14.dp))
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    item.title,
+                    color = Ios.Label,
+                    style = MaterialTheme.typography.bodyMedium,
+                    fontWeight = FontWeight.SemiBold,
+                )
+                Spacer(Modifier.height(6.dp))
+                Text(
+                    changelogText(item.description),
+                    color = Ios.SecondaryLabel,
+                    style = MaterialTheme.typography.bodySmall,
+                    textAlign = TextAlign.Justify,
+                )
+            }
         }
     }
 }
