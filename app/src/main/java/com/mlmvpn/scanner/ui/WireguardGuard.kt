@@ -1,33 +1,13 @@
 package com.mlmvpn.scanner.ui
 
-import com.mlmvpn.scanner.ui.theme.*
-import com.mlmvpn.scanner.ui.home.frostedGlass
 import android.content.Context
 import android.content.Intent
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Warning
+import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.Dialog
+import com.mlmvpn.scanner.ui.settings.Ios
 import com.mlmvpn.scanner.MyVpnService
-import com.mlmvpn.scanner.ui.theme.BgDark
-import com.mlmvpn.scanner.ui.theme.BorderDark
-import com.mlmvpn.scanner.ui.theme.Primary
-import com.mlmvpn.scanner.ui.theme.SurfaceDark
-import com.mlmvpn.scanner.ui.theme.TextMuted
-import com.mlmvpn.scanner.ui.theme.TextPrimary
 import com.mlmvpn.scanner.R
 import com.mlmvpn.scanner.utils.S
 
@@ -56,51 +36,20 @@ fun stopActiveVpn(context: Context) {
 fun WireguardConflictDialog(
     message: String = S(R.string.the_wireguard_connection_game_trial_is_active),
     onConfirm: () -> Unit,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
 ) {
-    Dialog(onDismissRequest = onDismiss) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .frostedGlass(CardShape)
-                .padding(20.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Box(
-                modifier = Modifier
-                    .size(56.dp)
-                    .background(Color(0xFFFFA000).copy(alpha = 0.15f), RoundedCornerShape(16.dp)),
-                contentAlignment = Alignment.Center
-            ) {
-                Icon(Icons.Filled.Warning, contentDescription = null, tint = Color(0xFFFFA000), modifier = Modifier.size(28.dp))
-            }
-            Spacer(Modifier.height(14.dp))
-            Text(S(R.string.wireguard_is_active), color = TextPrimary, fontSize = 17.sp, fontWeight = FontWeight.Bold)
-            Spacer(Modifier.height(10.dp))
-            Text(message, color = TextMuted, fontSize = 13.sp, lineHeight = 20.sp)
-            Spacer(Modifier.height(22.dp))
-            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                Box(
-                    modifier = Modifier
-                        .weight(1f)
-                        .background(Color.Transparent, ControlShape)
-                        .border(1.dp, BorderDark, ControlShape)
-                        .clickable { onDismiss() }
-                        .padding(vertical = 12.dp),
-                    contentAlignment = Alignment.Center
-                ) { Text(S(R.string.cancel_3), color = TextPrimary, fontSize = 14.sp, fontWeight = FontWeight.Medium) }
-
-                Box(
-                    modifier = Modifier
-                        .weight(1f)
-                        .background(Primary, ControlShape)
-                        .clickable { onConfirm() }
-                        .padding(vertical = 12.dp),
-                    contentAlignment = Alignment.Center
-                ) { Text(S(R.string.yes_turn_it_off), color = BgDark, fontSize = 14.sp, fontWeight = FontWeight.Bold) }
-            }
-        }
-    }
+    com.mlmvpn.scanner.ui.settings.IosAlert(
+        title = S(R.string.wireguard_is_active),
+        message = message,
+        icon = { Icon(Icons.Filled.Warning, contentDescription = null, tint = Ios.Orange) },
+        onDismiss = onDismiss,
+        actions = listOf(
+            com.mlmvpn.scanner.ui.settings.IosAlertAction(S(R.string.cancel_3), onDismiss),
+            com.mlmvpn.scanner.ui.settings.IosAlertAction(
+                S(R.string.yes_turn_it_off), onConfirm, preferred = true,
+            ),
+        ),
+    )
 }
 
 /**
@@ -172,52 +121,18 @@ fun stopVpnSafely(context: Context) {
 fun EngineConflictDialog(
     engineName: String,
     onConfirm: () -> Unit,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
 ) {
-    Dialog(onDismissRequest = onDismiss) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .frostedGlass(CardShape)
-                .padding(20.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Box(
-                modifier = Modifier
-                    .size(56.dp)
-                    .background(Color(0xFFFFA000).copy(alpha = 0.15f), RoundedCornerShape(16.dp)),
-                contentAlignment = Alignment.Center
-            ) {
-                Icon(Icons.Filled.Warning, contentDescription = null, tint = Color(0xFFFFA000), modifier = Modifier.size(28.dp))
-            }
-            Spacer(Modifier.height(14.dp))
-            Text(S(R.string.enginename_is_on, engineName), color = TextPrimary, fontSize = 17.sp, fontWeight = FontWeight.Bold)
-            Spacer(Modifier.height(10.dp))
-            Text(
-                S(R.string.to_start_the_test_enginename_has_to, engineName),
-                color = TextMuted, fontSize = 13.sp, lineHeight = 20.sp
-            )
-            Spacer(Modifier.height(22.dp))
-            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                Box(
-                    modifier = Modifier
-                        .weight(1f)
-                        .background(Color.Transparent, ControlShape)
-                        .border(1.dp, BorderDark, ControlShape)
-                        .clickable { onDismiss() }
-                        .padding(vertical = 12.dp),
-                    contentAlignment = Alignment.Center
-                ) { Text(S(R.string.cancel_3), color = TextPrimary, fontSize = 14.sp, fontWeight = FontWeight.Medium) }
-
-                Box(
-                    modifier = Modifier
-                        .weight(1f)
-                        .background(Primary, ControlShape)
-                        .clickable { onConfirm() }
-                        .padding(vertical = 12.dp),
-                    contentAlignment = Alignment.Center
-                ) { Text(S(R.string.confirm_and_refresh), color = BgDark, fontSize = 14.sp, fontWeight = FontWeight.Bold) }
-            }
-        }
-    }
+    com.mlmvpn.scanner.ui.settings.IosAlert(
+        title = S(R.string.enginename_is_on, engineName),
+        message = S(R.string.to_start_the_test_enginename_has_to, engineName),
+        icon = { Icon(Icons.Filled.Warning, contentDescription = null, tint = Ios.Orange) },
+        onDismiss = onDismiss,
+        actions = listOf(
+            com.mlmvpn.scanner.ui.settings.IosAlertAction(S(R.string.cancel_3), onDismiss),
+            com.mlmvpn.scanner.ui.settings.IosAlertAction(
+                S(R.string.confirm_and_refresh), onConfirm, preferred = true,
+            ),
+        ),
+    )
 }

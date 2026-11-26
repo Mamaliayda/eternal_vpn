@@ -39,11 +39,9 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Speed
 import androidx.compose.material.icons.filled.Stop
 import androidx.compose.material.icons.filled.SwapHoriz
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
@@ -794,15 +792,19 @@ fun PsiphonCleanIpScreen(onBack: () -> Unit, backLabel: String) {
     }
 
     acting?.let { e ->
-        AlertDialog(
-            onDismissRequest = { acting = null },
-            title = { Text(e.ip, fontFamily = FontFamily.Monospace, fontSize = 15.sp) },
-            text = {
+        com.mlmvpn.scanner.ui.settings.IosAlert(
+            title = e.ip,
+            onDismiss = { acting = null },
+            content = {
                 Column {
                     ActionLine(tr("سنجش واقعی کامل با سایفون", "Full real test with Psiphon"), enabled = !job.running) {
-                        acting = null; PsiphonCleanIps.realTest(ctx, listOf(e.ip))
+                        acting = null
+                        PsiphonCleanIps.realTest(ctx, listOf(e.ip))
                     }
-                    ActionLine(if (e.pinned) tr("لغو انتخاب", "Unchoose") else tr("انتخاب — فقط از آی‌پی‌های انتخاب‌شده وصل شود", "Choose -- connect only through chosen IPs")) {
+                    ActionLine(
+                        if (e.pinned) tr("لغو انتخاب", "Unchoose")
+                        else tr("انتخاب — فقط از آی‌پی‌های انتخاب‌شده وصل شود", "Choose -- connect only through chosen IPs"),
+                    ) {
                         acting = null
                         PsiphonCleanIps.setPinned(ctx, e.ip, !e.pinned)
                         if (!e.pinned) {
@@ -810,10 +812,15 @@ fun PsiphonCleanIpScreen(onBack: () -> Unit, backLabel: String) {
                             Toast.makeText(ctx, tr("روش اتصال سایفون: آی‌پی تمیز — فقط آی‌پی‌های انتخاب‌شده", "Psiphon's method: clean IP -- the chosen ones only"), Toast.LENGTH_SHORT).show()
                         }
                     }
-                    ActionLine(tr("حذف", "Remove"), color = Ios.Red) { acting = null; PsiphonCleanIps.remove(ctx, listOf(e.ip)) }
+                    ActionLine(tr("حذف", "Remove"), color = Ios.Red) {
+                        acting = null
+                        PsiphonCleanIps.remove(ctx, listOf(e.ip))
+                    }
                 }
             },
-            confirmButton = { TextButton(onClick = { acting = null }) { Text(tr("بستن", "Close")) } },
+            actions = listOf(
+                com.mlmvpn.scanner.ui.settings.IosAlertAction(tr("بستن", "Close"), onClick = { acting = null }),
+            ),
         )
     }
 }
@@ -890,7 +897,7 @@ private fun RunSummary(job: PsiphonCleanIps.Job) {
 
 @Composable
 private fun ActionLine(text: String, enabled: Boolean = true, color: Color = Ios.Blue, onClick: () -> Unit) {
-    Text(text, color = if (enabled) color else Ios.SecondaryLabel, fontSize = 15.sp,
+    Text(text, color = if (enabled) color else Ios.SecondaryLabel, style = androidx.compose.material3.MaterialTheme.typography.bodyMedium,
         modifier = Modifier.fillMaxWidth().then(if (enabled) Modifier.clickable(onClick = onClick) else Modifier).padding(vertical = 12.dp))
 }
 

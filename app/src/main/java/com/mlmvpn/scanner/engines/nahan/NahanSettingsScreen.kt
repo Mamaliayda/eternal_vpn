@@ -912,109 +912,99 @@ private fun AddNahanUserDialog(
     var userProxyIp by remember { mutableStateOf("") }
     val generatedUuid = remember { UUID.randomUUID().toString() }
 
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        containerColor = DialogSurface,
-        modifier = androidx.compose.ui.Modifier.border(
-            0.7.dp,
-            androidx.compose.ui.graphics.Color.White.copy(alpha = 0.15f),
-            CardShape,
-        ),
-        shape = CardShape,
-        title = {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(
-                    Icons.Default.PersonAdd,
-                    contentDescription = null,
-                    tint = TextMuted,
-                    modifier = Modifier.size(22.dp)
-                )
-                Spacer(modifier = Modifier.width(10.dp))
-                Text(androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.nhn_add_new_user), color = TextPrimary, fontWeight = FontWeight.Bold)
-            }
+    com.mlmvpn.scanner.ui.settings.IosAlert(
+        title = androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.nhn_add_new_user),
+        icon = {
+            Icon(
+                Icons.Default.PersonAdd,
+                contentDescription = null,
+                tint = TextMuted,
+                modifier = Modifier.size(22.dp),
+            )
         },
-        text = {
-            Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+        onDismiss = onDismiss,
+        content = {
+            Column(
+                modifier = Modifier.verticalScroll(rememberScrollState()),
+                verticalArrangement = Arrangement.spacedBy(12.dp),
+            ) {
                 OutlinedTextField(
                     value = name,
                     onValueChange = { name = it },
-                    label = { Text(androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.nhn_user_name), color = TextMuted, fontSize = 12.sp) },
+                    label = { Text(androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.nhn_user_name), color = TextMuted, style = MaterialTheme.typography.labelSmall) },
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true,
                     colors = iosFieldColors(),
-                    shape = ControlShape
+                    shape = ControlShape,
                 )
-
-                // UUID display (read-only)
                 OutlinedTextField(
                     value = generatedUuid,
                     onValueChange = {},
                     readOnly = true,
-                    label = { Text(androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.nhn_uuid_auto), color = TextMuted, fontSize = 12.sp) },
+                    label = { Text(androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.nhn_uuid_auto), color = TextMuted, style = MaterialTheme.typography.labelSmall) },
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true,
                     colors = iosFieldColors(),
-                    shape = ControlShape
+                    shape = ControlShape,
                 )
-
                 OutlinedTextField(
                     value = limitGB,
                     onValueChange = { limitGB = it },
-                    label = { Text(androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.nhn_total_limit_gb), color = TextMuted, fontSize = 12.sp) },
+                    label = { Text(androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.nhn_total_limit_gb), color = TextMuted, style = MaterialTheme.typography.labelSmall) },
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true,
                     colors = iosFieldColors(),
                     keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(
-                        keyboardType = androidx.compose.ui.text.input.KeyboardType.Number
+                        keyboardType = androidx.compose.ui.text.input.KeyboardType.Number,
                     ),
-                    shape = ControlShape
+                    shape = ControlShape,
                 )
-
                 OutlinedTextField(
                     value = dailyLimitGB,
                     onValueChange = { dailyLimitGB = it },
-                    label = { Text(androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.nhn_daily_traffic_limit), color = TextMuted, fontSize = 12.sp) },
+                    label = { Text(androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.nhn_daily_traffic_limit), color = TextMuted, style = MaterialTheme.typography.labelSmall) },
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true,
                     colors = iosFieldColors(),
                     keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(
-                        keyboardType = androidx.compose.ui.text.input.KeyboardType.Number
+                        keyboardType = androidx.compose.ui.text.input.KeyboardType.Number,
                     ),
-                    shape = ControlShape
+                    shape = ControlShape,
                 )
-
                 OutlinedTextField(
                     value = expiryDays,
                     onValueChange = { expiryDays = it },
-                    label = { Text(androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.nhn_expiry_days_input), color = TextMuted, fontSize = 12.sp) },
+                    label = { Text(androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.nhn_expiry_days_input), color = TextMuted, style = MaterialTheme.typography.labelSmall) },
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true,
                     colors = iosFieldColors(),
                     keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(
-                        keyboardType = androidx.compose.ui.text.input.KeyboardType.Number
+                        keyboardType = androidx.compose.ui.text.input.KeyboardType.Number,
                     ),
-                    shape = ControlShape
+                    shape = ControlShape,
                 )
-
                 OutlinedTextField(
                     value = userProxyIp,
                     onValueChange = { userProxyIp = it },
-                    label = { Text(androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.nhn_user_proxy_ip), color = TextMuted, fontSize = 12.sp) },
+                    label = { Text(androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.nhn_user_proxy_ip), color = TextMuted, style = MaterialTheme.typography.labelSmall) },
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true,
                     colors = iosFieldColors(),
-                    shape = ControlShape
+                    shape = ControlShape,
                 )
             }
         },
-        confirmButton = {
-            Button(
+        actions = listOf(
+            com.mlmvpn.scanner.ui.settings.IosAlertAction(
+                androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.common_cancel), onDismiss,
+            ),
+            com.mlmvpn.scanner.ui.settings.IosAlertAction(
+                androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.nhn_add),
                 onClick = {
                     val limitBytes = (limitGB.toLongOrNull() ?: 0L) * 6000L
                     val dailyLimitBytes = (dailyLimitGB.toLongOrNull() ?: 0L) * 6000L
                     val days = expiryDays.toLongOrNull() ?: 0L
                     val expiryTimeMs = if (days > 0) System.currentTimeMillis() + (days * 24 * 60 * 60 * 1000) else 0L
-
                     onConfirm(
                         NahanUser(
                             name = name.trim().ifEmpty { "User" },
@@ -1025,23 +1015,12 @@ private fun AddNahanUserDialog(
                             expiryMs = expiryTimeMs,
                             limitDailyReq = dailyLimitBytes,
                             isPaused = false,
-                            proxyIp = userProxyIp.trim()
-                        )
+                            proxyIp = userProxyIp.trim(),
+                        ),
                     )
                 },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Primary,
-                    contentColor = BgDark
-                ),
-                shape = ControlShape
-            ) {
-                Text(androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.nhn_add), fontWeight = FontWeight.Bold)
-            }
-        },
-        dismissButton = {
-            TextButton(onClick = onDismiss) {
-                Text(androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.common_cancel), color = TextMuted)
-            }
-        }
+                preferred = true,
+            ),
+        ),
     )
 }

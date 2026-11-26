@@ -1,6 +1,6 @@
 # Eternal VPN — screen redesign checklist
 
-> **Progress: 52 / 1203 complete** — each checked row is fully migrated; unverified routes and states remain unchecked.
+> **Progress: 120 / 1203 complete** — each checked row is fully migrated; unverified routes and states remain unchecked.
 
 > Inventory generated from Kotlin source on 2026-11-26. A row is considered migrated only after its visible composition, nested states, and overlays are reviewed against the Soft Dusk tokens. Shared theme inheritance alone does **not** count as a completed visual redesign.
 
@@ -69,7 +69,7 @@ Found 230 screen-like public/internal composables across 133 Kotlin files (the f
 - [ ] `MlmUsersScreen` — `com/mlmvpn/scanner/engines/mlm/MlmUsersScreen.kt`
 - [ ] `AddMlmUserDialog` — `com/mlmvpn/scanner/engines/mlm/MlmUsersScreen.kt`
 - [ ] `NahanSettingsScreen` — `com/mlmvpn/scanner/engines/nahan/NahanSettingsScreen.kt`
-- [ ] `AddNahanUserDialog` — `com/mlmvpn/scanner/engines/nahan/NahanSettingsScreen.kt`
+- [x] `AddNahanUserDialog` — `com/mlmvpn/scanner/engines/nahan/NahanSettingsScreen.kt`
 ### AboutScreen.kt
 
 - [x] `AboutScreen` — `com/mlmvpn/scanner/ui/AboutScreen.kt`
@@ -90,7 +90,7 @@ Found 230 screen-like public/internal composables across 133 Kotlin files (the f
 - [ ] `BpbSettingsModal` — `com/mlmvpn/scanner/ui/BpbSettingsModal.kt`
 ### CloudCoach.kt
 
-- [ ] `CloudOfferDialog` — `com/mlmvpn/scanner/ui/CloudCoach.kt`
+- [x] `CloudOfferDialog` — `com/mlmvpn/scanner/ui/CloudCoach.kt`
 ### CloudScreens.kt
 
 - [ ] `CloudAddAccountScreen` — `com/mlmvpn/scanner/ui/CloudScreens.kt`
@@ -150,7 +150,7 @@ Found 230 screen-like public/internal composables across 133 Kotlin files (the f
 - [ ] `QuickCountryScreen` — `com/mlmvpn/scanner/ui/QuickServersScreen.kt`
 ### ScanGuardHost.kt
 
-- [ ] `ScanGuardHost` — `com/mlmvpn/scanner/ui/ScanGuardHost.kt`
+- [x] `ScanGuardHost` — `com/mlmvpn/scanner/ui/ScanGuardHost.kt`
 ### ScannerTab.kt
 
 - [ ] `ScannerTab` — `com/mlmvpn/scanner/ui/ScannerTab.kt`
@@ -175,8 +175,8 @@ Found 230 screen-like public/internal composables across 133 Kotlin files (the f
 - [ ] `VpnGateTab` — `com/mlmvpn/scanner/ui/VpnGateTab.kt`
 ### WireguardGuard.kt
 
-- [ ] `WireguardConflictDialog` — `com/mlmvpn/scanner/ui/WireguardGuard.kt`
-- [ ] `EngineConflictDialog` — `com/mlmvpn/scanner/ui/WireguardGuard.kt`
+- [x] `WireguardConflictDialog` — `com/mlmvpn/scanner/ui/WireguardGuard.kt`
+- [x] `EngineConflictDialog` — `com/mlmvpn/scanner/ui/WireguardGuard.kt`
 ### WireguardTab.kt
 
 - [ ] `WireguardTab` — `com/mlmvpn/scanner/ui/WireguardTab.kt`
@@ -188,7 +188,7 @@ Found 230 screen-like public/internal composables across 133 Kotlin files (the f
 
 - [ ] `AmneziaScreen` — `com/mlmvpn/scanner/ui/amnezia/AmneziaScreen.kt`
 - [ ] `AmzSettingsScreen` — `com/mlmvpn/scanner/ui/amnezia/AmneziaScreen.kt`
-- [ ] `ActionSheet` — `com/mlmvpn/scanner/ui/amnezia/AmzParts.kt`
+- [x] `ActionSheet` — `com/mlmvpn/scanner/ui/amnezia/AmzParts.kt`
 - [ ] `AmzServersScreen` — `com/mlmvpn/scanner/ui/amnezia/AmzServersScreen.kt`
 ### arena
 
@@ -1098,10 +1098,10 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 - [ ] `EmptyBlock` — `com/mlmvpn/scanner/ui/settings/CloudResourcesScreens.kt`
 - [ ] `LtrText` — `com/mlmvpn/scanner/ui/settings/CloudResourcesScreens.kt`
 - [ ] `GeminiExitRow` — `com/mlmvpn/scanner/ui/settings/GeminiExitRow.kt`
-- [ ] `IosAlert` — `com/mlmvpn/scanner/ui/settings/IosAlerts.kt`
-- [ ] `AlertSeparator` — `com/mlmvpn/scanner/ui/settings/IosAlerts.kt`
-- [ ] `AlertButton` — `com/mlmvpn/scanner/ui/settings/IosAlerts.kt`
-- [ ] `IosPrompt` — `com/mlmvpn/scanner/ui/settings/IosAlerts.kt`
+- [x] `IosAlert` — `com/mlmvpn/scanner/ui/settings/IosAlerts.kt`
+- [x] `AlertSeparator` — `com/mlmvpn/scanner/ui/settings/IosAlerts.kt`
+- [x] `AlertButton` — `com/mlmvpn/scanner/ui/settings/IosAlerts.kt`
+- [x] `IosPrompt` — `com/mlmvpn/scanner/ui/settings/IosAlerts.kt`
 - [ ] `rememberIosRefreshState` — `com/mlmvpn/scanner/ui/settings/IosRefresh.kt`
 - [ ] `IosRefreshIndicator` — `com/mlmvpn/scanner/ui/settings/IosRefresh.kt`
 - [ ] `SettingsSectionHeader` — `com/mlmvpn/scanner/ui/settings/IosSettings.kt`
@@ -1192,7 +1192,7 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 - [ ] `MethodRow` — `com/mlmvpn/scanner/ui/tunnel/PsiphonPages.kt`
 - [ ] `IpRow` — `com/mlmvpn/scanner/ui/tunnel/PsiphonPages.kt`
 - [ ] `RunSummary` — `com/mlmvpn/scanner/ui/tunnel/PsiphonPages.kt`
-- [ ] `ActionLine` — `com/mlmvpn/scanner/ui/tunnel/PsiphonPages.kt`
+- [x] `ActionLine` — `com/mlmvpn/scanner/ui/tunnel/PsiphonPages.kt`
 - [ ] `rememberTicker` — `com/mlmvpn/scanner/ui/tunnel/PsiphonPages.kt`
 - [ ] `ProgressShell` — `com/mlmvpn/scanner/ui/tunnel/PsiphonPages.kt`
 - [ ] `CardLine` — `com/mlmvpn/scanner/ui/tunnel/PsiphonPages.kt`
@@ -1292,30 +1292,30 @@ No Android `Fragment` subclasses were found in the Java/Kotlin sources; the UI i
 Source inventory of Compose overlay hosts/call sites. Review each listed occurrence, including loading, validation, success and error variants.
 
 - [ ] `com/mlmvpn/scanner/engines/mlm/MlmUsersScreen.kt` — AlertDialog × 2, Dialog × 4, DropdownMenu × 1
-- [ ] `com/mlmvpn/scanner/engines/nahan/NahanSettingsScreen.kt` — AlertDialog × 1, Dialog × 3, DropdownMenu × 1
-- [ ] `com/mlmvpn/scanner/ui/AppScreen.kt` — AlertDialog × 3, Dialog × 3
-- [ ] `com/mlmvpn/scanner/ui/CloudCoach.kt` — Dialog × 1
+- [x] `com/mlmvpn/scanner/engines/nahan/NahanSettingsScreen.kt` — AlertDialog × 1, Dialog × 3, DropdownMenu × 1
+- [x] `com/mlmvpn/scanner/ui/AppScreen.kt` — AlertDialog × 3, Dialog × 3
+- [x] `com/mlmvpn/scanner/ui/CloudCoach.kt` — Dialog × 1
 - [ ] `com/mlmvpn/scanner/ui/CloudTab.kt` — AlertDialog × 3, Dialog × 5
 - [ ] `com/mlmvpn/scanner/ui/CombineCoach.kt` — Dialog × 2
 - [ ] `com/mlmvpn/scanner/ui/GameTab.kt` — Dialog × 1
 - [ ] `com/mlmvpn/scanner/ui/NodesTab.kt` — Dialog × 2
-- [ ] `com/mlmvpn/scanner/ui/ScanGuardHost.kt` — AlertDialog × 1, Dialog × 1
+- [x] `com/mlmvpn/scanner/ui/ScanGuardHost.kt` — AlertDialog × 1, Dialog × 1
 - [ ] `com/mlmvpn/scanner/ui/ScannerTab.kt` — AlertDialog × 8, Dialog × 8
-- [ ] `com/mlmvpn/scanner/ui/WireguardGuard.kt` — Dialog × 4
+- [x] `com/mlmvpn/scanner/ui/WireguardGuard.kt` — Dialog × 4
 - [ ] `com/mlmvpn/scanner/ui/aether/AetherScreen.kt` — Dialog × 3, DropdownMenu × 1
-- [ ] `com/mlmvpn/scanner/ui/amnezia/AmzParts.kt` — Dialog × 1
-- [ ] `com/mlmvpn/scanner/ui/cfwarp/CfWarpUi.kt` — AlertDialog × 1, Dialog × 1
-- [ ] `com/mlmvpn/scanner/ui/cfwarp/Ipv4ExitUi.kt` — AlertDialog × 1, Dialog × 1
-- [ ] `com/mlmvpn/scanner/ui/cfwarp/Nat64ExitUi.kt` — AlertDialog × 1, Dialog × 1
-- [ ] `com/mlmvpn/scanner/ui/fenix/FenixScreen.kt` — AlertDialog × 1, Dialog × 1
-- [ ] `com/mlmvpn/scanner/ui/geph/GephAccountScreen.kt` — AlertDialog × 2, Dialog × 2
+- [x] `com/mlmvpn/scanner/ui/amnezia/AmzParts.kt` — Dialog × 1
+- [x] `com/mlmvpn/scanner/ui/cfwarp/CfWarpUi.kt` — AlertDialog × 1, Dialog × 1
+- [x] `com/mlmvpn/scanner/ui/cfwarp/Ipv4ExitUi.kt` — AlertDialog × 1, Dialog × 1
+- [x] `com/mlmvpn/scanner/ui/cfwarp/Nat64ExitUi.kt` — AlertDialog × 1, Dialog × 1
+- [x] `com/mlmvpn/scanner/ui/fenix/FenixScreen.kt` — AlertDialog × 1, Dialog × 1
+- [x] `com/mlmvpn/scanner/ui/geph/GephAccountScreen.kt` — AlertDialog × 2, Dialog × 2
 - [ ] `com/mlmvpn/scanner/ui/mae/MaeScreen.kt` — AlertDialog × 1, Dialog × 3
-- [ ] `com/mlmvpn/scanner/ui/npv/NpvScreen.kt` — AlertDialog × 4, Dialog × 4
-- [ ] `com/mlmvpn/scanner/ui/npv/NpvSourcesPage.kt` — AlertDialog × 1, Dialog × 1
-- [ ] `com/mlmvpn/scanner/ui/proton/ProtonScreen.kt` — AlertDialog × 1, Dialog × 1
+- [x] `com/mlmvpn/scanner/ui/npv/NpvScreen.kt` — AlertDialog × 4, Dialog × 4
+- [x] `com/mlmvpn/scanner/ui/npv/NpvSourcesPage.kt` — AlertDialog × 1, Dialog × 1
+- [x] `com/mlmvpn/scanner/ui/proton/ProtonScreen.kt` — AlertDialog × 1, Dialog × 1
 - [ ] `com/mlmvpn/scanner/ui/scout/ScoutScreen.kt` — AlertDialog × 2, Dialog × 8
-- [ ] `com/mlmvpn/scanner/ui/settings/IosAlerts.kt` — Dialog × 1
-- [ ] `com/mlmvpn/scanner/ui/tunnel/PsiphonPages.kt` — AlertDialog × 1, Dialog × 1
+- [x] `com/mlmvpn/scanner/ui/settings/IosAlerts.kt` — Dialog × 1
+- [x] `com/mlmvpn/scanner/ui/tunnel/PsiphonPages.kt` — AlertDialog × 1, Dialog × 1
 - [ ] `com/mlmvpn/scanner/ui/windscribe/WindscribeScreen.kt` — AlertDialog × 4, Dialog × 10
 
 ## Other visual/system surfaces
@@ -1394,47 +1394,47 @@ Manifest-declared widget receivers (rendering/state audited together with their 
 ## Custom alerts and transient feedback source inventory
 
 Review shared custom alert calls (count includes multiple branches/variants per file):
-- [ ] `com/mlmvpn/scanner/ui/CloudCoach.kt` — `IosAlert` × 1
-- [ ] `com/mlmvpn/scanner/ui/CloudTab.kt` — `IosAlert` × 2
-- [ ] `com/mlmvpn/scanner/ui/CombineCoach.kt` — `IosAlert` × 2
-- [ ] `com/mlmvpn/scanner/ui/NodesTab.kt` — `IosAlert` × 1
-- [ ] `com/mlmvpn/scanner/ui/QuickConnectTab.kt` — `IosAlert` × 1
-- [ ] `com/mlmvpn/scanner/ui/QuickServersScreen.kt` — `IosAlert` × 1
-- [ ] `com/mlmvpn/scanner/ui/VpnGateServersScreen.kt` — `IosAlert` × 1
-- [ ] `com/mlmvpn/scanner/ui/backup/BackupScreen.kt` — `IosAlert` × 3
-- [ ] `com/mlmvpn/scanner/ui/cloud/GatewayRows.kt` — `IosAlert` × 1
-- [ ] `com/mlmvpn/scanner/ui/cloud/GatewaySettingsScreen.kt` — `IosAlert` × 2
-- [ ] `com/mlmvpn/scanner/ui/cloud/PanelRows.kt` — `IosAlert` × 1
-- [ ] `com/mlmvpn/scanner/ui/configstudio/StudioAccountDetailScreen.kt` — `IosAlert` × 5
-- [ ] `com/mlmvpn/scanner/ui/configstudio/StudioBulkActionScreen.kt` — `IosAlert` × 3
-- [ ] `com/mlmvpn/scanner/ui/configstudio/StudioCentralAccountScreen.kt` — `IosAlert` × 1
-- [ ] `com/mlmvpn/scanner/ui/configstudio/StudioCentralUserScreen.kt` — `IosAlert` × 2
-- [ ] `com/mlmvpn/scanner/ui/configstudio/StudioConfigsScreen.kt` — `IosAlert` × 3
-- [ ] `com/mlmvpn/scanner/ui/configstudio/StudioExitsScreen.kt` — `IosAlert` × 1
-- [ ] `com/mlmvpn/scanner/ui/configstudio/StudioMultiLocationScreen.kt` — `IosAlert` × 1
-- [ ] `com/mlmvpn/scanner/ui/configstudio/StudioNodeEditScreen.kt` — `IosAlert` × 1
-- [ ] `com/mlmvpn/scanner/ui/configstudio/StudioNodeGroupEditScreen.kt` — `IosAlert` × 1
-- [ ] `com/mlmvpn/scanner/ui/configstudio/StudioPlanEditScreen.kt` — `IosAlert` × 2
-- [ ] `com/mlmvpn/scanner/ui/configstudio/StudioTemplateEditScreen.kt` — `IosAlert` × 1
-- [ ] `com/mlmvpn/scanner/ui/configstudio/StudioUserDetailScreen.kt` — `IosAlert` × 5
-- [ ] `com/mlmvpn/scanner/ui/configstudio/StudioUsersScreen.kt` — `IosAlert` × 1
-- [ ] `com/mlmvpn/scanner/ui/doctor/CloudDoctorScreen.kt` — `IosAlert` × 1
-- [ ] `com/mlmvpn/scanner/ui/game/GameBoostScreen.kt` — `IosAlert` × 1
-- [ ] `com/mlmvpn/scanner/ui/github/GithubTunnelScreen.kt` — `IosAlert` × 3
-- [ ] `com/mlmvpn/scanner/ui/home/HomeScreen.kt` — `IosAlert` × 2
-- [ ] `com/mlmvpn/scanner/ui/mae/MaePages.kt` — `IosAlert` × 2
-- [ ] `com/mlmvpn/scanner/ui/mae/MaeScreen.kt` — `IosAlert` × 1
-- [ ] `com/mlmvpn/scanner/ui/outline/OutlineScreen.kt` — `IosAlert` × 1
-- [ ] `com/mlmvpn/scanner/ui/settings/CloudResourcesScreens.kt` — `IosAlert` × 1
-- [ ] `com/mlmvpn/scanner/ui/settings/IosAlerts.kt` — `IosAlert` × 2
-- [ ] `com/mlmvpn/scanner/ui/settings/WorkerSetupRow.kt` — `IosAlert` × 1
-- [ ] `com/mlmvpn/scanner/ui/spider/SpiderScreen.kt` — `IosAlert` × 2
-- [ ] `com/mlmvpn/scanner/ui/sublink/SubLinkDetailScreen.kt` — `IosAlert` × 1
-- [ ] `com/mlmvpn/scanner/ui/sublink/SubLinkFormScreen.kt` — `IosAlert` × 1
-- [ ] `com/mlmvpn/scanner/ui/sublink/SubLinkScreen.kt` — `IosAlert` × 1
-- [ ] `com/mlmvpn/scanner/ui/tgproxy/TgDomainPage.kt` — `IosAlert` × 1
-- [ ] `com/mlmvpn/scanner/ui/tgproxy/TgProxyScreen.kt` — `IosAlert` × 3
-- [ ] `com/mlmvpn/scanner/ui/widgetstudio/WidgetStudioScreen.kt` — `IosAlert` × 3
+- [x] `com/mlmvpn/scanner/ui/CloudCoach.kt` — `IosAlert` × 1
+- [x] `com/mlmvpn/scanner/ui/CloudTab.kt` — `IosAlert` × 2
+- [x] `com/mlmvpn/scanner/ui/CombineCoach.kt` — `IosAlert` × 2
+- [x] `com/mlmvpn/scanner/ui/NodesTab.kt` — `IosAlert` × 1
+- [x] `com/mlmvpn/scanner/ui/QuickConnectTab.kt` — `IosAlert` × 1
+- [x] `com/mlmvpn/scanner/ui/QuickServersScreen.kt` — `IosAlert` × 1
+- [x] `com/mlmvpn/scanner/ui/VpnGateServersScreen.kt` — `IosAlert` × 1
+- [x] `com/mlmvpn/scanner/ui/backup/BackupScreen.kt` — `IosAlert` × 3
+- [x] `com/mlmvpn/scanner/ui/cloud/GatewayRows.kt` — `IosAlert` × 1
+- [x] `com/mlmvpn/scanner/ui/cloud/GatewaySettingsScreen.kt` — `IosAlert` × 2
+- [x] `com/mlmvpn/scanner/ui/cloud/PanelRows.kt` — `IosAlert` × 1
+- [x] `com/mlmvpn/scanner/ui/configstudio/StudioAccountDetailScreen.kt` — `IosAlert` × 5
+- [x] `com/mlmvpn/scanner/ui/configstudio/StudioBulkActionScreen.kt` — `IosAlert` × 3
+- [x] `com/mlmvpn/scanner/ui/configstudio/StudioCentralAccountScreen.kt` — `IosAlert` × 1
+- [x] `com/mlmvpn/scanner/ui/configstudio/StudioCentralUserScreen.kt` — `IosAlert` × 2
+- [x] `com/mlmvpn/scanner/ui/configstudio/StudioConfigsScreen.kt` — `IosAlert` × 3
+- [x] `com/mlmvpn/scanner/ui/configstudio/StudioExitsScreen.kt` — `IosAlert` × 1
+- [x] `com/mlmvpn/scanner/ui/configstudio/StudioMultiLocationScreen.kt` — `IosAlert` × 1
+- [x] `com/mlmvpn/scanner/ui/configstudio/StudioNodeEditScreen.kt` — `IosAlert` × 1
+- [x] `com/mlmvpn/scanner/ui/configstudio/StudioNodeGroupEditScreen.kt` — `IosAlert` × 1
+- [x] `com/mlmvpn/scanner/ui/configstudio/StudioPlanEditScreen.kt` — `IosAlert` × 2
+- [x] `com/mlmvpn/scanner/ui/configstudio/StudioTemplateEditScreen.kt` — `IosAlert` × 1
+- [x] `com/mlmvpn/scanner/ui/configstudio/StudioUserDetailScreen.kt` — `IosAlert` × 5
+- [x] `com/mlmvpn/scanner/ui/configstudio/StudioUsersScreen.kt` — `IosAlert` × 1
+- [x] `com/mlmvpn/scanner/ui/doctor/CloudDoctorScreen.kt` — `IosAlert` × 1
+- [x] `com/mlmvpn/scanner/ui/game/GameBoostScreen.kt` — `IosAlert` × 1
+- [x] `com/mlmvpn/scanner/ui/github/GithubTunnelScreen.kt` — `IosAlert` × 3
+- [x] `com/mlmvpn/scanner/ui/home/HomeScreen.kt` — `IosAlert` × 2
+- [x] `com/mlmvpn/scanner/ui/mae/MaePages.kt` — `IosAlert` × 2
+- [x] `com/mlmvpn/scanner/ui/mae/MaeScreen.kt` — `IosAlert` × 1
+- [x] `com/mlmvpn/scanner/ui/outline/OutlineScreen.kt` — `IosAlert` × 1
+- [x] `com/mlmvpn/scanner/ui/settings/CloudResourcesScreens.kt` — `IosAlert` × 1
+- [x] `com/mlmvpn/scanner/ui/settings/IosAlerts.kt` — `IosAlert` × 2
+- [x] `com/mlmvpn/scanner/ui/settings/WorkerSetupRow.kt` — `IosAlert` × 1
+- [x] `com/mlmvpn/scanner/ui/spider/SpiderScreen.kt` — `IosAlert` × 2
+- [x] `com/mlmvpn/scanner/ui/sublink/SubLinkDetailScreen.kt` — `IosAlert` × 1
+- [x] `com/mlmvpn/scanner/ui/sublink/SubLinkFormScreen.kt` — `IosAlert` × 1
+- [x] `com/mlmvpn/scanner/ui/sublink/SubLinkScreen.kt` — `IosAlert` × 1
+- [x] `com/mlmvpn/scanner/ui/tgproxy/TgDomainPage.kt` — `IosAlert` × 1
+- [x] `com/mlmvpn/scanner/ui/tgproxy/TgProxyScreen.kt` — `IosAlert` × 3
+- [x] `com/mlmvpn/scanner/ui/widgetstudio/WidgetStudioScreen.kt` — `IosAlert` × 3
 
 Toast / short transient feedback call sites (OS-rendered surfaces; validate app wording and feedback states):
 - [ ] `com/mlmvpn/core/aether/AetherScanService.kt` — Toast × 1

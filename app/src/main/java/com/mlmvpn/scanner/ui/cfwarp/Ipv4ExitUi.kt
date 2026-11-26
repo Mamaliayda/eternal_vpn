@@ -22,10 +22,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -249,15 +247,23 @@ fun ColumnScope.Ipv4ExitSection(onChanged: () -> Unit) {
     )
 
     ackFor?.let { cc ->
-        AlertDialog(
-            onDismissRequest = { ackFor = null },
-            title = { Text(tr("خروج از پراکسی رایگان", "Exit through a free proxy")) },
-            text = {
-                Text(tr("گردانندهٔ پراکسی رایگان می‌بیند به چه سایت‌هایی می‌روید و هر ترافیکی که HTTPS نباشد را می‌خواند. برای بانک، ایمیل و ورود به حساب‌ها از آن استفاده نکنید. ادامه می‌دهید؟",
-                    "Whoever runs a free proxy sees which sites you visit and can read any traffic that is not HTTPS. Do not use it for banking, email or logging in. Continue?"))
-            },
-            confirmButton = { TextButton(onClick = { ackFor = null; enable(cc, ack = true) }) { Text(tr("ادامه", "Continue")) } },
-            dismissButton = { TextButton(onClick = { ackFor = null }) { Text(tr("انصراف", "Cancel")) } },
+        com.mlmvpn.scanner.ui.settings.IosAlert(
+            title = tr("خروج از پراکسی رایگان", "Exit through a free proxy"),
+            message = tr(
+                "گردانندهٔ پراکسی رایگان می‌بیند به چه سایت‌هایی می‌روید و هر ترافیکی که HTTPS نباشد را می‌خواند. برای بانک، ایمیل و ورود به حساب‌ها از آن استفاده نکنید. ادامه می‌دهید؟",
+                "Whoever runs a free proxy sees which sites you visit and can read any traffic that is not HTTPS. Do not use it for banking, email or logging in. Continue?",
+            ),
+            onDismiss = { ackFor = null },
+            actions = listOf(
+                com.mlmvpn.scanner.ui.settings.IosAlertAction(
+                    tr("انصراف", "Cancel"), onClick = { ackFor = null },
+                ),
+                com.mlmvpn.scanner.ui.settings.IosAlertAction(
+                    tr("ادامه", "Continue"),
+                    onClick = { ackFor = null; enable(cc, ack = true) },
+                    preferred = true,
+                ),
+            ),
         )
     }
 }

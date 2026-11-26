@@ -14,10 +14,8 @@ import androidx.compose.material.icons.filled.Login
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.PersonAdd
 import androidx.compose.material.icons.filled.Visibility
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -340,44 +338,55 @@ private fun HasAccount(
     SettingsFooter(stringResource(R.string.geph_remove_footer))
 
     if (confirmRotate) {
-        AlertDialog(
-            onDismissRequest = { confirmRotate = false },
-            title = { Text(stringResource(R.string.geph_rotate)) },
-            text = { Text(stringResource(R.string.geph_rotate_confirm)) },
-            confirmButton = {
-                TextButton(onClick = {
-                    confirmRotate = false
-                    setBusy("rotate")
-                    onMessage(null)
-                    scope.launch {
-                        val r = withContext(Dispatchers.IO) {
-                            GephAccount.rotate(ctx)
+        com.mlmvpn.scanner.ui.settings.IosAlert(
+            title = stringResource(R.string.geph_rotate),
+            message = stringResource(R.string.geph_rotate_confirm),
+            onDismiss = { confirmRotate = false },
+            actions = listOf(
+                com.mlmvpn.scanner.ui.settings.IosAlertAction(
+                    stringResource(R.string.geph_cancel), onClick = { confirmRotate = false },
+                ),
+                com.mlmvpn.scanner.ui.settings.IosAlertAction(
+                    stringResource(R.string.geph_rotate_yes),
+                    onClick = {
+                        confirmRotate = false
+                        setBusy("rotate")
+                        onMessage(null)
+                        scope.launch {
+                            val r = withContext(Dispatchers.IO) { GephAccount.rotate(ctx) }
+                            setBusy(null)
+                            r.onSuccess { fresh ->
+                                onMessage(ctx.getString(R.string.geph_rotated, GephAccount.formatSecret(fresh)))
+                                copyToClipboard(ctx, "Geph", fresh)
+                                onChanged()
+                            }.onFailure { onMessage(ctx.getString(R.string.geph_error, it.message ?: "")) }
                         }
-                        setBusy(null)
-                        r.onSuccess { fresh ->
-                            onMessage(ctx.getString(R.string.geph_rotated, GephAccount.formatSecret(fresh)))
-                            copyToClipboard(ctx, "Geph", fresh)
-                            onChanged()
-                        }.onFailure { onMessage(ctx.getString(R.string.geph_error, it.message ?: "")) }
-                    }
-                }) { Text(stringResource(R.string.geph_rotate_yes)) }
-            },
-            dismissButton = { TextButton(onClick = { confirmRotate = false }) { Text(stringResource(R.string.geph_cancel)) } },
+                    },
+                    preferred = true,
+                ),
+            ),
         )
     }
     if (confirmForget) {
-        AlertDialog(
-            onDismissRequest = { confirmForget = false },
-            title = { Text(stringResource(R.string.geph_remove)) },
-            text = { Text(stringResource(R.string.geph_remove_confirm)) },
-            confirmButton = {
-                TextButton(onClick = {
-                    confirmForget = false
-                    GephAccount.forget(ctx)
-                    onChanged()
-                }) { Text(stringResource(R.string.geph_remove_yes), color = Ios.Red) }
-            },
-            dismissButton = { TextButton(onClick = { confirmForget = false }) { Text(stringResource(R.string.geph_cancel)) } },
+        com.mlmvpn.scanner.ui.settings.IosAlert(
+            title = stringResource(R.string.geph_remove),
+            message = stringResource(R.string.geph_remove_confirm),
+            onDismiss = { confirmForget = false },
+            actions = listOf(
+                com.mlmvpn.scanner.ui.settings.IosAlertAction(
+                    stringResource(R.string.geph_cancel), onClick = { confirmForget = false },
+                ),
+                com.mlmvpn.scanner.ui.settings.IosAlertAction(
+                    stringResource(R.string.geph_remove_yes),
+                    onClick = {
+                        confirmForget = false
+                        GephAccount.forget(ctx)
+                        onChanged()
+                    },
+                    destructive = true,
+                    preferred = true,
+                ),
+            ),
         )
     }
 }

@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.BasicTextField
@@ -21,17 +22,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.DialogProperties
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import com.mlmvpn.scanner.ui.theme.CardShape
+import com.mlmvpn.scanner.ui.theme.DuskCard
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 import com.mlmvpn.scanner.R
 import com.mlmvpn.scanner.utils.S
 
@@ -67,62 +66,66 @@ fun IosAlert(
     message: String? = null,
     actions: List<IosAlertAction>,
     onDismiss: () -> Unit,
+    icon: @Composable (() -> Unit)? = null,
     content: @Composable (() -> Unit)? = null,
 ) {
     Dialog(onDismissRequest = onDismiss) {
-        Column(
-            modifier = Modifier
-                .width(290.dp)
-                .clip(CardShape)
-                .background(Ios.DialogSurface),
+        DuskCard(
+            modifier = Modifier.width(290.dp),
+            shape = DuskTheme.cardShape,
+            contentPadding = PaddingValues(0.dp),
         ) {
-            Column(
-                modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 18.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                Text(
-                    title,
-                    color = Ios.Label,
-                    fontSize = 17.sp,
-                    fontWeight = FontWeight.SemiBold,
-                    textAlign = TextAlign.Center,
-                    lineHeight = 24.sp,
-                )
-                if (message != null) {
-                    Spacer(Modifier.height(6.dp))
+            Column(modifier = Modifier.fillMaxWidth()) {
+                Column(
+                    modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 18.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                ) {
+                    if (icon != null) {
+                        icon()
+                        Spacer(Modifier.height(8.dp))
+                    }
                     Text(
-                        message,
-                        color = Ios.SecondaryLabel,
-                        fontSize = 13.sp,
-                        lineHeight = 20.sp,
+                        title,
+                        color = Ios.Label,
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.SemiBold,
                         textAlign = TextAlign.Center,
                     )
+                    if (message != null) {
+                        Spacer(Modifier.height(6.dp))
+                        Text(
+                            message,
+                            color = Ios.SecondaryLabel,
+                            style = MaterialTheme.typography.bodySmall,
+                            textAlign = TextAlign.Center,
+                        )
+                    }
+                    if (content != null) {
+                        Spacer(Modifier.height(14.dp))
+                        content()
+                    }
                 }
-                if (content != null) {
-                    Spacer(Modifier.height(14.dp))
-                    content()
-                }
-            }
 
-            AlertSeparator()
+                AlertSeparator()
 
-            // Two actions sit side by side; three or more stack. Side-by-side with four buttons is
-            // how a folder menu ended up as four eight-character words on one line.
-            if (actions.size == 2) {
-                Row(modifier = Modifier.fillMaxWidth().heightIn(min = 44.dp)) {
-                    AlertButton(actions[0], Modifier.weight(1f))
-                    Box(
-                        modifier = Modifier
-                            .width(0.5.dp)
-                            .height(44.dp)
-                            .background(Ios.Separator)
-                    )
-                    AlertButton(actions[1], Modifier.weight(1f))
-                }
-            } else {
-                actions.forEachIndexed { index, action ->
-                    if (index > 0) AlertSeparator()
-                    AlertButton(action, Modifier.fillMaxWidth())
+                // Two actions sit side by side; three or more stack. Side-by-side with four buttons is
+                // how a folder menu ended up as four eight-character words on one line.
+                if (actions.size == 2) {
+                    Row(modifier = Modifier.fillMaxWidth().heightIn(min = 44.dp)) {
+                        AlertButton(actions[0], Modifier.weight(1f))
+                        Box(
+                            modifier = Modifier
+                                .width(0.5.dp)
+                                .height(44.dp)
+                                .background(Ios.Separator)
+                        )
+                        AlertButton(actions[1], Modifier.weight(1f))
+                    }
+                } else {
+                    actions.forEachIndexed { index, action ->
+                        if (index > 0) AlertSeparator()
+                        AlertButton(action, Modifier.fillMaxWidth())
+                    }
                 }
             }
         }
@@ -147,8 +150,8 @@ private fun AlertButton(action: IosAlertAction, modifier: Modifier) {
             action.label,
             // White, not the accent -- the same rule the rest of the app follows. Red still means
             // destructive, because that is state, not decoration.
-            color = if (action.destructive) Ios.Destructive else Ios.Label,
-            fontSize = 16.sp,
+            color = if (action.destructive) DuskTheme.error else Ios.Label,
+            style = MaterialTheme.typography.bodyLarge,
             fontWeight = if (action.preferred) FontWeight.SemiBold else FontWeight.Normal,
             textAlign = TextAlign.Center,
         )
@@ -182,15 +185,15 @@ fun IosPrompt(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clip(com.mlmvpn.scanner.ui.theme.ControlShape)
-                    .background(Color.White.copy(alpha = 0.10f))
+                    .clip(DuskTheme.controlShape)
+                    .background(DuskTheme.raisedSurface)
                     .padding(horizontal = 12.dp, vertical = 10.dp),
             ) {
                 BasicTextField(
                     value = text,
                     onValueChange = { text = it },
                     singleLine = true,
-                    textStyle = TextStyle(color = Ios.Label, fontSize = 16.sp),
+                    textStyle = MaterialTheme.typography.bodyLarge.copy(color = Ios.Label),
                     cursorBrush = SolidColor(Ios.Blue),
                     keyboardOptions = KeyboardOptions.Default,
                     modifier = Modifier.fillMaxWidth(),
@@ -200,7 +203,7 @@ fun IosPrompt(
                                 Text(
                                     placeholder,
                                     color = Ios.SecondaryLabel.copy(alpha = 0.6f),
-                                    fontSize = 16.sp,
+                                    style = MaterialTheme.typography.bodyLarge,
                                 )
                             }
                             inner()

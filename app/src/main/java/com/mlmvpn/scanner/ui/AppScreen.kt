@@ -717,22 +717,16 @@ fun AppScreen() {
         }
     }
     if (proxyWarn) {
-        AlertDialog(
+        com.mlmvpn.scanner.ui.settings.IosAlert(
             // No onDismissRequest escape: tapping outside leaves it up. The user has to pick one
             // of the two, or the app has learned nothing about whether they understand.
-            onDismissRequest = {},
-            containerColor = surfaceColor,
-            icon = { Icon(Icons.Default.Warning, contentDescription = null, tint = androidx.compose.ui.graphics.Color(0xFFFF9F0A)) },
-            title = {
-                Text(
-                    S(R.string.proxy_warn_title),
-                    color = textColor,
-                    fontWeight = FontWeight.Bold,
-                )
-            },
-            text = { Text(S(R.string.proxy_warn_body), color = mutedColor) },
-            confirmButton = {
-                Button(
+            onDismiss = {},
+            icon = { Icon(Icons.Default.Warning, contentDescription = null, tint = DuskTheme.coral) },
+            title = S(R.string.proxy_warn_title),
+            message = S(R.string.proxy_warn_body),
+            actions = listOf(
+                com.mlmvpn.scanner.ui.settings.IosAlertAction(
+                    S(R.string.proxy_warn_turn_off),
                     onClick = {
                         com.mlmvpn.scanner.utils.NetworkSettings.setProxyMode(context, false)
                         com.mlmvpn.scanner.utils.NetworkSettings.setProxyModeAcknowledged(context, true)
@@ -743,16 +737,16 @@ fun AppScreen() {
                             android.widget.Toast.LENGTH_LONG,
                         ).show()
                     },
-                    colors = iosButtonColors(primaryColor),
-                    border = iosButtonBorder(primaryColor),
-                ) { Text(S(R.string.proxy_warn_turn_off)) }
-            },
-            dismissButton = {
-                TextButton(onClick = {
-                    com.mlmvpn.scanner.utils.NetworkSettings.setProxyModeAcknowledged(context, true)
-                    proxyWarn = false
-                }) { Text(S(R.string.proxy_warn_i_know), color = mutedColor) }
-            },
+                    preferred = true,
+                ),
+                com.mlmvpn.scanner.ui.settings.IosAlertAction(
+                    S(R.string.proxy_warn_i_know),
+                    onClick = {
+                        com.mlmvpn.scanner.utils.NetworkSettings.setProxyModeAcknowledged(context, true)
+                        proxyWarn = false
+                    },
+                ),
+            ),
         )
     }
 
@@ -761,36 +755,32 @@ fun AppScreen() {
         mutableStateOf<Boolean>(com.mlmvpn.scanner.CrashReporter.unreportedCrash(context) != null)
     }
     if (crashOffer && !proxyWarn && activeTab == homeTab) {
-        AlertDialog(
-            onDismissRequest = {
+        com.mlmvpn.scanner.ui.settings.IosAlert(
+            onDismiss = {
                 com.mlmvpn.scanner.CrashReporter.markOffered(context)
                 crashOffer = false
             },
-            containerColor = surfaceColor,
-            icon = { Icon(Icons.Default.Warning, contentDescription = null, tint = TextMuted) },
-            title = {
-                Text(S(R.string.crash_offer_title), color = textColor, fontWeight = FontWeight.Bold)
-            },
-            text = { Text(S(R.string.crash_offer_body), color = mutedColor) },
-            confirmButton = {
-                Button(
+            icon = { Icon(Icons.Default.Warning, contentDescription = null, tint = DuskTheme.muted) },
+            title = S(R.string.crash_offer_title),
+            message = S(R.string.crash_offer_body),
+            actions = listOf(
+                com.mlmvpn.scanner.ui.settings.IosAlertAction(
+                    S(R.string.crash_offer_skip),
+                    onClick = {
+                        com.mlmvpn.scanner.CrashReporter.markOffered(context)
+                        crashOffer = false
+                    },
+                ),
+                com.mlmvpn.scanner.ui.settings.IosAlertAction(
+                    S(R.string.crash_offer_send),
                     onClick = {
                         com.mlmvpn.scanner.CrashReporter.markOffered(context)
                         crashOffer = false
                         com.mlmvpn.scanner.CrashReporter.share(context)
                     },
-                    colors = iosButtonColors(primaryColor),
-                    border = iosButtonBorder(primaryColor),
-                ) { Text(S(R.string.crash_offer_send)) }
-            },
-            dismissButton = {
-                TextButton(
-                    onClick = {
-                        com.mlmvpn.scanner.CrashReporter.markOffered(context)
-                        crashOffer = false
-                    },
-                ) { Text(S(R.string.crash_offer_skip), color = mutedColor) }
-            },
+                    preferred = true,
+                ),
+            ),
         )
     }
 
@@ -798,23 +788,23 @@ fun AppScreen() {
         // While the dialog is up, a second physical back press exits immediately (the classic
         // double-tap-to-exit), and this BackHandler out-prioritises the global one above.
         BackHandler(enabled = true) { activity?.finish() }
-        AlertDialog(
-            onDismissRequest = { showExitDialog = false },
-            containerColor = surfaceColor,
-            icon = { Icon(Icons.Default.ExitToApp, contentDescription = null, tint = TextMuted) },
-            title = { Text(S(R.string.exit_the_app), color = textColor, fontWeight = FontWeight.Bold) },
-            text = { Text(S(R.string.press_back_again_to_exit_or_choose), color = mutedColor) },
-            confirmButton = {
-                Button(
+        com.mlmvpn.scanner.ui.settings.IosAlert(
+            onDismiss = { showExitDialog = false },
+            icon = { Icon(Icons.Default.ExitToApp, contentDescription = null, tint = DuskTheme.muted) },
+            title = S(R.string.exit_the_app),
+            message = S(R.string.press_back_again_to_exit_or_choose),
+            actions = listOf(
+                com.mlmvpn.scanner.ui.settings.IosAlertAction(
+                    S(R.string.stay),
+                    onClick = { showExitDialog = false },
+                ),
+                com.mlmvpn.scanner.ui.settings.IosAlertAction(
+                    S(R.string.exit),
                     onClick = { showExitDialog = false; activity?.finish() },
-                    colors = iosButtonColors(RedError),
-                    border = iosButtonBorder(RedError)) { Text(S(R.string.exit),) }
-            },
-            dismissButton = {
-                TextButton(onClick = { showExitDialog = false }) {
-                    Text(S(R.string.stay), color = primaryColor)
-                }
-            }
+                    destructive = true,
+                    preferred = true,
+                ),
+            ),
         )
     }
 

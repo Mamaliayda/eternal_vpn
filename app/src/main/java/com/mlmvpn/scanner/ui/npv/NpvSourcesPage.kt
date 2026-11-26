@@ -31,7 +31,6 @@ import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.PowerSettingsNew
 import androidx.compose.material.icons.filled.Send
 import androidx.compose.material.icons.filled.Sync
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
@@ -285,12 +284,22 @@ internal fun NpvSourcesPage(
         }
     }
     if (confirmClear) {
-        AlertDialog(
-            onDismissRequest = { confirmClear = false },
-            title = { Text(tr("همهٔ انبار حذف شود؟", "Empty the whole store?")) },
-            text = { Text(tr("${fa(store.size)} کانفیگ حذف می‌شود. کانفیگ‌های صفحهٔ اصلی می‌مانند.", "${store.size} configs will be deleted. The main page keeps its own.")) },
-            confirmButton = { TextButton(onClick = { confirmClear = false; scope.io { NpvEngine.clear(ctx, Shelf.STORE) } }) { Text(tr("حذف همه", "Delete all"), color = Ios.Red) } },
-            dismissButton = { TextButton(onClick = { confirmClear = false }) { Text(tr("لغو", "Cancel")) } },
+        com.mlmvpn.scanner.ui.settings.IosAlert(
+            title = tr("همهٔ انبار حذف شود؟", "Empty the whole store?"),
+            message = tr(
+                "${fa(store.size)} کانفیگ حذف می‌شود. کانفیگ‌های صفحهٔ اصلی می‌مانند.",
+                "${store.size} configs will be deleted. The main page keeps its own.",
+            ),
+            onDismiss = { confirmClear = false },
+            actions = listOf(
+                com.mlmvpn.scanner.ui.settings.IosAlertAction(tr("لغو", "Cancel"), onClick = { confirmClear = false }),
+                com.mlmvpn.scanner.ui.settings.IosAlertAction(
+                    tr("حذف همه", "Delete all"),
+                    onClick = { confirmClear = false; scope.io { NpvEngine.clear(ctx, Shelf.STORE) } },
+                    destructive = true,
+                    preferred = true,
+                ),
+            ),
         )
     }
 }

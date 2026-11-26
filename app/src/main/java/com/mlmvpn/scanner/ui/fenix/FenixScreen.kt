@@ -36,11 +36,9 @@ import androidx.compose.material.icons.filled.PersonAdd
 import androidx.compose.material.icons.filled.PowerSettingsNew
 import androidx.compose.material.icons.filled.Public
 import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -110,12 +108,12 @@ fun FenixScreen(onBack: () -> Unit) {
     }
     var page by rememberSaveable { mutableStateOf(Page.MAIN) }
     var back by rememberSaveable { mutableStateOf(Page.MAIN) }
-    fun open(p: Page) { back = if (page == Page.ACCOUNTS) Page.ACCOUNTS else Page.MAIN; page = p }
+    fun openPage(p: Page) { back = if (page == Page.ACCOUNTS) Page.ACCOUNTS else Page.MAIN; page = p }
 
     val challenge by FenixEngine.challenge.collectAsState()
     val signIn by FenixEngine.signIn.collectAsState()
     // Mozilla asked for its browser check: its page opens, the user passes it, and back we come.
-    LaunchedEffect(challenge) { if (challenge && page != Page.WEB_CHECK && page != Page.WEB_ADD) open(Page.WEB_CHECK) }
+    LaunchedEffect(challenge) { if (challenge && page != Page.WEB_CHECK && page != Page.WEB_ADD) openPage(Page.WEB_CHECK) }
     // An account was added: back to where the user came from.
     LaunchedEffect(signIn) {
         if (signIn is SignIn.Done) { FenixEngine.resetSignIn(); if (page == Page.WEB_ADD) page = back }
@@ -126,7 +124,7 @@ fun FenixScreen(onBack: () -> Unit) {
     }
     when (page) {
         Page.COUNTRY -> { FenixCountryPicker(onBack = { page = Page.MAIN }); return }
-        Page.ACCOUNTS -> { AccountsPage(onBack = { page = Page.MAIN }, onAdd = { open(Page.WEB_ADD) }); return }
+        Page.ACCOUNTS -> { AccountsPage(onBack = { page = Page.MAIN }, onAdd = { openPage(Page.WEB_ADD) }); return }
         Page.WEB_ADD -> { MozillaSignInPage(onBack = { page = back }); return }
         Page.WEB_CHECK -> {
             val host by FenixEngine.challengeHost.collectAsState()
@@ -152,7 +150,7 @@ fun FenixScreen(onBack: () -> Unit) {
             textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp, vertical = 4.dp),
         )
         Spacer(Modifier.height(14.dp))
-        if (accounts.isEmpty()) Welcome(onAdd = { open(Page.WEB_ADD) })
+        if (accounts.isEmpty()) Welcome(onAdd = { openPage(Page.WEB_ADD) })
         else Ready(accounts, onCountry = { page = Page.COUNTRY }, onAccounts = { page = Page.ACCOUNTS })
         Spacer(Modifier.height(40.dp))
     }
@@ -262,16 +260,21 @@ private fun AccountsPage(onBack: () -> Unit, onAdd: () -> Unit) {
     }
 
     removing?.let { a ->
-        AlertDialog(
-            onDismissRequest = { removing = null },
-            title = { Text(stringResource(R.string.fenix_remove)) },
-            text = { Text(stringResource(R.string.fenix_remove_confirm, a.email)) },
-            confirmButton = {
-                TextButton(onClick = { FenixEngine.removeAccount(context, a.id); removing = null }) {
-                    Text(stringResource(R.string.fenix_remove), color = Ios.Red)
-                }
-            },
-            dismissButton = { TextButton(onClick = { removing = null }) { Text(stringResource(R.string.geph_cancel)) } },
+        com.mlmvpn.scanner.ui.settings.IosAlert(
+            title = stringResource(R.string.fenix_remove),
+            message = stringResource(R.string.fenix_remove_confirm, a.email),
+            onDismiss = { removing = null },
+            actions = listOf(
+                com.mlmvpn.scanner.ui.settings.IosAlertAction(
+                    stringResource(R.string.geph_cancel), onClick = { removing = null },
+                ),
+                com.mlmvpn.scanner.ui.settings.IosAlertAction(
+                    stringResource(R.string.fenix_remove),
+                    onClick = { FenixEngine.removeAccount(context, a.id); removing = null },
+                    destructive = true,
+                    preferred = true,
+                ),
+            ),
         )
     }
 }

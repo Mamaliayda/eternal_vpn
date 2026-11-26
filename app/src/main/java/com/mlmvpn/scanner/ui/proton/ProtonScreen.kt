@@ -53,12 +53,10 @@ import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Shield
 import androidx.compose.material.icons.filled.Speed
 import androidx.compose.material.icons.filled.VpnKey
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -335,19 +333,26 @@ private fun ProtonHome(onBack: () -> Unit, onSignIn: () -> Unit, onSignUp: () ->
         }
         // Signing out takes the account's servers out of the list too, so it is asked first.
         if (askSignOut) {
-            AlertDialog(
-                onDismissRequest = { askSignOut = false },
-                title = { Text(stringResource(R.string.proton_sign_out_title)) },
-                text = { Text(stringResource(R.string.proton_sign_out_body)) },
-                confirmButton = {
-                    TextButton(onClick = {
-                        askSignOut = false
-                        ProtonEngine.signOut(context)
-                        signedIn = false
-                        Toast.makeText(context, context.getString(R.string.proton_signed_out), Toast.LENGTH_SHORT).show()
-                    }) { Text(stringResource(R.string.proton_sign_out_action), color = Ios.Red) }
-                },
-                dismissButton = { TextButton(onClick = { askSignOut = false }) { Text(stringResource(R.string.cancel)) } },
+            com.mlmvpn.scanner.ui.settings.IosAlert(
+                title = stringResource(R.string.proton_sign_out_title),
+                message = stringResource(R.string.proton_sign_out_body),
+                onDismiss = { askSignOut = false },
+                actions = listOf(
+                    com.mlmvpn.scanner.ui.settings.IosAlertAction(
+                        stringResource(R.string.cancel), onClick = { askSignOut = false },
+                    ),
+                    com.mlmvpn.scanner.ui.settings.IosAlertAction(
+                        stringResource(R.string.proton_sign_out_action),
+                        onClick = {
+                            askSignOut = false
+                            ProtonEngine.signOut(context)
+                            signedIn = false
+                            Toast.makeText(context, context.getString(R.string.proton_signed_out), Toast.LENGTH_SHORT).show()
+                        },
+                        destructive = true,
+                        preferred = true,
+                    ),
+                ),
             )
         }
         SettingsFooter(stringResource(R.string.proton_fallback_footer))

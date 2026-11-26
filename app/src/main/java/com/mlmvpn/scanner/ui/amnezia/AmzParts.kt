@@ -10,10 +10,12 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -37,6 +39,8 @@ import com.mlmvpn.scanner.R
 import com.mlmvpn.scanner.engines.amnezia.AmzBrain
 import com.mlmvpn.scanner.engines.amnezia.AmzKind
 import com.mlmvpn.scanner.ui.settings.Ios
+import com.mlmvpn.scanner.ui.theme.DuskCard
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 import com.mlmvpn.scanner.ui.settings.SettingsGroup
 import com.mlmvpn.scanner.ui.settings.SettingsGroupScope
 import java.util.Locale
@@ -108,18 +112,34 @@ internal fun ActionSheet(title: String, onDismiss: () -> Unit, content: @Composa
     Dialog(onDismissRequest = onDismiss) {
         Column(Modifier.fillMaxWidth()) {
             Text(
-                title, color = Ios.SecondaryLabel, fontSize = 13.sp, textAlign = TextAlign.Center, maxLines = 2,
-                overflow = TextOverflow.Ellipsis, modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 8.dp),
+                title,
+                color = Ios.SecondaryLabel,
+                style = MaterialTheme.typography.bodySmall,
+                textAlign = TextAlign.Center,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 8.dp),
             )
-            Column(Modifier.fillMaxWidth().clip(RoundedCornerShape(18.dp)).background(Ios.DialogSurface)) {
-                SettingsGroup(horizontal = 0.dp, content = content)
-            }
+            SettingsGroup(horizontal = 0.dp, content = content)
             Spacer(Modifier.height(8.dp))
-            Box(
-                Modifier.fillMaxWidth().clip(RoundedCornerShape(18.dp)).background(Ios.DialogSurface)
-                    .clickable(onClick = onDismiss).padding(vertical = 14.dp),
-                contentAlignment = Alignment.Center,
-            ) { Text(stringResource(R.string.amz_cancel), color = Ios.Blue, fontSize = 17.sp, fontWeight = FontWeight.SemiBold) }
+            DuskCard(
+                modifier = Modifier.fillMaxWidth(),
+                shape = DuskTheme.cardShape,
+                contentPadding = PaddingValues(0.dp),
+            ) {
+                Box(
+                    Modifier.fillMaxWidth().clip(DuskTheme.cardShape)
+                        .clickable(onClick = onDismiss).padding(vertical = 14.dp),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    Text(
+                        stringResource(R.string.amz_cancel),
+                        color = DuskTheme.primary,
+                        style = MaterialTheme.typography.bodyLarge,
+                        fontWeight = FontWeight.SemiBold,
+                    )
+                }
+            }
         }
     }
 }

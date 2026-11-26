@@ -23,11 +23,10 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Public
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -57,6 +56,8 @@ import com.mlmvpn.scanner.ui.settings.SettingsGroup
 import com.mlmvpn.scanner.ui.settings.SettingsRow
 import com.mlmvpn.scanner.ui.settings.SettingsSectionHeader
 import com.mlmvpn.scanner.ui.theme.PanelShape
+import com.mlmvpn.scanner.ui.theme.DuskTheme
+import com.mlmvpn.scanner.ui.theme.iosFieldColors
 import com.mlmvpn.scanner.ui.tunnel.CountryLabel
 import com.mlmvpn.scanner.ui.tunnel.Transport
 import com.mlmvpn.scanner.ui.tunnel.TunnelController
@@ -294,33 +295,51 @@ fun Nat64ExitScreen(onBack: () -> Unit, backLabel: String, transport: Transport?
         var error by remember { mutableStateOf<String?>(null) }
         val badPrefix = stringResource(R.string.nat64_custom_bad_prefix)
         val badCountry = stringResource(R.string.nat64_custom_bad_country)
-        AlertDialog(
-            onDismissRequest = { adding = false },
-            title = { Text(stringResource(R.string.nat64_add_custom)) },
-            text = {
+        com.mlmvpn.scanner.ui.settings.IosAlert(
+            title = stringResource(R.string.nat64_add_custom),
+            onDismiss = { adding = false },
+            content = {
                 Column {
                     OutlinedTextField(
-                        value = prefix, onValueChange = { prefix = it.trim() }, singleLine = true,
+                        modifier = Modifier.fillMaxWidth(),
+                        value = prefix,
+                        onValueChange = { prefix = it.trim() },
+                        singleLine = true,
                         label = { Text(stringResource(R.string.nat64_custom_prefix)) },
+                        colors = iosFieldColors(),
+                        shape = DuskTheme.controlShape,
                     )
                     Spacer(Modifier.height(8.dp))
                     OutlinedTextField(
-                        value = country, onValueChange = { country = it.trim().take(2).uppercase() }, singleLine = true,
+                        modifier = Modifier.fillMaxWidth(),
+                        value = country,
+                        onValueChange = { country = it.trim().take(2).uppercase() },
+                        singleLine = true,
                         label = { Text(stringResource(R.string.nat64_custom_country)) },
+                        colors = iosFieldColors(),
+                        shape = DuskTheme.controlShape,
                     )
-                    error?.let { Text(it, color = Ios.Red, fontSize = 12.sp) }
+                    error?.let {
+                        Text(it, color = Ios.Red, style = MaterialTheme.typography.bodySmall)
+                    }
                 }
             },
-            confirmButton = {
-                TextButton(onClick = {
-                    when (Nat64Exits.addCustom(ctx, prefix, country)) {
-                        null -> { adding = false; version++ }
-                        "country" -> error = badCountry
-                        else -> error = badPrefix
-                    }
-                }) { Text(stringResource(R.string.nat64_add)) }
-            },
-            dismissButton = { TextButton(onClick = { adding = false }) { Text(stringResource(R.string.geph_cancel)) } },
+            actions = listOf(
+                com.mlmvpn.scanner.ui.settings.IosAlertAction(
+                    stringResource(R.string.geph_cancel), onClick = { adding = false },
+                ),
+                com.mlmvpn.scanner.ui.settings.IosAlertAction(
+                    stringResource(R.string.nat64_add),
+                    onClick = {
+                        when (Nat64Exits.addCustom(ctx, prefix, country)) {
+                            null -> { adding = false; version++ }
+                            "country" -> error = badCountry
+                            else -> error = badPrefix
+                        }
+                    },
+                    preferred = true,
+                ),
+            ),
         )
     }
 }

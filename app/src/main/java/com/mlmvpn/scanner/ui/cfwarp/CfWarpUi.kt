@@ -13,9 +13,7 @@ import androidx.compose.material.icons.filled.Radar
 import androidx.compose.material.icons.filled.Router
 import androidx.compose.material.icons.filled.Timer
 import androidx.compose.material.icons.filled.Tune
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -120,18 +118,25 @@ fun ColumnScope.CfWarpPanel() {
     SettingsFooter(stringResource(R.string.cfwarp_identity_footer))
 
     if (confirmReset) {
-        AlertDialog(
-            onDismissRequest = { confirmReset = false },
-            title = { Text(stringResource(R.string.cfwarp_identity_reset)) },
-            text = { Text(stringResource(R.string.cfwarp_identity_reset_confirm)) },
-            confirmButton = {
-                TextButton(onClick = {
-                    confirmReset = false
-                    CfWarpEngine.resetIdentity(ctx)
-                    identity = CfWarpEngine.identityInfo(ctx)
-                }) { Text(stringResource(R.string.cfwarp_identity_reset_yes), color = Ios.Red) }
-            },
-            dismissButton = { TextButton(onClick = { confirmReset = false }) { Text(stringResource(R.string.geph_cancel)) } },
+        com.mlmvpn.scanner.ui.settings.IosAlert(
+            title = stringResource(R.string.cfwarp_identity_reset),
+            message = stringResource(R.string.cfwarp_identity_reset_confirm),
+            onDismiss = { confirmReset = false },
+            actions = listOf(
+                com.mlmvpn.scanner.ui.settings.IosAlertAction(
+                    stringResource(R.string.geph_cancel), onClick = { confirmReset = false },
+                ),
+                com.mlmvpn.scanner.ui.settings.IosAlertAction(
+                    stringResource(R.string.cfwarp_identity_reset_yes),
+                    onClick = {
+                        confirmReset = false
+                        CfWarpEngine.resetIdentity(ctx)
+                        identity = CfWarpEngine.identityInfo(ctx)
+                    },
+                    destructive = true,
+                    preferred = true,
+                ),
+            ),
         )
     }
 }

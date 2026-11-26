@@ -331,33 +331,33 @@ fun MlmUserCard(
     }
     
     if (showDeleteConfirm) {
-        AlertDialog(
-            onDismissRequest = { showDeleteConfirm = false },
-            title = { Text(S(R.string.delete_user), color = TextPrimary, fontWeight = FontWeight.Bold) },
-            text = { Text(S(R.string.are_you_sure_you_want_to_delete, user.username), color = TextMuted) },
-            confirmButton = {
-                TextButton(onClick = {
-                    showDeleteConfirm = false
-                    isBusy = true
-                    scope.launch {
-                        val success = apiManager.deleteUser(account, user.username)
-                        isBusy = false
-                        if (success) {
-                            onRefresh()
-                        } else {
-                            Toast.makeText(context, S(R.string.could_not_delete_the_user), Toast.LENGTH_SHORT).show()
+        com.mlmvpn.scanner.ui.settings.IosAlert(
+            title = S(R.string.delete_user),
+            message = S(R.string.are_you_sure_you_want_to_delete, user.username),
+            onDismiss = { showDeleteConfirm = false },
+            actions = listOf(
+                com.mlmvpn.scanner.ui.settings.IosAlertAction(
+                    S(R.string.cancel), onClick = { showDeleteConfirm = false },
+                ),
+                com.mlmvpn.scanner.ui.settings.IosAlertAction(
+                    S(R.string.yes_delete),
+                    onClick = {
+                        showDeleteConfirm = false
+                        isBusy = true
+                        scope.launch {
+                            val success = apiManager.deleteUser(account, user.username)
+                            isBusy = false
+                            if (success) {
+                                onRefresh()
+                            } else {
+                                Toast.makeText(context, S(R.string.could_not_delete_the_user), Toast.LENGTH_SHORT).show()
+                            }
                         }
-                    }
-                }) {
-                    Text(S(R.string.yes_delete), color = RedError, fontWeight = FontWeight.Bold)
-                }
-            },
-            dismissButton = {
-                TextButton(onClick = { showDeleteConfirm = false }) {
-                    Text(S(R.string.cancel), color = TextPrimary)
-                }
-            },
-            containerColor = SurfaceDark
+                    },
+                    destructive = true,
+                    preferred = true,
+                ),
+            ),
         )
     }
 }

@@ -51,7 +51,6 @@ import androidx.compose.material.icons.filled.Inventory2
 import androidx.compose.material.icons.filled.PowerSettingsNew
 import androidx.compose.material.icons.filled.RadioButtonUnchecked
 import androidx.compose.material.icons.filled.Speed
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
@@ -186,34 +185,34 @@ private fun RefreshQuestions(entries: List<NpvLibrary.Entry>) {
     val ctx = LocalContext.current
     val r by NpvEngine.refresh.collectAsState()
     when (r.ask) {
-        NpvEngine.Ask.TUNNEL -> AlertDialog(
-            onDismissRequest = {},
-            title = { Text(tr("تونل خاموش شود؟", "Turn the tunnel off?")) },
-            text = {
-                Text(tr(
-                    "دریافت تمام شد. تونل برنامه فقط برای رسیدن به تلگرام لازم بود. خاموشش کنم تا آزمودن کانفیگ‌ها روی اینترنت خودتان انجام شود؟",
-                    "The download is done. The app's tunnel was only needed to reach Telegram. Turn it off, so the configs are tested on your own internet?",
-                ))
-            },
-            confirmButton = { TextButton(onClick = { NpvEngine.answer(true) }) { Text(tr("خاموش کن", "Turn it off")) } },
-            dismissButton = { TextButton(onClick = { NpvEngine.answer(false) }) { Text(tr("روشن بماند", "Keep it on")) } },
+        NpvEngine.Ask.TUNNEL -> com.mlmvpn.scanner.ui.settings.IosAlert(
+            onDismiss = {},
+            title = tr("تونل خاموش شود؟", "Turn the tunnel off?"),
+            message = tr(
+                "دریافت تمام شد. تونل برنامه فقط برای رسیدن به تلگرام لازم بود. خاموشش کنم تا آزمودن کانفیگ‌ها روی اینترنت خودتان انجام شود؟",
+                "The download is done. The app's tunnel was only needed to reach Telegram. Turn it off, so the configs are tested on your own internet?",
+            ),
+            actions = listOf(
+                com.mlmvpn.scanner.ui.settings.IosAlertAction(tr("روشن بماند", "Keep it on"), { NpvEngine.answer(false) }),
+                com.mlmvpn.scanner.ui.settings.IosAlertAction(tr("خاموش کن", "Turn it off"), { NpvEngine.answer(true) }, preferred = true),
+            ),
         )
         NpvEngine.Ask.TEST -> {
             val n = entries.count { it.shelf == Shelf.STORE && it.kind == Kind.LINK }
             val other = remember(r.ask) { NpvEngine.otherVpnUp(ctx) }
-            AlertDialog(
-                onDismissRequest = {},
-                title = { Text(tr("همه آزموده شوند؟", "Test them all?")) },
-                text = {
-                    Text(tr(
-                        "${fa(r.added)} کانفیگ تازه آمد و ${fa(n)} کانفیگ در انبار است. همه را همین حالا روی اینترنت شما بیازمایم و خراب‌ها را حذف کنم تا انبار بیهوده پر نشود؟ اگر نه، در انبار می‌مانند و هر وقت خواستید «سنجش» بزنید." +
-                            if (other) "\n\nیک VPN دیگر روی گوشی روشن است؛ نتیجهٔ آزمون دربارهٔ همان VPN خواهد بود. برای نتیجهٔ درست اول آن را خاموش کنید." else "",
-                        "${r.added} new configs came in and ${n} are in the store. Test them all on your internet now and delete the broken ones, so the store does not fill up for nothing? If not, they wait in the store; tap «Measure» whenever you like." +
-                            if (other) "\n\nAnother VPN is on; the test would be about that VPN. Turn it off first for a true result." else "",
-                    ))
-                },
-                confirmButton = { TextButton(onClick = { NpvEngine.answer(true) }) { Text(tr("بله، بیازما", "Yes, test")) } },
-                dismissButton = { TextButton(onClick = { NpvEngine.answer(false) }) { Text(tr("نه، در انبار بماند", "No, keep them stored")) } },
+            com.mlmvpn.scanner.ui.settings.IosAlert(
+                onDismiss = {},
+                title = tr("همه آزموده شوند؟", "Test them all?"),
+                message = tr(
+                    "${fa(r.added)} کانفیگ تازه آمد و ${fa(n)} کانفیگ در انبار است. همه را همین حالا روی اینترنت شما بیازمایم و خراب‌ها را حذف کنم تا انبار بیهوده پر نشود؟ اگر نه، در انبار می‌مانند و هر وقت خواستید «سنجش» بزنید." +
+                        if (other) "\n\nیک VPN دیگر روی گوشی روشن است؛ نتیجهٔ آزمون دربارهٔ همان VPN خواهد بود. برای نتیجهٔ درست اول آن را خاموش کنید." else "",
+                    "${r.added} new configs came in and ${n} are in the store. Test them all on your internet now and delete the broken ones, so the store does not fill up for nothing? If not, they wait in the store; tap «Measure» whenever you like." +
+                        if (other) "\n\nAnother VPN is on; the test would be about that VPN. Turn it off first for a true result." else "",
+                ),
+                actions = listOf(
+                    com.mlmvpn.scanner.ui.settings.IosAlertAction(tr("نه، در انبار بماند", "No, keep them stored"), { NpvEngine.answer(false) }),
+                    com.mlmvpn.scanner.ui.settings.IosAlertAction(tr("بله، بیازما", "Yes, test"), { NpvEngine.answer(true) }, preferred = true),
+                ),
             )
         }
         NpvEngine.Ask.NONE -> Unit
@@ -387,12 +386,22 @@ private fun MainPage(
         }
     }
     if (confirmClear) {
-        AlertDialog(
-            onDismissRequest = { confirmClear = false },
-            title = { Text(tr("همهٔ کانفیگ‌های صفحهٔ اصلی حذف شوند؟", "Delete every config on the main page?")) },
-            text = { Text(tr("${fa(main.size)} کانفیگ حذف می‌شود. اگر فقط می‌خواهید از جلوی چشم بروند، «انتقال همه به انبار» را بزنید.", "${main.size} configs will be deleted. To only clear the page, use «Move all to the store».")) },
-            confirmButton = { TextButton(onClick = { confirmClear = false; scope.io { NpvEngine.clear(ctx, Shelf.MAIN) } }) { Text(tr("حذف همه", "Delete all"), color = Ios.Red) } },
-            dismissButton = { TextButton(onClick = { confirmClear = false }) { Text(tr("لغو", "Cancel")) } },
+        com.mlmvpn.scanner.ui.settings.IosAlert(
+            title = tr("همهٔ کانفیگ‌های صفحهٔ اصلی حذف شوند؟", "Delete every config on the main page?"),
+            message = tr(
+                "${fa(main.size)} کانفیگ حذف می‌شود. اگر فقط می‌خواهید از جلوی چشم بروند، «انتقال همه به انبار» را بزنید.",
+                "${main.size} configs will be deleted. To only clear the page, use «Move all to the store».",
+            ),
+            onDismiss = { confirmClear = false },
+            actions = listOf(
+                com.mlmvpn.scanner.ui.settings.IosAlertAction(tr("لغو", "Cancel"), { confirmClear = false }),
+                com.mlmvpn.scanner.ui.settings.IosAlertAction(
+                    tr("حذف همه", "Delete all"),
+                    { confirmClear = false; scope.io { NpvEngine.clear(ctx, Shelf.MAIN) } },
+                    destructive = true,
+                    preferred = true,
+                ),
+            ),
         )
     }
 }
@@ -648,16 +657,26 @@ private fun NativeRow(e: NpvLibrary.Entry, onRemove: () -> Unit) {
         }
     }
     if (ask) {
-        AlertDialog(
-            onDismissRequest = { ask = false },
-            title = { Text(e.name) },
-            confirmButton = {
-                TextButton(onClick = {
-                    ask = false
-                    if (!NpvEngine.openNative(ctx, e)) Toast.makeText(ctx, tr("برنامه‌ای برای باز کردن این فایل نیست", "No app can open this file"), Toast.LENGTH_LONG).show()
-                }) { Text(tr("باز کردن در NPV Tunnel", "Open in NPV Tunnel")) }
-            },
-            dismissButton = { TextButton(onClick = { ask = false; onRemove() }) { Text(tr("حذف", "Remove")) } },
+        com.mlmvpn.scanner.ui.settings.IosAlert(
+            title = e.name,
+            onDismiss = { ask = false },
+            actions = listOf(
+                com.mlmvpn.scanner.ui.settings.IosAlertAction(
+                    tr("حذف", "Remove"),
+                    onClick = { ask = false; onRemove() },
+                    destructive = true,
+                ),
+                com.mlmvpn.scanner.ui.settings.IosAlertAction(
+                    tr("باز کردن در NPV Tunnel", "Open in NPV Tunnel"),
+                    onClick = {
+                        ask = false
+                        if (!NpvEngine.openNative(ctx, e)) {
+                            Toast.makeText(ctx, tr("برنامه‌ای برای باز کردن این فایل نیست", "No app can open this file"), Toast.LENGTH_LONG).show()
+                        }
+                    },
+                    preferred = true,
+                ),
+            ),
         )
     }
 }
