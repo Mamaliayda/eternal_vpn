@@ -16,7 +16,7 @@ jobs:
   build:
     name: Build installable APKs
     runs-on: ubuntu-latest
-    timeout-minutes: 90
+    timeout-minutes: 150
     steps:
       - name: Check out source
         uses: actions/checkout@v4
@@ -31,6 +31,23 @@ jobs:
           repository: 2dust/AndroidLibXrayLite
           ref: 1314c9af79518a03300803019c8264c737bb3596
           path: xray-library
+
+      # Windscribe's API client is a native C++ library distributed upstream as an AAR.
+      # Build it from a pinned public source revision instead of relying on a missing binary.
+      - name: Check out WSNet source
+        uses: actions/checkout@v4
+        with:
+          repository: Windscribe/wsnet
+          ref: aa297ca6a6d3238c236d42c165f7668ca897795d
+          fetch-depth: 0
+          path: wsnet
+
+      - name: Check out WSNet vcpkg registry
+        uses: actions/checkout@v4
+        with:
+          repository: Windscribe/ws-vcpkg-registry
+          ref: 6e88a8e7aa1db0f0239f9b243c7667f2bbacf9a6
+          path: ws-vcpkg-registry
 
       - name: Set up Java
         uses: actions/setup-java@v5
@@ -64,6 +81,20 @@ jobs:
           gomobile bind -v -androidapi 24 -trimpath -ldflags='-s -w -buildid=' ./
           mkdir -p "$GITHUB_WORKSPACE/app/libs"
           cp libv2ray.aar "$GITHUB_WORKSPACE/app/libs/libv2ray.aar"
+
+      - name: Install pinned vcpkg for WSNet
+        working-directory: ws-vcpkg-registry
+        env:
+          VCPKG_ROOT: ${{ runner.temp }}/vcpkg
+        run: bash install-vcpkg/vcpkg_install.sh "$VCPKG_ROOT"
+
+      - name: Build Windscribe WSNet Android library
+        working-directory: wsnet/tools
+        env:
+          VCPKG_ROOT: ${{ runner.temp }}/vcpkg
+        run: |
+          ./build_android.sh
+          cp wsnet.aar "$GITHUB_WORKSPACE/app/libs/wsnet.aar"
 
       - name: Configure Gradle
         uses: gradle/actions/setup-gradle@v4

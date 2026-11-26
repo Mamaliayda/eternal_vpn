@@ -1,8 +1,8 @@
 # Upstream Android cores
 
-Both VPN engines are kept in the APK. Psiphon's gomobile runtime is relocated to avoid
-colliding with Xray's runtime; Xray's AAR is built from pinned public source during CI so the
-binary itself does not need to be committed.
+The APK retains the full set of VPN engines. Its Xray and Windscribe native libraries are
+built from pinned public upstream source during CI; Psiphon's AAR is checked in after a
+verified namespace relocation so the two gomobile runtimes do not collide.
 
 ## Xray Android library
 
@@ -21,6 +21,18 @@ To build this dependency locally, check out that commit, install Go 1.26, JDK 17
 SDK/NDK 28.2.13676358, then run `gomobile init` and
 `gomobile bind -v -androidapi 24 -trimpath -ldflags='-s -w -buildid=' ./` from the source
 checkout. Copy its generated `libv2ray.aar` to `app/libs/` before building the app.
+
+## Windscribe WSNet
+
+Windscribe's native WSNet library implements the account API used by the Windscribe engine.
+The workflow builds `wsnet.aar` from pinned upstream source commit
+`aa297ca6a6d3238c236d42c165f7668ca897795d`, using its matching public vcpkg registry snapshot
+`6e88a8e7aa1db0f0239f9b243c7667f2bbacf9a6`, then copies it to `app/libs/wsnet.aar` before
+Gradle runs. The Android build script packages arm64-v8a, armeabi-v7a, x86 and x86_64.
+
+- Repository: <https://github.com/Windscribe/wsnet>
+- vcpkg registry: <https://github.com/Windscribe/ws-vcpkg-registry>
+- License: GPL-2.0 (see the upstream repository)
 
 ## Psiphon Android library 2.0.39
 
