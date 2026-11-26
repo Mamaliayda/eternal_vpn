@@ -24,6 +24,7 @@ import androidx.compose.material.icons.filled.Label
 import androidx.compose.material.icons.filled.Link
 import androidx.compose.material.icons.filled.Schedule
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -31,14 +32,11 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.mlmvpn.scanner.data.GroupManager
 import com.mlmvpn.scanner.data.NodeManager
 import com.mlmvpn.scanner.data.SubscriptionManager
@@ -55,8 +53,7 @@ import com.mlmvpn.scanner.ui.settings.SettingsGroup
 import com.mlmvpn.scanner.ui.settings.SettingsRow
 import com.mlmvpn.scanner.ui.settings.SettingsSectionHeader
 import com.mlmvpn.scanner.ui.settings.SettingsTextRow
-import com.mlmvpn.scanner.ui.theme.BadgeShape
-import com.mlmvpn.scanner.ui.theme.ControlShape
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 import kotlinx.coroutines.launch
 import com.mlmvpn.scanner.R
 import com.mlmvpn.scanner.utils.S
@@ -164,10 +161,10 @@ fun SubLinkFormScreen(
                 Text(
                     S(R.string.save_2),
                     color = if (canSave) Ios.Label else Ios.SecondaryLabel.copy(alpha = 0.5f),
-                    fontSize = 16.sp,
+                    style = MaterialTheme.typography.bodyLarge,
                     fontWeight = FontWeight.SemiBold,
                     modifier = Modifier
-                        .clip(ControlShape)
+                        .clip(DuskTheme.controlShape)
                         .clickable(enabled = canSave) { save() }
                         .padding(horizontal = 6.dp, vertical = 4.dp),
                 )
@@ -319,8 +316,8 @@ fun SubLinkGroupScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp, vertical = 8.dp)
-                .clip(ControlShape)
-                .background(Color.White.copy(alpha = 0.10f))
+                .clip(DuskTheme.controlShape)
+                .background(DuskTheme.onSurface.copy(alpha = 0.10f))
                 .heightIn(min = 36.dp)
                 .padding(horizontal = 10.dp),
             verticalAlignment = Alignment.CenterVertically,
@@ -336,13 +333,13 @@ fun SubLinkGroupScreen(
                 value = query,
                 onValueChange = { query = it },
                 singleLine = true,
-                textStyle = TextStyle(color = Ios.Label, fontSize = 16.sp),
+                textStyle = MaterialTheme.typography.bodyLarge.copy(color = Ios.Label),
                 cursorBrush = SolidColor(Ios.Blue),
                 modifier = Modifier.weight(1f),
                 decorationBox = { inner ->
                     Box {
                         if (query.isEmpty()) {
-                            Text(S(R.string.search_groups), color = Ios.SecondaryLabel, fontSize = 16.sp)
+                            Text(S(R.string.search_groups), color = Ios.SecondaryLabel, style = MaterialTheme.typography.bodyLarge)
                         }
                         inner()
                     }
@@ -355,7 +352,7 @@ fun SubLinkGroupScreen(
                     tint = Ios.SecondaryLabel,
                     modifier = Modifier
                         .size(26.dp)
-                        .clip(BadgeShape)
+                        .clip(DuskTheme.controlShape)
                         .clickable { query = "" }
                         .padding(5.dp),
                 )
@@ -421,20 +418,20 @@ private fun GroupRow(group: SubGenGroup, selected: Boolean, onClick: () -> Unit)
             Text(
                 group.displayName,
                 color = if (empty) Ios.SecondaryLabel else Ios.Label,
-                fontSize = 16.sp,
+                style = MaterialTheme.typography.bodyLarge,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
             if (group.subtitle.isNotBlank()) {
                 Spacer(Modifier.height(2.dp))
-                Text(group.subtitle, color = Ios.SecondaryLabel, fontSize = 12.sp)
+                Text(group.subtitle, color = Ios.SecondaryLabel, style = MaterialTheme.typography.labelMedium)
             }
         }
         // The count is a state -- an empty group cannot serve a link -- so it keeps its colour.
         Text(
             if (empty) S(R.string.empty) else faCount(group.nodes.size) + S(R.string.configs_3),
             color = if (empty) Ios.Orange else Ios.SecondaryLabel,
-            fontSize = 14.sp,
+            style = MaterialTheme.typography.bodyMedium,
         )
         if (selected) {
             Spacer(Modifier.width(8.dp))

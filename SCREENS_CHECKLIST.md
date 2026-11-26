@@ -1,6 +1,6 @@
 # Eternal VPN — screen redesign checklist
 
-> **Progress: 5 / 1203 complete** — each checked row is fully migrated; unverified routes and states remain unchecked.
+> **Progress: 34 / 1203 complete** — each checked row is fully migrated; unverified routes and states remain unchecked.
 
 > Inventory generated from Kotlin source on 2026-11-26. A row is considered migrated only after its visible composition, nested states, and overlays are reviewed against the Soft Dusk tokens. Shared theme inheritance alone does **not** count as a completed visual redesign.
 
@@ -77,14 +77,14 @@ Found 230 screen-like public/internal composables across 133 Kotlin files (the f
 ### AddNodeScreen.kt
 
 - [ ] `AddNodeScreen` — `com/mlmvpn/scanner/ui/AddNodeScreen.kt`
-- [ ] `ManualEntryScreen` — `com/mlmvpn/scanner/ui/AddNodeScreen.kt`
-- [ ] `SubLinkAddScreen` — `com/mlmvpn/scanner/ui/AddNodeScreen.kt`
+- [x] `ManualEntryScreen` — `com/mlmvpn/scanner/ui/AddNodeScreen.kt`
+- [x] `SubLinkAddScreen` — `com/mlmvpn/scanner/ui/AddNodeScreen.kt`
 ### AppScreen.kt
 
 - [ ] `AppScreen` — `com/mlmvpn/scanner/ui/AppScreen.kt`
 ### BaseConfigPicker.kt
 
-- [ ] `BaseConfigPickerScreen` — `com/mlmvpn/scanner/ui/BaseConfigPicker.kt`
+- [x] `BaseConfigPickerScreen` — `com/mlmvpn/scanner/ui/BaseConfigPicker.kt`
 ### BpbSettingsModal.kt
 
 - [ ] `BpbSettingsModal` — `com/mlmvpn/scanner/ui/BpbSettingsModal.kt`
@@ -128,8 +128,8 @@ Found 230 screen-like public/internal composables across 133 Kotlin files (the f
 
 - [ ] `NodeDetailScreen` — `com/mlmvpn/scanner/ui/NodesScreens.kt`
 - [ ] `NodeEditScreen` — `com/mlmvpn/scanner/ui/NodesScreens.kt`
-- [ ] `NodeListSettingsScreen` — `com/mlmvpn/scanner/ui/NodesScreens.kt`
-- [ ] `AutoSwitchScreen` — `com/mlmvpn/scanner/ui/NodesScreens.kt`
+- [x] `NodeListSettingsScreen` — `com/mlmvpn/scanner/ui/NodesScreens.kt`
+- [x] `AutoSwitchScreen` — `com/mlmvpn/scanner/ui/NodesScreens.kt`
 ### NodesTab.kt
 
 - [ ] `NodesTab` — `com/mlmvpn/scanner/ui/NodesTab.kt`
@@ -369,9 +369,9 @@ Found 230 screen-like public/internal composables across 133 Kotlin files (the f
 ### sublink
 
 - [ ] `SubLinkDetailScreen` — `com/mlmvpn/scanner/ui/sublink/SubLinkDetailScreen.kt`
-- [ ] `SubLinkHelpScreen` — `com/mlmvpn/scanner/ui/sublink/SubLinkDetailScreen.kt`
+- [x] `SubLinkHelpScreen` — `com/mlmvpn/scanner/ui/sublink/SubLinkDetailScreen.kt`
 - [ ] `SubLinkFormScreen` — `com/mlmvpn/scanner/ui/sublink/SubLinkFormScreen.kt`
-- [ ] `SubLinkGroupScreen` — `com/mlmvpn/scanner/ui/sublink/SubLinkFormScreen.kt`
+- [x] `SubLinkGroupScreen` — `com/mlmvpn/scanner/ui/sublink/SubLinkFormScreen.kt`
 - [ ] `SubLinkScreen` — `com/mlmvpn/scanner/ui/sublink/SubLinkScreen.kt`
 ### tgproxy
 
@@ -444,7 +444,7 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 - [ ] `FeatureTopBar` — `com/mlmvpn/scanner/ui/AppScreen.kt`
 ### BaseConfigPicker.kt
 
-- [ ] `BaseConfigRow` — `com/mlmvpn/scanner/ui/BaseConfigPicker.kt`
+- [x] `BaseConfigRow` — `com/mlmvpn/scanner/ui/BaseConfigPicker.kt`
 ### BpbSettingsModal.kt
 
 - [ ] `SectionTitle` — `com/mlmvpn/scanner/ui/BpbSettingsModal.kt`
@@ -499,26 +499,26 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 - [ ] `HelpBody` — `com/mlmvpn/scanner/ui/HelpCenterScreen.kt`
 ### NodesScreens.kt
 
-- [ ] `nodeBadge` — `com/mlmvpn/scanner/ui/NodesScreens.kt`
-- [ ] `measurementTone` — `com/mlmvpn/scanner/ui/NodesScreens.kt`
-- [ ] `speedTone` — `com/mlmvpn/scanner/ui/NodesScreens.kt`
-- [ ] `MeasureRow` — `com/mlmvpn/scanner/ui/NodesScreens.kt`
-- [ ] `NodePill` — `com/mlmvpn/scanner/ui/NodesScreens.kt`
-- [ ] `NodeQrCard` — `com/mlmvpn/scanner/ui/NodesScreens.kt`
+- [x] `nodeBadge` — `com/mlmvpn/scanner/ui/NodesScreens.kt`
+- [x] `measurementTone` — `com/mlmvpn/scanner/ui/NodesScreens.kt`
+- [x] `speedTone` — `com/mlmvpn/scanner/ui/NodesScreens.kt`
+- [x] `MeasureRow` — `com/mlmvpn/scanner/ui/NodesScreens.kt`
+- [x] `NodePill` — `com/mlmvpn/scanner/ui/NodesScreens.kt`
+- [x] `NodeQrCard` — `com/mlmvpn/scanner/ui/NodesScreens.kt`
 ### NodesTab.kt
 
 - [ ] `GroupManagementDialogs` — `com/mlmvpn/scanner/ui/NodesTab.kt`
 ### NodesWidgets.kt
 
-- [ ] `ListJumpButton` — `com/mlmvpn/scanner/ui/NodesWidgets.kt`
-- [ ] `NodeToolbar` — `com/mlmvpn/scanner/ui/NodesWidgets.kt`
-- [ ] `ToolbarAction` — `com/mlmvpn/scanner/ui/NodesWidgets.kt`
-- [ ] `NodeTestProgressRow` — `com/mlmvpn/scanner/ui/NodesWidgets.kt`
-- [ ] `NodePlatformChips` — `com/mlmvpn/scanner/ui/NodesWidgets.kt`
-- [ ] `NodeNotice` — `com/mlmvpn/scanner/ui/NodesWidgets.kt`
-- [ ] `NodeRow` — `com/mlmvpn/scanner/ui/NodesWidgets.kt`
-- [ ] `MetricDot` — `com/mlmvpn/scanner/ui/NodesWidgets.kt`
-- [ ] `NodeConnectBar` — `com/mlmvpn/scanner/ui/NodesWidgets.kt`
+- [x] `ListJumpButton` — `com/mlmvpn/scanner/ui/NodesWidgets.kt`
+- [x] `NodeToolbar` — `com/mlmvpn/scanner/ui/NodesWidgets.kt`
+- [x] `ToolbarAction` — `com/mlmvpn/scanner/ui/NodesWidgets.kt`
+- [x] `NodeTestProgressRow` — `com/mlmvpn/scanner/ui/NodesWidgets.kt`
+- [x] `NodePlatformChips` — `com/mlmvpn/scanner/ui/NodesWidgets.kt`
+- [x] `NodeNotice` — `com/mlmvpn/scanner/ui/NodesWidgets.kt`
+- [x] `NodeRow` — `com/mlmvpn/scanner/ui/NodesWidgets.kt`
+- [x] `MetricDot` — `com/mlmvpn/scanner/ui/NodesWidgets.kt`
+- [x] `NodeConnectBar` — `com/mlmvpn/scanner/ui/NodesWidgets.kt`
 ### OpenVpnScreen.kt
 
 - [ ] `LiveGroup` — `com/mlmvpn/scanner/ui/OpenVpnScreen.kt`
@@ -561,7 +561,7 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 - [ ] `LaunchedWhileVisible` — `com/mlmvpn/scanner/ui/ScreenVisibility.kt`
 ### SubscriptionUsageCard.kt
 
-- [ ] `SubscriptionUsageCard` — `com/mlmvpn/scanner/ui/SubscriptionUsageCard.kt`
+- [x] `SubscriptionUsageCard` — `com/mlmvpn/scanner/ui/SubscriptionUsageCard.kt`
 ### VpnGateCountryScreen.kt
 
 - [ ] `CountryCheckRow` — `com/mlmvpn/scanner/ui/VpnGateCountryScreen.kt`
@@ -1155,11 +1155,11 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 - [ ] `StoreIconTile` — `com/mlmvpn/scanner/ui/store/StoreScreen.kt`
 ### sublink
 
-- [ ] `HelpRow` — `com/mlmvpn/scanner/ui/sublink/SubLinkDetailScreen.kt`
-- [ ] `GroupRow` — `com/mlmvpn/scanner/ui/sublink/SubLinkFormScreen.kt`
-- [ ] `SubLinkRow` — `com/mlmvpn/scanner/ui/sublink/SubLinkScreen.kt`
-- [ ] `StateBlock` — `com/mlmvpn/scanner/ui/sublink/SubLinkScreen.kt`
-- [ ] `expiryLabel` — `com/mlmvpn/scanner/ui/sublink/SubLinkScreen.kt`
+- [x] `HelpRow` — `com/mlmvpn/scanner/ui/sublink/SubLinkDetailScreen.kt`
+- [x] `GroupRow` — `com/mlmvpn/scanner/ui/sublink/SubLinkFormScreen.kt`
+- [x] `SubLinkRow` — `com/mlmvpn/scanner/ui/sublink/SubLinkScreen.kt`
+- [x] `StateBlock` — `com/mlmvpn/scanner/ui/sublink/SubLinkScreen.kt`
+- [x] `expiryLabel` — `com/mlmvpn/scanner/ui/sublink/SubLinkScreen.kt`
 ### tgproxy
 
 - [ ] `Step` — `com/mlmvpn/scanner/ui/tgproxy/TgDomainPage.kt`

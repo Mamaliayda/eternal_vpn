@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ColorScheme
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.material3.MaterialTheme
@@ -41,6 +42,10 @@ object DuskTheme {
     val blueGray = Color(0xFF71819C)
     val cream = Color(0xFFFFF8F1)
     val white = Color(0xFFFFFFFF)
+    /** Dedicated neutral backing keeps generated QR modules scannable in either appearance. */
+    val qrSurface = Color.White
+    /** Cloudflare's brand orange, centralized rather than embedded in individual screens. */
+    val cloudflareOrange = Color(0xFFF6821F)
     val lavenderNight = Color(0xFF27263E)
     val navyNight = Color(0xFF191D32)
     val nightCard = Color(0xFF34334D)
@@ -70,8 +75,12 @@ object DuskTheme {
     val onSurface: Color @Composable get() = if (Appearance.isDark()) nightText else lightText
     val muted: Color @Composable get() = if (Appearance.isDark()) nightMuted else lightMuted
     val onAccent: Color @Composable get() = if (Appearance.isDark()) navyNight else navy
+    val onError: Color @Composable get() = if (Appearance.isDark()) navyNight else white
     val success: Color @Composable get() = if (Appearance.isDark()) Color(0xFF9BCFB4) else Color(0xFF43765A)
     val disabled: Color @Composable get() = if (Appearance.isDark()) Color(0xFF9B98AD) else Color(0xFF8E93A0)
+    val error: Color @Composable get() = if (Appearance.isDark()) nightError else lightError
+    val indigo: Color @Composable get() = if (Appearance.isDark()) Color(0xFFB3A9E5) else Color(0xFF6E69A8)
+    val purple: Color @Composable get() = if (Appearance.isDark()) Color(0xFFD4B6E6) else Color(0xFF8F659F)
 
     val space1 = 4.dp
     val space2 = 8.dp
@@ -83,6 +92,7 @@ object DuskTheme {
     val cardShape = RoundedCornerShape(28.dp)
     val controlShape = RoundedCornerShape(50)
     val tileShape = RoundedCornerShape(22.dp)
+    val glyphShape = RoundedCornerShape(12.dp)
     val circleShape = CircleShape
     val chartShape = RoundedCornerShape(16.dp)
     val navIconSize = 44.dp
@@ -105,13 +115,15 @@ fun DuskCard(
     modifier: Modifier = Modifier,
     shape: RoundedCornerShape = DuskTheme.cardShape,
     contentPadding: PaddingValues = PaddingValues(DuskTheme.space4),
+    containerColor: Color = DuskTheme.surface,
+    contentColor: Color = DuskTheme.onSurface,
     content: @Composable BoxScope.() -> Unit,
 ) {
     Surface(
         modifier = modifier.shadow(DuskTheme.cardElevation, shape, clip = false),
         shape = shape,
-        color = DuskTheme.surface,
-        contentColor = DuskTheme.onSurface,
+        color = containerColor,
+        contentColor = contentColor,
         tonalElevation = 0.dp,
     ) {
         Box(Modifier.padding(contentPadding), content = content)
@@ -125,6 +137,7 @@ fun DuskPill(
     selected: Boolean = false,
     onClick: (() -> Unit)? = null,
     indicator: Color? = null,
+    busy: Boolean = false,
 ) {
     val fill = if (selected) DuskTheme.accent else DuskTheme.raisedSurface
     val ink = if (selected) DuskTheme.onAccent else DuskTheme.primary
@@ -139,8 +152,16 @@ fun DuskPill(
         contentAlignment = Alignment.Center,
     ) {
         Row(horizontalArrangement = Arrangement.spacedBy(DuskTheme.space2), verticalAlignment = Alignment.CenterVertically) {
-            indicator?.let { dot ->
-                Box(Modifier.size(DuskTheme.space2).clip(DuskTheme.circleShape).background(dot))
+            if (busy) {
+                CircularProgressIndicator(
+                    modifier = Modifier.size(DuskTheme.space3),
+                    color = ink,
+                    strokeWidth = 2.dp,
+                )
+            } else {
+                indicator?.let { dot ->
+                    Box(Modifier.size(DuskTheme.space2).clip(DuskTheme.circleShape).background(dot))
+                }
             }
             Text(
                 text = text,

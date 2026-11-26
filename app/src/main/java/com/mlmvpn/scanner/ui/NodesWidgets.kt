@@ -20,8 +20,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccessTime
 import androidx.compose.material.icons.filled.Add
@@ -49,6 +47,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -62,7 +61,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.mlmvpn.scanner.models.VpnNode
 import androidx.compose.foundation.layout.wrapContentHeight
 import com.mlmvpn.scanner.ui.home.DriftingLights
@@ -75,12 +73,9 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.remember
 import kotlinx.coroutines.launch
-import com.mlmvpn.scanner.ui.home.frostedGlass
 import com.mlmvpn.scanner.ui.settings.Ios
-import com.mlmvpn.scanner.ui.theme.BadgeShape
-import com.mlmvpn.scanner.ui.theme.CardShape
-import com.mlmvpn.scanner.ui.theme.ControlShape
-import com.mlmvpn.scanner.ui.theme.PanelShape
+import com.mlmvpn.scanner.ui.theme.DuskCard
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 import com.mlmvpn.scanner.utils.Platform
 import com.mlmvpn.scanner.R
 import com.mlmvpn.scanner.utils.S
@@ -162,11 +157,9 @@ fun ListJumpButton(
         exit = androidx.compose.animation.fadeOut(),
         modifier = modifier,
     ) {
-        Box(
+        DuskCard(
             modifier = Modifier
                 .size(42.dp)
-                .clip(androidx.compose.foundation.shape.CircleShape)
-                .frostedGlass(androidx.compose.foundation.shape.CircleShape)
                 .clickable {
                     scope.launch {
                         val target = if (down == true) (itemCount - 1).coerceAtLeast(0) else 0
@@ -188,8 +181,10 @@ fun ListJumpButton(
                         state.animateScrollToItem(target)
                     }
                 },
-            contentAlignment = Alignment.Center,
+            shape = DuskTheme.circleShape,
+            contentPadding = androidx.compose.foundation.layout.PaddingValues(0.dp),
         ) {
+            Box(contentAlignment = Alignment.Center) {
             Icon(
                 if (down == true) Icons.Default.KeyboardDoubleArrowDown
                 else Icons.Default.KeyboardDoubleArrowUp,
@@ -197,6 +192,7 @@ fun ListJumpButton(
                 tint = Ios.Label,
                 modifier = Modifier.size(22.dp),
             )
+            }
         }
     }
 }
@@ -211,15 +207,16 @@ fun NodeToolbar(
     onSort: () -> Unit,
     onSettings: () -> Unit,
 ) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp)
-            .frostedGlass(PanelShape)
-            .padding(vertical = 6.dp),
-        horizontalArrangement = Arrangement.SpaceEvenly,
-        verticalAlignment = Alignment.CenterVertically,
+    DuskCard(
+        modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+        shape = DuskTheme.chartShape,
+        contentPadding = androidx.compose.foundation.layout.PaddingValues(vertical = 6.dp),
     ) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
         ToolbarAction(Icons.Default.FlashOn, S(R.string.ping), enabled = !busy, onClick = onPing)
         ToolbarAction(Icons.Default.AccessTime, S(R.string.delay), enabled = !busy, onClick = onDelay)
         // No download-speed test here.
@@ -231,6 +228,7 @@ fun NodeToolbar(
         ToolbarAction(Icons.Default.Add, S(R.string.add), onClick = onAdd)
         ToolbarAction(Icons.Default.Sort, S(R.string.sort), active = sortActive, onClick = onSort)
         ToolbarAction(Icons.Default.Tune, S(R.string.settings), onClick = onSettings)
+        }
     }
 }
 
@@ -257,14 +255,14 @@ internal fun ToolbarAction(
     }
     Column(
         modifier = Modifier
-            .clip(ControlShape)
+            .clip(DuskTheme.controlShape)
             .clickable(enabled = enabled, onClick = onClick)
             .padding(horizontal = 10.dp, vertical = 7.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Icon(icon, contentDescription = label, tint = tint, modifier = Modifier.size(20.dp))
         Spacer(Modifier.height(4.dp))
-        Text(label, color = tint, fontSize = 10.sp)
+        Text(label, color = tint, style = MaterialTheme.typography.labelSmall)
     }
 }
 
@@ -292,14 +290,14 @@ fun NodeTestProgressRow(
             Text(
                 "$label ${faCount(progress)}/${faCount(total)}",
                 color = Ios.SecondaryLabel,
-                fontSize = 11.sp,
+                style = MaterialTheme.typography.labelSmall,
                 modifier = Modifier.padding(end = 10.dp),
             )
             LinearProgressIndicator(
                 progress = if (total > 0) progress.toFloat() / total else 0f,
-                modifier = Modifier.weight(1f).height(3.dp).clip(CircleShape),
+                modifier = Modifier.weight(1f).height(3.dp).clip(DuskTheme.circleShape),
                 color = Ios.Blue,
-                trackColor = Color.White.copy(alpha = 0.14f),
+                trackColor = DuskTheme.onSurface.copy(alpha = 0.14f),
             )
             Icon(
                 Icons.Default.Close,
@@ -308,7 +306,7 @@ fun NodeTestProgressRow(
                 modifier = Modifier
                     .padding(start = 10.dp)
                     .size(16.dp)
-                    .clip(CircleShape)
+                    .clip(DuskTheme.circleShape)
                     .clickable(onClick = onCancel),
             )
         }
@@ -343,8 +341,8 @@ fun <T> NodeScopeChips(
         if (onAdd != null) {
             Box(
                 modifier = Modifier
-                    .clip(BadgeShape)
-                    .background(Color.White.copy(alpha = 0.08f))
+                    .clip(DuskTheme.controlShape)
+                    .background(DuskTheme.onSurface.copy(alpha = 0.08f))
                     .clickable(onClick = onAdd)
                     .padding(horizontal = 10.dp, vertical = 7.dp),
                 contentAlignment = Alignment.Center,
@@ -361,10 +359,10 @@ fun <T> NodeScopeChips(
             val isSelected = item == selected
             Box(
                 modifier = Modifier
-                    .clip(BadgeShape)
+                    .clip(DuskTheme.controlShape)
                     .background(
-                        if (isSelected) Color.White.copy(alpha = 0.20f)
-                        else Color.White.copy(alpha = 0.07f)
+                        if (isSelected) DuskTheme.raisedSurface.copy(alpha = 0.82f)
+                        else DuskTheme.surface.copy(alpha = 0.62f)
                     )
                     .combinedClickable(
                         onClick = { onSelect(item) },
@@ -376,7 +374,7 @@ fun <T> NodeScopeChips(
                 Text(
                     label(item),
                     color = if (isSelected) Ios.Label else Ios.SecondaryLabel,
-                    fontSize = 13.sp,
+                    style = MaterialTheme.typography.bodySmall,
                     fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal,
                     maxLines = 1,
                 )
@@ -400,10 +398,10 @@ fun NodePlatformChips(selected: Platform?, onSelect: (Platform) -> Unit) {
             val isSelected = selected == platform
             Row(
                 modifier = Modifier
-                    .clip(BadgeShape)
+                    .clip(DuskTheme.controlShape)
                     .background(
-                        if (isSelected) Color.White.copy(alpha = 0.20f)
-                        else Color.White.copy(alpha = 0.07f)
+                        if (isSelected) DuskTheme.raisedSurface.copy(alpha = 0.82f)
+                        else DuskTheme.surface.copy(alpha = 0.62f)
                     )
                     .clickable { onSelect(platform) }
                     .padding(horizontal = 12.dp, vertical = 8.dp),
@@ -419,7 +417,7 @@ fun NodePlatformChips(selected: Platform?, onSelect: (Platform) -> Unit) {
                 Text(
                     platform.displayName,
                     color = if (isSelected) Ios.Label else Ios.SecondaryLabel,
-                    fontSize = 12.sp,
+                    style = MaterialTheme.typography.labelMedium,
                     fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal,
                 )
             }
@@ -444,14 +442,13 @@ private fun platformIcon(platform: Platform): ImageVector = when (platform) {
 @Composable
 fun NodeNotice(wrong: Boolean, title: String, body: String) {
     val accent = if (wrong) Ios.Red else Ios.Yellow
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp)
-            .background(accent.copy(alpha = 0.12f), PanelShape)
-            .padding(14.dp),
-        verticalAlignment = Alignment.Top,
+    DuskCard(
+        modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+        shape = DuskTheme.chartShape,
+        contentPadding = androidx.compose.foundation.layout.PaddingValues(14.dp),
+        containerColor = accent.copy(alpha = 0.12f),
     ) {
+        Row(verticalAlignment = Alignment.Top) {
         Icon(
             if (wrong) Icons.Default.Error else Icons.Default.Info,
             contentDescription = null,
@@ -460,9 +457,10 @@ fun NodeNotice(wrong: Boolean, title: String, body: String) {
         )
         Spacer(Modifier.width(10.dp))
         Column {
-            Text(title, color = accent, fontWeight = FontWeight.SemiBold, fontSize = 13.sp)
+            Text(title, color = accent, fontWeight = FontWeight.SemiBold, style = MaterialTheme.typography.bodySmall)
             Spacer(Modifier.height(4.dp))
-            Text(body, color = Ios.SecondaryLabel, fontSize = 12.sp, lineHeight = 19.sp)
+            Text(body, color = Ios.SecondaryLabel, style = MaterialTheme.typography.labelMedium)
+        }
         }
     }
 }
@@ -499,26 +497,26 @@ fun NodeRow(
         isActive -> Ios.Blue
         else -> null
     }
-    Row(
+    DuskCard(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp)
-            .frostedGlass(PanelShape)
             .then(
-                if (rim != null) Modifier.border(1.5.dp, rim.copy(alpha = 0.55f), PanelShape)
+                if (rim != null) Modifier.border(1.5.dp, rim.copy(alpha = 0.55f), DuskTheme.cardShape)
                 else Modifier
             )
             .clickable(onClick = onClick)
-            .heightIn(min = 62.dp)
-            .padding(start = 14.dp, end = 6.dp, top = 10.dp, bottom = 10.dp),
-        verticalAlignment = Alignment.CenterVertically,
+            .heightIn(min = 62.dp),
+        shape = DuskTheme.cardShape,
+        contentPadding = androidx.compose.foundation.layout.PaddingValues(start = 14.dp, end = 6.dp, top = 10.dp, bottom = 10.dp),
     ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
         // The state marker doubles as the type glyph: green tick when this is the live tunnel,
         // the badge's own colour otherwise. One object, not a tick AND a tile.
         Box(
             modifier = Modifier
                 .size(30.dp)
-                .clip(RoundedCornerShape(9.dp))
+                .clip(DuskTheme.glyphShape)
                 .background(
                     if (isConnected) Ios.Green.copy(alpha = 0.22f)
                     else badgeTint.copy(alpha = 0.18f)
@@ -540,7 +538,7 @@ fun NodeRow(
                 Text(
                     node.name,
                     color = if (isActive) Ios.Label else Ios.Label,
-                    fontSize = 15.sp,
+                    style = MaterialTheme.typography.bodyMedium,
                     fontWeight = if (isActive) FontWeight.SemiBold else FontWeight.Normal,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
@@ -548,7 +546,7 @@ fun NodeRow(
                 )
                 if (node.countryCode != null) {
                     Spacer(Modifier.width(6.dp))
-                    Text(getNodeFlagEmoji(node.countryCode), fontSize = 14.sp)
+                    Text(getNodeFlagEmoji(node.countryCode), style = MaterialTheme.typography.bodyMedium)
                 }
                 if (highlight) {
                     Spacer(Modifier.width(6.dp))
@@ -559,24 +557,24 @@ fun NodeRow(
             Spacer(Modifier.height(5.dp))
 
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(badge, color = badgeTint, fontSize = 10.sp, fontWeight = FontWeight.SemiBold)
+                Text(badge, color = badgeTint, style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.SemiBold)
                 MetricDot()
-                Text(node.type.uppercase(), color = Ios.SecondaryLabel, fontSize = 10.sp)
+                Text(node.type.uppercase(), color = Ios.SecondaryLabel, style = MaterialTheme.typography.labelSmall)
                 measurementLabel(node.ping)?.let {
                     MetricDot()
-                    Text(it, color = measurementTone(node.ping, 150, 500), fontSize = 10.sp)
+                    Text(it, color = measurementTone(node.ping, 150, 500), style = MaterialTheme.typography.labelSmall)
                 }
                 measurementLabel(node.delay)?.let {
                     MetricDot()
-                    Text(it, color = measurementTone(node.delay, 300, 800), fontSize = 10.sp)
+                    Text(it, color = measurementTone(node.delay, 300, 800), style = MaterialTheme.typography.labelSmall)
                 }
                 measurementLabel(node.speed)?.let {
                     MetricDot()
-                    Text(it, color = speedTone(node.speed), fontSize = 10.sp)
+                    Text(it, color = speedTone(node.speed), style = MaterialTheme.typography.labelSmall)
                 }
                 if (platformDelay != null) {
                     MetricDot()
-                    Text("${faCount(platformDelay.toInt())}ms", color = Ios.Teal, fontSize = 10.sp)
+                    Text("${faCount(platformDelay.toInt())}ms", color = Ios.Teal, style = MaterialTheme.typography.labelSmall)
                 }
             }
         }
@@ -585,7 +583,7 @@ fun NodeRow(
         // without a second guess about which half of the row does what.
         Box(
             modifier = Modifier
-                .clip(CircleShape)
+                .clip(DuskTheme.circleShape)
                 .clickable(onClick = onOpenDetail)
                 .padding(10.dp),
         ) {
@@ -601,6 +599,7 @@ fun NodeRow(
                     ),
             )
         }
+        }
     }
 }
 
@@ -610,7 +609,7 @@ private fun MetricDot() {
     Text(
         " · ",
         color = Ios.SecondaryLabel.copy(alpha = 0.55f),
-        fontSize = 10.sp,
+        style = MaterialTheme.typography.labelSmall,
     )
 }
 
@@ -635,10 +634,10 @@ private fun MetricDot() {
  */
 private fun connectWashPair(running: Boolean, connecting: Boolean): Pair<Color, Color> = when {
     // Green and turquoise: near enough in hue to read as one living colour rather than two lamps.
-    running -> Color(0xFF35C05A) to Color(0xFF2ED3C6)
-    connecting -> Color(0xFFF0912B) to Color(0xFFF2C34B)
+    running -> DuskTheme.success to DuskTheme.secondary
+    connecting -> DuskTheme.accent to DuskTheme.coral
     // Red with a warmer second beside it. Red alone reads as an error rather than as "not on".
-    else -> Color(0xFFE0526A) to Color(0xFFA968C8)
+    else -> DuskTheme.error to DuskTheme.purple
 }
 
 @Composable
@@ -670,7 +669,7 @@ fun NodeConnectBar(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(Ios.Teal.copy(alpha = 0.14f), ControlShape)
+                    .background(Ios.Teal.copy(alpha = 0.14f), DuskTheme.controlShape)
                     .clickable(enabled = !platformTesting, onClick = onPlatformTest)
                     .padding(vertical = 11.dp),
                 horizontalArrangement = Arrangement.Center,
@@ -695,7 +694,7 @@ fun NodeConnectBar(
                     if (platformTesting) S(R.string.measuring_3)
                     else S(R.string.measure_servers_for, platformName ?: ""),
                     color = Ios.Label,
-                    fontSize = 14.sp,
+                    style = MaterialTheme.typography.bodyMedium,
                 )
             }
             Spacer(Modifier.height(8.dp))
@@ -717,13 +716,16 @@ fun NodeConnectBar(
         // Tapping anywhere on it toggles. The button was the only live part before -- a full-width
         // bar with one target at the end of it, when everything else printed on the bar is about
         // the connection that target makes.
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .clip(CardShape)
-                .frostedGlass(CardShape)
-                .clickable(enabled = node != null || isRunning || isConnecting, onClick = onToggle),
+        DuskCard(
+            modifier = Modifier.fillMaxWidth().clickable(
+                enabled = node != null || isRunning || isConnecting,
+                onClick = onToggle,
+            ),
+            shape = DuskTheme.cardShape,
+            contentPadding = androidx.compose.foundation.layout.PaddingValues(0.dp),
+            containerColor = DuskTheme.surface,
         ) {
+            Box(Modifier.fillMaxWidth()) {
             val hues = connectWashPair(isRunning, isConnecting)
             // Lit AND moving in all three states.
             //
@@ -767,19 +769,19 @@ fun NodeConnectBar(
                     // Same reasoning as the button: the bar is already the colour of the
                     // state, so a coloured caption on it is a second voice saying one thing.
                     color = Ios.Label.copy(alpha = 0.85f),
-                    fontSize = 12.sp,
+                    style = MaterialTheme.typography.labelMedium,
                     fontWeight = FontWeight.SemiBold,
                 )
                 Spacer(Modifier.height(3.dp))
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     if (isRunning && exitCountry != null) {
-                        Text(getNodeFlagEmoji(exitCountry), fontSize = 14.sp)
+                        Text(getNodeFlagEmoji(exitCountry), style = MaterialTheme.typography.bodyMedium)
                         Spacer(Modifier.width(6.dp))
                     }
                     Text(
                         node?.name ?: S(R.string.tap_one_from_the_list),
                         color = Ios.Label,
-                        fontSize = 14.sp,
+                        style = MaterialTheme.typography.bodyMedium,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
                     )
@@ -797,8 +799,8 @@ fun NodeConnectBar(
             // own words -- the tint there is the theme's onSurface for exactly this reason.
             Row(
                 modifier = Modifier
-                    .clip(ControlShape)
-                    .background(Color.White.copy(alpha = 0.16f))
+                    .clip(DuskTheme.controlShape)
+                    .background(DuskTheme.onSurface.copy(alpha = 0.16f))
                     .clickable(onClick = onToggle)
                     .padding(horizontal = 18.dp, vertical = 11.dp),
                 verticalAlignment = Alignment.CenterVertically,
@@ -828,7 +830,7 @@ fun NodeConnectBar(
                         else -> S(R.string.connect)
                     },
                     color = Ios.Label,
-                    fontSize = 14.sp,
+                    style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.SemiBold,
                 )
             }

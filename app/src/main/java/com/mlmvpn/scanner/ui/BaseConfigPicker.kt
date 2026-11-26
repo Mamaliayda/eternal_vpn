@@ -13,13 +13,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Cloud
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Speed
 import androidx.compose.material.icons.filled.Storage
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -38,13 +38,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.mlmvpn.scanner.data.CombineEngine
 import com.mlmvpn.scanner.data.GroupManager
 import com.mlmvpn.scanner.data.NodeManager
 import com.mlmvpn.scanner.data.ScanGuard
 import com.mlmvpn.scanner.models.VpnNode
 import com.mlmvpn.scanner.ui.settings.Ios
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 import com.mlmvpn.scanner.ui.settings.IosScreen
 import com.mlmvpn.scanner.ui.settings.SettingsActionRow
 import com.mlmvpn.scanner.ui.settings.SettingsFooter
@@ -351,14 +351,14 @@ private fun BaseConfigRow(
                 Text(
                     option.label,
                     color = Ios.Label,
-                    fontSize = 16.sp,
+                    style = MaterialTheme.typography.bodyLarge,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )
                 Text(
                     option.detail,
                     color = Ios.SecondaryLabel,
-                    fontSize = 12.sp,
+                    style = MaterialTheme.typography.labelMedium,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )
@@ -373,8 +373,8 @@ private fun BaseConfigRow(
         Box(
             modifier = Modifier
                 .padding(end = 16.dp)
-                .background(pillColor.copy(alpha = 0.14f), RoundedCornerShape(10.dp))
-                .border(1.dp, pillColor.copy(alpha = 0.35f), RoundedCornerShape(10.dp))
+                .background(pillColor.copy(alpha = 0.14f), DuskTheme.controlShape)
+                .border(1.dp, pillColor.copy(alpha = 0.35f), DuskTheme.controlShape)
                 .clickable(enabled = probe != Probe.Running, onClick = onMeasure)
                 .padding(horizontal = 10.dp, vertical = 6.dp),
             contentAlignment = Alignment.Center,
@@ -388,13 +388,13 @@ private fun BaseConfigRow(
                 is Probe.Ok -> Text(
                     faCount(probe.ms.toInt()) + " ms",
                     color = pillColor,
-                    fontSize = 12.sp,
+                    style = MaterialTheme.typography.labelMedium,
                     fontWeight = FontWeight.Bold,
                 )
                 is Probe.Failed -> Text(
                     S(R.string.base_config_delay_failed_short),
                     color = pillColor,
-                    fontSize = 12.sp,
+                    style = MaterialTheme.typography.labelMedium,
                     fontWeight = FontWeight.Bold,
                 )
                 else -> Row(verticalAlignment = Alignment.CenterVertically) {
@@ -408,7 +408,7 @@ private fun BaseConfigRow(
                     Text(
                         S(R.string.base_config_test_delay_short),
                         color = pillColor,
-                        fontSize = 12.sp,
+                        style = MaterialTheme.typography.labelMedium,
                         fontWeight = FontWeight.Bold,
                     )
                 }

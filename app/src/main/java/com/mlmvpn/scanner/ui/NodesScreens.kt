@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccessTime
 import androidx.compose.material.icons.filled.ContentCopy
@@ -31,6 +30,7 @@ import androidx.compose.material.icons.filled.SwapHoriz
 import androidx.compose.material.icons.filled.Timer
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -47,10 +47,8 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.mlmvpn.scanner.data.NodeManager
 import com.mlmvpn.scanner.models.VpnNode
-import com.mlmvpn.scanner.ui.home.frostedGlass
 import com.mlmvpn.scanner.ui.settings.Ios
 import com.mlmvpn.scanner.ui.settings.IosScreen
 import com.mlmvpn.scanner.ui.settings.SettingsActionRow
@@ -62,7 +60,8 @@ import com.mlmvpn.scanner.ui.settings.SettingsSectionHeader
 import com.mlmvpn.scanner.ui.settings.SettingsSlider
 import com.mlmvpn.scanner.ui.settings.SettingsTextRow
 import com.mlmvpn.scanner.ui.settings.SettingsToggle
-import com.mlmvpn.scanner.ui.theme.CardShape
+import com.mlmvpn.scanner.ui.theme.DuskCard
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 import com.mlmvpn.scanner.utils.Platform
 import com.mlmvpn.scanner.utils.VpnConfig
 import com.mlmvpn.scanner.R
@@ -187,25 +186,22 @@ fun NodeDetailScreen(
         Spacer(Modifier.height(14.dp))
 
         // The identity block: what this is, where it comes out, and whether it is the live one.
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp)
-                .frostedGlass(CardShape)
-                .padding(18.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
+        DuskCard(
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+            contentPadding = androidx.compose.foundation.layout.PaddingValues(18.dp),
         ) {
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
             if (node.countryCode != null) {
-                Text(getNodeFlagEmoji(node.countryCode), fontSize = 40.sp)
+                Text(getNodeFlagEmoji(node.countryCode), style = MaterialTheme.typography.displayMedium)
                 Spacer(Modifier.height(8.dp))
             }
             Text(
                 node.name,
                 color = Ios.Label,
-                fontSize = 18.sp,
+                style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.SemiBold,
                 textAlign = TextAlign.Center,
-                lineHeight = 26.sp,
+
             )
             Spacer(Modifier.height(10.dp))
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -216,6 +212,7 @@ fun NodeDetailScreen(
                     Spacer(Modifier.width(6.dp))
                     NodePill(S(R.string.connected), Ios.Green)
                 }
+            }
             }
         }
 
@@ -361,7 +358,7 @@ private fun MeasureRow(
     ) {
         SettingsGlyph(icon, tint)
         Spacer(Modifier.width(12.dp))
-        Text(title, color = Ios.Label, fontSize = 16.sp, modifier = Modifier.weight(1f))
+        Text(title, color = Ios.Label, style = MaterialTheme.typography.bodyLarge, modifier = Modifier.weight(1f))
         if (busy) {
             CircularProgressIndicator(
                 modifier = Modifier.size(15.dp),
@@ -372,7 +369,7 @@ private fun MeasureRow(
             Text(
                 measurementLabel(raw) ?: S(R.string.not_measured),
                 color = if (measurementLabel(raw) == null) Ios.SecondaryLabel else valueTone,
-                fontSize = 15.sp,
+                style = MaterialTheme.typography.bodyMedium,
                 fontWeight = if (measurementLabel(raw) == null) FontWeight.Normal else FontWeight.Medium,
             )
         }
@@ -385,10 +382,10 @@ fun NodePill(text: String, tint: Color) {
     Text(
         text,
         color = tint,
-        fontSize = 11.sp,
+        style = MaterialTheme.typography.labelSmall,
         fontWeight = FontWeight.SemiBold,
         modifier = Modifier
-            .background(tint.copy(alpha = 0.16f), RoundedCornerShape(7.dp))
+            .background(tint.copy(alpha = 0.16f), DuskTheme.controlShape)
             .padding(horizontal = 8.dp, vertical = 3.dp),
     )
 }
@@ -427,21 +424,18 @@ fun NodeQrCard(uri: String) {
         }
     }
 
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp)
-            .frostedGlass(CardShape)
-            .padding(18.dp),
-        contentAlignment = Alignment.Center,
+    DuskCard(
+        modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+        contentPadding = androidx.compose.foundation.layout.PaddingValues(18.dp),
     ) {
+        Box(contentAlignment = Alignment.Center) {
         if (bitmap != null) {
             Image(
                 bitmap = bitmap,
                 contentDescription = null,
                 modifier = Modifier
                     .size(200.dp)
-                    .background(Color.White, RoundedCornerShape(10.dp))
+                    .background(DuskTheme.qrSurface, DuskTheme.controlShape)
                     .padding(8.dp),
             )
         } else {
@@ -451,11 +445,11 @@ fun NodeQrCard(uri: String) {
             Text(
                 S(R.string.this_config_is_too_long_for_a),
                 color = Ios.SecondaryLabel,
-                fontSize = 13.sp,
-                lineHeight = 21.sp,
+                style = MaterialTheme.typography.bodySmall,
                 textAlign = TextAlign.Center,
             )
         }
+    }
     }
 }
 

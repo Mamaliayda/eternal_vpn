@@ -43,11 +43,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -55,6 +54,7 @@ import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material.icons.filled.Cloud
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
@@ -65,10 +65,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.draw.scale
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.text.TextStyle
@@ -77,10 +75,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.mlmvpn.scanner.ui.home.Appearance
 import com.mlmvpn.scanner.ui.home.fadingEdges
-import com.mlmvpn.scanner.ui.home.frostedGlass
+import com.mlmvpn.scanner.ui.theme.DuskCard
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 
 /**
  * The pieces an iOS Settings screen is made of: inset grouped cards, 29pt tinted glyph tiles,
@@ -111,98 +108,36 @@ object Ios {
      * unreadable, so light is a lighter DARK here -- and the difference the setting actually
      * makes is in the glass, which lifts considerably.
      */
-    val Background: Color
-        @Composable get() = if (Appearance.isDark()) Color(0xFF000000) else Color(0xFF1C1C1E)
+    val Background: Color @Composable get() = com.mlmvpn.scanner.ui.theme.DuskTheme.background
+    val Card: Color @Composable get() = com.mlmvpn.scanner.ui.theme.DuskTheme.surface
+    val CardOverWallpaper: Color @Composable get() = com.mlmvpn.scanner.ui.theme.DuskTheme.surface
+    val DialogSurface: Color @Composable get() = com.mlmvpn.scanner.ui.theme.DuskTheme.raisedSurface
+    val Separator: Color @Composable get() = com.mlmvpn.scanner.ui.theme.DuskTheme.primary.copy(alpha = 0.16f)
+    val Label: Color @Composable get() = com.mlmvpn.scanner.ui.theme.DuskTheme.onSurface
+    val SecondaryLabel: Color @Composable get() = com.mlmvpn.scanner.ui.theme.DuskTheme.muted
+    val Chevron: Color @Composable get() = com.mlmvpn.scanner.ui.theme.DuskTheme.disabled
+    val Destructive: Color @Composable get() = com.mlmvpn.scanner.ui.theme.DuskTheme.error
+    val Blue: Color @Composable get() = com.mlmvpn.scanner.ui.theme.DuskTheme.primary
+    val Green: Color @Composable get() = com.mlmvpn.scanner.ui.theme.DuskTheme.success
+    val Indigo: Color @Composable get() = com.mlmvpn.scanner.ui.theme.DuskTheme.indigo
+    val Orange: Color @Composable get() = com.mlmvpn.scanner.ui.theme.DuskTheme.accent
+    val Pink: Color @Composable get() = com.mlmvpn.scanner.ui.theme.DuskTheme.coral
+    val Purple: Color @Composable get() = com.mlmvpn.scanner.ui.theme.DuskTheme.purple
+    val Red: Color @Composable get() = com.mlmvpn.scanner.ui.theme.DuskTheme.error
+    val Teal: Color @Composable get() = com.mlmvpn.scanner.ui.theme.DuskTheme.blueGray
+    val Yellow: Color @Composable get() = com.mlmvpn.scanner.ui.theme.DuskTheme.coral
+    val Gray: Color @Composable get() = com.mlmvpn.scanner.ui.theme.DuskTheme.disabled
 
-    val Card: Color
-        @Composable get() = if (Appearance.isDark()) Color(0xFF1C1C1E) else Color(0xFF2C2C2E)
-
-    /**
-     * What the grouped cards actually use. These screens sit ON the home wallpaper rather than on
-     * a flat sheet, so a solid card would punch an opaque hole through it. Slightly translucent
-     * keeps the backdrop present at almost no cost in contrast.
-     */
-    val CardOverWallpaper: Color
-        @Composable get() = if (Appearance.isDark()) {
-            Color(0xFF1C1C1E).copy(alpha = 0.82f)
-        } else {
-            Color(0xFF48484A).copy(alpha = 0.62f)
-        }
-
-    /**
-     * Dialogs and modal sheets.
-     *
-     * Denser than [CardOverWallpaper] on purpose. A card is laid on the wallpaper, which is
-     * blurred and still, so translucency there costs nothing. A dialog floats over the live
-     * screen -- a node list, a running scan -- and at card opacity that content reads straight
-     * through the text sitting on it. Near-opaque, with just enough left to read as glass.
-     */
-    val DialogSurface: Color
-        @Composable get() = if (Appearance.isDark()) {
-            Color(0xFF1C1C1E).copy(alpha = 0.97f)
-        } else {
-            Color(0xFF3A3A3C).copy(alpha = 0.95f)
-        }
-
-    val Separator: Color
-        @Composable get() = if (Appearance.isDark()) {
-            Color.White.copy(alpha = 0.13f)
-        } else {
-            Color.White.copy(alpha = 0.22f)
-        }
-
-    /** White in both appearances. See [Background] for why. */
-    val Label: Color
-        @Composable get() = Color(0xFFFFFFFF)
-
-    val SecondaryLabel: Color
-        @Composable get() = if (Appearance.isDark()) {
-            Color.White.copy(alpha = 0.62f)
-        } else {
-            Color.White.copy(alpha = 0.74f)
-        }
-
-    val Chevron: Color
-        @Composable get() = if (Appearance.isDark()) {
-            Color.White.copy(alpha = 0.32f)
-        } else {
-            Color.White.copy(alpha = 0.45f)
-        }
-
-    val Destructive: Color
-        @Composable get() = if (Appearance.isDark()) Color(0xFFFF453A) else Color(0xFFFF3B30)
-
-    val Blue: Color
-        @Composable get() = if (Appearance.isDark()) Color(0xFF0A84FF) else Color(0xFF007AFF)
-    val Green: Color
-        @Composable get() = if (Appearance.isDark()) Color(0xFF32D74B) else Color(0xFF34C759)
-    val Indigo: Color
-        @Composable get() = if (Appearance.isDark()) Color(0xFF5E5CE6) else Color(0xFF5856D6)
-    val Orange: Color
-        @Composable get() = if (Appearance.isDark()) Color(0xFFFF9F0A) else Color(0xFFFF9500)
-    val Pink: Color
-        @Composable get() = if (Appearance.isDark()) Color(0xFFFF375F) else Color(0xFFFF2D55)
-    val Purple: Color
-        @Composable get() = if (Appearance.isDark()) Color(0xFFBF5AF2) else Color(0xFFAF52DE)
-    val Red: Color
-        @Composable get() = if (Appearance.isDark()) Color(0xFFFF453A) else Color(0xFFFF3B30)
-    val Teal: Color
-        @Composable get() = if (Appearance.isDark()) Color(0xFF64D2FF) else Color(0xFF32ADE6)
-    val Yellow: Color
-        @Composable get() = if (Appearance.isDark()) Color(0xFFFFD60A) else Color(0xFFFFCC00)
-    val Gray: Color
-        @Composable get() = Color(0xFF8E8E93)
-
-    /** Cloudflare's orange. A brand colour, so it is the same in both modes. */
-    val CloudflareOrange = Color(0xFFF6821F)
+    /** Cloudflare orange is retained as an intentional brand color. */
+    val CloudflareOrange: Color @Composable get() = com.mlmvpn.scanner.ui.theme.DuskTheme.cloudflareOrange
 }
 
 /**
  * iOS 26 rounds its grouped cards hard enough that a single-row card reads almost as a pill.
  * 10dp -- the usual Material figure -- looked visibly squarer than the reference next to it.
  */
-private val RowShape = RoundedCornerShape(22.dp)
-private val GlyphShape = RoundedCornerShape(8.dp)
+private val RowShape = DuskTheme.cardShape
+private val GlyphShape = DuskTheme.glyphShape
 
 /** Section caption above a card, in iOS's small grey uppercase-ish style. */
 @Composable
@@ -210,7 +145,7 @@ fun SettingsSectionHeader(text: String, horizontal: androidx.compose.ui.unit.Dp 
     Text(
         text = text,
         color = Ios.SecondaryLabel,
-        fontSize = 13.sp,
+        style = MaterialTheme.typography.bodySmall,
         modifier = Modifier.padding(start = horizontal, end = horizontal, top = 26.dp, bottom = 7.dp),
     )
 }
@@ -225,13 +160,12 @@ fun SettingsGroup(
     horizontal: androidx.compose.ui.unit.Dp = 16.dp,
     content: @Composable SettingsGroupScope.() -> Unit,
 ) {
-    Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(horizontal = horizontal)
-            .frostedGlass(RowShape),
+    DuskCard(
+        modifier = modifier.fillMaxWidth().padding(horizontal = horizontal),
+        shape = RowShape,
+        contentPadding = PaddingValues(0.dp),
     ) {
-        SettingsGroupScopeImpl(this).content()
+        Column { SettingsGroupScopeImpl(this).content() }
     }
 }
 
@@ -262,14 +196,10 @@ fun SettingsGlyph(icon: ImageVector, tint: Color) {
         modifier = Modifier
             .size(29.dp)
             .clip(GlyphShape)
-            .background(
-                Brush.verticalGradient(
-                    listOf(lerp(tint, Color.White, 0.10f), lerp(tint, Color.Black, 0.10f))
-                )
-            ),
+            .background(tint.copy(alpha = 0.16f), GlyphShape),
         contentAlignment = Alignment.Center,
     ) {
-        Icon(icon, contentDescription = null, tint = Color.White, modifier = Modifier.size(18.dp))
+        Icon(icon, contentDescription = null, tint = tint, modifier = Modifier.size(18.dp))
     }
 }
 
@@ -359,7 +289,7 @@ fun SettingsActionRow(
     ) {
         Icon(icon, contentDescription = null, tint = shade, modifier = Modifier.size(20.dp))
         Spacer(Modifier.width(10.dp))
-        Text(label, color = words, fontSize = 16.sp, modifier = Modifier.weight(1f))
+        Text(label, color = words, style = MaterialTheme.typography.bodyLarge, modifier = Modifier.weight(1f))
         if (busy) {
             CircularProgressIndicator(
                 modifier = Modifier.size(16.dp),
@@ -376,8 +306,7 @@ fun SettingsFooter(text: String) {
     Text(
         text,
         color = Ios.SecondaryLabel,
-        fontSize = 13.sp,
-        lineHeight = 21.sp,
+        style = MaterialTheme.typography.bodySmall,
         modifier = Modifier.padding(start = 32.dp, end = 32.dp, top = 8.dp),
     )
 }
@@ -409,7 +338,7 @@ fun SettingsRow(
                 Text(
                     value,
                     color = Ios.SecondaryLabel,
-                    fontSize = 16.sp,
+                    style = MaterialTheme.typography.bodyLarge,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                     modifier = Modifier.padding(end = if (showChevron) 6.dp else 0.dp),
@@ -419,9 +348,9 @@ fun SettingsRow(
         },
         label = {
             Column {
-                Text(title, color = titleColor, fontSize = 16.sp)
+                Text(title, color = titleColor, style = MaterialTheme.typography.bodyLarge)
                 if (subtitle != null) {
-                    Text(subtitle, color = Ios.SecondaryLabel, fontSize = 12.sp)
+                    Text(subtitle, color = Ios.SecondaryLabel, style = MaterialTheme.typography.labelSmall)
                 }
             }
         },
@@ -435,15 +364,15 @@ fun IosBadge(count: Int, modifier: Modifier = Modifier) {
         modifier = modifier
             .heightIn(min = 22.dp)
             .widthIn(min = 22.dp)
-            .clip(RoundedCornerShape(50))
-            .background(Color(0xFFFF3B30))
+            .clip(DuskTheme.controlShape)
+            .background(DuskTheme.error)
             .padding(horizontal = 7.dp),
         contentAlignment = Alignment.Center,
     ) {
         Text(
             if (count > 99) "99+" else count.toString(),
-            color = Color.White,
-            fontSize = 13.sp,
+            color = DuskTheme.onError,
+            style = MaterialTheme.typography.bodySmall,
             fontWeight = androidx.compose.ui.text.font.FontWeight.SemiBold,
         )
     }
@@ -469,23 +398,23 @@ fun SettingsToggle(
                 checked = checked,
                 onCheckedChange = onCheckedChange,
                 colors = SwitchDefaults.colors(
-                    checkedThumbColor = Color.White,
+                    checkedThumbColor = DuskTheme.white,
                     // The app's own blue rather than the platform green: green is Apple's accent,
                     // not ours, and it was the one control on screen not speaking the app's colour.
                     checkedTrackColor = Ios.Blue,
                     checkedBorderColor = Ios.Blue,
-                    uncheckedThumbColor = Color.White,
-                    uncheckedTrackColor = Color(0xFF39393D),
-                    uncheckedBorderColor = Color(0xFF39393D),
+                    uncheckedThumbColor = DuskTheme.white,
+                    uncheckedTrackColor = DuskTheme.disabled.copy(alpha = 0.38f),
+                    uncheckedBorderColor = DuskTheme.disabled.copy(alpha = 0.55f),
                 ),
                 modifier = Modifier.scale(0.85f),
             )
         },
         label = {
             Column {
-                Text(title, color = Ios.Label, fontSize = 16.sp)
+                Text(title, color = Ios.Label, style = MaterialTheme.typography.bodyLarge)
                 if (subtitle != null) {
-                    Text(subtitle, color = Ios.SecondaryLabel, fontSize = 12.sp)
+                    Text(subtitle, color = Ios.SecondaryLabel, style = MaterialTheme.typography.labelSmall)
                 }
             }
         },
@@ -538,7 +467,7 @@ fun SettingsTextRow(
                     singleLine = true,
                     textStyle = TextStyle(
                         color = if (error != null) Ios.Destructive else Ios.SecondaryLabel,
-                        fontSize = 16.sp,
+                        style = MaterialTheme.typography.bodyLarge,
                         textAlign = TextAlign.End,
                     ),
                     cursorBrush = SolidColor(Ios.Blue),
@@ -563,7 +492,7 @@ fun SettingsTextRow(
                                 Text(
                                     placeholder,
                                     color = Ios.SecondaryLabel.copy(alpha = 0.5f),
-                                    fontSize = 16.sp,
+                                    style = MaterialTheme.typography.bodyLarge,
                                 )
                             }
                             inner()
@@ -571,13 +500,13 @@ fun SettingsTextRow(
                     },
                 )
             },
-            label = { Text(title, color = Ios.Label, fontSize = 16.sp) },
+            label = { Text(title, color = Ios.Label, style = MaterialTheme.typography.bodyLarge) },
         )
         if (error != null) {
             Text(
                 error,
                 color = Ios.Destructive,
-                fontSize = 12.sp,
+                style = MaterialTheme.typography.labelSmall,
                 modifier = Modifier.padding(start = 57.dp, end = 16.dp, bottom = 10.dp),
             )
         }
@@ -604,12 +533,12 @@ fun CloudflareAccountCard(
     accountsLabel: String? = null,
     onAccountsClick: (() -> Unit)? = null,
 ) {
-    Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp)
-            .frostedGlass(RowShape),
+    DuskCard(
+        modifier = modifier.fillMaxWidth().padding(horizontal = 16.dp),
+        shape = RowShape,
+        contentPadding = PaddingValues(0.dp),
     ) {
+        Column {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -633,7 +562,7 @@ fun CloudflareAccountCard(
             Text(
                 title,
                 color = Ios.Label,
-                fontSize = 19.sp,
+                style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.SemiBold,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
@@ -642,7 +571,7 @@ fun CloudflareAccountCard(
             Text(
                 subtitle,
                 color = Ios.SecondaryLabel,
-                fontSize = 13.sp,
+                style = MaterialTheme.typography.bodySmall,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
@@ -675,7 +604,7 @@ fun CloudflareAccountCard(
             Text(
                 accountsLabel ?: "",
                 color = Ios.Label,
-                fontSize = 16.sp,
+                style = MaterialTheme.typography.bodyLarge,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 modifier = Modifier.weight(1f),
@@ -683,6 +612,7 @@ fun CloudflareAccountCard(
             RowChevron()
         }
     }
+        }
     }
 }
 
@@ -700,7 +630,7 @@ private fun AccountDots(initials: List<String>) {
     val shown = initials.take(4)
     val step = 17.dp
     val dot = 26.dp
-    val palette = listOf(Ios.CloudflareOrange, Color(0xFF5AC8FA), Color(0xFF34C759), Color(0xFFAF52DE))
+    val palette = listOf(Ios.CloudflareOrange, DuskTheme.blueGray, DuskTheme.success, DuskTheme.purple)
 
     Box(modifier = Modifier.height(dot).width(dot + step * (shown.size - 1))) {
         shown.forEachIndexed { index, label ->
@@ -708,19 +638,19 @@ private fun AccountDots(initials: List<String>) {
                 modifier = Modifier
                     .offset(x = step * index)
                     .size(dot)
-                    .clip(CircleShape)
+                    .clip(DuskTheme.circleShape)
                     // The ring is what separates one dot from the one it overlaps; without it a
                     // run of similar colours reads as a single blob.
                     .background(Ios.Card)
                     .padding(1.5.dp)
-                    .clip(CircleShape)
+                    .clip(DuskTheme.circleShape)
                     .background(palette[index % palette.size]),
                 contentAlignment = Alignment.Center,
             ) {
                 Text(
                     label.take(1).uppercase(),
-                    color = Color.White,
-                    fontSize = 12.sp,
+                    color = DuskTheme.onAccent,
+                    style = MaterialTheme.typography.labelSmall,
                     fontWeight = FontWeight.SemiBold,
                 )
             }
@@ -899,7 +829,7 @@ fun IosScreen(
                     Text(
                         largeTitle,
                         color = Ios.Label,
-                        fontSize = 26.sp,
+                        style = MaterialTheme.typography.displaySmall,
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier.align(BiasAlignment(-1f + travel, 0f)),
                     )
@@ -943,7 +873,7 @@ fun IosScreen(
                                 ),
                         )
                         if (backLabel != null) {
-                            Text(backLabel, color = Ios.Label, fontSize = 16.sp)
+                            Text(backLabel, color = Ios.Label, style = MaterialTheme.typography.bodyLarge)
                         }
                     }
                 }
@@ -954,7 +884,7 @@ fun IosScreen(
                     Text(
                         title,
                         color = Ios.Label,
-                        fontSize = 17.sp,
+                        style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.SemiBold,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
@@ -1010,9 +940,9 @@ fun IosPickerScreen(
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Column(modifier = Modifier.weight(1f)) {
-                        Text(option.label, color = Ios.Label, fontSize = 16.sp)
+                        Text(option.label, color = Ios.Label, style = MaterialTheme.typography.bodyLarge)
                         if (option.detail != null) {
-                            Text(option.detail, color = Ios.SecondaryLabel, fontSize = 12.sp)
+                            Text(option.detail, color = Ios.SecondaryLabel, style = MaterialTheme.typography.labelSmall)
                         }
                     }
                     if (option.key == selectedKey) {
@@ -1030,7 +960,7 @@ fun IosPickerScreen(
             Text(
                 footer,
                 color = Ios.SecondaryLabel,
-                fontSize = 13.sp,
+                style = MaterialTheme.typography.bodySmall,
                 modifier = Modifier.padding(start = 32.dp, end = 32.dp, top = 8.dp),
             )
         }
@@ -1074,7 +1004,7 @@ fun IosTextScreen(
                     singleLine = true,
                     textStyle = TextStyle(
                         color = if (error != null) Ios.Destructive else Ios.Label,
-                        fontSize = 17.sp,
+                        style = MaterialTheme.typography.titleMedium,
                     ),
                     cursorBrush = SolidColor(Ios.Blue),
                     keyboardOptions = KeyboardOptions(
@@ -1091,7 +1021,7 @@ fun IosTextScreen(
                                 Text(
                                     placeholder,
                                     color = Ios.SecondaryLabel.copy(alpha = 0.6f),
-                                    fontSize = 17.sp,
+                                    style = MaterialTheme.typography.titleMedium,
                                 )
                             }
                             inner()
@@ -1105,7 +1035,7 @@ fun IosTextScreen(
             Text(
                 note,
                 color = if (error != null) Ios.Destructive else Ios.SecondaryLabel,
-                fontSize = 13.sp,
+                style = MaterialTheme.typography.bodySmall,
                 modifier = Modifier.padding(start = 32.dp, end = 32.dp, top = 8.dp),
             )
         }
@@ -1122,30 +1052,29 @@ fun SettingsSlider(
     valueLabel: String,
     range: ClosedFloatingPointRange<Float> = 0f..100f,
 ) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp)
-            .frostedGlass(RowShape)
-            .settingsSpotlight(title)
-            .padding(horizontal = 20.dp, vertical = 14.dp),
+    DuskCard(
+        modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp).settingsSpotlight(title),
+        shape = RowShape,
+        contentPadding = PaddingValues(horizontal = 20.dp, vertical = 14.dp),
     ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-        ) {
-            Text(title, color = Ios.Label, fontSize = 16.sp)
-            Text(valueLabel, color = Ios.SecondaryLabel, fontSize = 16.sp)
+        Column {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+            ) {
+                Text(title, color = Ios.Label, style = MaterialTheme.typography.bodyLarge)
+                Text(valueLabel, color = Ios.SecondaryLabel, style = MaterialTheme.typography.bodyLarge)
+            }
+            Slider(
+                value = value.toFloat(),
+                onValueChange = { onValueChange(it.toInt()) },
+                valueRange = range,
+                colors = SliderDefaults.colors(
+                    thumbColor = DuskTheme.raisedSurface,
+                    activeTrackColor = Ios.Blue,
+                    inactiveTrackColor = DuskTheme.secondary.copy(alpha = 0.24f),
+                ),
+            )
         }
-        Slider(
-            value = value.toFloat(),
-            onValueChange = { onValueChange(it.toInt()) },
-            valueRange = range,
-            colors = SliderDefaults.colors(
-                thumbColor = Color.White,
-                activeTrackColor = Ios.Blue,
-                inactiveTrackColor = Color.White.copy(alpha = 0.22f),
-            ),
-        )
     }
 }

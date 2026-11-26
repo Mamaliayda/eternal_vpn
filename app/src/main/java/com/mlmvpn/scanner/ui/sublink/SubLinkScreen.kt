@@ -15,15 +15,15 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Cloud
 import androidx.compose.material.icons.filled.CloudOff
 import androidx.compose.material.icons.filled.CloudUpload
-import androidx.compose.material.icons.filled.ChevronLeft
+import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material.icons.filled.HelpOutline
 import androidx.compose.material.icons.filled.Link
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
@@ -31,12 +31,14 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.mlmvpn.scanner.data.CloudManager
 import com.mlmvpn.scanner.data.GroupManager
 import com.mlmvpn.scanner.data.NodeManager
@@ -54,9 +56,9 @@ import com.mlmvpn.scanner.ui.settings.SettingsActionRow
 import com.mlmvpn.scanner.ui.settings.SettingsFooter
 import com.mlmvpn.scanner.ui.settings.SettingsGlyph
 import com.mlmvpn.scanner.ui.settings.SettingsGroup
+import com.mlmvpn.scanner.ui.theme.DuskTheme
+import com.mlmvpn.scanner.ui.theme.DuskPill
 import com.mlmvpn.scanner.ui.settings.SettingsSectionHeader
-import com.mlmvpn.scanner.ui.theme.BadgeShape
-import com.mlmvpn.scanner.ui.theme.ControlShape
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -67,11 +69,8 @@ import com.mlmvpn.scanner.utils.S
 // «لینک ساب» -- a Cloudflare Worker of the user's own that serves their configs as a subscription
 // URL other clients can import.
 //
-// The screen lived in `engines/subgenerator/`, the only one in the app outside `ui/`, and it was
-// the last one still written entirely in the pre-redesign vocabulary: a raw Material
-// `ScrollableTabRow`, three raw `AlertDialog`s, a top-level `Color(0xFF121212)` that punched an
-// opaque hole through the wallpaper, hardcoded Material-2 error hex, and two untranslated English
-// toasts. What was wrapped around it was an `IosScreen`, and nothing inside it.
+// The account, link, form, and help states share the app's Dusk surfaces, palette, type scale,
+// and selection pills. Platform alerts remain intentionally separated into the overlays batch.
 // =================================================================================================
 
 private sealed class SubLinkPage {
@@ -279,7 +278,7 @@ fun SubLinkScreen(
                     tint = Ios.Label,
                     modifier = Modifier
                         .size(30.dp)
-                        .clip(CircleShape)
+                        .clip(DuskTheme.circleShape)
                         .clickable { page = SubLinkPage.Help }
                         .padding(5.dp),
                 )
@@ -301,24 +300,11 @@ fun SubLinkScreen(
             ) {
                 accounts.forEachIndexed { index, item ->
                     val isSelected = account?.id == item.id
-                    Box(
-                        modifier = Modifier
-                            .clip(BadgeShape)
-                            .background(
-                                if (isSelected) Color.White.copy(alpha = 0.20f)
-                                else Color.White.copy(alpha = 0.07f)
-                            )
-                            .clickable { selectedAccountId = item.id }
-                            .padding(horizontal = 14.dp, vertical = 8.dp),
-                    ) {
-                        Text(
-                            item.email.ifEmpty { S(R.string.account_r2) + faCount(index + 1) },
-                            color = if (isSelected) Ios.Label else Ios.SecondaryLabel,
-                            fontSize = 13.sp,
-                            fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal,
-                            maxLines = 1,
-                        )
-                    }
+                    DuskPill(
+                        text = item.email.ifEmpty { S(R.string.account_r2) + faCount(index + 1) },
+                        selected = isSelected,
+                        onClick = { selectedAccountId = item.id },
+                    )
                 }
             }
             Spacer(Modifier.height(6.dp))
@@ -356,7 +342,7 @@ fun SubLinkScreen(
                         color = Ios.SecondaryLabel,
                     )
                     Spacer(Modifier.width(10.dp))
-                    Text(S(R.string.checking_the_worker_s_status), color = Ios.SecondaryLabel, fontSize = 14.sp)
+                    Text(S(R.string.checking_the_worker_s_status), color = Ios.SecondaryLabel, style = MaterialTheme.typography.bodyMedium)
                 }
             }
 
@@ -373,21 +359,21 @@ fun SubLinkScreen(
                             Text(
                                 deployStatus.ifBlank { S(R.string.deploying) },
                                 color = Ios.SecondaryLabel,
-                                fontSize = 12.sp,
+                                style = MaterialTheme.typography.labelMedium,
                                 modifier = Modifier.weight(1f),
                             )
                             Text(
                                 faCount(deployProgress) + S(R.string.str_r2),
                                 color = Ios.SecondaryLabel,
-                                fontSize = 12.sp,
+                                style = MaterialTheme.typography.labelMedium,
                             )
                         }
                         Spacer(Modifier.height(8.dp))
                         LinearProgressIndicator(
                             progress = deployProgress / 100f,
-                            modifier = Modifier.fillMaxWidth().height(3.dp).clip(CircleShape),
+                            modifier = Modifier.fillMaxWidth().height(3.dp).clip(DuskTheme.circleShape),
                             color = Ios.Blue,
-                            trackColor = Color.White.copy(alpha = 0.14f),
+                            trackColor = DuskTheme.onSurface.copy(alpha = 0.14f),
                         )
                     }
                 } else {
@@ -495,7 +481,7 @@ private fun SubLinkRow(link: SubLinkConfig, onClick: () -> Unit) {
             Text(
                 link.name,
                 color = Ios.Label,
-                fontSize = 16.sp,
+                style = MaterialTheme.typography.bodyLarge,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
@@ -503,7 +489,7 @@ private fun SubLinkRow(link: SubLinkConfig, onClick: () -> Unit) {
             Text(
                 link.mappedGroupName?.let { groupShortName(it) } ?: S(R.string.no_group),
                 color = Ios.SecondaryLabel,
-                fontSize = 12.sp,
+                style = MaterialTheme.typography.labelMedium,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
@@ -512,20 +498,23 @@ private fun SubLinkRow(link: SubLinkConfig, onClick: () -> Unit) {
             Text(
                 expiry,
                 color = expiryTone,
-                fontSize = 11.sp,
+                style = MaterialTheme.typography.labelSmall,
                 fontWeight = FontWeight.Medium,
                 modifier = Modifier
-                    .clip(BadgeShape)
+                    .clip(DuskTheme.controlShape)
                     .background(expiryTone.copy(alpha = 0.14f))
                     .padding(horizontal = 6.dp, vertical = 2.dp),
             )
             Spacer(Modifier.width(8.dp))
         }
         androidx.compose.material3.Icon(
-            Icons.Default.ChevronLeft,
+            Icons.Default.ChevronRight,
             contentDescription = null,
             tint = Ios.Chevron,
-            modifier = Modifier.size(18.dp),
+            modifier = Modifier.size(18.dp).scale(
+                scaleX = if (LocalLayoutDirection.current == LayoutDirection.Rtl) -1f else 1f,
+                scaleY = 1f,
+            ),
         )
     }
 }
@@ -542,7 +531,7 @@ private fun StateBlock(icon: @Composable () -> Unit, title: String, body: String
         Text(
             title,
             color = Ios.Label,
-            fontSize = 17.sp,
+            style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.SemiBold,
             textAlign = androidx.compose.ui.text.style.TextAlign.Center,
         )
@@ -550,8 +539,7 @@ private fun StateBlock(icon: @Composable () -> Unit, title: String, body: String
         Text(
             body,
             color = Ios.SecondaryLabel,
-            fontSize = 13.sp,
-            lineHeight = 21.sp,
+            style = MaterialTheme.typography.bodySmall,
             textAlign = androidx.compose.ui.text.style.TextAlign.Center,
         )
     }

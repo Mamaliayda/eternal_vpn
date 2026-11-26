@@ -24,6 +24,7 @@ import androidx.compose.material.icons.filled.QrCode
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Schedule
 import androidx.compose.material.icons.filled.Share
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
@@ -33,7 +34,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.mlmvpn.scanner.data.GroupManager
 import com.mlmvpn.scanner.data.NodeManager
 import com.mlmvpn.scanner.engines.subgenerator.SubGenAccountData
@@ -53,7 +53,7 @@ import com.mlmvpn.scanner.ui.settings.SettingsGlyph
 import com.mlmvpn.scanner.ui.settings.SettingsGroup
 import com.mlmvpn.scanner.ui.settings.SettingsRow
 import com.mlmvpn.scanner.ui.settings.SettingsSectionHeader
-import com.mlmvpn.scanner.ui.theme.ControlShape
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 import kotlinx.coroutines.launch
 import com.mlmvpn.scanner.R
 import com.mlmvpn.scanner.utils.S
@@ -111,7 +111,7 @@ fun SubLinkDetailScreen(
                 tint = Ios.Label,
                 modifier = Modifier
                     .size(30.dp)
-                    .clip(ControlShape)
+                    .clip(DuskTheme.controlShape)
                     .clickable(onClick = onEdit)
                     .padding(5.dp),
             )
@@ -131,8 +131,7 @@ fun SubLinkDetailScreen(
                 Text(
                     fullUrl,
                     color = Ios.Label,
-                    fontSize = 13.sp,
-                    lineHeight = 20.sp,
+                    style = MaterialTheme.typography.bodySmall,
                 )
             }
             Separator()

@@ -1,7 +1,6 @@
 package com.mlmvpn.scanner.ui
 
 import com.mlmvpn.scanner.ui.home.fadingEdges
-import com.mlmvpn.scanner.ui.home.frostedGlass
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.Image
@@ -12,8 +11,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.combinedClickable
@@ -33,7 +30,6 @@ import com.mlmvpn.scanner.R
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.mlmvpn.scanner.ui.theme.*
 import kotlinx.coroutines.*
 
@@ -64,7 +60,7 @@ private const val MAX_CLIP_CHARS = 200_000
 fun NodesTab(onBack: () -> Unit) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
-    
+
     val nodeManager = remember { com.mlmvpn.scanner.data.NodeManager(context) }
     val subscriptionManager = remember { com.mlmvpn.scanner.data.SubscriptionManager(context) }
     val subscriptions by subscriptionManager.subscriptionsFlow.collectAsState()
@@ -165,7 +161,7 @@ fun NodesTab(onBack: () -> Unit) {
             .putString("nodes_manual_group", selectedManualGroup)
             .apply()
     }
-    
+
     var activeRealCountry by remember { mutableStateOf<String?>(null) }
 
     // Platform Testing State
@@ -202,7 +198,7 @@ fun NodesTab(onBack: () -> Unit) {
     var autoSwitchPlatform by remember { mutableStateOf(sharedPrefs.getString("auto_switch_platform", "None") ?: "None") }
     var autoSwitchInterval by remember { mutableStateOf(sharedPrefs.getInt("auto_switch_interval", 15)) }
     var autoSwitchTestCount by remember { mutableStateOf(sharedPrefs.getInt("auto_switch_test_count", 20)) }
-    
+
 
     // Test Progress State
     var pingProgress by remember { mutableIntStateOf(0) }
@@ -259,7 +255,7 @@ fun NodesTab(onBack: () -> Unit) {
     val distinctEngines = remember(visibleNodes) {
         visibleNodes.map { it.engineType }.distinct().sorted()
     }
-    
+
     var emptyCustomGroups = remember { androidx.compose.runtime.mutableStateListOf<String>() }
 
     val distinctManualGroups = remember(visibleNodes, emptyCustomGroups.toList()) {
@@ -322,12 +318,12 @@ fun NodesTab(onBack: () -> Unit) {
             val newNodes = withContext(kotlinx.coroutines.Dispatchers.Default) { source.map { node ->
                 if (node.engineType == "NHN") return@map node
                 if (!node.uri.startsWith("vmess://") && !node.uri.contains("127.0.0.1")) return@map node
-                
+
                 var newUri = node.uri
                 var currentName = ""
                 var changedLocal = false
                 val isVmess = node.uri.startsWith("vmess://")
-                
+
                 if (isVmess) {
                     try {
                         val base64 = node.uri.substring(8)
@@ -350,7 +346,7 @@ fun NodesTab(onBack: () -> Unit) {
                     val config = com.mlmvpn.scanner.utils.VpnConfig.parseUri(node.uri)
                     val isLocal = config?.address == "127.0.0.1" || node.uri.contains("@127.0.0.1:")
                     currentName = config?.name ?: (if (node.uri.contains("#")) android.net.Uri.decode(node.uri.substringAfterLast("#")) else "")
-                    
+
                     if (isLocal && !currentName.startsWith("mlmvpn")) {
                         val randomSuffix = (10000..99999).random()
                         currentName = "mlmvpn-$randomSuffix"
@@ -380,7 +376,7 @@ fun NodesTab(onBack: () -> Unit) {
             }
         }
     }
-    
+
     // Fetch Real IP when VPN connects or active node changes
     LaunchedEffect(isRunning, connectedNodeId) {
         if (isRunning) {
@@ -474,7 +470,7 @@ fun NodesTab(onBack: () -> Unit) {
                 } else {
                     0
                 }
-                
+
                 if (sortState == 2) -comparison else comparison
             }
             visibleNodes.sortedWith(comparator)
@@ -1006,7 +1002,7 @@ fun NodesTab(onBack: () -> Unit) {
                 val semaphore = kotlinx.coroutines.sync.Semaphore(3)
 
                 // Check if we need RSTA
-                val needsRsta = targetNodes.any { 
+                val needsRsta = targetNodes.any {
                     val config = com.mlmvpn.scanner.utils.VpnConfig.parseUri(it.uri)
                     config?.address == "127.0.0.1"
                 }
@@ -1539,13 +1535,13 @@ fun NodesTab(onBack: () -> Unit) {
                             stringResource(R.string.nodes_no_config_available),
                             color = Ios.Label,
                             fontWeight = FontWeight.SemiBold,
-                            fontSize = 16.sp,
+                            style = MaterialTheme.typography.bodyLarge,
                         )
                         Spacer(Modifier.height(6.dp))
                         Text(
                             S(R.string.add_one_with_the_add_button_at),
                             color = Ios.SecondaryLabel,
-                            fontSize = 13.sp,
+                            style = MaterialTheme.typography.bodySmall,
                         )
                     }
                 }
@@ -1853,17 +1849,17 @@ suspend fun tlsPing(host: String, port: Int, sni: String): Int = kotlinx.corouti
         val start = System.currentTimeMillis()
         socket.soTimeout = 3000
         socket.connect(java.net.InetSocketAddress(host, port), 3000)
-        
+
         val sslSocketFactory = javax.net.ssl.SSLSocketFactory.getDefault() as javax.net.ssl.SSLSocketFactory
         val sslSocket = sslSocketFactory.createSocket(socket, host, port, true) as javax.net.ssl.SSLSocket
-        
+
         val params = sslSocket.sslParameters
         val sniHostName = javax.net.ssl.SNIHostName(if (sni.isNotEmpty()) sni else host)
         params.serverNames = listOf(sniHostName)
         sslSocket.sslParameters = params
-        
+
         sslSocket.startHandshake()
-        
+
         val end = System.currentTimeMillis()
         sslSocket.close()
         (end - start).toInt()
@@ -1878,36 +1874,36 @@ suspend fun realSniPing(host: String, port: Int, sni: String): Int = kotlinx.cor
         val start = System.currentTimeMillis()
         socket.soTimeout = 3000
         socket.connect(java.net.InetSocketAddress(host, port), 3000)
-        
+
         val sslSocketFactory = javax.net.ssl.SSLSocketFactory.getDefault() as javax.net.ssl.SSLSocketFactory
         val sslSocket = sslSocketFactory.createSocket(socket, host, port, true) as javax.net.ssl.SSLSocket
-        
+
         val params = sslSocket.sslParameters
         val sniHostName = javax.net.ssl.SNIHostName(if (sni.isNotEmpty()) sni else host)
         params.serverNames = listOf(sniHostName)
         sslSocket.sslParameters = params
-        
+
         sslSocket.startHandshake()
-        
+
         val out = sslSocket.outputStream
         val request = "GET / HTTP/1.1\r\nHost: $sni\r\nConnection: close\r\n\r\n"
         out.write(request.toByteArray())
         out.flush()
-        
+
         val input = sslSocket.inputStream.bufferedReader()
         val responseLine = input.readLine()
-        
+
         val end = System.currentTimeMillis()
         sslSocket.close()
-        
+
         if (responseLine == null) return@withContext -1
-        
-        if (responseLine.contains("404") || responseLine.contains("502") || 
-            responseLine.contains("530") || responseLine.contains("521") || 
+
+        if (responseLine.contains("404") || responseLine.contains("502") ||
+            responseLine.contains("530") || responseLine.contains("521") ||
             responseLine.contains("1004") || responseLine.contains("1000")) {
             return@withContext -1
         }
-        
+
         (end - start).toInt()
     } catch (e: Exception) {
         -1
@@ -1936,11 +1932,11 @@ suspend fun httpDelay(host: String, port: Int): Int = kotlinx.coroutines.withCon
         val start = System.currentTimeMillis()
         socket.soTimeout = 3000
         socket.connect(java.net.InetSocketAddress(host, port), 3000)
-        
+
         val output = socket.getOutputStream()
         output.write("GET / HTTP/1.1\r\nHost: $host\r\n\r\n".toByteArray())
         output.flush()
-        
+
         val input = socket.getInputStream()
         input.read() // read first byte
         val end = System.currentTimeMillis()
@@ -1955,7 +1951,7 @@ suspend fun realSpeedTest(config: com.mlmvpn.scanner.utils.VpnConfig, context: a
     try {
         val localPort = (20000..30000).random()
         val jsonConfig = com.mlmvpn.scanner.utils.XrayJsonGenerator.generateConfig(config, localPort, includeTun = false)
-        
+
         var speedStr = "Timeout"
         // A test core, in the test host process (XrayHosts): a node that panics Xray ends that
         // process, not the app.
@@ -1964,7 +1960,7 @@ suspend fun realSpeedTest(config: com.mlmvpn.scanner.utils.VpnConfig, context: a
             val c = com.mlmvpn.core.warp.VlessXrayInjector(0, quiet = true)
             if (!c.start(context, jsonConfig, localPort)) return@withContext "Error"
             core = c
-            
+
             // Give Xray time to start listening on localPort
             kotlinx.coroutines.delay(500)
 
@@ -1981,7 +1977,7 @@ suspend fun realSpeedTest(config: com.mlmvpn.scanner.utils.VpnConfig, context: a
 
             val startTime = System.currentTimeMillis()
             val response = client.newCall(request).execute()
-            
+
             if (response.isSuccessful) {
                 val bytes = response.body?.bytes()?.size ?: 0
                 val endTime = System.currentTimeMillis()
