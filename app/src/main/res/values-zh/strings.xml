@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Mlm Vpn</string>
+    <string name="app_name">Eternal VPN</string>
     <string name="cloud_no_account_connected">未连接账户</string>
     <string name="cloud_press_add_button">点击“添加”按钮获取配置。</string>
     <string name="cloud_add_account">添加账户</string>
@@ -259,7 +259,7 @@
     <string name="common_cancel">取消</string>
     <string name="common_close">关闭</string>
     <string name="about_title">关于我们</string>
-    <string name="about_desc">MLMVPN 这个名字来自其先进的核心架构：Multi-Layer Multiplexer（多层多路复用器）。我们没有依赖单一连接，而是设计了一个超智能的多层平台，突破了传统网络的界限。通过同时调度多个强大的反审查引擎，本应用会动态地把您的流量引向最快、最安全的可用路径。我们的使命是提供高度稳定、超高速的网络，在多个层面打破网络限制，带来无与伦比、真正自由的上网体验。</string>
+    <string name="about_desc">Eternal VPN 集成多种连接引擎，并会根据网络状况变化为您的流量选择合适的线路。本应用旨在帮助您在受限或不稳定的网络中保持连接。</string>
     <string name="about_telegram">Telegram</string>
     <string name="about_github">GitHub</string>
     <string name="about_youtube">YouTube</string>
@@ -763,7 +763,7 @@
     <string name="vpn_disconnected">已断开</string>
     <string name="vpn_kill_switch">断网保护</string>
     <string name="vpn_reconnect">重新连接</string>
-    <string name="tile_label_vpn">Mlm Vpn</string>
+    <string name="tile_label_vpn">Eternal VPN</string>
     <string name="tile_label_tunnel">Mlm Tunnel</string>
     <string name="wg_data_check">验证数据确实在传输</string>
     <string name="wg_data_check_hint">在报告成功之前等待真实流量通过。有些运营商上 WireGuard 握手能完成，但之后会丢弃所有数据包，所以仅凭握手什么也证明不了。关闭此项连接更快，但“已连接”的含义会打折扣。</string>

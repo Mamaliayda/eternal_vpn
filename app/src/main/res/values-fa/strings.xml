@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Mlm Vpn</string>
+    <string name="app_name">Eternal VPN</string>
     <string name="cloud_no_account_connected">هیچ اکانتی متصل نیست</string>
     <string name="cloud_press_add_button">برای دریافت کانفیگ، دکمه افزودن را بزنید.</string>
     <string name="cloud_add_account">افزودن اکانت</string>
@@ -262,7 +262,7 @@
     <string name="common_cancel">انصراف</string>
     <string name="common_close">بستن</string>
     <string name="about_title">درباره ما</string>
-    <string name="about_desc">نام MLMVPN برگرفته از معماری پیشرفته‌ی Multi-Layer Multiplexer است. ما مرزهای ارتباطات سنتی را درنوردیده‌ایم تا به جای تکیه بر یک اتصال ساده، یک پلتفرم فوق‌هوشمند و چندلایه خلق کنیم. این اپلیکیشن با ترکیب همزمان چندین موتور قدرتمند ضدسانسور، ترافیک شما را از امن‌ترین و پرسرعت‌ترین مسیرها هدایت می‌کند. رسالت ما، ارائه یک شبکه پایدار و فوق‌سریع است که محدودیت‌های اینترنتی را در هم می‌شکند و تجربه‌ای آزاد و بی‌نظیر از دنیای وب را برای شما به ارمغان می‌آورد.</string>
+    <string name="about_desc">Eternal VPN چندین موتور اتصال را کنار هم می‌آورد و با تغییر شرایط شبکه، مسیر مناسبی برای ترافیک شما انتخاب می‌کند. این برنامه برای کمک به حفظ اتصال در شبکه‌های محدود یا ناپایدار طراحی شده است.</string>
     <string name="about_telegram">تلگرام</string>
     <string name="about_github">گیت‌هاب</string>
     <string name="about_youtube">یوتیوب</string>
@@ -812,7 +812,7 @@
     <string name="vpn_disconnected">قطع</string>
     <string name="vpn_kill_switch">قطع‌کن اضطراری</string>
     <string name="vpn_reconnect">اتصال دوباره</string>
-    <string name="tile_label_vpn">Mlm Vpn</string>
+    <string name="tile_label_vpn">Eternal VPN</string>
     <string name="tile_label_tunnel">تونل Mlm</string>
     <string name="wg_data_check">بررسی عبور واقعی داده</string>
     <string name="wg_data_check_hint">پیش از اعلام موفقیت، صبر می‌کند تا ترافیک واقعی رد شود. دست‌دهی وایرگارد روی اپراتورهایی کامل می‌شود که بعد هر بستهٔ داده را دور می‌ریزند، پس دست‌دهی به‌تنهایی چیزی را ثابت نمی‌کند. خاموش‌کردنش اتصال را سریع‌تر می‌کند و معنای «متصل» را کم.</string>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Mlm Vpn</string>
+    <string name="app_name">Eternal VPN</string>
     <string name="cloud_no_account_connected">Аккаунт не подключён</string>
     <string name="cloud_press_add_button">Нажмите кнопку «Добавить», чтобы получить конфиги.</string>
     <string name="cloud_add_account">Добавить аккаунт</string>
@@ -259,7 +259,7 @@
     <string name="common_cancel">Отмена</string>
     <string name="common_close">Закрыть</string>
     <string name="about_title">О нас</string>
-    <string name="about_desc">Название MLMVPN происходит от его продвинутой архитектуры ядра — Multi-Layer Multiplexer (многоуровневый мультиплексор). Вместо одного соединения мы создали сверхумную многоуровневую платформу и раздвинули границы привычных сетевых технологий. Одновременно управляя несколькими мощными движками обхода цензуры, приложение динамически направляет ваш трафик по самым быстрым и безопасным доступным путям. Наша миссия — дать стабильную и сверхбыструю сеть, которая преодолевает интернет-ограничения на нескольких уровнях и дарит по-настоящему свободный интернет.</string>
+    <string name="about_desc">Eternal VPN объединяет несколько сетевых движков и выбирает подходящий маршрут для вашего трафика при изменении условий сети. Приложение создано, чтобы помогать сохранять подключение в ограниченных или нестабильных сетях.</string>
     <string name="about_telegram">Telegram</string>
     <string name="about_github">GitHub</string>
     <string name="about_youtube">YouTube</string>
@@ -763,7 +763,7 @@
     <string name="vpn_disconnected">Отключено</string>
     <string name="vpn_kill_switch">Kill switch</string>
     <string name="vpn_reconnect">Переподключить</string>
-    <string name="tile_label_vpn">Mlm Vpn</string>
+    <string name="tile_label_vpn">Eternal VPN</string>
     <string name="tile_label_tunnel">Mlm Tunnel</string>
     <string name="wg_data_check">Проверять, что данные действительно идут</string>
     <string name="wg_data_check_hint">Ждёт, пока пройдёт реальный трафик, прежде чем сообщить об успехе. У некоторых операторов рукопожатие WireGuard проходит, а затем все пакеты данных отбрасываются, поэтому одно рукопожатие ничего не доказывает. Без этой проверки подключение быстрее, но «подключено» значит меньше.</string>
