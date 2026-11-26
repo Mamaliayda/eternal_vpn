@@ -473,7 +473,6 @@ tasks.register('testWorker') {
     def script = file('../scripts/test-studio-worker.mjs')
     inputs.dir(srcDir)
     inputs.file(asset)
-    inputs.file(script).optional()
 
     doLast {
         if (!script.isFile()) {
