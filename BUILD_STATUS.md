@@ -4,6 +4,8 @@
 
 | Commit | Run | Result | Errors fixed / notes |
 |---|---:|---|---|
+| `3c570ffc48a5cd6a9b5f184070cee0573ba73561` | [45841774168](https://github.com/Mamaliayda/eternal_vpn/actions/runs/45841774168) | Red | `assembleDebug` failed: `QuickServersScreen.kt` lacked the `MaterialTheme` import after replacing direct font sizes with typography tokens. Added the import locally; follow-up build pending. |
+| `3c570ffc48a5cd6a9b5f184070cee0573ba73561` | [45841774148](https://github.com/Mamaliayda/eternal_vpn/actions/runs/45841774148) | Red | Release `compileReleaseKotlin` failed with the same unresolved `MaterialTheme` references in `QuickServersScreen.kt`. Added the import locally; follow-up build pending. |
 | `ec54f2bcfd9e353f9ac25c0d9954107abd75dd80` | [45833558380](https://github.com/Mamaliayda/eternal_vpn/actions/runs/45833558380) | Green | `assembleDebug` passed in 31m46s; debug APK and build-log artifacts uploaded. All steps succeeded. |
 | `ec54f2bcfd9e353f9ac25c0d9954107abd75dd80` | [45833558382](https://github.com/Mamaliayda/eternal_vpn/actions/runs/45833558382) | Green | Release APK build passed in 34m56s; APK/checksum artifacts uploaded. All steps succeeded. |
 | `838c8a6d7b1f79a48b9ae138c82b94c2d6854be3` | [45827635789](https://github.com/Mamaliayda/eternal_vpn/actions/runs/45827635789) | Green | `assembleDebug` passed in 20m19s; APK and build-log artifacts uploaded. All steps succeeded. |
@@ -28,4 +30,4 @@
 
 ## Current state
 
-The required wrapper files are present. `.github/workflows/build.yml` runs `assembleDebug` on pushes and uploads the Gradle log even when the build fails. Latest pushed commit `ec54f2b` passed both debug and release workflows; debug build logs and both APK artifact sets were uploaded. All build steps completed successfully; only non-blocking runner Node.js and missing `go.mod` cache warnings were reported. Local Gradle compilation is unavailable because Java is not installed in this sandbox.
+The required wrapper files are present. `.github/workflows/build.yml` runs `assembleDebug` on pushes and uploads the Gradle log even when the build fails. Latest pushed commit `3c570ff` failed both workflows because `QuickServersScreen.kt` was missing the `MaterialTheme` import for the new typography-token calls; the import has been added locally and the follow-up build is pending. The previous pushed commit `ec54f2b` passed both workflows. Local Gradle compilation is unavailable because Java is not installed in this sandbox.
