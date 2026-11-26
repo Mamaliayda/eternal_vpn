@@ -40,10 +40,34 @@ jobs:
         uses: gradle/actions/setup-gradle@v4
 
       - name: Build release APKs (test signing key)
-        run: >-
-          java -classpath gradle/wrapper/gradle-wrapper.jar
-          org.gradle.wrapper.GradleWrapperMain
-          :app:assembleRelease -PmlmTestSign --stacktrace
+        shell: bash
+        run: |
+          set +e
+          java -classpath gradle/wrapper/gradle-wrapper.jar org.gradle.wrapper.GradleWrapperMain :app:assembleRelease -PmlmTestSign --stacktrace --console=plain > build-output.log 2>&1
+          result=$?
+          cat build-output.log
+          exit "$result"
+
+      - name: Annotate build errors
+        if: failure()
+        shell: bash
+        run: |
+          if [[ -f build-output.log ]]; then
+            grep -E '(^e: |error:|FAILURE:|What went wrong:|Execution failed for task|Could not resolve)' build-output.log | head -40 | while IFS= read -r line; do
+              echo "::error::$line"
+            done
+          else
+            echo 'Gradle failed before producing a build log.' >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Upload build log for troubleshooting
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-build-log
+          path: build-output.log
+          if-no-files-found: ignore
+          retention-days: 7
 
       - name: Collect APKs and checksums
         shell: bash
