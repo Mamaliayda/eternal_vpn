@@ -4,6 +4,8 @@
 
 | Commit | Run | Result | Errors fixed / notes |
 |---|---:|---|---|
+| `77e083c2deec32a4516458f725694d8bc2092ca6` | [45822006548](https://github.com/Mamaliayda/eternal_vpn/actions/runs/45822006548) | Green | `assembleDebug` passed; debug APK and build-log artifacts uploaded. All steps succeeded. |
+| `77e083c2deec32a4516458f725694d8bc2092ca6` | [45822006511](https://github.com/Mamaliayda/eternal_vpn/actions/runs/45822006511) | Green | Release APK build passed in 32m49s; APK/checksum artifacts uploaded. All steps succeeded. |
 | `44d6bc44b65d7aebb0eeb06a93963c0871a19eee` | [45815196552](https://github.com/Mamaliayda/eternal_vpn/actions/runs/45815196552) | Green | `assembleDebug` passed in 19m38s; debug APK and build log artifacts uploaded; all steps succeeded. |
 | `44d6bc44b65d7aebb0eeb06a93963c0871a19eee` | [45815196575](https://github.com/Mamaliayda/eternal_vpn/actions/runs/45815196575) | Green | Release APK and checksum artifacts uploaded after a successful build (28m55s); all steps succeeded. |
 | `9b23fc077726c1be9707cb086f32864298e51a07` | [45810355819](https://github.com/Mamaliayda/eternal_vpn/actions/runs/45810355819) | Green | `assembleDebug` passed in 24m07s; APK and `assemble-debug-build-log` artifacts uploaded. All build steps succeeded. Log artifact download returned EOF from GitHub's artifact host; run summary and step results were inspected. |
@@ -22,4 +24,4 @@
 
 ## Current state
 
-The required wrapper files are present. `.github/workflows/build.yml` runs `assembleDebug` on pushes and uploads the Gradle log even when the build fails. Latest pushed commit `44d6bc4` passed both debug and release workflows; debug logs and both APK artifact sets were uploaded. Build-log artifact retrieval via GitHub's artifact host returned EOF on the prior run, but run summaries and all step outcomes were inspected. Local Gradle compilation is unavailable because Java is not installed in this sandbox.
+The required wrapper files are present. `.github/workflows/build.yml` runs `assembleDebug` on pushes and uploads the Gradle log even when the build fails. Latest pushed commit `77e083c` passed both debug and release workflows; debug build logs and both APK artifact sets were uploaded. All build steps completed successfully; only non-blocking runner Node.js and missing `go.mod` cache warnings were reported. Local Gradle compilation is unavailable because Java is not installed in this sandbox.

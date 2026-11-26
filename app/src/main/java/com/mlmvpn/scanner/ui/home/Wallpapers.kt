@@ -32,6 +32,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.LayoutDirection
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 import java.io.File
 
 /**
@@ -501,7 +502,7 @@ fun HomeWallpaper(
                     androidx.compose.foundation.layout.Box(
                         modifier = Modifier
                             .fillMaxSize()
-                            .background(Color.Black.copy(alpha = (blur / 100f) * 0.42f))
+                            .background(DuskTheme.navyNight.copy(alpha = (blur / 100f) * 0.42f))
                     )
                 }
                 return@BoxWithConstraints

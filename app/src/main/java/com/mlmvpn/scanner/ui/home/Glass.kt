@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 
 /**
  * Frosted glass, the way iOS does it: the card shows a blurred slice of what is actually behind
@@ -74,11 +75,11 @@ fun Modifier.frostedGlass(
     // sit on; the wash is the milky lift that makes it read as glass rather than as a dark pane.
     // Light lifts the glass; it does not invert it. Text is white in both appearances, so the
     // wash has a ceiling: past roughly 0.22 over a pale wallpaper white type stops reading.
-    val tint = if (dark) Color.Black.copy(alpha = 0.34f) else Color.Black.copy(alpha = 0.16f)
-    val wash = if (dark) Color.White.copy(alpha = 0.08f) else Color.White.copy(alpha = 0.20f)
+    val tint = if (dark) DuskTheme.navyNight.copy(alpha = 0.34f) else DuskTheme.navy.copy(alpha = 0.16f)
+    val wash = if (dark) DuskTheme.nightText.copy(alpha = 0.08f) else DuskTheme.white.copy(alpha = 0.20f)
     // iOS catches a light edge on the top rim of every glass surface. A single hairline border all
     // the way round is the cheap version of it and survives any corner radius.
-    val rim = if (dark) Color.White.copy(alpha = 0.15f) else Color.White.copy(alpha = 0.65f)
+    val rim = if (dark) DuskTheme.nightText.copy(alpha = 0.15f) else DuskTheme.white.copy(alpha = 0.65f)
 
     val backdrop = rememberFrostedBackdrop(
         widthPx = if (overWallpaper) windowW else 0,
@@ -89,8 +90,8 @@ fun Modifier.frostedGlass(
     // card sits at the screen's own value instead of punching a hole to the picture underneath.
     val scrim = when {
         !underScrim -> Color.Transparent
-        dark -> Color.Black.copy(alpha = 0.45f)
-        else -> Color.Black.copy(alpha = 0.20f)
+        dark -> DuskTheme.navyNight.copy(alpha = 0.45f)
+        else -> DuskTheme.navy.copy(alpha = 0.20f)
     }
 
     // The blur setting has to reach the glass as well, and not only through the backdrop bitmap.
@@ -127,12 +128,12 @@ fun Modifier.frostedGlass(
                 if (scrim.alpha > 0f) drawRect(scrim)
                 drawRect(tint)
                 drawRect(wash)
-                if (hazeAlpha > 0f) drawRect(Color.Black.copy(alpha = hazeAlpha))
+                if (hazeAlpha > 0f) drawRect(DuskTheme.navyNight.copy(alpha = hazeAlpha))
             } else {
                 // No backdrop to refract: an ordinary translucent card.
                 drawRect(
-                    if (dark) Color(0xFF1C1C1E).copy(alpha = 0.92f)
-                    else Color(0xFF3A3A3C).copy(alpha = 0.94f)
+                    if (dark) DuskTheme.nightCard.copy(alpha = 0.92f)
+                    else DuskTheme.cream.copy(alpha = 0.94f)
                 )
             }
         }

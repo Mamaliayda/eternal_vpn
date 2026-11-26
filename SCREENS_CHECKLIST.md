@@ -1,6 +1,6 @@
 # Eternal VPN — screen redesign checklist
 
-> **Progress: 193 / 1203 complete** — each checked row is fully migrated; unverified routes and states remain unchecked.
+> **Progress: 201 / 1203 complete** — each checked row is fully migrated; unverified routes and states remain unchecked.
 
 > Inventory generated from Kotlin source on 2026-11-26. A row is considered migrated only after its visible composition, nested states, and overlays are reviewed against the Soft Dusk tokens. Shared theme inheritance alone does **not** count as a completed visual redesign.
 
@@ -297,7 +297,7 @@ Found 230 screen-like public/internal composables across 133 Kotlin files (the f
 - [ ] `IranConfigsScreen` — `com/mlmvpn/scanner/ui/home/BuiltInProfilesScreen.kt`
 - [ ] `DomainFrontingScreen` — `com/mlmvpn/scanner/ui/home/BuiltInProfilesScreen.kt`
 - [ ] `BuiltInProfileScreen` — `com/mlmvpn/scanner/ui/home/BuiltInProfilesScreen.kt`
-- [ ] `HomeScreen` — `com/mlmvpn/scanner/ui/home/HomeScreen.kt`
+- [x] `HomeScreen` — `com/mlmvpn/scanner/ui/home/HomeScreen.kt`
 - [ ] `IosModalHost` — `com/mlmvpn/scanner/ui/home/ModalHost.kt`
 ### lan
 
@@ -929,8 +929,8 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 - [x] `Modifier` — `com/mlmvpn/scanner/ui/home/AppIcon.kt`
 - [ ] `isDark` — `com/mlmvpn/scanner/ui/home/Appearance.kt`
 - [ ] `ProfileRow` — `com/mlmvpn/scanner/ui/home/BuiltInProfilesScreen.kt`
-- [ ] `DriftingLights` — `com/mlmvpn/scanner/ui/home/DriftingLights.kt`
-- [ ] `Modifier` — `com/mlmvpn/scanner/ui/home/Glass.kt`
+- [x] `DriftingLights` — `com/mlmvpn/scanner/ui/home/DriftingLights.kt`
+- [x] `Modifier` — `com/mlmvpn/scanner/ui/home/Glass.kt`
 - [x] `GlassDock` — `com/mlmvpn/scanner/ui/home/GlassDock.kt`
 - [x] `HomeConnectionWidget` — `com/mlmvpn/scanner/ui/home/HomeConnectionWidget.kt`
 - [x] `Header` — `com/mlmvpn/scanner/ui/home/HomeConnectionWidget.kt`
@@ -948,9 +948,9 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 - [x] `FolderOverlay` — `com/mlmvpn/scanner/ui/home/HomeFolders.kt`
 - [x] `FolderName` — `com/mlmvpn/scanner/ui/home/HomeFolders.kt`
 - [x] `HomeStatusStrip` — `com/mlmvpn/scanner/ui/home/HomeScreen.kt`
-- [ ] `BoardGrid` — `com/mlmvpn/scanner/ui/home/HomeScreen.kt`
+- [x] `BoardGrid` — `com/mlmvpn/scanner/ui/home/HomeScreen.kt`
 - [ ] `rememberSlotPosition` — `com/mlmvpn/scanner/ui/home/HomeScreen.kt`
-- [ ] `BoardCell` — `com/mlmvpn/scanner/ui/home/HomeScreen.kt`
+- [x] `BoardCell` — `com/mlmvpn/scanner/ui/home/HomeScreen.kt`
 - [x] `RemoveBadge` — `com/mlmvpn/scanner/ui/home/HomeScreen.kt`
 - [x] `PageDots` — `com/mlmvpn/scanner/ui/home/HomeScreen.kt`
 - [x] `SearchPill` — `com/mlmvpn/scanner/ui/home/HomeSearch.kt`
@@ -960,9 +960,10 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 - [x] `TileResults` — `com/mlmvpn/scanner/ui/home/HomeSearch.kt`
 - [x] `SettingsResults` — `com/mlmvpn/scanner/ui/home/HomeSearch.kt`
 - [x] `Modifier` — `com/mlmvpn/scanner/ui/home/HomeSearch.kt`
-- [ ] `rememberIsTelevision` — `com/mlmvpn/scanner/ui/home/TvFocus.kt`
-- [ ] `HomeWallpaper` — `com/mlmvpn/scanner/ui/home/Wallpapers.kt`
-- [ ] `rememberFrostedBackdrop` — `com/mlmvpn/scanner/ui/home/Wallpapers.kt`
+- [x] `rememberIsTelevision` — `com/mlmvpn/scanner/ui/home/TvFocus.kt`
+- [x] `HomeWallpaper` — `com/mlmvpn/scanner/ui/home/Wallpapers.kt`
+- [x] `rememberFrostedBackdrop` — `com/mlmvpn/scanner/ui/home/Wallpapers.kt`
+> Audit note: the literal colors in `Wallpapers.PRESETS` are curated user-selectable wallpaper artwork, not component styling; the glass DstIn black/white values are alpha masks.
 ### lan
 
 - [ ] `LanDiagram` — `com/mlmvpn/scanner/ui/lan/LanDiagram.kt`

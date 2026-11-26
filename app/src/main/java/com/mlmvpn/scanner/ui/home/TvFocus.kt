@@ -17,7 +17,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.onFocusChanged
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.KeyEventType
 import androidx.compose.ui.input.key.key
@@ -25,6 +24,7 @@ import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.input.key.type
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 
 // =================================================================================================
 // Reaching the app with a remote control.
@@ -78,7 +78,7 @@ fun rememberIsTelevision(): Boolean {
  */
 fun Modifier.tvFocusable(
     enabled: Boolean = true,
-    cornerRadius: Int = 22,
+    cornerRadius: Int = DuskTheme.focusCornerRadius,
     onPress: () -> Unit,
 ): Modifier = composed {
     if (!enabled) return@composed this
@@ -103,10 +103,10 @@ fun Modifier.tvFocusable(
             if (focused) {
                 Modifier
                     .clip(RoundedCornerShape(cornerRadius.dp))
-                    .background(Color.White.copy(alpha = 0.14f))
+                    .background(DuskTheme.accent.copy(alpha = 0.16f))
                     .border(
                         width = 2.dp,
-                        color = Color.White.copy(alpha = 0.85f),
+                        color = DuskTheme.accent,
                         shape = RoundedCornerShape(cornerRadius.dp),
                     )
             } else {

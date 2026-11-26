@@ -26,6 +26,7 @@ import kotlinx.coroutines.delay
 import kotlin.math.abs
 import kotlin.math.floor
 import kotlin.math.sin
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 
 /**
  * The moving lights along the bottom of the connect screen.
@@ -314,7 +315,7 @@ fun washLights(first: Color, second: Color): List<Color> = listOf(
     first.copy(alpha = 0.42f),
     second.copy(alpha = 0.40f),
     blend(first, second).copy(alpha = 0.34f),
-    Color.White.copy(alpha = 0.34f)
+    DuskTheme.white.copy(alpha = 0.34f)
 )
 
 /**
@@ -331,7 +332,7 @@ fun strongWashLights(first: Color, second: Color): List<Color> = listOf(
     first.copy(alpha = 0.82f),
     second.copy(alpha = 0.78f),
     blend(first, second).copy(alpha = 0.62f),
-    Color.White.copy(alpha = 0.30f)
+    DuskTheme.white.copy(alpha = 0.30f)
 )
 
 private fun blend(from: Color, to: Color) = Color(
