@@ -37,8 +37,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Download
@@ -46,6 +44,7 @@ import androidx.compose.material.icons.filled.Remove
 import androidx.compose.material.icons.filled.Shield
 import androidx.compose.material.icons.filled.Upload
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -66,7 +65,6 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.BlurEffect
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.TileMode
 import androidx.compose.ui.graphics.graphicsLayer
@@ -81,14 +79,13 @@ import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 import com.mlmvpn.scanner.R
 import com.mlmvpn.scanner.ui.LocalSystemBottomPadding
 import com.mlmvpn.scanner.ui.LocalSystemTopPadding
@@ -526,8 +523,8 @@ private fun HomeStatusStrip(
     editMode: Boolean,
     onDone: () -> Unit,
 ) {
-    val green = Color(0xFF34C759)
-    val muted = Color(0xFFB9BDC2)
+    val green = DuskTheme.success
+    val muted = DuskTheme.muted
 
     Row(
         modifier = Modifier
@@ -550,8 +547,8 @@ private fun HomeStatusStrip(
                 Spacer(Modifier.width(8.dp))
                 Row(
                     modifier = Modifier
-                        .clip(RoundedCornerShape(12.dp))
-                        .background(Color.White.copy(alpha = 0.14f))
+                        .clip(DuskTheme.glyphShape)
+                        .background(DuskTheme.raisedSurface.copy(alpha = 0.18f))
                         .pointerInput(Unit) { detectTapGestures { com.mlmvpn.scanner.utils.Donate.open(context) } }
                         .padding(horizontal = 9.dp, vertical = 3.dp),
                     verticalAlignment = Alignment.CenterVertically,
@@ -559,14 +556,14 @@ private fun HomeStatusStrip(
                     Icon(
                         Icons.Default.Favorite,
                         contentDescription = null,
-                        tint = Color(0xFFFF2D55),
+                        tint = DuskTheme.coral,
                         modifier = Modifier.size(12.dp),
                     )
                     Spacer(Modifier.width(4.dp))
                     Text(
                         com.mlmvpn.scanner.store.tr("حمایت", "Support"),
-                        color = Color.White,
-                        fontSize = 12.sp,
+                        color = DuskTheme.nightText,
+                        style = MaterialTheme.typography.labelSmall,
                         fontWeight = FontWeight.SemiBold,
                     )
                 }
@@ -576,12 +573,12 @@ private fun HomeStatusStrip(
         if (editMode) {
             Text(
                 text = stringResource(R.string.home_edit_done),
-                color = Color.White,
-                fontSize = 14.sp,
+                color = DuskTheme.nightText,
+                style = MaterialTheme.typography.labelMedium,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier
-                    .clip(RoundedCornerShape(16.dp))
-                    .background(Color.White.copy(alpha = 0.16f))
+                    .clip(DuskTheme.chartShape)
+                    .background(DuskTheme.raisedSurface.copy(alpha = 0.2f))
                     .pointerInput(Unit) { detectTapGestures { onDone() } }
                     .padding(horizontal = 16.dp, vertical = 5.dp),
             )
@@ -597,22 +594,20 @@ private fun HomeStatusStrip(
                 Text(
                     String.format("%.1f", trafficDown),
                     color = if (isRunning) green else muted,
-                    fontSize = 12.sp,
-                    fontFamily = FontFamily.Monospace,
+                    style = MaterialTheme.typography.labelSmall.copy(fontFeatureSettings = "tnum"),
                 )
                 Spacer(Modifier.width(12.dp))
                 Icon(
                     Icons.Default.Upload,
                     contentDescription = null,
-                    tint = if (isRunning) Color(0xFF5AC8FA) else muted,
+                    tint = if (isRunning) DuskTheme.secondary else muted,
                     modifier = Modifier.size(13.dp),
                 )
                 Spacer(Modifier.width(3.dp))
                 Text(
                     String.format("%.1f", trafficUp),
-                    color = if (isRunning) Color(0xFF5AC8FA) else muted,
-                    fontSize = 12.sp,
-                    fontFamily = FontFamily.Monospace,
+                    color = if (isRunning) DuskTheme.secondary else muted,
+                    style = MaterialTheme.typography.labelSmall.copy(fontFeatureSettings = "tnum"),
                 )
             }
         }
@@ -977,14 +972,14 @@ private fun RemoveBadge(size: Dp, onClick: () -> Unit) {
                 .align(corner)
                 .absoluteOffset(x = -(d * 0.32f), y = -(d * 0.32f))
                 .size(d)
-                .shadow(elevation = 2.dp, shape = CircleShape, clip = false)
-                .clip(CircleShape)
-                .background(Color(0xFF8E8E93).copy(alpha = 0.96f))
+                .shadow(elevation = DuskTheme.badgeElevation, shape = DuskTheme.circleShape, clip = false)
+                .clip(DuskTheme.circleShape)
+                .background(DuskTheme.disabled.copy(alpha = 0.96f))
                 .semantics { contentDescription = description }
                 .pointerInput(Unit) { detectTapGestures { onClick() } },
             contentAlignment = Alignment.Center,
         ) {
-            Icon(Icons.Default.Remove, contentDescription = null, tint = Color.White, modifier = Modifier.size(d * 0.72f))
+            Icon(Icons.Default.Remove, contentDescription = null, tint = DuskTheme.nightText, modifier = Modifier.size(d * 0.72f))
         }
     }
 }
@@ -1007,9 +1002,9 @@ internal fun PageDots(count: Int, current: Int, modifier: Modifier = Modifier) {
                 modifier = Modifier
                     .padding(horizontal = 4.dp)
                     .size(7.dp)
-                    .clip(RoundedCornerShape(50))
+                    .clip(DuskTheme.controlShape)
                     .background(
-                        Color.White.copy(alpha = if (i == current) 0.85f else 0.28f)
+                        DuskTheme.nightText.copy(alpha = if (i == current) 0.85f else 0.28f)
                     )
             )
         }

@@ -30,6 +30,7 @@ import androidx.compose.material3.Text
 import com.mlmvpn.scanner.ui.theme.DuskCard
 import com.mlmvpn.scanner.ui.theme.DuskPill
 import com.mlmvpn.scanner.ui.theme.DuskTheme
+import com.mlmvpn.scanner.ui.theme.LocalDuskSnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -114,10 +115,13 @@ internal fun HomeConnectionWidget(
         if (res.resultCode == Activity.RESULT_OK && m != null) WidgetConnectService.start(context, m, null)
     }
     val scope = androidx.compose.runtime.rememberCoroutineScope()
+    val snackbarHostState = LocalDuskSnackbarHostState.current
     fun connectLast() {
         val m = last ?: return
         if (com.mlmvpn.scanner.data.ScanGuard.isScanBusy()) {
-            android.widget.Toast.makeText(context, tr("یک اسکن در حال اجراست؛ اول آن را متوقف کنید", "A scan is running; stop it first"), android.widget.Toast.LENGTH_LONG).show()
+            scope.launch {
+                snackbarHostState.showSnackbar(tr("یک اسکن در حال اجراست؛ اول آن را متوقف کنید", "A scan is running; stop it first"))
+            }
             return
         }
         // VpnService.prepare is a call into the system that took seconds on a busy phone, with the

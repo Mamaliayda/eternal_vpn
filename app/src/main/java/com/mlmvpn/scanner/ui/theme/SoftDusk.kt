@@ -19,8 +19,12 @@ import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Snackbar
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -94,13 +98,21 @@ object DuskTheme {
     val controlShape = RoundedCornerShape(50)
     val tileShape = RoundedCornerShape(22.dp)
     val glyphShape = RoundedCornerShape(12.dp)
+    val squircleShape = RoundedCornerShape(percent = 26)
     val circleShape = CircleShape
     val chartShape = RoundedCornerShape(16.dp)
     val navIconSize = 44.dp
     val bottomNavInset = 128.dp
     val iconSize = 22.dp
     val cardElevation = 8.dp
+    val tileElevation = 6.dp
+    val badgeElevation = 2.dp
+    val indicatorElevation = 3.dp
     val focusCornerRadius = 24
+}
+
+val LocalDuskSnackbarHostState = staticCompositionLocalOf<SnackbarHostState> {
+    error("DuskSnackbarHostState is only available inside MlmVpnTheme")
 }
 
 /** Vazirmatn is used as a single bilingual family so mixed Persian, Latin and IP text remains consistent. */
@@ -187,6 +199,26 @@ fun DuskPill(
                 style = MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.SemiBold),
             )
         }
+    }
+}
+
+@Composable
+fun DuskSnackbarHost(
+    hostState: SnackbarHostState,
+    modifier: Modifier = Modifier,
+) {
+    SnackbarHost(
+        hostState = hostState,
+        modifier = modifier,
+    ) { data ->
+        Snackbar(
+            snackbarData = data,
+            shape = DuskTheme.cardShape,
+            containerColor = DuskTheme.raisedSurface,
+            contentColor = DuskTheme.onSurface,
+            actionColor = DuskTheme.primary,
+            dismissActionContentColor = DuskTheme.muted,
+        )
     }
 }
 

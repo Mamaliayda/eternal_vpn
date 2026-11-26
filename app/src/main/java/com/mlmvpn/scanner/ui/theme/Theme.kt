@@ -1,7 +1,16 @@
 package com.mlmvpn.scanner.ui.theme
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import com.mlmvpn.scanner.ui.home.Appearance
 import com.mlmvpn.scanner.ui.settings.Ios
@@ -66,9 +75,22 @@ val ConnectedRed: Color
 @Composable
 fun MlmVpnTheme(content: @Composable () -> Unit) {
     val dark = Appearance.isDark()
+    val snackbarHostState = remember { SnackbarHostState() }
     MaterialTheme(
         colorScheme = duskColorScheme(dark),
         typography = iranSansTypography(MaterialTheme.typography),
-        content = content,
-    )
+    ) {
+        CompositionLocalProvider(LocalDuskSnackbarHostState provides snackbarHostState) {
+            Box(Modifier.fillMaxSize()) {
+                content()
+                DuskSnackbarHost(
+                    hostState = snackbarHostState,
+                    modifier = Modifier
+                        .align(Alignment.BottomCenter)
+                        .navigationBarsPadding()
+                        .padding(horizontal = DuskTheme.space4, vertical = DuskTheme.space3),
+                )
+            }
+        }
+    }
 }

@@ -9,15 +9,14 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.platform.LocalLayoutDirection
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.absoluteOffset
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -38,13 +37,13 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 
 /**
  * Apple's icons are not rounded rectangles but squircles -- a continuous curve with no visible
@@ -52,7 +51,7 @@ import androidx.compose.ui.unit.sp
  * at the naive 20% reads noticeably squarer than the real thing. 26% is the closest a circular
  * corner gets to the same optical weight at these sizes.
  */
-private val Squircle = RoundedCornerShape(percent = 26)
+private val Squircle get() = DuskTheme.squircleShape
 
 /**
  * The white label under an icon has to stay readable over ten different backdrops AND over
@@ -60,7 +59,7 @@ private val Squircle = RoundedCornerShape(percent = 26)
  * scrim behind every caption, which would look nothing like a home screen.
  */
 private val LabelShadow = Shadow(
-    color = Color.Black.copy(alpha = 0.65f),
+    color = DuskTheme.navyNight.copy(alpha = 0.65f),
     offset = Offset(0f, 1f),
     blurRadius = 4f,
 )
@@ -124,16 +123,16 @@ private fun TextTag(text: String, size: Dp, modifier: Modifier = Modifier) {
         modifier = modifier
             .absoluteOffset(y = -(h * 0.45f))
             .height(h)
-            .shadow(elevation = 2.dp, shape = RoundedCornerShape(50), clip = false)
-            .clip(RoundedCornerShape(50))
-            .background(Color(0xFFFF3B30))
+            .shadow(elevation = DuskTheme.badgeElevation, shape = DuskTheme.controlShape, clip = false)
+            .clip(DuskTheme.controlShape)
+            .background(DuskTheme.error)
             .padding(horizontal = 7.dp),
         contentAlignment = Alignment.Center,
     ) {
         Text(
             text = text,
-            color = Color.White,
-            fontSize = (h.value * 0.58f).sp,
+            color = DuskTheme.onError,
+            style = MaterialTheme.typography.labelSmall,
             fontWeight = FontWeight.Bold,
             maxLines = 1,
         )
@@ -152,16 +151,16 @@ private fun CountBadge(count: Int, size: Dp, modifier: Modifier = Modifier) {
             .absoluteOffset(x = d * 0.34f, y = -(d * 0.34f))
             .height(d)
             .widthIn(min = d)
-            .shadow(elevation = 2.dp, shape = CircleShape, clip = false)
-            .clip(RoundedCornerShape(50))
-            .background(Color(0xFFFF3B30))
+            .shadow(elevation = DuskTheme.badgeElevation, shape = DuskTheme.circleShape, clip = false)
+            .clip(DuskTheme.controlShape)
+            .background(DuskTheme.error)
             .padding(horizontal = 5.dp),
         contentAlignment = Alignment.Center,
     ) {
         Text(
             text = if (count > 99) "99+" else count.toString(),
-            color = Color.White,
-            fontSize = (d.value * 0.58f).sp,
+            color = DuskTheme.onError,
+            style = MaterialTheme.typography.labelSmall,
             fontWeight = FontWeight.SemiBold,
             maxLines = 1,
         )
@@ -189,14 +188,14 @@ private fun RunningLamp(size: Dp, modifier: Modifier = Modifier) {
             // which would push the lamp INTO the tile instead of out of it.
             .absoluteOffset(x = -(dot * 0.22f), y = -(dot * 0.22f))
             .size(dot)
-            .shadow(elevation = 3.dp, shape = CircleShape, clip = false)
-            .clip(CircleShape)
-            .background(Color(0xFF0B0B0C))
+            .shadow(elevation = DuskTheme.indicatorElevation, shape = DuskTheme.circleShape, clip = false)
+            .clip(DuskTheme.circleShape)
+            .background(DuskTheme.navyNight)
             .padding(2.dp)
-            .clip(CircleShape)
+            .clip(DuskTheme.circleShape)
             .background(
                 Brush.verticalGradient(
-                    listOf(Color(0xFF5AF08A), Color(0xFF2FBF5C))
+                    listOf(DuskTheme.success.copy(alpha = 0.76f), DuskTheme.success)
                 )
             ),
     )
@@ -213,7 +212,7 @@ internal fun TileFace(
     modifier: Modifier = Modifier,
     shadow: Boolean = true,
 ) {
-    val elevation = if (shadow) 6.dp else 0.dp
+    val elevation = if (shadow) DuskTheme.tileElevation else 0.dp
     if (app.imageRes != null) {
         // Finished artwork: it brings its own background and its own corner shape, so nothing is
         // drawn behind it and it is not clipped. Clipping would shave the corners of a silhouette
@@ -245,8 +244,8 @@ internal fun TileFace(
             .background(
                 Brush.verticalGradient(
                     listOf(
-                        lerp(app.tint, Color.White, 0.18f),
-                        lerp(app.tint, Color.Black, 0.14f),
+                        lerp(app.tint, DuskTheme.nightText, 0.18f),
+                        lerp(app.tint, DuskTheme.navyNight, 0.14f),
                     )
                 )
             ),
@@ -255,7 +254,7 @@ internal fun TileFace(
         Icon(
             imageVector = app.glyphRes?.let { tileVector(it) } ?: app.icon,
             contentDescription = null,
-            tint = Color.White,
+            tint = DuskTheme.nightText,
             modifier = Modifier.size(size * app.glyphScale),
         )
     }
@@ -346,9 +345,12 @@ fun AppIconCell(
 internal fun TileCaption(text: String) {
     Text(
         text = text,
-        color = Color.White,
-        fontSize = (11f * Appearance.labelScale / 100f).sp,
-        fontWeight = FontWeight.Medium,
+        color = DuskTheme.nightText,
+        style = MaterialTheme.typography.labelSmall.copy(
+            fontSize = (11f * Appearance.labelScale / 100f).sp,
+            fontWeight = FontWeight.Medium,
+            shadow = LabelShadow,
+        ),
         maxLines = 1,
         overflow = TextOverflow.Ellipsis,
         textAlign = TextAlign.Center,

@@ -1,6 +1,6 @@
 # Eternal VPN — screen redesign checklist
 
-> **Progress: 158 / 1203 complete** — each checked row is fully migrated; unverified routes and states remain unchecked.
+> **Progress: 181 / 1203 complete** — each checked row is fully migrated; unverified routes and states remain unchecked.
 
 > Inventory generated from Kotlin source on 2026-11-26. A row is considered migrated only after its visible composition, nested states, and overlays are reviewed against the Soft Dusk tokens. Shared theme inheritance alone does **not** count as a completed visual redesign.
 
@@ -916,43 +916,43 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 ### home
 
 - [ ] `ids` — `com/mlmvpn/scanner/ui/home/ActiveEngines.kt`
-- [ ] `AppIconTile` — `com/mlmvpn/scanner/ui/home/AppIcon.kt`
-- [ ] `TextTag` — `com/mlmvpn/scanner/ui/home/AppIcon.kt`
-- [ ] `CountBadge` — `com/mlmvpn/scanner/ui/home/AppIcon.kt`
-- [ ] `RunningLamp` — `com/mlmvpn/scanner/ui/home/AppIcon.kt`
-- [ ] `TileFace` — `com/mlmvpn/scanner/ui/home/AppIcon.kt`
-- [ ] `tileVector` — `com/mlmvpn/scanner/ui/home/AppIcon.kt`
-- [ ] `tilePainter` — `com/mlmvpn/scanner/ui/home/AppIcon.kt`
-- [ ] `AppIconCell` — `com/mlmvpn/scanner/ui/home/AppIcon.kt`
-- [ ] `TileCaption` — `com/mlmvpn/scanner/ui/home/AppIcon.kt`
-- [ ] `TileLamp` — `com/mlmvpn/scanner/ui/home/AppIcon.kt`
-- [ ] `Modifier` — `com/mlmvpn/scanner/ui/home/AppIcon.kt`
+- [x] `AppIconTile` — `com/mlmvpn/scanner/ui/home/AppIcon.kt`
+- [x] `TextTag` — `com/mlmvpn/scanner/ui/home/AppIcon.kt`
+- [x] `CountBadge` — `com/mlmvpn/scanner/ui/home/AppIcon.kt`
+- [x] `RunningLamp` — `com/mlmvpn/scanner/ui/home/AppIcon.kt`
+- [x] `TileFace` — `com/mlmvpn/scanner/ui/home/AppIcon.kt`
+- [x] `tileVector` — `com/mlmvpn/scanner/ui/home/AppIcon.kt`
+- [x] `tilePainter` — `com/mlmvpn/scanner/ui/home/AppIcon.kt`
+- [x] `AppIconCell` — `com/mlmvpn/scanner/ui/home/AppIcon.kt`
+- [x] `TileCaption` — `com/mlmvpn/scanner/ui/home/AppIcon.kt`
+- [x] `TileLamp` — `com/mlmvpn/scanner/ui/home/AppIcon.kt`
+- [x] `Modifier` — `com/mlmvpn/scanner/ui/home/AppIcon.kt`
 - [ ] `isDark` — `com/mlmvpn/scanner/ui/home/Appearance.kt`
 - [ ] `ProfileRow` — `com/mlmvpn/scanner/ui/home/BuiltInProfilesScreen.kt`
 - [ ] `DriftingLights` — `com/mlmvpn/scanner/ui/home/DriftingLights.kt`
 - [ ] `Modifier` — `com/mlmvpn/scanner/ui/home/Glass.kt`
 - [x] `GlassDock` — `com/mlmvpn/scanner/ui/home/GlassDock.kt`
 - [x] `HomeConnectionWidget` — `com/mlmvpn/scanner/ui/home/HomeConnectionWidget.kt`
-- [ ] `Header` — `com/mlmvpn/scanner/ui/home/HomeConnectionWidget.kt`
+- [x] `Header` — `com/mlmvpn/scanner/ui/home/HomeConnectionWidget.kt`
 - [x] `StatusPill` — `com/mlmvpn/scanner/ui/home/HomeConnectionWidget.kt`
-- [ ] `Footer` — `com/mlmvpn/scanner/ui/home/HomeConnectionWidget.kt`
-- [ ] `Stat` — `com/mlmvpn/scanner/ui/home/HomeConnectionWidget.kt`
-- [ ] `tabular` — `com/mlmvpn/scanner/ui/home/HomeConnectionWidget.kt`
-- [ ] `LiveChart` — `com/mlmvpn/scanner/ui/home/HomeConnectionWidget.kt`
-- [ ] `PowerButton` — `com/mlmvpn/scanner/ui/home/HomeConnectionWidget.kt`
-- [ ] `DuskThemeHills` — `com/mlmvpn/scanner/ui/home/HomeConnectionWidget.kt`
-- [ ] `RemoveBadge` — `com/mlmvpn/scanner/ui/home/HomeConnectionWidget.kt`
+- [x] `Footer` — `com/mlmvpn/scanner/ui/home/HomeConnectionWidget.kt`
+- [x] `Stat` — `com/mlmvpn/scanner/ui/home/HomeConnectionWidget.kt`
+- [x] `tabular` — `com/mlmvpn/scanner/ui/home/HomeConnectionWidget.kt`
+- [x] `LiveChart` — `com/mlmvpn/scanner/ui/home/HomeConnectionWidget.kt`
+- [x] `PowerButton` — `com/mlmvpn/scanner/ui/home/HomeConnectionWidget.kt`
+- [x] `DuskThemeHills` — `com/mlmvpn/scanner/ui/home/HomeConnectionWidget.kt`
+- [x] `RemoveBadge` — `com/mlmvpn/scanner/ui/home/HomeConnectionWidget.kt`
 - [ ] `DragLayer` — `com/mlmvpn/scanner/ui/home/HomeDrag.kt`
 - [ ] `FolderTile` — `com/mlmvpn/scanner/ui/home/HomeFolders.kt`
 - [ ] `folderTitle` — `com/mlmvpn/scanner/ui/home/HomeFolders.kt`
 - [ ] `FolderOverlay` — `com/mlmvpn/scanner/ui/home/HomeFolders.kt`
 - [ ] `FolderName` — `com/mlmvpn/scanner/ui/home/HomeFolders.kt`
-- [ ] `HomeStatusStrip` — `com/mlmvpn/scanner/ui/home/HomeScreen.kt`
+- [x] `HomeStatusStrip` — `com/mlmvpn/scanner/ui/home/HomeScreen.kt`
 - [ ] `BoardGrid` — `com/mlmvpn/scanner/ui/home/HomeScreen.kt`
 - [ ] `rememberSlotPosition` — `com/mlmvpn/scanner/ui/home/HomeScreen.kt`
 - [ ] `BoardCell` — `com/mlmvpn/scanner/ui/home/HomeScreen.kt`
-- [ ] `RemoveBadge` — `com/mlmvpn/scanner/ui/home/HomeScreen.kt`
-- [ ] `PageDots` — `com/mlmvpn/scanner/ui/home/HomeScreen.kt`
+- [x] `RemoveBadge` — `com/mlmvpn/scanner/ui/home/HomeScreen.kt`
+- [x] `PageDots` — `com/mlmvpn/scanner/ui/home/HomeScreen.kt`
 - [ ] `SearchPill` — `com/mlmvpn/scanner/ui/home/HomeSearch.kt`
 - [ ] `HomeSearch` — `com/mlmvpn/scanner/ui/home/HomeSearch.kt`
 - [ ] `SearchField` — `com/mlmvpn/scanner/ui/home/HomeSearch.kt`
@@ -1476,7 +1476,7 @@ Toast / short transient feedback call sites (OS-rendered surfaces; validate app 
 - [ ] `com/mlmvpn/scanner/ui/game/GameBoostScreen.kt` — Toast × 4
 - [ ] `com/mlmvpn/scanner/ui/geph/GephUi.kt` — Toast × 1
 - [ ] `com/mlmvpn/scanner/ui/github/GithubTunnelScreen.kt` — Toast × 1
-- [ ] `com/mlmvpn/scanner/ui/home/HomeConnectionWidget.kt` — Toast × 1
+- [x] `com/mlmvpn/scanner/ui/home/HomeConnectionWidget.kt` — Toast × 1 (replaced with DuskSnackbar)
 - [ ] `com/mlmvpn/scanner/ui/lantern/LanternUi.kt` — Toast × 1
 - [ ] `com/mlmvpn/scanner/ui/mae/MaePages.kt` — Toast × 2
 - [ ] `com/mlmvpn/scanner/ui/mae/MaeScreen.kt` — Toast × 1
