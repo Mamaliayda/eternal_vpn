@@ -1,6 +1,6 @@
 # Eternal VPN — screen redesign checklist
 
-> **Progress: 149 / 1203 complete** — each checked row is fully migrated; unverified routes and states remain unchecked.
+> **Progress: 150 / 1203 complete** — each checked row is fully migrated; unverified routes and states remain unchecked.
 
 > Inventory generated from Kotlin source on 2026-11-26. A row is considered migrated only after its visible composition, nested states, and overlays are reviewed against the Soft Dusk tokens. Shared theme inheritance alone does **not** count as a completed visual redesign.
 
@@ -159,7 +159,7 @@ Found 230 screen-like public/internal composables across 133 Kotlin files (the f
 - [ ] `rememberOnScreen` — `com/mlmvpn/scanner/ui/ScreenVisibility.kt`
 ### SplashScreen.kt
 
-- [ ] `SplashScreen` — `com/mlmvpn/scanner/ui/SplashScreen.kt`
+- [x] `SplashScreen` — `com/mlmvpn/scanner/ui/SplashScreen.kt`
 ### VpnGateCountryScreen.kt
 
 - [ ] `VpnGateCountryScreen` — `com/mlmvpn/scanner/ui/VpnGateCountryScreen.kt`

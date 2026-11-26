@@ -14,6 +14,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -30,7 +31,6 @@ import androidx.compose.ui.graphics.drawscope.translate
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.mlmvpn.scanner.ui.theme.*
 import kotlinx.coroutines.delay
 import kotlin.math.sin
@@ -142,9 +142,9 @@ fun SplashScreen(onFinished: () -> Unit) {
                 .background(
                     Brush.verticalGradient(
                         listOf(
-                            Color(0xFF0A101C).copy(alpha = 0.90f),
-                            Color(0xFF0A101C).copy(alpha = 0.72f),
-                            Color(0xFF0A101C).copy(alpha = 0.90f),
+                            DuskTheme.navyNight.copy(alpha = 0.90f),
+                            DuskTheme.navyNight.copy(alpha = 0.72f),
+                            DuskTheme.navyNight.copy(alpha = 0.90f),
                         )
                     )
                 )
@@ -162,7 +162,7 @@ fun SplashScreen(onFinished: () -> Unit) {
                     // parallax instead of looking like uniform snow.
                     val len = 6f + s.speed * 22f * launch.value
                     drawLine(
-                        color = Color(0xFFAECBFA).copy(alpha = a),
+                        color = DuskTheme.nightBlue.copy(alpha = a),
                         start = Offset(s.x * size.width, y),
                         end = Offset(s.x * size.width, y + len),
                         strokeWidth = s.radius,
@@ -175,7 +175,7 @@ fun SplashScreen(onFinished: () -> Unit) {
 
             // The mark's colour is read once, above the Canvas: the palette resolves against
             // the Appearance setting now, and a DrawScope cannot invoke composables.
-            val markColor = Primary
+            val markColor = DuskTheme.nightBlue
             Canvas(modifier = Modifier.size(240.dp)) {
                 val cx = size.width / 2f
                 val cy = size.height / 2f
@@ -234,10 +234,9 @@ fun SplashScreen(onFinished: () -> Unit) {
 
             Text(
                 text = S(R.string.with_mlmvpn_stay_connected_always_whatever_the),
-                color = TextPrimary,
-                fontSize = 15.sp,
+                color = DuskTheme.nightText,
+                style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.Medium,
-                lineHeight = 24.sp,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .padding(horizontal = 36.dp)
@@ -326,9 +325,9 @@ private fun DrawScope.drawFlame(s: Float, ignite: Float, flicker: Float, launch:
         close()
     }
 
-    drawPath(teardrop(w, len), color = Color(0xFFFF8A2B).copy(alpha = 0.85f * ignite))
-    drawPath(teardrop(w * 0.58f, len * 0.66f), color = Color(0xFFFFD23F).copy(alpha = 0.95f * ignite))
-    drawPath(teardrop(w * 0.26f, len * 0.34f), color = Color(0xFFFFF4CC).copy(alpha = ignite))
+    drawPath(teardrop(w, len), color = DuskTheme.coral.copy(alpha = 0.85f * ignite))
+    drawPath(teardrop(w * 0.58f, len * 0.66f), color = DuskTheme.rose.copy(alpha = 0.95f * ignite))
+    drawPath(teardrop(w * 0.26f, len * 0.34f), color = DuskTheme.cream.copy(alpha = ignite))
 
     // Sparks falling away from the nozzle.
     val sparks = 5
@@ -337,7 +336,7 @@ private fun DrawScope.drawFlame(s: Float, ignite: Float, flicker: Float, launch:
         val y = base + len * (0.6f + t * 0.9f)
         val x = (if (i % 2 == 0) 1f else -1f) * w * (0.25f + t * 0.75f)
         drawCircle(
-            color = Color(0xFFFFB258).copy(alpha = (1f - t) * 0.8f * ignite),
+            color = DuskTheme.coral.copy(alpha = (1f - t) * 0.8f * ignite),
             radius = s * 0.10f * (1f - t),
             center = Offset(x, y),
         )
