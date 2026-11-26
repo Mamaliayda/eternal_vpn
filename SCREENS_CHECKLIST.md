@@ -1,6 +1,6 @@
 # Eternal VPN — screen redesign checklist
 
-> **Progress: 181 / 1203 complete** — each checked row is fully migrated; unverified routes and states remain unchecked.
+> **Progress: 193 / 1203 complete** — each checked row is fully migrated; unverified routes and states remain unchecked.
 
 > Inventory generated from Kotlin source on 2026-11-26. A row is considered migrated only after its visible composition, nested states, and overlays are reviewed against the Soft Dusk tokens. Shared theme inheritance alone does **not** count as a completed visual redesign.
 
@@ -942,24 +942,24 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 - [x] `PowerButton` — `com/mlmvpn/scanner/ui/home/HomeConnectionWidget.kt`
 - [x] `DuskThemeHills` — `com/mlmvpn/scanner/ui/home/HomeConnectionWidget.kt`
 - [x] `RemoveBadge` — `com/mlmvpn/scanner/ui/home/HomeConnectionWidget.kt`
-- [ ] `DragLayer` — `com/mlmvpn/scanner/ui/home/HomeDrag.kt`
-- [ ] `FolderTile` — `com/mlmvpn/scanner/ui/home/HomeFolders.kt`
-- [ ] `folderTitle` — `com/mlmvpn/scanner/ui/home/HomeFolders.kt`
-- [ ] `FolderOverlay` — `com/mlmvpn/scanner/ui/home/HomeFolders.kt`
-- [ ] `FolderName` — `com/mlmvpn/scanner/ui/home/HomeFolders.kt`
+- [x] `DragLayer` — `com/mlmvpn/scanner/ui/home/HomeDrag.kt`
+- [x] `FolderTile` — `com/mlmvpn/scanner/ui/home/HomeFolders.kt`
+- [x] `folderTitle` — `com/mlmvpn/scanner/ui/home/HomeFolders.kt`
+- [x] `FolderOverlay` — `com/mlmvpn/scanner/ui/home/HomeFolders.kt`
+- [x] `FolderName` — `com/mlmvpn/scanner/ui/home/HomeFolders.kt`
 - [x] `HomeStatusStrip` — `com/mlmvpn/scanner/ui/home/HomeScreen.kt`
 - [ ] `BoardGrid` — `com/mlmvpn/scanner/ui/home/HomeScreen.kt`
 - [ ] `rememberSlotPosition` — `com/mlmvpn/scanner/ui/home/HomeScreen.kt`
 - [ ] `BoardCell` — `com/mlmvpn/scanner/ui/home/HomeScreen.kt`
 - [x] `RemoveBadge` — `com/mlmvpn/scanner/ui/home/HomeScreen.kt`
 - [x] `PageDots` — `com/mlmvpn/scanner/ui/home/HomeScreen.kt`
-- [ ] `SearchPill` — `com/mlmvpn/scanner/ui/home/HomeSearch.kt`
-- [ ] `HomeSearch` — `com/mlmvpn/scanner/ui/home/HomeSearch.kt`
-- [ ] `SearchField` — `com/mlmvpn/scanner/ui/home/HomeSearch.kt`
-- [ ] `SearchResults` — `com/mlmvpn/scanner/ui/home/HomeSearch.kt`
-- [ ] `TileResults` — `com/mlmvpn/scanner/ui/home/HomeSearch.kt`
-- [ ] `SettingsResults` — `com/mlmvpn/scanner/ui/home/HomeSearch.kt`
-- [ ] `Modifier` — `com/mlmvpn/scanner/ui/home/HomeSearch.kt`
+- [x] `SearchPill` — `com/mlmvpn/scanner/ui/home/HomeSearch.kt`
+- [x] `HomeSearch` — `com/mlmvpn/scanner/ui/home/HomeSearch.kt`
+- [x] `SearchField` — `com/mlmvpn/scanner/ui/home/HomeSearch.kt`
+- [x] `SearchResults` — `com/mlmvpn/scanner/ui/home/HomeSearch.kt`
+- [x] `TileResults` — `com/mlmvpn/scanner/ui/home/HomeSearch.kt`
+- [x] `SettingsResults` — `com/mlmvpn/scanner/ui/home/HomeSearch.kt`
+- [x] `Modifier` — `com/mlmvpn/scanner/ui/home/HomeSearch.kt`
 - [ ] `rememberIsTelevision` — `com/mlmvpn/scanner/ui/home/TvFocus.kt`
 - [ ] `HomeWallpaper` — `com/mlmvpn/scanner/ui/home/Wallpapers.kt`
 - [ ] `rememberFrostedBackdrop` — `com/mlmvpn/scanner/ui/home/Wallpapers.kt`

@@ -26,14 +26,13 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -56,7 +55,6 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.graphicsLayer
@@ -70,7 +68,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextRange
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.TextFieldValue
@@ -78,15 +75,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 import com.mlmvpn.scanner.R
 import kotlinx.coroutines.launch
 
 /** The folder tile's own squircle -- the same curve every app tile uses. */
-internal val FolderShape = RoundedCornerShape(percent = 26)
+internal val FolderShape get() = DuskTheme.squircleShape
 
-/** An open folder's panel: iOS's large rounded square. */
-private val PanelShape = RoundedCornerShape(36.dp)
+/** An open folder's panel: the shared Soft Dusk card silhouette. */
+private val PanelShape get() = DuskTheme.cardShape
 
 /** An open folder holds three by three icons a page, the way iOS does on a phone. */
 private const val FOLDER_COLUMNS = 3
@@ -232,7 +229,7 @@ internal fun FolderOverlay(
             modifier = Modifier
                 .fillMaxSize()
                 .graphicsLayer { alpha = progress.value }
-                .background(Color.Black.copy(alpha = 0.24f))
+                .background(DuskTheme.navyNight.copy(alpha = 0.24f))
                 .pointerInput(open) {
                     if (open) detectTapGestures { if (titleFocused) finishRename() else onClose() }
                 },
@@ -298,13 +295,13 @@ internal fun FolderOverlay(
             if (editMode) {
                 Text(
                     text = stringResource(R.string.home_edit_done),
-                    color = Color.White,
-                    fontSize = 14.sp,
+                    color = DuskTheme.nightText,
+                    style = MaterialTheme.typography.labelMedium,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier
                         .graphicsLayer { alpha = progress.value }
-                        .clip(RoundedCornerShape(16.dp))
-                        .background(Color.White.copy(alpha = 0.16f))
+                        .clip(DuskTheme.chartShape)
+                        .background(DuskTheme.raisedSurface.copy(alpha = 0.2f))
                         .pointerInput(Unit) {
                             detectTapGestures {
                                 finishRename()
@@ -430,8 +427,8 @@ internal fun FolderOverlay(
                 Spacer(Modifier.height(12.dp))
                 Text(
                     text = stringResource(R.string.home_folder_drag_out_hint),
-                    color = Color.White.copy(alpha = 0.78f),
-                    fontSize = 12.sp,
+                    color = DuskTheme.nightVariantText,
+                    style = MaterialTheme.typography.labelSmall,
                     textAlign = TextAlign.Center,
                     modifier = Modifier
                         .widthIn(max = panelW)
@@ -460,12 +457,11 @@ private fun FolderName(
     onHold: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val style = TextStyle(
-        color = Color.White,
-        fontSize = 26.sp,
+    val style = MaterialTheme.typography.headlineSmall.copy(
+        color = DuskTheme.nightText,
         fontWeight = FontWeight.Bold,
         textAlign = TextAlign.Center,
-        shadow = Shadow(Color.Black.copy(alpha = 0.55f), Offset(0f, 1f), 6f),
+        shadow = Shadow(DuskTheme.navyNight.copy(alpha = 0.55f), Offset(0f, 1f), 6f),
     )
     if (!editable) {
         Text(
@@ -483,8 +479,8 @@ private fun FolderName(
     Row(
         modifier = modifier
             .widthIn(min = 160.dp, max = maxWidth)
-            .clip(RoundedCornerShape(14.dp))
-            .background(Color.White.copy(alpha = 0.16f))
+            .clip(DuskTheme.glyphShape)
+            .background(DuskTheme.raisedSurface.copy(alpha = 0.2f))
             .padding(start = 16.dp, end = 6.dp, top = 6.dp, bottom = 6.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -493,7 +489,7 @@ private fun FolderName(
             onValueChange = onValueChange,
             singleLine = true,
             textStyle = style.copy(shadow = null),
-            cursorBrush = SolidColor(Color.White),
+            cursorBrush = SolidColor(DuskTheme.nightText),
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
             keyboardActions = KeyboardActions(onDone = { onDone() }),
             modifier = Modifier
@@ -509,13 +505,13 @@ private fun FolderName(
                 Box(
                     modifier = Modifier
                         .size(20.dp)
-                        .clip(CircleShape)
-                        .background(Color.White.copy(alpha = 0.35f))
+                        .clip(DuskTheme.circleShape)
+                        .background(DuskTheme.disabled.copy(alpha = 0.35f))
                         .semantics { contentDescription = clearLabel }
                         .pointerInput(Unit) { detectTapGestures { onClear() } },
                     contentAlignment = Alignment.Center,
                 ) {
-                    Icon(Icons.Default.Close, contentDescription = null, tint = Color(0xFF2C2C2E), modifier = Modifier.size(13.dp))
+                    Icon(Icons.Default.Close, contentDescription = null, tint = DuskTheme.onSurface, modifier = Modifier.size(13.dp))
                 }
             }
         }

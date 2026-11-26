@@ -27,8 +27,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -38,11 +36,11 @@ import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
@@ -58,7 +56,6 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.graphicsLayer
@@ -78,7 +75,6 @@ import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -87,13 +83,13 @@ import androidx.compose.ui.text.style.TextDirection
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.mlmvpn.scanner.store.tr
 import com.mlmvpn.scanner.ui.LocalSystemTopPadding
-import com.mlmvpn.scanner.ui.settings.Ios
+import com.mlmvpn.scanner.ui.settings.Hue
 import com.mlmvpn.scanner.ui.settings.SettingsEntry
 import com.mlmvpn.scanner.ui.settings.SettingsGlyph
 import com.mlmvpn.scanner.ui.settings.SettingsIndex
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 
 // =================================================================================================
 // Search on the home screen, the way an iPhone has it: tap the dots under the board (or the
@@ -200,8 +196,8 @@ internal fun SearchPill(
                     .pointerInput(Unit) { detectTapGestures { live() } }
                     .padding(horizontal = 10.dp, vertical = 3.dp)
                     .height(24.dp)
-                    .frostedGlass(RoundedCornerShape(50), overWallpaper = true, underScrim = false)
-                    .tvFocusable(enabled = focusable, cornerRadius = 12, onPress = { live() })
+                    .frostedGlass(DuskTheme.controlShape, overWallpaper = true, underScrim = false)
+                    .tvFocusable(enabled = focusable, cornerRadius = DuskTheme.focusCornerRadius, onPress = { live() })
                     .semantics(mergeDescendants = true) {
                         contentDescription = label
                         role = Role.Button
@@ -212,7 +208,7 @@ internal fun SearchPill(
                 Icon(
                     Icons.Default.Search,
                     contentDescription = null,
-                    tint = Color.White.copy(alpha = 0.9f),
+                    tint = DuskTheme.nightText.copy(alpha = 0.9f),
                     modifier = Modifier.size(13.dp),
                 )
                 if (pageCount > 1) {
@@ -222,13 +218,13 @@ internal fun SearchPill(
                             modifier = Modifier
                                 .padding(horizontal = 3.5.dp)
                                 .size(6.5.dp)
-                                .clip(CircleShape)
-                                .background(Color.White.copy(alpha = if (i == current) 0.9f else 0.35f)),
+                                .clip(DuskTheme.circleShape)
+                                .background(DuskTheme.nightText.copy(alpha = if (i == current) 0.9f else 0.35f)),
                         )
                     }
                 } else {
                     Spacer(Modifier.width(5.dp))
-                    Text(label, color = Color.White, fontSize = 12.sp, fontWeight = FontWeight.Medium, maxLines = 1)
+                    Text(label, color = DuskTheme.nightText, style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Medium, maxLines = 1)
                 }
             }
         }
@@ -317,7 +313,6 @@ internal fun HomeSearch(
         keyboard?.show()
     }
 
-    val dark = Appearance.isDark()
     val slide = with(LocalDensity.current) { 18.dp.toPx() }
     Box(modifier = Modifier.fillMaxSize().graphicsLayer { alpha = progress.value }) {
         // The wallpaper, frosted, over the whole home screen; a tap on it puts the keyboard away.
@@ -325,7 +320,7 @@ internal fun HomeSearch(
             modifier = Modifier
                 .fillMaxSize()
                 .frostedGlass(RectangleShape, overWallpaper = true, underScrim = false)
-                .background(Color.Black.copy(alpha = if (dark) 0.26f else 0.16f))
+                .background(DuskTheme.navyNight.copy(alpha = 0.22f))
                 .pointerInput(open) { if (open) detectTapGestures { putAwayKeyboard() } },
         )
         Box(
@@ -403,15 +398,15 @@ private fun SearchField(
             modifier = Modifier
                 .weight(1f)
                 .height(42.dp)
-                .clip(RoundedCornerShape(14.dp))
-                .background(Color.White.copy(alpha = 0.17f))
+                .clip(DuskTheme.chartShape)
+                .background(DuskTheme.raisedSurface.copy(alpha = 0.2f))
                 .padding(start = 10.dp, end = 4.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Icon(
                 Icons.Default.Search,
                 contentDescription = null,
-                tint = Color.White.copy(alpha = 0.72f),
+                tint = DuskTheme.nightText.copy(alpha = 0.72f),
                 modifier = Modifier.size(19.dp),
             )
             Spacer(Modifier.width(6.dp))
@@ -422,13 +417,12 @@ private fun SearchField(
                 // The direction follows what is typed -- an English name reads left to right, a
                 // Persian one right to left -- but the place does not: it stays beside the
                 // magnifier, where the hint was, whichever language the app is in.
-                textStyle = TextStyle(
-                    color = Color.White,
-                    fontSize = 17.sp,
+                textStyle = MaterialTheme.typography.bodyLarge.copy(
+                    color = DuskTheme.nightText,
                     textDirection = TextDirection.Content,
                     textAlign = if (rtl) TextAlign.Right else TextAlign.Left,
                 ),
-                cursorBrush = SolidColor(Color.White),
+                cursorBrush = SolidColor(DuskTheme.nightText),
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search, autoCorrect = false),
                 keyboardActions = KeyboardActions(onSearch = { onSubmit() }),
                 modifier = Modifier
@@ -438,7 +432,7 @@ private fun SearchField(
                 decorationBox = { inner ->
                     Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.CenterStart) {
                         if (query.isEmpty()) {
-                            Text(hint, color = Color.White.copy(alpha = 0.55f), fontSize = 17.sp, maxLines = 1)
+                            Text(hint, color = DuskTheme.nightVariantText, style = MaterialTheme.typography.bodyLarge, maxLines = 1)
                         }
                         // The whole width of the well, so the alignment above has room to act: left to
                         // its own size the field is ten letters wide, and English sat halfway along it.
@@ -451,7 +445,7 @@ private fun SearchField(
                 Box(
                     modifier = Modifier
                         .size(32.dp)
-                        .clip(CircleShape)
+                        .clip(DuskTheme.circleShape)
                         .pointerInput(Unit) { detectTapGestures { liveQuery("") } }
                         .semantics {
                             contentDescription = clearLabel
@@ -462,11 +456,11 @@ private fun SearchField(
                     Box(
                         modifier = Modifier
                             .size(18.dp)
-                            .clip(CircleShape)
-                            .background(Color.White.copy(alpha = 0.42f)),
+                            .clip(DuskTheme.circleShape)
+                            .background(DuskTheme.disabled.copy(alpha = 0.35f)),
                         contentAlignment = Alignment.Center,
                     ) {
-                        Icon(Icons.Default.Close, contentDescription = null, tint = Color(0xFF2C2C2E), modifier = Modifier.size(12.dp))
+                        Icon(Icons.Default.Close, contentDescription = null, tint = DuskTheme.onSurface, modifier = Modifier.size(12.dp))
                     }
                 }
             }
@@ -474,12 +468,12 @@ private fun SearchField(
         Spacer(Modifier.width(6.dp))
         Text(
             tr("لغو", "Cancel"),
-            color = Color.White,
-            fontSize = 17.sp,
+            color = DuskTheme.nightText,
+            style = MaterialTheme.typography.bodyLarge,
             maxLines = 1,
             modifier = Modifier
-                .clip(RoundedCornerShape(10.dp))
-                .pressable(cornerRadius = 10, role = Role.Button, onOpen = onCancel)
+                .clip(DuskTheme.glyphShape)
+                .pressable(cornerRadius = DuskTheme.focusCornerRadius, role = Role.Button, onOpen = onCancel)
                 .padding(horizontal = 8.dp, vertical = 8.dp),
         )
     }
@@ -526,8 +520,8 @@ private fun SearchResults(
             query.isBlank() -> Unit
             tiles.isEmpty() && rows.isEmpty() -> Text(
                 tr("نتیجه‌ای پیدا نشد", "No results"),
-                color = Color.White.copy(alpha = 0.78f),
-                fontSize = 20.sp,
+                color = DuskTheme.nightVariantText,
+                style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.SemiBold,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth().padding(start = 24.dp, end = 24.dp, top = 56.dp),
@@ -541,7 +535,7 @@ private fun SearchResults(
                             .fillMaxWidth()
                             .padding(horizontal = 20.dp, vertical = 12.dp)
                             .height(0.8.dp)
-                            .background(Color.White.copy(alpha = 0.30f)),
+                            .background(DuskTheme.outline.copy(alpha = 0.38f)),
                     )
                 }
                 if (rows.isNotEmpty()) SettingsResults(rows, query, onRow)
@@ -562,8 +556,8 @@ private fun TileResults(tiles: List<TileHit>, liveEngines: Set<String>, onApp: (
                             Column(
                                 modifier = Modifier
                                     .weight(1f)
-                                    .clip(RoundedCornerShape(16.dp))
-                                    .pressable(cornerRadius = 16, onOpen = { onApp(hit.app) })
+                                    .clip(DuskTheme.chartShape)
+                                    .pressable(cornerRadius = DuskTheme.focusCornerRadius, onOpen = { onApp(hit.app) })
                                     .padding(top = 8.dp, bottom = 8.dp, start = 2.dp, end = 2.dp),
                                 horizontalAlignment = Alignment.CenterHorizontally,
                             ) {
@@ -579,8 +573,8 @@ private fun TileResults(tiles: List<TileHit>, liveEngines: Set<String>, onApp: (
                                 hit.folder?.let { f ->
                                     Text(
                                         folderTitle(f),
-                                        color = Color.White.copy(alpha = 0.7f),
-                                        fontSize = 10.sp,
+                                        color = DuskTheme.nightVariantText,
+                                        style = MaterialTheme.typography.labelSmall,
                                         maxLines = 1,
                                         overflow = TextOverflow.Ellipsis,
                                         textAlign = TextAlign.Center,
@@ -605,7 +599,7 @@ private fun SettingsResults(rows: List<SettingsEntry>, query: String, onRow: (Se
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp)
-            .frostedGlass(RoundedCornerShape(22.dp), overWallpaper = true, underScrim = false),
+            .frostedGlass(DuskTheme.cardShape, overWallpaper = true, underScrim = false),
     ) {
         rows.forEachIndexed { i, entry ->
             key(entry) {
@@ -615,10 +609,22 @@ private fun SettingsResults(rows: List<SettingsEntry>, query: String, onRow: (Se
                             .fillMaxWidth()
                             .padding(start = 57.dp)
                             .height(0.5.dp)
-                            .background(Ios.Separator),
+                            .background(DuskTheme.outline.copy(alpha = 0.32f)),
                     )
                 }
                 val title = entry.title.current(context)
+                val glyphTint = when (entry.hue) {
+                    Hue.BLUE -> DuskTheme.primary
+                    Hue.GREEN -> DuskTheme.success
+                    Hue.INDIGO -> DuskTheme.indigo
+                    Hue.ORANGE, Hue.CLOUDFLARE -> DuskTheme.cloudflareOrange
+                    Hue.PINK -> DuskTheme.accent
+                    Hue.PURPLE -> DuskTheme.purple
+                    Hue.RED -> DuskTheme.error
+                    Hue.TEAL -> DuskTheme.secondary
+                    Hue.YELLOW -> DuskTheme.accent
+                    Hue.GRAY -> DuskTheme.muted
+                }
                 // An arrow, not iOS's ›: in the app's font that one is a speck that reads as a comma.
                 val path = (listOf(settings) + entry.path.map { it.current(context) })
                     .joinToString(if (rtl) " ← " else " → ")
@@ -631,20 +637,20 @@ private fun SettingsResults(rows: List<SettingsEntry>, query: String, onRow: (Se
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Start,
                 ) {
-                    SettingsGlyph(entry.icon(), entry.hue.color)
+                    SettingsGlyph(entry.icon(), glyphTint)
                     Spacer(Modifier.width(12.dp))
                     Column(modifier = Modifier.weight(1f)) {
                         Text(
                             bolded(title, query),
-                            color = Color.White,
-                            fontSize = 16.sp,
+                            color = DuskTheme.onSurface,
+                            style = MaterialTheme.typography.bodyLarge,
                             maxLines = 2,
                             overflow = TextOverflow.Ellipsis,
                         )
                         Text(
                             path,
-                            color = Ios.SecondaryLabel,
-                            fontSize = 12.sp,
+                            color = DuskTheme.muted,
+                            style = MaterialTheme.typography.labelSmall,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
                         )
@@ -652,7 +658,7 @@ private fun SettingsResults(rows: List<SettingsEntry>, query: String, onRow: (Se
                     Icon(
                         Icons.Default.ChevronRight,
                         contentDescription = null,
-                        tint = Ios.Chevron,
+                        tint = DuskTheme.primary,
                         // Points the way it goes, which is leftward in Persian.
                         modifier = Modifier.size(18.dp).scale(scaleX = if (rtl) -1f else 1f, scaleY = 1f),
                     )
