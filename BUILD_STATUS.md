@@ -4,6 +4,8 @@
 
 | Commit | Run | Result | Errors fixed / notes |
 |---|---:|---|---|
+| `838c8a6d7b1f79a48b9ae138c82b94c2d6854be3` | [45827635789](https://github.com/Mamaliayda/eternal_vpn/actions/runs/45827635789) | Green | `assembleDebug` passed in 20m19s; APK and build-log artifacts uploaded. All steps succeeded. |
+| `838c8a6d7b1f79a48b9ae138c82b94c2d6854be3` | [45827635730](https://github.com/Mamaliayda/eternal_vpn/actions/runs/45827635730) | Green | Release APK build passed in 34m19s; APK/checksum artifacts uploaded. All steps succeeded. |
 | `77e083c2deec32a4516458f725694d8bc2092ca6` | [45822006548](https://github.com/Mamaliayda/eternal_vpn/actions/runs/45822006548) | Green | `assembleDebug` passed; debug APK and build-log artifacts uploaded. All steps succeeded. |
 | `77e083c2deec32a4516458f725694d8bc2092ca6` | [45822006511](https://github.com/Mamaliayda/eternal_vpn/actions/runs/45822006511) | Green | Release APK build passed in 32m49s; APK/checksum artifacts uploaded. All steps succeeded. |
 | `44d6bc44b65d7aebb0eeb06a93963c0871a19eee` | [45815196552](https://github.com/Mamaliayda/eternal_vpn/actions/runs/45815196552) | Green | `assembleDebug` passed in 19m38s; debug APK and build log artifacts uploaded; all steps succeeded. |
@@ -24,4 +26,4 @@
 
 ## Current state
 
-The required wrapper files are present. `.github/workflows/build.yml` runs `assembleDebug` on pushes and uploads the Gradle log even when the build fails. Latest pushed commit `77e083c` passed both debug and release workflows; debug build logs and both APK artifact sets were uploaded. All build steps completed successfully; only non-blocking runner Node.js and missing `go.mod` cache warnings were reported. Local Gradle compilation is unavailable because Java is not installed in this sandbox.
+The required wrapper files are present. `.github/workflows/build.yml` runs `assembleDebug` on pushes and uploads the Gradle log even when the build fails. Latest pushed commit `838c8a6` passed both debug and release workflows; debug build logs and both APK artifact sets were uploaded. All build steps completed successfully; only non-blocking runner Node.js and missing `go.mod` cache warnings were reported. Local Gradle compilation is unavailable because Java is not installed in this sandbox.

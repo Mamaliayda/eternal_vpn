@@ -23,6 +23,7 @@ import androidx.compose.material.icons.filled.Speed
 import androidx.compose.material.icons.filled.Storage
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -37,7 +38,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.rememberCoroutineScope
 import kotlinx.coroutines.launch
@@ -50,12 +50,12 @@ import com.mlmvpn.scanner.mitm.MitmProfile
 import com.mlmvpn.scanner.models.VpnNode
 import com.mlmvpn.scanner.ui.NodeNotice
 import com.mlmvpn.scanner.ui.mitm.MitmSetupCard
-import com.mlmvpn.scanner.ui.settings.Ios
 import com.mlmvpn.scanner.ui.settings.IosScreen
 import com.mlmvpn.scanner.ui.settings.SettingsActionRow
 import com.mlmvpn.scanner.ui.settings.SettingsFooter
 import com.mlmvpn.scanner.ui.settings.SettingsGroup
 import com.mlmvpn.scanner.ui.settings.SettingsSectionHeader
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 import com.mlmvpn.scanner.utils.LocalPort
 import com.mlmvpn.scanner.utils.NetworkSettings
 
@@ -290,19 +290,19 @@ private fun ProfileRow(
             when {
                 busy -> CircularProgressIndicator(
                     modifier = Modifier.size(18.dp),
-                    color = Ios.Blue,
+                    color = DuskTheme.primary,
                     strokeWidth = 2.dp,
                 )
                 connected -> Icon(
                     Icons.Default.CheckCircle,
                     contentDescription = null,
-                    tint = Ios.Green,
+                    tint = DuskTheme.success,
                     modifier = Modifier.size(20.dp),
                 )
                 else -> Icon(
                     Icons.Default.Storage,
                     contentDescription = null,
-                    tint = Ios.SecondaryLabel,
+                    tint = DuskTheme.muted,
                     modifier = Modifier.size(18.dp),
                 )
             }
@@ -312,8 +312,8 @@ private fun ProfileRow(
         Column(modifier = Modifier.weight(1f)) {
             Text(
                 node.name,
-                color = Ios.Label,
-                fontSize = 15.sp,
+                color = DuskTheme.onSurface,
+                style = MaterialTheme.typography.bodyLarge,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
             )
@@ -335,13 +335,13 @@ private fun ProfileRow(
                     }
                 ),
                 color = when {
-                    connected -> Ios.Green
-                    measuredLine != null && verdict?.level == IranProfileTester.Level.OK -> Ios.Green
-                    measuredLine != null && verdict?.level == IranProfileTester.Level.PARTIAL -> Ios.Orange
-                    measuredLine != null -> Ios.Red
-                    else -> Ios.SecondaryLabel
+                    connected -> DuskTheme.success
+                    measuredLine != null && verdict?.level == IranProfileTester.Level.OK -> DuskTheme.success
+                    measuredLine != null && verdict?.level == IranProfileTester.Level.PARTIAL -> DuskTheme.accent
+                    measuredLine != null -> DuskTheme.error
+                    else -> DuskTheme.muted
                 },
-                fontSize = 12.sp,
+                style = MaterialTheme.typography.bodySmall,
                 fontWeight = if (connected) FontWeight.Medium else FontWeight.Normal,
             )
         }
@@ -349,7 +349,7 @@ private fun ProfileRow(
         Icon(
             Icons.Default.PowerSettingsNew,
             contentDescription = null,
-            tint = if (connected) Ios.Red else Ios.SecondaryLabel,
+            tint = if (connected) DuskTheme.error else DuskTheme.muted,
             modifier = Modifier.size(18.dp),
         )
     }

@@ -1,6 +1,6 @@
 # Eternal VPN — screen redesign checklist
 
-> **Progress: 201 / 1203 complete** — each checked row is fully migrated; unverified routes and states remain unchecked.
+> **Progress: 202 / 1203 complete** — each checked row is fully migrated; unverified routes and states remain unchecked.
 
 > Inventory generated from Kotlin source on 2026-11-26. A row is considered migrated only after its visible composition, nested states, and overlays are reviewed against the Soft Dusk tokens. Shared theme inheritance alone does **not** count as a completed visual redesign.
 
@@ -928,7 +928,7 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 - [x] `TileLamp` — `com/mlmvpn/scanner/ui/home/AppIcon.kt`
 - [x] `Modifier` — `com/mlmvpn/scanner/ui/home/AppIcon.kt`
 - [ ] `isDark` — `com/mlmvpn/scanner/ui/home/Appearance.kt`
-- [ ] `ProfileRow` — `com/mlmvpn/scanner/ui/home/BuiltInProfilesScreen.kt`
+- [x] `ProfileRow` — `com/mlmvpn/scanner/ui/home/BuiltInProfilesScreen.kt`
 - [x] `DriftingLights` — `com/mlmvpn/scanner/ui/home/DriftingLights.kt`
 - [x] `Modifier` — `com/mlmvpn/scanner/ui/home/Glass.kt`
 - [x] `GlassDock` — `com/mlmvpn/scanner/ui/home/GlassDock.kt`
