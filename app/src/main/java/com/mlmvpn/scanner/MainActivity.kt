@@ -8,7 +8,6 @@ import androidx.compose.foundation.background
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.Modifier
 
 import androidx.appcompat.app.AppCompatActivity
@@ -83,46 +82,10 @@ class MainActivity : AppCompatActivity() {
         com.mlmvpn.scanner.widget.WidgetUpdater.refreshAllAsync(this)
 
         setContent {
-            // Settings > Display > Appearance drives this. Note the honest limit: only the
-            // rebuilt surfaces (the home screen, Settings and everything under it, Advanced VPN,
-            // Total Usage) resolve their colours through the theme. The older screens still carry
-            // hardcoded dark hex values and stay dark until each is converted -- which is why the
-            // setting defaults to Dark rather than Automatic.
-            val darkTheme = com.mlmvpn.scanner.ui.home.Appearance.isDark()
-            val colorScheme = if (darkTheme) {
-                androidx.compose.material3.darkColorScheme(
-                    primary = androidx.compose.ui.graphics.Color(0xFF8AB4F8),
-                    onPrimary = androidx.compose.ui.graphics.Color(0xFF202124),
-                    primaryContainer = androidx.compose.ui.graphics.Color(0xFF8AB4F8).copy(alpha = 0.2f),
-                    onPrimaryContainer = androidx.compose.ui.graphics.Color(0xFF8AB4F8),
-                    surface = androidx.compose.ui.graphics.Color(0xFF202124),
-                    onSurface = androidx.compose.ui.graphics.Color(0xFFE8EAED),
-                    background = androidx.compose.ui.graphics.Color(0xFF121212),
-                    onBackground = androidx.compose.ui.graphics.Color(0xFFE8EAED)
-                )
-            } else {
-                // Still a DARK scheme, with lifted surfaces. Text across the app is white in
-                // both appearances, so a light scheme here would hand Material components black
-                // type on surfaces the rest of the app draws white type on.
-                androidx.compose.material3.darkColorScheme(
-                    primary = androidx.compose.ui.graphics.Color(0xFF0A84FF),
-                    onPrimary = androidx.compose.ui.graphics.Color(0xFFFFFFFF),
-                    primaryContainer = androidx.compose.ui.graphics.Color(0xFF0A84FF).copy(alpha = 0.25f),
-                    onPrimaryContainer = androidx.compose.ui.graphics.Color(0xFFFFFFFF),
-                    surface = androidx.compose.ui.graphics.Color(0xFF2C2C2E),
-                    onSurface = androidx.compose.ui.graphics.Color(0xFFFFFFFF),
-                    background = androidx.compose.ui.graphics.Color(0xFF1C1C1E),
-                    onBackground = androidx.compose.ui.graphics.Color(0xFFFFFFFF)
-                )
-            }
-            // IRANSansX for the whole app. Material's Typography has no "default family" field,
-            // so every style is rebuilt with it -- see ui/theme/Type.kt.
-            MaterialTheme(
-                colorScheme = colorScheme,
-                typography = com.mlmvpn.scanner.ui.theme.iranSansTypography(
-                    androidx.compose.material3.MaterialTheme.typography
-                ),
-            ) {
+            // Appearance is resolved once and drives the Material surfaces as well as Soft Dusk
+            // tokens. Individual feature layouts are being migrated route by route; this root
+            // scheme is the foundation, not a claim that every legacy screen is finished.
+            com.mlmvpn.scanner.ui.theme.MlmVpnTheme {
                 val systemBars = androidx.compose.foundation.layout.WindowInsets.systemBars.asPaddingValues()
                 // The app-wide text size rides on the DENSITY's fontScale rather than on the
                 // Typography. It has to: nearly every Text in this app passes an explicit
@@ -163,10 +126,7 @@ class MainActivity : AppCompatActivity() {
                             modifier = Modifier
                                 .fillMaxSize()
                                 .onSizeChanged { windowSizePx = it }
-                                .background(
-                                    if (darkTheme) androidx.compose.ui.graphics.Color(0xFF121212)
-                                    else androidx.compose.ui.graphics.Color(0xFF1C1C1E)
-                                )
+                                .background(com.mlmvpn.scanner.ui.theme.DuskTheme.background)
                         ) {
                             androidx.compose.runtime.CompositionLocalProvider(
                                 com.mlmvpn.scanner.ui.LocalWindowSizePx provides windowSizePx

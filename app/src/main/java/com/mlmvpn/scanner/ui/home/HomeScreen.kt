@@ -384,9 +384,14 @@ fun HomeScreen(
             Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
                 GlassDock(
                     apps = HomeDestinations.DOCK,
-                    tileSize = 56.dp,
+                    tileSize = com.mlmvpn.scanner.ui.theme.DuskTheme.navIconSize,
                     onOpen = { if (!editMode) onOpen(it) },
-                    modifier = Modifier.padding(start = 14.dp, end = 14.dp, top = 6.dp, bottom = 10.dp),
+                    modifier = Modifier.padding(
+                        start = com.mlmvpn.scanner.ui.theme.DuskTheme.space4,
+                        end = com.mlmvpn.scanner.ui.theme.DuskTheme.space4,
+                        top = com.mlmvpn.scanner.ui.theme.DuskTheme.space2,
+                        bottom = com.mlmvpn.scanner.ui.theme.DuskTheme.space3,
+                    ),
                     focusable = !searchShown,
                 )
             }

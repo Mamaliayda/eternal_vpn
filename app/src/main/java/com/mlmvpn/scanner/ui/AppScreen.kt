@@ -26,6 +26,7 @@ import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.ui.res.stringResource
 import com.mlmvpn.scanner.R
+import com.mlmvpn.scanner.ui.home.GlassDock
 import com.mlmvpn.scanner.ui.home.HomeDestinations
 import com.mlmvpn.scanner.ui.home.HomeScreen
 import com.mlmvpn.scanner.ui.home.fadingTopEdge
@@ -285,7 +286,10 @@ fun AppScreen() {
             // plus the chrome bar when one is floating over it.
             val contentTopInset = topInset + if (hasChrome) FEATURE_BAR_HEIGHT else 0.dp
 
-            CompositionLocalProvider(LocalContentTopInset provides contentTopInset) {
+            CompositionLocalProvider(
+                LocalContentTopInset provides contentTopInset,
+                LocalSystemBottomPadding provides LocalSystemBottomPadding.current + if (onHome) 0.dp else DuskTheme.bottomNavInset,
+            ) {
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
@@ -649,6 +653,20 @@ fun AppScreen() {
                     settingsRoute = route
                     openTab("settings")
                 },
+            )
+        } else if (activeModal == null) {
+            GlassDock(
+                apps = HomeDestinations.DOCK,
+                tileSize = DuskTheme.navIconSize,
+                onOpen = { app -> switchTab(app.id) },
+                selectedId = activeTab,
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .padding(
+                        start = DuskTheme.space4,
+                        end = DuskTheme.space4,
+                        bottom = LocalSystemBottomPadding.current + DuskTheme.space2,
+                    ),
             )
         }
     }

@@ -21,12 +21,15 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.LocalTextStyle
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import com.mlmvpn.scanner.ui.theme.DuskCard
+import com.mlmvpn.scanner.ui.theme.DuskPill
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -55,7 +58,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mlmvpn.scanner.store.tr
 import com.mlmvpn.scanner.widget.WidgetConnect
@@ -126,28 +128,26 @@ internal fun HomeConnectionWidget(
         }
     }
 
-    val green = Color(0xFF34C759)
-    val amber = Color(0xFFFF9F0A)
+    val connectedAccent = com.mlmvpn.scanner.ui.theme.DuskTheme.accent
+    val connectingAccent = com.mlmvpn.scanner.ui.theme.DuskTheme.secondary
     val accent = when {
-        conn.up -> green
-        conn.busy -> amber
-        else -> Color(0xFF0A84FF)
+        conn.up -> connectedAccent
+        conn.busy -> connectingAccent
+        else -> com.mlmvpn.scanner.ui.theme.DuskTheme.primary
     }
-    val shape = RoundedCornerShape(26.dp)
+    val shape = DuskTheme.cardShape
 
-    Box(modifier = modifier) {
+    DuskCard(modifier = modifier, shape = shape, contentPadding = PaddingValues(0.dp)) {
         BoxWithConstraints(
             modifier = Modifier
                 .fillMaxSize()
-                .shadow(10.dp, shape, clip = false)
-                .frostedGlass(shape, overWallpaper = true, underScrim = false)
                 .drawBehind {
                     // The accent's glow, from the button's corner: the widget's state at a glance.
                     val rtl = layoutDirection == LayoutDirection.Rtl
                     val cx = if (rtl) size.width * 0.16f else size.width * 0.84f
                     drawCircle(
                         brush = Brush.radialGradient(
-                            listOf(accent.copy(alpha = if (conn.up) 0.30f else 0.14f), Color.Transparent),
+                            listOf(accent.copy(alpha = if (conn.up) 0.16f else 0.07f), Color.Transparent),
                             center = Offset(cx, size.height * 0.55f),
                             radius = max(size.width, size.height) * 0.62f,
                         ),
@@ -164,23 +164,24 @@ internal fun HomeConnectionWidget(
                 .padding(horizontal = 16.dp, vertical = 14.dp),
         ) {
             val compact = maxHeight < 150.dp
+            DuskThemeHills(Modifier.fillMaxSize())
             Column(modifier = Modifier.fillMaxSize()) {
                 Header(conn, app, compact)
                 Spacer(Modifier.height(if (compact) 6.dp else 10.dp))
                 Row(modifier = Modifier.fillMaxWidth().weight(1f), verticalAlignment = Alignment.CenterVertically) {
                     Box(modifier = Modifier.weight(1f).fillMaxSize()) {
                         when {
-                            conn.up && !compact -> LiveChart(traffic, green, Color(0xFF64D2FF), Modifier.fillMaxSize())
+                            conn.up && !compact -> LiveChart(traffic, connectedAccent, com.mlmvpn.scanner.ui.theme.DuskTheme.blueGray, Modifier.fillMaxSize())
                             conn.up -> Unit
                             conn.busy -> Text(
                                 tr("در حال برقراری اتصال…", "Connecting…"),
-                                color = amber, fontSize = 14.sp, fontWeight = FontWeight.Medium,
+                                color = connectingAccent, style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Medium),
                                 modifier = Modifier.align(Alignment.CenterStart),
                             )
                             else -> Text(
                                 if (last != null) tr("آخرین روش شما آماده است؛ با یک لمس وصل شوید.", "Your last method is ready; one tap connects it.")
                                 else tr("یکی از روش‌های اتصال پایین را انتخاب کنید.", "Pick one of the connection methods below."),
-                                color = Color.White.copy(alpha = 0.72f), fontSize = 13.sp, lineHeight = 20.sp,
+                                color = DuskTheme.muted, style = MaterialTheme.typography.bodySmall,
                                 modifier = Modifier.align(Alignment.CenterStart),
                             )
                         }
@@ -229,7 +230,9 @@ private fun Header(conn: WidgetLive.Conn, app: HomeApp?, compact: Boolean) {
         Column(modifier = Modifier.weight(1f)) {
             Text(
                 app?.let { WidgetPainter.labelOf(it) } ?: "MLMVPN",
-                color = Color.White, fontSize = if (compact) 15.sp else 17.sp, fontWeight = FontWeight.Bold,
+                color = DuskTheme.onSurface,
+                style = (if (compact) MaterialTheme.typography.titleMedium else MaterialTheme.typography.titleLarge)
+                    .copy(fontWeight = FontWeight.Bold),
                 maxLines = 1, overflow = TextOverflow.Ellipsis,
             )
             val sub = when {
@@ -239,7 +242,7 @@ private fun Header(conn: WidgetLive.Conn, app: HomeApp?, compact: Boolean) {
                 app != null -> tr("آخرین روش استفاده‌شده", "Last method used")
                 else -> tr("هنوز اتصالی برقرار نشده", "Not connected yet")
             }
-            Text(sub, color = Color.White.copy(alpha = 0.72f), fontSize = 12.5.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            Text(sub, color = DuskTheme.muted, style = MaterialTheme.typography.bodySmall, maxLines = 1, overflow = TextOverflow.Ellipsis)
         }
         StatusPill(conn)
     }
@@ -257,31 +260,21 @@ private fun StatusPill(conn: WidgetLive.Conn) {
         }
     }
     val (color, text) = when {
-        conn.up -> Color(0xFF34C759) to (tr("متصل", "Connected") + " " + WidgetFormat.clock(now.longValue - conn.since))
-        conn.busy -> Color(0xFFFF9F0A) to tr("در حال اتصال", "Connecting")
-        else -> Color(0xFF8E8E93) to tr("قطع", "Off")
+        conn.up -> DuskTheme.success to (tr("متصل", "Connected") + " " + WidgetFormat.clock(now.longValue - conn.since))
+        conn.busy -> DuskTheme.secondary to tr("در حال اتصال", "Connecting")
+        else -> DuskTheme.muted to tr("قطع", "Off")
     }
-    Row(
-        modifier = Modifier
-            .clip(RoundedCornerShape(50))
-            .background(Color.White.copy(alpha = 0.12f))
-            .padding(horizontal = 10.dp, vertical = 5.dp),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        Box(Modifier.size(7.dp).clip(CircleShape).background(color))
-        Spacer(Modifier.width(6.dp))
-        Text(text, color = Color.White, fontSize = 12.sp, fontWeight = FontWeight.Medium, maxLines = 1, style = tabular())
-    }
+    DuskPill(text = text, indicator = color)
 }
 
 @Composable
 private fun Footer(traffic: WidgetLive.Traffic) {
     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
-        Stat("↓", WidgetFormat.rate(traffic.rxRate), Color(0xFF34C759))
-        Stat("↑", WidgetFormat.rate(traffic.txRate), Color(0xFF64D2FF))
+        Stat("↓", WidgetFormat.rate(traffic.rxRate), com.mlmvpn.scanner.ui.theme.DuskTheme.accent)
+        Stat("↑", WidgetFormat.rate(traffic.txRate), com.mlmvpn.scanner.ui.theme.DuskTheme.blueGray)
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Text(tr("مصرف نشست ", "Session "), color = Color.White.copy(alpha = 0.65f), fontSize = 12.sp)
-            Text(WidgetFormat.bytes(traffic.rx + traffic.tx), color = Color.White, fontSize = 13.sp, fontWeight = FontWeight.SemiBold, style = tabular())
+            Text(tr("مصرف نشست ", "Session "), color = DuskTheme.muted, style = MaterialTheme.typography.bodySmall)
+            Text(WidgetFormat.bytes(traffic.rx + traffic.tx), color = DuskTheme.onSurface, style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold).merge(tabular()))
         }
     }
 }
@@ -289,9 +282,9 @@ private fun Footer(traffic: WidgetLive.Traffic) {
 @Composable
 private fun Stat(arrow: String, value: String, color: Color) {
     Row(verticalAlignment = Alignment.CenterVertically) {
-        Text(arrow, color = color, fontSize = 14.sp, fontWeight = FontWeight.Bold)
+        Text(arrow, color = color, style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Bold))
         Spacer(Modifier.width(4.dp))
-        Text(value, color = Color.White, fontSize = 13.sp, fontWeight = FontWeight.SemiBold, maxLines = 1, style = tabular())
+        Text(value, color = DuskTheme.onSurface, style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold).merge(tabular()), maxLines = 1)
     }
 }
 
@@ -325,13 +318,13 @@ private fun LiveChart(traffic: WidgetLive.Traffic, down: Color, up: Color, modif
         animationSpec = tween(durationMillis = 700, easing = FastOutSlowInEasing),
         label = "chart scale",
     )
-    Canvas(modifier = modifier.clip(RoundedCornerShape(12.dp))) {
+    Canvas(modifier = modifier.clip(DuskTheme.chartShape)) {
         val w = size.width
         val h = size.height
         // A faint baseline grid.
         for (i in 1..2) {
             val y = h * i / 3f
-            drawLine(Color.White.copy(alpha = 0.07f), Offset(0f, y), Offset(w, y), strokeWidth = 1f)
+            drawLine(com.mlmvpn.scanner.ui.theme.DuskTheme.primary.copy(alpha = 0.12f), Offset(0f, y), Offset(w, y), strokeWidth = 1f)
         }
         val n = WidgetLive.HISTORY
         val top = ceiling
@@ -396,34 +389,60 @@ private val CEILING_STEPS = floatArrayOf(1f, 1.5f, 2f, 3f, 4f, 5f, 6f, 8f, 10f)
 /** 0 idle (connect), 1 connecting (cancel), 2 connected (disconnect). */
 @Composable
 private fun PowerButton(state: Int, enabled: Boolean, size: Dp, onClick: () -> Unit) {
-    val color = when (state) {
-        2 -> Color(0xFF34C759)
-        1 -> Color(0xFFFF9F0A)
-        else -> Color(0xFF0A84FF)
-    }
+    val dusk by androidx.compose.animation.animateColorAsState(
+        targetValue = when (state) {
+            2 -> com.mlmvpn.scanner.ui.theme.DuskTheme.accent
+            1 -> com.mlmvpn.scanner.ui.theme.DuskTheme.secondary
+            else -> com.mlmvpn.scanner.ui.theme.DuskTheme.primary
+        },
+        animationSpec = tween(600, easing = FastOutSlowInEasing), label = "dusk connect color",
+    )
+    val progress by animateFloatAsState(
+        targetValue = when (state) { 2 -> 1f; 1 -> 0.5f; else -> 0f },
+        animationSpec = tween(600, easing = FastOutSlowInEasing), label = "sun moon transition",
+    )
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Box(
             modifier = Modifier
                 .size(size)
-                .shadow(if (state == 2) 14.dp else 4.dp, CircleShape, clip = false, ambientColor = color, spotColor = color)
-                .clip(CircleShape)
-                .background(Brush.verticalGradient(listOf(color.copy(alpha = if (enabled) 0.95f else 0.4f), color.copy(alpha = if (enabled) 0.70f else 0.3f))))
+                .shadow(if (state == 2) 14.dp else 5.dp, DuskTheme.circleShape, clip = false, ambientColor = dusk, spotColor = dusk)
+                .clip(DuskTheme.circleShape)
+                .background(Brush.verticalGradient(listOf(dusk.copy(alpha = if (enabled) 0.96f else 0.48f), dusk.copy(alpha = 0.78f))))
                 .pointerInput(enabled) { detectTapGestures { if (enabled) onClick() } },
             contentAlignment = Alignment.Center,
         ) {
-            Canvas(modifier = Modifier.size(size * 0.46f)) {
-                val r = this.size.minDimension / 2f
-                val stroke = r * 0.20f
-                drawArc(
-                    color = Color.White,
-                    startAngle = 270f + 38f,
-                    sweepAngle = 284f,
-                    useCenter = false,
-                    style = Stroke(width = stroke, cap = StrokeCap.Round),
-                    topLeft = Offset(stroke / 2f, stroke / 2f),
-                    size = androidx.compose.ui.geometry.Size(this.size.width - stroke, this.size.height - stroke),
-                )
-                drawLine(Color.White, Offset(center.x, center.y - r * 1.02f), Offset(center.x, center.y - r * 0.15f), strokeWidth = stroke, cap = StrokeCap.Round)
+            Canvas(modifier = Modifier.size(size * 0.62f)) {
+                val glyph = if (state == 0 && !Appearance.isDark()) DuskTheme.white else DuskTheme.navyNight
+                val r = this.size.minDimension * 0.31f
+                val stroke = (r * 0.105f).coerceAtLeast(1.dp.toPx())
+                // A small sun becomes a crescent as the connection settles, over a gentle 600 ms.
+                if (progress < 0.99f) {
+                    val sunAlpha = (1f - progress).coerceIn(0f, 1f)
+                    val rayInner = r * 1.42f
+                    val rayOuter = r * (1.65f - 0.18f * progress)
+                    repeat(8) { i ->
+                        val angle = Math.toRadians(i * 45.0)
+                        drawLine(
+                            glyph.copy(alpha = sunAlpha),
+                            Offset(center.x + kotlin.math.cos(angle).toFloat() * rayInner, center.y + kotlin.math.sin(angle).toFloat() * rayInner),
+                            Offset(center.x + kotlin.math.cos(angle).toFloat() * rayOuter, center.y + kotlin.math.sin(angle).toFloat() * rayOuter),
+                            strokeWidth = stroke, cap = StrokeCap.Round,
+                        )
+                    }
+                    drawCircle(glyph.copy(alpha = sunAlpha), radius = r * (1f - 0.12f * progress), center = center)
+                }
+                if (progress > 0f) {
+                    val moon = Path().apply {
+                        moveTo(center.x, center.y - r)
+                        cubicTo(center.x + r * 1.12f, center.y - r * 0.35f, center.x + r * 0.88f, center.y + r * 0.72f, center.x, center.y + r)
+                        cubicTo(center.x + r * 0.42f, center.y + r * 0.18f, center.x + r * 0.42f, center.y - r * 0.36f, center.x, center.y - r)
+                        close()
+                    }
+                    drawPath(moon, glyph.copy(alpha = progress))
+                }
+                if (state == 1) {
+                    drawCircle(glyph.copy(alpha = 0.7f), radius = r * 1.85f, center = center, style = Stroke(strokeWidth = stroke * 0.7f))
+                }
             }
         }
         Spacer(Modifier.height(4.dp))
@@ -433,8 +452,44 @@ private fun PowerButton(state: Int, enabled: Boolean, size: Dp, onClick: () -> U
                 1 -> tr("لغو", "Cancel")
                 else -> tr("اتصال", "Connect")
             },
-            color = Color.White.copy(alpha = if (enabled) 0.9f else 0.45f), fontSize = 11.5.sp, fontWeight = FontWeight.Medium,
+            color = DuskTheme.onSurface.copy(alpha = if (enabled) 0.9f else 0.45f),
+            style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Medium),
         )
+    }
+}
+
+/** A quiet, non-raster dusk landscape tucked into the home connection card. */
+@Composable
+private fun DuskThemeHills(modifier: Modifier = Modifier) {
+    val night = Appearance.isDark()
+    val sky by androidx.compose.animation.animateColorAsState(
+        if (night) com.mlmvpn.scanner.ui.theme.DuskTheme.nightBlue.copy(alpha = 0.24f)
+        else com.mlmvpn.scanner.ui.theme.DuskTheme.rose.copy(alpha = 0.30f),
+        tween(600, easing = FastOutSlowInEasing), label = "dusk landscape sky",
+    )
+    val hill by androidx.compose.animation.animateColorAsState(
+        if (night) DuskTheme.secondary.copy(alpha = 0.23f)
+        else com.mlmvpn.scanner.ui.theme.DuskTheme.coral.copy(alpha = 0.22f),
+        tween(600, easing = FastOutSlowInEasing), label = "dusk landscape hills",
+    )
+    Canvas(modifier = modifier) {
+        val w = size.width
+        val h = size.height
+        drawCircle(sky, radius = h * 0.27f, center = Offset(w * 0.82f, h * 0.28f))
+        val far = Path().apply {
+            moveTo(0f, h * 0.68f)
+            cubicTo(w * 0.20f, h * 0.48f, w * 0.34f, h * 0.82f, w * 0.55f, h * 0.62f)
+            cubicTo(w * 0.72f, h * 0.48f, w * 0.82f, h * 0.74f, w, h * 0.56f)
+            lineTo(w, h); lineTo(0f, h); close()
+        }
+        drawPath(far, hill)
+        val near = Path().apply {
+            moveTo(0f, h * 0.82f)
+            cubicTo(w * 0.26f, h * 0.63f, w * 0.48f, h * 0.98f, w * 0.70f, h * 0.77f)
+            cubicTo(w * 0.83f, h * 0.67f, w * 0.90f, h * 0.83f, w, h * 0.72f)
+            lineTo(w, h); lineTo(0f, h); close()
+        }
+        drawPath(near, hill.copy(alpha = hill.alpha * 0.72f))
     }
 }
 
@@ -445,12 +500,12 @@ private fun RemoveBadge(onRemove: () -> Unit, modifier: Modifier = Modifier) {
         modifier = modifier
             .absoluteOffset(x = (-6).dp, y = (-6).dp)
             .size(24.dp)
-            .shadow(3.dp, CircleShape)
-            .clip(CircleShape)
-            .background(Color(0xFF8E8E93))
+            .shadow(3.dp, DuskTheme.circleShape)
+            .clip(DuskTheme.circleShape)
+            .background(DuskTheme.disabled)
             .pointerInput(Unit) { detectTapGestures { onRemove() } },
         contentAlignment = Alignment.Center,
     ) {
-        Box(Modifier.width(11.dp).height(2.5.dp).clip(RoundedCornerShape(50)).background(Color.White))
+        Box(Modifier.width(11.dp).height(2.5.dp).clip(DuskTheme.controlShape).background(DuskTheme.white))
     }
 }
