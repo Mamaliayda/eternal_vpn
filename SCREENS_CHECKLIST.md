@@ -1,6 +1,6 @@
 # Eternal VPN — screen redesign checklist
 
-> **Progress: 120 / 1203 complete** — each checked row is fully migrated; unverified routes and states remain unchecked.
+> **Progress: 149 / 1203 complete** — each checked row is fully migrated; unverified routes and states remain unchecked.
 
 > Inventory generated from Kotlin source on 2026-11-26. A row is considered migrated only after its visible composition, nested states, and overlays are reviewed against the Soft Dusk tokens. Shared theme inheritance alone does **not** count as a completed visual redesign.
 
@@ -67,7 +67,7 @@ Found 230 screen-like public/internal composables across 133 Kotlin files (the f
 - [ ] `EdgSettingsScreen` — `com/mlmvpn/scanner/engines/edg/EdgSettingsScreen.kt`
 - [ ] `MlmSettingsScreen` — `com/mlmvpn/scanner/engines/mlm/MlmSettingsScreen.kt`
 - [ ] `MlmUsersScreen` — `com/mlmvpn/scanner/engines/mlm/MlmUsersScreen.kt`
-- [ ] `AddMlmUserDialog` — `com/mlmvpn/scanner/engines/mlm/MlmUsersScreen.kt`
+- [x] `AddMlmUserDialog` — `com/mlmvpn/scanner/engines/mlm/MlmUsersScreen.kt`
 - [ ] `NahanSettingsScreen` — `com/mlmvpn/scanner/engines/nahan/NahanSettingsScreen.kt`
 - [x] `AddNahanUserDialog` — `com/mlmvpn/scanner/engines/nahan/NahanSettingsScreen.kt`
 ### AboutScreen.kt
@@ -183,7 +183,7 @@ Found 230 screen-like public/internal composables across 133 Kotlin files (the f
 ### aether
 
 - [ ] `AetherScreen` — `com/mlmvpn/scanner/ui/aether/AetherScreen.kt`
-- [ ] `AdvancedSettingsDialog` — `com/mlmvpn/scanner/ui/aether/AetherScreen.kt`
+- [x] `AdvancedSettingsDialog` — `com/mlmvpn/scanner/ui/aether/AetherScreen.kt`
 ### amnezia
 
 - [ ] `AmneziaScreen` — `com/mlmvpn/scanner/ui/amnezia/AmneziaScreen.kt`
@@ -309,7 +309,7 @@ Found 230 screen-like public/internal composables across 133 Kotlin files (the f
 - [ ] `MaeDiagnosticsScreen` — `com/mlmvpn/scanner/ui/mae/MaePages.kt`
 - [ ] `InstalledAppPicker` — `com/mlmvpn/scanner/ui/mae/MaePages.kt`
 - [ ] `MaeScreen` — `com/mlmvpn/scanner/ui/mae/MaeScreen.kt`
-- [ ] `SymptomDialog` — `com/mlmvpn/scanner/ui/mae/MaeScreen.kt`
+- [x] `SymptomDialog` — `com/mlmvpn/scanner/ui/mae/MaeScreen.kt`
 ### npv
 
 - [ ] `NpvScreen` — `com/mlmvpn/scanner/ui/npv/NpvScreen.kt`
@@ -332,7 +332,7 @@ Found 230 screen-like public/internal composables across 133 Kotlin files (the f
 ### scout
 
 - [ ] `ScoutScreen` — `com/mlmvpn/scanner/ui/scout/ScoutScreen.kt`
-- [ ] `ScoutDialog` — `com/mlmvpn/scanner/ui/scout/ScoutScreen.kt`
+- [x] `ScoutDialog` — `com/mlmvpn/scanner/ui/scout/ScoutScreen.kt`
 ### settings
 
 - [ ] `WorkersListPage` — `com/mlmvpn/scanner/ui/settings/CloudResourcesScreens.kt`
@@ -412,9 +412,9 @@ Found 230 screen-like public/internal composables across 133 Kotlin files (the f
 ### windscribe
 
 - [ ] `WindscribeScreen` — `com/mlmvpn/scanner/ui/windscribe/WindscribeScreen.kt`
-- [ ] `LoginDialog` — `com/mlmvpn/scanner/ui/windscribe/WindscribeScreen.kt`
-- [ ] `CaptchaDialog` — `com/mlmvpn/scanner/ui/windscribe/WindscribeScreen.kt`
-- [ ] `EmailDialog` — `com/mlmvpn/scanner/ui/windscribe/WindscribeScreen.kt`
+- [x] `LoginDialog` — `com/mlmvpn/scanner/ui/windscribe/WindscribeScreen.kt`
+- [x] `CaptchaDialog` — `com/mlmvpn/scanner/ui/windscribe/WindscribeScreen.kt`
+- [x] `EmailDialog` — `com/mlmvpn/scanner/ui/windscribe/WindscribeScreen.kt`
 ### com
 
 - [ ] `ConfigureScreen` — `com/mlmvpn/scanner/widget/studio/StudioConfigureActivity.kt`
@@ -613,19 +613,19 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 - [ ] `MasqueAdvancedPane` — `com/mlmvpn/scanner/ui/aether/AetherScreen.kt`
 - [ ] `SharedAdvancedPane` — `com/mlmvpn/scanner/ui/aether/AetherScreen.kt`
 - [ ] `SharedPane` — `com/mlmvpn/scanner/ui/aether/AetherScreen.kt`
-- [ ] `LogCard` — `com/mlmvpn/scanner/ui/aether/AetherScreen.kt`
+- [x] `LogCard` — `com/mlmvpn/scanner/ui/aether/AetherScreen.kt`
 - [ ] `StatusCard` — `com/mlmvpn/scanner/ui/aether/AetherScreen.kt`
 - [ ] `ConnectBar` — `com/mlmvpn/scanner/ui/aether/AetherScreen.kt`
-- [ ] `SettingsCard` — `com/mlmvpn/scanner/ui/aether/AetherScreen.kt`
-- [ ] `SectionTitle` — `com/mlmvpn/scanner/ui/aether/AetherScreen.kt`
-- [ ] `SectionHint` — `com/mlmvpn/scanner/ui/aether/AetherScreen.kt`
-- [ ] `WarningCard` — `com/mlmvpn/scanner/ui/aether/AetherScreen.kt`
-- [ ] `StepDot` — `com/mlmvpn/scanner/ui/aether/AetherScreen.kt`
-- [ ] `DetailRow` — `com/mlmvpn/scanner/ui/aether/AetherScreen.kt`
-- [ ] `SegmentedControl` — `com/mlmvpn/scanner/ui/aether/AetherScreen.kt`
-- [ ] `TextFieldLite` — `com/mlmvpn/scanner/ui/aether/AetherScreen.kt`
-- [ ] `DropdownLite` — `com/mlmvpn/scanner/ui/aether/AetherScreen.kt`
-- [ ] `ButtonLite` — `com/mlmvpn/scanner/ui/aether/AetherScreen.kt`
+- [x] `SettingsCard` — `com/mlmvpn/scanner/ui/aether/AetherScreen.kt`
+- [x] `SectionTitle` — `com/mlmvpn/scanner/ui/aether/AetherScreen.kt`
+- [x] `SectionHint` — `com/mlmvpn/scanner/ui/aether/AetherScreen.kt`
+- [x] `WarningCard` — `com/mlmvpn/scanner/ui/aether/AetherScreen.kt`
+- [x] `StepDot` — `com/mlmvpn/scanner/ui/aether/AetherScreen.kt`
+- [x] `DetailRow` — `com/mlmvpn/scanner/ui/aether/AetherScreen.kt`
+- [x] `SegmentedControl` — `com/mlmvpn/scanner/ui/aether/AetherScreen.kt`
+- [x] `TextFieldLite` — `com/mlmvpn/scanner/ui/aether/AetherScreen.kt`
+- [x] `DropdownLite` — `com/mlmvpn/scanner/ui/aether/AetherScreen.kt`
+- [x] `ButtonLite` — `com/mlmvpn/scanner/ui/aether/AetherScreen.kt`
 ### amnezia
 
 - [ ] `AmzHome` — `com/mlmvpn/scanner/ui/amnezia/AmneziaScreen.kt`
@@ -1270,7 +1270,7 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 - [ ] `TestProgress` — `com/mlmvpn/scanner/ui/windscribe/WindscribeScreen.kt`
 - [ ] `resultLine` — `com/mlmvpn/scanner/ui/windscribe/WindscribeScreen.kt`
 - [ ] `measurementLabel` — `com/mlmvpn/scanner/ui/windscribe/WindscribeScreen.kt`
-- [ ] `CaptchaArt` — `com/mlmvpn/scanner/ui/windscribe/WindscribeScreen.kt`
+- [x] `CaptchaArt` — `com/mlmvpn/scanner/ui/windscribe/WindscribeScreen.kt`
 ### com
 
 - [ ] `LocaleProvider` — `com/mlmvpn/scanner/utils/AppLocaleManager.kt`
@@ -1291,32 +1291,32 @@ No Android `Fragment` subclasses were found in the Java/Kotlin sources; the UI i
 
 Source inventory of Compose overlay hosts/call sites. Review each listed occurrence, including loading, validation, success and error variants.
 
-- [ ] `com/mlmvpn/scanner/engines/mlm/MlmUsersScreen.kt` — AlertDialog × 2, Dialog × 4, DropdownMenu × 1
+- [x] `com/mlmvpn/scanner/engines/mlm/MlmUsersScreen.kt` — AlertDialog × 2, Dialog × 4, DropdownMenu × 1
 - [x] `com/mlmvpn/scanner/engines/nahan/NahanSettingsScreen.kt` — AlertDialog × 1, Dialog × 3, DropdownMenu × 1
 - [x] `com/mlmvpn/scanner/ui/AppScreen.kt` — AlertDialog × 3, Dialog × 3
 - [x] `com/mlmvpn/scanner/ui/CloudCoach.kt` — Dialog × 1
-- [ ] `com/mlmvpn/scanner/ui/CloudTab.kt` — AlertDialog × 3, Dialog × 5
-- [ ] `com/mlmvpn/scanner/ui/CombineCoach.kt` — Dialog × 2
-- [ ] `com/mlmvpn/scanner/ui/GameTab.kt` — Dialog × 1
-- [ ] `com/mlmvpn/scanner/ui/NodesTab.kt` — Dialog × 2
+- [x] `com/mlmvpn/scanner/ui/CloudTab.kt` — AlertDialog × 3, Dialog × 5
+- [x] `com/mlmvpn/scanner/ui/CombineCoach.kt` — Dialog × 2
+- [x] `com/mlmvpn/scanner/ui/GameTab.kt` — Dialog × 1
+- [x] `com/mlmvpn/scanner/ui/NodesTab.kt` — Dialog × 2
 - [x] `com/mlmvpn/scanner/ui/ScanGuardHost.kt` — AlertDialog × 1, Dialog × 1
-- [ ] `com/mlmvpn/scanner/ui/ScannerTab.kt` — AlertDialog × 8, Dialog × 8
+- [x] `com/mlmvpn/scanner/ui/ScannerTab.kt` — AlertDialog × 8, Dialog × 8
 - [x] `com/mlmvpn/scanner/ui/WireguardGuard.kt` — Dialog × 4
-- [ ] `com/mlmvpn/scanner/ui/aether/AetherScreen.kt` — Dialog × 3, DropdownMenu × 1
+- [x] `com/mlmvpn/scanner/ui/aether/AetherScreen.kt` — Dialog × 3, DropdownMenu × 1
 - [x] `com/mlmvpn/scanner/ui/amnezia/AmzParts.kt` — Dialog × 1
 - [x] `com/mlmvpn/scanner/ui/cfwarp/CfWarpUi.kt` — AlertDialog × 1, Dialog × 1
 - [x] `com/mlmvpn/scanner/ui/cfwarp/Ipv4ExitUi.kt` — AlertDialog × 1, Dialog × 1
 - [x] `com/mlmvpn/scanner/ui/cfwarp/Nat64ExitUi.kt` — AlertDialog × 1, Dialog × 1
 - [x] `com/mlmvpn/scanner/ui/fenix/FenixScreen.kt` — AlertDialog × 1, Dialog × 1
 - [x] `com/mlmvpn/scanner/ui/geph/GephAccountScreen.kt` — AlertDialog × 2, Dialog × 2
-- [ ] `com/mlmvpn/scanner/ui/mae/MaeScreen.kt` — AlertDialog × 1, Dialog × 3
+- [x] `com/mlmvpn/scanner/ui/mae/MaeScreen.kt` — AlertDialog × 1, Dialog × 3
 - [x] `com/mlmvpn/scanner/ui/npv/NpvScreen.kt` — AlertDialog × 4, Dialog × 4
 - [x] `com/mlmvpn/scanner/ui/npv/NpvSourcesPage.kt` — AlertDialog × 1, Dialog × 1
 - [x] `com/mlmvpn/scanner/ui/proton/ProtonScreen.kt` — AlertDialog × 1, Dialog × 1
-- [ ] `com/mlmvpn/scanner/ui/scout/ScoutScreen.kt` — AlertDialog × 2, Dialog × 8
+- [x] `com/mlmvpn/scanner/ui/scout/ScoutScreen.kt` — AlertDialog × 2, Dialog × 8
 - [x] `com/mlmvpn/scanner/ui/settings/IosAlerts.kt` — Dialog × 1
 - [x] `com/mlmvpn/scanner/ui/tunnel/PsiphonPages.kt` — AlertDialog × 1, Dialog × 1
-- [ ] `com/mlmvpn/scanner/ui/windscribe/WindscribeScreen.kt` — AlertDialog × 4, Dialog × 10
+- [x] `com/mlmvpn/scanner/ui/windscribe/WindscribeScreen.kt` — AlertDialog × 4, Dialog × 10
 
 ## Other visual/system surfaces
 

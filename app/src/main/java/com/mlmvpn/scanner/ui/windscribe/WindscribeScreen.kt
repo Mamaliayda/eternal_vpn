@@ -39,6 +39,8 @@ import androidx.compose.ui.unit.dp
 import com.mlmvpn.scanner.R
 import com.mlmvpn.scanner.engines.windscribe.*
 import com.mlmvpn.scanner.ui.settings.*
+import com.mlmvpn.scanner.ui.theme.DuskTheme
+import com.mlmvpn.scanner.ui.theme.iosFieldColors
 import java.text.DateFormat
 import java.util.Date
 
@@ -244,22 +246,31 @@ fun WindscribeScreen(onBack: () -> Unit) {
     }
     if (login) LoginDialog(busy, error, onDismiss = { if (!busy) { login = false; engine.cancelLogin() } }, onLogin = { user, pass, two -> engine.login(user, pass, two) })
     if (challenge != null) CaptchaDialog(challenge!!, busy, onDismiss = { engine.cancelLogin() }, onRefresh = { engine.refreshCaptcha() }, onAnswer = { engine.answerCaptcha(it) })
-    if (protocolDialog) AlertDialog(onDismissRequest = { protocolDialog = false }, containerColor = Ios.DialogSurface,
-        title = { Text(stringResource(R.string.windscribe_protocol)) }, text = {
-            Column {
-                TextButton(onClick = { engine.selectProtocol(null); protocolDialog = false }) { Text(stringResource(R.string.windscribe_auto)) }
-                WsProtocol.values().filter { protocol -> protocol in protocols && data.ports[protocol].orEmpty().isNotEmpty() && data.servers.any { server ->
-                    (data.selectedServer == null || server.id == data.selectedServer) &&
-                        when(protocol) {
-                            WsProtocol.WIREGUARD -> server.publicKey.isNotBlank() && server.ip3.isNotBlank()
-                            WsProtocol.STEALTH -> server.x509.isNotBlank() && server.ip3.isNotBlank()
-                            WsProtocol.WSTUNNEL -> server.x509.isNotBlank() && server.ip.isNotBlank()
-                            else -> server.x509.isNotBlank() && server.ip2.isNotBlank()
-                        }
-                } }.forEach { protocol -> TextButton(onClick = { engine.selectProtocol(protocol); protocolDialog = false }) { Text(protocolName(protocol)) } }
-                Text(stringResource(R.string.windscribe_protocol_limits), style = MaterialTheme.typography.bodySmall)
+    if (protocolDialog) {
+        val availableProtocols = WsProtocol.values().filter { protocol ->
+            protocol in protocols && data.ports[protocol].orEmpty().isNotEmpty() && data.servers.any { server ->
+                (data.selectedServer == null || server.id == data.selectedServer) &&
+                    when (protocol) {
+                        WsProtocol.WIREGUARD -> server.publicKey.isNotBlank() && server.ip3.isNotBlank()
+                        WsProtocol.STEALTH -> server.x509.isNotBlank() && server.ip3.isNotBlank()
+                        WsProtocol.WSTUNNEL -> server.x509.isNotBlank() && server.ip.isNotBlank()
+                        else -> server.x509.isNotBlank() && server.ip2.isNotBlank()
+                    }
             }
-        }, confirmButton = { TextButton(onClick = { protocolDialog = false }) { Text(stringResource(R.string.windscribe_close)) } })
+        }
+        IosAlert(
+            title = stringResource(R.string.windscribe_protocol),
+            message = stringResource(R.string.windscribe_protocol_limits),
+            onDismiss = { protocolDialog = false },
+            actions = listOf(
+                IosAlertAction(stringResource(R.string.windscribe_auto), onClick = { engine.selectProtocol(null); protocolDialog = false }),
+                *availableProtocols.map { protocol ->
+                    IosAlertAction(protocolName(protocol), onClick = { engine.selectProtocol(protocol); protocolDialog = false })
+                }.toTypedArray(),
+                IosAlertAction(stringResource(R.string.windscribe_close), onClick = { protocolDialog = false }),
+            ),
+        )
+    }
     if (emailDialog) EmailDialog(onDismiss = { emailDialog = false }, onSubmit = { engine.addEmail(it); emailDialog = false })
 }
 
@@ -372,28 +383,93 @@ private fun errorRes(error: WsError) = when (error) {
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var twoFa by remember { mutableStateOf("") }
-    AlertDialog(onDismissRequest = onDismiss, containerColor = Ios.DialogSurface, title = { Text(stringResource(R.string.windscribe_login)) },
-        text = { Column {
-            OutlinedTextField(username, { username = it }, singleLine = true, label = { Text(stringResource(R.string.windscribe_username)) })
-            OutlinedTextField(password, { password = it }, singleLine = true, visualTransformation = PasswordVisualTransformation(), label = { Text(stringResource(R.string.windscribe_password)) })
-            OutlinedTextField(twoFa, { twoFa = it }, singleLine = true, label = { Text(stringResource(R.string.windscribe_two_fa)) })
-            error?.let { Text(stringResource(errorRes(it))) }
-        } }, confirmButton = {
-            TextButton(onClick = { onLogin(username, password, twoFa); password = "" }, enabled = !busy && username.isNotBlank() && password.isNotEmpty()) { Text(stringResource(R.string.windscribe_login)) }
-        }, dismissButton = { TextButton(onClick = onDismiss, enabled = !busy) { Text(stringResource(R.string.windscribe_close)) } })
+    IosAlert(
+        title = stringResource(R.string.windscribe_login),
+        onDismiss = onDismiss,
+        content = {
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                OutlinedTextField(
+                    value = username,
+                    onValueChange = { username = it },
+                    singleLine = true,
+                    label = { Text(stringResource(R.string.windscribe_username)) },
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = iosFieldColors(),
+                    shape = DuskTheme.controlShape,
+                    enabled = !busy,
+                )
+                OutlinedTextField(
+                    value = password,
+                    onValueChange = { password = it },
+                    singleLine = true,
+                    visualTransformation = PasswordVisualTransformation(),
+                    label = { Text(stringResource(R.string.windscribe_password)) },
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = iosFieldColors(),
+                    shape = DuskTheme.controlShape,
+                    enabled = !busy,
+                )
+                OutlinedTextField(
+                    value = twoFa,
+                    onValueChange = { twoFa = it },
+                    singleLine = true,
+                    label = { Text(stringResource(R.string.windscribe_two_fa)) },
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = iosFieldColors(),
+                    shape = DuskTheme.controlShape,
+                    enabled = !busy,
+                )
+                error?.let { Text(stringResource(errorRes(it)), color = DuskTheme.error, style = MaterialTheme.typography.bodySmall) }
+            }
+        },
+        actions = listOf(
+            IosAlertAction(stringResource(R.string.windscribe_close), onDismiss, enabled = !busy),
+            IosAlertAction(
+                stringResource(R.string.windscribe_login),
+                onClick = { onLogin(username, password, twoFa); password = "" },
+                preferred = true,
+                enabled = !busy && username.isNotBlank() && password.isNotEmpty(),
+                busy = busy,
+            ),
+        ),
+    )
 }
+
 @Composable private fun CaptchaDialog(challenge: com.mlmvpn.scanner.engines.windscribe.WsLoginChallenge, busy: Boolean,
                                       onDismiss: () -> Unit, onRefresh: () -> Unit, onAnswer: (String) -> Unit) {
     var answer by remember(challenge) { mutableStateOf("") }
-    AlertDialog(onDismissRequest = onDismiss, containerColor = Ios.DialogSurface, title = { Text(stringResource(R.string.windscribe_captcha)) },
-        text = { Column {
-            Text(stringResource(R.string.windscribe_captcha_help), style = MaterialTheme.typography.bodySmall)
-            CaptchaArt(challenge.ascii, Modifier.fillMaxWidth().padding(vertical = 8.dp))
-            if (challenge.wrong) Text(stringResource(R.string.windscribe_captcha_wrong), color = Ios.Orange, style = MaterialTheme.typography.bodySmall)
-            OutlinedTextField(answer, { answer = it }, singleLine = true, label = { Text(stringResource(R.string.windscribe_captcha_answer)) })
-            TextButton(onClick = onRefresh, enabled = !busy) { Text(stringResource(R.string.windscribe_captcha_new)) }
-        } }, confirmButton = { TextButton(onClick = { onAnswer(answer) }, enabled = !busy && answer.isNotBlank()) { Text(stringResource(R.string.windscribe_login)) } },
-        dismissButton = { TextButton(onClick = onDismiss, enabled = !busy) { Text(stringResource(R.string.windscribe_close)) } })
+    IosAlert(
+        title = stringResource(R.string.windscribe_captcha),
+        onDismiss = onDismiss,
+        content = {
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                Text(stringResource(R.string.windscribe_captcha_help), style = MaterialTheme.typography.bodySmall)
+                CaptchaArt(challenge.ascii, Modifier.fillMaxWidth().padding(vertical = 8.dp))
+                if (challenge.wrong) Text(stringResource(R.string.windscribe_captcha_wrong), color = DuskTheme.error, style = MaterialTheme.typography.bodySmall)
+                OutlinedTextField(
+                    value = answer,
+                    onValueChange = { answer = it },
+                    singleLine = true,
+                    label = { Text(stringResource(R.string.windscribe_captcha_answer)) },
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = iosFieldColors(),
+                    shape = DuskTheme.controlShape,
+                    enabled = !busy,
+                )
+            }
+        },
+        actions = listOf(
+            IosAlertAction(stringResource(R.string.windscribe_captcha_new), onRefresh, enabled = !busy),
+            IosAlertAction(stringResource(R.string.windscribe_close), onDismiss, enabled = !busy),
+            IosAlertAction(
+                stringResource(R.string.windscribe_login),
+                onClick = { onAnswer(answer) },
+                preferred = true,
+                enabled = !busy && answer.isNotBlank(),
+                busy = busy,
+            ),
+        ),
+    )
 }
 
 /**
@@ -407,7 +483,7 @@ private fun errorRes(error: WsError) = when (error) {
     val rows = remember(art) { art.replace("\r", "").replace("\t", "    ").lines().dropWhile { it.isBlank() }.dropLastWhile { it.isBlank() } }
     val columns = remember(rows) { rows.maxOfOrNull { it.length } ?: 0 }
     if (rows.isEmpty() || columns == 0) return
-    androidx.compose.foundation.layout.BoxWithConstraints(modifier.background(Color.White, RoundedCornerShape(8.dp)).padding(10.dp),
+    androidx.compose.foundation.layout.BoxWithConstraints(modifier.background(DuskTheme.qrSurface, DuskTheme.chartShape).padding(10.dp),
         contentAlignment = Alignment.Center) {
         val cell = minOf(maxWidth / columns, 200.dp / rows.size)
         androidx.compose.foundation.Canvas(Modifier.size(cell * columns, cell * rows.size)) {
@@ -419,7 +495,7 @@ private fun errorRes(error: WsError) = when (error) {
                     if (set && start < 0) start = x
                     if (!set && start >= 0) {
                         // One rectangle per run: no hairline seams between neighbouring cells.
-                        drawRect(Color.Black, topLeft = androidx.compose.ui.geometry.Offset(start * px, y * px),
+                        drawRect(DuskTheme.navy, topLeft = androidx.compose.ui.geometry.Offset(start * px, y * px),
                             size = androidx.compose.ui.geometry.Size((x - start) * px, px))
                         start = -1
                     }
@@ -430,8 +506,28 @@ private fun errorRes(error: WsError) = when (error) {
 }
 @Composable private fun EmailDialog(onDismiss: () -> Unit, onSubmit: (String) -> Unit) {
     var email by remember { mutableStateOf("") }
-    AlertDialog(onDismissRequest = onDismiss, containerColor = Ios.DialogSurface, title = { Text(stringResource(R.string.windscribe_add_email)) },
-        text = { OutlinedTextField(email, { email = it }, singleLine = true, label = { Text(stringResource(R.string.windscribe_email)) }) },
-        confirmButton = { TextButton(onClick = { onSubmit(email) }, enabled = email.contains('@')) { Text(stringResource(R.string.windscribe_add_email)) } },
-        dismissButton = { TextButton(onClick = onDismiss) { Text(stringResource(R.string.windscribe_close)) } })
+    IosAlert(
+        title = stringResource(R.string.windscribe_add_email),
+        onDismiss = onDismiss,
+        content = {
+            OutlinedTextField(
+                value = email,
+                onValueChange = { email = it },
+                singleLine = true,
+                label = { Text(stringResource(R.string.windscribe_email)) },
+                modifier = Modifier.fillMaxWidth(),
+                colors = iosFieldColors(),
+                shape = DuskTheme.controlShape,
+            )
+        },
+        actions = listOf(
+            IosAlertAction(stringResource(R.string.windscribe_close), onDismiss),
+            IosAlertAction(
+                stringResource(R.string.windscribe_add_email),
+                onClick = { onSubmit(email) },
+                preferred = true,
+                enabled = email.contains('@'),
+            ),
+        ),
+    )
 }

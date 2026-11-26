@@ -571,13 +571,13 @@ private fun QuickSettings(
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             ButtonLite(
                 text = S(R.string.advanced_settings_3),
-                color = SurfaceDark,
+                color = DuskTheme.surface,
                 onClick = onOpenAdvanced,
                 modifier = Modifier.weight(1f),
             )
             ButtonLite(
                 text = S(R.string.clear_the_identity),
-                color = SurfaceDark,
+                color = DuskTheme.surface,
                 onClick = onReset,
                 modifier = Modifier.weight(1f),
             )
@@ -720,17 +720,18 @@ private fun AdvancedSettingsDialog(
         onDismissRequest = onDismiss,
         properties = androidx.compose.ui.window.DialogProperties(usePlatformDefaultWidth = false),
     ) {
-        Surface(
-            color = MaterialTheme.colorScheme.background,
-            shape = CardShape,
+        DuskCard(
             modifier = Modifier.fillMaxSize(),
+            shape = DuskTheme.cardShape,
+            contentPadding = androidx.compose.foundation.layout.PaddingValues(12.dp),
+            containerColor = DuskTheme.background,
         ) {
-            Column(modifier = Modifier.fillMaxSize().padding(12.dp)) {
+            Column(modifier = Modifier.fillMaxSize()) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
                         S(R.string.advanced_settings_3),
+                        style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
-                        fontSize = 15.sp,
                         modifier = Modifier.weight(1f),
                     )
                     // A real icon button: ButtonLite without a modifier has no horizontal
@@ -739,7 +740,7 @@ private fun AdvancedSettingsDialog(
                         Icon(
                             Icons.Default.Close,
                             contentDescription = S(R.string.close_4),
-                            tint = TextMuted,
+                            tint = DuskTheme.muted,
                         )
                     }
                 }
@@ -886,7 +887,7 @@ private fun WgPane(
         Row(verticalAlignment = Alignment.CenterVertically) {
             Switch(checked = retry, onCheckedChange = onRetry)
             Spacer(modifier = Modifier.width(6.dp))
-            Text(S(R.string.if_the_first_profile_does_not_work), fontSize = 12.sp)
+            Text(S(R.string.if_the_first_profile_does_not_work), style = MaterialTheme.typography.bodySmall)
         }
 
         Spacer(modifier = Modifier.height(10.dp))
@@ -904,7 +905,7 @@ private fun GooLPane(
 ) {
     SettingsCard {
         Text(S(R.string.a_wireguard_tunnel_inside_another_wireguard_tunnel),
-            fontSize = 11.sp, color = TextMuted, lineHeight = 17.sp)
+            style = MaterialTheme.typography.bodySmall, color = DuskTheme.muted)
         Spacer(modifier = Modifier.height(8.dp))
         WarningCard(text = S(R.string.this_mode_creates_two_cloudflare_identities_and))
         Spacer(modifier = Modifier.height(10.dp))
@@ -935,7 +936,7 @@ private fun MasqueAdvancedPane(
             Switch(checked = fragment, onCheckedChange = onFragment,
                 colors = SwitchDefaults.colors(checkedThumbColor = MaterialTheme.colorScheme.primary))
             Spacer(modifier = Modifier.width(6.dp))
-            Text(if (fragment) S(R.string.on_3) else S(R.string.off_3), fontSize = 12.sp)
+            Text(if (fragment) S(R.string.on_3) else S(R.string.off_3), style = MaterialTheme.typography.bodySmall)
         }
         Spacer(modifier = Modifier.height(6.dp))
         Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
@@ -972,7 +973,7 @@ private fun SharedAdvancedPane(
         Row(verticalAlignment = Alignment.CenterVertically) {
             Switch(checked = quick, onCheckedChange = onQuick)
             Spacer(modifier = Modifier.width(6.dp))
-            Text(S(R.string.if_the_previous_server_was_healthy_skip), fontSize = 12.sp)
+            Text(S(R.string.if_the_previous_server_was_healthy_skip), style = MaterialTheme.typography.bodySmall)
         }
 
         Spacer(modifier = Modifier.height(10.dp))
@@ -980,7 +981,7 @@ private fun SharedAdvancedPane(
         Row(verticalAlignment = Alignment.CenterVertically) {
             Switch(checked = noDataCheck, onCheckedChange = onNoDataCheck)
             Spacer(modifier = Modifier.width(6.dp))
-            Text(S(R.string.accept_a_server_on_a_successful_handshake), fontSize = 12.sp)
+            Text(S(R.string.accept_a_server_on_a_successful_handshake), style = MaterialTheme.typography.bodySmall)
         }
         SectionHint(
             S(R.string.by_default_a_server_is_not_accepted) +
@@ -994,7 +995,7 @@ private fun SharedAdvancedPane(
         Row(verticalAlignment = Alignment.CenterVertically) {
             Switch(checked = verbose, onCheckedChange = onVerbose)
             Spacer(modifier = Modifier.width(6.dp))
-            Text(S(R.string.more_detail_in_the_core_log_and), fontSize = 12.sp)
+            Text(S(R.string.more_detail_in_the_core_log_and), style = MaterialTheme.typography.bodySmall)
         }
         SectionHint(S(R.string.turn_it_on_for_troubleshooting_only))
     }
@@ -1024,7 +1025,7 @@ private fun SharedPane(
         Row(verticalAlignment = Alignment.CenterVertically) {
             Switch(checked = quick, onCheckedChange = onQuick)
             Spacer(modifier = Modifier.width(6.dp))
-            Text(S(R.string.if_the_previous_server_was_healthy_skip), fontSize = 12.sp)
+            Text(S(R.string.if_the_previous_server_was_healthy_skip), style = MaterialTheme.typography.bodySmall)
         }
 
         Spacer(modifier = Modifier.height(10.dp))
@@ -1032,7 +1033,7 @@ private fun SharedPane(
         Row(verticalAlignment = Alignment.CenterVertically) {
             Switch(checked = noDataCheck, onCheckedChange = onNoDataCheck)
             Spacer(modifier = Modifier.width(6.dp))
-            Text(S(R.string.accept_a_server_on_a_successful_handshake), fontSize = 12.sp)
+            Text(S(R.string.accept_a_server_on_a_successful_handshake), style = MaterialTheme.typography.bodySmall)
         }
         SectionHint(
             S(R.string.by_default_a_server_is_not_accepted) +
@@ -1046,7 +1047,7 @@ private fun SharedPane(
         Row(verticalAlignment = Alignment.CenterVertically) {
             Switch(checked = verbose, onCheckedChange = onVerbose)
             Spacer(modifier = Modifier.width(6.dp))
-            Text(S(R.string.more_detail_in_the_core_log_and), fontSize = 12.sp)
+            Text(S(R.string.more_detail_in_the_core_log_and), style = MaterialTheme.typography.bodySmall)
         }
         SectionHint(S(R.string.turn_it_on_for_troubleshooting_only))
     }
@@ -1113,31 +1114,32 @@ private fun LogCard(engine: AetherEngine) {
 
     SettingsCard(title = S(R.string.core_log)) {
         if (lines.isEmpty()) {
-            Text(S(R.string.no_output_yet_start_a_connection_to),
-                fontSize = 11.sp, color = Color(0xFF7a7783), lineHeight = 17.sp)
+            Text(
+                S(R.string.no_output_yet_start_a_connection_to),
+                style = MaterialTheme.typography.bodySmall,
+                color = DuskTheme.muted,
+            )
         } else {
-            Box(modifier = Modifier
-                .fillMaxWidth()
-                .height(200.dp)
-                .frostedGlass(RoundedCornerShape(8.dp))
-                .padding(8.dp)) {
+            DuskCard(
+                modifier = Modifier.fillMaxWidth().height(200.dp),
+                shape = DuskTheme.chartShape,
+                contentPadding = androidx.compose.foundation.layout.PaddingValues(8.dp),
+            ) {
                 LazyColumn(state = listState, verticalArrangement = Arrangement.spacedBy(2.dp)) {
                     items(lines) { line ->
                         Text(
                             line,
-                            fontSize = 10.sp,
-                            lineHeight = 14.sp,
-                            fontFamily = androidx.compose.ui.text.font.FontFamily.Monospace,
-                            // Colour by severity so a failure stands out without reading
-                            // every line. Matches the stage colours used in StatusCard.
+                            style = MaterialTheme.typography.labelSmall.copy(
+                                fontFamily = androidx.compose.ui.text.font.FontFamily.Monospace,
+                            ),
+                            // Severity is data: keep errors, successes and engine output distinct
+                            // while deriving their colors from the shared Soft Dusk palette.
                             color = when {
                                 line.contains("panic", true) || line.contains("error", true) ||
-                                    line.contains("failed", true) || line.contains(S(R.string.error_3)) ->
-                                    Color(0xFFff9090)
-                                line.contains("connected", true) || line.contains(S(R.string.connected_5)) ->
-                                    Color(0xFF7ee787)
-                                line.startsWith("[AETHER]") -> Color(0xFF9ecbff)
-                                else -> Color(0xFFb8b5c0)
+                                    line.contains("failed", true) || line.contains(S(R.string.error_3)) -> DuskTheme.error
+                                line.contains("connected", true) || line.contains(S(R.string.connected_5)) -> DuskTheme.success
+                                line.startsWith("[AETHER]") -> DuskTheme.primary
+                                else -> DuskTheme.muted
                             },
                         )
                     }
@@ -1286,13 +1288,13 @@ private fun ConnectBar(
             verticalAlignment = Alignment.CenterVertically) {
             ButtonLite(
                 text = if (running) S(R.string.stop_2) else S(R.string.connect_3),
-                color = if (running) Color(0xFFb3261e) else MaterialTheme.colorScheme.primary,
+                color = if (running) DuskTheme.error else DuskTheme.primary,
                 onClick = { if (running) onStop() else onConnect() },
                 modifier = Modifier.weight(1f)
             )
             ButtonLite(
                 text = S(R.string.clear_the_identity),
-                color = SurfaceDark,
+                color = DuskTheme.surface,
                 onClick = onReset,
                 modifier = Modifier.weight(1f)
             )
@@ -1304,13 +1306,13 @@ private fun ConnectBar(
 
 @Composable
 private fun SettingsCard(title: String? = null, content: @Composable () -> Unit) {
-    Card(
-        shape = CardShape,
-        colors = CardDefaults.cardColors(containerColor = SurfaceDark)
+    DuskCard(
+        shape = DuskTheme.cardShape,
+        contentPadding = androidx.compose.foundation.layout.PaddingValues(12.dp),
     ) {
-        Column(modifier = Modifier.padding(12.dp)) {
+        Column {
             if (title != null) {
-                Text(title, fontWeight = FontWeight.Bold, fontSize = 13.sp)
+                Text(title, color = DuskTheme.onSurface, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Bold)
                 Spacer(modifier = Modifier.height(8.dp))
             }
             content()
@@ -1320,23 +1322,24 @@ private fun SettingsCard(title: String? = null, content: @Composable () -> Unit)
 
 @Composable
 private fun SectionTitle(text: String) {
-    Text(text, fontSize = 12.sp, fontWeight = FontWeight.SemiBold,
-        color = Color(0xFFdddddd))
+    Text(text, style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.SemiBold,
+        color = DuskTheme.onSurface)
 }
 
 @Composable
 private fun SectionHint(text: String) {
     Spacer(modifier = Modifier.height(4.dp))
-    Text(text, fontSize = 10.sp, color = Color(0xFF7a7783), lineHeight = 16.sp)
+    Text(text, style = MaterialTheme.typography.bodySmall, color = DuskTheme.muted)
 }
 
 @Composable
 private fun WarningCard(text: String) {
-    Box(modifier = Modifier
-        .fillMaxWidth()
-        .frostedGlass(RoundedCornerShape(8.dp))
-        .padding(10.dp)) {
-        Text(text, fontSize = 11.sp, color = Color(0xFFe0a800), lineHeight = 17.sp)
+    DuskCard(
+        modifier = Modifier.fillMaxWidth(),
+        shape = DuskTheme.chartShape,
+        contentPadding = androidx.compose.foundation.layout.PaddingValues(10.dp),
+    ) {
+        Text(text, style = MaterialTheme.typography.bodySmall, color = DuskTheme.accent)
     }
 }
 
@@ -1346,38 +1349,31 @@ private fun StepDot(done: Boolean, active: Boolean) {
         .size(13.dp)
         .background(
             when {
-                done -> GreenOk
-                active -> MaterialTheme.colorScheme.primary
-                else -> Color(0xFF3a3a3a)
+                done -> DuskTheme.success
+                active -> DuskTheme.primary
+                else -> DuskTheme.outline.copy(alpha = 0.45f)
             },
-            CircleShape))
+            DuskTheme.circleShape))
 }
 
 @Composable
 private fun DetailRow(label: String, value: String) {
     Row(modifier = Modifier.padding(vertical = 1.dp)) {
-        Text("$label: ", fontSize = 11.sp, color = TextMuted)
-        Text(value, fontSize = 11.sp, color = Color(0xFFe8eaed))
+        Text("$label: ", style = MaterialTheme.typography.labelSmall, color = DuskTheme.muted)
+        Text(value, style = MaterialTheme.typography.labelSmall, color = DuskTheme.onSurface)
     }
 }
 
 @Composable
 private fun SegmentedControl(options: List<Pair<String, String>>, selected: String, onSelected: (String) -> Unit) {
-    Row(modifier = Modifier
-        .fillMaxWidth()
-        .frostedGlass(RoundedCornerShape(8.dp))
-        .padding(3.dp)) {
+    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
         options.forEach { (key, label) ->
-            val sel = key == selected
-            Box(modifier = Modifier
-                .weight(1f)
-                .background(if (sel) MaterialTheme.colorScheme.primary else Color.Transparent, RoundedCornerShape(8.dp))
-                .clickable { onSelected(key) }
-                .padding(vertical = 8.dp),
-                contentAlignment = Alignment.Center) {
-                Text(label, fontSize = 11.sp,
-                    color = if (sel) Color.White else TextMuted)
-            }
+            DuskPill(
+                text = label,
+                modifier = Modifier.weight(1f),
+                selected = key == selected,
+                onClick = { onSelected(key) },
+            )
         }
     }
 }
@@ -1389,11 +1385,12 @@ private fun TextFieldLite(
 ) {
     androidx.compose.material3.OutlinedTextField(
         value = value, onValueChange = onValueChange,
-        placeholder = { Text(placeholder, fontSize = 12.sp, color = Color(0xFF7a7783)) },
+        placeholder = { Text(placeholder, style = MaterialTheme.typography.bodySmall, color = DuskTheme.muted) },
         singleLine = true,
-        textStyle = androidx.compose.ui.text.TextStyle(fontSize = 12.sp, color = Color.White),
+        textStyle = MaterialTheme.typography.bodyMedium.copy(color = DuskTheme.onSurface),
         modifier = modifier,
-        colors = iosFieldColors()
+        colors = iosFieldColors(),
+        shape = DuskTheme.controlShape,
     )
 }
 
@@ -1404,13 +1401,11 @@ private fun <T> DropdownLiteE(
 ) {
     var expanded by remember { mutableStateOf(false) }
     Box {
-        Box(modifier = Modifier
-            .fillMaxWidth()
-            .frostedGlass(RoundedCornerShape(8.dp))
-            .clickable { expanded = true }
-            .padding(10.dp)) {
-            Text(label(selected), fontSize = 12.sp, color = Color.White)
-        }
+        DuskPill(
+            text = label(selected),
+            modifier = Modifier.fillMaxWidth(),
+            onClick = { expanded = true },
+        )
         androidx.compose.material3.DropdownMenu(
             expanded = expanded,
             onDismissRequest = { expanded = false },
@@ -1418,7 +1413,7 @@ private fun <T> DropdownLiteE(
         ) {
             options.forEach { opt ->
                 androidx.compose.material3.DropdownMenuItem(
-                    text = { Text(label(opt), fontSize = 12.sp) },
+                    text = { Text(label(opt), style = MaterialTheme.typography.bodyMedium) },
                     onClick = { onSelected(opt); expanded = false })
             }
         }
@@ -1440,13 +1435,24 @@ private fun ButtonLite(
     text: String, color: Color, onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Box(modifier = modifier
-        .background(color, ControlShape)
-        .clickable(onClick = onClick)
-        // Horizontal padding matters when the caller passes no width — without it the box
-        // hugs the text so tightly it stops looking (and behaving) like a button.
-        .padding(horizontal = 16.dp, vertical = 11.dp),
-        contentAlignment = Alignment.Center) {
-        Text(text, fontWeight = FontWeight.Bold, fontSize = 13.sp, color = Color.White)
+    DuskCard(
+        modifier = modifier.clickable(onClick = onClick),
+        shape = DuskTheme.controlShape,
+        contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 16.dp, vertical = 11.dp),
+        containerColor = color,
+        contentColor = when (color) {
+            DuskTheme.surface, DuskTheme.background -> DuskTheme.onSurface
+            DuskTheme.primary -> DuskTheme.raisedSurface
+            DuskTheme.error -> DuskTheme.onError
+            else -> DuskTheme.onAccent
+        },
+    ) {
+        val textColor = when (color) {
+            DuskTheme.surface, DuskTheme.background -> DuskTheme.onSurface
+            DuskTheme.primary -> DuskTheme.raisedSurface
+            DuskTheme.error -> DuskTheme.onError
+            else -> DuskTheme.onAccent
+        }
+        Text(text, fontWeight = FontWeight.Bold, style = MaterialTheme.typography.labelLarge, color = textColor)
     }
 }

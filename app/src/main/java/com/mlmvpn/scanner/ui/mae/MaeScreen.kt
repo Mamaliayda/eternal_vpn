@@ -25,6 +25,7 @@ import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.IntOffset
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 import com.mlmvpn.scanner.ui.collectWhileVisible
 import com.mlmvpn.scanner.ui.settings.SettingsFooter
 import kotlinx.coroutines.Dispatchers
@@ -53,6 +54,7 @@ import androidx.compose.material.icons.outlined.ThumbDown
 import androidx.compose.material.icons.outlined.ThumbUp
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -681,31 +683,35 @@ private fun SymptomDialog(
         Symptom.LOGIN to R.string.mae_symptom_login,
         Symptom.MEDIA_CALLS to R.string.mae_symptom_calls,
     )
-    androidx.compose.material3.AlertDialog(
-        onDismissRequest = onDismiss,
-        containerColor = Ios.Card,
-        title = { Text(stringResource(R.string.mae_ask_title, name), color = Ios.Label, fontSize = 18.sp) },
-        text = {
+    com.mlmvpn.scanner.ui.settings.IosAlert(
+        onDismiss = onDismiss,
+        title = stringResource(R.string.mae_ask_title, name),
+        content = {
             Column {
-                Text(stringResource(R.string.mae_ask_subtitle, ask.level), color = Ios.SecondaryLabel, fontSize = 13.sp)
+                Text(
+                    stringResource(R.string.mae_ask_subtitle, ask.level),
+                    color = Ios.SecondaryLabel,
+                    style = MaterialTheme.typography.bodySmall,
+                )
                 Spacer(Modifier.height(8.dp))
                 options.forEach { (symptom, label) ->
                     val chosenBefore = symptom == ask.previous
                     Row(
-                        Modifier.fillMaxWidth().clip(RoundedCornerShape(10.dp))
+                        Modifier.fillMaxWidth().clip(DuskTheme.chartShape)
                             .background(if (chosenBefore) Ios.Blue.copy(alpha = 0.15f) else Color.Transparent)
                             .combinedClickableCompat { onAnswer(symptom) }
                             .padding(horizontal = 8.dp, vertical = 12.dp),
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
-                        Text(stringResource(label), color = Ios.Label, fontSize = 15.sp)
+                        Text(stringResource(label), color = Ios.Label, style = MaterialTheme.typography.bodyMedium)
                     }
                 }
             }
         },
-        confirmButton = {},
-        dismissButton = {
-            androidx.compose.material3.TextButton(onClick = onDismiss) { Text(stringResource(R.string.mae_cancel)) }
-        },
+        actions = listOf(
+            com.mlmvpn.scanner.ui.settings.IosAlertAction(
+                stringResource(R.string.mae_cancel), onClick = onDismiss,
+            ),
+        ),
     )
 }

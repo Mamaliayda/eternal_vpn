@@ -27,6 +27,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import com.mlmvpn.scanner.ui.theme.DuskCard
@@ -58,6 +59,8 @@ data class IosAlertAction(
     val onClick: () -> Unit,
     val destructive: Boolean = false,
     val preferred: Boolean = false,
+    val enabled: Boolean = true,
+    val busy: Boolean = false,
 )
 
 @Composable
@@ -141,20 +144,30 @@ private fun AlertSeparator() {
 private fun AlertButton(action: IosAlertAction, modifier: Modifier) {
     Box(
         modifier = modifier
-            .clickable(onClick = action.onClick)
+            .clickable(enabled = action.enabled, onClick = action.onClick)
             .heightIn(min = 44.dp)
             .padding(horizontal = 12.dp, vertical = 12.dp),
         contentAlignment = Alignment.Center,
     ) {
-        Text(
-            action.label,
-            // White, not the accent -- the same rule the rest of the app follows. Red still means
-            // destructive, because that is state, not decoration.
-            color = if (action.destructive) DuskTheme.error else Ios.Label,
-            style = MaterialTheme.typography.bodyLarge,
-            fontWeight = if (action.preferred) FontWeight.SemiBold else FontWeight.Normal,
-            textAlign = TextAlign.Center,
-        )
+        if (action.busy) {
+            CircularProgressIndicator(
+                modifier = Modifier.size(18.dp),
+                color = DuskTheme.primary,
+                strokeWidth = 2.dp,
+            )
+        } else {
+            Text(
+                action.label,
+                color = when {
+                    !action.enabled -> DuskTheme.disabled
+                    action.destructive -> DuskTheme.error
+                    else -> Ios.Label
+                },
+                style = MaterialTheme.typography.bodyLarge,
+                fontWeight = if (action.preferred) FontWeight.SemiBold else FontWeight.Normal,
+                textAlign = TextAlign.Center,
+            )
+        }
     }
 }
 

@@ -410,62 +410,55 @@ fun AddMlmUserDialog(
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
 
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        containerColor = DialogSurface,
-        modifier = androidx.compose.ui.Modifier.border(
-            0.7.dp,
-            androidx.compose.ui.graphics.Color.White.copy(alpha = 0.15f),
-            CardShape,
-        ),
-                shape = CardShape,
-        title = { Text(if (isEditMode) S(R.string.edit_user) else S(R.string.new_user), color = TextPrimary) },
-        text = {
+    com.mlmvpn.scanner.ui.settings.IosAlert(
+        title = if (isEditMode) S(R.string.edit_user) else S(R.string.new_user),
+        onDismiss = onDismiss,
+        content = {
             Column(modifier = Modifier.verticalScroll(androidx.compose.foundation.rememberScrollState())) {
                 OutlinedTextField(
                     value = username,
                     onValueChange = { username = it },
-                    label = { Text(S(R.string.username), color = TextMuted) },
+                    label = { Text(S(R.string.username), color = DuskTheme.muted) },
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true,
                     readOnly = isEditMode, // Cannot change username when editing
                     colors = iosFieldColors()
                 ,
-        shape = ControlShape,)
+        shape = DuskTheme.controlShape,)
                 Spacer(modifier = Modifier.height(8.dp))
                 OutlinedTextField(
                     value = limitGb,
                     onValueChange = { limitGb = it },
-                    label = { Text(S(R.string.total_limit_gb_empty_unlimited), color = TextMuted) },
+                    label = { Text(S(R.string.total_limit_gb_empty_unlimited), color = DuskTheme.muted) },
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true,
                     colors = iosFieldColors()
                 ,
-        shape = ControlShape,)
+        shape = DuskTheme.controlShape,)
                 Spacer(modifier = Modifier.height(8.dp))
                 OutlinedTextField(
                     value = dailyLimitGb,
                     onValueChange = { dailyLimitGb = it },
-                    label = { Text(S(R.string.daily_limit_gb_empty_unlimited), color = TextMuted) },
+                    label = { Text(S(R.string.daily_limit_gb_empty_unlimited), color = DuskTheme.muted) },
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true,
                     colors = iosFieldColors()
                 ,
-        shape = ControlShape,)
+        shape = DuskTheme.controlShape,)
                 Spacer(modifier = Modifier.height(8.dp))
                 OutlinedTextField(
                     value = expiryDays,
                     onValueChange = { expiryDays = it },
-                    label = { Text(S(R.string.validity_days_empty_unlimited), color = TextMuted) },
+                    label = { Text(S(R.string.validity_days_empty_unlimited), color = DuskTheme.muted) },
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true,
                     colors = iosFieldColors()
                 ,
-        shape = ControlShape,)
+        shape = DuskTheme.controlShape,)
                 Spacer(modifier = Modifier.height(16.dp))
                 
                 Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
-                    Text(S(R.string.port_type), color = TextMuted, modifier = Modifier.weight(1f), fontSize = 14.sp)
+                    Text(S(R.string.port_type), color = DuskTheme.muted, modifier = Modifier.weight(1f), style = MaterialTheme.typography.bodyMedium)
                     Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.clickable { 
                         isSecure = true
                         selectedPorts = selectedPorts.filter { it in securePorts }.toSet().ifEmpty { setOf("443") }
@@ -476,9 +469,9 @@ fun AddMlmUserDialog(
                                 isSecure = true
                                 selectedPorts = selectedPorts.filter { it in securePorts }.toSet().ifEmpty { setOf("443") }
                             }, 
-                            colors = RadioButtonDefaults.colors(selectedColor = Primary)
+                            colors = RadioButtonDefaults.colors(selectedColor = DuskTheme.primary)
                         )
-                        Text(S(R.string.secure_tls), color = TextPrimary, fontSize = 12.sp)
+                        Text(S(R.string.secure_tls), color = DuskTheme.onSurface, style = MaterialTheme.typography.bodySmall)
                     }
                     Spacer(modifier = Modifier.width(8.dp))
                     Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.clickable { 
@@ -491,9 +484,9 @@ fun AddMlmUserDialog(
                                 isSecure = false
                                 selectedPorts = selectedPorts.filter { it in normalPorts }.toSet().ifEmpty { setOf("80") }
                             }, 
-                            colors = RadioButtonDefaults.colors(selectedColor = Primary)
+                            colors = RadioButtonDefaults.colors(selectedColor = DuskTheme.primary)
                         )
-                        Text(S(R.string.plain), color = TextPrimary, fontSize = 12.sp)
+                        Text(S(R.string.plain), color = DuskTheme.onSurface, style = MaterialTheme.typography.bodySmall)
                     }
                 }
                 Spacer(modifier = Modifier.height(8.dp))
@@ -506,12 +499,12 @@ fun AddMlmUserDialog(
                         value = selectedPorts.joinToString(", "),
                         onValueChange = {},
                         readOnly = true,
-                        label = { Text(S(R.string.choose_a_port), color = TextMuted) },
+                        label = { Text(S(R.string.choose_a_port), color = DuskTheme.muted) },
                         trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = portExpanded) },
                         modifier = Modifier.fillMaxWidth().menuAnchor(),
                         colors = iosFieldColors()
                     ,
-        shape = ControlShape,)
+        shape = DuskTheme.controlShape,)
                     ExposedDropdownMenu(
                         expanded = portExpanded,
                         onDismissRequest = { portExpanded = false },
@@ -524,10 +517,10 @@ fun AddMlmUserDialog(
                                         Checkbox(
                                             checked = selectedPorts.contains(p),
                                             onCheckedChange = null,
-                                            colors = CheckboxDefaults.colors(checkedColor = Primary, uncheckedColor = TextMuted)
+                                            colors = CheckboxDefaults.colors(checkedColor = DuskTheme.primary, uncheckedColor = DuskTheme.muted)
                                         )
                                         Spacer(modifier = Modifier.width(8.dp))
-                                        Text(p, color = TextPrimary)
+                                        Text(p, color = DuskTheme.onSurface)
                                     }
                                 },
                                 onClick = {
@@ -546,77 +539,75 @@ fun AddMlmUserDialog(
                 OutlinedTextField(
                     value = fingerprint,
                     onValueChange = { fingerprint = it },
-                    label = { Text(S(R.string.fingerprint), color = TextMuted) },
+                    label = { Text(S(R.string.fingerprint), color = DuskTheme.muted) },
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true,
                     colors = iosFieldColors()
                 ,
-        shape = ControlShape,)
+        shape = DuskTheme.controlShape,)
                 Spacer(modifier = Modifier.height(8.dp))
                 OutlinedTextField(
                     value = proxyIp,
                     onValueChange = { proxyIp = it },
-                    label = { Text(S(R.string.dedicated_proxy_ip), color = TextMuted) },
+                    label = { Text(S(R.string.dedicated_proxy_ip), color = DuskTheme.muted) },
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true,
                     colors = iosFieldColors()
                 ,
-        shape = ControlShape,)
+        shape = DuskTheme.controlShape,)
             }
         },
-        confirmButton = {
-            Button(
+        actions = listOf(
+            com.mlmvpn.scanner.ui.settings.IosAlertAction(
+                S(R.string.cancel), onClick = onDismiss, enabled = !isBusy,
+            ),
+            com.mlmvpn.scanner.ui.settings.IosAlertAction(
+                if (isEditMode) S(R.string.save) else S(R.string.create),
                 onClick = {
                     if (username.isBlank()) {
                         Toast.makeText(context, S(R.string.a_username_is_required), Toast.LENGTH_SHORT).show()
-                        return@Button
-                    }
-                    isBusy = true
-                    scope.launch {
-                        val success = if (isEditMode) {
-                            val req = MlmUpdateUserRequest(
-                                limitGb = limitGb.toFloatOrNull(),
-                                dailyLimitGb = dailyLimitGb.toFloatOrNull(),
-                                expiryDays = expiryDays.toIntOrNull(),
-                                tls = if (isSecure) "tls" else "none",
-                                port = selectedPorts.joinToString(",").ifEmpty { if (isSecure) "443" else "80" },
-                                fingerprint = fingerprint.trim().ifEmpty { "chrome" },
-                                proxyIp = proxyIp.trim().ifEmpty { null },
-                                ips = editingUser?.ips
-                            )
-                            apiManager.updateUser(account, username.trim(), req)
-                        } else {
-                            val req = MlmCreateUserRequest(
-                                username = username.trim(),
-                                limitGb = limitGb.toFloatOrNull(),
-                                dailyLimitGb = dailyLimitGb.toFloatOrNull(),
-                                expiryDays = expiryDays.toIntOrNull(),
-                                tls = if (isSecure) "tls" else "none",
-                                port = selectedPorts.joinToString(",").ifEmpty { if (isSecure) "443" else "80" },
-                                fingerprint = fingerprint.trim().ifEmpty { "chrome" },
-                                proxyIp = proxyIp.trim().ifEmpty { null }
-                            )
-                            apiManager.createUser(account, req)
-                        }
-                        isBusy = false
-                        if (success) {
-                            Toast.makeText(context, if (isEditMode) S(R.string.user_edited_successfully) else S(R.string.user_created_successfully), Toast.LENGTH_SHORT).show()
-                            onUserAdded()
-                        } else {
-                            Toast.makeText(context, if (isEditMode) S(R.string.could_not_edit_the_user) else S(R.string.could_not_create_the_user), Toast.LENGTH_SHORT).show()
+                    } else {
+                        isBusy = true
+                        scope.launch {
+                            val success = if (isEditMode) {
+                                val req = MlmUpdateUserRequest(
+                                    limitGb = limitGb.toFloatOrNull(),
+                                    dailyLimitGb = dailyLimitGb.toFloatOrNull(),
+                                    expiryDays = expiryDays.toIntOrNull(),
+                                    tls = if (isSecure) "tls" else "none",
+                                    port = selectedPorts.joinToString(",").ifEmpty { if (isSecure) "443" else "80" },
+                                    fingerprint = fingerprint.trim().ifEmpty { "chrome" },
+                                    proxyIp = proxyIp.trim().ifEmpty { null },
+                                    ips = editingUser?.ips,
+                                )
+                                apiManager.updateUser(account, username.trim(), req)
+                            } else {
+                                val req = MlmCreateUserRequest(
+                                    username = username.trim(),
+                                    limitGb = limitGb.toFloatOrNull(),
+                                    dailyLimitGb = dailyLimitGb.toFloatOrNull(),
+                                    expiryDays = expiryDays.toIntOrNull(),
+                                    tls = if (isSecure) "tls" else "none",
+                                    port = selectedPorts.joinToString(",").ifEmpty { if (isSecure) "443" else "80" },
+                                    fingerprint = fingerprint.trim().ifEmpty { "chrome" },
+                                    proxyIp = proxyIp.trim().ifEmpty { null },
+                                )
+                                apiManager.createUser(account, req)
+                            }
+                            isBusy = false
+                            if (success) {
+                                Toast.makeText(context, if (isEditMode) S(R.string.user_edited_successfully) else S(R.string.user_created_successfully), Toast.LENGTH_SHORT).show()
+                                onUserAdded()
+                            } else {
+                                Toast.makeText(context, if (isEditMode) S(R.string.could_not_edit_the_user) else S(R.string.could_not_create_the_user), Toast.LENGTH_SHORT).show()
+                            }
                         }
                     }
                 },
-                enabled = !isBusy
-            ) {
-                if (isBusy) CircularProgressIndicator(modifier = Modifier.size(16.dp), color = BgDark)
-                else Text(if (isEditMode) S(R.string.save) else S(R.string.create), color = BgDark)
-            }
-        },
-        dismissButton = {
-            TextButton(onClick = onDismiss, enabled = !isBusy) {
-                Text(S(R.string.cancel), color = TextMuted)
-            }
-        }
+                preferred = true,
+                enabled = !isBusy,
+                busy = isBusy,
+            ),
+        ),
     )
 }

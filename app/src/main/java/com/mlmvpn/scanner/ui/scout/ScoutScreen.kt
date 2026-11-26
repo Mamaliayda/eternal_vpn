@@ -5,7 +5,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.*
@@ -165,21 +164,32 @@ fun ScoutScreen(onBack: () -> Unit, onOpen: (String) -> Unit, visible: Boolean =
         Spacer(Modifier.height(24.dp))
     }
 
-    confirm?.let { (label, action) -> AlertDialog(
-        onDismissRequest = { confirm = null },
-        title = { Text(tr("قطع موقت اتصال", "Pause connection")) },
-        text = { Text(tr("برای بررسی اینترنت شما، اتصال $label موقتاً قطع می‌شود. بعد از بررسی می‌توانید دوباره وصل شوید.", "To check your internet, $label will be paused. You can reconnect after the check.")) },
-        confirmButton = { TextButton(onClick = {
-            confirm = null
-            // Recheck: the network or VPN may have changed while the dialog was open.
-            when (val current = ScoutEngine.check(context)) {
-                ScoutEngine.Check.Ok -> action(false)
-                is ScoutEngine.Check.OurVpn -> if (current.label == label) action(true) else confirm = current.label to action
-                else -> checked(action)
-            }
-        }) { Text(tr("قطع موقت و شروع", "Pause and start")) } },
-        dismissButton = { TextButton(onClick = { confirm = null }) { Text(tr("انصراف", "Cancel")) } },
-    ) }
+    confirm?.let { (label, action) ->
+        com.mlmvpn.scanner.ui.settings.IosAlert(
+            onDismiss = { confirm = null },
+            title = tr("قطع موقت اتصال", "Pause connection"),
+            message = tr(
+                "برای بررسی اینترنت شما، اتصال $label موقتاً قطع می‌شود. بعد از بررسی می‌توانید دوباره وصل شوید.",
+                "To check your internet, $label will be paused. You can reconnect after the check.",
+            ),
+            actions = listOf(
+                com.mlmvpn.scanner.ui.settings.IosAlertAction(tr("انصراف", "Cancel"), { confirm = null }),
+                com.mlmvpn.scanner.ui.settings.IosAlertAction(
+                    tr("قطع موقت و شروع", "Pause and start"),
+                    onClick = {
+                        confirm = null
+                        // Recheck: the network or VPN may have changed while the dialog was open.
+                        when (val current = ScoutEngine.check(context)) {
+                            ScoutEngine.Check.Ok -> action(false)
+                            is ScoutEngine.Check.OurVpn -> if (current.label == label) action(true) else confirm = current.label to action
+                            else -> checked(action)
+                        }
+                    },
+                    preferred = true,
+                ),
+            ),
+        )
+    }
     message?.let { value -> ScoutDialog(tr("MLM Scout", "MLM Scout"), { message = null }) { Text(value) } }
     if (showHistory) ScoutDialog(tr("سابقهٔ بررسی‌ها", "History"), { showHistory = false }) {
         if (ui.running) Text(tr("برای مشاهدهٔ بررسی قبلی، ابتدا بررسی جاری را متوقف کنید.", "Stop the current check before viewing history."))
@@ -255,9 +265,20 @@ fun ScoutScreen(onBack: () -> Unit, onOpen: (String) -> Unit, visible: Boolean =
 
 @Composable
 private fun ScoutDialog(title: String, dismiss: () -> Unit, content: @Composable ColumnScope.() -> Unit) {
-    AlertDialog(onDismissRequest = dismiss, title = { Text(title) },
-        text = { Column(Modifier.fillMaxWidth().heightIn(max = 480.dp).verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(8.dp), content = content) },
-        confirmButton = { TextButton(onClick = dismiss) { Text(tr("بستن", "Close")) } })
+    com.mlmvpn.scanner.ui.settings.IosAlert(
+        title = title,
+        onDismiss = dismiss,
+        content = {
+            Column(
+                Modifier.fillMaxWidth().heightIn(max = 480.dp).verticalScroll(rememberScrollState()),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+                content = content,
+            )
+        },
+        actions = listOf(
+            com.mlmvpn.scanner.ui.settings.IosAlertAction(tr("بستن", "Close"), dismiss),
+        ),
+    )
 }
 
 /** A family's state in words: the enum's own name ("WORKS") was shown as it was. */

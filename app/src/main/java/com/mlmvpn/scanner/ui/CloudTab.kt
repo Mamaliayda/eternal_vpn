@@ -2275,168 +2275,108 @@ fun AccountGroupCard(
     }
 
     if (showSubdomainError) {
-        AlertDialog(
-            onDismissRequest = { showSubdomainError = false },
-            containerColor = DialogSurface,
-            modifier = androidx.compose.ui.Modifier.border(
-                0.7.dp,
-                androidx.compose.ui.graphics.Color.White.copy(alpha = 0.15f),
-                CardShape,
-            ),
-                shape = CardShape,
-            title = { Text(stringResource(R.string.cloud_manual_change_required), color = TextPrimary) },
-            text = {
-                Text(
-                    stringResource(R.string.cloud_subdomain_duplicate_error),
-                    color = TextMuted, fontSize = 14.sp
-                )
-            },
-            confirmButton = {
-                Button(
+        com.mlmvpn.scanner.ui.settings.IosAlert(
+            onDismiss = { showSubdomainError = false },
+            title = stringResource(R.string.cloud_manual_change_required),
+            message = stringResource(R.string.cloud_subdomain_duplicate_error),
+            actions = listOf(
+                com.mlmvpn.scanner.ui.settings.IosAlertAction(
+                    stringResource(R.string.cloud_close), onClick = { showSubdomainError = false },
+                ),
+                com.mlmvpn.scanner.ui.settings.IosAlertAction(
+                    stringResource(R.string.cloud_login_to_cloudflare),
                     onClick = {
                         val url = "https://dash.cloudflare.com/?to=/:account/workers/overview"
                         val intent = android.content.Intent(android.content.Intent.ACTION_VIEW, android.net.Uri.parse(url))
                         context.startActivity(intent)
                         showSubdomainError = false
                     },
-                    colors = iosButtonColors(Primary),
-                    border = iosButtonBorder(Primary)) {
-                    Text(stringResource(R.string.cloud_login_to_cloudflare),)
-                }
-            },
-            dismissButton = {
-                TextButton(onClick = { showSubdomainError = false }) {
-                    Text(stringResource(R.string.cloud_close), color = TextMuted)
-                }
-            }
+                    preferred = true,
+                ),
+            ),
         )
     }
 
     if (subdomainCreationError.isNotEmpty()) {
-        AlertDialog(
-            onDismissRequest = { subdomainCreationError = "" },
-            containerColor = DialogSurface,
-            modifier = androidx.compose.ui.Modifier.border(
-                0.7.dp,
-                androidx.compose.ui.graphics.Color.White.copy(alpha = 0.15f),
-                CardShape,
-            ),
-                shape = CardShape,
-            title = { Text(stringResource(R.string.cloud_error_creating_subdomain), color = TextPrimary) },
-            text = {
-                val errorMsg = subdomainCreationError
-                val displayMsg = when {
-                    errorMsg.contains("10009") || errorMsg.contains("terms", ignoreCase = true) -> 
-                        stringResource(R.string.cloud_cloudflare_rules_not_accepted) +
-                        stringResource(R.string.cloud_solution_accept_rules)
-                    errorMsg.contains("10000") || errorMsg.contains("Authentication") ->
-                        stringResource(R.string.cloud_access_error_10000) +
-                        stringResource(R.string.cloud_solution_api_token_permissions) +
-                        "- Account -> Workers Scripts -> Edit\n\n" +
-                        stringResource(R.string.cloud_or_use_global_api_key)
-                    errorMsg.contains("10014") || errorMsg.contains("taken") ->
-                        stringResource(R.string.cloud_subdomain_taken)
-                    else -> stringResource(R.string.cloud_unknown_cloudflare_error, errorMsg)
-                }
-                Text(displayMsg, color = TextMuted, fontSize = 14.sp)
-            },
-            confirmButton = {
-                Button(
+        val errorMsg = subdomainCreationError
+        val displayMsg = when {
+            errorMsg.contains("10009") || errorMsg.contains("terms", ignoreCase = true) ->
+                stringResource(R.string.cloud_cloudflare_rules_not_accepted) +
+                    stringResource(R.string.cloud_solution_accept_rules)
+            errorMsg.contains("10000") || errorMsg.contains("Authentication") ->
+                stringResource(R.string.cloud_access_error_10000) +
+                    stringResource(R.string.cloud_solution_api_token_permissions) +
+                    "- Account -> Workers Scripts -> Edit\n\n" +
+                    stringResource(R.string.cloud_or_use_global_api_key)
+            errorMsg.contains("10014") || errorMsg.contains("taken") ->
+                stringResource(R.string.cloud_subdomain_taken)
+            else -> stringResource(R.string.cloud_unknown_cloudflare_error, errorMsg)
+        }
+        com.mlmvpn.scanner.ui.settings.IosAlert(
+            onDismiss = { subdomainCreationError = "" },
+            title = stringResource(R.string.cloud_error_creating_subdomain),
+            message = displayMsg,
+            actions = listOf(
+                com.mlmvpn.scanner.ui.settings.IosAlertAction(
+                    stringResource(R.string.cloud_close), onClick = { subdomainCreationError = "" },
+                ),
+                com.mlmvpn.scanner.ui.settings.IosAlertAction(
+                    stringResource(R.string.cloud_login_to_cloudflare),
                     onClick = {
                         val url = "https://dash.cloudflare.com/?to=/:account/workers/overview"
                         val intent = android.content.Intent(android.content.Intent.ACTION_VIEW, android.net.Uri.parse(url))
                         context.startActivity(intent)
                         subdomainCreationError = ""
                     },
-                    colors = iosButtonColors(Primary),
-                    border = iosButtonBorder(Primary)) {
-                    Text(stringResource(R.string.cloud_login_to_cloudflare),)
-                }
-            },
-            dismissButton = {
-                TextButton(onClick = { subdomainCreationError = "" }) {
-                    Text(stringResource(R.string.cloud_close), color = TextMuted)
-                }
-            }
+                    preferred = true,
+                ),
+            ),
         )
     }
 
     if (showEmailModal) {
-        AlertDialog(
-            onDismissRequest = { showEmailModal = false },
-            containerColor = DialogSurface,
-            modifier = androidx.compose.ui.Modifier.border(
-                0.7.dp,
-                androidx.compose.ui.graphics.Color.White.copy(alpha = 0.15f),
-                CardShape,
-            ),
-                shape = CardShape,
-            title = { Text(stringResource(R.string.cloud_verify_cloudflare_email), color = TextPrimary) },
-            text = {
-                Column {
-                    Text(
-                        stringResource(R.string.cloud_cloudflare_sends_email_once) +
-                        stringResource(R.string.cloud_step1_login_profile) +
-                        stringResource(R.string.cloud_step2_send_verification) +
-                        stringResource(R.string.cloud_step3_verify_inbox) +
-                        stringResource(R.string.cloud_step4_return_and_check),
-                        color = TextMuted, fontSize = 14.sp
-                    )
-                }
-            },
-            confirmButton = {
-                Column(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    Button(
-                        onClick = {
-                            val url = "https://dash.cloudflare.com/profile"
-                            val intent = android.content.Intent(android.content.Intent.ACTION_VIEW, android.net.Uri.parse(url))
-                            context.startActivity(intent)
-                        },
-                        colors = iosButtonColors(Primary),
-                        border = iosButtonBorder(Primary),
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Text(stringResource(R.string.cloud_login_cloudflare_profile),)
-                    }
-                    
-                    Button(
-                        onClick = {
-                            isCheckingStatus = true
-                            scope.launch {
-                                val status = cloudManager.checkAccountStatus(account)
-                                isCheckingStatus = false
-                                if (status.second) {
-                                    account.isEmailVerified = true
-                                    isEmailVerified = true
-                                    cloudManager.saveAccounts()
-                                    showEmailModal = false
-                                    android.widget.Toast.makeText(context, context.getString(R.string.cloud_email_verified), android.widget.Toast.LENGTH_SHORT).show()
-                                } else {
-                                    android.widget.Toast.makeText(context, context.getString(R.string.cloud_not_verified_try_again), android.widget.Toast.LENGTH_SHORT).show()
-                                }
+        com.mlmvpn.scanner.ui.settings.IosAlert(
+            onDismiss = { showEmailModal = false },
+            title = stringResource(R.string.cloud_verify_cloudflare_email),
+            message = stringResource(R.string.cloud_cloudflare_sends_email_once) +
+                stringResource(R.string.cloud_step1_login_profile) +
+                stringResource(R.string.cloud_step2_send_verification) +
+                stringResource(R.string.cloud_step3_verify_inbox) +
+                stringResource(R.string.cloud_step4_return_and_check),
+            actions = listOf(
+                com.mlmvpn.scanner.ui.settings.IosAlertAction(
+                    stringResource(R.string.cloud_close), onClick = { showEmailModal = false },
+                ),
+                com.mlmvpn.scanner.ui.settings.IosAlertAction(
+                    stringResource(R.string.cloud_login_cloudflare_profile),
+                    onClick = {
+                        val url = "https://dash.cloudflare.com/profile"
+                        val intent = android.content.Intent(android.content.Intent.ACTION_VIEW, android.net.Uri.parse(url))
+                        context.startActivity(intent)
+                    },
+                ),
+                com.mlmvpn.scanner.ui.settings.IosAlertAction(
+                    stringResource(R.string.cloud_check_verification_status),
+                    onClick = {
+                        isCheckingStatus = true
+                        scope.launch {
+                            val status = cloudManager.checkAccountStatus(account)
+                            isCheckingStatus = false
+                            if (status.second) {
+                                account.isEmailVerified = true
+                                isEmailVerified = true
+                                cloudManager.saveAccounts()
+                                showEmailModal = false
+                                android.widget.Toast.makeText(context, context.getString(R.string.cloud_email_verified), android.widget.Toast.LENGTH_SHORT).show()
+                            } else {
+                                android.widget.Toast.makeText(context, context.getString(R.string.cloud_not_verified_try_again), android.widget.Toast.LENGTH_SHORT).show()
                             }
-                        },
-                        colors = iosButtonColors(GreenOk),
-                        border = iosButtonBorder(GreenOk),
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        if (isCheckingStatus) {
-                            CircularProgressIndicator(modifier = Modifier.size(16.dp),)
-                        } else {
-                            Text(stringResource(R.string.cloud_check_verification_status),)
                         }
-                    }
-                }
-            },
-            dismissButton = {
-                TextButton(onClick = { showEmailModal = false }) {
-                    Text(stringResource(R.string.cloud_close), color = TextMuted)
-                }
-            }
+                    },
+                    preferred = true,
+                    busy = isCheckingStatus,
+                ),
+            ),
         )
     }
 
