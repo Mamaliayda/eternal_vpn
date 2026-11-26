@@ -4,6 +4,8 @@
 
 | Commit | Run | Result | Errors fixed / notes |
 |---|---:|---|---|
+| `4323f976f4956a85e5cea4d14f4a63828a1c49a3` | [45855479414](https://github.com/Mamaliayda/eternal_vpn/actions/runs/45855479414) | Green | `assembleDebug` passed in 29m28s; debug APK and build-log artifacts uploaded. Non-blocking Node.js 20 deprecation and missing `go.mod` cache warnings only. |
+| `4323f976f4956a85e5cea4d14f4a63828a1c49a3` | [45855479550](https://github.com/Mamaliayda/eternal_vpn/actions/runs/45855479550) | Green | Release APK build passed in 32m9s; APK/checksum artifacts uploaded. Non-blocking Node.js 20 deprecation and missing `go.mod` cache warnings only. |
 | `f77feb54ae05abb11c7085203d8e9576952e1a5a` | [45846471963](https://github.com/Mamaliayda/eternal_vpn/actions/runs/45846471963) | Green | `assembleDebug` passed in 32m21s; debug APK and build-log artifacts uploaded. All build steps succeeded. |
 | `f77feb54ae05abb11c7085203d8e9576952e1a5a` | [45846471921](https://github.com/Mamaliayda/eternal_vpn/actions/runs/45846471921) | Green | Release APK build passed in 33m56s; APK/checksum artifacts uploaded. All build steps succeeded. |
 | `3c570ffc48a5cd6a9b5f184070cee0573ba73561` | [45841774168](https://github.com/Mamaliayda/eternal_vpn/actions/runs/45841774168) | Red | `assembleDebug` failed: `QuickServersScreen.kt` lacked the `MaterialTheme` import after replacing direct font sizes with typography tokens. Fixed in `f77feb5`. |
@@ -32,4 +34,4 @@
 
 ## Current state
 
-The required wrapper files are present. `.github/workflows/build.yml` runs `assembleDebug` on pushes and uploads the Gradle log even when the build fails. Latest pushed commit `f77feb5` passed both the debug and release APK workflows; artifacts were uploaded. It fixes the missing `MaterialTheme` import reported by the two failed workflows on `3c570ff`. Local Gradle compilation is unavailable because Java is not installed in this sandbox.
+The required wrapper files are present. `.github/workflows/build.yml` runs `assembleDebug` on pushes and uploads the Gradle log even when the build fails. Latest screen batch at `4323f97` passed both the debug and release APK workflows; artifacts were uploaded. The only workflow notices were non-blocking Node.js 20 deprecation and missing `go.mod` cache warnings. Local Gradle compilation is unavailable because Java is not installed in this sandbox.
