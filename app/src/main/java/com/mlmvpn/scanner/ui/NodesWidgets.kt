@@ -632,6 +632,7 @@ private fun MetricDot() {
  * Green for carrying, amber for coming up, red for down -- which is the mapping every one of these
  * screens already implies and none of them showed.
  */
+@Composable
 private fun connectWashPair(running: Boolean, connecting: Boolean): Pair<Color, Color> = when {
     // Green and turquoise: near enough in hue to read as one living colour rather than two lamps.
     running -> DuskTheme.success to DuskTheme.secondary
@@ -837,6 +838,7 @@ fun NodeConnectBar(
         }
         }
     }
+}
 }
 
 /**
