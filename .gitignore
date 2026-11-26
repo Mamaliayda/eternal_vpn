@@ -38,3 +38,12 @@ mlm-chat/**/target/
 mlm-chat/**/target-*/
 mlm-chat/tools/*/out/
 mlm-chat/**/node_modules/
+
+# Local tooling environments/caches (never commit workstation state)
+.venv/
+venv/
+.tox/
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+.cache/

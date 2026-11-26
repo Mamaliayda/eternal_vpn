@@ -104,7 +104,7 @@ fun IranConfigsScreen(onBack: () -> Unit) {
                 else
                     stringResource(R.string.these_configs_are_the_original_serverless_files),
             )
-            Spacer(Modifier.height(14.dp))
+            Spacer(Modifier.height(DuskTheme.space3))
         },
     )
 }
@@ -123,7 +123,7 @@ fun DomainFrontingScreen(onBack: () -> Unit) {
             // this device trusts. A connect button above an unfinished wizard is a button whose
             // only outcome is failure.
             MitmSetupCard()
-            Spacer(Modifier.height(14.dp))
+            Spacer(Modifier.height(DuskTheme.space3))
         },
     )
 }
@@ -218,13 +218,13 @@ private fun BuiltInProfileScreen(
     }
 
     IosScreen(title = title, onBack = onBack, backLabel = stringResource(R.string.emergency_3_back)) {
-        Spacer(Modifier.height(14.dp))
+        Spacer(Modifier.height(DuskTheme.space3))
         header()
         com.mlmvpn.scanner.ui.RouteChips()
 
         if (profiles.isEmpty()) {
             SettingsFooter(stringResource(R.string.builtin_profiles_none))
-            Spacer(Modifier.height(28.dp))
+            Spacer(Modifier.height(DuskTheme.space5))
             return@IosScreen
         }
 
@@ -239,7 +239,7 @@ private fun BuiltInProfileScreen(
                 )
             }
             SettingsFooter(stringResource(R.string.iran_test_footer))
-            Spacer(Modifier.height(14.dp))
+            Spacer(Modifier.height(DuskTheme.space3))
         }
 
         SettingsSectionHeader(stringResource(R.string.builtin_profiles_section))
@@ -258,7 +258,7 @@ private fun BuiltInProfileScreen(
             }
         }
         SettingsFooter(footer)
-        Spacer(Modifier.height(28.dp))
+        Spacer(Modifier.height(DuskTheme.space5))
     }
 }
 
@@ -283,7 +283,7 @@ private fun ProfileRow(
             .fillMaxWidth()
             .clickable(onClick = onClick)
             .heightIn(min = 56.dp)
-            .padding(horizontal = 16.dp, vertical = 10.dp),
+            .padding(horizontal = DuskTheme.space4, vertical = DuskTheme.space2),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Box(modifier = Modifier.size(28.dp), contentAlignment = Alignment.Center) {
@@ -307,7 +307,7 @@ private fun ProfileRow(
                 )
             }
         }
-        Spacer(Modifier.width(12.dp))
+        Spacer(Modifier.width(DuskTheme.space3))
 
         Column(modifier = Modifier.weight(1f)) {
             Text(

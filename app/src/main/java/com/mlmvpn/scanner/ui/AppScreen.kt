@@ -21,7 +21,6 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.ui.res.stringResource
@@ -54,6 +53,8 @@ private val SELF_HEADED = setOf(
 @Composable
 fun AppScreen() {
     val context = androidx.compose.ui.platform.LocalContext.current
+    val snackbarScope = rememberCoroutineScope()
+    val duskSnackbarHost = LocalDuskSnackbarHostState.current
     // After an engine-conflict restart the game boost left a "pending_boost_mode" flag -- land the
     // user straight back on the Game tab so they can retap Start on a clean process.
     val hasPendingBoost = remember {
@@ -160,7 +161,6 @@ fun AppScreen() {
     val textColor = TextPrimary
     val mutedColor = TextMuted
     val borderColor = BorderDark
-    val GreenOk = Color(0xFF81C995)
     var trafficDown by remember { mutableFloatStateOf(0f) }
     var trafficUp by remember { mutableFloatStateOf(0f) }
 
@@ -625,7 +625,7 @@ fun AppScreen() {
                         mutedColor = mutedColor,
                         borderColor = borderColor,
                         primaryColor = primaryColor,
-                        greenOk = GreenOk,
+                        greenOk = DuskTheme.success,
                         modifier = Modifier.padding(top = topInset),
                     )
                 }
@@ -731,11 +731,9 @@ fun AppScreen() {
                         com.mlmvpn.scanner.utils.NetworkSettings.setProxyMode(context, false)
                         com.mlmvpn.scanner.utils.NetworkSettings.setProxyModeAcknowledged(context, true)
                         proxyWarn = false
-                        android.widget.Toast.makeText(
-                            context,
-                            S(R.string.proxy_warn_turned_off),
-                            android.widget.Toast.LENGTH_LONG,
-                        ).show()
+                        snackbarScope.launch {
+                            duskSnackbarHost.showSnackbar(S(R.string.proxy_warn_turned_off))
+                        }
                     },
                     preferred = true,
                 ),
@@ -837,7 +835,7 @@ private fun FeatureTopBar(
     // Transparent, the backdrop runs behind it unbroken.
     Box(modifier = modifier.fillMaxWidth().height(FEATURE_BAR_HEIGHT)) {
         Row(
-            modifier = Modifier.fillMaxSize().padding(end = 16.dp),
+            modifier = Modifier.fillMaxSize().padding(horizontal = DuskTheme.space4),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -849,21 +847,31 @@ private fun FeatureTopBar(
                     Text(
                         stringResource(titleRes),
                         color = textColor,
-                        fontSize = 17.sp,
-                        fontWeight = FontWeight.Bold,
+                        style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
                     )
                 }
             }
 
             if (showTraffic) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(Icons.Default.Download, contentDescription = "Down", tint = if (isRunning) greenOk else mutedColor, modifier = Modifier.size(14.dp))
-                    Spacer(modifier = Modifier.width(4.dp))
-                    Text(String.format("%.1f", trafficDown), color = if (isRunning) greenOk else mutedColor, fontSize = 12.sp, fontFamily = androidx.compose.ui.text.font.FontFamily.Monospace)
-                    Divider(modifier = Modifier.padding(horizontal = 10.dp).height(16.dp).width(1.dp), color = borderColor)
-                    Icon(Icons.Default.Upload, contentDescription = "Up", tint = if (isRunning) primaryColor else mutedColor, modifier = Modifier.size(14.dp))
-                    Spacer(modifier = Modifier.width(4.dp))
-                    Text(String.format("%.1f", trafficUp), color = if (isRunning) primaryColor else mutedColor, fontSize = 12.sp, fontFamily = androidx.compose.ui.text.font.FontFamily.Monospace)
+                    Icon(Icons.Default.Download, contentDescription = "Down", tint = if (isRunning) greenOk else mutedColor, modifier = Modifier.size(DuskTheme.space3))
+                    Spacer(modifier = Modifier.width(DuskTheme.space1))
+                    Text(
+                        String.format("%.1f", trafficDown),
+                        color = if (isRunning) greenOk else mutedColor,
+                        style = MaterialTheme.typography.labelSmall.copy(fontFamily = androidx.compose.ui.text.font.FontFamily.Monospace),
+                    )
+                    Box(
+                        Modifier.padding(horizontal = DuskTheme.space2)
+                            .width(1.dp).height(DuskTheme.space4).background(borderColor),
+                    )
+                    Icon(Icons.Default.Upload, contentDescription = "Up", tint = if (isRunning) primaryColor else mutedColor, modifier = Modifier.size(DuskTheme.space3))
+                    Spacer(modifier = Modifier.width(DuskTheme.space1))
+                    Text(
+                        String.format("%.1f", trafficUp),
+                        color = if (isRunning) primaryColor else mutedColor,
+                        style = MaterialTheme.typography.labelSmall.copy(fontFamily = androidx.compose.ui.text.font.FontFamily.Monospace),
+                    )
                 }
             } else {
                 Icon(

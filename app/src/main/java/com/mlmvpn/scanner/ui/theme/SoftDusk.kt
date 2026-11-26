@@ -43,7 +43,7 @@ object DuskTheme {
     val rose = Color(0xFFE9BACB)
     val coral = Color(0xFFE98583)
     val navy = Color(0xFF293451)
-    val blueGray = Color(0xFF71819C)
+    val blueGray = Color(0xFF58657A)
     val cream = Color(0xFFFFF8F1)
     val white = Color(0xFFFFFFFF)
     /** Dedicated neutral backing keeps generated QR modules scannable in either appearance. */
@@ -58,7 +58,7 @@ object DuskTheme {
     val lightText = Color(0xFF293451)
     val nightText = Color(0xFFF8F2FA)
     val nightMuted = Color(0xFFC1BED0)
-    val lightMuted = Color(0xFF72788B)
+    val lightMuted = Color(0xFF595F72)
     val nightVariantText = Color(0xFFD0CDE0)
     val lightVariant = Color(0xFFF0E5E8)
     val lightVariantText = Color(0xFF515B70)
@@ -239,7 +239,7 @@ fun duskColorScheme(dark: Boolean): ColorScheme = if (dark) {
         primary = DuskTheme.navy, onPrimary = DuskTheme.white,
         primaryContainer = DuskTheme.rose, onPrimaryContainer = DuskTheme.navy,
         secondary = DuskTheme.blueGray, onSecondary = DuskTheme.white,
-        tertiary = DuskTheme.coral, onTertiary = DuskTheme.white,
+        tertiary = DuskTheme.coral, onTertiary = DuskTheme.navy,
         background = DuskTheme.blush, onBackground = DuskTheme.lightText,
         surface = DuskTheme.cream, onSurface = DuskTheme.lightText,
         surfaceVariant = DuskTheme.lightVariant, onSurfaceVariant = DuskTheme.lightVariantText,

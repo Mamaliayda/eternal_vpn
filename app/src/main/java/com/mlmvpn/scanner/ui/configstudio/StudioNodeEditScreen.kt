@@ -28,7 +28,7 @@ import com.mlmvpn.scanner.ui.configstudio.parts.ProblemCard
 import com.mlmvpn.scanner.ui.configstudio.parts.WizardBusy
 import com.mlmvpn.scanner.ui.configstudio.parts.WizardField
 import com.mlmvpn.scanner.ui.configstudio.parts.WizardPrimary
-import com.mlmvpn.scanner.ui.settings.Ios
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 import com.mlmvpn.scanner.ui.settings.IosAlert
 import com.mlmvpn.scanner.ui.settings.IosAlertAction
 import com.mlmvpn.scanner.ui.settings.IosScreen
@@ -153,7 +153,7 @@ fun StudioNodeEditScreen(
         onBack = if (busy) null else onBack,
         backLabel = S(R.string.studio_nodes),
     ) {
-        Spacer(Modifier.height(10.dp))
+        Spacer(Modifier.height(DuskTheme.space2))
         PageIntro(S(R.string.studio_nodes_sub))
 
         note?.let { InfoCard(it) }
@@ -214,7 +214,7 @@ fun StudioNodeEditScreen(
         WizardField(priority, { priority = it }, S(R.string.studio_node_priority_hint))
         InfoCard(S(R.string.studio_node_priority_note))
 
-        Spacer(Modifier.height(14.dp))
+        Spacer(Modifier.height(DuskTheme.space3))
         SettingsGroup {
             SettingsToggle(
                 title = S(R.string.studio_node_enabled),
@@ -252,9 +252,9 @@ fun StudioNodeEditScreen(
                         NodeHealth.UNKNOWN -> StudioIcons.Info
                     },
                     tint = when (current.health) {
-                        NodeHealth.UP -> Ios.Green
-                        NodeHealth.DOWN -> Ios.Red
-                        NodeHealth.UNKNOWN -> Ios.Gray
+                        NodeHealth.UP -> DuskTheme.success
+                        NodeHealth.DOWN -> DuskTheme.error
+                        NodeHealth.UNKNOWN -> DuskTheme.disabled
                     },
                     value = current.latencyMs?.takeIf { current.health == NodeHealth.UP }
                         ?.let { S(R.string.studio_node_latency).replace("%1\$s", faNum(it)) },
@@ -268,7 +268,7 @@ fun StudioNodeEditScreen(
                     SettingsActionRow(
                         label = if (busy) S(R.string.studio_node_testing) else S(R.string.studio_node_test),
                         icon = StudioIcons.Test,
-                        tint = Ios.Green,
+                        tint = DuskTheme.success,
                         busy = busy,
                         enabled = !busy,
                     ) {
@@ -297,7 +297,7 @@ fun StudioNodeEditScreen(
 
         error?.let { ProblemCard(it) }
 
-        Spacer(Modifier.height(16.dp))
+        Spacer(Modifier.height(DuskTheme.space4))
         WizardPrimary(S(R.string.studio_save), busy = busy) { save() }
 
         if (existing != null) {
@@ -317,7 +317,7 @@ fun StudioNodeEditScreen(
                         SettingsActionRow(
                             label = S(R.string.studio_node_history_load),
                             icon = StudioIcons.ProbeHistory,
-                            tint = Ios.Blue,
+                            tint = DuskTheme.primary,
                             enabled = !busy,
                         ) {
                             loadingHistory = true
@@ -339,14 +339,14 @@ fun StudioNodeEditScreen(
                                     "\n" + S(R.string.studio_node_avg_latency).replace("%1\$s", faNum(it))
                                 } ?: "")
                         )
-                        Spacer(Modifier.height(10.dp))
+                        Spacer(Modifier.height(DuskTheme.space2))
                         SettingsGroup {
                             h.items.take(12).forEachIndexed { index, probe ->
                                 if (index > 0) Separator()
                                 SettingsRow(
                                     title = if (probe.up) S(R.string.studio_node_up) else S(R.string.studio_node_down),
                                     icon = if (probe.up) StudioIcons.Ok else StudioIcons.Error,
-                                    tint = if (probe.up) Ios.Green else Ios.Red,
+                                    tint = if (probe.up) DuskTheme.success else DuskTheme.error,
                                     // The failure keeps its own words: "refused", "unreachable" and
                                     // "timed out" call for three different actions.
                                     value = if (probe.up) probe.latencyMs?.let {
@@ -367,7 +367,7 @@ fun StudioNodeEditScreen(
                 SettingsActionRow(
                     label = S(R.string.studio_node_delete),
                     icon = StudioIcons.Delete,
-                    tint = Ios.Red,
+                    tint = DuskTheme.error,
                     enabled = !busy,
                 ) { confirmDelete = true }
             }

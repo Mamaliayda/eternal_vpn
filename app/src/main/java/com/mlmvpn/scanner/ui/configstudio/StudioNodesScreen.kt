@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -24,7 +25,6 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.mlmvpn.scanner.R
 import com.mlmvpn.scanner.data.PanelBuild
 import com.mlmvpn.scanner.data.studio.StudioState
@@ -38,7 +38,7 @@ import com.mlmvpn.scanner.ui.configstudio.parts.PayloadText
 import com.mlmvpn.scanner.ui.configstudio.parts.ProblemCard
 import com.mlmvpn.scanner.ui.configstudio.parts.StatusDot
 import com.mlmvpn.scanner.ui.configstudio.parts.StudioListRow
-import com.mlmvpn.scanner.ui.settings.Ios
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 import com.mlmvpn.scanner.ui.settings.IosRefreshIndicator
 import com.mlmvpn.scanner.ui.settings.IosScreen
 import com.mlmvpn.scanner.ui.settings.SettingsActionRow
@@ -117,15 +117,15 @@ fun StudioNodesScreen(
         trailing = {
             Text(
                 S(R.string.studio_node_new),
-                color = Ios.Blue,
-                fontSize = 16.sp,
+                color = DuskTheme.primary,
+                style = MaterialTheme.typography.labelLarge,
                 modifier = Modifier
                     .clickable(enabled = !busy, onClick = onNewNode)
-                    .padding(horizontal = 4.dp, vertical = 6.dp),
+                    .padding(horizontal = DuskTheme.space1, vertical = DuskTheme.space2),
             )
         },
     ) {
-        Spacer(Modifier.height(10.dp))
+        Spacer(Modifier.height(DuskTheme.space2))
         note?.let { InfoCard(it) }
 
         // The accounts that did not answer are named, and their nodes are simply absent rather than
@@ -153,7 +153,7 @@ fun StudioNodesScreen(
             }
             item {
                 InfoCard(S(R.string.studio_nodes_sub))
-                Spacer(Modifier.height(10.dp))
+                Spacer(Modifier.height(DuskTheme.space2))
             }
 
             // Grouped, and in the order the fan-out itself uses: group priority, then whatever the
@@ -170,7 +170,7 @@ fun StudioNodesScreen(
 
             for ((group, nodes) in ordered) {
                 item(key = "h:" + (group?.installationId.orEmpty()) + ":" + (group?.id ?: "-")) {
-                    Spacer(Modifier.height(6.dp))
+                    Spacer(Modifier.height(DuskTheme.space1))
                     SettingsSectionHeader(
                         (group?.name ?: S(R.string.studio_node_group_ungrouped)) +
                             (group?.let { " · " + strategyLabel(it.strategy) } ?: "")
@@ -179,7 +179,7 @@ fun StudioNodesScreen(
                     // Hiding them would make an address the operator switched off look deleted.
                     if (group != null && !group.enabled) {
                         InfoCard(S(R.string.studio_node_group_off_note), underHeader = true)
-                        Spacer(Modifier.height(6.dp))
+                        Spacer(Modifier.height(DuskTheme.space1))
                     }
                 }
                 items(nodes, key = { it.installationId + ":" + it.id }) { node ->
@@ -193,12 +193,12 @@ fun StudioNodesScreen(
             }
 
             item {
-                Spacer(Modifier.height(14.dp))
+                Spacer(Modifier.height(DuskTheme.space3))
                 SettingsGroup {
                     SettingsRow(
                         title = S(R.string.studio_node_groups),
                         icon = StudioIcons.EndpointGroups,
-                        tint = Ios.Purple,
+                        tint = DuskTheme.purple,
                         value = state.nodeGroups.size.takeIf { it > 0 }?.let { faNum(it) },
                         onClick = onOpenGroups,
                     )
@@ -206,12 +206,12 @@ fun StudioNodesScreen(
             }
 
             item {
-                Spacer(Modifier.height(14.dp))
+                Spacer(Modifier.height(DuskTheme.space3))
                 SettingsGroup {
                     SettingsActionRow(
                         label = S(R.string.studio_node_new),
                         icon = StudioIcons.Add,
-                        tint = Ios.Blue,
+                        tint = DuskTheme.primary,
                         enabled = !busy,
                         onClick = onNewNode,
                     )
@@ -221,7 +221,7 @@ fun StudioNodesScreen(
                             label = if (busy) S(R.string.studio_node_testing)
                             else S(R.string.studio_node_test_all),
                             icon = StudioIcons.Test,
-                            tint = Ios.Green,
+                            tint = DuskTheme.success,
                             busy = busy,
                             enabled = !busy,
                         ) {
@@ -239,7 +239,7 @@ fun StudioNodesScreen(
                 }
                 if (canProbe) InfoCard(S(R.string.studio_node_probe_note))
                 else InfoCard(S(R.string.studio_node_engine_old))
-                Spacer(Modifier.height(28.dp))
+                Spacer(Modifier.height(DuskTheme.space5))
             }
         }
     }
@@ -257,10 +257,10 @@ private fun NodeRow(node: StudioNode, shard: String?, onClick: () -> Unit) {
     StudioListRow(onClick = onClick) {
         StatusDot(
             when {
-                !node.enabled -> Ios.SecondaryLabel
-                node.health == NodeHealth.UP -> Ios.Green
-                node.health == NodeHealth.DOWN -> Ios.Red
-                else -> Ios.SecondaryLabel
+                !node.enabled -> DuskTheme.muted
+                node.health == NodeHealth.UP -> DuskTheme.success
+                node.health == NodeHealth.DOWN -> DuskTheme.error
+                else -> DuskTheme.muted
             }
         )
         Column(modifier = Modifier.weight(1f)) {
@@ -271,8 +271,8 @@ private fun NodeRow(node: StudioNode, shard: String?, onClick: () -> Unit) {
             ) {
                 Text(
                     node.name,
-                    color = if (node.enabled) Ios.Label else Ios.SecondaryLabel,
-                    fontSize = 16.sp,
+                    color = if (node.enabled) DuskTheme.onSurface else DuskTheme.muted,
+                    style = MaterialTheme.typography.bodyLarge,
                     fontWeight = FontWeight.Medium,
                     modifier = Modifier.weight(1f),
                 )
@@ -281,8 +281,8 @@ private fun NodeRow(node: StudioNode, shard: String?, onClick: () -> Unit) {
                 node.latencyMs?.takeIf { node.health == NodeHealth.UP }?.let {
                     Text(
                         S(R.string.studio_node_latency).replace("%1\$s", faNum(it)),
-                        color = Ios.Green,
-                        fontSize = 13.sp,
+                        color = DuskTheme.success,
+                        style = MaterialTheme.typography.labelMedium,
                     )
                 }
             }
@@ -294,8 +294,8 @@ private fun NodeRow(node: StudioNode, shard: String?, onClick: () -> Unit) {
             Spacer(Modifier.height(3.dp))
             Text(
                 listOfNotNull(shard, node.country, healthLabel(node)).joinToString(" · "),
-                color = if (node.isDown) Ios.Red else Ios.SecondaryLabel,
-                fontSize = 12.sp,
+                color = if (node.isDown) DuskTheme.error else DuskTheme.muted,
+                style = MaterialTheme.typography.labelSmall,
             )
         }
     }

@@ -1594,7 +1594,7 @@ fun NodesTab(onBack: () -> Unit) {
         ListJumpButton(
             state = listState,
             itemCount = displayedNodes.size,
-            modifier = Modifier.align(Alignment.BottomEnd).padding(end = 18.dp, bottom = 16.dp),
+            modifier = Modifier.align(Alignment.BottomEnd).padding(end = DuskTheme.space4, bottom = DuskTheme.space4),
         )
         }
 

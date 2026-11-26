@@ -694,10 +694,10 @@ fun ScannerTab(onBack: () -> Unit = {}, onOpenNodes: () -> Unit = {}) {
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
                 .padding(
-                    start = 10.dp,
-                    end = 10.dp,
-                    top = 8.dp,
-                    bottom = com.mlmvpn.scanner.ui.LocalSystemBottomPadding.current + 16.dp,
+                    start = DuskTheme.space3,
+                    end = DuskTheme.space3,
+                    top = DuskTheme.space2,
+                    bottom = com.mlmvpn.scanner.ui.LocalSystemBottomPadding.current + DuskTheme.space4,
                 ),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {

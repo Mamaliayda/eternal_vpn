@@ -81,6 +81,7 @@ import com.mlmvpn.scanner.ui.home.WallpaperPreset
 import com.mlmvpn.scanner.ui.home.Wallpapers
 import com.mlmvpn.scanner.ui.theme.DuskCard
 import com.mlmvpn.scanner.ui.theme.DuskTheme
+import com.mlmvpn.scanner.ui.theme.LocalDuskSnackbarHostState
 import com.mlmvpn.scanner.utils.AppLocaleManager
 import com.mlmvpn.scanner.utils.LocalPort
 import com.mlmvpn.scanner.utils.NetworkSettings
@@ -192,6 +193,7 @@ fun SettingsScreen(
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
+    val duskSnackbarHost = LocalDuskSnackbarHostState.current
     val sharedPrefs = remember { context.getSharedPreferences("app_settings", android.content.Context.MODE_PRIVATE) }
     val defaultPrefs = remember { androidx.preference.PreferenceManager.getDefaultSharedPreferences(context) }
 
@@ -286,11 +288,7 @@ fun SettingsScreen(
                 if (ok) {
                     Wallpapers.select(context, Wallpapers.CUSTOM_ID)
                 } else {
-                    android.widget.Toast.makeText(
-                        context,
-                        context.getString(R.string.wallpaper_pick_failed),
-                        android.widget.Toast.LENGTH_SHORT,
-                    ).show()
+                    duskSnackbarHost.showSnackbar(context.getString(R.string.wallpaper_pick_failed))
                 }
             }
         }
@@ -674,11 +672,9 @@ fun SettingsScreen(
                     showChevron = false,
                     onClick = {
                         HomeLayoutStore.reset(context)
-                        android.widget.Toast.makeText(
-                            context,
-                            context.getString(R.string.settings_reset_home_done),
-                            android.widget.Toast.LENGTH_SHORT,
-                        ).show()
+                        scope.launch {
+                            duskSnackbarHost.showSnackbar(context.getString(R.string.settings_reset_home_done))
+                        }
                     },
                 )
             }
@@ -708,11 +704,9 @@ fun SettingsScreen(
                     showChevron = reportCount > 0,
                     onClick = {
                         if (reportCount > 0) com.mlmvpn.scanner.CrashReporter.share(context)
-                        else android.widget.Toast.makeText(
-                            context,
-                            context.getString(R.string.settings_crash_report_none),
-                            android.widget.Toast.LENGTH_SHORT,
-                        ).show()
+                        else scope.launch {
+                            duskSnackbarHost.showSnackbar(context.getString(R.string.settings_crash_report_none))
+                        }
                     },
                 )
                 Separator()
