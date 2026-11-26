@@ -2,7 +2,20 @@
 
 The APK retains the full set of VPN engines. Its Xray and Windscribe native libraries are
 built from pinned public upstream source during CI; Psiphon's AAR is checked in after a
-verified namespace relocation so the two gomobile runtimes do not collide.
+verified namespace relocation so the two gomobile runtimes do not collide. The SoftEther
+client is vendored as Kotlin source, with missing controller classes restored from upstream.
+
+## Kittoku SoftEther client
+
+The vendored SoftEther VPN client uses source from Kittoku's Minimum VPN Client. Its
+controller, network observer and optional log writer are kept under
+`app/src/main/java/kittoku/mvc/control/`; the AndroidX DocumentFile dependency supports the
+log writer's Storage Access Framework output.
+
+- Repository: <https://github.com/kittoku/Minimum-VPN-Client-for-SoftEther-VPN>
+- Pinned upstream commit: `289fa2d4afb6ff4de8e597a175b75affd8fb8889`
+- License: Apache-2.0 (see upstream `LICENSE`; SoftEther protocol attribution is in its
+  `SOFTETHER_LICENSE`)
 
 ## Xray Android library
 

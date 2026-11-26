@@ -224,6 +224,7 @@ dependencies {
 
     // Preferences (Encrypted storage for API tokens)
     implementation 'androidx.preference:preference-ktx:1.2.1'
+    implementation 'androidx.documentfile:documentfile:1.0.1' // SoftEther client's optional log writer
 
     // ZXing for QR Code generation and scanning
     implementation 'com.google.zxing:core:3.5.3'
