@@ -36,7 +36,6 @@ import kotlinx.coroutines.*
 import android.app.Activity
 import android.content.Intent
 import android.net.VpnService
-import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.ui.platform.LocalContext
@@ -52,6 +51,10 @@ import com.mlmvpn.scanner.data.NodeManager
 import com.mlmvpn.scanner.models.VpnNode
 import com.mlmvpn.scanner.utils.S
 
+private fun showNodesNotice(scope: CoroutineScope, hostState: SnackbarHostState, message: String) {
+    scope.launch { hostState.showSnackbar(message) }
+}
+
 /** At most this many characters go to the clipboard in one copy (it rides one binder call). */
 private const val MAX_CLIP_CHARS = 200_000
 
@@ -60,6 +63,8 @@ private const val MAX_CLIP_CHARS = 200_000
 fun NodesTab(onBack: () -> Unit) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
+    val snackbarScope = rememberCoroutineScope()
+    val duskSnackbarHost = LocalDuskSnackbarHostState.current
 
     val nodeManager = remember { com.mlmvpn.scanner.data.NodeManager(context) }
     val subscriptionManager = remember { com.mlmvpn.scanner.data.SubscriptionManager(context) }
@@ -540,7 +545,7 @@ fun NodesTab(onBack: () -> Unit) {
             }
         } else {
             isConnecting = false
-            Toast.makeText(context, S(R.string.vpn_permission_denied), Toast.LENGTH_SHORT).show()
+            showNodesNotice(snackbarScope, duskSnackbarHost, S(R.string.vpn_permission_denied))
         }
     }
 
@@ -609,12 +614,8 @@ fun NodesTab(onBack: () -> Unit) {
         val removed = nodes.size - remaining.size
         nodeManager.removeByIds(victims)
         nodes = remaining
-        android.widget.Toast.makeText(
-            context,
-            if (removed > 0) context.getString(R.string.nodes_deleted_count, removed)
-            else context.getString(R.string.nodes_delete_dead_none),
-            android.widget.Toast.LENGTH_SHORT
-        ).show()
+        showNodesNotice(snackbarScope, duskSnackbarHost, if (removed > 0) context.getString(R.string.nodes_deleted_count, removed)
+            else context.getString(R.string.nodes_delete_dead_none))
     }
 
     // The three per-node measurements, lifted out of the list item so the detail page can
@@ -866,11 +867,7 @@ fun NodesTab(onBack: () -> Unit) {
                     runCatching {
                         cm.setPrimaryClip(android.content.ClipData.newPlainText("configs", fit.joinToString("\n")))
                     }
-                    android.widget.Toast.makeText(
-                        context,
-                        S(R.string.nodes_copied_healthy, faCount(fit.size)),
-                        android.widget.Toast.LENGTH_SHORT,
-                    ).show()
+                    showNodesNotice(snackbarScope, duskSnackbarHost, S(R.string.nodes_copied_healthy, faCount(fit.size)))
                 },
                 canGroupByPanel = distinctEngines.size > 1,
                 groupByPanel = isGroupedByPanel,
@@ -907,22 +904,22 @@ fun NodesTab(onBack: () -> Unit) {
                 },
                 onSubscriptionAdded = { name, url ->
                     val sub = subscriptionManager.addSubscription(name, url)
-                    android.widget.Toast.makeText(context, S(R.string.fetching_configs), android.widget.Toast.LENGTH_SHORT).show()
+                    showNodesNotice(snackbarScope, duskSnackbarHost, S(R.string.fetching_configs))
                     scope.launch {
                         val res = subscriptionManager.updateSubscription(sub, nodeManager)
                         withContext(kotlinx.coroutines.Dispatchers.Main) {
                             nodes = nodeManager.nodes.toList()
-                            android.widget.Toast.makeText(context, res.second, android.widget.Toast.LENGTH_SHORT).show()
+                            showNodesNotice(snackbarScope, duskSnackbarHost, res.second)
                         }
                     }
                 },
                 onUpdateSubscriptions = {
-                    android.widget.Toast.makeText(context, S(R.string.updating_subscriptions), android.widget.Toast.LENGTH_SHORT).show()
+                    showNodesNotice(snackbarScope, duskSnackbarHost, S(R.string.updating_subscriptions))
                     scope.launch {
                         val res = subscriptionManager.updateAllSubscriptions(nodeManager)
                         withContext(kotlinx.coroutines.Dispatchers.Main) {
                             nodes = nodeManager.nodes.toList()
-                            android.widget.Toast.makeText(context, S(R.string.subscriptions_configs, res.first, res.second), android.widget.Toast.LENGTH_SHORT).show()
+                            showNodesNotice(snackbarScope, duskSnackbarHost, S(R.string.subscriptions_configs, res.first, res.second))
                         }
                     }
                 },
@@ -1087,7 +1084,7 @@ fun NodesTab(onBack: () -> Unit) {
                             val marks = if (indicatorProp == "ping") livePing
                             else if (indicatorProp == "delay") liveDelay else liveSpeed
                             marks.replaceValue("...", "Cancelled")
-                            android.widget.Toast.makeText(context, S(R.string.test_cancelled), android.widget.Toast.LENGTH_SHORT).show()
+                            showNodesNotice(snackbarScope, duskSnackbarHost, S(R.string.test_cancelled))
                         }
                     }
                 } finally {
@@ -1111,7 +1108,7 @@ fun NodesTab(onBack: () -> Unit) {
                         isSpeedTesting = false
                         speedJob = null
                     }
-                    android.widget.Toast.makeText(context, successMsg, android.widget.Toast.LENGTH_SHORT).show()
+                    showNodesNotice(snackbarScope, duskSnackbarHost, successMsg)
                     kotlinx.coroutines.delay(100)
                     listState.scrollToItem(0)
                 }
@@ -1120,7 +1117,7 @@ fun NodesTab(onBack: () -> Unit) {
         }
 
         val pingAllNodes = {
-            android.widget.Toast.makeText(context, S(R.string.checking_ping), android.widget.Toast.LENGTH_SHORT).show()
+            showNodesNotice(snackbarScope, duskSnackbarHost, S(R.string.checking_ping))
             updateNodes("ping", { node, config ->
                 val latency = if (config.address == "127.0.0.1") {
                     realSniPing(config.address, config.port, config.sni.ifEmpty { config.wsHost })
@@ -1150,7 +1147,7 @@ fun NodesTab(onBack: () -> Unit) {
                 // list itself draws from -- so the count, the rows and the work cannot disagree.
                 val activeNodes = displayedNodes
                 withContext(kotlinx.coroutines.Dispatchers.Main) {
-                    android.widget.Toast.makeText(context, S(R.string.starting_real_delay_test), android.widget.Toast.LENGTH_SHORT).show()
+                    showNodesNotice(snackbarScope, duskSnackbarHost, S(R.string.starting_real_delay_test))
                     delayTotal = activeNodes.size
                     delayProgress = 0
                     isDelayTesting = true
@@ -1316,7 +1313,7 @@ fun NodesTab(onBack: () -> Unit) {
                             withContext(kotlinx.coroutines.NonCancellable) {
                                 withContext(kotlinx.coroutines.Dispatchers.Main) {
                                     liveDelay.replaceValue("...", "Cancelled")
-                                    android.widget.Toast.makeText(context, S(R.string.test_cancelled), android.widget.Toast.LENGTH_SHORT).show()
+                                    showNodesNotice(snackbarScope, duskSnackbarHost, S(R.string.test_cancelled))
                                 }
                             }
                         }
@@ -1330,7 +1327,7 @@ fun NodesTab(onBack: () -> Unit) {
                     } catch (e: Exception) {
                         android.util.Log.e("BatchTest", "Xray Batch test failed", e)
                         withContext(kotlinx.coroutines.Dispatchers.Main) {
-                            android.widget.Toast.makeText(context, S(R.string.batch_test_error), android.widget.Toast.LENGTH_SHORT).show()
+                            showNodesNotice(snackbarScope, duskSnackbarHost, S(R.string.batch_test_error))
                         }
                     } finally {
                         if (needsRsta) com.mlmvpn.scanner.engines.rstaspoof.RstaSpoofManager.release()
@@ -1346,7 +1343,7 @@ fun NodesTab(onBack: () -> Unit) {
                 withContext(kotlinx.coroutines.Dispatchers.Main) {
                     isDelayTesting = false
                     delayJob = null
-                    android.widget.Toast.makeText(context, S(R.string.real_delay_check_completed), android.widget.Toast.LENGTH_SHORT).show()
+                    showNodesNotice(snackbarScope, duskSnackbarHost, S(R.string.real_delay_check_completed))
                 }
             }
             delayJob = job
@@ -1617,7 +1614,7 @@ fun NodesTab(onBack: () -> Unit) {
                 if (!isPlatformTesting) {
                     isPlatformTesting = true
                     scope.launch {
-                        android.widget.Toast.makeText(context, S(R.string.measuring_2, selectedPlatform!!.displayName), android.widget.Toast.LENGTH_SHORT).show()
+                        showNodesNotice(snackbarScope, duskSnackbarHost, S(R.string.measuring_2, selectedPlatform!!.displayName))
                         val nodesToTest = displayedNodes.take(20)
                         val semaphore = kotlinx.coroutines.sync.Semaphore(5)
                         val deferredResults = nodesToTest.mapIndexed { index, node ->
@@ -1646,14 +1643,14 @@ fun NodesTab(onBack: () -> Unit) {
                             topNodeHighlightedId = topNode.id
                             activeNodeId = topNode.id
                         } else {
-                            android.widget.Toast.makeText(context, S(R.string.no_server_connected), android.widget.Toast.LENGTH_SHORT).show()
+                            showNodesNotice(snackbarScope, duskSnackbarHost, S(R.string.no_server_connected))
                         }
                     }
                 }
             },
             onToggle = {
                 if (activeNodeId == null) {
-                    android.widget.Toast.makeText(context, S(R.string.choose_a_server_first), android.widget.Toast.LENGTH_SHORT).show()
+                    showNodesNotice(snackbarScope, duskSnackbarHost, S(R.string.choose_a_server_first))
                 } else if (isRunning) {
                     // The service being up covers both "connected" and "still trying", and the
                     // answer is the same for both: stop it. stopVpnSafely, not a bare STOP -- if
@@ -1726,12 +1723,12 @@ fun NodesTab(onBack: () -> Unit) {
                 val sub = subscriptions.firstOrNull { it.name == group }
                 showGroupMenu = null
                 if (sub != null) {
-                    android.widget.Toast.makeText(context, S(R.string.updating), android.widget.Toast.LENGTH_SHORT).show()
+                    showNodesNotice(snackbarScope, duskSnackbarHost, S(R.string.updating))
                     scope.launch {
                         val res = subscriptionManager.updateSubscription(sub, nodeManager)
                         withContext(kotlinx.coroutines.Dispatchers.Main) {
                             nodes = nodeManager.nodes.toList()
-                            android.widget.Toast.makeText(context, res.second, android.widget.Toast.LENGTH_SHORT).show()
+                            showNodesNotice(snackbarScope, duskSnackbarHost, res.second)
                         }
                     }
                 }

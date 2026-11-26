@@ -36,7 +36,7 @@ import com.mlmvpn.scanner.ui.configstudio.parts.ProblemCard
 import com.mlmvpn.scanner.ui.configstudio.parts.WizardBusy
 import com.mlmvpn.scanner.ui.configstudio.parts.WizardField
 import com.mlmvpn.scanner.ui.configstudio.parts.WizardPrimary
-import com.mlmvpn.scanner.ui.settings.Ios
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 import com.mlmvpn.scanner.ui.settings.IosScreen
 import com.mlmvpn.scanner.ui.settings.SettingsActionRow
 import com.mlmvpn.scanner.ui.settings.SettingsGroup
@@ -145,7 +145,7 @@ fun StudioConfigBuilderScreen(
         onBack = if (busy) null else onBack,
         backLabel = username.ifBlank { S(R.string.studio_section_configs) },
     ) {
-        Spacer(Modifier.height(10.dp))
+        Spacer(Modifier.height(DuskTheme.space2))
 
         if (account == null) {
             InfoCard(S(R.string.studio_engine_unreachable))
@@ -308,7 +308,7 @@ fun StudioConfigBuilderScreen(
                 )
             }
             if (!draft.useRootPath) {
-                Spacer(Modifier.height(10.dp))
+                Spacer(Modifier.height(DuskTheme.space2))
                 WizardField(
                     draft.customPath,
                     { draft = draft.copy(customPath = it) },
@@ -350,12 +350,12 @@ fun StudioConfigBuilderScreen(
                     )
                 )
             }
-            Spacer(Modifier.height(10.dp))
+            Spacer(Modifier.height(DuskTheme.space2))
             SettingsGroup {
                 SettingsActionRow(
                     label = S(R.string.studio_builder_cred_generate),
                     icon = StudioIcons.Credential,
-                    tint = Ios.Green,
+                    tint = DuskTheme.success,
                 ) {
                     draft = draft.copy(
                         customCredential = StudioCredentials.newCredential(draft.shape.protocol)
@@ -375,7 +375,7 @@ fun StudioConfigBuilderScreen(
             SettingsActionRow(
                 label = S(R.string.studio_builder_save_template),
                 icon = StudioIcons.Template,
-                tint = Ios.Purple,
+                tint = DuskTheme.purple,
                 enabled = !busy,
             ) { onSaveAsTemplate(draft) }
         }
@@ -390,10 +390,10 @@ fun StudioConfigBuilderScreen(
             ltr = false,
         )
 
-        Spacer(Modifier.height(16.dp))
+        Spacer(Modifier.height(DuskTheme.space4))
         error?.let { ProblemCard(it) }
         WizardPrimary(S(R.string.studio_builder_review), enabled = draft.isValid) { reviewing = true }
-        Spacer(Modifier.height(28.dp))
+        Spacer(Modifier.height(DuskTheme.space5))
     }
 }
 
@@ -477,7 +477,7 @@ private fun androidx.compose.foundation.layout.ColumnScope.ReviewStep(
                     else -> S(R.string.studio_builder_test_blocked)
                 },
                 icon = if (p.reachable) StudioIcons.Ok else StudioIcons.Error,
-                tint = if (p.reachable) Ios.Green else Ios.Red,
+                tint = if (p.reachable) DuskTheme.success else DuskTheme.error,
                 subtitle = p.error,
                 value = p.latencyMs?.let { S(R.string.studio_node_latency).replace("%1\$s", faNum(it)) },
                 showChevron = false,
@@ -487,7 +487,7 @@ private fun androidx.compose.foundation.layout.ColumnScope.ReviewStep(
         SettingsActionRow(
             label = if (busy) S(R.string.studio_node_testing) else S(R.string.studio_builder_test_run),
             icon = StudioIcons.Test,
-            tint = Ios.Green,
+            tint = DuskTheme.success,
             busy = busy,
             enabled = !busy,
             onClick = onTest,
@@ -495,22 +495,22 @@ private fun androidx.compose.foundation.layout.ColumnScope.ReviewStep(
     }
     InfoCard(S(R.string.studio_builder_test_note))
 
-    Spacer(Modifier.height(16.dp))
+    Spacer(Modifier.height(DuskTheme.space4))
     error?.let { ProblemCard(it) }
 
     if (busy) {
         WizardBusy(S(R.string.studio_creating))
     } else {
         WizardPrimary(S(R.string.studio_create), onClick = onConfirm)
-        Spacer(Modifier.height(10.dp))
+        Spacer(Modifier.height(DuskTheme.space2))
         SettingsGroup {
             SettingsActionRow(
                 label = S(R.string.studio_builder_edit),
                 icon = StudioIcons.Edit,
-                tint = Ios.Gray,
+                tint = DuskTheme.disabled,
                 onClick = onEdit,
             )
         }
     }
-    Spacer(Modifier.height(28.dp))
+    Spacer(Modifier.height(DuskTheme.space5))
 }

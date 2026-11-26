@@ -18,6 +18,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Download
 import androidx.compose.material.icons.filled.SwapVert
 import androidx.compose.material.icons.filled.Upload
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -29,14 +30,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.mlmvpn.scanner.R
 import com.mlmvpn.scanner.data.TrafficManager
-import com.mlmvpn.scanner.ui.home.frostedGlass
+import com.mlmvpn.scanner.ui.theme.DuskCard
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 
 /**
  * Settings > Total Usage, in the same grouped style as the rest of Settings.
@@ -66,7 +66,7 @@ fun UsageScreen(onDismiss: () -> Unit) {
     }
 
     IosScreen(title = stringResource(R.string.usage_title), onBack = onDismiss) {
-        Spacer(Modifier.height(10.dp))
+        Spacer(Modifier.height(DuskTheme.space2))
 
         UsagePeriod(
             header = stringResource(R.string.usage_today),
@@ -85,17 +85,14 @@ fun UsageScreen(onDismiss: () -> Unit) {
         )
 
         SettingsSectionHeader(stringResource(R.string.usage_last_7_days))
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp)
-                .frostedGlass(RoundedCornerShape(22.dp))
-                .padding(16.dp)
+        DuskCard(
+            modifier = Modifier.fillMaxWidth().padding(horizontal = DuskTheme.space4),
+            shape = DuskTheme.cardShape,
         ) {
             SevenDayChart(last7Days.map { it.rxBytes + it.txBytes })
         }
 
-        Spacer(Modifier.height(28.dp))
+        Spacer(Modifier.height(DuskTheme.space5))
     }
 }
 
@@ -106,7 +103,7 @@ private fun UsagePeriod(header: String, rx: Long, tx: Long) {
         SettingsRow(
             title = stringResource(R.string.usage_download),
             icon = Icons.Default.Download,
-            tint = Ios.Green,
+            tint = DuskTheme.success,
             value = formatBytes(rx),
             showChevron = false,
         )
@@ -114,7 +111,7 @@ private fun UsagePeriod(header: String, rx: Long, tx: Long) {
         SettingsRow(
             title = stringResource(R.string.usage_upload),
             icon = Icons.Default.Upload,
-            tint = Ios.Blue,
+            tint = DuskTheme.primary,
             value = formatBytes(tx),
             showChevron = false,
         )
@@ -122,7 +119,7 @@ private fun UsagePeriod(header: String, rx: Long, tx: Long) {
         SettingsRow(
             title = stringResource(R.string.usage_total),
             icon = Icons.Default.SwapVert,
-            tint = Ios.Gray,
+            tint = DuskTheme.disabled,
             value = formatBytes(rx + tx),
             showChevron = false,
         )
@@ -135,7 +132,7 @@ private fun SevenDayChart(totals: List<Long>) {
 
     Row(
         modifier = Modifier.fillMaxWidth().height(130.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        horizontalArrangement = Arrangement.spacedBy(DuskTheme.space2),
         verticalAlignment = Alignment.Bottom,
     ) {
         totals.forEach { total ->
@@ -152,21 +149,21 @@ private fun SevenDayChart(totals: List<Long>) {
             ) {
                 Text(
                     text = shortBytes(total),
-                    color = Ios.SecondaryLabel,
-                    fontSize = 9.sp,
+                    color = DuskTheme.muted,
+                    style = MaterialTheme.typography.labelSmall,
                     textAlign = TextAlign.Center,
                 )
-                Spacer(Modifier.height(4.dp))
+                Spacer(Modifier.height(DuskTheme.space1))
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
                         // A day with no traffic still gets a sliver, so the chart reads as seven
                         // days rather than as four days and a gap.
                         .height((6f + animated * 88f).dp)
-                        .clip(RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp))
+                        .clip(RoundedCornerShape(topStart = DuskTheme.space2, topEnd = DuskTheme.space2))
                         .background(
                             Brush.verticalGradient(
-                                listOf(Ios.Blue, Ios.Blue.copy(alpha = 0.35f))
+                                listOf(DuskTheme.primary, DuskTheme.primary.copy(alpha = 0.35f))
                             )
                         )
                 )

@@ -1,6 +1,6 @@
 # Eternal VPN — screen redesign checklist
 
-> **Progress: 278 / 1203 complete** — each checked row is fully migrated; unverified routes and states remain unchecked.
+> **Progress: 303 / 1203 complete** — each checked row is fully migrated; unverified routes and states remain unchecked.
 
 > Inventory generated from Kotlin source on 2026-11-26. A row is considered migrated only after its visible composition, nested states, and overlays are reviewed against the Soft Dusk tokens. Shared theme inheritance alone does **not** count as a completed visual redesign.
 
@@ -219,7 +219,7 @@ Found 230 screen-like public/internal composables across 133 Kotlin files (the f
 - [ ] `StudioCentralBulkUsersScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioCentralBulkUsersScreen.kt`
 - [ ] `StudioCentralNewUserScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioCentralNewUserScreen.kt`
 - [ ] `StudioCentralUserScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioCentralUserScreen.kt`
-- [ ] `StudioConfigBuilderScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioConfigBuilderScreen.kt`
+- [x] `StudioConfigBuilderScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioConfigBuilderScreen.kt`
 - [x] `StudioConfigsScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioConfigsScreen.kt`
 - [ ] `StudioDashboardScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioDashboardScreen.kt`
 - [ ] `StudioExitsScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioExitsScreen.kt`
@@ -340,7 +340,7 @@ Found 230 screen-like public/internal composables across 133 Kotlin files (the f
 - [ ] `KvListPage` — `com/mlmvpn/scanner/ui/settings/CloudResourcesScreens.kt`
 - [ ] `SelectableResourcePage` — `com/mlmvpn/scanner/ui/settings/CloudResourcesScreens.kt`
 - [x] `IosScreen` — `com/mlmvpn/scanner/ui/settings/IosSettings.kt`
-- [ ] `IosPickerScreen` — `com/mlmvpn/scanner/ui/settings/IosSettings.kt`
+- [x] `IosPickerScreen` — `com/mlmvpn/scanner/ui/settings/IosSettings.kt`
 - [x] `IosTextScreen` — `com/mlmvpn/scanner/ui/settings/IosSettings.kt`
 - [x] `BackendDnsPage` — `com/mlmvpn/scanner/ui/settings/NetworkSettingPages.kt`
 - [x] `LocalPortPage` — `com/mlmvpn/scanner/ui/settings/NetworkSettingPages.kt`
@@ -351,7 +351,7 @@ Found 230 screen-like public/internal composables across 133 Kotlin files (the f
 - [x] `WallpaperPage` — `com/mlmvpn/scanner/ui/settings/SettingsScreen.kt`
 - [x] `PresetPickerPage` — `com/mlmvpn/scanner/ui/settings/SettingsScreen.kt`
 - [x] `SmartIranPage` — `com/mlmvpn/scanner/ui/settings/SmartIranPage.kt`
-- [ ] `UsageScreen` — `com/mlmvpn/scanner/ui/settings/UsageScreen.kt`
+- [x] `UsageScreen` — `com/mlmvpn/scanner/ui/settings/UsageScreen.kt`
 - [x] `VpnSettingsScreen` — `com/mlmvpn/scanner/ui/settings/VpnSettingsScreen.kt`
 - [x] `AppPickerPage` — `com/mlmvpn/scanner/ui/settings/VpnSettingsScreen.kt`
 ### spider
@@ -1104,28 +1104,28 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 - [x] `AlertButton` — `com/mlmvpn/scanner/ui/settings/IosAlerts.kt`
 - [x] `IosPrompt` — `com/mlmvpn/scanner/ui/settings/IosAlerts.kt`
 - [ ] `rememberIosRefreshState` — `com/mlmvpn/scanner/ui/settings/IosRefresh.kt`
-- [ ] `IosRefreshIndicator` — `com/mlmvpn/scanner/ui/settings/IosRefresh.kt`
-- [ ] `SettingsSectionHeader` — `com/mlmvpn/scanner/ui/settings/IosSettings.kt`
-- [ ] `SettingsGroup` — `com/mlmvpn/scanner/ui/settings/IosSettings.kt`
-- [ ] `Separator` — `com/mlmvpn/scanner/ui/settings/IosSettings.kt`
-- [ ] `Separator` — `com/mlmvpn/scanner/ui/settings/IosSettings.kt`
-- [ ] `SettingsGlyph` — `com/mlmvpn/scanner/ui/settings/IosSettings.kt`
-- [ ] `RowChevron` — `com/mlmvpn/scanner/ui/settings/IosSettings.kt`
-- [ ] `RowFrame` — `com/mlmvpn/scanner/ui/settings/IosSettings.kt`
-- [ ] `SettingsActionRow` — `com/mlmvpn/scanner/ui/settings/IosSettings.kt`
-- [ ] `SettingsFooter` — `com/mlmvpn/scanner/ui/settings/IosSettings.kt`
-- [ ] `SettingsRow` — `com/mlmvpn/scanner/ui/settings/IosSettings.kt`
-- [ ] `IosBadge` — `com/mlmvpn/scanner/ui/settings/IosSettings.kt`
-- [ ] `SettingsToggle` — `com/mlmvpn/scanner/ui/settings/IosSettings.kt`
-- [ ] `SettingsTextRow` — `com/mlmvpn/scanner/ui/settings/IosSettings.kt`
-- [ ] `CloudflareAccountCard` — `com/mlmvpn/scanner/ui/settings/IosSettings.kt`
-- [ ] `AccountDots` — `com/mlmvpn/scanner/ui/settings/IosSettings.kt`
-- [ ] `SettingsSlider` — `com/mlmvpn/scanner/ui/settings/IosSettings.kt`
-- [ ] `SettingsDetailPlaceholder` — `com/mlmvpn/scanner/ui/settings/SettingsScreen.kt`
+- [x] `IosRefreshIndicator` — `com/mlmvpn/scanner/ui/settings/IosRefresh.kt`
+- [x] `SettingsSectionHeader` — `com/mlmvpn/scanner/ui/settings/IosSettings.kt`
+- [x] `SettingsGroup` — `com/mlmvpn/scanner/ui/settings/IosSettings.kt`
+- [x] `Separator` — `com/mlmvpn/scanner/ui/settings/IosSettings.kt`
+- [x] `Separator` — `com/mlmvpn/scanner/ui/settings/IosSettings.kt`
+- [x] `SettingsGlyph` — `com/mlmvpn/scanner/ui/settings/IosSettings.kt`
+- [x] `RowChevron` — `com/mlmvpn/scanner/ui/settings/IosSettings.kt`
+- [x] `RowFrame` — `com/mlmvpn/scanner/ui/settings/IosSettings.kt`
+- [x] `SettingsActionRow` — `com/mlmvpn/scanner/ui/settings/IosSettings.kt`
+- [x] `SettingsFooter` — `com/mlmvpn/scanner/ui/settings/IosSettings.kt`
+- [x] `SettingsRow` — `com/mlmvpn/scanner/ui/settings/IosSettings.kt`
+- [x] `IosBadge` — `com/mlmvpn/scanner/ui/settings/IosSettings.kt`
+- [x] `SettingsToggle` — `com/mlmvpn/scanner/ui/settings/IosSettings.kt`
+- [x] `SettingsTextRow` — `com/mlmvpn/scanner/ui/settings/IosSettings.kt`
+- [x] `CloudflareAccountCard` — `com/mlmvpn/scanner/ui/settings/IosSettings.kt`
+- [x] `AccountDots` — `com/mlmvpn/scanner/ui/settings/IosSettings.kt`
+- [x] `SettingsSlider` — `com/mlmvpn/scanner/ui/settings/IosSettings.kt`
+- [x] `SettingsDetailPlaceholder` — `com/mlmvpn/scanner/ui/settings/SettingsScreen.kt`
 - [ ] `presetName` — `com/mlmvpn/scanner/ui/settings/SettingsScreen.kt`
 - [x] `AppToggleRow` — `com/mlmvpn/scanner/ui/settings/SmartIranPage.kt`
-- [ ] `UsagePeriod` — `com/mlmvpn/scanner/ui/settings/UsageScreen.kt`
-- [ ] `SevenDayChart` — `com/mlmvpn/scanner/ui/settings/UsageScreen.kt`
+- [x] `UsagePeriod` — `com/mlmvpn/scanner/ui/settings/UsageScreen.kt`
+- [x] `SevenDayChart` — `com/mlmvpn/scanner/ui/settings/UsageScreen.kt`
 - [ ] `rememberInstalledApps` — `com/mlmvpn/scanner/ui/settings/VpnSettingsScreen.kt`
 - [ ] `mtuMethodLabel` — `com/mlmvpn/scanner/ui/settings/VpnSettingsScreen.kt`
 - [ ] `WarpIdRelayRow` — `com/mlmvpn/scanner/ui/settings/WarpIdRelayRow.kt`
@@ -1455,10 +1455,10 @@ Toast / short transient feedback call sites (OS-rendered surfaces; validate app 
 - [ ] `com/mlmvpn/scanner/ui/CloudTroubleshootScreen.kt` — Toast × 1
 - [ ] `com/mlmvpn/scanner/ui/FixedIpScreen.kt` — Toast × 1
 - [ ] `com/mlmvpn/scanner/ui/GameTab.kt` — Toast × 6
-- [ ] `com/mlmvpn/scanner/ui/NodesTab.kt` — Toast × 19
+- [x] `com/mlmvpn/scanner/ui/NodesTab.kt` — Toast × 19 (replaced with Dusk snackbars)
 - [x] `com/mlmvpn/scanner/ui/OpenVpnScreen.kt` — Toast × 1
 - [ ] `com/mlmvpn/scanner/ui/QuickConnectTab.kt` — Toast × 1
-- [ ] `com/mlmvpn/scanner/ui/ScannerTab.kt` — Toast × 20
+- [x] `com/mlmvpn/scanner/ui/ScannerTab.kt` — Toast × 20 (replaced with Dusk snackbars)
 - [ ] `com/mlmvpn/scanner/ui/aether/AetherScreen.kt` — Toast × 4
 - [ ] `com/mlmvpn/scanner/ui/amnezia/AmneziaScreen.kt` — Toast × 3
 - [ ] `com/mlmvpn/scanner/ui/amnezia/AmzServersScreen.kt` — Toast × 1

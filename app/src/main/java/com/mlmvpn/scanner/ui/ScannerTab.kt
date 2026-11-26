@@ -36,6 +36,10 @@ import kotlin.math.max
 import com.mlmvpn.scanner.utils.S
 import com.mlmvpn.scanner.utils.ScanPreflight
 
+private fun showDuskNotice(scope: CoroutineScope, hostState: SnackbarHostState, message: String) {
+    scope.launch { hostState.showSnackbar(message) }
+}
+
 data class ScannedIP(
     val id: Int,
     val ip: String,
@@ -475,6 +479,8 @@ fun ScannerTab(onBack: () -> Unit = {}, onOpenNodes: () -> Unit = {}) {
     val haptic = LocalHapticFeedback.current
     val density = LocalDensity.current
     val scope = rememberCoroutineScope()
+    val snackbarScope = rememberCoroutineScope()
+    val duskSnackbarHost = LocalDuskSnackbarHostState.current
     val groupManager = remember { com.mlmvpn.scanner.data.GroupManager(context) }
     val nodeManager = remember { com.mlmvpn.scanner.data.NodeManager(context) }
     val scannerGroupsFlowState by groupManager.scannerGroupsFlow.collectAsState()
@@ -1075,7 +1081,7 @@ fun ScannerTab(onBack: () -> Unit = {}, onOpenNodes: () -> Unit = {}) {
                                         val selected = scannedIPs.filter { it.selected }.joinToString("\n") { it.ip }
                                         if (selected.isNotEmpty()) {
                                             if (com.mlmvpn.scanner.utils.SafeClip.copy(context, "IPs", selected))
-                                                android.widget.Toast.makeText(context, context.getString(R.string.scanner_ips_copied), android.widget.Toast.LENGTH_SHORT).show()
+                                                showDuskNotice(snackbarScope, duskSnackbarHost, context.getString(R.string.scanner_ips_copied))
                                         }
                                     },
                                     modifier = Modifier.weight(1f).height(56.dp),
@@ -1092,7 +1098,7 @@ fun ScannerTab(onBack: () -> Unit = {}, onOpenNodes: () -> Unit = {}) {
                                     onClick = {
                                         groupManager.loadCloudGroups()
                                         if (groupManager.cloudGroups.isEmpty() && studioTarget == null) {
-                                            android.widget.Toast.makeText(context, context.getString(R.string.scanner_no_cloud_group), android.widget.Toast.LENGTH_SHORT).show()
+                                            showDuskNotice(snackbarScope, duskSnackbarHost, context.getString(R.string.scanner_no_cloud_group))
                                             return@Button
                                         }
                                         showActionSheet = true
@@ -1125,7 +1131,7 @@ fun ScannerTab(onBack: () -> Unit = {}, onOpenNodes: () -> Unit = {}) {
                                 busy = preflightChecking,
                                 onStartScan = {
                                     if (baseConfig.trim().isEmpty()) {
-                                        android.widget.Toast.makeText(context, context.getString(R.string.scanner_enter_base_config_warning), android.widget.Toast.LENGTH_LONG).show()
+                                        showDuskNotice(snackbarScope, duskSnackbarHost, context.getString(R.string.scanner_enter_base_config_warning))
                                     } else {
                                         // The check moves a byte, so it is not instant. The
                                         // button shows it is working rather than appearing dead.
@@ -1254,7 +1260,7 @@ fun ScannerTab(onBack: () -> Unit = {}, onOpenNodes: () -> Unit = {}) {
                                                                 .apply { put(group.id, healthy) }
                                                             pingingGroup = null
                                                             pingProgressMap = pingProgressMap - group.id
-                                                            android.widget.Toast.makeText(context, context.getString(R.string.scanner_configs_connected, healthy.size, group.nodes.size), android.widget.Toast.LENGTH_SHORT).show()
+                                                            showDuskNotice(snackbarScope, duskSnackbarHost, context.getString(R.string.scanner_configs_connected, healthy.size, group.nodes.size))
                                                         }
                                                         }
                                                     },
@@ -1307,15 +1313,15 @@ fun ScannerTab(onBack: () -> Unit = {}, onOpenNodes: () -> Unit = {}) {
                                                                             )
                                                                             val success = api.updateUser(acc, mlmUsername, req)
                                                                             if (success) {
-                                                                                android.widget.Toast.makeText(context, S(R.string.the_user_s_subscription_was_updated_with), android.widget.Toast.LENGTH_LONG).show()
+                                                                                showDuskNotice(snackbarScope, duskSnackbarHost, S(R.string.the_user_s_subscription_was_updated_with))
                                                                             } else {
-                                                                                android.widget.Toast.makeText(context, S(R.string.failed_to_update_the_subscription), android.widget.Toast.LENGTH_LONG).show()
+                                                                                showDuskNotice(snackbarScope, duskSnackbarHost, S(R.string.failed_to_update_the_subscription))
                                                                             }
                                                                         } else {
-                                                                            android.widget.Toast.makeText(context, S(R.string.user_not_found), android.widget.Toast.LENGTH_SHORT).show()
+                                                                            showDuskNotice(snackbarScope, duskSnackbarHost, S(R.string.user_not_found))
                                                                         }
                                                                     } else {
-                                                                        android.widget.Toast.makeText(context, S(R.string.mlm_account_not_found), android.widget.Toast.LENGTH_SHORT).show()
+                                                                        showDuskNotice(snackbarScope, duskSnackbarHost, S(R.string.mlm_account_not_found))
                                                                     }
                                                                     isUpdatingSub = false
                                                                 }
@@ -1350,9 +1356,7 @@ fun ScannerTab(onBack: () -> Unit = {}, onOpenNodes: () -> Unit = {}) {
                                                             scope.launch {
                                                                 val outcome = publishStudioGroup(context, group, healthyNodes)
                                                                 publishingCard = false
-                                                                android.widget.Toast.makeText(
-                                                                    context, outcome.message, android.widget.Toast.LENGTH_LONG,
-                                                                ).show()
+                                                                showDuskNotice(snackbarScope, duskSnackbarHost, outcome.message)
                                                             }
                                                         },
                                                         enabled = !publishingCard,
@@ -1377,7 +1381,7 @@ fun ScannerTab(onBack: () -> Unit = {}, onOpenNodes: () -> Unit = {}) {
                                                     onClick = {
                                                         nodeManager.nodes.addAll(0, healthyNodes)
                                                         nodeManager.saveNodes()
-                                                        android.widget.Toast.makeText(context, context.getString(R.string.scanner_healthy_nodes_transferred, healthyNodes.size), android.widget.Toast.LENGTH_SHORT).show()
+                                                        showDuskNotice(snackbarScope, duskSnackbarHost, context.getString(R.string.scanner_healthy_nodes_transferred, healthyNodes.size))
                                                         onOpenNodes()
                                                     },
                                                     modifier = Modifier.weight(1f).height(48.dp),
@@ -1445,7 +1449,7 @@ fun ScannerTab(onBack: () -> Unit = {}, onOpenNodes: () -> Unit = {}) {
                                                 onClick = {
                                                     groupManager.loadCloudGroups()
                                                     if (groupManager.cloudGroups.isEmpty() && studioTarget == null) {
-                                                        android.widget.Toast.makeText(context, context.getString(R.string.scanner_no_cloud_group), android.widget.Toast.LENGTH_SHORT).show()
+                                                        showDuskNotice(snackbarScope, duskSnackbarHost, context.getString(R.string.scanner_no_cloud_group))
                                                         return@Button
                                                     }
                                                     mixingArchive = archive
@@ -1589,7 +1593,7 @@ fun ScannerTab(onBack: () -> Unit = {}, onOpenNodes: () -> Unit = {}) {
                     Button(
                         onClick = {
                             if (selectedCloudGroup == null) {
-                                android.widget.Toast.makeText(context, context.getString(R.string.scanner_please_select_group), android.widget.Toast.LENGTH_SHORT).show()
+                                showDuskNotice(snackbarScope, duskSnackbarHost, context.getString(R.string.scanner_please_select_group))
                                 return@Button
                             }
                             // The Config Studio subscriber, or a cloud group. Both end up as a
@@ -1664,7 +1668,7 @@ fun ScannerTab(onBack: () -> Unit = {}, onOpenNodes: () -> Unit = {}) {
 
                             if (mixingArchive === archiveUsed) mixingArchive = null
                             viewingGroup = newComboGroup
-                            android.widget.Toast.makeText(context, context.getString(R.string.scanner_combined_nodes_created, combinedNodes.size), android.widget.Toast.LENGTH_SHORT).show()
+                            showDuskNotice(snackbarScope, duskSnackbarHost, context.getString(R.string.scanner_combined_nodes_created, combinedNodes.size))
                             }
                         },
                         modifier = Modifier.fillMaxWidth().height(48.dp),
@@ -1732,9 +1736,7 @@ fun ScannerTab(onBack: () -> Unit = {}, onOpenNodes: () -> Unit = {}) {
                                     scope.launch {
                                         val outcome = publishStudioGroup(context, currentGroup, source)
                                         publishing = false
-                                        android.widget.Toast.makeText(
-                                            context, outcome.message, android.widget.Toast.LENGTH_LONG,
-                                        ).show()
+                                        showDuskNotice(snackbarScope, duskSnackbarHost, outcome.message)
                                     }
                                 },
                                 enabled = !publishing,
@@ -1765,7 +1767,7 @@ fun ScannerTab(onBack: () -> Unit = {}, onOpenNodes: () -> Unit = {}) {
                                 onClick = {
                                     val healthyConfigs = healthyNodes.joinToString("\n") { it.uri }
                                     if (com.mlmvpn.scanner.utils.SafeClip.copy(context, "Healthy Configs", healthyConfigs))
-                                        android.widget.Toast.makeText(context, context.getString(R.string.scanner_healthy_configs_copied, healthyNodes.size), android.widget.Toast.LENGTH_SHORT).show()
+                                        showDuskNotice(snackbarScope, duskSnackbarHost, context.getString(R.string.scanner_healthy_configs_copied, healthyNodes.size))
                                 },
                                 modifier = Modifier.fillMaxWidth().height(48.dp),
                                 colors = iosButtonColors(DuskTheme.success),
@@ -1786,9 +1788,9 @@ fun ScannerTab(onBack: () -> Unit = {}, onOpenNodes: () -> Unit = {}) {
 
                                 if (ips.isNotEmpty()) {
                                     if (com.mlmvpn.scanner.utils.SafeClip.copy(context, "IPs", ips))
-                                        android.widget.Toast.makeText(context, context.getString(R.string.scanner_ips_copied_short), android.widget.Toast.LENGTH_SHORT).show()
+                                        showDuskNotice(snackbarScope, duskSnackbarHost, context.getString(R.string.scanner_ips_copied_short))
                                 } else {
-                                    android.widget.Toast.makeText(context, context.getString(R.string.scanner_ip_not_found_in_configs), android.widget.Toast.LENGTH_SHORT).show()
+                                    showDuskNotice(snackbarScope, duskSnackbarHost, context.getString(R.string.scanner_ip_not_found_in_configs))
                                 }
                             },
                             modifier = Modifier.fillMaxWidth().height(48.dp),
@@ -2000,7 +2002,7 @@ fun ScannerTab(onBack: () -> Unit = {}, onOpenNodes: () -> Unit = {}) {
                             if (uri.isEmpty() ||
                                 com.mlmvpn.scanner.utils.VpnConfig.parseUri(uri) == null
                             ) {
-                                android.widget.Toast.makeText(context, context.getString(R.string.scanner_enter_base_config), android.widget.Toast.LENGTH_LONG).show()
+                                showDuskNotice(snackbarScope, duskSnackbarHost, context.getString(R.string.scanner_enter_base_config))
                                 return@Button
                             }
                             val archive = showRetestDialog!!
@@ -2052,7 +2054,7 @@ fun ScannerTab(onBack: () -> Unit = {}, onOpenNodes: () -> Unit = {}) {
                             mixToDelete = null
                             groupManager.scannerGroups.remove(group)
                             groupManager.saveScannerGroups()
-                            android.widget.Toast.makeText(context, context.getString(R.string.scanner_combined_group_deleted), android.widget.Toast.LENGTH_SHORT).show()
+                            showDuskNotice(snackbarScope, duskSnackbarHost, context.getString(R.string.scanner_combined_group_deleted))
                         },
                         colors = iosButtonColors(DuskTheme.error),
                         border = iosButtonBorder(DuskTheme.error)) {
@@ -2085,7 +2087,7 @@ fun ScannerTab(onBack: () -> Unit = {}, onOpenNodes: () -> Unit = {}) {
                                 // background thread, and there is only ever one unified archive.
                                 withContext(Dispatchers.IO) { groupManager.clearIpArchives() }
                                 ipArchives = groupManager.ipArchives.toList()
-                                android.widget.Toast.makeText(context, context.getString(R.string.scanner_archive_deleted), android.widget.Toast.LENGTH_SHORT).show()
+                                showDuskNotice(snackbarScope, duskSnackbarHost, context.getString(R.string.scanner_archive_deleted))
                             }
                         },
                         colors = iosButtonColors(DuskTheme.error),

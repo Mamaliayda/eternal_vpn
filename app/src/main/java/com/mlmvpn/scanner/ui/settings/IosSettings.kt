@@ -140,12 +140,12 @@ private val GlyphShape = DuskTheme.glyphShape
 
 /** Section caption above a card, in iOS's small grey uppercase-ish style. */
 @Composable
-fun SettingsSectionHeader(text: String, horizontal: androidx.compose.ui.unit.Dp = 20.dp) {
+fun SettingsSectionHeader(text: String, horizontal: androidx.compose.ui.unit.Dp = DuskTheme.space5) {
     Text(
         text = text,
-        color = Ios.SecondaryLabel,
+        color = DuskTheme.muted,
         style = MaterialTheme.typography.bodySmall,
-        modifier = Modifier.padding(start = horizontal, end = horizontal, top = 26.dp, bottom = 7.dp),
+        modifier = Modifier.padding(start = horizontal, end = horizontal, top = DuskTheme.space5, bottom = DuskTheme.space2),
     )
 }
 
@@ -156,7 +156,7 @@ fun SettingsSectionHeader(text: String, horizontal: androidx.compose.ui.unit.Dp 
 @Composable
 fun SettingsGroup(
     modifier: Modifier = Modifier,
-    horizontal: androidx.compose.ui.unit.Dp = 16.dp,
+    horizontal: androidx.compose.ui.unit.Dp = DuskTheme.space4,
     content: @Composable SettingsGroupScope.() -> Unit,
 ) {
     DuskCard(
@@ -183,7 +183,7 @@ private class SettingsGroupScopeImpl(
                 // Starts past the glyph, exactly as iOS does: 16 padding + 29 icon + 12 gap.
                 .padding(start = 57.dp)
                 .height(0.5.dp)
-                .background(Ios.Separator)
+                .background(DuskTheme.primary.copy(alpha = 0.16f))
         )
     }
 }
@@ -207,7 +207,7 @@ private fun RowChevron() {
     Icon(
         Icons.Default.ChevronRight,
         contentDescription = null,
-        tint = Ios.Chevron,
+        tint = DuskTheme.disabled,
         modifier = Modifier
             .size(18.dp)
             // The chevron always points the way navigation goes, which is leftward in Persian.
@@ -233,8 +233,8 @@ private fun RowFrame(
             .fillMaxWidth()
             .then(if (spotlight != null) Modifier.settingsSpotlight(spotlight) else Modifier)
             .then(if (onClick != null) Modifier.clickable(onClick = onClick) else Modifier)
-            .heightIn(min = 44.dp)
-            .padding(horizontal = 16.dp, vertical = 7.dp),
+            .heightIn(min = DuskTheme.navIconSize)
+            .padding(horizontal = DuskTheme.space4, vertical = DuskTheme.space2),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         if (icon != null) {
@@ -262,7 +262,7 @@ private fun RowFrame(
 fun SettingsActionRow(
     label: String,
     icon: ImageVector,
-    tint: Color = Ios.Label,
+    tint: Color = DuskTheme.onSurface,
     /**
      * The label's colour, when it should not follow the glyph.
      *
@@ -276,14 +276,14 @@ fun SettingsActionRow(
     onClick: () -> Unit,
 ) {
     val live = enabled && !busy
-    val shade = if (live) tint else Ios.SecondaryLabel
-    val words = if (live) (labelColor ?: tint) else Ios.SecondaryLabel
+    val shade = if (live) tint else DuskTheme.muted
+    val words = if (live) (labelColor ?: tint) else DuskTheme.muted
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .then(if (live) Modifier.clickable(onClick = onClick) else Modifier)
-            .heightIn(min = 44.dp)
-            .padding(horizontal = 16.dp, vertical = 9.dp),
+            .heightIn(min = DuskTheme.navIconSize)
+            .padding(horizontal = DuskTheme.space4, vertical = DuskTheme.space2),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Icon(icon, contentDescription = null, tint = shade, modifier = Modifier.size(20.dp))
@@ -304,9 +304,9 @@ fun SettingsActionRow(
 fun SettingsFooter(text: String) {
     Text(
         text,
-        color = Ios.SecondaryLabel,
+        color = DuskTheme.muted,
         style = MaterialTheme.typography.bodySmall,
-        modifier = Modifier.padding(start = 32.dp, end = 32.dp, top = 8.dp),
+        modifier = Modifier.padding(start = DuskTheme.space6, end = DuskTheme.space6, top = DuskTheme.space2),
     )
 }
 
@@ -315,10 +315,10 @@ fun SettingsFooter(text: String) {
 fun SettingsRow(
     title: String,
     icon: ImageVector? = null,
-    tint: Color = Ios.Gray,
+    tint: Color = DuskTheme.disabled,
     value: String? = null,
     subtitle: String? = null,
-    titleColor: Color = Ios.Label,
+    titleColor: Color = DuskTheme.onSurface,
     showChevron: Boolean = true,
     onClick: (() -> Unit)? = null,
     /** iOS's red count badge before the chevron ("1" on Software Update). 0 draws nothing. */
@@ -336,7 +336,7 @@ fun SettingsRow(
             if (value != null) {
                 Text(
                     value,
-                    color = Ios.SecondaryLabel,
+                    color = DuskTheme.muted,
                     style = MaterialTheme.typography.bodyLarge,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
@@ -349,7 +349,7 @@ fun SettingsRow(
             Column {
                 Text(title, color = titleColor, style = MaterialTheme.typography.bodyLarge)
                 if (subtitle != null) {
-                    Text(subtitle, color = Ios.SecondaryLabel, style = MaterialTheme.typography.labelSmall)
+                    Text(subtitle, color = DuskTheme.muted, style = MaterialTheme.typography.labelSmall)
                 }
             }
         },
@@ -384,7 +384,7 @@ fun SettingsToggle(
     checked: Boolean,
     onCheckedChange: (Boolean) -> Unit,
     icon: ImageVector? = null,
-    tint: Color = Ios.Gray,
+    tint: Color = DuskTheme.disabled,
     subtitle: String? = null,
 ) {
     RowFrame(
@@ -400,8 +400,8 @@ fun SettingsToggle(
                     checkedThumbColor = DuskTheme.white,
                     // The app's own blue rather than the platform green: green is Apple's accent,
                     // not ours, and it was the one control on screen not speaking the app's colour.
-                    checkedTrackColor = Ios.Blue,
-                    checkedBorderColor = Ios.Blue,
+                    checkedTrackColor = DuskTheme.primary,
+                    checkedBorderColor = DuskTheme.primary,
                     uncheckedThumbColor = DuskTheme.white,
                     uncheckedTrackColor = DuskTheme.disabled.copy(alpha = 0.38f),
                     uncheckedBorderColor = DuskTheme.disabled.copy(alpha = 0.55f),
@@ -411,9 +411,9 @@ fun SettingsToggle(
         },
         label = {
             Column {
-                Text(title, color = Ios.Label, style = MaterialTheme.typography.bodyLarge)
+                Text(title, color = DuskTheme.onSurface, style = MaterialTheme.typography.bodyLarge)
                 if (subtitle != null) {
-                    Text(subtitle, color = Ios.SecondaryLabel, style = MaterialTheme.typography.labelSmall)
+                    Text(subtitle, color = DuskTheme.muted, style = MaterialTheme.typography.labelSmall)
                 }
             }
         },
@@ -434,7 +434,7 @@ fun SettingsTextRow(
     value: String,
     onValueChange: (String) -> Unit,
     icon: ImageVector? = null,
-    tint: Color = Ios.Gray,
+    tint: Color = DuskTheme.disabled,
     placeholder: String = "",
     error: String? = null,
     numeric: Boolean = false,
@@ -465,10 +465,10 @@ fun SettingsTextRow(
                     onValueChange = onValueChange,
                     singleLine = true,
                     textStyle = MaterialTheme.typography.bodyLarge.copy(
-                        color = if (error != null) Ios.Destructive else Ios.SecondaryLabel,
+                        color = if (error != null) DuskTheme.error else DuskTheme.muted,
                         textAlign = TextAlign.End,
                     ),
-                    cursorBrush = SolidColor(Ios.Blue),
+                    cursorBrush = SolidColor(DuskTheme.primary),
                     keyboardOptions = KeyboardOptions(
                         keyboardType = if (numeric) {
                             androidx.compose.ui.text.input.KeyboardType.Number
@@ -489,7 +489,7 @@ fun SettingsTextRow(
                             if (value.isEmpty() && placeholder.isNotEmpty()) {
                                 Text(
                                     placeholder,
-                                    color = Ios.SecondaryLabel.copy(alpha = 0.5f),
+                                    color = DuskTheme.muted.copy(alpha = 0.5f),
                                     style = MaterialTheme.typography.bodyLarge,
                                 )
                             }
@@ -498,12 +498,12 @@ fun SettingsTextRow(
                     },
                 )
             },
-            label = { Text(title, color = Ios.Label, style = MaterialTheme.typography.bodyLarge) },
+            label = { Text(title, color = DuskTheme.onSurface, style = MaterialTheme.typography.bodyLarge) },
         )
         if (error != null) {
             Text(
                 error,
-                color = Ios.Destructive,
+                color = DuskTheme.error,
                 style = MaterialTheme.typography.labelSmall,
                 modifier = Modifier.padding(start = 57.dp, end = 16.dp, bottom = 10.dp),
             )
@@ -559,7 +559,7 @@ fun CloudflareAccountCard(
         Column(modifier = Modifier.weight(1f)) {
             Text(
                 title,
-                color = Ios.Label,
+                color = DuskTheme.onSurface,
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.SemiBold,
                 maxLines = 1,
@@ -568,7 +568,7 @@ fun CloudflareAccountCard(
             Spacer(Modifier.height(2.dp))
             Text(
                 subtitle,
-                color = Ios.SecondaryLabel,
+                color = DuskTheme.muted,
                 style = MaterialTheme.typography.bodySmall,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
@@ -585,7 +585,7 @@ fun CloudflareAccountCard(
                 // Starts past the avatar, the way iOS insets the divider in this card.
                 .padding(start = 86.dp)
                 .height(0.5.dp)
-                .background(Ios.Separator)
+                .background(DuskTheme.primary.copy(alpha = 0.16f))
         )
         Row(
             modifier = Modifier
@@ -601,7 +601,7 @@ fun CloudflareAccountCard(
             Spacer(Modifier.width(12.dp))
             Text(
                 accountsLabel ?: "",
-                color = Ios.Label,
+                color = DuskTheme.onSurface,
                 style = MaterialTheme.typography.bodyLarge,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
@@ -628,7 +628,7 @@ private fun AccountDots(initials: List<String>) {
     val shown = initials.take(4)
     val step = 17.dp
     val dot = 26.dp
-    val palette = listOf(Ios.CloudflareOrange, DuskTheme.blueGray, DuskTheme.success, DuskTheme.purple)
+    val palette = listOf(DuskTheme.cloudflareOrange, DuskTheme.blueGray, DuskTheme.success, DuskTheme.purple)
 
     Box(modifier = Modifier.height(dot).width(dot + step * (shown.size - 1))) {
         shown.forEachIndexed { index, label ->
@@ -639,7 +639,7 @@ private fun AccountDots(initials: List<String>) {
                     .clip(DuskTheme.circleShape)
                     // The ring is what separates one dot from the one it overlaps; without it a
                     // run of similar colours reads as a single blob.
-                    .background(Ios.Card)
+                    .background(DuskTheme.surface)
                     .padding(1.5.dp)
                     .clip(DuskTheme.circleShape)
                     .background(palette[index % palette.size]),
@@ -922,7 +922,7 @@ fun IosPickerScreen(
     footer: String? = null,
 ) {
     IosScreen(title = title, onBack = onBack, backLabel = backLabel) {
-        Spacer(Modifier.height(14.dp))
+        Spacer(Modifier.height(DuskTheme.space3))
         SettingsGroup {
             options.forEachIndexed { index, option ->
                 if (index > 0) Separator()
@@ -933,21 +933,21 @@ fun IosPickerScreen(
                             onSelect(option.key)
                             onBack()
                         }
-                        .heightIn(min = 44.dp)
-                        .padding(horizontal = 16.dp, vertical = 9.dp),
+                        .heightIn(min = DuskTheme.navIconSize)
+                        .padding(horizontal = DuskTheme.space4, vertical = DuskTheme.space2),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Column(modifier = Modifier.weight(1f)) {
-                        Text(option.label, color = Ios.Label, style = MaterialTheme.typography.bodyLarge)
+                        Text(option.label, color = DuskTheme.onSurface, style = MaterialTheme.typography.bodyLarge)
                         if (option.detail != null) {
-                            Text(option.detail, color = Ios.SecondaryLabel, style = MaterialTheme.typography.labelSmall)
+                            Text(option.detail, color = DuskTheme.muted, style = MaterialTheme.typography.labelSmall)
                         }
                     }
                     if (option.key == selectedKey) {
                         Icon(
                             Icons.Default.Check,
                             contentDescription = null,
-                            tint = Ios.Blue,
+                            tint = DuskTheme.primary,
                             modifier = Modifier.size(20.dp),
                         )
                     }
@@ -957,12 +957,12 @@ fun IosPickerScreen(
         if (footer != null) {
             Text(
                 footer,
-                color = Ios.SecondaryLabel,
+                color = DuskTheme.muted,
                 style = MaterialTheme.typography.bodySmall,
-                modifier = Modifier.padding(start = 32.dp, end = 32.dp, top = 8.dp),
+                modifier = Modifier.padding(start = DuskTheme.space6, end = DuskTheme.space6, top = DuskTheme.space2),
             )
         }
-        Spacer(Modifier.height(24.dp))
+        Spacer(Modifier.height(DuskTheme.space5))
     }
 }
 
@@ -1059,8 +1059,8 @@ fun SettingsSlider(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
             ) {
-                Text(title, color = Ios.Label, style = MaterialTheme.typography.bodyLarge)
-                Text(valueLabel, color = Ios.SecondaryLabel, style = MaterialTheme.typography.bodyLarge)
+                Text(title, color = DuskTheme.onSurface, style = MaterialTheme.typography.bodyLarge)
+                Text(valueLabel, color = DuskTheme.muted, style = MaterialTheme.typography.bodyLarge)
             }
             Slider(
                 value = value.toFloat(),
@@ -1068,7 +1068,7 @@ fun SettingsSlider(
                 valueRange = range,
                 colors = SliderDefaults.colors(
                     thumbColor = DuskTheme.raisedSurface,
-                    activeTrackColor = Ios.Blue,
+                    activeTrackColor = DuskTheme.primary,
                     inactiveTrackColor = DuskTheme.secondary.copy(alpha = 0.24f),
                 ),
             )

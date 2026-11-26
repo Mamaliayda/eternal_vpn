@@ -777,13 +777,13 @@ private fun SettingsDetailPlaceholder() {
             Icon(
                 Icons.Default.Settings,
                 contentDescription = null,
-                tint = Ios.SecondaryLabel.copy(alpha = 0.5f),
-                modifier = Modifier.size(56.dp),
+                tint = DuskTheme.muted.copy(alpha = 0.5f),
+                modifier = Modifier.size(DuskTheme.iconSize * 2 + DuskTheme.space3),
             )
-            Spacer(Modifier.height(14.dp))
+            Spacer(Modifier.height(DuskTheme.space3))
             Text(
                 stringResource(R.string.settings_pick_a_row),
-                color = Ios.SecondaryLabel,
+                color = DuskTheme.muted,
                 style = MaterialTheme.typography.bodyMedium,
             )
         }

@@ -26,6 +26,7 @@ import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Velocity
 import androidx.compose.ui.unit.dp
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -128,15 +129,15 @@ fun IosRefreshIndicator(state: IosRefreshState, modifier: Modifier = Modifier) {
     Box(modifier = modifier.fillMaxWidth().height(height), contentAlignment = Alignment.Center) {
         if (state.refreshing) {
             CircularProgressIndicator(
-                modifier = Modifier.size(22.dp),
-                color = Ios.SecondaryLabel,
+                modifier = Modifier.size(DuskTheme.iconSize),
+                color = DuskTheme.muted,
                 strokeWidth = 2.dp,
             )
         } else if (height > 12.dp) {
             CircularProgressIndicator(
                 progress = state.progress,
-                modifier = Modifier.size(22.dp),
-                color = Ios.SecondaryLabel,
+                modifier = Modifier.size(DuskTheme.iconSize),
+                color = DuskTheme.muted,
                 strokeWidth = 2.dp,
             )
         }
