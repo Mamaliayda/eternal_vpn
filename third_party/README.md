@@ -1,24 +1,35 @@
-# Upstream artifacts, kept pristine
+# Upstream artifacts
 
-## `psiphontunnel-2.0.39.aar`
+## Psiphon Android library 2.0.39
 
-Psiphon's Go controller as published. **It is not the copy the app builds against.**
+The APK consumes the relocated AAR at `app/libs/psiphontunnel-2.0.39-ns.aar`. Psiphon and
+Xray are both gomobile builds: each normally bundles the same Java runtime classes (`go.Seq`,
+`go.Universe`, `go.error`) and native library name (`libgojni.so`). Including both pristine
+AARs causes duplicate classes and duplicate native-library paths. Picking one at packaging
+time is not safe because the libraries contain different Go programs; the missing one would
+fail when its core is used.
 
-It cannot be, because this APK also carries `libv2ray.aar` and both are gomobile builds:
-each ships the Java classes `go.Seq` / `go.Universe` / `go.error` and a native library
-called `libgojni.so`. Two of each in one APK is a duplicate-class error and a duplicate
-native-library error, and neither can be resolved by picking one — the two `libgojni.so`
-are different Go programs (Xray, Psiphon), so whichever lost would leave every native
-method of its own library unresolvable at runtime.
+The included Psiphon AAR keeps both VPN engines available. Its gomobile runtime is relocated
+from `go` to `pg`, and its native library is renamed from `libgojni.so` to `libpgjni.so`.
+The Xray runtime remains unchanged. The transformation is performed by
+`scripts/repackage-psiphon-aar.py` and verified against the packaged classes and native
+symbols for all four ABIs.
 
-`app/libs/psiphontunnel-2.0.39-ns.aar` is this file with its gomobile runtime moved from
-`go` to `pg` and its native library renamed to `libpgjni.so`. To regenerate it:
+The upstream artifact is published in Psiphon's Android Maven repository:
+
+- Repository: <https://github.com/Psiphon-Labs/psiphon-tunnel-core-Android-library>
+- Source path: `ca/psiphon/psiphontunnel/2.0.39/psiphontunnel-2.0.39.aar`
+- Pinned source commit: `7ba832f9d693b69889e6c1582dac2d3e5b51e6ad`
+- Upstream AAR SHA-256: `7bcbb09ed53ac44f858298253eeb77c1baf7fefd105a8d1ef4eee3a148dd7ac1`
+- Relocated AAR SHA-256: `92abbb3e884decd194d5abd52cee4bb7d057264d5bd060af6b852cf5b20ee2a9`
+
+To reproduce the bundled artifact, retrieve the upstream AAR from the pinned repository
+commit and run:
 
 ```bash
-cp third_party/psiphontunnel-2.0.39.aar app/libs/
-python scripts/repackage-psiphon-aar.py app/libs/psiphontunnel-2.0.39.aar
-rm app/libs/psiphontunnel-2.0.39.aar
+python3 scripts/repackage-psiphon-aar.py /path/to/psiphontunnel-2.0.39.aar
 ```
 
-The script explains every substitution and verifies its own output. Run it again after
-upgrading psiphon-tunnel-core, from the new upstream file rather than from the patched one.
+The script writes a `-ns.aar` sibling. The upstream project is GPL-3.0; its source and
+license are available at the pinned repository above. The relocation script is included in
+this repository as the corresponding modification to the upstream artifact.
