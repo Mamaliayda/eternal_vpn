@@ -1,14 +1,11 @@
 package com.mlmvpn.scanner.ui
 
-import com.mlmvpn.scanner.ui.home.frostedGlass
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.draw.rotate
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -27,7 +24,6 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.platform.LocalConfiguration
@@ -61,14 +57,14 @@ fun ScannerHeader(scanning: Boolean, pulseScale: Float, radarRotation: Float) {
                 modifier = Modifier
                     .size(72.dp)
                     .scale(pulseScale)
-                    .clip(CircleShape)
-                    .background(Primary.copy(alpha = 0.2f))
+                    .clip(DuskTheme.circleShape)
+                    .background(DuskTheme.primary.copy(alpha = 0.2f))
             )
         }
         Icon(
-            Icons.Default.Radar, 
-            contentDescription = null, 
-            tint = TextMuted, 
+            Icons.Default.Radar,
+            contentDescription = null,
+            tint = DuskTheme.muted,
             modifier = Modifier
                 .size(72.dp)
                 .then(if (scanning) Modifier.rotate(radarRotation) else Modifier)
@@ -76,11 +72,11 @@ fun ScannerHeader(scanning: Boolean, pulseScale: Float, radarRotation: Float) {
     }
 
     Spacer(modifier = Modifier.height(16.dp))
-    Text(stringResource(R.string.scanner_title), color = TextPrimary, fontSize = 20.sp, fontWeight = FontWeight.Bold)
+    Text(stringResource(R.string.scanner_title), color = DuskTheme.onSurface, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
     Text(
         stringResource(R.string.scanner_desc),
-        color = TextMuted,
-        fontSize = 12.sp,
+        color = DuskTheme.muted,
+        style = MaterialTheme.typography.labelMedium,
         textAlign = TextAlign.Center,
         modifier = Modifier.padding(top = 8.dp, bottom = 32.dp)
     )
@@ -107,12 +103,12 @@ fun ScannerProgressCard(
     pinnedToRealLine: Boolean,
     onStop: () -> Unit,
 ) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .frostedGlass(CardShape)
-            .padding(20.dp)
+    DuskCard(
+        modifier = Modifier.fillMaxWidth(),
+        shape = DuskTheme.cardShape,
+        contentPadding = PaddingValues(20.dp),
     ) {
+        Column {
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
             val phaseText = when (scanPhase) {
                 com.mlmvpn.scanner.data.CloudflareScanner.ScanPhase.DONE ->
@@ -121,11 +117,11 @@ fun ScannerProgressCard(
                     stringResource(R.string.scanner_phase_ready)
                 else -> stringResource(R.string.scanner_phase_running)
             }
-            Text(phaseText, color = TextPrimary, fontSize = 12.sp, fontWeight = FontWeight.Bold)
+            Text(phaseText, color = DuskTheme.onSurface, style = MaterialTheme.typography.labelMedium, fontWeight = FontWeight.Bold)
             Text(
                 faCount(progress.toInt()) + "٪",
-                color = TextPrimary,
-                fontSize = 12.sp,
+                color = DuskTheme.onSurface,
+                style = MaterialTheme.typography.labelMedium,
                 fontWeight = FontWeight.Bold,
             )
         }
@@ -136,7 +132,7 @@ fun ScannerProgressCard(
             done = stats.probed,
             total = stats.total,
             trailing = stringResource(R.string.scanner_stage_probe_found, faCount(stats.alive)),
-            tint = Primary,
+            tint = DuskTheme.primary,
         )
 
         Spacer(modifier = Modifier.height(10.dp))
@@ -152,7 +148,7 @@ fun ScannerProgressCard(
                     R.string.scanner_stage_verify_healthy,
                     faCount(stats.healthy),
                 ),
-                tint = GreenOk,
+                tint = DuskTheme.success,
             )
         } else {
             ScanStageRow(
@@ -167,7 +163,7 @@ fun ScannerProgressCard(
                     faCount(stats.tested),
                     faCount(stats.testBudget),
                 ),
-                tint = GreenOk,
+                tint = DuskTheme.success,
             )
         }
 
@@ -177,9 +173,8 @@ fun ScannerProgressCard(
             Spacer(modifier = Modifier.height(12.dp))
             Text(
                 stringResource(R.string.scanner_pinned_real_line),
-                color = YellowWarn,
-                fontSize = 11.sp,
-                lineHeight = 16.sp,
+                color = DuskTheme.accent,
+                style = MaterialTheme.typography.labelSmall,
             )
         }
 
@@ -190,17 +185,18 @@ fun ScannerProgressCard(
         Button(
             onClick = onStop,
             modifier = Modifier.fillMaxWidth().height(46.dp),
-            shape = ControlShape,
-            colors = iosButtonColors(RedError),
-            border = iosButtonBorder(RedError),
+            shape = DuskTheme.controlShape,
+            colors = iosButtonColors(DuskTheme.error),
+            border = iosButtonBorder(DuskTheme.error),
         ) {
             Icon(Icons.Default.Stop, contentDescription = null, modifier = Modifier.size(18.dp))
             Spacer(modifier = Modifier.width(8.dp))
             Text(
                 stringResource(R.string.scanner_stop),
                 fontWeight = FontWeight.Bold,
-                fontSize = 14.sp,
+                style = MaterialTheme.typography.bodyMedium,
             )
+        }
         }
     }
 }
@@ -217,39 +213,38 @@ private fun ScanStageRow(
     val fraction = if (total > 0) (done.toFloat() / total).coerceIn(0f, 1f) else 0f
     val width by animateFloatAsState(targetValue = fraction, animationSpec = tween(160))
     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-        Text(label, color = TextMuted, fontSize = 11.sp)
+        Text(label, color = DuskTheme.muted, style = MaterialTheme.typography.labelSmall)
         Text(
             faCount(done) + " / " + faCount(total) + " · " + trailing,
-            color = TextMuted,
-            fontSize = 11.sp,
+            color = DuskTheme.muted,
+            style = MaterialTheme.typography.labelSmall,
         )
     }
     Spacer(modifier = Modifier.height(5.dp))
-    Box(modifier = Modifier.fillMaxWidth().height(6.dp).background(BgDark, CircleShape)) {
-        Box(modifier = Modifier.fillMaxHeight().fillMaxWidth(width).background(tint, CircleShape))
+    Box(modifier = Modifier.fillMaxWidth().height(6.dp).background(DuskTheme.background, DuskTheme.circleShape)) {
+        Box(modifier = Modifier.fillMaxHeight().fillMaxWidth(width).background(tint, DuskTheme.circleShape))
     }
 }
 
 @Composable
 fun NetworkPausedBanner(message: String) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 12.dp)
-            .background(YellowWarn.copy(alpha = 0.12f), RoundedCornerShape(16.dp))
-            .border(1.dp, YellowWarn.copy(alpha = 0.4f), RoundedCornerShape(16.dp))
-            .padding(16.dp),
-        verticalAlignment = Alignment.CenterVertically
+    DuskCard(
+        modifier = Modifier.fillMaxWidth().padding(top = 12.dp),
+        shape = DuskTheme.chartShape,
+        contentPadding = PaddingValues(16.dp),
+        containerColor = DuskTheme.accent.copy(alpha = 0.12f),
     ) {
-        CircularProgressIndicator(modifier = Modifier.size(18.dp), color = YellowWarn, strokeWidth = 2.dp)
+        Row(verticalAlignment = Alignment.CenterVertically) {
+        CircularProgressIndicator(modifier = Modifier.size(18.dp), color = DuskTheme.accent, strokeWidth = 2.dp)
         Spacer(modifier = Modifier.width(12.dp))
         Column {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(Icons.Default.WifiOff, contentDescription = null, tint = YellowWarn, modifier = Modifier.size(16.dp))
+                Icon(Icons.Default.WifiOff, contentDescription = null, tint = DuskTheme.accent, modifier = Modifier.size(16.dp))
                 Spacer(modifier = Modifier.width(6.dp))
-                Text(S(R.string.no_internet_connection), color = YellowWarn, fontSize = 13.sp, fontWeight = FontWeight.Bold)
+                Text(S(R.string.no_internet_connection), color = DuskTheme.accent, style = MaterialTheme.typography.bodySmall, fontWeight = FontWeight.Bold)
             }
-            Text(message, color = TextMuted, fontSize = 11.sp, modifier = Modifier.padding(top = 2.dp))
+            Text(message, color = DuskTheme.muted, style = MaterialTheme.typography.labelSmall, modifier = Modifier.padding(top = 2.dp))
+        }
         }
     }
 }
@@ -547,7 +542,7 @@ fun ScannerTab(onBack: () -> Unit = {}, onOpenNodes: () -> Unit = {}) {
     var mixingArchive by remember { mutableStateOf<com.mlmvpn.scanner.data.IpArchive?>(null) }
     var showRetestDialog by remember { mutableStateOf<com.mlmvpn.scanner.data.IpArchive?>(null) }
     var retestBaseConfig by remember { mutableStateOf("") }
-    
+
     var mixToDelete by remember { mutableStateOf<com.mlmvpn.scanner.data.ScannerGroup?>(null) }
     var archiveToDelete by remember { mutableStateOf<com.mlmvpn.scanner.data.IpArchive?>(null) }
 
@@ -1004,8 +999,8 @@ fun ScannerTab(onBack: () -> Unit = {}, onOpenNodes: () -> Unit = {}) {
                             // Results List
                             Row(modifier = Modifier.fillMaxWidth().padding(top = 16.dp), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
                                 val title = if (scanPhase == com.mlmvpn.scanner.data.CloudflareScanner.ScanPhase.DONE) stringResource(R.string.scanner_final_results) else stringResource(R.string.scanner_found_ips)
-                                Text(title, color = TextPrimary, fontSize = 14.sp, fontWeight = FontWeight.Bold)
-                                Box(modifier = Modifier.background(GreenOk.copy(alpha = 0.1f), RoundedCornerShape(8.dp)).padding(horizontal = 8.dp, vertical = 4.dp)) {
+                                Text(title, color = DuskTheme.onSurface, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Bold)
+                                Box(modifier = Modifier.background(DuskTheme.success.copy(alpha = 0.1f), DuskTheme.controlShape).padding(horizontal = 8.dp, vertical = 4.dp)) {
                                     // The new/duplicate breakdown only exists for a DISCOVERY scan,
                                     // which is the only thing that merges into the archive. After
                                     // an archive health test both counters are zero and this read
@@ -1021,12 +1016,12 @@ fun ScannerTab(onBack: () -> Unit = {}, onOpenNodes: () -> Unit = {}) {
                                     } else {
                                         stringResource(R.string.scanner_ips_found, scannedIPs.size)
                                     }
-                                    Text(countText, color = GreenOk, fontSize = 12.sp)
+                                    Text(countText, color = DuskTheme.success, style = MaterialTheme.typography.labelMedium)
                                 }
                             }
                             Spacer(modifier = Modifier.height(12.dp))
 
-                            LazyColumn(modifier = Modifier.fillMaxWidth().heightIn(max = 400.dp).frostedGlass(RoundedCornerShape(16.dp)).border(1.dp, BorderDark, RoundedCornerShape(16.dp)).clip(RoundedCornerShape(16.dp))) {
+                            LazyColumn(modifier = Modifier.fillMaxWidth().heightIn(max = 400.dp).background(DuskTheme.surface, DuskTheme.chartShape).border(1.dp, DuskTheme.outline, DuskTheme.chartShape).clip(DuskTheme.chartShape)) {
                                 items(scannedIPs.size, key = { index -> scannedIPs[index].id }) { index ->
                                     val ip = scannedIPs[index]
                                     Row(
@@ -1035,7 +1030,7 @@ fun ScannerTab(onBack: () -> Unit = {}, onOpenNodes: () -> Unit = {}) {
                                             .clickable {
                                                 com.mlmvpn.scanner.data.ScannerManager.toggleSelection(ip.id)
                                             }
-                                            .background(if (ip.selected) Primary.copy(alpha = 0.05f) else Color.Transparent)
+                                            .background(if (ip.selected) DuskTheme.primary.copy(alpha = 0.05f) else Color.Transparent)
                                             .padding(16.dp),
                                         horizontalArrangement = Arrangement.SpaceBetween,
                                         verticalAlignment = Alignment.CenterVertically
@@ -1044,29 +1039,29 @@ fun ScannerTab(onBack: () -> Unit = {}, onOpenNodes: () -> Unit = {}) {
                                             Icon(
                                                 if (ip.selected) Icons.Default.CheckBox else Icons.Default.CheckBoxOutlineBlank,
                                                 contentDescription = null,
-                                                tint = if (ip.selected) Primary else TextDim,
+                                                tint = if (ip.selected) DuskTheme.primary else DuskTheme.disabled,
                                                 modifier = Modifier.size(20.dp)
                                             )
                                             Spacer(modifier = Modifier.width(12.dp))
                                             Column {
-                                                Text(ip.ip, color = TextPrimary, fontSize = 14.sp)
-                                                Text("Cloudflare CDN", color = TextMuted, fontSize = 10.sp)
+                                                Text(ip.ip, color = DuskTheme.onSurface, style = MaterialTheme.typography.bodyMedium)
+                                                Text("Cloudflare CDN", color = DuskTheme.muted, style = MaterialTheme.typography.labelSmall)
                                             }
                                         }
                                         Row(verticalAlignment = Alignment.CenterVertically) {
-                                            val color = if (ip.ping < 50) GreenOk else if (ip.ping < 80) YellowWarn else RedError
-                                            Box(modifier = Modifier.size(6.dp).clip(CircleShape).background(color))
+                                            val color = if (ip.ping < 50) DuskTheme.success else if (ip.ping < 80) DuskTheme.accent else DuskTheme.error
+                                            Box(modifier = Modifier.size(6.dp).clip(DuskTheme.circleShape).background(color))
                                             Spacer(modifier = Modifier.width(4.dp))
                                             Column(horizontalAlignment = Alignment.End) {
-                                                Text("Ping: ${ip.ping}ms", color = if (ip.ping < 50) GreenOk else TextPrimary, fontSize = 10.sp)
+                                                Text("Ping: ${ip.ping}ms", color = if (ip.ping < 50) DuskTheme.success else DuskTheme.onSurface, style = MaterialTheme.typography.labelSmall)
                                                 if (ip.downloadSpeed > 0) {
-                                                    Text("Real: ${ip.downloadSpeed.toInt()}ms", color = TextPrimary, fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                                                    Text("Real: ${ip.downloadSpeed.toInt()}ms", color = DuskTheme.onSurface, style = MaterialTheme.typography.labelMedium, fontWeight = FontWeight.Bold)
                                                 }
                                             }
                                         }
                                     }
                                     if (index < scannedIPs.size - 1) {
-                                        Divider(color = BorderDark)
+                                        Divider(color = DuskTheme.outline)
                                     }
                                 }
                             }
@@ -1084,13 +1079,13 @@ fun ScannerTab(onBack: () -> Unit = {}, onOpenNodes: () -> Unit = {}) {
                                         }
                                     },
                                     modifier = Modifier.weight(1f).height(56.dp),
-                                    shape = RoundedCornerShape(16.dp),
+                                    shape = DuskTheme.chartShape,
                                     colors = iosNeutralButtonColors(),
                                     border = iosNeutralBorder(),
                                 ) {
                                     Icon(Icons.Default.CopyAll, contentDescription = null, modifier = Modifier.size(18.dp))
                                     Spacer(modifier = Modifier.width(8.dp))
-                                    Text(stringResource(R.string.scanner_copy_ips), fontWeight = FontWeight.Bold, fontSize = 14.sp)
+                                    Text(stringResource(R.string.scanner_copy_ips), fontWeight = FontWeight.Bold, style = MaterialTheme.typography.bodyMedium)
                                 }
 
                                 Button(
@@ -1103,17 +1098,17 @@ fun ScannerTab(onBack: () -> Unit = {}, onOpenNodes: () -> Unit = {}) {
                                         showActionSheet = true
                                     },
                                     modifier = Modifier.weight(1f).height(56.dp),
-                                    shape = RoundedCornerShape(16.dp),
-                                    colors = iosButtonColors(Primary),
-                                    border = iosButtonBorder(Primary)) {
+                                    shape = DuskTheme.chartShape,
+                                    colors = iosButtonColors(DuskTheme.primary),
+                                    border = iosButtonBorder(DuskTheme.primary)) {
                                     Icon(Icons.Default.Layers, contentDescription = null, modifier = Modifier.size(18.dp))
                                     Spacer(modifier = Modifier.width(8.dp))
-                                    Text(stringResource(R.string.scanner_combine_with_config), fontWeight = FontWeight.Bold, fontSize = 14.sp)
+                                    Text(stringResource(R.string.scanner_combine_with_config), fontWeight = FontWeight.Bold, style = MaterialTheme.typography.bodyMedium)
                                 }
                             }
 
                             TextButton(onClick = { com.mlmvpn.scanner.data.ScannerManager.reset() }, modifier = Modifier.padding(top = 8.dp)) {
-                                Text(stringResource(R.string.scanner_cancel_and_rescan), color = TextMuted, fontSize = 14.sp)
+                                Text(stringResource(R.string.scanner_cancel_and_rescan), color = DuskTheme.muted, style = MaterialTheme.typography.bodyMedium)
                             }
                         } else if (!scanning && scannedIPs.isEmpty()) {
                             ScannerSettingsCard(
@@ -1143,34 +1138,34 @@ fun ScannerTab(onBack: () -> Unit = {}, onOpenNodes: () -> Unit = {}) {
                         if (!showActionSheet && scannerGroups.isNotEmpty()) {
                             // Combinations History Groups
                             Spacer(modifier = Modifier.height(24.dp))
-                            Divider(color = BorderDark)
+                            Divider(color = DuskTheme.outline)
                             Row(modifier = Modifier.fillMaxWidth().padding(12.dp), verticalAlignment = Alignment.CenterVertically) {
-                                Icon(Icons.Default.Layers, contentDescription = null, tint = TextMuted, modifier = Modifier.size(16.dp))
+                                Icon(Icons.Default.Layers, contentDescription = null, tint = DuskTheme.muted, modifier = Modifier.size(16.dp))
                                 Spacer(modifier = Modifier.width(8.dp))
-                                Text(stringResource(R.string.scanner_combined_groups), color = TextPrimary, fontSize = 14.sp, fontWeight = FontWeight.Bold)
+                                Text(stringResource(R.string.scanner_combined_groups), color = DuskTheme.onSurface, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Bold)
                             }
-                            
+
                             Column(modifier = Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(12.dp)) {
                                 scannerGroups.forEachIndexed { index, group ->
                                     Column(
-                                        modifier = Modifier.fillMaxWidth().frostedGlass(RoundedCornerShape(16.dp)).border(1.dp, BorderDark, RoundedCornerShape(16.dp)).padding(16.dp)
+                                        modifier = Modifier.fillMaxWidth().background(DuskTheme.surface, DuskTheme.chartShape).border(1.dp, DuskTheme.outline, DuskTheme.chartShape).padding(16.dp)
                                     ) {
                                         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.Top) {
                                             Column {
-                                                Text(group.title, color = TextPrimary, fontSize = 16.sp, fontWeight = FontWeight.Bold)
-                                                Text(stringResource(R.string.scanner_combine_info, group.ipCount, group.sourceGroupCount), color = TextPrimary, fontSize = 12.sp, modifier = Modifier.padding(top = 4.dp))
-                                                Text(group.date, color = TextMuted, fontSize = 10.sp, modifier = Modifier.padding(top = 4.dp))
+                                                Text(group.title, color = DuskTheme.onSurface, style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.Bold)
+                                                Text(stringResource(R.string.scanner_combine_info, group.ipCount, group.sourceGroupCount), color = DuskTheme.onSurface, style = MaterialTheme.typography.labelMedium, modifier = Modifier.padding(top = 4.dp))
+                                                Text(group.date, color = DuskTheme.muted, style = MaterialTheme.typography.labelSmall, modifier = Modifier.padding(top = 4.dp))
                                             }
                                             val engineType = group.nodes.firstOrNull()?.engineType ?: stringResource(R.string.scanner_unknown)
                                             Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
                                                 Box(modifier = Modifier.background(
-                                                    (if (engineType == "NHN") GreenOk else Primary).copy(alpha = 0.15f),
-                                                    RoundedCornerShape(8.dp)
+                                                    (if (engineType == "NHN") DuskTheme.success else DuskTheme.primary).copy(alpha = 0.15f),
+                                                    DuskTheme.controlShape
                                                 ).padding(horizontal = 6.dp, vertical = 2.dp)) {
-                                                    Text(engineType, color = if (engineType == "NHN") GreenOk else Primary, fontSize = 10.sp, fontWeight = FontWeight.Bold)
+                                                    Text(engineType, color = if (engineType == "NHN") DuskTheme.success else DuskTheme.primary, style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold)
                                                 }
-                                                Box(modifier = Modifier.background(Primary.copy(alpha = 0.1f), RoundedCornerShape(8.dp)).border(1.dp, Primary.copy(alpha = 0.3f), RoundedCornerShape(8.dp)).padding(horizontal = 8.dp, vertical = 4.dp)) {
-                                                    Text(stringResource(R.string.scanner_node_count, group.nodes.size), color = TextPrimary, fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                                                Box(modifier = Modifier.background(DuskTheme.primary.copy(alpha = 0.1f), DuskTheme.controlShape).border(1.dp, DuskTheme.primary.copy(alpha = 0.3f), DuskTheme.controlShape).padding(horizontal = 8.dp, vertical = 4.dp)) {
+                                                    Text(stringResource(R.string.scanner_node_count, group.nodes.size), color = DuskTheme.onSurface, style = MaterialTheme.typography.labelMedium, fontWeight = FontWeight.Bold)
                                                 }
                                             }
                                         }
@@ -1188,15 +1183,15 @@ fun ScannerTab(onBack: () -> Unit = {}, onOpenNodes: () -> Unit = {}) {
                                                     modifier = Modifier
                                                         .fillMaxWidth()
                                                         .height(6.dp)
-                                                        .clip(RoundedCornerShape(8.dp)),
-                                                    color = Primary,
-                                                    trackColor = BorderDark
+                                                        .clip(DuskTheme.controlShape),
+                                                    color = DuskTheme.primary,
+                                                    trackColor = DuskTheme.outline
                                                 )
                                                 Spacer(modifier = Modifier.height(4.dp))
                                                 Text(
                                                     "${progressData.first} / ${progressData.second}",
-                                                    color = TextMuted,
-                                                    fontSize = 10.sp,
+                                                    color = DuskTheme.muted,
+                                                    style = MaterialTheme.typography.labelSmall,
                                                     modifier = Modifier.align(Alignment.End)
                                                 )
                                             }
@@ -1209,29 +1204,28 @@ fun ScannerTab(onBack: () -> Unit = {}, onOpenNodes: () -> Unit = {}) {
                                             Spacer(modifier = Modifier.height(12.dp))
                                             Text(
                                                 S(R.string.to_move_these_combinations_to_the_connection),
-                                                color = TextMuted,
-                                                fontSize = 12.sp,
-                                                lineHeight = 19.sp,
+                                                color = DuskTheme.muted,
+                                                style = MaterialTheme.typography.labelMedium,
                                             )
                                         }
                                         Spacer(modifier = Modifier.height(16.dp))
                                         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                                            IconButton(onClick = { 
+                                            IconButton(onClick = {
                                                 viewingGroup = group
-                                            }, modifier = Modifier.size(48.dp).background(BgDark, ControlShape).border(1.dp, BorderDark, ControlShape)) {
-                                                Icon(Icons.Default.Visibility, contentDescription = "View", tint = Primary)
+                                            }, modifier = Modifier.size(48.dp).background(DuskTheme.background, DuskTheme.controlShape).border(1.dp, DuskTheme.outline, DuskTheme.controlShape)) {
+                                                Icon(Icons.Default.Visibility, contentDescription = "View", tint = DuskTheme.primary)
                                             }
 
-                                            IconButton(onClick = { mixToDelete = group }, modifier = Modifier.size(48.dp).background(BgDark, ControlShape).border(1.dp, BorderDark, ControlShape)) {
-                                                Icon(Icons.Default.Delete, contentDescription = "Delete", tint = TextMuted)
+                                            IconButton(onClick = { mixToDelete = group }, modifier = Modifier.size(48.dp).background(DuskTheme.background, DuskTheme.controlShape).border(1.dp, DuskTheme.outline, DuskTheme.controlShape)) {
+                                                Icon(Icons.Default.Delete, contentDescription = "Delete", tint = DuskTheme.muted)
                                             }
-                                            
+
                                             val isPinging = pingingGroup == group.id
                                             val healthyNodes = healthyNodesMap[group.id]
 
                                             if (healthyNodes == null) {
                                                 Button(
-                                                    onClick = { 
+                                                    onClick = {
                                                         // ScanGuard first: this is the same core
                                                         // and the same link a running scan uses, so
                                                         // measured underneath one every combination
@@ -1265,16 +1259,16 @@ fun ScannerTab(onBack: () -> Unit = {}, onOpenNodes: () -> Unit = {}) {
                                                         }
                                                     },
                                                     modifier = Modifier.weight(1f).height(48.dp),
-                                                    shape = ControlShape,
+                                                    shape = DuskTheme.controlShape,
                                                     colors = iosNeutralButtonColors(),
                                                     border = iosNeutralBorder(),
                                                 ) {
                                                     if (isPinging) {
-                                                        CircularProgressIndicator(modifier = Modifier.size(24.dp), color = Primary, strokeWidth = 2.dp)
+                                                        CircularProgressIndicator(modifier = Modifier.size(24.dp), color = DuskTheme.primary, strokeWidth = 2.dp)
                                                     } else {
                                                         Icon(Icons.Default.Sensors, contentDescription = null, modifier = Modifier.size(18.dp))
                                                         Spacer(modifier = Modifier.width(8.dp))
-                                                        Text(stringResource(R.string.scanner_ping_health_test), fontWeight = FontWeight.Bold, fontSize = 14.sp)
+                                                        Text(stringResource(R.string.scanner_ping_health_test), fontWeight = FontWeight.Bold, style = MaterialTheme.typography.bodyMedium)
                                                     }
                                                 }
                                             } else {
@@ -1291,7 +1285,7 @@ fun ScannerTab(onBack: () -> Unit = {}, onOpenNodes: () -> Unit = {}) {
                                                                     val ips = healthyNodes.mapNotNull {
                                                                         com.mlmvpn.scanner.utils.VpnConfig.parseUri(it.uri)?.address
                                                                     }.distinct().joinToString("\n")
-                                                                    
+
                                                                     val api = com.mlmvpn.scanner.engines.mlm.MlmApiManager(context)
                                                                     // Get account from db
                                                                     val accManager = com.mlmvpn.scanner.data.CloudManager(context)
@@ -1327,20 +1321,20 @@ fun ScannerTab(onBack: () -> Unit = {}, onOpenNodes: () -> Unit = {}) {
                                                                 }
                                                             },
                                                             modifier = Modifier.weight(1f).height(48.dp),
-                                                            shape = ControlShape,
-                                                            colors = iosButtonColors(Primary),
-                                                            border = iosButtonBorder(Primary)) {
+                                                            shape = DuskTheme.controlShape,
+                                                            colors = iosButtonColors(DuskTheme.primary),
+                                                            border = iosButtonBorder(DuskTheme.primary)) {
                                                             if (isUpdatingSub) {
                                                                 CircularProgressIndicator(modifier = Modifier.size(24.dp), strokeWidth = 2.dp)
                                                             } else {
-                                                                Text(S(R.string.update_sub, healthyNodes.size), fontWeight = FontWeight.Bold, fontSize = 12.sp)
+                                                                Text(S(R.string.update_sub, healthyNodes.size), fontWeight = FontWeight.Bold, style = MaterialTheme.typography.labelMedium)
                                                                 Spacer(modifier = Modifier.width(4.dp))
                                                                 Icon(Icons.Default.CloudUpload, contentDescription = null, modifier = Modifier.size(16.dp))
                                                             }
                                                         }
                                                     }
                                                 }
-                                                
+
                                                 // «بروزرسانی ساب» on the card itself, not only behind the eye
                                                 // icon. A group combined FOR a Config Studio subscriber exists in
                                                 // order to be published, and the moment to publish it is the one
@@ -1363,13 +1357,13 @@ fun ScannerTab(onBack: () -> Unit = {}, onOpenNodes: () -> Unit = {}) {
                                                         },
                                                         enabled = !publishingCard,
                                                         modifier = Modifier.weight(1f).height(48.dp),
-                                                        shape = ControlShape,
-                                                        colors = iosButtonColors(Primary),
-                                                        border = iosButtonBorder(Primary)) {
+                                                        shape = DuskTheme.controlShape,
+                                                        colors = iosButtonColors(DuskTheme.primary),
+                                                        border = iosButtonBorder(DuskTheme.primary)) {
                                                         if (publishingCard) {
                                                             CircularProgressIndicator(modifier = Modifier.size(24.dp), strokeWidth = 2.dp)
                                                         } else {
-                                                            Text(S(R.string.update_sub, healthyNodes.size), fontWeight = FontWeight.Bold, fontSize = 12.sp)
+                                                            Text(S(R.string.update_sub, healthyNodes.size), fontWeight = FontWeight.Bold, style = MaterialTheme.typography.labelMedium)
                                                             Spacer(modifier = Modifier.width(4.dp))
                                                             Icon(Icons.Default.CloudUpload, contentDescription = null, modifier = Modifier.size(16.dp))
                                                         }
@@ -1380,17 +1374,17 @@ fun ScannerTab(onBack: () -> Unit = {}, onOpenNodes: () -> Unit = {}) {
                                                     // Transferring and then leaving the user on the
                                                     // scanner made them hunt for where the configs
                                                     // went. It goes where they went.
-                                                    onClick = { 
+                                                    onClick = {
                                                         nodeManager.nodes.addAll(0, healthyNodes)
                                                         nodeManager.saveNodes()
                                                         android.widget.Toast.makeText(context, context.getString(R.string.scanner_healthy_nodes_transferred, healthyNodes.size), android.widget.Toast.LENGTH_SHORT).show()
                                                         onOpenNodes()
                                                     },
                                                     modifier = Modifier.weight(1f).height(48.dp),
-                                                    shape = ControlShape,
-                                                    colors = iosButtonColors(GreenOk),
-                                                    border = iosButtonBorder(GreenOk)) {
-                                                    Text(stringResource(R.string.scanner_transfer_healthy_count, healthyNodes.size), fontWeight = FontWeight.Bold, fontSize = 12.sp)
+                                                    shape = DuskTheme.controlShape,
+                                                    colors = iosButtonColors(DuskTheme.success),
+                                                    border = iosButtonBorder(DuskTheme.success)) {
+                                                    Text(stringResource(R.string.scanner_transfer_healthy_count, healthyNodes.size), fontWeight = FontWeight.Bold, style = MaterialTheme.typography.labelMedium)
                                                     Spacer(modifier = Modifier.width(4.dp))
                                                     Icon(Icons.Default.ArrowForward, contentDescription = null, modifier = Modifier.size(16.dp))
                                                 }
@@ -1410,45 +1404,45 @@ fun ScannerTab(onBack: () -> Unit = {}, onOpenNodes: () -> Unit = {}) {
                         if (!showActionSheet && ipArchives.isNotEmpty()) {
                             // IP Archives
                             Spacer(modifier = Modifier.height(24.dp))
-                            Divider(color = BorderDark)
+                            Divider(color = DuskTheme.outline)
                             Row(modifier = Modifier.fillMaxWidth().padding(12.dp), verticalAlignment = Alignment.CenterVertically) {
-                                Icon(Icons.Default.Archive, contentDescription = null, tint = TextMuted, modifier = Modifier.size(16.dp))
+                                Icon(Icons.Default.Archive, contentDescription = null, tint = DuskTheme.muted, modifier = Modifier.size(16.dp))
                                 Spacer(modifier = Modifier.width(8.dp))
-                                Text(stringResource(R.string.scanner_clean_ips_archive), color = TextPrimary, fontSize = 14.sp, fontWeight = FontWeight.Bold)
+                                Text(stringResource(R.string.scanner_clean_ips_archive), color = DuskTheme.onSurface, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Bold)
                             }
 
                             Column(modifier = Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(12.dp)) {
                                 ipArchives.forEach { archive ->
                                     Column(
-                                        modifier = Modifier.fillMaxWidth().frostedGlass(RoundedCornerShape(16.dp)).border(1.dp, BorderDark, RoundedCornerShape(16.dp)).padding(16.dp)
+                                        modifier = Modifier.fillMaxWidth().background(DuskTheme.surface, DuskTheme.chartShape).border(1.dp, DuskTheme.outline, DuskTheme.chartShape).padding(16.dp)
                                     ) {
                                         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.Top) {
                                             Column {
-                                                Text(stringResource(R.string.scanner_archive_ip_count, archive.ips.size), color = TextPrimary, fontSize = 14.sp, fontWeight = FontWeight.Bold)
-                                                Text(archive.date, color = TextMuted, fontSize = 10.sp, modifier = Modifier.padding(top = 4.dp))
+                                                Text(stringResource(R.string.scanner_archive_ip_count, archive.ips.size), color = DuskTheme.onSurface, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Bold)
+                                                Text(archive.date, color = DuskTheme.muted, style = MaterialTheme.typography.labelSmall, modifier = Modifier.padding(top = 4.dp))
                                             }
                                             IconButton(onClick = { archiveToDelete = archive }, modifier = Modifier.size(32.dp)) {
-                                                Icon(Icons.Default.Close, contentDescription = "Delete", tint = TextMuted, modifier = Modifier.size(16.dp))
+                                                Icon(Icons.Default.Close, contentDescription = "Delete", tint = DuskTheme.muted, modifier = Modifier.size(16.dp))
                                             }
                                         }
                                         Spacer(modifier = Modifier.height(16.dp))
                                         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                                             Button(
-                                                onClick = { 
+                                                onClick = {
                                                     showRetestDialog = archive
                                                 },
                                                 modifier = Modifier.weight(1f).height(48.dp),
-                                                shape = ControlShape,
+                                                shape = DuskTheme.controlShape,
                                                 colors = iosNeutralButtonColors(),
                                                 border = iosNeutralBorder(),
                                             ) {
                                                 Icon(Icons.Default.Sensors, contentDescription = null, modifier = Modifier.size(18.dp))
                                                 Spacer(modifier = Modifier.width(8.dp))
-                                                Text(stringResource(R.string.scanner_health_test), fontWeight = FontWeight.Bold, fontSize = 12.sp)
+                                                Text(stringResource(R.string.scanner_health_test), fontWeight = FontWeight.Bold, style = MaterialTheme.typography.labelMedium)
                                             }
-                                            
+
                                             Button(
-                                                onClick = { 
+                                                onClick = {
                                                     groupManager.loadCloudGroups()
                                                     if (groupManager.cloudGroups.isEmpty() && studioTarget == null) {
                                                         android.widget.Toast.makeText(context, context.getString(R.string.scanner_no_cloud_group), android.widget.Toast.LENGTH_SHORT).show()
@@ -1458,19 +1452,19 @@ fun ScannerTab(onBack: () -> Unit = {}, onOpenNodes: () -> Unit = {}) {
                                                     showActionSheet = true
                                                 },
                                                 modifier = Modifier.weight(1f).height(48.dp),
-                                                shape = ControlShape,
-                                                colors = iosButtonColors(Primary),
-                                                border = iosButtonBorder(Primary)) {
+                                                shape = DuskTheme.controlShape,
+                                                colors = iosButtonColors(DuskTheme.primary),
+                                                border = iosButtonBorder(DuskTheme.primary)) {
                                                 Icon(Icons.Default.Layers, contentDescription = null, modifier = Modifier.size(18.dp))
                                                 Spacer(modifier = Modifier.width(8.dp))
-                                                Text(stringResource(R.string.scanner_combine_node), fontWeight = FontWeight.Bold, fontSize = 12.sp)
+                                                Text(stringResource(R.string.scanner_combine_node), fontWeight = FontWeight.Bold, style = MaterialTheme.typography.labelMedium)
                                             }
                                         }
                                     }
                                 }
                             }
                         }
-                        
+
                         // Bottom spacer to ensure room
                         Spacer(modifier = Modifier.height(140.dp))
                     }
@@ -1478,13 +1472,13 @@ fun ScannerTab(onBack: () -> Unit = {}, onOpenNodes: () -> Unit = {}) {
             ) { measurables, constraints ->
                 val topPlaceable = measurables[0].measure(constraints.copy(minHeight = 0))
                 val bottomPlaceable = measurables[1].measure(constraints.copy(minHeight = 0))
-                
+
                 // We want the total height to be at least minScreenHeight - 24.dp (the 8.dp top and
                 // 16.dp bottom padding of the scroll column) minus the 140.dp spacer at the bottom
                 // to ensure the menu doesn't cover it.
                 val requiredMinHeight = with(density) { (minScreenHeight - 24.dp - 140.dp).roundToPx() }
                 val totalHeight = max(requiredMinHeight, topPlaceable.height + bottomPlaceable.height)
-                
+
                 layout(constraints.maxWidth, totalHeight) {
                     topPlaceable.placeRelative(0, 0)
                     bottomPlaceable.placeRelative(0, totalHeight - bottomPlaceable.height)
@@ -1494,32 +1488,32 @@ fun ScannerTab(onBack: () -> Unit = {}, onOpenNodes: () -> Unit = {}) {
 
         if (showActionSheet) {
             AlertDialog(
-                onDismissRequest = { 
+                onDismissRequest = {
                     showActionSheet = false
                     mixingArchive = null
                 },
-                modifier = Modifier.fillMaxWidth().clip(CardShape).border(0.7.dp, androidx.compose.ui.graphics.Color.White.copy(alpha = 0.15f), CardShape),
-                containerColor = DialogSurface,
-                shape = CardShape,
+                modifier = Modifier.fillMaxWidth().clip(DuskTheme.cardShape).border(0.7.dp, DuskTheme.outline.copy(alpha = 0.55f), DuskTheme.cardShape),
+                containerColor = DuskTheme.raisedSurface,
+                shape = DuskTheme.cardShape,
                 title = {
                     Row(modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
                         Column {
                             val title = if (mixingArchive != null) stringResource(R.string.scanner_archive_ips) else if (scanPhase == com.mlmvpn.scanner.data.CloudflareScanner.ScanPhase.DONE) stringResource(R.string.scanner_final_results) else stringResource(R.string.scanner_found_ips)
-                            Text(title, color = TextPrimary, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                            Text(title, color = DuskTheme.onSurface, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
                             val count = mixingArchive?.ips?.size ?: scannedIPs.size
-                            Text(stringResource(R.string.scanner_ips_with_good_ping, count), color = TextMuted, fontSize = 12.sp)
+                            Text(stringResource(R.string.scanner_ips_with_good_ping, count), color = DuskTheme.muted, style = MaterialTheme.typography.labelMedium)
                         }
-                        IconButton(onClick = { 
+                        IconButton(onClick = {
                             showActionSheet = false
                             mixingArchive = null
                         }) {
-                            Icon(Icons.Default.Close, contentDescription = null, tint = TextMuted)
+                            Icon(Icons.Default.Close, contentDescription = null, tint = DuskTheme.muted)
                         }
                     }
                 },
                 text = {
                     Column(modifier = Modifier.fillMaxWidth()) {
-                        Text(stringResource(R.string.scanner_which_cloud_group), color = TextMuted, fontSize = 14.sp)
+                        Text(stringResource(R.string.scanner_which_cloud_group), color = DuskTheme.muted, style = MaterialTheme.typography.bodyMedium)
                         Spacer(modifier = Modifier.height(16.dp))
                         LazyColumn(modifier = Modifier.fillMaxWidth().heightIn(max = 240.dp)) {
                             // The Config Studio subscriber, when «ترکیب» armed one, and FIRST in
@@ -1533,37 +1527,37 @@ fun ScannerTab(onBack: () -> Unit = {}, onOpenNodes: () -> Unit = {}) {
                                     val isSelected = selectedCloudGroup == STUDIO_SOURCE_ID
                                     Row(
                                         modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp)
-                                            .clip(RoundedCornerShape(16.dp))
+                                            .clip(DuskTheme.chartShape)
                                             .clickable { selectedCloudGroup = STUDIO_SOURCE_ID }
-                                            .background(if (isSelected) Primary.copy(alpha = 0.1f) else BgDark)
-                                            .border(1.dp, if (isSelected) Primary else BorderDark, RoundedCornerShape(16.dp))
+                                            .background(if (isSelected) DuskTheme.primary.copy(alpha = 0.1f) else DuskTheme.background)
+                                            .border(1.dp, if (isSelected) DuskTheme.primary else DuskTheme.outline, DuskTheme.chartShape)
                                             .padding(16.dp),
                                         verticalAlignment = Alignment.CenterVertically
                                     ) {
                                         RadioButton(
                                             selected = isSelected,
                                             onClick = { selectedCloudGroup = STUDIO_SOURCE_ID },
-                                            colors = RadioButtonDefaults.colors(selectedColor = Primary, unselectedColor = TextDim)
+                                            colors = RadioButtonDefaults.colors(selectedColor = DuskTheme.primary, unselectedColor = DuskTheme.disabled)
                                         )
                                         Spacer(modifier = Modifier.width(12.dp))
                                         Column(modifier = Modifier.weight(1f)) {
                                             Text(
                                                 target.username,
-                                                color = TextPrimary, fontSize = 14.sp, fontWeight = FontWeight.Bold,
+                                                color = DuskTheme.onSurface, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Bold,
                                             )
                                             Text(
                                                 stringResource(R.string.scanner_studio_source_sub, target.nodes.size),
-                                                color = TextMuted, fontSize = 10.sp,
+                                                color = DuskTheme.muted, style = MaterialTheme.typography.labelSmall,
                                             )
                                         }
                                         Text(
                                             stringResource(R.string.scanner_studio_badge),
-                                            color = Primary,
-                                            fontSize = 10.sp,
+                                            color = DuskTheme.primary,
+                                            style = MaterialTheme.typography.labelSmall,
                                             fontWeight = FontWeight.Bold,
                                             modifier = Modifier
-                                                .clip(RoundedCornerShape(8.dp))
-                                                .background(Primary.copy(alpha = 0.14f))
+                                                .clip(DuskTheme.controlShape)
+                                                .background(DuskTheme.primary.copy(alpha = 0.14f))
                                                 .padding(horizontal = 8.dp, vertical = 4.dp),
                                         )
                                     }
@@ -1572,19 +1566,19 @@ fun ScannerTab(onBack: () -> Unit = {}, onOpenNodes: () -> Unit = {}) {
                             items(groupManager.cloudGroups) { group ->
                                 val isSelected = selectedCloudGroup == group.id
                                 Row(
-                                    modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp).clip(RoundedCornerShape(16.dp)).clickable { selectedCloudGroup = group.id }.background(if (isSelected) Primary.copy(alpha = 0.1f) else BgDark).border(1.dp, if (isSelected) Primary else BorderDark, RoundedCornerShape(16.dp)).padding(16.dp),
+                                    modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp).clip(DuskTheme.chartShape).clickable { selectedCloudGroup = group.id }.background(if (isSelected) DuskTheme.primary.copy(alpha = 0.1f) else DuskTheme.background).border(1.dp, if (isSelected) DuskTheme.primary else DuskTheme.outline, DuskTheme.chartShape).padding(16.dp),
                                     verticalAlignment = Alignment.CenterVertically
                                 ) {
                                     RadioButton(
                                         selected = isSelected,
                                         onClick = { selectedCloudGroup = group.id },
-                                        colors = RadioButtonDefaults.colors(selectedColor = Primary, unselectedColor = TextDim)
+                                        colors = RadioButtonDefaults.colors(selectedColor = DuskTheme.primary, unselectedColor = DuskTheme.disabled)
                                     )
                                     Spacer(modifier = Modifier.width(12.dp))
                                     Column {
                                         val engine = group.nodes.firstOrNull()?.engineType ?: "BPB"
-                                        Text(stringResource(R.string.scanner_group_info_format, group.title, engine, group.nodes.size), color = TextPrimary, fontSize = 14.sp, fontWeight = FontWeight.Bold)
-                                        Text(group.date, color = TextMuted, fontSize = 10.sp)
+                                        Text(stringResource(R.string.scanner_group_info_format, group.title, engine, group.nodes.size), color = DuskTheme.onSurface, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Bold)
+                                        Text(group.date, color = DuskTheme.muted, style = MaterialTheme.typography.labelSmall)
                                     }
                                 }
                             }
@@ -1663,7 +1657,7 @@ fun ScannerTab(onBack: () -> Unit = {}, onOpenNodes: () -> Unit = {}) {
                                 studioUsername = studioPick?.username,
                                 studioConfigIds = studioPick?.configIds.orEmpty(),
                             )
-                            
+
                             groupManager.scannerGroups.add(0, newComboGroup)
                             withContext(Dispatchers.IO) { groupManager.saveScannerGroups() }
                             scannerGroups = groupManager.scannerGroups.toList()
@@ -1674,9 +1668,9 @@ fun ScannerTab(onBack: () -> Unit = {}, onOpenNodes: () -> Unit = {}) {
                             }
                         },
                         modifier = Modifier.fillMaxWidth().height(48.dp),
-                        colors = iosButtonColors(Primary),
-                        border = iosButtonBorder(Primary),
-                        shape = ControlShape
+                        colors = iosButtonColors(DuskTheme.primary),
+                        border = iosButtonBorder(DuskTheme.primary),
+                        shape = DuskTheme.controlShape
                     ) {
                         Text(stringResource(R.string.scanner_confirm_and_combine), fontWeight = FontWeight.Bold)
                     }
@@ -1687,26 +1681,26 @@ fun ScannerTab(onBack: () -> Unit = {}, onOpenNodes: () -> Unit = {}) {
         if (currentGroup != null) {
             AlertDialog(
                 onDismissRequest = { viewingGroup = null },
-                modifier = Modifier.fillMaxWidth().clip(CardShape).border(0.7.dp, androidx.compose.ui.graphics.Color.White.copy(alpha = 0.15f), CardShape),
-                containerColor = DialogSurface,
-                shape = CardShape,
+                modifier = Modifier.fillMaxWidth().clip(DuskTheme.cardShape).border(0.7.dp, DuskTheme.outline.copy(alpha = 0.55f), DuskTheme.cardShape),
+                containerColor = DuskTheme.raisedSurface,
+                shape = DuskTheme.cardShape,
                 title = {
                     Row(modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
                         Column {
-                            Text(stringResource(R.string.scanner_combined_nodes), color = TextPrimary, fontSize = 18.sp, fontWeight = FontWeight.Bold)
-                            Text(stringResource(R.string.scanner_configs_connected_to_cloudflare, currentGroup.nodes.size), color = TextMuted, fontSize = 12.sp)
+                            Text(stringResource(R.string.scanner_combined_nodes), color = DuskTheme.onSurface, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+                            Text(stringResource(R.string.scanner_configs_connected_to_cloudflare, currentGroup.nodes.size), color = DuskTheme.muted, style = MaterialTheme.typography.labelMedium)
                         }
                         IconButton(onClick = { viewingGroup = null }) {
-                            Icon(Icons.Default.Close, contentDescription = null, tint = TextMuted)
+                            Icon(Icons.Default.Close, contentDescription = null, tint = DuskTheme.muted)
                         }
                     }
                 },
                 text = {
                     Column(modifier = Modifier.fillMaxWidth()) {
-                        LazyColumn(modifier = Modifier.fillMaxWidth().heightIn(max = 240.dp).background(BgDark, ControlShape).padding(12.dp)) {
+                        LazyColumn(modifier = Modifier.fillMaxWidth().heightIn(max = 240.dp).background(DuskTheme.background, DuskTheme.controlShape).padding(12.dp)) {
                             items(currentGroup.nodes) { node ->
-                                Text(node.uri, color = TextPrimary, fontSize = 10.sp, modifier = Modifier.padding(bottom = 8.dp))
-                                Divider(color = BorderDark, modifier = Modifier.padding(bottom = 8.dp))
+                                Text(node.uri, color = DuskTheme.onSurface, style = MaterialTheme.typography.labelSmall, modifier = Modifier.padding(bottom = 8.dp))
+                                Divider(color = DuskTheme.outline, modifier = Modifier.padding(bottom = 8.dp))
                             }
                         }
                     }
@@ -1745,9 +1739,9 @@ fun ScannerTab(onBack: () -> Unit = {}, onOpenNodes: () -> Unit = {}) {
                                 },
                                 enabled = !publishing,
                                 modifier = Modifier.fillMaxWidth().height(48.dp),
-                                colors = iosButtonColors(Primary),
-                                border = iosButtonBorder(Primary),
-                                shape = ControlShape
+                                colors = iosButtonColors(DuskTheme.primary),
+                                border = iosButtonBorder(DuskTheme.primary),
+                                shape = DuskTheme.controlShape
                             ) {
                                 Icon(Icons.Default.CloudUpload, contentDescription = null, modifier = Modifier.size(18.dp))
                                 Spacer(modifier = Modifier.width(8.dp))
@@ -1759,8 +1753,8 @@ fun ScannerTab(onBack: () -> Unit = {}, onOpenNodes: () -> Unit = {}) {
                             }
                             Text(
                                 stringResource(R.string.studio_publish_note),
-                                color = TextMuted,
-                                fontSize = 11.sp,
+                                color = DuskTheme.muted,
+                                style = MaterialTheme.typography.labelSmall,
                                 modifier = Modifier.padding(horizontal = 4.dp, vertical = 2.dp),
                             )
                         }
@@ -1774,9 +1768,9 @@ fun ScannerTab(onBack: () -> Unit = {}, onOpenNodes: () -> Unit = {}) {
                                         android.widget.Toast.makeText(context, context.getString(R.string.scanner_healthy_configs_copied, healthyNodes.size), android.widget.Toast.LENGTH_SHORT).show()
                                 },
                                 modifier = Modifier.fillMaxWidth().height(48.dp),
-                                colors = iosButtonColors(GreenOk),
-                                border = iosButtonBorder(GreenOk),
-                                shape = ControlShape
+                                colors = iosButtonColors(DuskTheme.success),
+                                border = iosButtonBorder(DuskTheme.success),
+                                shape = DuskTheme.controlShape
                             ) {
                                 Icon(Icons.Default.ContentCopy, contentDescription = null, modifier = Modifier.size(18.dp))
                                 Spacer(modifier = Modifier.width(8.dp))
@@ -1786,10 +1780,10 @@ fun ScannerTab(onBack: () -> Unit = {}, onOpenNodes: () -> Unit = {}) {
 
                         Button(
                             onClick = {
-                                val ips = currentGroup.nodes.mapNotNull { 
-                                    Regex("address=([^&#\\s]+)").find(it.uri)?.groupValues?.get(1) 
+                                val ips = currentGroup.nodes.mapNotNull {
+                                    Regex("address=([^&#\\s]+)").find(it.uri)?.groupValues?.get(1)
                                 }.distinct().joinToString("\n")
-                                
+
                                 if (ips.isNotEmpty()) {
                                     if (com.mlmvpn.scanner.utils.SafeClip.copy(context, "IPs", ips))
                                         android.widget.Toast.makeText(context, context.getString(R.string.scanner_ips_copied_short), android.widget.Toast.LENGTH_SHORT).show()
@@ -1800,7 +1794,7 @@ fun ScannerTab(onBack: () -> Unit = {}, onOpenNodes: () -> Unit = {}) {
                             modifier = Modifier.fillMaxWidth().height(48.dp),
                             colors = iosNeutralButtonColors(),
                             border = iosNeutralBorder(),
-                            shape = ControlShape
+                            shape = DuskTheme.controlShape
                         ) {
                             Icon(Icons.Default.CopyAll, contentDescription = null, modifier = Modifier.size(18.dp))
                             Spacer(modifier = Modifier.width(8.dp))
@@ -1827,9 +1821,9 @@ fun ScannerTab(onBack: () -> Unit = {}, onOpenNodes: () -> Unit = {}) {
             val afterVerdict = preflightAction
             AlertDialog(
                 onDismissRequest = { preflight = null },
-                modifier = Modifier.fillMaxWidth().clip(CardShape).border(0.7.dp, androidx.compose.ui.graphics.Color.White.copy(alpha = 0.15f), CardShape),
-                containerColor = DialogSurface,
-                shape = CardShape,
+                modifier = Modifier.fillMaxWidth().clip(DuskTheme.cardShape).border(0.7.dp, DuskTheme.outline.copy(alpha = 0.55f), DuskTheme.cardShape),
+                containerColor = DuskTheme.raisedSurface,
+                shape = DuskTheme.cardShape,
                 title = {
                     Text(
                         when (verdict) {
@@ -1839,7 +1833,7 @@ fun ScannerTab(onBack: () -> Unit = {}, onOpenNodes: () -> Unit = {}) {
                             is ScanPreflight.Verdict.OwnVpn -> stringResource(R.string.preflight_own_vpn_title)
                             else -> stringResource(R.string.preflight_foreign_vpn_title)
                         },
-                        color = TextPrimary, fontWeight = FontWeight.Bold,
+                        color = DuskTheme.onSurface, fontWeight = FontWeight.Bold,
                     )
                 },
                 text = {
@@ -1857,7 +1851,7 @@ fun ScannerTab(onBack: () -> Unit = {}, onOpenNodes: () -> Unit = {}) {
                                 else stringResource(R.string.preflight_foreign_vpn_body)
                             else -> ""
                         },
-                        color = TextMuted, fontSize = 14.sp, lineHeight = 21.sp,
+                        color = DuskTheme.muted, style = MaterialTheme.typography.bodyMedium,
                     )
                 },
                 confirmButton = {
@@ -1882,8 +1876,8 @@ fun ScannerTab(onBack: () -> Unit = {}, onOpenNodes: () -> Unit = {}) {
                                     afterVerdict(false)
                                 }
                             },
-                            colors = iosButtonColors(Primary),
-                            border = iosButtonBorder(Primary),
+                            colors = iosButtonColors(DuskTheme.primary),
+                            border = iosButtonBorder(DuskTheme.primary),
                         ) {
                             Text(stringResource(R.string.preflight_disconnect_and_scan), fontWeight = FontWeight.Bold)
                         }
@@ -1899,15 +1893,15 @@ fun ScannerTab(onBack: () -> Unit = {}, onOpenNodes: () -> Unit = {}) {
                                     )
                                 }
                             },
-                            colors = iosButtonColors(Primary),
-                            border = iosButtonBorder(Primary),
+                            colors = iosButtonColors(DuskTheme.primary),
+                            border = iosButtonBorder(DuskTheme.primary),
                         ) {
                             Text(stringResource(R.string.preflight_open_vpn_settings), fontWeight = FontWeight.Bold)
                         }
                         else -> Button(
                             onClick = { preflight = null },
-                            colors = iosButtonColors(Primary),
-                            border = iosButtonBorder(Primary),
+                            colors = iosButtonColors(DuskTheme.primary),
+                            border = iosButtonBorder(DuskTheme.primary),
                         ) {
                             Text(stringResource(R.string.scanner_understood), fontWeight = FontWeight.Bold)
                         }
@@ -1924,7 +1918,7 @@ fun ScannerTab(onBack: () -> Unit = {}, onOpenNodes: () -> Unit = {}) {
                         }) {
                             Text(
                                 stringResource(R.string.preflight_scan_without_disconnecting),
-                                color = TextMuted,
+                                color = DuskTheme.muted,
                             )
                         }
                         is ScanPreflight.Verdict.ForeignVpn -> TextButton(onClick = {
@@ -1933,10 +1927,10 @@ fun ScannerTab(onBack: () -> Unit = {}, onOpenNodes: () -> Unit = {}) {
                             // theirs. The dialog's text has already said which half that covers.
                             afterVerdict(verdict.canUseRealLine)
                         }) {
-                            Text(stringResource(R.string.preflight_scan_anyway), color = TextMuted)
+                            Text(stringResource(R.string.preflight_scan_anyway), color = DuskTheme.muted)
                         }
                         else -> TextButton(onClick = { preflight = null }) {
-                            Text(stringResource(R.string.scanner_cancel), color = TextMuted)
+                            Text(stringResource(R.string.scanner_cancel), color = DuskTheme.muted)
                         }
                     }
                 },
@@ -1948,13 +1942,13 @@ fun ScannerTab(onBack: () -> Unit = {}, onOpenNodes: () -> Unit = {}) {
         if (disconnectingOwnVpn) {
             AlertDialog(
                 onDismissRequest = { },
-                modifier = Modifier.fillMaxWidth().clip(CardShape).border(0.7.dp, androidx.compose.ui.graphics.Color.White.copy(alpha = 0.15f), CardShape),
-                containerColor = DialogSurface,
-                shape = CardShape,
+                modifier = Modifier.fillMaxWidth().clip(DuskTheme.cardShape).border(0.7.dp, DuskTheme.outline.copy(alpha = 0.55f), DuskTheme.cardShape),
+                containerColor = DuskTheme.raisedSurface,
+                shape = DuskTheme.cardShape,
                 title = {
                     Text(
                         stringResource(R.string.preflight_disconnecting),
-                        color = TextPrimary,
+                        color = DuskTheme.onSurface,
                         fontWeight = FontWeight.Bold,
                     )
                 },
@@ -1962,14 +1956,14 @@ fun ScannerTab(onBack: () -> Unit = {}, onOpenNodes: () -> Unit = {}) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         CircularProgressIndicator(
                             modifier = Modifier.size(18.dp),
-                            color = Primary,
+                            color = DuskTheme.primary,
                             strokeWidth = 2.dp,
                         )
                         Spacer(modifier = Modifier.width(12.dp))
                         Text(
                             stringResource(R.string.preflight_disconnecting_body),
-                            color = TextMuted,
-                            fontSize = 14.sp,
+                            color = DuskTheme.muted,
+                            style = MaterialTheme.typography.bodyMedium,
                         )
                     }
                 },
@@ -1980,23 +1974,23 @@ fun ScannerTab(onBack: () -> Unit = {}, onOpenNodes: () -> Unit = {}) {
         if (showRetestDialog != null) {
             AlertDialog(
                 onDismissRequest = { showRetestDialog = null },
-                modifier = Modifier.fillMaxWidth().clip(CardShape).border(0.7.dp, androidx.compose.ui.graphics.Color.White.copy(alpha = 0.15f), CardShape),
-                containerColor = DialogSurface,
-                shape = CardShape,
-                title = { Text(stringResource(R.string.scanner_test_archive_ips_health), color = TextPrimary, fontWeight = FontWeight.Bold) },
+                modifier = Modifier.fillMaxWidth().clip(DuskTheme.cardShape).border(0.7.dp, DuskTheme.outline.copy(alpha = 0.55f), DuskTheme.cardShape),
+                containerColor = DuskTheme.raisedSurface,
+                shape = DuskTheme.cardShape,
+                title = { Text(stringResource(R.string.scanner_test_archive_ips_health), color = DuskTheme.onSurface, fontWeight = FontWeight.Bold) },
                 text = {
                     Column(modifier = Modifier.fillMaxWidth()) {
-                        Text(stringResource(R.string.scanner_enter_base_config_for_test), color = TextMuted, fontSize = 14.sp)
+                        Text(stringResource(R.string.scanner_enter_base_config_for_test), color = DuskTheme.muted, style = MaterialTheme.typography.bodyMedium)
                         Spacer(modifier = Modifier.height(16.dp))
                         OutlinedTextField(
                             value = retestBaseConfig,
                             onValueChange = { retestBaseConfig = it },
-                            label = { Text(stringResource(R.string.scanner_base_config_label), color = TextMuted, fontSize = 12.sp) },
+                            label = { Text(stringResource(R.string.scanner_base_config_label), color = DuskTheme.muted, style = MaterialTheme.typography.labelMedium) },
                             modifier = Modifier.fillMaxWidth(),
                             colors = iosFieldColors(),
                             singleLine = true
                         ,
-        shape = ControlShape,)
+        shape = DuskTheme.controlShape,)
                     }
                 },
                 confirmButton = {
@@ -2030,14 +2024,14 @@ fun ScannerTab(onBack: () -> Unit = {}, onOpenNodes: () -> Unit = {}) {
                                 )
                             }
                         },
-                        colors = iosButtonColors(Primary),
-                        border = iosButtonBorder(Primary)) {
+                        colors = iosButtonColors(DuskTheme.primary),
+                        border = iosButtonBorder(DuskTheme.primary)) {
                         Text(stringResource(R.string.scanner_start_test), fontWeight = FontWeight.Bold)
                     }
                 },
                 dismissButton = {
                     TextButton(onClick = { showRetestDialog = null }) {
-                        Text(stringResource(R.string.scanner_cancel), color = TextMuted)
+                        Text(stringResource(R.string.scanner_cancel), color = DuskTheme.muted)
                     }
                 }
             )
@@ -2046,11 +2040,11 @@ fun ScannerTab(onBack: () -> Unit = {}, onOpenNodes: () -> Unit = {}) {
         if (mixToDelete != null) {
             AlertDialog(
                 onDismissRequest = { mixToDelete = null },
-                modifier = Modifier.fillMaxWidth().clip(CardShape).border(0.7.dp, androidx.compose.ui.graphics.Color.White.copy(alpha = 0.15f), CardShape),
-                containerColor = DialogSurface,
-                shape = CardShape,
-                title = { Text(stringResource(R.string.dialog_delete_mix_title), color = TextPrimary, fontWeight = FontWeight.Bold) },
-                text = { Text(stringResource(R.string.dialog_delete_mix_msg), color = TextMuted, fontSize = 14.sp) },
+                modifier = Modifier.fillMaxWidth().clip(DuskTheme.cardShape).border(0.7.dp, DuskTheme.outline.copy(alpha = 0.55f), DuskTheme.cardShape),
+                containerColor = DuskTheme.raisedSurface,
+                shape = DuskTheme.cardShape,
+                title = { Text(stringResource(R.string.dialog_delete_mix_title), color = DuskTheme.onSurface, fontWeight = FontWeight.Bold) },
+                text = { Text(stringResource(R.string.dialog_delete_mix_msg), color = DuskTheme.muted, style = MaterialTheme.typography.bodyMedium) },
                 confirmButton = {
                     Button(
                         onClick = {
@@ -2060,14 +2054,14 @@ fun ScannerTab(onBack: () -> Unit = {}, onOpenNodes: () -> Unit = {}) {
                             groupManager.saveScannerGroups()
                             android.widget.Toast.makeText(context, context.getString(R.string.scanner_combined_group_deleted), android.widget.Toast.LENGTH_SHORT).show()
                         },
-                        colors = iosButtonColors(RedError),
-                        border = iosButtonBorder(RedError)) {
+                        colors = iosButtonColors(DuskTheme.error),
+                        border = iosButtonBorder(DuskTheme.error)) {
                         Text(stringResource(R.string.node_delete), fontWeight = FontWeight.Bold)
                     }
                 },
                 dismissButton = {
                     TextButton(onClick = { mixToDelete = null }) {
-                        Text(stringResource(R.string.scanner_cancel), color = TextMuted)
+                        Text(stringResource(R.string.scanner_cancel), color = DuskTheme.muted)
                     }
                 }
             )
@@ -2076,11 +2070,11 @@ fun ScannerTab(onBack: () -> Unit = {}, onOpenNodes: () -> Unit = {}) {
         if (archiveToDelete != null) {
             AlertDialog(
                 onDismissRequest = { archiveToDelete = null },
-                modifier = Modifier.fillMaxWidth().clip(CardShape).border(0.7.dp, androidx.compose.ui.graphics.Color.White.copy(alpha = 0.15f), CardShape),
-                containerColor = DialogSurface,
-                shape = CardShape,
-                title = { Text(stringResource(R.string.dialog_delete_archive_title), color = TextPrimary, fontWeight = FontWeight.Bold) },
-                text = { Text(stringResource(R.string.dialog_delete_archive_msg), color = TextMuted, fontSize = 14.sp) },
+                modifier = Modifier.fillMaxWidth().clip(DuskTheme.cardShape).border(0.7.dp, DuskTheme.outline.copy(alpha = 0.55f), DuskTheme.cardShape),
+                containerColor = DuskTheme.raisedSurface,
+                shape = DuskTheme.cardShape,
+                title = { Text(stringResource(R.string.dialog_delete_archive_title), color = DuskTheme.onSurface, fontWeight = FontWeight.Bold) },
+                text = { Text(stringResource(R.string.dialog_delete_archive_msg), color = DuskTheme.muted, style = MaterialTheme.typography.bodyMedium) },
                 confirmButton = {
                     Button(
                         onClick = {
@@ -2094,14 +2088,14 @@ fun ScannerTab(onBack: () -> Unit = {}, onOpenNodes: () -> Unit = {}) {
                                 android.widget.Toast.makeText(context, context.getString(R.string.scanner_archive_deleted), android.widget.Toast.LENGTH_SHORT).show()
                             }
                         },
-                        colors = iosButtonColors(RedError),
-                        border = iosButtonBorder(RedError)) {
+                        colors = iosButtonColors(DuskTheme.error),
+                        border = iosButtonBorder(DuskTheme.error)) {
                         Text(stringResource(R.string.node_delete), fontWeight = FontWeight.Bold)
                     }
                 },
                 dismissButton = {
                     TextButton(onClick = { archiveToDelete = null }) {
-                        Text(stringResource(R.string.scanner_cancel), color = TextMuted)
+                        Text(stringResource(R.string.scanner_cancel), color = DuskTheme.muted)
                     }
                 }
             )
@@ -2112,11 +2106,11 @@ fun ScannerTab(onBack: () -> Unit = {}, onOpenNodes: () -> Unit = {}) {
             val blocked = healthTestResults!!.second
             AlertDialog(
                 onDismissRequest = { com.mlmvpn.scanner.data.ScannerManager.dismissHealthTestCleanup() },
-                modifier = Modifier.fillMaxWidth().clip(CardShape).border(0.7.dp, androidx.compose.ui.graphics.Color.White.copy(alpha = 0.15f), CardShape),
-                containerColor = DialogSurface,
-                shape = CardShape,
-                title = { Text(stringResource(R.string.scanner_health_test_cleanup_title), color = TextPrimary, fontWeight = FontWeight.Bold) },
-                text = { Text(stringResource(R.string.scanner_health_test_cleanup_desc, total, blocked), color = TextMuted, fontSize = 14.sp) },
+                modifier = Modifier.fillMaxWidth().clip(DuskTheme.cardShape).border(0.7.dp, DuskTheme.outline.copy(alpha = 0.55f), DuskTheme.cardShape),
+                containerColor = DuskTheme.raisedSurface,
+                shape = DuskTheme.cardShape,
+                title = { Text(stringResource(R.string.scanner_health_test_cleanup_title), color = DuskTheme.onSurface, fontWeight = FontWeight.Bold) },
+                text = { Text(stringResource(R.string.scanner_health_test_cleanup_desc, total, blocked), color = DuskTheme.muted, style = MaterialTheme.typography.bodyMedium) },
                 confirmButton = {
                     Button(
                         onClick = {
@@ -2129,14 +2123,14 @@ fun ScannerTab(onBack: () -> Unit = {}, onOpenNodes: () -> Unit = {}) {
                                 }
                             }
                         },
-                        colors = iosButtonColors(RedError),
-                        border = iosButtonBorder(RedError)) {
+                        colors = iosButtonColors(DuskTheme.error),
+                        border = iosButtonBorder(DuskTheme.error)) {
                         Text(stringResource(R.string.node_delete), fontWeight = FontWeight.Bold)
                     }
                 },
                 dismissButton = {
                     TextButton(onClick = { com.mlmvpn.scanner.data.ScannerManager.dismissHealthTestCleanup() }) {
-                        Text(stringResource(R.string.scanner_cancel), color = TextMuted)
+                        Text(stringResource(R.string.scanner_cancel), color = DuskTheme.muted)
                     }
                 }
             )

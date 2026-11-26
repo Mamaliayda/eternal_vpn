@@ -1,6 +1,6 @@
 # Eternal VPN — screen redesign checklist
 
-> **Progress: 34 / 1203 complete** — each checked row is fully migrated; unverified routes and states remain unchecked.
+> **Progress: 39 / 1203 complete** — each checked row is fully migrated; unverified routes and states remain unchecked.
 
 > Inventory generated from Kotlin source on 2026-11-26. A row is considered migrated only after its visible composition, nested states, and overlays are reviewed against the Soft Dusk tokens. Shared theme inheritance alone does **not** count as a completed visual redesign.
 
@@ -548,11 +548,11 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 - [ ] `RouteChips` — `com/mlmvpn/scanner/ui/RouteChips.kt`
 ### ScannerTab.kt
 
-- [ ] `ScannerHeader` — `com/mlmvpn/scanner/ui/ScannerTab.kt`
-- [ ] `ScannerProgressCard` — `com/mlmvpn/scanner/ui/ScannerTab.kt`
-- [ ] `ScanStageRow` — `com/mlmvpn/scanner/ui/ScannerTab.kt`
-- [ ] `NetworkPausedBanner` — `com/mlmvpn/scanner/ui/ScannerTab.kt`
-- [ ] `ScannerSettingsCard` — `com/mlmvpn/scanner/ui/ScannerTab.kt`
+- [x] `ScannerHeader` — `com/mlmvpn/scanner/ui/ScannerTab.kt`
+- [x] `ScannerProgressCard` — `com/mlmvpn/scanner/ui/ScannerTab.kt`
+- [x] `ScanStageRow` — `com/mlmvpn/scanner/ui/ScannerTab.kt`
+- [x] `NetworkPausedBanner` — `com/mlmvpn/scanner/ui/ScannerTab.kt`
+- [x] `ScannerSettingsCard` — `com/mlmvpn/scanner/ui/ScannerTab.kt`
 ### ScreenChrome.kt
 
 - [ ] `FloatingHeaderLayout` — `com/mlmvpn/scanner/ui/ScreenChrome.kt`

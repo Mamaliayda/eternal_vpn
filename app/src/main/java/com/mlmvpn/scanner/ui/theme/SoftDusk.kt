@@ -78,6 +78,7 @@ object DuskTheme {
     val onError: Color @Composable get() = if (Appearance.isDark()) navyNight else white
     val success: Color @Composable get() = if (Appearance.isDark()) Color(0xFF9BCFB4) else Color(0xFF43765A)
     val disabled: Color @Composable get() = if (Appearance.isDark()) Color(0xFF9B98AD) else Color(0xFF8E93A0)
+    val outline: Color @Composable get() = if (Appearance.isDark()) nightOutline else lightOutline
     val error: Color @Composable get() = if (Appearance.isDark()) nightError else lightError
     val indigo: Color @Composable get() = if (Appearance.isDark()) Color(0xFFB3A9E5) else Color(0xFF6E69A8)
     val purple: Color @Composable get() = if (Appearance.isDark()) Color(0xFFD4B6E6) else Color(0xFF8F659F)

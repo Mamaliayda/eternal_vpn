@@ -1,7 +1,6 @@
 package com.mlmvpn.scanner.ui.theme
 
 import androidx.compose.ui.Modifier
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.background
 import com.mlmvpn.scanner.ui.theme.*
@@ -29,23 +28,23 @@ import androidx.compose.ui.unit.dp
  * neutral fill and get a plain separator rim from [iosNeutralBorder].
  */
 @Composable
-fun iosButtonColors(accent: Color = Primary): ButtonColors = ButtonDefaults.buttonColors(
+fun iosButtonColors(accent: Color = DuskTheme.primary): ButtonColors = ButtonDefaults.buttonColors(
     containerColor = accent.copy(alpha = 0.22f),
     // WHITE label, not the accent. The tinted fill and the accent rim already say which action
     // this is; painting the words in it too made every primary button on every screen a patch of
     // blue text, which is the one thing the app's palette reserves for nothing at all. A
     // destructive button still reads destructive: its fill and its rim are red.
-    contentColor = TextPrimary,
+    contentColor = DuskTheme.onSurface,
     // Disabled keeps the shape but drops almost all of the tint, so a disabled button reads as
     // present-but-inert rather than as a differently-coloured live one.
     disabledContainerColor = accent.copy(alpha = 0.08f),
-    disabledContentColor = TextDim,
+    disabledContentColor = DuskTheme.disabled,
 )
 
 /** The rim that goes with [iosButtonColors]. Falls back to a hairline when disabled. */
 @Composable
-fun iosButtonBorder(accent: Color = Primary, enabled: Boolean = true): BorderStroke =
-    BorderStroke(width = 1.5.dp, color = if (enabled) accent else BorderDark)
+fun iosButtonBorder(accent: Color = DuskTheme.primary, enabled: Boolean = true): BorderStroke =
+    BorderStroke(width = 1.5.dp, color = if (enabled) accent else DuskTheme.outline)
 
 /**
  * For a button that is deliberately not the primary action on its screen -- the "cancel" half of
@@ -54,15 +53,15 @@ fun iosButtonBorder(accent: Color = Primary, enabled: Boolean = true): BorderStr
  */
 @Composable
 fun iosNeutralButtonColors(): ButtonColors = ButtonDefaults.buttonColors(
-    containerColor = Color.White.copy(alpha = 0.08f),
-    contentColor = TextPrimary,
-    disabledContainerColor = Color.White.copy(alpha = 0.04f),
-    disabledContentColor = TextDim,
+    containerColor = DuskTheme.surface.copy(alpha = 0.76f),
+    contentColor = DuskTheme.onSurface,
+    disabledContainerColor = DuskTheme.surface.copy(alpha = 0.42f),
+    disabledContentColor = DuskTheme.disabled,
 )
 
 /** The rim that goes with [iosNeutralButtonColors]. */
 @Composable
-fun iosNeutralBorder(): BorderStroke = BorderStroke(width = 1.dp, color = BorderDark)
+fun iosNeutralBorder(): BorderStroke = BorderStroke(width = 1.dp, color = DuskTheme.outline)
 
 /**
  * The one text-field treatment the app uses.
@@ -83,21 +82,21 @@ fun iosNeutralBorder(): BorderStroke = BorderStroke(width = 1.dp, color = Border
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun iosFieldColors(): TextFieldColors = TextFieldDefaults.colors(
-    focusedContainerColor = Color.White.copy(alpha = 0.08f),
-    unfocusedContainerColor = Color.White.copy(alpha = 0.06f),
-    disabledContainerColor = Color.White.copy(alpha = 0.03f),
-    focusedTextColor = TextPrimary,
-    unfocusedTextColor = TextPrimary,
-    disabledTextColor = TextDim,
-    cursorColor = Primary,
-    focusedIndicatorColor = Primary,
-    unfocusedIndicatorColor = BorderDark,
-    disabledIndicatorColor = BorderDark,
-    focusedLabelColor = Primary,
-    unfocusedLabelColor = TextMuted,
-    disabledLabelColor = TextDim,
-    focusedPlaceholderColor = TextDim,
-    unfocusedPlaceholderColor = TextDim,
+    focusedContainerColor = DuskTheme.raisedSurface,
+    unfocusedContainerColor = DuskTheme.surface,
+    disabledContainerColor = DuskTheme.surface.copy(alpha = 0.55f),
+    focusedTextColor = DuskTheme.onSurface,
+    unfocusedTextColor = DuskTheme.onSurface,
+    disabledTextColor = DuskTheme.disabled,
+    cursorColor = DuskTheme.primary,
+    focusedIndicatorColor = DuskTheme.primary,
+    unfocusedIndicatorColor = DuskTheme.outline,
+    disabledIndicatorColor = DuskTheme.outline,
+    focusedLabelColor = DuskTheme.primary,
+    unfocusedLabelColor = DuskTheme.muted,
+    disabledLabelColor = DuskTheme.disabled,
+    focusedPlaceholderColor = DuskTheme.disabled,
+    unfocusedPlaceholderColor = DuskTheme.disabled,
 )
 
 /**
@@ -117,4 +116,4 @@ fun Modifier.iosMenu(): Modifier = this
     .padding(vertical = 4.dp)
 
 /** Matches the radius Material gives the menu surface closely enough to hide the join. */
-val MenuShape = RoundedCornerShape(14.dp)
+val MenuShape = DuskTheme.chartShape
