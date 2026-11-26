@@ -318,13 +318,14 @@ private fun LiveChart(traffic: WidgetLive.Traffic, down: Color, up: Color, modif
         animationSpec = tween(durationMillis = 700, easing = FastOutSlowInEasing),
         label = "chart scale",
     )
+    val gridLineColor = DuskTheme.primary.copy(alpha = 0.12f)
     Canvas(modifier = modifier.clip(DuskTheme.chartShape)) {
         val w = size.width
         val h = size.height
         // A faint baseline grid.
         for (i in 1..2) {
             val y = h * i / 3f
-            drawLine(com.mlmvpn.scanner.ui.theme.DuskTheme.primary.copy(alpha = 0.12f), Offset(0f, y), Offset(w, y), strokeWidth = 1f)
+            drawLine(gridLineColor, Offset(0f, y), Offset(w, y), strokeWidth = 1f)
         }
         val n = WidgetLive.HISTORY
         val top = ceiling
@@ -401,6 +402,7 @@ private fun PowerButton(state: Int, enabled: Boolean, size: Dp, onClick: () -> U
         targetValue = when (state) { 2 -> 1f; 1 -> 0.5f; else -> 0f },
         animationSpec = tween(600, easing = FastOutSlowInEasing), label = "sun moon transition",
     )
+    val glyphColor = if (state == 0 && !Appearance.isDark()) DuskTheme.white else DuskTheme.navyNight
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Box(
             modifier = Modifier
@@ -412,7 +414,7 @@ private fun PowerButton(state: Int, enabled: Boolean, size: Dp, onClick: () -> U
             contentAlignment = Alignment.Center,
         ) {
             Canvas(modifier = Modifier.size(size * 0.62f)) {
-                val glyph = if (state == 0 && !Appearance.isDark()) DuskTheme.white else DuskTheme.navyNight
+                val glyph = glyphColor
                 val r = this.size.minDimension * 0.31f
                 val stroke = (r * 0.105f).coerceAtLeast(1.dp.toPx())
                 // A small sun becomes a crescent as the connection settles, over a gentle 600 ms.
@@ -441,7 +443,7 @@ private fun PowerButton(state: Int, enabled: Boolean, size: Dp, onClick: () -> U
                     drawPath(moon, glyph.copy(alpha = progress))
                 }
                 if (state == 1) {
-                    drawCircle(glyph.copy(alpha = 0.7f), radius = r * 1.85f, center = center, style = Stroke(strokeWidth = stroke * 0.7f))
+                    drawCircle(glyph.copy(alpha = 0.7f), radius = r * 1.85f, center = center, style = Stroke(width = stroke * 0.7f))
                 }
             }
         }
