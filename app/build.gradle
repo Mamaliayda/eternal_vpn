@@ -426,6 +426,10 @@ tasks.register('checkWorkerAsset') {
     inputs.file(asset)
 
     doLast {
+        if (!script.isFile()) {
+            logger.warn('checkWorkerAsset: builder script is absent from this checkout, skipping the worker asset check')
+            return
+        }
         def node = ['node', 'node.exe'].findResult { exe ->
             try {
                 def p = new ProcessBuilder(exe, '--version').redirectErrorStream(true).start()
