@@ -473,9 +473,13 @@ tasks.register('testWorker') {
     def script = file('../scripts/test-studio-worker.mjs')
     inputs.dir(srcDir)
     inputs.file(asset)
-    inputs.file(script)
+    inputs.file(script).optional()
 
     doLast {
+        if (!script.isFile()) {
+            logger.warn('testWorker: test script is absent from this checkout, skipping the worker tests')
+            return
+        }
         def node = ['node', 'node.exe'].findResult { exe ->
             try {
                 def p = new ProcessBuilder(exe, '--version').redirectErrorStream(true).start()
