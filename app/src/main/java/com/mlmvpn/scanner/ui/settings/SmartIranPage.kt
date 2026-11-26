@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Apps
 import androidx.compose.material.icons.filled.Refresh
@@ -37,11 +36,11 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.mlmvpn.core.tunnel.SmartIranLists
 import com.mlmvpn.core.tunnel.SmartIranRoute
 import com.mlmvpn.scanner.store.tr
 import com.mlmvpn.scanner.ui.amnezia.fa
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -139,7 +138,7 @@ internal fun SmartIranPage(backLabel: String, onBack: () -> Unit, onChanged: (Bo
         SettingsGroup {
             val shown = if (showAll) apps else apps.filter { it.outside || it.suggested }
             if (shown.isEmpty()) {
-                Text(tr("برنامهٔ ایرانی‌ای پیدا نشد", "No Iranian app found"), color = Ios.SecondaryLabel, fontSize = 14.sp,
+                Text(tr("برنامهٔ ایرانی‌ای پیدا نشد", "No Iranian app found"), color = Ios.SecondaryLabel, style = androidx.compose.material3.MaterialTheme.typography.bodyMedium,
                     modifier = Modifier.padding(16.dp))
             }
             shown.forEachIndexed { i, a ->
@@ -187,20 +186,31 @@ private fun AppToggleRow(a: AppRow, onChange: (Boolean) -> Unit) {
         Modifier.fillMaxWidth().clickable { onChange(!a.outside) }.heightIn(min = 52.dp).padding(horizontal = 16.dp, vertical = 8.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Box(Modifier.size(32.dp).clip(RoundedCornerShape(8.dp))) { icon?.let { Image(it, contentDescription = null, modifier = Modifier.size(32.dp)) } }
+        Box(Modifier.size(32.dp).clip(DuskTheme.glyphShape)) { icon?.let { Image(it, contentDescription = null, modifier = Modifier.size(32.dp)) } }
         Spacer(Modifier.width(12.dp))
         Column(Modifier.weight(1f)) {
-            Text(a.label, color = Ios.Label, fontSize = 15.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            Text(a.label, color = Ios.Label, style = androidx.compose.material3.MaterialTheme.typography.bodyMedium, maxLines = 1, overflow = TextOverflow.Ellipsis)
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(a.pkg, color = Ios.SecondaryLabel, fontSize = 11.sp, maxLines = 1, overflow = TextOverflow.Ellipsis, modifier = Modifier.weight(1f, fill = false))
+                Text(a.pkg, color = Ios.SecondaryLabel, style = androidx.compose.material3.MaterialTheme.typography.labelSmall, maxLines = 1, overflow = TextOverflow.Ellipsis, modifier = Modifier.weight(1f, fill = false))
                 if (a.suggested && !a.outside) {
                     Spacer(Modifier.width(6.dp))
-                    Text(tr("پیشنهاد", "Suggested"), color = Ios.Orange, fontSize = 10.sp, fontWeight = FontWeight.SemiBold,
-                        modifier = Modifier.clip(RoundedCornerShape(5.dp)).background(Ios.Orange.copy(alpha = 0.16f)).padding(horizontal = 5.dp, vertical = 1.dp))
+                    Text(tr("پیشنهاد", "Suggested"), color = Ios.Orange, style = androidx.compose.material3.MaterialTheme.typography.labelSmall, fontWeight = FontWeight.SemiBold,
+                        modifier = Modifier.clip(DuskTheme.controlShape).background(Ios.Orange.copy(alpha = 0.16f)).padding(horizontal = 5.dp, vertical = 1.dp))
                 }
             }
         }
-        Switch(checked = a.outside, onCheckedChange = onChange, colors = SwitchDefaults.colors(checkedTrackColor = Ios.Green))
+        Switch(
+            checked = a.outside,
+            onCheckedChange = onChange,
+            colors = SwitchDefaults.colors(
+                checkedThumbColor = DuskTheme.raisedSurface,
+                checkedTrackColor = DuskTheme.success,
+                checkedBorderColor = DuskTheme.success,
+                uncheckedThumbColor = DuskTheme.raisedSurface,
+                uncheckedTrackColor = DuskTheme.disabled.copy(alpha = 0.35f),
+                uncheckedBorderColor = DuskTheme.disabled.copy(alpha = 0.55f),
+            ),
+        )
     }
 }
 

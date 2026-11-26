@@ -1,31 +1,19 @@
 package com.mlmvpn.scanner.ui
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.mlmvpn.scanner.store.tr
-import com.mlmvpn.scanner.ui.settings.Ios
+import com.mlmvpn.scanner.ui.theme.DuskPill
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
@@ -54,14 +42,12 @@ fun RouteChips(modifier: Modifier = Modifier) {
     ) {
         items(chips.size) { i ->
             val (text, on) = chips[i]
-            Row(
-                Modifier.clip(RoundedCornerShape(50)).background(Ios.CardOverWallpaper).padding(horizontal = 12.dp, vertical = 7.dp),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Box(Modifier.size(7.dp).clip(CircleShape).background(if (on) Ios.Green else Ios.SecondaryLabel))
-                Spacer(Modifier.width(6.dp))
-                Text(text, color = Ios.Label, fontSize = 12.sp, maxLines = 1)
-            }
+            DuskPill(
+                text = text,
+                selected = on,
+                indicator = if (on) DuskTheme.success else DuskTheme.muted,
+                compact = true,
+            )
         }
     }
 }

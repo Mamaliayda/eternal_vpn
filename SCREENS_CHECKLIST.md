@@ -1,6 +1,6 @@
 # Eternal VPN — screen redesign checklist
 
-> **Progress: 39 / 1203 complete** — each checked row is fully migrated; unverified routes and states remain unchecked.
+> **Progress: 42 / 1203 complete** — each checked row is fully migrated; unverified routes and states remain unchecked.
 
 > Inventory generated from Kotlin source on 2026-11-26. A row is considered migrated only after its visible composition, nested states, and overlays are reviewed against the Soft Dusk tokens. Shared theme inheritance alone does **not** count as a completed visual redesign.
 
@@ -353,7 +353,7 @@ Found 230 screen-like public/internal composables across 133 Kotlin files (the f
 - [ ] `SmartIranPage` — `com/mlmvpn/scanner/ui/settings/SmartIranPage.kt`
 - [ ] `UsageScreen` — `com/mlmvpn/scanner/ui/settings/UsageScreen.kt`
 - [ ] `VpnSettingsScreen` — `com/mlmvpn/scanner/ui/settings/VpnSettingsScreen.kt`
-- [ ] `AppPickerPage` — `com/mlmvpn/scanner/ui/settings/VpnSettingsScreen.kt`
+- [x] `AppPickerPage` — `com/mlmvpn/scanner/ui/settings/VpnSettingsScreen.kt`
 ### spider
 
 - [ ] `SpiderScreen` — `com/mlmvpn/scanner/ui/spider/SpiderScreen.kt`
@@ -545,7 +545,7 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 - [ ] `QuickButton` — `com/mlmvpn/scanner/ui/QuickServersScreen.kt`
 ### RouteChips.kt
 
-- [ ] `RouteChips` — `com/mlmvpn/scanner/ui/RouteChips.kt`
+- [x] `RouteChips` — `com/mlmvpn/scanner/ui/RouteChips.kt`
 ### ScannerTab.kt
 
 - [x] `ScannerHeader` — `com/mlmvpn/scanner/ui/ScannerTab.kt`
@@ -1122,7 +1122,7 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 - [ ] `SettingsSlider` — `com/mlmvpn/scanner/ui/settings/IosSettings.kt`
 - [ ] `SettingsDetailPlaceholder` — `com/mlmvpn/scanner/ui/settings/SettingsScreen.kt`
 - [ ] `presetName` — `com/mlmvpn/scanner/ui/settings/SettingsScreen.kt`
-- [ ] `AppToggleRow` — `com/mlmvpn/scanner/ui/settings/SmartIranPage.kt`
+- [x] `AppToggleRow` — `com/mlmvpn/scanner/ui/settings/SmartIranPage.kt`
 - [ ] `UsagePeriod` — `com/mlmvpn/scanner/ui/settings/UsageScreen.kt`
 - [ ] `SevenDayChart` — `com/mlmvpn/scanner/ui/settings/UsageScreen.kt`
 - [ ] `rememberInstalledApps` — `com/mlmvpn/scanner/ui/settings/VpnSettingsScreen.kt`

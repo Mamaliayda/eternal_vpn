@@ -139,17 +139,18 @@ fun DuskPill(
     onClick: (() -> Unit)? = null,
     indicator: Color? = null,
     busy: Boolean = false,
+    compact: Boolean = false,
 ) {
     val fill = if (selected) DuskTheme.accent else DuskTheme.raisedSurface
     val ink = if (selected) DuskTheme.onAccent else DuskTheme.primary
     Box(
         modifier = modifier
-            .defaultMinSize(minHeight = DuskTheme.navIconSize)
+            .defaultMinSize(minHeight = if (compact) 32.dp else DuskTheme.navIconSize)
             .clip(DuskTheme.controlShape)
             .background(fill)
             .border(1.dp, DuskTheme.accent.copy(alpha = if (selected) 0.65f else 0.28f), DuskTheme.controlShape)
             .then(onClick?.let { Modifier.clickable(onClick = it) } ?: Modifier)
-            .padding(horizontal = DuskTheme.space4, vertical = DuskTheme.space2),
+            .padding(horizontal = DuskTheme.space4, vertical = if (compact) DuskTheme.space1 else DuskTheme.space2),
         contentAlignment = Alignment.Center,
     ) {
         Row(horizontalArrangement = Arrangement.spacedBy(DuskTheme.space2), verticalAlignment = Alignment.CenterVertically) {

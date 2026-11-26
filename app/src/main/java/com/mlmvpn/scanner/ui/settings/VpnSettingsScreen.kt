@@ -21,8 +21,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Block
@@ -37,6 +35,7 @@ import androidx.compose.material.icons.filled.Widgets
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -49,17 +48,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.core.graphics.drawable.toBitmap
 import com.mlmvpn.scanner.R
-import com.mlmvpn.scanner.ui.home.frostedGlass
+import com.mlmvpn.scanner.ui.theme.DuskCard
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -616,8 +613,8 @@ internal fun AppPickerPage(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp, vertical = 8.dp)
-                .clip(RoundedCornerShape(12.dp))
-                .background(Color.White.copy(alpha = 0.10f))
+                .clip(DuskTheme.controlShape)
+                .background(DuskTheme.onSurface.copy(alpha = 0.08f))
                 .heightIn(min = 36.dp)
                 .padding(horizontal = 10.dp),
             verticalAlignment = Alignment.CenterVertically,
@@ -633,7 +630,7 @@ internal fun AppPickerPage(
                 value = query,
                 onValueChange = { query = it },
                 singleLine = true,
-                textStyle = TextStyle(color = Ios.Label, fontSize = 16.sp),
+                textStyle = MaterialTheme.typography.bodyLarge.copy(color = Ios.Label),
                 cursorBrush = SolidColor(Ios.Blue),
                 modifier = Modifier.fillMaxWidth(),
                 decorationBox = { inner ->
@@ -642,7 +639,7 @@ internal fun AppPickerPage(
                             Text(
                                 stringResource(R.string.vpn_search_app),
                                 color = Ios.SecondaryLabel,
-                                fontSize = 16.sp,
+                                style = MaterialTheme.typography.bodyLarge,
                             )
                         }
                         inner()
@@ -672,14 +669,12 @@ internal fun AppPickerPage(
         ) {
             items(filtered, key = { it.packageName }) { app ->
                 val isChecked = selected.contains(app.packageName)
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .frostedGlass(RoundedCornerShape(16.dp))
-                        .clickable { onToggle(app.packageName) }
-                        .padding(horizontal = 12.dp, vertical = 9.dp),
-                    verticalAlignment = Alignment.CenterVertically,
+                DuskCard(
+                    modifier = Modifier.fillMaxWidth().clickable { onToggle(app.packageName) },
+                    shape = DuskTheme.chartShape,
+                    contentPadding = PaddingValues(horizontal = 12.dp, vertical = 9.dp),
                 ) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
                     // Made once per app, off the main thread where the loader could, and at the
                     // size it is shown -- never a full-size conversion per frame.
                     val icon = app.bitmap ?: app.icon?.let { d ->
@@ -690,23 +685,23 @@ internal fun AppPickerPage(
                         Image(
                             bitmap = icon,
                             contentDescription = null,
-                            modifier = Modifier.size(34.dp).clip(RoundedCornerShape(8.dp)),
+                            modifier = Modifier.size(34.dp).clip(DuskTheme.glyphShape),
                         )
                     } else {
                         Box(
                             modifier = Modifier
                                 .size(34.dp)
-                                .clip(CircleShape)
+                                .clip(DuskTheme.circleShape)
                                 .background(Ios.Gray.copy(alpha = 0.4f))
                         )
                     }
                     Spacer(Modifier.width(12.dp))
                     Column(modifier = Modifier.weight(1f)) {
-                        Text(app.name, color = Ios.Label, fontSize = 15.sp, maxLines = 1)
+                        Text(app.name, color = Ios.Label, style = MaterialTheme.typography.bodyMedium, maxLines = 1)
                         Text(
                             app.packageName,
                             color = Ios.SecondaryLabel,
-                            fontSize = 11.sp,
+                            style = MaterialTheme.typography.labelSmall,
                             maxLines = 1,
                         )
                     }
@@ -717,6 +712,7 @@ internal fun AppPickerPage(
                             tint = Ios.Blue,
                             modifier = Modifier.size(20.dp),
                         )
+                    }
                     }
                 }
                 Spacer(Modifier.height(6.dp))
