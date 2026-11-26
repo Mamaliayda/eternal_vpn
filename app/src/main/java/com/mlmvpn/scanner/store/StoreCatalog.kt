@@ -47,19 +47,6 @@ object StoreCatalog {
 
     private fun has(t: String, vararg needles: String) = needles.all { t.contains(it) }
 
-    // ── the app ─────────────────────────────────────────────────────────────────────────────────
-
-    val APP = StoreItem(
-        id = "mlmvpn", kind = StoreKind.APP,
-        titleFa = "MLM VPN", titleEn = "MLM VPN",
-        subtitleFa = "خود برنامه", subtitleEn = "The app itself",
-        developer = "MLM VPN", repo = "mlmvpn/mlmvpn_android",
-        source = StoreSource.App,
-        icon = StoreIcon(Icons.Default.Shield, Blue),
-        aboutFa = "نسخهٔ تازهٔ برنامه از صفحهٔ انتشارهای گیت‌هاب خودش، مخصوص پردازندهٔ همین گوشی.",
-        aboutEn = "New versions of the app from its own GitHub releases, built for this phone's processor.",
-    )
-
     // ── engines ─────────────────────────────────────────────────────────────────────────────────
 
     private fun aetherAsset(abi: String): String? = when (abi) {
@@ -75,11 +62,11 @@ object StoreCatalog {
             titleFa = "هستهٔ OpenVPN", titleEn = "OpenVPN core",
             subtitleFa = "اتصال داخلی OpenVPN و حساب‌های شما", subtitleEn = "Internal OpenVPN connections",
             developer = "OpenVPN Inc. · MLMVPN Android integration", repo = "OpenVPN/openvpn3",
-            source = StoreSource.Channel,
+            source = StoreSource.Bundled,
             icon = StoreIcon(Icons.Default.VpnKey, Orange, imageRes = R.drawable.ic_app_openvpn),
             engine = EngineSpec(libs = listOf("libmlmopenvpn.so"), mode = EngineSpec.Mode.JNI, shipped = "1.0.1"),
-            aboutFa = "هسته از سورس رسمی OpenVPN ساخته می‌شود. نسخهٔ سازگار با رابط اندروید MLMVPN، پس از ساخت و آزمون برای پردازندهٔ گوشی، از کانال امضاشده نصب می‌شود. برای استفاده از نسخهٔ جدید برنامه را کامل ببندید و دوباره باز کنید. حساب‌ها و پروفایل‌ها حفظ می‌شوند.",
-            aboutEn = "Built from the official OpenVPN source. Android builds compatible with MLMVPN's native interface are tested per ABI and installed through the signed channel. Fully close and reopen the app to use an update. Accounts and profiles are preserved.",
+            aboutFa = "هسته از سورس رسمی OpenVPN ساخته می‌شود و نسخهٔ سازگار با رابط اندروید برای پردازندهٔ گوشی آزموده شده است. این نسخه همراه خود برنامه ارائه می‌شود. حساب‌ها و پروفایل‌ها حفظ می‌شوند.",
+            aboutEn = "Built from the official OpenVPN source and tested per ABI for MLMVPN's native interface. This copy is bundled with the app. Accounts and profiles are preserved.",
         ),
         StoreItem(
             id = "aether", kind = StoreKind.ENGINE,
@@ -147,8 +134,8 @@ object StoreCatalog {
             subtitleFa = "تور", subtitleEn = "Tor",
             developer = "The Tor Project", repo = null,
             // torproject.org publishes no Android executable (Tor Browser embeds it as a library),
-            // so this is our build, offered only through the signed channel.
-            source = StoreSource.Channel,
+            // so this compatible executable is bundled with the app.
+            source = StoreSource.Bundled,
             icon = StoreIcon(Icons.Default.Security, Purple, imageRes = R.drawable.ic_app_tor),
             engine = EngineSpec(
                 libs = listOf("libtor.so"), mode = EngineSpec.Mode.EXEC,
@@ -161,7 +148,7 @@ object StoreCatalog {
             titleFa = "پل‌های تور (lyrebird)", titleEn = "Tor bridges (lyrebird)",
             subtitleFa = "obfs4، وب‌تانل، اسنوفلیک و میک", subtitleEn = "obfs4, WebTunnel, Snowflake and meek",
             developer = "The Tor Project", repo = null,
-            source = StoreSource.Channel,
+            source = StoreSource.Bundled,
             icon = StoreIcon(Icons.Default.Link, Indigo, tint2 = Purple),
             engine = EngineSpec(
                 libs = listOf("libobfs4proxy.so"), mode = EngineSpec.Mode.EXEC,
@@ -173,7 +160,7 @@ object StoreCatalog {
             titleFa = "هستهٔ تونل", titleEn = "Tunnel core",
             subtitleFa = "ماسک، وایرگارد و وارپ در وارپ", subtitleEn = "MASQUE, WireGuard and WARP-on-WARP",
             developer = "MLM VPN", repo = "mlmvpn/mlmvpn_android",
-            source = StoreSource.Channel,
+            source = StoreSource.Bundled,
             icon = StoreIcon(Icons.Default.Bolt, Blue, tint2 = Indigo),
             engine = EngineSpec(
                 libs = listOf("libtunnelcore.so", "libtunneljni.so"), mode = EngineSpec.Mode.JNI,
@@ -186,7 +173,7 @@ object StoreCatalog {
             titleFa = "هستهٔ تونل گوگل اسکریپت", titleEn = "Google Script tunnel core",
             subtitleFa = "گوگل اسکریپت", subtitleEn = "Google Script",
             developer = "MLM VPN", repo = "mlmvpn/mlmvpn_android",
-            source = StoreSource.Channel,
+            source = StoreSource.Bundled,
             icon = StoreIcon(Icons.Default.Bolt, Red, imageRes = R.drawable.ic_app_gscript),
             engine = EngineSpec(libs = listOf("libmhrv_rs.so"), mode = EngineSpec.Mode.JNI),
         ),
@@ -388,7 +375,7 @@ object StoreCatalog {
             titleFa = "پنل نهان", titleEn = "Nahan panel",
             subtitleFa = "پنل کاربران نهان", subtitleEn = "Nahan user panel",
             developer = "Project Nahan", repo = null,
-            source = StoreSource.Channel,
+            source = StoreSource.Bundled,
             icon = StoreIcon(Icons.Default.Storage, Indigo, tint2 = Purple),
             worker = WorkerSpec(
                 asset = "nahan_worker.js",
@@ -402,7 +389,7 @@ object StoreCatalog {
             titleFa = "پنل MLM (کانفیگ استدیو)", titleEn = "MLM panel (Config Studio)",
             subtitleFa = "کاربران، کانفیگ‌ها و ساب", subtitleEn = "Users, configs and subscriptions",
             developer = "MLM VPN", repo = "mlmvpn/mlmvpn_android",
-            source = StoreSource.Channel,
+            source = StoreSource.Bundled,
             icon = StoreIcon(Icons.Default.Layers, Indigo, tint2 = Blue),
             worker = WorkerSpec(
                 asset = "mlm_worker.js",
@@ -421,7 +408,7 @@ object StoreCatalog {
             titleFa = "DNS اختصاصی", titleEn = "Dedicated DNS",
             subtitleFa = "تقویت بازی", subtitleEn = "Game Boost",
             developer = "MLM VPN", repo = "mlmvpn/mlmvpn_android",
-            source = StoreSource.Channel,
+            source = StoreSource.Bundled,
             icon = StoreIcon(Icons.Default.Dns, Green, imageRes = R.drawable.ic_app_dns),
             worker = WorkerSpec(
                 asset = "dns_worker.js",
@@ -434,7 +421,7 @@ object StoreCatalog {
             titleFa = "رلهٔ کلودفلر گوگل اسکریپت", titleEn = "Google Script Cloudflare relay",
             subtitleFa = "شتاب‌دهندهٔ گوگل اسکریپت", subtitleEn = "Google Script accelerator",
             developer = "MLM VPN", repo = "mlmvpn/mlmvpn_android",
-            source = StoreSource.Channel,
+            source = StoreSource.Bundled,
             icon = StoreIcon(Icons.Default.Bolt, Red, tint2 = Orange),
             worker = WorkerSpec(
                 asset = "gst_relay_worker.js",
@@ -447,7 +434,7 @@ object StoreCatalog {
             titleFa = "رلهٔ فهرست VPN Gate", titleEn = "VPN Gate list relay",
             subtitleFa = "گیت‌وی", subtitleEn = "Gateway",
             developer = "MLM VPN", repo = "mlmvpn/mlmvpn_android",
-            source = StoreSource.Channel,
+            source = StoreSource.Bundled,
             icon = StoreIcon(Icons.Default.Public, Indigo),
             worker = WorkerSpec(
                 asset = "vpngate_relay_worker.js",
@@ -460,7 +447,7 @@ object StoreCatalog {
             titleFa = "خروجی جمنای", titleEn = "Gemini exit",
             subtitleFa = "جمنای و برنامه‌های گوگل", subtitleEn = "Gemini and Google apps",
             developer = "MLM VPN", repo = "mlmvpn/mlmvpn_android",
-            source = StoreSource.Channel,
+            source = StoreSource.Bundled,
             icon = StoreIcon(Icons.Default.SmartToy, Blue, tint2 = Purple),
             worker = WorkerSpec(
                 asset = "gemini_exit_worker.js",
@@ -473,7 +460,7 @@ object StoreCatalog {
             titleFa = "رلهٔ هویت وارپ", titleEn = "WARP identity relay",
             subtitleFa = "وایرگارد، وارپ در وارپ و ماسک", subtitleEn = "WireGuard, WARP-in-WARP and MASQUE",
             developer = "MLM VPN", repo = "mlmvpn/mlmvpn_android",
-            source = StoreSource.Channel,
+            source = StoreSource.Bundled,
             icon = StoreIcon(Icons.Default.VpnKey, Orange, tint2 = CfOrange),
             worker = WorkerSpec(
                 asset = "warp_id_worker.js",
@@ -486,7 +473,7 @@ object StoreCatalog {
             titleFa = "سازندهٔ لینک ساب", titleEn = "Sub link generator",
             subtitleFa = "لینک ساب", subtitleEn = "Sub links",
             developer = "MLM VPN", repo = "mlmvpn/mlmvpn_android",
-            source = StoreSource.Channel,
+            source = StoreSource.Bundled,
             icon = StoreIcon(Icons.Default.Link, Purple),
             worker = WorkerSpec(
                 asset = "sub_worker.js",
@@ -499,7 +486,7 @@ object StoreCatalog {
             titleFa = "سرویس کلید گیت‌هاب تانل", titleEn = "GitHub Tunnel key service",
             subtitleFa = "گیت‌هاب تانل", subtitleEn = "GitHub Tunnel",
             developer = "MLM VPN", repo = "mlmvpn/mlmvpn_android",
-            source = StoreSource.Channel,
+            source = StoreSource.Bundled,
             icon = StoreIcon(Icons.Default.Cloud, Gray, imageRes = R.drawable.ic_app_github),
             worker = WorkerSpec(
                 asset = "gt/broker_worker.js",
@@ -517,7 +504,7 @@ object StoreCatalog {
             titleFa = "برنامهٔ تست دکتر کلادفلر", titleEn = "Cloudflare Doctor test plan",
             subtitleFa = "تست‌های تشخیص اتصال", subtitleEn = "Connection diagnostic tests",
             developer = "MLM VPN", repo = "mlmvpn/mlmvpn_android",
-            source = StoreSource.Channel,
+            source = StoreSource.Bundled,
             icon = StoreIcon(Icons.Default.Public, Blue, imageRes = R.drawable.ic_app_doctor),
             data = DataSpec("cf_doctor_plan.json", DataSpec.Target.OVERLAY, json = true),
         ),
@@ -583,7 +570,7 @@ object StoreCatalog {
             titleFa = "کانفیگ دامین فرانتینگ", titleEn = "Domain fronting config",
             subtitleFa = "دامین فرانتینگ", subtitleEn = "Domain fronting",
             developer = "MLM VPN", repo = "mlmvpn/mlmvpn_android",
-            source = StoreSource.Channel,
+            source = StoreSource.Bundled,
             icon = StoreIcon(Icons.Default.SwapHoriz, Orange, tint2 = Color(0xFFFFD60A)),
             data = DataSpec("mitm_domainfronting_v23.json", DataSpec.Target.OVERLAY, json = true),
         ),
@@ -592,7 +579,7 @@ object StoreCatalog {
             titleFa = "فهرست سرورهای سایفون", titleEn = "Psiphon server list",
             subtitleFa = "سایفون — سرورهای شروع اتصال", subtitleEn = "Psiphon — bootstrap servers",
             developer = "MLM VPN", repo = "mlmvpn/mlmvpn_android",
-            source = StoreSource.Channel,
+            source = StoreSource.Bundled,
             icon = StoreIcon(Icons.Default.Hub, Red, tint2 = Pink),
             data = DataSpec("server_entries.txt", DataSpec.Target.OVERLAY, minBytes = 1000),
         ),
@@ -601,7 +588,7 @@ object StoreCatalog {
             titleFa = "فهرست دامنه‌های تحریمی", titleEn = "Sanctioned domains list",
             subtitleFa = "ضد تحریم", subtitleEn = "Anti-sanction",
             developer = "MLM VPN", repo = "mlmvpn/mlmvpn_android",
-            source = StoreSource.Channel,
+            source = StoreSource.Bundled,
             icon = StoreIcon(Icons.Default.Shield, Green),
             data = DataSpec("sanction_domains.json", DataSpec.Target.OVERLAY, json = true),
         ),
@@ -610,13 +597,13 @@ object StoreCatalog {
             titleFa = "فهرست بازی‌ها", titleEn = "Game catalogue",
             subtitleFa = "تقویت بازی", subtitleEn = "Game Boost",
             developer = "MLM VPN", repo = "mlmvpn/mlmvpn_android",
-            source = StoreSource.Channel,
+            source = StoreSource.Bundled,
             icon = StoreIcon(Icons.Default.SportsEsports, Green, tint2 = Teal),
             data = DataSpec("game_catalog.json", DataSpec.Target.OVERLAY, json = true),
         ),
     )
 
-    val ALL: List<StoreItem> = listOf(APP) + ENGINES + WORKERS + DATA
+    val ALL: List<StoreItem> = ENGINES + WORKERS + DATA
     private val BY_ID = ALL.associateBy { it.id }
 
     fun byId(id: String): StoreItem? = BY_ID[id]

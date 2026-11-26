@@ -7,17 +7,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Autorenew
-import androidx.compose.material.icons.filled.CardGiftcard
 import androidx.compose.material.icons.filled.ContentCopy
-import androidx.compose.material.icons.filled.DataUsage
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Key
 import androidx.compose.material.icons.filled.Login
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.PersonAdd
-import androidx.compose.material.icons.filled.Redeem
-import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.material.icons.filled.Schedule
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.LinearProgressIndicator
@@ -34,7 +29,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.core.text.HtmlCompat
 import com.mlmvpn.core.geph.GephAccount
 import com.mlmvpn.core.geph.GephCredential
 import com.mlmvpn.scanner.R
@@ -65,12 +59,10 @@ fun GephAccountScreen(onBack: () -> Unit, backLabel: String) {
     // seconds, under GephAccount's lock (Geph's freezes and ANRs, 1.2.41).
     var cred by remember { mutableStateOf<GephCredential?>(null) }
     var loading by remember { mutableStateOf(GephAccount.hasAccount(ctx)) }
-    var info by remember { mutableStateOf(GephAccount.cachedInfo(ctx)) }
     var busy by remember { mutableStateOf<String?>(null) }
     var message by remember { mutableStateOf<String?>(null) }
 
     fun reload() {
-        info = GephAccount.cachedInfo(ctx)
         scope.launch {
             cred = withContext(Dispatchers.IO) { GephAccount.credential(ctx) }
             loading = false
@@ -79,15 +71,6 @@ fun GephAccountScreen(onBack: () -> Unit, backLabel: String) {
 
     LaunchedEffect(Unit) { reload() }
 
-    fun refresh() {
-        busy = "refresh"
-        scope.launch {
-            val r = withContext(Dispatchers.IO) { GephAccount.refreshInfo(ctx) }
-            r.onSuccess { info = it; if (it == null) message = ctx.getString(R.string.geph_not_an_account) }
-                .onFailure { message = ctx.getString(R.string.geph_error, it.message ?: "") }
-            busy = null
-        }
-    }
 
     IosScreen(title = stringResource(R.string.geph_account_title), onBack = onBack, backLabel = backLabel) {
         Spacer(Modifier.height(12.dp))
@@ -104,18 +87,15 @@ fun GephAccountScreen(onBack: () -> Unit, backLabel: String) {
                 onMessage = { message = it },
                 onDone = {
                     reload()
-                    refresh()
                     applyGephNow(ctx)
                 },
             )
         } else {
             HasAccount(
                 cred = cred!!,
-                info = info,
                 busy = busy,
                 setBusy = { busy = it },
                 onMessage = { message = it },
-                onRefresh = { refresh() },
                 onChanged = {
                     reload()
                     applyGephNow(ctx)
@@ -266,21 +246,7 @@ private fun NoAccount(
                 setBusy("legacy")
                 onMessage(null)
                 GephAccount.setLegacy(ctx, user.trim(), pass)
-                scope.launch {
-                    val r = withContext(Dispatchers.IO) { GephAccount.refreshInfo(ctx) }
-                    setBusy(null)
-                    r.onSuccess { info ->
-                        if (info == null) {
-                            GephAccount.forget(ctx)
-                            onMessage(ctx.getString(R.string.geph_legacy_wrong))
-                        } else {
-                            onDone()
-                        }
-                    }.onFailure {
-                        GephAccount.forget(ctx)
-                        onMessage(ctx.getString(R.string.geph_error, it.message ?: ""))
-                    }
-                }
+                onDone()
             },
         )
     }
@@ -290,11 +256,9 @@ private fun NoAccount(
 @Composable
 private fun HasAccount(
     cred: GephCredential,
-    info: GephAccount.Info?,
     busy: String?,
     setBusy: (String?) -> Unit,
     onMessage: (String?) -> Unit,
-    onRefresh: () -> Unit,
     onChanged: () -> Unit,
 ) {
     val ctx = LocalContext.current
@@ -302,63 +266,6 @@ private fun HasAccount(
     var reveal by remember { mutableStateOf(false) }
     var confirmRotate by remember { mutableStateOf(false) }
     var confirmForget by remember { mutableStateOf(false) }
-    var voucher by remember { mutableStateOf<GephAccount.Voucher?>(null) }
-    var giftCode by remember { mutableStateOf("") }
-
-    SettingsSectionHeader(stringResource(R.string.geph_account_section))
-    SettingsGroup {
-        SettingsRow(
-            title = stringResource(R.string.geph_level),
-            icon = Icons.Default.AccountCircle,
-            tint = Ios.Blue,
-            value = levelLabel(info),
-            showChevron = false,
-        )
-        info?.let { i ->
-            Separator()
-            SettingsRow(
-                title = stringResource(R.string.geph_user_id),
-                value = faDigits(i.userId.toString()),
-                showChevron = false,
-            )
-            if (i.level != GephAccount.Level.FREE && i.plusExpiresUnix != null) {
-                Separator()
-                SettingsRow(
-                    title = stringResource(R.string.geph_expires),
-                    icon = Icons.Default.Schedule,
-                    tint = Ios.Orange,
-                    value = gephDate(i.plusExpiresUnix),
-                    subtitle = if (i.recurring) stringResource(R.string.geph_recurring) else null,
-                    showChevron = false,
-                )
-            }
-            if (i.bwLimitMb != null) {
-                Separator()
-                SettingsRow(
-                    title = stringResource(R.string.geph_data_used),
-                    icon = Icons.Default.DataUsage,
-                    tint = Ios.Teal,
-                    value = stringResource(
-                        R.string.geph_mb_of,
-                        faDigits((i.bwUsedMb ?: 0).toString()),
-                        faDigits(i.bwLimitMb.toString()),
-                    ),
-                    subtitle = i.bwRenewUnix?.let { stringResource(R.string.geph_renews, gephDate(it)) },
-                    showChevron = false,
-                )
-            }
-        }
-        Separator()
-        SettingsActionRow(
-            label = stringResource(R.string.geph_refresh),
-            icon = Icons.Default.Refresh,
-            tint = Ios.Blue,
-            busy = busy == "refresh",
-            enabled = busy == null,
-            onClick = onRefresh,
-        )
-    }
-    if (info?.level == GephAccount.Level.FREE) SettingsFooter(stringResource(R.string.geph_free_footer))
 
     when (cred) {
         is GephCredential.Secret -> {
@@ -403,76 +310,7 @@ private fun HasAccount(
                     if (GephAccount.canRotate(ctx)) "\n\n" + stringResource(R.string.geph_rotate_footer) else "",
             )
 
-            SettingsSectionHeader(stringResource(R.string.geph_voucher_section))
-            SettingsGroup {
-                SettingsActionRow(
-                    label = stringResource(R.string.geph_free_voucher),
-                    icon = Icons.Default.CardGiftcard,
-                    tint = Ios.Pink,
-                    busy = busy == "voucher",
-                    enabled = busy == null,
-                    onClick = {
-                        setBusy("voucher")
-                        onMessage(null)
-                        scope.launch {
-                            val r = withContext(Dispatchers.IO) { GephAccount.freeVoucher(ctx) }
-                            setBusy(null)
-                            r.onSuccess { v ->
-                                voucher = v
-                                if (v == null) onMessage(ctx.getString(R.string.geph_no_free_voucher))
-                                else giftCode = v.code
-                            }.onFailure { onMessage(ctx.getString(R.string.geph_error, it.message ?: "")) }
-                        }
-                    },
-                )
-                voucher?.let { v ->
-                    val lang = if (com.mlmvpn.scanner.utils.AppLocaleManager.isFarsi()) "fa" else "en"
-                    val html = v.explanation[lang] ?: v.explanation["en"] ?: v.explanation.values.firstOrNull()
-                    if (!html.isNullOrBlank()) {
-                        Separator()
-                        Text(
-                            HtmlCompat.fromHtml(html, HtmlCompat.FROM_HTML_MODE_COMPACT).toString().trim(),
-                            color = Ios.SecondaryLabel,
-                            modifier = Modifier.padding(horizontal = 16.dp, vertical = 10.dp),
-                        )
-                    }
-                }
-                Separator()
-                SettingsTextRow(
-                    title = stringResource(R.string.geph_gift_code),
-                    value = giftCode,
-                    onValueChange = { giftCode = it },
-                    icon = Icons.Default.Redeem,
-                    tint = Ios.Pink,
-                )
-                Separator()
-                SettingsActionRow(
-                    label = stringResource(R.string.geph_redeem),
-                    icon = Icons.Default.Redeem,
-                    tint = Ios.Green,
-                    busy = busy == "redeem",
-                    enabled = busy == null && giftCode.isNotBlank(),
-                    onClick = {
-                        setBusy("redeem")
-                        onMessage(null)
-                        scope.launch {
-                            val r = withContext(Dispatchers.IO) { GephAccount.redeem(ctx, giftCode) }
-                            setBusy(null)
-                            r.onSuccess { days ->
-                                onMessage(
-                                    if (days > 0) ctx.getString(R.string.geph_redeemed, faDigits(days.toString()))
-                                    else ctx.getString(R.string.geph_redeem_nothing),
-                                )
-                                giftCode = ""
-                                voucher = null
-                                onRefresh()
-                                onChanged()
-                            }.onFailure { onMessage(ctx.getString(R.string.geph_error, it.message ?: "")) }
-                        }
-                    },
-                )
-            }
-            SettingsFooter(stringResource(R.string.geph_voucher_footer))
+
         }
 
         is GephCredential.Legacy -> {
@@ -511,19 +349,13 @@ private fun HasAccount(
                     confirmRotate = false
                     setBusy("rotate")
                     onMessage(null)
-                    val before = info?.plusExpiresUnix ?: 0L
                     scope.launch {
                         val r = withContext(Dispatchers.IO) {
-                            GephAccount.rotate(ctx).onSuccess { GephAccount.refreshInfo(ctx) }
+                            GephAccount.rotate(ctx)
                         }
                         setBusy(null)
                         r.onSuccess { fresh ->
-                            val after = GephAccount.cachedInfo(ctx)?.plusExpiresUnix ?: 0L
-                            val days = ((after - maxOf(before, System.currentTimeMillis() / 1000)) / 86_400L).toInt()
-                            onMessage(
-                                ctx.getString(R.string.geph_rotated, GephAccount.formatSecret(fresh)) +
-                                    if (days > 0) "\n" + ctx.getString(R.string.geph_rotate_reward, faDigits(days.toString())) else "",
-                            )
+                            onMessage(ctx.getString(R.string.geph_rotated, GephAccount.formatSecret(fresh)))
                             copyToClipboard(ctx, "Geph", fresh)
                             onChanged()
                         }.onFailure { onMessage(ctx.getString(R.string.geph_error, it.message ?: "")) }

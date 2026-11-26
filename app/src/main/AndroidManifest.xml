@@ -17,9 +17,6 @@
         android:required="false" />
     <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
 
-    <!-- In-app update: install the downloaded APK -->
-    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
-
     <!-- Local network sharing: starting a local-only hotspot so a second device has an address
          it can reach this phone's proxy on. Android gates WifiManager.startLocalOnlyHotspot()
          behind a location permission because a Wi-Fi radio in AP mode is a location signal; the
@@ -429,19 +426,7 @@
             android:exported="false"
             android:process=":tun" />
 
-        <!-- Delivers crash reports from the outbox (crashlogs/outbox) once there is a network,
-             retried with the scheduler's backoff. Scheduled by the crash handler just before the
-             process dies, so a report leaves whether or not the app is opened again. See
-             CrashReporter and docs/CRASH-REPORTS.md. -->
-        <service
-            android:name=".crash.CrashUploadJob"
-            android:exported="false"
-            android:permission="android.permission.BIND_JOB_SERVICE" />
-
-        <!-- «کانفیگ استدیو» on each account's central Worker: the Worker cannot tell the time, so
-             this phone takes a person whose term ended off it (and puts back ids another device
-             dropped) about every half hour while there is a network. Uploads nothing when the
-             Worker is already in step. Scheduled by StudioCentralJob.ensure. -->
+        <!-- Config Studio maintenance for the user's own central Worker. -->
         <service
             android:name=".data.studio.central.StudioCentralJob"
             android:exported="false"
@@ -724,8 +709,7 @@
                 tools:targetApi="34" />
         </service>
 
-        <!-- FileProvider: shares the downloaded update APK (in cache dir) with the system
-             package installer. Required on API 24+, since raw file:// URIs are blocked. -->
+        <!-- FileProvider: shares exported files and NPV configs with other apps. -->
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.fileprovider"

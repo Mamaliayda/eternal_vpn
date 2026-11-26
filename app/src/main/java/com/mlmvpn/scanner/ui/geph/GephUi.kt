@@ -99,14 +99,6 @@ internal fun gephDate(unixSeconds: Long): String {
 internal fun mbitText(mbit: Double): String = faDigits(String.format(java.util.Locale.US, "%.2f", mbit))
 
 @Composable
-internal fun levelLabel(info: GephAccount.Info?): String = when (info?.level) {
-    null -> stringResource(R.string.geph_level_unknown)
-    GephAccount.Level.FREE -> stringResource(R.string.geph_level_free)
-    GephAccount.Level.BASIC -> stringResource(R.string.geph_level_basic)
-    GephAccount.Level.PLUS -> stringResource(R.string.geph_level_plus)
-}
-
-@Composable
 internal fun exitLabel(exit: GephExitChoice): String = when {
     exit.isAuto -> stringResource(R.string.geph_exit_auto)
     exit.city.isNullOrBlank() -> CountryLabel.withFlag(exit.country!!)
@@ -122,7 +114,6 @@ internal fun exitLabel(exit: GephExitChoice): String = when {
 fun ColumnScope.GephPanel(onOpenPage: (String) -> Unit) {
     val ctx = LocalContext.current
     var hasAccount by remember { mutableStateOf(GephAccount.hasAccount(ctx)) }
-    var info by remember { mutableStateOf(GephAccount.cachedInfo(ctx)) }
     val exit = remember { mutableStateOf(GephSettings.exit(ctx)) }
     val tunnel by TunnelController.state.collectAsState()
 
@@ -130,9 +121,6 @@ fun ColumnScope.GephPanel(onOpenPage: (String) -> Unit) {
     LaunchedEffect(tunnel.stage) {
         hasAccount = GephAccount.hasAccount(ctx)
         exit.value = GephSettings.exit(ctx)
-        if (hasAccount) {
-            info = withContext(Dispatchers.IO) { GephAccount.refreshInfo(ctx).getOrNull() } ?: GephAccount.cachedInfo(ctx)
-        }
     }
 
     SettingsSectionHeader(stringResource(R.string.geph_account_section))
@@ -149,9 +137,6 @@ fun ColumnScope.GephPanel(onOpenPage: (String) -> Unit) {
                 title = stringResource(R.string.geph_account_row),
                 icon = Icons.Default.AccountCircle,
                 tint = Ios.Blue,
-                value = levelLabel(info),
-                subtitle = info?.plusExpiresUnix?.takeIf { info?.level != GephAccount.Level.FREE }
-                    ?.let { stringResource(R.string.geph_until, gephDate(it)) },
                 onClick = { onOpenPage(GephPages.ACCOUNT) },
             )
         }

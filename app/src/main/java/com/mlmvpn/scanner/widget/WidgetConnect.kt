@@ -584,9 +584,7 @@ object WidgetConnect {
         "psiphon" -> com.mlmvpn.core.tunnel.PsiphonRegions.options(app)
         "tor" -> com.mlmvpn.core.tunnel.TorRegions.options()
         "geph" -> {
-            val level = com.mlmvpn.core.geph.GephAccount.cachedInfo(app)?.level ?: com.mlmvpn.core.geph.GephAccount.Level.FREE
-            com.mlmvpn.core.geph.GephExits.countries(com.mlmvpn.core.geph.GephExits.cached(app), level)
-                .filter { it.usable(level) > 0 }.map { it.code }
+            com.mlmvpn.core.geph.GephExits.countries(com.mlmvpn.core.geph.GephExits.cached(app)).map { it.code }
         }
         "masque", "wireguard", "warp" -> com.mlmvpn.core.warp.Nat64Exits.countries(app) + measuredIpv4(app)
         "warp_on_warp" -> measuredIpv4(app)

@@ -2961,45 +2961,7 @@
     <string name="sni_configs_deleted">%1$s کانفیگ SNI حذف شد</string>
     <string name="sni_no_cloud_config">کانفیگ ابری‌ای برای تبدیل وجود ندارد. کانفیگ‌های SNI از پنل‌ها ساخته می‌شوند — BPB، EDG، نهان و MLM، حتی ترکیب‌شده‌ها — چون موتور SNI از لبهٔ کلادفلر عبور می‌کند و فقط کانفیگی که پشت همان لبه باشد از این راه قابل دسترسی است.</string>
     <!-- ==== تنظیمات > به‌روزرسانی نرم‌افزار ==== -->
-    <string name="settings_software_update">به‌روزرسانی نرم‌افزار</string>
-    <string name="settings_software_update_desc">بررسی نسخهٔ جدید و نصب آن</string>
-    <string name="update_check_now">بررسی به‌روزرسانی</string>
-    <string name="update_download_and_install">دانلود و نصب</string>
-    <string name="update_install_now">همین حالا نصب کن</string>
     <string name="update_checking">در حال بررسی…</string>
-    <string name="update_downloading_pct">در حال دانلود… ٪%1$d</string>
-    <string name="update_check_failed">بررسی کامل نشد</string>
-    <string name="update_no_asset">آخرین نسخه برای این گوشی فایلی ندارد</string>
-    <string name="update_incomplete_download">دانلود پیش از کامل شدن فایل قطع شد</string>
-    <string name="update_up_to_date_line">نرم‌افزار شما به‌روز است. آخرین بررسی: %1$s</string>
-    <string name="update_available_line">نسخهٔ %1$s موجود است — %2$s</string>
-    <string name="update_failed_line">بررسی نشد: %1$s. معمولاً یعنی گیت‌هاب روی این شبکه در دسترس نیست — یک تونل وصل کنید و دوباره امتحان کنید.</string>
-    <string name="update_last_checked">آخرین بررسی: %1$s</string>
-    <string name="update_never_checked">هنوز هیچ بررسی‌ای روی این دستگاه کامل نشده.</string>
-    <string name="update_ready_to_install">دانلود شده و آمادهٔ نصب است.</string>
-    <string name="update_auto_downloading">در حال دانلود در پس‌زمینه از طریق Wi-Fi…</string>
-    <string name="update_mobile_data_warning">دانلود از طریق شبکهٔ تلفن همراه ممکن است هزینه‌های اضافی در بر داشته باشد. در صورت امکان، به جای آن از شبکه Wi-Fi دانلود کنید.</string>
-    <string name="update_auto_download_wifi">دانلود خودکار از طریق Wi-Fi</string>
-    <string name="update_auto_download_wifi_desc">پس از اتصال به شبکه Wi-Fi، به‌روزرسانی‌های نرم‌افزار به طور خودکار دانلود می‌شوند.</string>
-    <string name="update_auto_download_footer">فقط دانلود خودکار است، آن هم فقط روی Wi-Fi بدون محدودیت — هات‌اسپات یا اتصالی که خودتان «محدود» علامت زده‌اید دست‌نخورده می‌ماند. نصب همیشه منتظر شماست: اندروید تأیید می‌خواهد و هیچ برنامه‌ای نمی‌تواند از آن رد شود.</string>
-    <string name="update_last_installed">آخرین به‌روزرسانی</string>
-    <string name="update_installed_on">نصب‌شده</string>
-    <string name="update_installed_on_line">آخرین به‌روزرسانی در %1$s نصب شده است.</string>
-    <string name="update_installed_unknown">تاریخ نصب در دسترس نیست.</string>
-    <string name="update_last_installed_footer">این تاریخ از خودِ اندروید خوانده می‌شود نه از چیزی که برنامه ثبت کرده، پس بعد از پاک کردن داده‌ها یا بازگرداندن پشتیبان هم درست می‌ماند.</string>
-    <string name="update_checking_versions">در حال بررسی نسخه‌های به‌روز…</string>
-    <string name="update_you_are_up_to_date">نرم‌افزار شما به‌روز است.</string>
-    <string name="update_info_card_title">اطلاعات به‌روزرسانی نرم‌افزار</string>
-    <string name="update_info_current_version">نسخهٔ فعلی: %1$s</string>
-    <string name="update_info_checked_at">آخرین بررسی: %1$s</string>
-    <string name="update_check_again">بررسی دوباره</string>
-    <string name="update_new_version_available">نسخهٔ جدیدی موجود است.</string>
-    <string name="update_row_version">نسخه</string>
-    <string name="update_row_size">حجم</string>
-    <string name="update_whats_new">تازه‌های این نسخه</string>
-    <string name="update_download">دانلود</string>
-    <string name="update_downloading">در حال دانلود…</string>
-
     <!-- Local network sharing -->
     <string name="lan_section_address">آدرس برای دستگاه مقابل</string>
     <string name="lan_section_clients">دستگاه‌های متصل</string>
@@ -3166,31 +3128,21 @@
 
     <!-- Crash reporting and the Proxy Mode warning -->
     <string name="settings_crash_report">گزارش خطا</string>
-    <string name="settings_crash_report_count">%1$d گزارش ذخیره‌شده — برای ارسال بزنید</string>
+    <string name="settings_crash_report_count">%1$d گزارش ذخیره‌شده — برای اشتراک‌گذاری بزنید</string>
     <string name="settings_crash_report_none">چیزی ثبت نشده. برنامه روی این گوشی کرش نکرده است.</string>
     <string name="crash_offer_title">برنامه ناگهانی بسته شد</string>
-    <string name="crash_offer_body">گزارشی از آنچه پیش آمد روی همین گوشی ذخیره شد. فرستادنش تنها راهی است که مشکل واقعاً پیدا شود — فقط خطا و مدل دستگاه شما در آن است، هیچ چیزی از کانفیگ‌ها یا ترافیک شما نیست.</string>
-    <string name="crash_offer_send">ارسال گزارش</string>
+    <string name="crash_offer_body">گزارش روی همین گوشی ذخیره شد. با انتخاب «اشتراک‌گذاری گزارش»، برگهٔ اشتراک‌گذاری اندروید باز می‌شود؛ تا وقتی خودتان برنامه‌ای را انتخاب نکنید چیزی فرستاده نمی‌شود.</string>
+    <string name="crash_offer_send">اشتراک‌گذاری گزارش</string>
     <string name="crash_offer_skip">الان نه</string>
     <string name="proxy_warn_title">حالت پروکسی روشن است</string>
     <string name="proxy_warn_body">با روشن بودن این گزینه و اتصال یک کانفیگ V2Ray (وی‌لس، وی‌مس، تروجان، شدوساکس، ریلیتی)، گوشی شما تونل نمی‌شود. برنامه یک پروکسی محلی منتشر می‌کند و فقط برنامه‌هایی که خودتان دستی به آن پورت وصلشان کرده‌اید از آن رد می‌شوند — مرورگر و بقیهٔ اپ‌های شما با همان اینترنت معمولی و بدون پوشش کار می‌کنند، حتی وقتی برنامه می‌گوید متصل است.\n\nMASQUE و وایرگارد و وارپ‌در‌وارپ مشمول این نیستند: با آن‌ها کل گوشی تونل‌شده می‌ماند و حالت پروکسی همان چیزی است که اشتراک‌گذاری روی «شبکه محلی» را ممکن می‌کند.\n\nاگر خودتان عمداً روشنش نکرده‌اید، خاموشش کنید.</string>
     <string name="proxy_warn_turn_off">خاموش کردن</string>
     <string name="proxy_warn_i_know">می‌دانم</string>
     <string name="proxy_warn_turned_off">حالت پروکسی خاموش شد. برای اعمال، دوباره وصل شوید.</string>
-    <string name="crash_offer_sending">در حال ارسال…</string>
-    <string name="crash_offer_sent">گزارش ارسال شد. ممنون — همین است که باگ را قابل پیدا کردن می‌کند.</string>
-    <string name="crash_offer_send_failed">سرور در دسترس نبود. گزارش هر وقت ممکن شد خودکار فرستاده می‌شود — یا همین حالا با یک برنامه بفرستید.</string>
     <!-- Cloudflare verification diagnostics -->
-    <string name="cloud_diag_wrong_prompt">این پیام اشتباه است؟ ارسال گزارش</string>
-    <string name="cloud_diag_sending">در حال ارسال گزارش…</string>
-    <string name="cloud_diag_sent">گزارش ارسال شد. ممنون — همین است که علت را قابل پیدا کردن می‌کند.</string>
-    <string name="cloud_diag_failed">سرور در دسترس نبود. بعد از وصل شدن تونل دوباره تلاش کنید.</string>
     <string name="cloud_diag_resolved">حساب شما سالم است. پنل باز شد.</string>
     <string name="cloud_subdomain_failed_reason">کلادفلر رد کرد: %1$s</string>
     <!-- Update: the notice is a notice, the download lives in Settings -->
-    <string name="update_go_to_settings">رفتن به تنظیمات برای نصب</string>
-    <string name="update_notice_where">برای دانلود و نصب به تنظیمات &#8250; بروزرسانی نرم‌افزار &#8250; دانلود و نصب بروید.</string>
-    <string name="update_later">بعداً</string>
     <!-- Cloudflare account troubleshooting: what the probe saw, and the one thing to try -->
     <string name="cf_fix_open">عیب‌یابی این حساب</string>
     <string name="cf_fix_title">عیب‌یابی حساب کلادفلر</string>
@@ -3218,7 +3170,6 @@
     <string name="cf_advice_retry">دوباره تلاش کن</string>
     <string name="cf_advice_switch_scheme">جور دیگر بفرست</string>
     <string name="cf_advice_create_subdomain">ساخت زیردامنه</string>
-    <string name="cf_advice_send_report">ارسال گزارش</string>
     <string name="cf_advice_network_title">به کلادفلر نرسیدیم</string>
     <string name="cf_advice_network_body">کلادفلر روی این اینترنت درست پاسخ نداد. دکتر کلادفلر را اجرا کنید تا شبکه، حساب و کانفیگ‌ها جدا بررسی شوند.</string>
     <string name="cf_advice_token_dead_title">کلادفلر این کلید را رد کرد</string>
@@ -3232,21 +3183,20 @@
     <string name="cf_advice_nosub_title">این حساب هنوز زیردامنهٔ workers.dev ندارد</string>
     <string name="cf_advice_nosub_body">کلادفلر درست جواب داد: این حساب هیچ‌وقت زیردامنه نداشته. ساختنش چند ثانیه است و فقط یک بار لازم است.</string>
     <string name="cf_advice_unknown_title">علت چیزی نیست که این نسخه بشناسد</string>
-    <string name="cf_advice_unknown_body">کلادفلر جواب می‌دهد و چیزی این‌جا خراب به نظر نمی‌رسد، پس چیز دیگری پنل را قفل کرده. فرستادن گزارش همان چیزی است که پیدا کردنش را ممکن می‌کند — فقط کدهای وضعیت را می‌برد، نه توکن و ایمیل و زیردامنهٔ شما را.</string>
+    <string name="cf_advice_unknown_body">کلادفلر پاسخ می‌دهد و اینجا مشکلی پیدا نشد؛ شاید عامل دیگری پنل را مسدود کرده باشد. بعداً دوباره امتحان کنید یا این کدهای وضعیت را با پشتیبانی کلادفلر در میان بگذارید.</string>
     <string name="cf_advice_ok_title">این حساب سالم است</string>
     <string name="cf_advice_ok_body">کلادفلر به همهٔ بررسی‌ها جواب داد، کلید کار می‌کند و زیردامنهٔ workers.dev سر جایش است. چیزی این‌جا لازم نیست عوض شود.</string>
     <!-- Troubleshooting a credential that cannot be added yet -->
     <string name="cf_fix_accounts_probe">فهرست حساب‌ها</string>
     <string name="cf_fix_no_answer">جوابی نیامد</string>
-    <string name="cf_fix_report_footer">گزارش، کدهای وضعیت بالا و نسخهٔ برنامه و مدل گوشی شما را می‌برد. هیچ‌وقت توکن، ایمیل یا نام workers.dev شما را نمی‌برد.</string>
     <string name="cf_fix_open_from_add">چرا اضافه نشد؟</string>
     <string name="cf_advice_need_email_title">کلید سراسری بدون ایمیل حساب کار نمی‌کند</string>
     <string name="cf_advice_need_email_body">جای ایمیل خالی مانده است. کلید سراسری (Global API Key) فقط همراه ایمیل همان حساب معتبر است — تنهایی، کلادفلر آن را دقیقاً مثل یک کلید غلط رد می‌کند. توکن API برعکس است: هویت خودش را دارد و به ایمیل نیازی ندارد. یا ایمیل را پر کنید، یا به‌جایش یک توکن بگذارید.</string>
     <string name="cf_advice_no_accounts_title">کلید کار می‌کند ولی هیچ حسابی نشان نمی‌دهد</string>
     <string name="cf_advice_no_accounts_body">کلادفلر آن را قبول کرد ولی هیچ حسابی برای کار کردن فهرست نکرد. آن‌جا «تو کی هستی» و «اجازه داری چه ببینی» دو دسترسی جدا هستند. توکن را با قالب Edit Cloudflare Workers بسازید که حساب را هم شامل می‌شود، یا کلید سراسری را همراه ایمیل حساب وارد کنید.</string>
     <string name="cf_advice_cred_ok_title">خود کلید سالم است</string>
-    <string name="cf_advice_cred_ok_body">کلادفلر آن را تایید کرد و حساب شما را هم فهرست کرد، پس چیزی که جلوی افزودن حساب را گرفته توکن یا ایمیل نیست. یک بار دیگر امتحان کنید؛ اگر باز هم نشد گزارش را بفرستید — همین حالت است که ارزش بررسی دارد.</string>
-    <string name="cf_advice_cred_report_body">فرستادن گزارش همان چیزی است که پیدا کردن این را ممکن می‌کند. فقط کدهای وضعیت بالا را می‌برد، نه توکن و نه ایمیل شما را.</string>
+    <string name="cf_advice_cred_ok_body">کلادفلر احراز هویت را پذیرفت و حساب را نشان داد؛ پس مشکل افزودن حساب از توکن یا ایمیل نیست. یک بار دیگر امتحان کنید؛ اگر باز هم نشد با پشتیبانی کلادفلر تماس بگیرید.</string>
+    <string name="cf_advice_cred_report_body">این بررسی‌ها علت را پیدا نکردند. کدهای وضعیت بالا را ببینید و اگر مشکل ادامه داشت با پشتیبانی کلادفلر تماس بگیرید.</string>
 
     <string name="home_iran">کانفیگ ایران</string>
     <string name="home_fronting">دامین فرانتینگ</string>
@@ -4636,11 +4586,6 @@
     <string name="geph_stage_tunnel">تونل باز شد…</string>
     <string name="geph_copied">کپی شد</string>
     <string name="geph_error">خطا: %1$s</string>
-    <string name="geph_level_unknown">هنوز بررسی نشده</string>
-    <string name="geph_level_free">رایگان</string>
-    <string name="geph_level_basic">پایه</string>
-    <string name="geph_level_plus">پلاس</string>
-    <string name="geph_until">تا %1$s</string>
     <string name="geph_exit_auto">خودکار</string>
     <string name="geph_mbit">%1$s مگابیت</string>
     <string name="geph_account_section">حساب گف</string>
@@ -4667,7 +4612,6 @@
     <string name="geph_speed_failed">سنجش تمام نشد — دوباره امتحان کنید</string>
     <string name="geph_speed_footer">یک مگابایت از شبکهٔ دانلود گوگل، از داخل خود گف. سرعت حساب رایگان را خود سرورهای گف محدود می‌کنند، پس چند مگابیت عدد عادی آن است.</string>
     <string name="geph_account_title">حساب گف</string>
-    <string name="geph_not_an_account">شبکهٔ گف این حساب را نمی‌شناسد.</string>
     <string name="geph_new_account_section">حساب تازه</string>
     <string name="geph_register_progress">حل معمای شبکه… %1$s٪</string>
     <string name="geph_cancel">لغو</string>
@@ -4683,18 +4627,8 @@
     <string name="geph_legacy_section">حساب قدیمی گف (نام کاربری و رمز)</string>
     <string name="geph_legacy_user">نام کاربری</string>
     <string name="geph_legacy_pass">رمز</string>
-    <string name="geph_legacy_wrong">شبکهٔ گف این نام کاربری و رمز را نپذیرفت.</string>
     <string name="geph_legacy_footer">حساب‌های گف ۴ هنوز با نام کاربری و رمز وارد می‌شوند.</string>
     <string name="geph_legacy_has_footer">این یک حساب قدیمی گف ۴ است و با همان نام کاربری و رمز کار می‌کند.</string>
-    <string name="geph_level">نوع حساب</string>
-    <string name="geph_user_id">شمارهٔ کاربر</string>
-    <string name="geph_expires">فعال تا</string>
-    <string name="geph_recurring">تمدید خودکار</string>
-    <string name="geph_data_used">مصرف این دوره</string>
-    <string name="geph_mb_of">%1$s از %2$s مگابایت</string>
-    <string name="geph_renews">تمدید در %1$s</string>
-    <string name="geph_refresh">بررسی دوبارهٔ حساب</string>
-    <string name="geph_free_footer">حساب رایگان از سرورهای رایگان گف استفاده می‌کند که سرعتشان را خود گف محدود کرده است. کد هدیه یا جایگزینی کد حساب در پایین می‌تواند روز پلاس اضافه کند.</string>
     <string name="geph_code_section">کد حساب</string>
     <string name="geph_show_code">نمایش کد</string>
     <string name="geph_hide_code">پنهان کردن کد</string>
@@ -4702,14 +4636,6 @@
     <string name="geph_rotate">جایگزینی کد حساب</string>
     <string name="geph_code_footer">کد، خودِ حساب است. هر کس آن را داشته باشد می‌تواند از حساب استفاده کند و بدون آن حساب قابل بازیابی نیست.</string>
     <string name="geph_rotate_footer">جایگزینی یک کد تازه می‌دهد و کد فعلی را همه‌جا از کار می‌اندازد — همهٔ دستگاه‌ها باید با کد جدید دوباره وارد شوند. شبکهٔ گف برای جایگزینی کد قدیمی روز پلاس هدیه می‌دهد.</string>
-    <string name="geph_voucher_section">کد هدیه</string>
-    <string name="geph_free_voucher">گرفتن کد هدیهٔ رایگان</string>
-    <string name="geph_no_free_voucher">شبکهٔ گف فعلاً کد هدیهٔ رایگانی برای این حساب ندارد.</string>
-    <string name="geph_gift_code">کد هدیه</string>
-    <string name="geph_redeem">استفاده از این کد</string>
-    <string name="geph_redeemed">انجام شد — %1$s روز اضافه شد.</string>
-    <string name="geph_redeem_nothing">کد پذیرفته شد ولی روزی اضافه نکرد.</string>
-    <string name="geph_voucher_footer">کدهای هدیه به این حساب روز اضافه می‌کنند. گف گاهی کد رایگان می‌دهد؛ دکمهٔ بالا از خود شبکه می‌پرسد.</string>
     <string name="geph_remove_section">این گوشی</string>
     <string name="geph_remove">پاک کردن حساب از این گوشی</string>
     <string name="geph_remove_footer">فقط این گوشی آن را فراموش می‌کند. خود حساب در شبکه می‌ماند و با کدش همه‌جا کار می‌کند.</string>
@@ -4718,7 +4644,6 @@
     <string name="geph_rotate_confirm">یک کد تازه می‌گیرید و کد فعلی همه‌جا از کار می‌افتد. کد جدید برایتان کپی می‌شود. ادامه می‌دهید؟</string>
     <string name="geph_rotate_yes">جایگزین کن</string>
     <string name="geph_rotated">کد حساب جدید (کپی شد): %1$s — کد قبلی دیگر کار نمی‌کند.</string>
-    <string name="geph_rotate_reward">شبکهٔ گف %1$s روز پلاس به این حساب اضافه کرد.</string>
     <string name="geph_exit_title">سرور خروج</string>
     <string name="geph_exit_auto_sub">گف یک سرور کم‌بار انتخاب می‌کند</string>
     <string name="geph_fastest_section">سریع‌ترین از همین خط</string>
@@ -4741,7 +4666,6 @@
     <string name="geph_exits_loading">گرفتن فهرست سرورها از گف…</string>
     <string name="geph_servers_count">%1$s سرور</string>
     <string name="geph_any_city">هر شهری</string>
-    <string name="geph_plus_only">فقط حساب پلاس</string>
     <string name="geph_load">شلوغی %1$s٪</string>
     <string name="geph_streaming">مناسب استریم</string>
     <string name="geph_exits_footer">شلوغی یعنی کم‌بارترین سرور آن شهر همین حالا چقدر مشغول است.</string>
@@ -4962,7 +4886,6 @@
     <string name="mae_remove_confirm_body">هرچه MAE دربارهٔ آن یاد گرفته هم پاک می‌شود.</string>
     <string name="mae_remove_confirm_part">%1$s بخشی از «%2$s» است. با برداشتنش «%2$s» و هرچه MAE دربارهٔ آن یاد گرفته حذف می‌شود.</string>
     <string name="mae_site_is_app">%1$s مال «%2$s» است؛ همان برنامه اضافه شد.</string>
-    <string name="settings_update_available">به‌روزرسانی نرم‌افزار آماده است</string>
     <string name="worker_setup">راه‌اندازی</string>
     <string name="worker_update">به‌روزرسانی</string>
     <string name="worker_version">نسخهٔ %1$d</string>
@@ -4986,12 +4909,6 @@
     <string name="mae_app_enabled_footer">وقتی خاموش باشد، این برنامه مثل بقیهٔ ترافیک از مسیر پیش‌فرض می‌رود و آنچه دربارهٔ آن یاد گرفته شده حفظ می‌شود.</string>
     <string name="mae_route_footer">«خودکار» یعنی موتور تطبیقی بهترین مسیر را خودش انتخاب می‌کند و اگر از کار افتاد عوضش می‌کند.</string>
     <string name="mae_remove_app">حذف از موتور تطبیقی</string>
-    <string name="crash_notice_title">برنامه ناگهانی بسته شد</string>
-    <string name="crash_notice_body">گزارشی از آنچه پیش آمد برای رفع مشکل فرستاده می‌شود: فقط خطا و مدل دستگاه شما، هیچ چیزی از کانفیگ‌ها یا ترافیک شما. می‌توانید این کار را در تنظیمات ← گزارش خطا خاموش کنید.</string>
-    <string name="crash_notice_ok">باشه</string>
-    <string name="crash_notice_off">گزارش نفرست</string>
-    <string name="settings_crash_auto">ارسال خودکار گزارش خطا</string>
-    <string name="settings_crash_auto_desc">وقتی برنامه به‌خاطر خطا بسته شود، خود خطا و مدل دستگاه برای سازنده فرستاده می‌شود؛ هیچ چیزی از کانفیگ‌ها یا ترافیک شما.</string>
     <!-- FLUX -->
     <string name="flux_title_short">FLUX</string>
     <string name="flux_title">موتور FLUX ام‌ال‌ام</string>

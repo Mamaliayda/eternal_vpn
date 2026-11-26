@@ -3,7 +3,7 @@ package com.mlmvpn.scanner.utils
 /**
  * Strips credential-shaped text out of anything that leaves the device or lands in a log.
  *
- * Crash reports go to a GitHub issue (see CrashReporter.upload); an exception message that
+ * Crash reports stay local until the user shares them; an exception message that
  * happened to carry a Cloudflare key or an email would otherwise travel with it. This is a last
  * line of defence, not a licence to put secrets in messages: shapes it does not know pass through.
  *

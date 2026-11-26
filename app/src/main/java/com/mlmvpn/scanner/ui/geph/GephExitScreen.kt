@@ -56,7 +56,6 @@ fun GephExitScreen(onBack: () -> Unit, backLabel: String) {
     var loading by remember { mutableStateOf(true) }
     var loadError by remember { mutableStateOf<String?>(null) }
     var selected by remember { mutableStateOf(GephSettings.exit(ctx)) }
-    val level = GephAccount.cachedInfo(ctx)?.level ?: GephAccount.Level.FREE
 
     // The fastest-server run.
     var probing by remember { mutableStateOf(false) }
@@ -118,12 +117,9 @@ fun GephExitScreen(onBack: () -> Unit, backLabel: String) {
                     probeResults.clear()
                     // One candidate per usable country: its lightest city. Measuring every
                     // server would cost minutes for a difference the country already decides.
-                    val candidates = GephExits.countries(exits, level)
-                        .filter { it.usable(level) > 0 }
-                        .map { c ->
-                            val city = c.cities.firstOrNull { city -> city.exits.any { it.allows(level) } }
-                            GephExitChoice(c.code, city?.name)
-                        }
+                    val candidates = GephExits.countries(exits).map { c ->
+                        GephExitChoice(c.code, c.cities.firstOrNull()?.name)
+                    }
                     scope.launch {
                         val r = withContext(Dispatchers.IO) {
                             runCatching {
@@ -195,8 +191,7 @@ fun GephExitScreen(onBack: () -> Unit, backLabel: String) {
         if (loading && exits.isEmpty()) SettingsFooter(stringResource(R.string.geph_exits_loading))
         loadError?.let { SettingsFooter(stringResource(R.string.geph_error, it)) }
 
-        GephExits.countries(exits, level).forEach { country ->
-            val usable = country.usable(level) > 0
+        GephExits.countries(exits).forEach { country ->
             SettingsSectionHeader(
                 CountryLabel.withFlag(country.code) + " · " +
                     stringResource(R.string.geph_servers_count, faDigits(country.exits.size.toString())),
@@ -206,26 +201,24 @@ fun GephExitScreen(onBack: () -> Unit, backLabel: String) {
                     title = stringResource(R.string.geph_any_city),
                     icon = if (selected.country == country.code && selected.city.isNullOrBlank()) Icons.Default.Check else null,
                     tint = Ios.Green,
-                    value = if (!usable) stringResource(R.string.geph_plus_only) else null,
+                    value = null,
                     showChevron = false,
-                    onClick = if (usable) ({ choose(GephExitChoice(country.code, null)) }) else null,
+                    onClick = { choose(GephExitChoice(country.code, null)) },
                 )
                 country.cities.forEach { city ->
-                    val cityUsable = city.exits.any { it.allows(level) }
                     val isSel = selected.country == country.code && selected.city == city.name
                     Separator()
                     SettingsRow(
                         title = city.name.ifBlank { country.code },
                         icon = if (isSel) Icons.Default.Check else Icons.Default.LocationCity,
                         tint = if (isSel) Ios.Green else Ios.Gray,
-                        value = if (!cityUsable) stringResource(R.string.geph_plus_only)
-                            else stringResource(R.string.geph_load, faDigits((city.lightestLoad * 100).toInt().toString())),
+                        value = stringResource(R.string.geph_load, faDigits((city.lightestLoad * 100).toInt().toString())),
                         subtitle = listOfNotNull(
                             stringResource(R.string.geph_servers_count, faDigits(city.exits.size.toString())),
                             if (city.streaming) stringResource(R.string.geph_streaming) else null,
                         ).joinToString(" · "),
                         showChevron = false,
-                        onClick = if (cityUsable) ({ choose(GephExitChoice(country.code, city.name)) }) else null,
+                        onClick = { choose(GephExitChoice(country.code, city.name)) },
                     )
                 }
             }

@@ -21,11 +21,6 @@ android {
         targetSdk 34
         versionCode 81
         versionName "1.2.45"
-        // When this APK was built, in minutes since 2026-01-01: the crash collector counts a build
-        // as newer by it, so a new APK with the same versionCode still reopens a closed issue it
-        // hits (crash/CrashClient.appVersion).
-        buildConfigField "long", "BUILD_STAMP", "${System.currentTimeMillis().intdiv(60000L) - 29453760L}L"
-
         testInstrumentationRunner project.findProperty('scoutDeviceRunner') ?: "androidx.test.runner.AndroidJUnitRunner"
 
         // Force extraction of native libraries so standalone .so binaries

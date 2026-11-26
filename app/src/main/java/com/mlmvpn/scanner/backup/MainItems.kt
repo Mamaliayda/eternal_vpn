@@ -48,7 +48,6 @@ internal object MainItems {
             "main_general", BackupKind.MAIN, "سایر تنظیمات برنامه", "Other app settings",
             listOf(
                 PrefsSlice(DEFAULT_PREFS, keys = setOf("screen_off_timeout", "show_realtime_traffic", "enable_usage_tracking", "quick_tile_count")),
-                PrefsSlice("app_settings", keys = setOf("update_auto_download_wifi")),
                 PrefsSlice("cfnet_ui", whole = true),
             ),
         ),

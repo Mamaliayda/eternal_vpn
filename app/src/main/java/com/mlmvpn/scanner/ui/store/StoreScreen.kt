@@ -111,7 +111,6 @@ fun StoreScreen(onBack: () -> Unit) {
     val jobs by StoreManager.jobs.collectAsState()
     val checking by StoreManager.checking.collectAsState()
     val lastCheck by StoreManager.lastCheck.collectAsState()
-    val appState by com.mlmvpn.scanner.update.UpdateChecker.state.collectAsState()
 
     var tab by rememberSaveable { mutableStateOf(StoreTab.TODAY) }
     var openId by rememberSaveable { mutableStateOf<String?>(null) }
@@ -120,8 +119,6 @@ fun StoreScreen(onBack: () -> Unit) {
         StoreManager.load(context)
         StoreManager.checkIfStale(context)
     }
-    // The app row is read from the updater's own state; redraw when it moves.
-    LaunchedEffect(appState) { StoreManager.load(context) }
     // A job that ends changes what is installed.
     LaunchedEffect(jobs.values.count { it.running }) { StoreManager.load(context) }
 
@@ -216,7 +213,6 @@ private fun TodayPage(
 @Composable
 private fun AppsPage(rows: List<StoreRow>, jobs: Map<String, StoreJob>, onBack: () -> Unit, onOpen: (String) -> Unit) {
     IosScreen(onBack = onBack, largeTitle = tr("همه", "Everything")) {
-        Section(tr("برنامه", "App"), rows.filter { it.item.kind == StoreKind.APP }, jobs, onOpen)
         Section(tr("هسته‌ها", "Engines"), rows.filter { it.item.kind == StoreKind.ENGINE && it.item.source !is StoreSource.WithApp }, jobs, onOpen)
         Section(tr("ورکرها", "Workers"), rows.filter { it.item.kind == StoreKind.WORKER }, jobs, onOpen,
             footer = tr("کدی که برنامه روی حساب کلودفلر شما مستقر می‌کند. بروزرسانی، کد ورکرهای مستقرشده را هم عوض می‌کند و تنظیمات، کاربران و دیتابیسشان دست نمی‌خورد. ورکرهایی که استور نشناسد هرگز لمس نمی‌شوند.",
@@ -271,22 +267,20 @@ private fun UpdatesPage(
                 }
             }
         } else {
-            if (pending.any { it.item.kind != StoreKind.APP }) {
-                Row(Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 4.dp), verticalAlignment = Alignment.CenterVertically) {
-                    Text(
-                        all?.let { if (it.running) it.phase else (it.done ?: it.error ?: "") } ?: "",
-                        color = Ios.SecondaryLabel, fontSize = 13.sp, maxLines = 1, overflow = TextOverflow.Ellipsis,
-                        modifier = Modifier.weight(1f),
-                    )
-                    Pill(
-                        if (all?.running == true) tr("در حال بروزرسانی…", "Updating…") else tr("بروزرسانی همه", "Update All"),
-                        prominent = true,
-                        enabled = all?.running != true,
-                        onClick = { StoreManager.updateAll(context) },
-                    )
-                }
-                Spacer(Modifier.height(8.dp))
+            Row(Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 4.dp), verticalAlignment = Alignment.CenterVertically) {
+                Text(
+                    all?.let { if (it.running) it.phase else (it.done ?: it.error ?: "") } ?: "",
+                    color = Ios.SecondaryLabel, fontSize = 13.sp, maxLines = 1, overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier.weight(1f),
+                )
+                Pill(
+                    if (all?.running == true) tr("در حال بروزرسانی…", "Updating…") else tr("بروزرسانی همه", "Update All"),
+                    prominent = true,
+                    enabled = all?.running != true,
+                    onClick = { StoreManager.updateAll(context) },
+                )
             }
+            Spacer(Modifier.height(8.dp))
             SettingsGroup {
                 pending.sortedBy { order(it.item) }.forEachIndexed { i, r ->
                     if (i > 0) Separator()
@@ -429,7 +423,7 @@ private fun ProductPage(row: StoreRow, job: StoreJob?, onBack: () -> Unit) {
             InfoRow(tr("سازنده", "Developer"), item.developer)
             Separator()
             InfoRow(tr("نسخهٔ در حال استفاده", "Version in use"), row.version ?: when (item.source) {
-                is StoreSource.WithApp, is StoreSource.App -> tr("همراه برنامه", "Shipped with the app")
+                is StoreSource.WithApp, is StoreSource.Bundled -> tr("همراه برنامه", "Shipped with the app")
                 else -> tr("همراه برنامه", "Shipped with the app")
             })
             if (row.fromStore) {
@@ -472,11 +466,9 @@ private fun ProductPage(row: StoreRow, job: StoreJob?, onBack: () -> Unit) {
                     onClick = { StoreManager.rollback(context, item.id) },
                 )
             }
-            if (item.kind != StoreKind.APP) {
-                if (item.repo != null || row.canRollback) Separator()
-                SettingsActionRow(label = tr("بررسی دوباره", "Check again"), icon = Icons.Default.Refresh) {
-                    StoreManager.checkAll(context)
-                }
+            if (item.repo != null || row.canRollback) Separator()
+            SettingsActionRow(label = tr("بررسی دوباره", "Check again"), icon = Icons.Default.Refresh) {
+                StoreManager.checkAll(context)
             }
         }
         row.error?.let {
@@ -696,7 +688,7 @@ private fun FeatureCard(row: StoreRow, job: StoreJob?, onOpen: () -> Unit) {
             .padding(20.dp),
     ) {
         Text(
-            if (row.item.kind == StoreKind.APP) tr("نسخهٔ تازهٔ برنامه", "A NEW VERSION OF THE APP") else tr("بروزرسانی تازه", "NEW UPDATE"),
+            tr("بروزرسانی تازه", "NEW UPDATE"),
             color = Color.White.copy(alpha = 0.8f), fontSize = 12.sp, fontWeight = FontWeight.Bold,
         )
         Spacer(Modifier.height(6.dp))
@@ -831,8 +823,8 @@ private fun InfoStrip(row: StoreRow) {
             "developer" -> tr("سازنده", "Developer")
             "channel" -> tr("کانال امضاشده", "Signed")
             else -> when (row.item.source) {
-                is StoreSource.WithApp, is StoreSource.App -> tr("برنامه", "App")
-                is StoreSource.Channel -> tr("کانال", "Channel")
+                is StoreSource.WithApp -> tr("برنامه", "App")
+                is StoreSource.Bundled -> tr("همراه برنامه", "Bundled")
                 else -> tr("گیت‌هاب", "GitHub")
             }
         })
@@ -931,10 +923,9 @@ fun StoreIconTile(item: StoreItem, size: Dp) {
 // ── words ────────────────────────────────────────────────────────────────────────────────────
 
 private fun order(item: StoreItem): Int = when (item.kind) {
-    StoreKind.APP -> 0
-    StoreKind.ENGINE -> 1
-    StoreKind.WORKER -> 2
-    StoreKind.DATA -> 3
+    StoreKind.ENGINE -> 0
+    StoreKind.WORKER -> 1
+    StoreKind.DATA -> 2
 }
 
 private fun versionLine(row: StoreRow): String {
@@ -960,9 +951,8 @@ private fun sourceLabel(item: StoreItem, row: StoreRow): String = when (val s = 
     is StoreSource.GithubFile -> "${s.repo} · ${s.path}"
     is StoreSource.GithubFiles -> "${s.repo} · " + s.paths.joinToString(" + ")
     is StoreSource.SignedManifest -> tr("فهرست نسخه‌های امضاشدهٔ سازنده", "The developer's signed release list")
-    is StoreSource.Channel -> tr("کانال امضاشدهٔ MLM VPN", "MLM VPN signed channel")
+    is StoreSource.Bundled -> tr("همراه برنامه", "Bundled with the app")
     is StoreSource.WithApp -> tr("همراه برنامه", "With the app")
-    is StoreSource.App -> item.repo ?: ""
 }
 
 private fun size(bytes: Long): String = when {

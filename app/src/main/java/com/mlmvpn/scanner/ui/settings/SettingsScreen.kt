@@ -47,7 +47,6 @@ import androidx.compose.material.icons.filled.Https
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.SettingsEthernet
 import androidx.compose.material.icons.filled.SwapHoriz
-import androidx.compose.material.icons.filled.SystemUpdate
 import androidx.compose.material.icons.filled.Timeline
 import androidx.compose.material.icons.filled.TextFields
 import androidx.compose.material.icons.filled.Timer
@@ -101,8 +100,6 @@ private const val P_PORT = "port"
 private const val P_PROXY_MODE = "proxy_mode_page"
 private const val P_ALLOW_LAN = "allow_lan_page"
 private const val P_SMART_IRAN = "smart_iran_page"
-private const val P_UPDATE = "software_update"
-private const val P_UPDATE_CHECK = "software_update_check"
 private const val P_DISPLAY = "display"
 private const val P_WALLPAPER = "wallpaper"
 private const val P_WALLPAPER_PICK = "wallpaper_pick"
@@ -146,15 +143,6 @@ const val ROUTE_CF_RESOURCES = P_CF_RESOURCES
 const val ROUTE_PROXY_MODE = P_PROXY_MODE
 
 /**
- * The download-and-install page, addressable from outside this screen.
- *
- * The "a new version is out" notice no longer downloads anything itself. It is a notice, and the
- * one place an update is installed from is this page -- so a user who has just been told about a
- * version is sent here rather than being handed a second, parallel downloader that knew nothing
- * about the Wi-Fi setting, the retry, or whether the file was already on disk.
- */
-const val ROUTE_UPDATE_DOWNLOAD = P_UPDATE_CHECK
-/**
  * One resource list: `cf_list:<accountIndex>:<WORKERS|D1|KV>`.
  *
  * The parameters ride in the route rather than in a separate piece of state so that the back
@@ -175,7 +163,6 @@ internal object SettingsRoutes {
     const val SMART_IRAN = P_SMART_IRAN
     const val PROXY_MODE = P_PROXY_MODE
     const val ALLOW_LAN = P_ALLOW_LAN
-    const val UPDATE = P_UPDATE
     const val VPN = P_VPN_ADVANCED
     const val ABOUT = P_ABOUT
     const val BACKUP = com.mlmvpn.scanner.ui.backup.ROUTE_BACKUP
@@ -227,7 +214,6 @@ fun SettingsScreen(
         // hierarchy the user would have walked by hand instead of dropping them at the root.
         val path = when (target) {
             SettingsRoutes.ROOT -> emptyList()
-            P_UPDATE_CHECK -> listOf(P_UPDATE, P_UPDATE_CHECK)
             P_WALLPAPER -> listOf(P_DISPLAY, P_WALLPAPER)
             else -> listOf(target)
         }
@@ -409,17 +395,6 @@ fun SettingsScreen(
             onCheckedChange = { proxyMode = it; NetworkSettings.setProxyMode(context, it) },
         )
 
-        P_UPDATE -> SoftwareUpdateScreen(
-            onDismiss = { pop() },
-            backLabel = settingsTitle,
-            onOpenCheck = { push(P_UPDATE_CHECK) },
-        )
-
-        P_UPDATE_CHECK -> UpdateCheckScreen(
-            onBack = { pop() },
-            backLabel = stringResource(R.string.settings_software_update),
-        )
-
         P_SMART_IRAN -> SmartIranPage(
             backLabel = settingsTitle,
             onBack = { pop() },
@@ -518,23 +493,6 @@ fun SettingsScreen(
                 accountsLabel = stringResource(R.string.settings_cf_accounts, accounts.size),
                 onAccountsClick = onOpenCloud,
             )
-
-            // iOS puts "Software Update Available" in a card of its own right under the account,
-            // with the same red "1" the Settings icon wears on the home screen.
-            val update by com.mlmvpn.scanner.update.UpdateChecker.updateAvailableFlow.collectAsState()
-            if (update != null) {
-                Spacer(Modifier.height(14.dp))
-                SettingsGroup {
-                    SettingsRow(
-                        title = stringResource(R.string.settings_update_available),
-                        subtitle = update?.versionName,
-                        icon = Icons.Default.SystemUpdate,
-                        tint = Ios.Gray,
-                        badge = 1,
-                        onClick = { push(P_UPDATE) },
-                    )
-                }
-            }
 
             Spacer(Modifier.height(14.dp))
             SettingsGroup {
@@ -759,24 +717,8 @@ fun SettingsScreen(
                     showChevron = false,
                 )
                 Separator()
-                // The updater had no home before this: it only ever appeared as a dialog, on its
-                // own schedule, when a check happened to succeed. A user who dismissed it once --
-                // or whose network blocked GitHub on the single attempt that ran -- had no way to
-                // ask again, and no way to turn off the background download.
-                SettingsRow(
-                    title = stringResource(R.string.settings_software_update),
-                    subtitle = stringResource(R.string.settings_software_update_desc),
-                    icon = Icons.Default.SystemUpdate,
-                    tint = Ios.Blue,
-                    badge = if (update != null) 1 else 0,
-                    onClick = { push(P_UPDATE) },
-                )
-                Separator()
-                // The app has recorded every crash to files/crashlogs/ for a long time and there
-                // was no way for anyone but a developer with a USB cable to read one. That gap is
-                // why "the app crashes when I open V2Ray" could be reported by several users and
-                // still be unreproducible: the one artefact that would have answered it in a
-                // minute was sitting on their phones with no way out.
+                // Crash reports stay on-device. This row opens the system share sheet only when
+                // the user explicitly chooses to share one.
                 val reportCount = remember { com.mlmvpn.scanner.CrashReporter.reportCount() }
                 SettingsRow(
                     title = stringResource(R.string.settings_crash_report),
@@ -798,25 +740,7 @@ fun SettingsScreen(
                     },
                 )
                 Separator()
-                // On unless turned off: a crash of any kind -- Java, native, an ANR -- is sent to the
-                // crash collector as it happens. Off, the launch after a crash asks instead.
-                var crashAutoSend by remember { mutableStateOf(com.mlmvpn.scanner.CrashReporter.autoSend()) }
-                SettingsToggle(
-                    title = stringResource(R.string.settings_crash_auto),
-                    subtitle = stringResource(R.string.settings_crash_auto_desc),
-                    checked = crashAutoSend,
-                    onCheckedChange = {
-                        crashAutoSend = it
-                        com.mlmvpn.scanner.CrashReporter.setAutoSend(it)
-                    },
-                    icon = Icons.Default.Warning,
-                    tint = Ios.Orange,
-                )
-                Separator()
-                // Last in the group, and last on purpose: the three rows above it are things a
-                // user comes to Settings to DO -- read the version back to us, install an update,
-                // send a crash. This one is reading. It is also the row the changelog hangs off,
-                // which is why it sits under the updater rather than above it.
+                // Last in the group: the About page and changelog are the final informational rows.
                 SettingsRow(
                     title = stringResource(R.string.about_title),
                     subtitle = stringResource(R.string.about_row_subtitle),

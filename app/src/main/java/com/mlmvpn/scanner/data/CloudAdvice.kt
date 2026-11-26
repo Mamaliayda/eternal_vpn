@@ -19,8 +19,6 @@ enum class CloudFixAction {
     CREATE_SUBDOMAIN,
     /** Take the email-verification lock off this account by hand. */
     UNLOCK_EMAIL,
-    /** Send what the probe saw. */
-    REPORT,
 }
 
 /** One finding: what is wrong, why, and the single thing to try. */
@@ -141,9 +139,8 @@ fun CloudVerifyProbe.advice(): List<CloudAdvice> {
     // subdomain; the 404 with error 10007 is Cloudflare saying so outright -- "You do not have a
     // workers.dev subdomain" -- and only the first was recognised. So the single most common
     // first-run situation fell through every branch to "the cause is not something this version
-    // recognises", which asks the user to send a report instead of offering them the button that
-    // fixes it. Seven separate people sent that report before the pattern was visible; the answer
-    // was in the error code they were sending.
+    // recognises", rather than offering the button that fixes it. The answer is in the response
+    // code and can be explained locally without sending diagnostic data.
     if ((subdomainHttp == 200 || subCodes.contains(10007)) && !hasSubdomain) {
         out += CloudAdvice(
             R.string.cf_advice_nosub_title,
@@ -160,8 +157,8 @@ fun CloudVerifyProbe.advice(): List<CloudAdvice> {
         out += CloudAdvice(
             R.string.cf_advice_unknown_title,
             R.string.cf_advice_unknown_body,
-            CloudFixAction.REPORT,
-            R.string.cf_advice_send_report,
+            CloudFixAction.NONE,
+            0,
             1,
         )
     }
@@ -234,8 +231,8 @@ fun CloudVerifyProbe.credentialAdvice(): List<CloudAdvice> {
         out += CloudAdvice(
             R.string.cf_advice_unknown_title,
             R.string.cf_advice_cred_report_body,
-            CloudFixAction.REPORT,
-            R.string.cf_advice_send_report,
+            CloudFixAction.NONE,
+            0,
             1,
         )
         return out
@@ -256,8 +253,8 @@ fun CloudVerifyProbe.credentialAdvice(): List<CloudAdvice> {
         out += CloudAdvice(
             R.string.cf_advice_unknown_title,
             R.string.cf_advice_cred_report_body,
-            CloudFixAction.REPORT,
-            R.string.cf_advice_send_report,
+            CloudFixAction.NONE,
+            0,
             1,
         )
         return out
@@ -269,8 +266,8 @@ fun CloudVerifyProbe.credentialAdvice(): List<CloudAdvice> {
     out += CloudAdvice(
         R.string.cf_advice_cred_ok_title,
         R.string.cf_advice_cred_ok_body,
-        CloudFixAction.REPORT,
-        R.string.cf_advice_send_report,
+        CloudFixAction.NONE,
+        0,
         0,
     )
     return out

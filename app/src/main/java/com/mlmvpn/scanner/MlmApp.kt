@@ -28,12 +28,6 @@ class MlmApp : org.telegram.messenger.ApplicationLoader() {
             CrashReporter.install(this)
             // the home-screen widget Gereh's bridge tells when its unread count or network changes
             org.mlmvpn.chat.bridge.GerehHost.setWidget(com.mlmvpn.scanner.widget.GerehWidget::class.java)
-            // the newest release the updates have seen: «old version» beside whoever runs an older one (T75)
-            val app = this
-            org.mlmvpn.chat.bridge.GerehHost.setRelease(object : org.mlmvpn.chat.bridge.GerehHost.Release {
-                override fun latest(): String? = com.mlmvpn.scanner.update.UpdateChecker.latestKnown(app)
-                override fun openUpdate(context: android.content.Context): Boolean = false
-            })
             // the heart beside Gereh's menu: MLMVPN's support page
             org.mlmvpn.chat.bridge.GerehHost.setSupport("https://donito.me/ehsan2noven")
             super.onCreate() // Telegram's own start-up (ApplicationLoader)

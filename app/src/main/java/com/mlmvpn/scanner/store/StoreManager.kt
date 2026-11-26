@@ -4,7 +4,6 @@ import android.content.Context
 import android.os.Build
 import android.util.Log
 import com.mlmvpn.scanner.data.studio.StudioDeployer
-import com.mlmvpn.scanner.update.UpdateChecker
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -157,12 +156,13 @@ object StoreManager {
     private fun rowFor(context: Context, item: StoreItem, cache: JSONObject): StoreRow {
         val inst = StoreFiles.installed(context, item.id)
         val c = cache.optJSONObject("items")?.optJSONObject(item.id)
-        val candidate = candidateFromJson(c?.optJSONObject("candidate"))
+        // Drop cached candidates from the removed publisher channel for bundled catalog entries.
+        val candidate = if (item.source is StoreSource.Bundled) null
+            else candidateFromJson(c?.optJSONObject("candidate"))
         val error = c?.optString("error")?.ifBlank { null }
         val checkedAt = cache.optLong("at")
 
         return when (item.kind) {
-            StoreKind.APP -> appRow(context, item)
             StoreKind.ENGINE -> {
                 if (item.source is StoreSource.WithApp) {
                     StoreRow(item, withAppVersion(context, item), null, false, 0, false, null, StoreRow.State.WITH_APP,
@@ -258,37 +258,18 @@ object StoreManager {
         return StoreVersions.newer(candidate, inUse)
     }
 
-    private fun appRow(context: Context, item: StoreItem): StoreRow {
-        val current = StoreChannel.appVersion(context)
-        return when (val s = UpdateChecker.state.value) {
-            is UpdateChecker.State.Available -> StoreRow(
-                item, current, current, false, 0, false,
-                StoreCandidate(s.info.versionName, s.info.changelog.joinToString("\n"), "", "developer",
-                    listOf(StoreArtifact("apk", listOf(s.info.apkUrl), null, s.info.apkSizeBytes, "raw"))),
-                StoreRow.State.UPDATE, checkedAt = s.checkedAt,
-            )
-            is UpdateChecker.State.UpToDate -> StoreRow(item, current, current, false, 0, false, null, StoreRow.State.CURRENT, checkedAt = s.checkedAt)
-            is UpdateChecker.State.Failed -> StoreRow(item, current, current, false, 0, false, null, StoreRow.State.UNKNOWN, s.reason)
-            else -> StoreRow(item, current, current, false, 0, false, null,
-                if (UpdateChecker.lastCheckedAt(context) > 0) StoreRow.State.CURRENT else StoreRow.State.UNCHECKED)
-        }
-    }
-
     // ── checking ───────────────────────────────────────────────────────────────────────────────
 
-    /** Ask every developer and the channel what is new, and survey the user's accounts. */
+    /** Check third-party sources and survey the user's accounts for component updates. */
     fun checkAll(context: Context, force: Boolean = true) {
         val app = context.applicationContext
         scope.launch {
             if (!checkMutex.tryLock()) return@launch
             _checking.value = true
             try {
-                runCatching { UpdateChecker.checkForUpdate(app, force = force) }
-                StoreChannel.refresh(app, force = force)
                 val prev = readCache(app).optJSONObject("items") ?: JSONObject()
                 val items = JSONObject()
                 for (item in StoreCatalog.ALL) {
-                    if (item.kind == StoreKind.APP) continue
                     if (item.source is StoreSource.WithApp) {
                         // Not installable from here, but its developer's newest version is shown.
                         val repo = item.repo ?: continue
@@ -338,9 +319,8 @@ object StoreManager {
         context.packageManager.getPackageInfo(context.packageName, 0).lastUpdateTime
     }.getOrDefault(0L)
 
-    /** The newest installable version of one item: the developer's or the channel's. */
+    /** The newest installable version of one item from its third-party source, if any. */
     private fun resolve(context: Context, item: StoreItem, prev: JSONObject?): StoreCandidate? {
-        val fromChannel = StoreChannel.candidate(context, item.id)
         val fromDev: StoreCandidate? = when (val s = item.source) {
             is StoreSource.GithubRelease -> resolveRelease(context, item, s)
             is StoreSource.GithubFile -> resolveFile(context, item, s, prev)
@@ -348,13 +328,7 @@ object StoreManager {
             is StoreSource.SignedManifest -> resolveManifest(context, s)
             else -> null
         }
-        // Newest wins; on a tie the channel's copy, because at equal versions tested beats untested.
-        return when {
-            fromDev == null -> fromChannel
-            fromChannel == null -> fromDev
-            StoreVersions.newer(fromDev.version, fromChannel.version) -> fromDev
-            else -> fromChannel
-        }
+        return fromDev
     }
 
     private fun resolveRelease(context: Context, item: StoreItem, s: StoreSource.GithubRelease): StoreCandidate? {
@@ -595,29 +569,7 @@ object StoreManager {
     /** The one button on a product page. */
     fun install(context: Context, id: String) {
         val item = StoreCatalog.byId(id) ?: return
-        if (item.kind == StoreKind.APP) return installApp(context)
         launchJob(context, id) { app -> installItem(app, item) }
-    }
-
-    private fun installApp(context: Context) {
-        val s = UpdateChecker.state.value as? UpdateChecker.State.Available ?: return
-        val app = context.applicationContext
-        scope.launch {
-            setJob("mlmvpn", tr("در حال دانلود…", "Downloading…"), 0f)
-            val watcher = launch {
-                UpdateChecker.downloadProgressFlow.collect { p ->
-                    if (p != null) setJob("mlmvpn", tr("در حال دانلود…", "Downloading…"), p / 100f)
-                }
-            }
-            UpdateChecker.downloadAndInstall(app, s.info) { err ->
-                setJob("mlmvpn", err, null, running = false, error = err)
-            }
-            watcher.cancel()
-            if (_jobs.value["mlmvpn"]?.error == null) {
-                setJob("mlmvpn", tr("نصب‌کنندهٔ اندروید باز شد", "Android's installer opened"), 1f, running = false,
-                    done = tr("نصب‌کنندهٔ اندروید باز شد", "Android's installer opened"))
-            }
-        }
     }
 
     private suspend fun installItem(context: Context, item: StoreItem): String {
@@ -900,7 +852,7 @@ object StoreManager {
      */
     fun updateAll(context: Context) {
         val app = context.applicationContext
-        val todo = _rows.value.filter { it.hasUpdate && it.item.kind != StoreKind.APP }.map { it.item.id }
+        val todo = _rows.value.filter { it.hasUpdate }.map { it.item.id }
         if (todo.isEmpty()) return
         scope.launch {
             setJob("all", tr("بروزرسانی همه…", "Updating all…"), 0f)

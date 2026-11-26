@@ -2969,45 +2969,7 @@ The per-app list in Advanced VPN is the other way round and is often the better 
     <string name="sni_configs_deleted">%1$s SNI configs deleted</string>
     <string name="sni_no_cloud_config">There is no cloud config to convert. SNI configs are built from the panels — BPB, EDG, Nahan and MLM, combined ones included — because the SNI engine reaches a server through a Cloudflare edge, and only a config that lives behind that edge can be reached that way.</string>
     <!-- ==== Settings > Software update ==== -->
-    <string name="settings_software_update">Software update</string>
-    <string name="settings_software_update_desc">Check for a new version and install it</string>
-    <string name="update_check_now">Check for updates</string>
-    <string name="update_download_and_install">Download and install</string>
-    <string name="update_install_now">Install now</string>
     <string name="update_checking">Checking…</string>
-    <string name="update_downloading_pct">Downloading… %1$d%%</string>
-    <string name="update_check_failed">The check could not be completed</string>
-    <string name="update_no_asset">The latest release has no build for this phone</string>
-    <string name="update_incomplete_download">The download stopped before the file was complete</string>
-    <string name="update_up_to_date_line">Your software is up to date. Last checked: %1$s</string>
-    <string name="update_available_line">Version %1$s is available — %2$s</string>
-    <string name="update_failed_line">Could not check: %1$s. This usually means GitHub is unreachable on this network — connect a tunnel and try again.</string>
-    <string name="update_last_checked">Last checked: %1$s</string>
-    <string name="update_never_checked">No check has completed yet on this device.</string>
-    <string name="update_ready_to_install">Downloaded and ready to install.</string>
-    <string name="update_auto_downloading">Downloading in the background over Wi-Fi…</string>
-    <string name="update_mobile_data_warning">Downloading over a mobile network may incur additional charges. Download over Wi-Fi instead if you can.</string>
-    <string name="update_auto_download_wifi">Auto download over Wi-Fi</string>
-    <string name="update_auto_download_wifi_desc">Updates are downloaded automatically once connected to Wi-Fi.</string>
-    <string name="update_auto_download_footer">Only the download is automatic, and only on an unmetered Wi-Fi — a hotspot or a connection you have marked as metered is left alone. Installing always waits for you: Android asks for your confirmation and no app can skip that.</string>
-    <string name="update_last_installed">Last update</string>
-    <string name="update_installed_on">Installed</string>
-    <string name="update_installed_on_line">The last update was installed on %1$s.</string>
-    <string name="update_installed_unknown">The install date is not available.</string>
-    <string name="update_last_installed_footer">Taken from Android itself rather than from anything this app records, so it stays right after clearing data or restoring a backup.</string>
-    <string name="update_checking_versions">Checking for updates…</string>
-    <string name="update_you_are_up_to_date">Your software is up to date.</string>
-    <string name="update_info_card_title">Software update information</string>
-    <string name="update_info_current_version">Current version: %1$s</string>
-    <string name="update_info_checked_at">Last checked: %1$s</string>
-    <string name="update_check_again">Check again</string>
-    <string name="update_new_version_available">A new version is available.</string>
-    <string name="update_row_version">Version</string>
-    <string name="update_row_size">Size</string>
-    <string name="update_whats_new">What’s new</string>
-    <string name="update_download">Download</string>
-    <string name="update_downloading">Downloading…</string>
-
     <!-- Local network sharing -->
     <string name="lan_section_address">ADDRESS FOR THE OTHER DEVICE</string>
     <string name="lan_section_clients">CONNECTED DEVICES</string>
@@ -3174,31 +3136,21 @@ The per-app list in Advanced VPN is the other way round and is often the better 
 
     <!-- Crash reporting and the Proxy Mode warning -->
     <string name="settings_crash_report">Crash report</string>
-    <string name="settings_crash_report_count">%1$d saved report(s) — tap to send</string>
+    <string name="settings_crash_report_count">%1$d saved report(s) — tap to share</string>
     <string name="settings_crash_report_none">Nothing recorded. The app has not crashed on this phone.</string>
     <string name="crash_offer_title">The app closed unexpectedly</string>
-    <string name="crash_offer_body">A report of what went wrong was saved on this phone. Sending it is what lets the problem actually be found — it contains the error and your device model, nothing from your configs or your traffic.</string>
-    <string name="crash_offer_send">Send report</string>
+    <string name="crash_offer_body">A report was saved on this phone. Choose Share report to open Android’s share sheet; nothing is sent unless you select a sharing app.</string>
+    <string name="crash_offer_send">Share report</string>
     <string name="crash_offer_skip">Not now</string>
     <string name="proxy_warn_title">Proxy Mode is on</string>
     <string name="proxy_warn_body">With this on and a V2Ray config connected (VLESS, VMess, Trojan, Shadowsocks, Reality), your phone is NOT tunnelled. The app publishes a local proxy and only programs you have pointed at that port by hand go through it — your browser and your other apps keep using your normal, unprotected connection, even while the app says it is connected.\n\nMASQUE, WireGuard and WARP-on-WARP are not affected: with those the whole phone stays tunnelled, and Proxy Mode is what lets you share the connection over Local Network.\n\nIf you did not turn this on deliberately, turn it off.</string>
     <string name="proxy_warn_turn_off">Turn it off</string>
     <string name="proxy_warn_i_know">I know</string>
     <string name="proxy_warn_turned_off">Proxy Mode is off. Reconnect for it to take effect.</string>
-    <string name="crash_offer_sending">Sending…</string>
-    <string name="crash_offer_sent">Report sent. Thank you — this is what makes the bug findable.</string>
-    <string name="crash_offer_send_failed">The server could not be reached. The report will be sent automatically when it can be — or pick an app to send it with now.</string>
     <!-- Cloudflare verification diagnostics -->
-    <string name="cloud_diag_wrong_prompt">Is this wrong? Send a report</string>
-    <string name="cloud_diag_sending">Sending report…</string>
-    <string name="cloud_diag_sent">Report sent. Thank you — this is what makes the cause findable.</string>
-    <string name="cloud_diag_failed">Could not reach the server. Try again once a tunnel is connected.</string>
     <string name="cloud_diag_resolved">Your account checks out. The panel is unlocked.</string>
     <string name="cloud_subdomain_failed_reason">Cloudflare refused: %1$s</string>
     <!-- Update: the notice is a notice, the download lives in Settings -->
-    <string name="update_go_to_settings">Go to Settings to install</string>
-    <string name="update_notice_where">Download and install it from Settings &#8250; Software update &#8250; Download and install.</string>
-    <string name="update_later">Later</string>
     <!-- Cloudflare account troubleshooting: what the probe saw, and the one thing to try -->
     <string name="cf_fix_open">Troubleshoot this account</string>
     <string name="cf_fix_title">Cloudflare account troubleshooting</string>
@@ -3226,7 +3178,6 @@ The per-app list in Advanced VPN is the other way round and is often the better 
     <string name="cf_advice_retry">Try again</string>
     <string name="cf_advice_switch_scheme">Send it the other way</string>
     <string name="cf_advice_create_subdomain">Create the subdomain</string>
-    <string name="cf_advice_send_report">Send the report</string>
     <string name="cf_advice_network_title">Cloudflare could not be reached</string>
     <string name="cf_advice_network_body">Cloudflare did not answer reliably on this network. Open Cloudflare Doctor to check the network, account and configs separately.</string>
     <string name="cf_advice_token_dead_title">Cloudflare rejected this credential</string>
@@ -3240,21 +3191,20 @@ The per-app list in Advanced VPN is the other way round and is often the better 
     <string name="cf_advice_nosub_title">This account has no workers.dev subdomain yet</string>
     <string name="cf_advice_nosub_body">Cloudflare answered normally: the account simply has never had one. Creating it takes a few seconds and only has to be done once.</string>
     <string name="cf_advice_unknown_title">The cause is not one this version recognises</string>
-    <string name="cf_advice_unknown_body">Cloudflare is answering and nothing here looks wrong, so something else is blocking the panel. Sending the report is what makes it findable - it carries the status codes only, never your token, email or subdomain.</string>
+    <string name="cf_advice_unknown_body">Cloudflare is answering and nothing here looks wrong, so something else may be blocking the panel. Try again later or contact Cloudflare support with these status codes.</string>
     <string name="cf_advice_ok_title">This account is healthy</string>
     <string name="cf_advice_ok_body">Cloudflare answered every check, the credential works, and the workers.dev subdomain is in place. Nothing here needs changing.</string>
     <!-- Troubleshooting a credential that cannot be added yet -->
     <string name="cf_fix_accounts_probe">Account listing</string>
     <string name="cf_fix_no_answer">no answer</string>
-    <string name="cf_fix_report_footer">A report carries the status codes above, your app version and your phone model. It never carries your token, your email address or your workers.dev name.</string>
     <string name="cf_fix_open_from_add">Why did this fail?</string>
     <string name="cf_advice_need_email_title">A Global API Key needs the account email</string>
     <string name="cf_advice_need_email_body">The email box was left empty. A Global API Key is only valid paired with the email of the account it belongs to - on its own Cloudflare rejects it exactly like a wrong key. An API token is the opposite: it carries its own identity and needs no email. Fill the email in, or paste a token instead.</string>
     <string name="cf_advice_no_accounts_title">The credential works, but shows no account</string>
     <string name="cf_advice_no_accounts_body">Cloudflare accepted it and then listed nothing to work with. Authenticating and being allowed to see an account are separate permissions there. Create the token with the Edit Cloudflare Workers template, which includes the account, or use your Global API Key with the account email.</string>
     <string name="cf_advice_cred_ok_title">The credential itself is fine</string>
-    <string name="cf_advice_cred_ok_body">Cloudflare authenticated it and listed your account, so whatever stopped the account being added is not the token or the email. Try adding it once more; if it fails again, send the report - this is the case worth looking at.</string>
-    <string name="cf_advice_cred_report_body">Sending the report is what makes this findable. It carries the status codes above only, never your token or email address.</string>
+    <string name="cf_advice_cred_ok_body">Cloudflare authenticated it and listed your account, so whatever stopped the account being added is not the token or the email. Try adding it once more; if it fails again, contact Cloudflare support.</string>
+    <string name="cf_advice_cred_report_body">These checks could not identify the cause. Review the status codes above and contact Cloudflare support if the issue continues.</string>
 
     <string name="home_iran">Iran configs</string>
     <string name="home_fronting">Domain fronting</string>
@@ -4644,11 +4594,6 @@ After that it builds the combinations itself, measures every one with a real req
     <string name="geph_stage_tunnel">Tunnel open…</string>
     <string name="geph_copied">Copied</string>
     <string name="geph_error">Error: %1$s</string>
-    <string name="geph_level_unknown">Not checked yet</string>
-    <string name="geph_level_free">Free</string>
-    <string name="geph_level_basic">Basic</string>
-    <string name="geph_level_plus">Plus</string>
-    <string name="geph_until">until %1$s</string>
     <string name="geph_exit_auto">Automatic</string>
     <string name="geph_mbit">%1$s Mbit/s</string>
     <string name="geph_account_section">Geph account</string>
@@ -4675,7 +4620,6 @@ After that it builds the combinations itself, measures every one with a real req
     <string name="geph_speed_failed">The measurement did not finish — try again</string>
     <string name="geph_speed_footer">One megabyte from Google\'s download network, through Geph itself. The free tier is limited by Geph\'s own servers, so a few megabits is the expected figure there.</string>
     <string name="geph_account_title">Geph account</string>
-    <string name="geph_not_an_account">The network does not know this account.</string>
     <string name="geph_new_account_section">New account</string>
     <string name="geph_register_progress">Solving the network\'s puzzle… %1$s%%</string>
     <string name="geph_cancel">Cancel</string>
@@ -4691,18 +4635,8 @@ After that it builds the combinations itself, measures every one with a real req
     <string name="geph_legacy_section">Old Geph account (username and password)</string>
     <string name="geph_legacy_user">Username</string>
     <string name="geph_legacy_pass">Password</string>
-    <string name="geph_legacy_wrong">The network did not accept this username and password.</string>
     <string name="geph_legacy_footer">Accounts from Geph 4 still log in with their username and password.</string>
     <string name="geph_legacy_has_footer">This is an old Geph 4 account. It keeps working with its username and password.</string>
-    <string name="geph_level">Account type</string>
-    <string name="geph_user_id">User number</string>
-    <string name="geph_expires">Active until</string>
-    <string name="geph_recurring">Renews automatically</string>
-    <string name="geph_data_used">Data this month</string>
-    <string name="geph_mb_of">%1$s of %2$s MB</string>
-    <string name="geph_renews">renews %1$s</string>
-    <string name="geph_refresh">Check the account again</string>
-    <string name="geph_free_footer">A free account uses Geph\'s free servers, whose speed Geph limits itself. A voucher code or replacing the account code below can add Plus days.</string>
     <string name="geph_code_section">Account code</string>
     <string name="geph_show_code">Show the code</string>
     <string name="geph_hide_code">Hide the code</string>
@@ -4710,14 +4644,6 @@ After that it builds the combinations itself, measures every one with a real req
     <string name="geph_rotate">Replace the account code</string>
     <string name="geph_code_footer">The code is the account. Anyone who has it can use it, and without it the account cannot be recovered.</string>
     <string name="geph_rotate_footer">Replacing gives a new code and retires this one everywhere — every device has to log in again with the new code. Geph\'s network rewards replacing an old code with Plus days.</string>
-    <string name="geph_voucher_section">Voucher codes</string>
-    <string name="geph_free_voucher">Get a free voucher</string>
-    <string name="geph_no_free_voucher">The network has no free voucher for this account right now.</string>
-    <string name="geph_gift_code">Voucher code</string>
-    <string name="geph_redeem">Use this code</string>
-    <string name="geph_redeemed">Done — %1$s days added.</string>
-    <string name="geph_redeem_nothing">The code was accepted but added no days.</string>
-    <string name="geph_voucher_footer">Voucher and gift codes add days to this account. Geph sometimes gives free ones; the button above asks the network.</string>
     <string name="geph_remove_section">This phone</string>
     <string name="geph_remove">Remove the account from this phone</string>
     <string name="geph_remove_footer">Only this phone forgets it. The account itself stays on the network and works with its code anywhere.</string>
@@ -4726,7 +4652,6 @@ After that it builds the combinations itself, measures every one with a real req
     <string name="geph_rotate_confirm">You will get a new code and this one stops working everywhere. The new code is copied for you. Continue?</string>
     <string name="geph_rotate_yes">Replace</string>
     <string name="geph_rotated">New account code (copied): %1$s — the old one no longer works.</string>
-    <string name="geph_rotate_reward">The network added %1$s days of Plus to this account.</string>
     <string name="geph_exit_title">Exit server</string>
     <string name="geph_exit_auto_sub">Geph picks a lightly loaded server</string>
     <string name="geph_fastest_section">Fastest from this line</string>
@@ -4749,7 +4674,6 @@ After that it builds the combinations itself, measures every one with a real req
     <string name="geph_exits_loading">Getting the server list from Geph…</string>
     <string name="geph_servers_count">%1$s servers</string>
     <string name="geph_any_city">Any city</string>
-    <string name="geph_plus_only">Plus accounts only</string>
     <string name="geph_load">load %1$s%%</string>
     <string name="geph_streaming">good for streaming</string>
     <string name="geph_exits_footer">Load is how busy the least busy server in that city is right now.</string>
@@ -4970,7 +4894,6 @@ After that it builds the combinations itself, measures every one with a real req
     <string name="mae_remove_confirm_body">Everything MAE learned about it is erased too.</string>
     <string name="mae_remove_confirm_part">%1$s is part of %2$s. Removing it removes %2$s and everything MAE learned about it.</string>
     <string name="mae_site_is_app">%1$s belongs to %2$s: that app was added.</string>
-    <string name="settings_update_available">Software Update Available</string>
     <string name="worker_setup">Set up</string>
     <string name="worker_update">Update</string>
     <string name="worker_version">version %1$d</string>
@@ -4994,12 +4917,6 @@ After that it builds the combinations itself, measures every one with a real req
     <string name="mae_app_enabled_footer">When off, this app goes the default way like other traffic; what was learned about it is kept.</string>
     <string name="mae_route_footer">Automatic lets MAE pick the best route and switch when it stops working.</string>
     <string name="mae_remove_app">Remove from MAE</string>
-    <string name="crash_notice_title">The app closed unexpectedly</string>
-    <string name="crash_notice_body">A report of what went wrong is being sent so it can be fixed: the error and your device model, nothing from your configs or your traffic. You can turn this off in Settings → Crash report.</string>
-    <string name="crash_notice_ok">OK</string>
-    <string name="crash_notice_off">Don\'t send reports</string>
-    <string name="settings_crash_auto">Send crash reports automatically</string>
-    <string name="settings_crash_auto_desc">When the app closes because of an error, the error and your device model are sent to the developers. Nothing from your configs or your traffic.</string>
     <!-- FLUX -->
     <string name="flux_title_short">FLUX</string>
     <string name="flux_title">MLM FLUX Engine</string>

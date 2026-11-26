@@ -206,8 +206,6 @@ fun HomeScreen(
     trafficDown: Float,
     trafficUp: Float,
     onOpen: (HomeApp) -> Unit,
-    /** Settings > Software update. Only reachable while [updateReady] is true. */
-    onOpenUpdate: () -> Unit = {},
     /** Settings, on the page of a row the search found (the route); the row is armed already. */
     onOpenSetting: (String) -> Unit = {},
 ) {

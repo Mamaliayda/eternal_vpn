@@ -31,7 +31,6 @@ import androidx.compose.material.icons.filled.Send
 import androidx.compose.material.icons.filled.SettingsEthernet
 import androidx.compose.material.icons.filled.Speed
 import androidx.compose.material.icons.filled.SwapHoriz
-import androidx.compose.material.icons.filled.SystemUpdate
 import androidx.compose.material.icons.filled.TextFields
 import androidx.compose.material.icons.filled.Timeline
 import androidx.compose.material.icons.filled.Timer
@@ -235,18 +234,8 @@ internal object SettingsIndex {
             keywords = listOf("ورژن", "Version"),
         ),
         SettingsEntry(
-            res(R.string.settings_software_update), SettingsRoutes.ROOT, listOf(about), { Icons.Default.SystemUpdate }, Hue.BLUE,
-            subtitle = res(R.string.settings_software_update_desc),
-            keywords = listOf("آپدیت", "Update", "نسخه جدید", "New version"),
-        ),
-        SettingsEntry(
             res(R.string.settings_crash_report), SettingsRoutes.ROOT, listOf(about), { Icons.Default.Warning }, Hue.ORANGE,
             keywords = listOf("کرش", "Crash", "خطا", "Error", "باگ", "Bug"),
-        ),
-        SettingsEntry(
-            res(R.string.settings_crash_auto), SettingsRoutes.ROOT, listOf(about), { Icons.Default.Warning }, Hue.ORANGE,
-            subtitle = res(R.string.settings_crash_auto_desc),
-            keywords = listOf("کرش", "Crash", "خطا", "Error"),
         ),
         SettingsEntry(
             res(R.string.about_title), SettingsRoutes.ROOT, listOf(about), { Icons.Default.Groups }, Hue.BLUE,
@@ -314,19 +303,6 @@ internal object SettingsIndex {
             res(R.string.wallpaper_blur), SettingsRoutes.WALLPAPER, listOf(display, res(R.string.settings_wallpaper)),
             { Icons.Default.BlurOn }, Hue.TEAL,
             keywords = listOf("تاری", "محو", "Blur", "والپیپر", "Wallpaper"),
-        ),
-
-        // ---- Software update ----------------------------------------------------------------------
-        SettingsEntry(
-            res(R.string.update_download_and_install), SettingsRoutes.UPDATE, listOf(res(R.string.settings_software_update)),
-            { Icons.Default.SystemUpdate }, Hue.BLUE,
-            keywords = listOf("آپدیت", "Update", "دانلود", "Download", "نصب", "Install"),
-        ),
-        SettingsEntry(
-            res(R.string.update_auto_download_wifi), SettingsRoutes.UPDATE, listOf(res(R.string.settings_software_update)),
-            { Icons.Default.Wifi }, Hue.TEAL,
-            subtitle = res(R.string.update_auto_download_wifi_desc),
-            keywords = listOf("آپدیت", "Update", "خودکار", "Auto", "وای فای"),
         ),
 
         // ---- Smart Iran Routing -------------------------------------------------------------------
@@ -402,7 +378,7 @@ internal object SettingsIndex {
     /** Every page an entry may point at. */
     val routes: Set<String> = setOf(
         SettingsRoutes.ROOT, SettingsRoutes.DISPLAY, SettingsRoutes.WALLPAPER, SettingsRoutes.SMART_IRAN,
-        SettingsRoutes.PROXY_MODE, SettingsRoutes.ALLOW_LAN, SettingsRoutes.UPDATE, SettingsRoutes.VPN,
+        SettingsRoutes.PROXY_MODE, SettingsRoutes.ALLOW_LAN, SettingsRoutes.VPN,
         SettingsRoutes.ABOUT,
     )
 

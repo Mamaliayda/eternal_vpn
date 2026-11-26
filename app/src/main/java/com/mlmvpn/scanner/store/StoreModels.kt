@@ -8,7 +8,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 //
 // Four kinds of thing are listed, and they are updated in genuinely different ways:
 //
-//   برنامه    MLM VPN itself, through the updater it already had (update/UpdateChecker.kt).
 //   هسته‌ها   the native engines. A downloaded engine is run from the store's own folder, never
 //             from nativeLibraryDir (which only the package installer can write) — see
 //             StoreEngines.kt for how that is possible on Android 10+ and what it cannot cover.
@@ -19,11 +18,11 @@ import androidx.compose.ui.graphics.vector.ImageVector
 //
 // Where a newer version comes from, per item ([StoreSource]):
 //   * the DEVELOPER's own GitHub — a release asset or a file on a branch pinned to its commit;
-//   * the signed channel (StoreChannel.kt) — our own builds, and anything we tested first;
-//   * the app itself — what Android does not allow to be swapped at runtime.
+//   * a third-party GitHub release or signed manifest; or
+//   * bundled with the app, with no remote update source.
 // =================================================================================================
 
-enum class StoreKind { APP, ENGINE, WORKER, DATA }
+enum class StoreKind { ENGINE, WORKER, DATA }
 
 /** How an item's tile is drawn: finished artwork, or a white glyph on a tinted squircle. */
 data class StoreIcon(
@@ -80,8 +79,8 @@ sealed class StoreSource {
         val versionInContent: Regex? = null,
     ) : StoreSource()
 
-    /** Our own builds: only what the signed channel offers. */
-    object Channel : StoreSource()
+    /** Shipped in the APK; this item has no remote update source. */
+    object Bundled : StoreSource()
 
     /**
      * A developer that publishes a SIGNED release manifest rather than GitHub releases -- Geph.
@@ -99,9 +98,6 @@ sealed class StoreSource {
 
     /** Cannot be replaced at runtime on Android; arrives with a new version of the app. */
     object WithApp : StoreSource()
-
-    /** The app itself. */
-    object App : StoreSource()
 }
 
 /** A native engine: what is installed, how it is started, and how its version is asked. */

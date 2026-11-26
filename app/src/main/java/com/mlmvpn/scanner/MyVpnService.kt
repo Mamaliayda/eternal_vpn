@@ -131,14 +131,9 @@ class MyVpnService : VpnService() {
         // The Xray core runs in its own process (XrayHosts). When Xray panics there, that process
         // ends and this service hears about it here -- before, the same panic closed the whole app.
         com.mlmvpn.core.warp.VlessXrayInjector.onTunnelLost = { serviceScope.launch { onXrayCoreLost() } }
-        // If the update check on app launch failed silently (GitHub filtered/unreachable before
-        // any tunnel was up), retry it once real connectivity exists -- whichever engine got us
-        // there. Cheap: UpdateChecker throttles itself internally, so repeated CONNECTED events
-        // (reconnects, engine switches) don't spam the API.
         serviceScope.launch {
             connectionPhaseFlow.collect { phase ->
                 if (phase == Phase.CONNECTED) {
-                    com.mlmvpn.scanner.update.UpdateChecker.checkForUpdate(applicationContext)
                     // The one point that means the engine actually came up. Recorded here rather
                     // than at start so the Quick Settings tile can never replay something that
                     // failed -- see LastEngine. Every feature that reaches this service does so

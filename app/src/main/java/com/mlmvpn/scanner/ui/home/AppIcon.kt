@@ -326,10 +326,7 @@ fun AppIconCell(
     connected: Boolean = false,
     onClick: (() -> Unit)? = null,
 ) {
-    // Settings wears the update badge, the way an iPhone announces a new iOS: no banner, no extra
-    // glyph in the status bar -- a red "1" on the Settings icon, wherever that icon sits.
-    val update by com.mlmvpn.scanner.update.UpdateChecker.updateAvailableFlow.collectAsState()
-    val badge = if (app.id == "settings" && update != null) 1 else 0
+    val badge = 0
     Column(
         modifier = modifier.then(
             if (onClick != null) Modifier.noRippleClickable(onClick) else Modifier

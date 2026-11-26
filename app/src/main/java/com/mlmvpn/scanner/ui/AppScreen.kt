@@ -143,21 +143,6 @@ fun AppScreen() {
         openTab("settings")
     }
 
-    // The update check still runs, and it no longer says anything.
-    //
-    // A dialog used to appear over whatever the user was doing the moment a new version was found.
-    // Nobody asked for it at that moment -- they were opening a tunnel, or reading a config -- and
-    // an interruption that can only be dismissed teaches people to dismiss it without reading.
-    // Settings > Software update is where a version is checked for and installed now, on the
-    // user's own initiative.
-    //
-    // The check itself is kept deliberately. It is silent, it costs one request, and it is what
-    // makes that Settings page answer instantly instead of starting from "checking..." every time
-    // it is opened -- and it is what the "download over Wi-Fi automatically" switch runs on.
-    LaunchedEffect(Unit) {
-        com.mlmvpn.scanner.update.UpdateChecker.checkForUpdate(context)
-    }
-
     // Physical back-button behaviour (standard Android hierarchy):
     //   a full-screen modal is open -> close it (returns to the screen underneath)
     //   a sub-screen is stacked (e.g. Settings > Wallpaper) -> go up one level
@@ -677,10 +662,6 @@ fun AppScreen() {
                         else -> openTab(app.id)
                     }
                 },
-                onOpenUpdate = {
-                    settingsRoute = com.mlmvpn.scanner.ui.settings.ROUTE_UPDATE_DOWNLOAD
-                    openTab("settings")
-                },
                 // A row the home screen's search found: Settings on its page, where the row shows itself.
                 onOpenSetting = { route ->
                     settingsRoute = route
@@ -775,59 +756,11 @@ fun AppScreen() {
         )
     }
 
-    // Offered once per crash, on the launch that follows it, and only on the home screen so it
-    // cannot land on top of something the user is in the middle of.
-    //
-    // This exists because reports of "it crashes when I open X" kept arriving with nothing
-    // attached: the app has always written a full stack to files/crashlogs/, and no user has ever
-    // had a way to send one. A row buried in Settings would not have closed that gap either --
-    // the people who hit the crash are the ones who never go looking.
+    // Offer the locally saved report for sharing; no report is sent to a remote service.
     var crashOffer by remember {
         mutableStateOf<Boolean>(com.mlmvpn.scanner.CrashReporter.unreportedCrash(context) != null)
     }
-    // With automatic sending on (the default) nothing is asked: the report left with the crash.
-    // The first time, the user is told so, once, and offered the switch right there.
-    var crashNotice by remember { mutableStateOf(com.mlmvpn.scanner.CrashReporter.noticeDue(context)) }
-    // One at a time. Both of these fire on the same launch often enough -- a crash while Proxy
-    // Mode is on is exactly the kind of session that produces both -- and stacked dialogs read
-    // as a broken app rather than two pieces of information.
-    var crashSending by remember { mutableStateOf(false) }
-    val crashScope = rememberCoroutineScope()
-    if (crashNotice && !proxyWarn && activeTab == homeTab) {
-        AlertDialog(
-            onDismissRequest = {
-                com.mlmvpn.scanner.CrashReporter.markNoticeShown(context)
-                crashNotice = false
-            },
-            containerColor = surfaceColor,
-            icon = { Icon(Icons.Default.Warning, contentDescription = null, tint = TextMuted) },
-            title = {
-                Text(S(R.string.crash_notice_title), color = textColor, fontWeight = FontWeight.Bold)
-            },
-            text = { Text(S(R.string.crash_notice_body), color = mutedColor) },
-            confirmButton = {
-                Button(
-                    onClick = {
-                        com.mlmvpn.scanner.CrashReporter.markNoticeShown(context)
-                        crashNotice = false
-                    },
-                    colors = iosButtonColors(primaryColor),
-                    border = iosButtonBorder(primaryColor),
-                ) { Text(S(R.string.crash_notice_ok)) }
-            },
-            dismissButton = {
-                TextButton(
-                    onClick = {
-                        com.mlmvpn.scanner.CrashReporter.setAutoSend(false)
-                        com.mlmvpn.scanner.CrashReporter.markNoticeShown(context)
-                        crashNotice = false
-                    },
-                ) { Text(S(R.string.crash_notice_off), color = mutedColor) }
-            },
-        )
-    }
-
-    if (crashOffer && !crashNotice && !proxyWarn && activeTab == homeTab) {
+    if (crashOffer && !proxyWarn && activeTab == homeTab) {
         AlertDialog(
             onDismissRequest = {
                 com.mlmvpn.scanner.CrashReporter.markOffered(context)
@@ -841,41 +774,17 @@ fun AppScreen() {
             text = { Text(S(R.string.crash_offer_body), color = mutedColor) },
             confirmButton = {
                 Button(
-                    enabled = !crashSending,
                     onClick = {
-                        crashSending = true
-                        crashScope.launch {
-                            val sent = com.mlmvpn.scanner.CrashReporter.upload(context)
-                            com.mlmvpn.scanner.CrashReporter.markOffered(context)
-                            crashSending = false
-                            crashOffer = false
-                            android.widget.Toast.makeText(
-                                context,
-                                S(
-                                    if (sent) R.string.crash_offer_sent
-                                    else R.string.crash_offer_send_failed
-                                ),
-                                android.widget.Toast.LENGTH_LONG,
-                            ).show()
-                            // Nothing to fall back to on failure but the manual route, and the
-                            // user is already here -- so offer it rather than losing the report.
-                            if (!sent) com.mlmvpn.scanner.CrashReporter.share(context)
-                        }
+                        com.mlmvpn.scanner.CrashReporter.markOffered(context)
+                        crashOffer = false
+                        com.mlmvpn.scanner.CrashReporter.share(context)
                     },
                     colors = iosButtonColors(primaryColor),
                     border = iosButtonBorder(primaryColor),
-                ) {
-                    Text(
-                        S(
-                            if (crashSending) R.string.crash_offer_sending
-                            else R.string.crash_offer_send
-                        )
-                    )
-                }
+                ) { Text(S(R.string.crash_offer_send)) }
             },
             dismissButton = {
                 TextButton(
-                    enabled = !crashSending,
                     onClick = {
                         com.mlmvpn.scanner.CrashReporter.markOffered(context)
                         crashOffer = false

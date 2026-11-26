@@ -552,8 +552,6 @@ private fun SearchResults(
 
 @Composable
 private fun TileResults(tiles: List<TileHit>, liveEngines: Set<String>, onApp: (HomeApp) -> Unit) {
-    // The same red "1" the Settings icon wears on the board while an update waits.
-    val update by com.mlmvpn.scanner.update.UpdateChecker.updateAvailableFlow.collectAsState()
     BoxWithConstraints(modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp)) {
         val columns = (maxWidth / 86.dp).toInt().coerceIn(4, 6)
         Column {
@@ -573,7 +571,7 @@ private fun TileResults(tiles: List<TileHit>, liveEngines: Set<String>, onApp: (
                                     app = hit.app,
                                     size = 56.dp,
                                     connected = hit.app.id in liveEngines,
-                                    badge = if (hit.app.id == "settings" && update != null) 1 else 0,
+                                    badge = 0,
                                 )
                                 Spacer(Modifier.height(6.dp))
                                 TileCaption(stringResource(hit.app.labelRes))

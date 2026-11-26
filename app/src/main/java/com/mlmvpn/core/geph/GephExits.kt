@@ -15,12 +15,8 @@ data class GephExit(
     val load: Double,
     /** `core` or `streaming`; `auto` only ever picks core. */
     val category: String,
-    /** Account levels allowed on it: "Free", "Plus". */
-    val levels: Set<String>,
 ) {
     val streaming: Boolean get() = category == "streaming"
-    fun allows(level: GephAccount.Level): Boolean =
-        levels.isEmpty() || if (level == GephAccount.Level.FREE) "Free" in levels else "Plus" in levels
 }
 
 object GephExits {
@@ -32,7 +28,6 @@ object GephExits {
 
     data class Country(val code: String, val cities: List<City>) {
         val exits: List<GephExit> get() = cities.flatMap { it.exits }
-        fun usable(level: GephAccount.Level): Int = exits.count { it.allows(level) }
     }
 
     /** net_status: `{exits: {key: [pubkey, ExitDescriptor, ExitMetadata]}}`. */
@@ -43,28 +38,24 @@ object GephExits {
             val tuple = exits.optJSONArray(key) ?: return@forEach
             val desc = tuple.optJSONObject(1) ?: return@forEach
             val meta = tuple.optJSONObject(2)
-            val levels = meta?.optJSONArray("allowed_levels")?.let { arr ->
-                (0 until arr.length()).map { arr.optString(it) }.toSet()
-            }.orEmpty()
             out += GephExit(
                 key = key,
                 country = desc.optString("country").uppercase(),
                 city = desc.optString("city"),
                 load = desc.optDouble("load", 0.0),
                 category = meta?.optString("category", "core") ?: "core",
-                levels = levels,
             )
         }
         return out.filter { it.country.length == 2 }
     }
 
-    /** Grouped by country and city; countries with something this account can use first. */
-    fun countries(exits: List<GephExit>, level: GephAccount.Level): List<Country> =
+    /** Grouped by country and city; all exits advertised by the network remain selectable. */
+    fun countries(exits: List<GephExit>): List<Country> =
         exits.groupBy { it.country }
             .map { (code, list) ->
                 Country(code, list.groupBy { it.city }.map { (city, e) -> City(city, e) }.sortedBy { it.lightestLoad })
             }
-            .sortedWith(compareBy<Country> { if (it.usable(level) > 0) 0 else 1 }.thenBy { it.code })
+            .sortedBy { it.code }
 
     private fun cacheFile(ctx: Context) = File(GephEngine.dir(ctx), "exits.json")
 

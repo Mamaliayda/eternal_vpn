@@ -8,8 +8,6 @@ import com.mlmvpn.scanner.store.tr
 import kotlinx.coroutines.*
 import java.io.File
 import java.net.ServerSocket
-import org.json.JSONArray
-import org.json.JSONObject
 
 /** Own child processes: no TUN, shared engine state, or changes to the user's exit settings. */
 internal object GephAdapter : ScoutAdapter() {
@@ -26,18 +24,16 @@ internal object GephAdapter : ScoutAdapter() {
         "نصب موتور و ساخت حساب رایگان خودکار است؛ خروجی خودکار و کشورها/شهرهای گف جدا با عبور داده و نمونهٔ سرعت سنجیده می‌شوند. راه‌اندازی اول ممکن است چند دقیقه و دانلود بیشتری نیاز داشته باشد.",
         "The engine and free account are set up automatically; automatic and country/city exits get separate data and speed tests. First setup may take several minutes and an additional download.")
 
-    override fun variants(ctx: Context, line: LineSnapshot) = choices(ctx, GephExits.cached(ctx), null)
+    override fun variants(ctx: Context, line: LineSnapshot) = choices(ctx, GephExits.cached(ctx))
 
-    private fun choices(ctx: Context, exits: List<GephExit>, level: GephAccount.Level?): List<Variant> {
+    private fun choices(ctx: Context, exits: List<GephExit>): List<Variant> {
         val selected = GephSettings.exit(ctx)
         val all = listOf(GephExitChoice.AUTO, selected) + exits.map { GephExitChoice(it.country, it.city) }
         return all.distinct().map { choice ->
-            val matches = exits.filter { it.country == choice.country && (choice.city == null || it.city == choice.city) }
             Variant(if (choice.isAuto) "geph" else "exit_${choice.country}_${java.net.URLEncoder.encode(choice.city.orEmpty(), "UTF-8")}",
                 if (choice.isAuto) tr("خودکار", "Automatic") else listOfNotNull(choice.country, choice.city?.takeIf { it.isNotBlank() }).joinToString(" · "),
                 quick = choice == selected && GephEngine.available(ctx) && GephAccount.hasAccount(ctx), budgetMs = 600_000,
-                payload = choice, needsSetup = if (level != null && matches.isNotEmpty() && matches.none { it.allows(level) })
-                    tr("این خروجی در طرح حساب فعلی در دسترس نیست", "This exit is unavailable on the current account plan") else null)
+                payload = choice)
         }
     }
 
@@ -47,11 +43,7 @@ internal object GephAdapter : ScoutAdapter() {
         process(kit.context, null, GephExitChoice.AUTO) { control, _ ->
             val status = control.netStatus() ?: error("No exit catalogue")
             val exits = GephExits.parse(status).also { check(it.isNotEmpty()) }
-            val info = try { control.brokerRpc("get_user_info_by_cred", JSONArray().put(credential.toJson())) as? JSONObject }
-                catch (e: CancellationException) { throw e }
-                catch (_: Exception) { null }
-            val level = info?.let { GephAccount.Info.parse(it).level } ?: GephAccount.cachedInfo(kit.context)?.level
-            choices(kit.context, exits, level)
+            choices(kit.context, exits)
         }
     }
 

@@ -98,7 +98,6 @@ fun CloudTroubleshootScreen(
     // list, and re-evaluating the rules per row would put two independent copies on screen.
     var findings by remember { mutableStateOf<List<CloudAdvice>>(emptyList()) }
     var busy by remember { mutableStateOf(true) }
-    var reportSent by remember { mutableStateOf(false) }
     // Read once into state so the switches move under the user's finger; the account object behind
     // them is written on every change.
     var unlockEmail by remember { mutableStateOf(account?.isEmailVerified ?: true) }
@@ -130,24 +129,6 @@ fun CloudTroubleshootScreen(
 
     LaunchedEffect(account?.id, credential) { reprobe() }
 
-    fun sendReport() {
-        val p = probe ?: return
-        scope.launch {
-            val where = if (account != null) "troubleshooting an added account"
-                        else "troubleshooting a credential that could not be added"
-            val ok = com.mlmvpn.scanner.quick.MlmPoolClient.reportDiagnostic(
-                context,
-                summary = p.summary(),
-                body = p.report(context, where),
-            )
-            reportSent = ok
-            android.widget.Toast.makeText(
-                context,
-                context.getString(if (ok) R.string.cloud_diag_sent else R.string.cloud_diag_failed),
-                android.widget.Toast.LENGTH_LONG,
-            ).show()
-        }
-    }
 
     fun applyScheme(next: String?) {
         val acc = account ?: return
@@ -188,7 +169,6 @@ fun CloudTroubleshootScreen(
                 cloudManager.saveAccounts()
                 onAccountChanged()
             }
-            CloudFixAction.REPORT -> sendReport()
             CloudFixAction.NONE -> Unit
         }
     }
@@ -351,22 +331,7 @@ fun CloudTroubleshootScreen(
                 enabled = !busy,
                 onClick = { reprobe() },
             )
-            // Hidden when a finding above already carries this button. Two "send the report"
-            // buttons a thumb apart read as two different reports.
-            if (findings.none { it.action == CloudFixAction.REPORT }) {
-                Separator()
-                SettingsActionRow(
-                    label = stringResource(
-                        if (reportSent) R.string.cloud_diag_sent else R.string.cf_advice_send_report
-                    ),
-                    icon = Icons.Default.Send,
-                    tint = if (reportSent) Ios.Green else Ios.Gray,
-                    enabled = probe != null && !reportSent,
-                    onClick = { sendReport() },
-                )
-            }
         }
-        SettingsFooter(stringResource(R.string.cf_fix_report_footer))
 
         Spacer(Modifier.height(28.dp))
     }
@@ -401,7 +366,6 @@ private fun actionIcon(action: CloudFixAction) = when (action) {
     CloudFixAction.SWITCH_SCHEME -> Icons.Default.Key
     CloudFixAction.CREATE_SUBDOMAIN -> Icons.Default.Language
     CloudFixAction.UNLOCK_EMAIL -> Icons.Default.LockOpen
-    CloudFixAction.REPORT -> Icons.Default.Send
     CloudFixAction.NONE -> Icons.Default.Info
 }
 

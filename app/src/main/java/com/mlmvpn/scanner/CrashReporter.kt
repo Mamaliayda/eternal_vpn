@@ -1,13 +1,9 @@
 package com.mlmvpn.scanner
 
-import com.mlmvpn.scanner.crash.CrashClient
 import com.mlmvpn.scanner.crash.CrashText
-import com.mlmvpn.scanner.crash.CrashUploadJob
 import com.mlmvpn.scanner.utils.SecretRedactor
 import android.app.Application
 import android.util.Log
-import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.sync.withLock
 import java.io.File
 import java.io.PrintWriter
 import java.io.StringWriter
@@ -33,22 +29,12 @@ import java.util.Locale
  *
  * ## Where a report goes
  *
- * Into an outbox, and from there to the crash collector (worker-src/crash), with the Quick Connect
- * pool's `/crash` as the fallback -- see [CrashClient]. A JVM crash schedules [CrashUploadJob] in
- * the moment before the process dies, so its report leaves within minutes whether or not the app
- * is opened again; a report stays in the outbox until one of the two says it was filed.
+ * Reports remain on-device. They are shared only when the user chooses the Settings row or
+ * accepts the launch prompt; that action opens Android's system share sheet. This reporter has
+ * no network delivery path.
  *
- * Automatically, unless the user turned that off (Settings → Crash report). The app's owner asked
- * for every crash to reach them: the launch dialog this replaced reached only people who came
- * back, landed on the home screen and tapped Send, which is why crashes kept being described in
- * words and never arrived as stacks. What is sent is the report text below -- the error, the
- * breadcrumbs, the device model and the app version, passed through [SecretRedactor] -- and
- * nothing from configs or traffic. The first time it happens the user is told, once, and shown
- * where to turn it off; with it off, the old dialog asks every time.
- *
- * The whole path across the app, the collector, the pool, D1, KV and the private repository is in
- * `docs/CRASH-REPORTS.md`. Read it before changing anything here that a Worker also depends on --
- * [signatureOf] in particular, which decides what counts as "the same bug".
+ * Historical notes on the removed collector are retained in `docs/CRASH-REPORTS.md`; they no
+ * longer describe an active network path.
  */
 object CrashReporter {
 
@@ -56,7 +42,7 @@ object CrashReporter {
 
     private val stamp = SimpleDateFormat("yyyy-MM-dd_HH-mm-ss", Locale.US)
 
-    /** A report of one crash of any kind: the thing that gets sent. */
+    /** A locally saved report of one crash of any kind. */
     private const val CRASH_PREFIX = "crash-"
     /** How earlier runs ended, from ApplicationExitInfo, for the shared text. */
     private const val LAST_EXIT_PREFIX = "lastexit-"
@@ -69,10 +55,6 @@ object CrashReporter {
     private const val KEEP_CRASHES = 20
     /** Exit histories and shutdown notes kept, each. */
     private const val KEEP_NOTES = 5
-    /** At most this many reports go up in one pass; the rest wait for the next. */
-    private const val MAX_PER_FLUSH = 5
-    /** A report nobody could deliver in this long is given up on. */
-    private const val OUTBOX_MAX_AGE_MS = 30L * 24 * 60 * 60 * 1000
     /** An ANR's thread dump or a native tombstone can run to megabytes; a report needs its top. */
     private const val MAX_TRACE_CHARS = 24_000
 
@@ -144,13 +126,7 @@ object CrashReporter {
                 // Logcat first: if writing the file fails for any reason, the report is still
                 // in the buffer the stress test is being watched through.
                 Log.e(TAG, text)
-                val file = writeReport(text)
-                // Handed to the system before this process dies: the job runs in a fresh one, as
-                // soon as there is a network, whether or not anyone opens the app again.
-                if (autoSend()) {
-                    enqueue(file)
-                    CrashUploadJob.schedule(appContext)
-                }
+                writeReport(text)
             } catch (t: Throwable) {
                 Log.e(TAG, "failed to record crash: ${t.message}")
             }
@@ -180,23 +156,11 @@ object CrashReporter {
             Log.w(TAG, "could not register shutdown hook: ${t.message}")
         }
 
-        // The exit history and the outbox are the package's, not a process's: the main process
-        // reads and sends, so the tunnel's process starting up does not do it all again.
+        // Exit history belongs to the package, so only the main process records it.
         if (isMainProcess(app)) {
             watchMainThread(app)
-            // Off the main thread: reading the system's traces and redacting them can take
-            // seconds on a slow phone after an ANR, and doing it inside Application.onCreate
-            // made the app itself fail to start (an ANR report of its own, 1.2.38).
-            Thread({
-                reportPreviousExit(app)
-                try {
-                    queueUnsent(app)
-                    if (queued().isNotEmpty()) CrashUploadJob.schedule(app)
-                } catch (t: Throwable) {
-                    // A crash reporter must never be the crash.
-                    Log.w(TAG, "could not queue reports: ${t.message}")
-                }
-            }, "crash-previous-exit").start()
+            // Off the main thread: reading the system's traces can take seconds on a slow phone.
+            Thread({ reportPreviousExit(app) }, "crash-previous-exit").start()
         }
 
         Log.i(TAG, "crash reporter installed; reports in ${logDir.absolutePath}")
@@ -264,9 +228,7 @@ object CrashReporter {
     private fun crashReports(): List<File> = reports().filter { it.name.startsWith(CRASH_PREFIX) }
 
     /**
-     * How many things on disk are worth sending: crash reports, and the records of runs that
-     * ended badly. Not the shutdown notes every deliberate restart writes -- Settings counted
-     * those as crashes.
+     * How many crash reports and abnormal-exit records are available for local sharing.
      */
     fun reportCount(): Int =
         reports().count { it.name.startsWith(CRASH_PREFIX) || it.name.startsWith(LAST_EXIT_PREFIX) }
@@ -274,12 +236,11 @@ object CrashReporter {
     /**
      * One text blob of the most recent reports, ready to be shared.
      *
-     * Newest first and capped, because this is going into a message box: the newest report is
-     * the one being asked about, and no one pastes half a megabyte into Telegram.
+     * Newest first and capped so a share action does not create an oversized message.
      *
      * The reports come first and the app's own notes after them, one of each. It used to be simply
      * the newest three files, and since an exit history was written on every launch, those three
-     * were nearly always exit histories: the reports users sent said a JVM crash had happened
+     * were nearly always exit histories: the shared reports then said a JVM crash had happened
      * and left out the stack that would have said where.
      */
     fun collect(limit: Int = 3, maxChars: Int = 60_000): String {
@@ -306,180 +267,7 @@ object CrashReporter {
         return if (clean.length <= maxChars) clean else clean.take(maxChars) + "\n… (truncated)"
     }
 
-    /**
-     * The one line that identifies a crash: the exception, its message, and the first frame of
-     * ours.
-     *
-     * "Ours" matters. The top frame of a Compose crash is nearly always inside the Compose
-     * runtime and identical across completely unrelated bugs, so grouping on it would file every
-     * UI crash in the app under one heading. The first `com.mlmvpn` frame is the line a developer
-     * would actually open.
-     *
-     * In a JVM report the exception is the line after `--- stack ---`. It used to be the first
-     * line anywhere that said "Exception" or "Error", and a breadcrumb that happened to say either
-     * became the bug's title. Native-crash and ANR reports have no stack section; their `error:`
-     * headline ([CrashText]) is the line.
-     */
-    fun signatureOf(text: String): String {
-        val lines = text.lines()
-        val stackAt = lines.indexOfFirst { it.trim() == "--- stack ---" }
-        val stack = if (stackAt >= 0) lines.drop(stackAt + 1) else lines
-        val cause = (if (stackAt >= 0) stack.firstOrNull { it.isNotBlank() } else null)?.trim()
-            ?: lines.firstOrNull { it.startsWith("error") || it.contains("Exception") || it.contains("Error") }
-                ?.trim()
-                .orEmpty()
-        val frame = stack.map { it.trim() }.firstOrNull { it.startsWith("at com.mlmvpn") }.orEmpty()
-        return listOf(stable(cause), frame).filter { it.isNotBlank() }.joinToString("  |  ").take(300)
-    }
-
-    /**
-     * The message without what changes from one occurrence to the next. The server files one issue
-     * per summary, and "app is in background uid UidRecord{6492d3d u0a469 ...}" or an object's
-     * @address differ every time: one bug became 96 issues through 1.2.39.
-     */
-    private fun stable(cause: String): String = cause
-        .replace(Regex("(app is in background).*"), "$1")
-        .replace(Regex("Intent \\{[^}]*\\}"), "Intent {…}")
-        // a record's hash (ServiceRecord{eae6ac4 u0 …}) changes with every crash: 1.2.43 and 1.2.44
-        // filed one Gereh service crash as 650 issues (mlmvpn/crashes)
-        .replace(Regex("ServiceRecord\\{\\S+ \\S+ ([^ }]+)[^}]*\\}"), "ServiceRecord{$1}")
-        .replace(Regex("(ProcessRecord|ActivityRecord|BroadcastRecord)\\{[^}]*\\}"), "$1{…}")
-        .replace(Regex("@[0-9a-fA-F]{5,}"), "@…")
-        .replace(Regex("\\b(pid|uid)=\\d+"), "$1=#")
-        .replace(Regex("\\d{4,}"), "#")
-
-    // ---------------------------------------------------------------------------- the outbox
-    //
-    // A marker file per report, in a directory: the crash handler of whichever process died adds
-    // one, the upload job removes it, and the filesystem is the one store every process of the
-    // app sees the same way (SharedPreferences are cached per process).
-
-    private fun outbox() = File(logDir, "outbox").apply { mkdirs() }
-    private fun sentDir() = File(logDir, "sent").apply { mkdirs() }
-
-    private fun enqueue(report: File) {
-        try {
-            if (!File(sentDir(), report.name).exists()) File(outbox(), report.name).createNewFile()
-        } catch (t: Throwable) {
-            Log.w(TAG, "could not queue ${report.name}: ${t.message}")
-        }
-    }
-
-    /** The reports waiting to be delivered, oldest first. */
-    private fun queued(): List<File> {
-        if (!this::logDir.isInitialized) return emptyList()
-        val now = System.currentTimeMillis()
-        return outbox().listFiles().orEmpty().mapNotNull { marker ->
-            val report = File(logDir, marker.name)
-            if (!report.isFile || now - report.lastModified() > OUTBOX_MAX_AGE_MS) {
-                marker.delete()
-                null
-            } else {
-                report
-            }
-        }.sortedBy { it.lastModified() }
-    }
-
-    private fun markSent(report: File) {
-        runCatching { File(sentDir(), report.name).createNewFile() }
-        File(outbox(), report.name).delete()
-    }
-
-    private val flushLock = Mutex()
-
-    /**
-     * Delivers what is waiting in the outbox. True when nothing is left waiting.
-     *
-     * Stops at the first report that does not go through: when the network or both servers are
-     * down, the rest would fail the same way, and the job's backoff is the right pace to retry.
-     */
-    suspend fun flushQueue(context: android.content.Context): Boolean = flushLock.withLock {
-        for (report in queued().take(MAX_PER_FLUSH)) {
-            val text = runCatching { report.readText() }.getOrNull()?.takeIf { it.isNotBlank() }
-            if (text == null) {
-                File(outbox(), report.name).delete()
-                continue
-            }
-            val ok = CrashClient.send(
-                context,
-                // Reports written before redaction existed are cleaned here too.
-                summary = SecretRedactor.redact(signatureOf(text)),
-                body = SecretRedactor.redact(text),
-                kind = CrashText.kindOf(text),
-            )
-            if (!ok) break
-            markSent(report)
-        }
-        queued().isEmpty()
-    }
-
-    /**
-     * With automatic sending on: every report the user has not been asked about goes into the
-     * outbox -- written by a native crash or an ANR on this launch, or by a JVM crash whose own
-     * handler could not queue it.
-     */
-    private fun queueUnsent(context: android.content.Context) {
-        if (!autoSend()) return
-        val prefs = context.getSharedPreferences("crash_diag", android.content.Context.MODE_PRIVATE)
-        val offeredUpTo = prefs.getLong("offered_up_to", 0L)
-        val fresh = crashReports().filter { it.lastModified() > offeredUpTo }
-        if (fresh.isEmpty()) return
-        fresh.forEach { enqueue(it) }
-        prefs.edit()
-            .putLong("offered_up_to", fresh.maxOf { it.lastModified() })
-            .putLong("auto_reported_at", System.currentTimeMillis())
-            .apply()
-    }
-
-    /**
-     * Sends, now, what the user agreed to in the launch dialog (automatic sending off). True when
-     * it was all delivered; whatever was not stays queued, and the job keeps trying.
-     */
-    suspend fun upload(context: android.content.Context): Boolean {
-        val offeredUpTo = context.getSharedPreferences("crash_diag", android.content.Context.MODE_PRIVATE)
-            .getLong("offered_up_to", 0L)
-        // Every crash since the last offer, not only the newest: two in a row are as often two
-        // bugs as one, and the dialog asked about "a crash" without saying which.
-        val crashes = crashReports()
-        crashes.filter { it.lastModified() > offeredUpTo }.ifEmpty { crashes.take(1) }.forEach { enqueue(it) }
-        val done = flushQueue(context)
-        if (!done) CrashUploadJob.schedule(context)
-        return done
-    }
-
     // ---------------------------------------------------------------------------- the choice
-
-    /** Present when the user turned automatic sending off. A file, so every process sees it. */
-    private fun manualMarker() = File(logDir, ".manual-send")
-
-    /** Whether crash reports are sent without asking. On unless the user turned it off. */
-    fun autoSend(): Boolean = this::logDir.isInitialized && !manualMarker().exists()
-
-    fun setAutoSend(on: Boolean) {
-        if (!this::logDir.isInitialized) return
-        if (on) {
-            manualMarker().delete()
-        } else {
-            runCatching { manualMarker().createNewFile() }
-            // Queued without asking, so withdrawn with the permission.
-            outbox().listFiles().orEmpty().forEach { it.delete() }
-        }
-    }
-
-    /**
-     * True once: the first launch after a report was sent automatically, so the user hears that
-     * it happened and where to turn it off.
-     */
-    fun noticeDue(context: android.content.Context): Boolean {
-        if (!autoSend()) return false
-        val prefs = context.getSharedPreferences("crash_diag", android.content.Context.MODE_PRIVATE)
-        return prefs.getLong("auto_reported_at", 0L) > 0L && !prefs.getBoolean("auto_notice_shown", false)
-    }
-
-    fun markNoticeShown(context: android.content.Context) {
-        context.getSharedPreferences("crash_diag", android.content.Context.MODE_PRIVATE)
-            .edit().putBoolean("auto_notice_shown", true).apply()
-    }
 
     /**
      * Hand the newest reports to whatever the user wants to send them with.
@@ -506,14 +294,12 @@ object CrashReporter {
     }
 
     /**
-     * The newest report the user has not been asked about, or null -- for the launch dialog, which
-     * only asks when automatic sending is off.
+     * The newest report the user has not been offered for local sharing, or null.
      *
      * Tracked by timestamp rather than by a "shown" flag per file so that a burst of reports from
      * one crash prompts once, and so that clearing the marker cannot resurrect old prompts.
      */
     fun unreportedCrash(context: android.content.Context): File? {
-        if (autoSend()) return null
         val newest = crashReports().firstOrNull() ?: return null
         val prefs = context.getSharedPreferences("crash_diag", android.content.Context.MODE_PRIVATE)
         return if (newest.lastModified() > prefs.getLong("offered_up_to", 0L)) newest else null
@@ -569,9 +355,7 @@ object CrashReporter {
             val diag = app.getSharedPreferences("crash_diag", android.content.Context.MODE_PRIVATE)
             val deliberateAt = diag.getLong("deliberate_exit_at", 0L)
             val deliberateWhy = diag.getString("deliberate_exit_why", null)
-            // The system keeps a rolling list, so every launch used to write the same exits down
-            // again -- one file per launch, which crowded the real crash stacks out of what users
-            // sent and, through [prune], off the phone. Only exits not seen before count now.
+            // The system keeps a rolling list, so only exits not previously recorded are retained.
             val seenUpTo = diag.getLong("exits_seen_up_to", 0L)
             val fresh = exits.filter { it.timestamp > seenUpTo }
             diag.edit()
@@ -648,7 +432,7 @@ object CrashReporter {
             android.app.ApplicationExitInfo.REASON_EXCESSIVE_RESOURCE_USAGE,
             // Native code ending the process with an error, a process killed because one it
             // depended on died, killed for memory while carrying the tunnel: [noteworthy] already
-            // keeps only the ones that can be a bug, and each was written down and never sent.
+            // keeps only the ones that can be a bug; each is recorded locally.
             android.app.ApplicationExitInfo.REASON_EXIT_SELF,
             android.app.ApplicationExitInfo.REASON_DEPENDENCY_DIED,
             android.app.ApplicationExitInfo.REASON_LOW_MEMORY -> "jvm"
@@ -703,9 +487,8 @@ object CrashReporter {
             }
         }
         val file = writeReport(text, tag = kind + "-" + CrashText.processLabel(e.processName).removePrefix(":"))
-        // Dated when it happened, not when it was found: the outbox and the dialog order by it.
+        // Dated when it happened, not when it was found: the launch prompt uses this timestamp.
         runCatching { file.setLastModified(maxOf(e.timestamp, 1L)) }
-        if (autoSend()) enqueue(file)
     }
 
     /** What the process published through [publishState]: "v=<version>|<last step>", or null. */
@@ -824,7 +607,7 @@ object CrashReporter {
      * follows), and grouped by a line that often matches an older bug. So: a watchdog thread asks
      * the main thread to answer every second; when it has not for [FREEZE_MS] while a screen is
      * showing, the main thread's stack -- the code it is stuck in -- and the breadcrumbs are written
-     * as a report and handed to the upload job at once, before anything can kill the process.
+     * as a local report, ready to be shared if the user chooses.
      */
     private fun watchMainThread(app: Application) {
         app.registerActivityLifecycleCallbacks(object : Application.ActivityLifecycleCallbacks {
@@ -872,7 +655,7 @@ object CrashReporter {
         val where = area
         val text = buildString {
             appendLine(CrashText.ANR_HEADER)
-            // Grouped by the screen and (through signatureOf) the first frame of the app's own code.
+            // Include the screen and first app frame so a user can identify where the freeze occurred.
             appendLine("error: freeze (main)" + (where?.let { " [$it]" } ?: "") + ": the main thread stopped answering")
             appendLine("time      : ${Date()}")
             appendLine("version   : $appVersion")
@@ -903,11 +686,7 @@ object CrashReporter {
                 }
         }
         Log.e(TAG, text)
-        val file = writeReport(text, tag = "freeze-main")
-        if (autoSend()) {
-            enqueue(file)
-            CrashUploadJob.schedule(appContext)
-        }
+        writeReport(text, tag = "freeze-main")
     }
 
     /**
@@ -915,8 +694,8 @@ object CrashReporter {
      * storage queue stopped answering: every chat sat on its loading circle, and closing the app did
      * not help, because Gereh's foreground service keeps the process alive. The watching itself
      * (which queues, how long, the restart) is Gereh's bridge's now, for every app that carries it
-     * ([org.mlmvpn.chat.bridge.GerehWatchdog]); what a stall becomes is the app's: here a report like
-     * any freeze's, filed and sent ([reportChatStall]).
+     * ([org.mlmvpn.chat.bridge.GerehWatchdog]); what a stall becomes is the app's: a local report
+     * that the user can choose to share ([reportChatStall]).
      */
     fun watchChatQueues(app: Application) {
         org.mlmvpn.chat.bridge.GerehWatchdog.start(app, object : org.mlmvpn.chat.bridge.GerehWatchdog.Host {
@@ -954,11 +733,7 @@ object CrashReporter {
             append(s.others)
         }
         Log.e(TAG, text)
-        val file = writeReport(text, tag = "freeze-chat-${s.queue}")
-        if (autoSend()) {
-            enqueue(file)
-            CrashUploadJob.schedule(appContext)
-        }
+        writeReport(text, tag = "freeze-chat-${s.queue}")
     }
 
     /**
@@ -1040,9 +815,5 @@ object CrashReporter {
         // Old ones only: another process of the app may be writing one this very moment.
         files.filter { it.name.endsWith(".part") && System.currentTimeMillis() - it.lastModified() > 60_000 }
             .forEach { it.delete() }
-        // Queue and delivery markers of reports that are gone.
-        listOf(File(logDir, "outbox"), File(logDir, "sent")).forEach { dir ->
-            dir.listFiles().orEmpty().filter { !File(logDir, it.name).exists() }.forEach { it.delete() }
-        }
     }
 }
