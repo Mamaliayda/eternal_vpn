@@ -1,6 +1,6 @@
 # Eternal VPN — screen redesign checklist
 
-> **Progress: 264 / 1203 complete** — each checked row is fully migrated; unverified routes and states remain unchecked.
+> **Progress: 278 / 1203 complete** — each checked row is fully migrated; unverified routes and states remain unchecked.
 
 > Inventory generated from Kotlin source on 2026-11-26. A row is considered migrated only after its visible composition, nested states, and overlays are reviewed against the Soft Dusk tokens. Shared theme inheritance alone does **not** count as a completed visual redesign.
 
@@ -220,7 +220,7 @@ Found 230 screen-like public/internal composables across 133 Kotlin files (the f
 - [ ] `StudioCentralNewUserScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioCentralNewUserScreen.kt`
 - [ ] `StudioCentralUserScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioCentralUserScreen.kt`
 - [ ] `StudioConfigBuilderScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioConfigBuilderScreen.kt`
-- [ ] `StudioConfigsScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioConfigsScreen.kt`
+- [x] `StudioConfigsScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioConfigsScreen.kt`
 - [ ] `StudioDashboardScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioDashboardScreen.kt`
 - [ ] `StudioExitsScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioExitsScreen.kt`
 - [ ] `StudioLocationsEditScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioLocationsEditScreen.kt`
@@ -228,8 +228,8 @@ Found 230 screen-like public/internal composables across 133 Kotlin files (the f
 - [ ] `StudioMultiLocationScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioMultiLocationScreen.kt`
 - [ ] `StudioNewUserScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioNewUserScreen.kt`
 - [x] `StudioNodeEditScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioNodeEditScreen.kt`
-- [ ] `StudioNodeGroupEditScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioNodeGroupEditScreen.kt`
-- [ ] `StudioNodeGroupsScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioNodeGroupsScreen.kt`
+- [x] `StudioNodeGroupEditScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioNodeGroupEditScreen.kt`
+- [x] `StudioNodeGroupsScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioNodeGroupsScreen.kt`
 - [x] `StudioNodesScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioNodesScreen.kt`
 - [ ] `StudioPlanEditScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioPlanEditScreen.kt`
 - [ ] `StudioPlansScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioPlansScreen.kt`
@@ -339,20 +339,20 @@ Found 230 screen-like public/internal composables across 133 Kotlin files (the f
 - [ ] `D1ListPage` — `com/mlmvpn/scanner/ui/settings/CloudResourcesScreens.kt`
 - [ ] `KvListPage` — `com/mlmvpn/scanner/ui/settings/CloudResourcesScreens.kt`
 - [ ] `SelectableResourcePage` — `com/mlmvpn/scanner/ui/settings/CloudResourcesScreens.kt`
-- [ ] `IosScreen` — `com/mlmvpn/scanner/ui/settings/IosSettings.kt`
+- [x] `IosScreen` — `com/mlmvpn/scanner/ui/settings/IosSettings.kt`
 - [ ] `IosPickerScreen` — `com/mlmvpn/scanner/ui/settings/IosSettings.kt`
-- [ ] `IosTextScreen` — `com/mlmvpn/scanner/ui/settings/IosSettings.kt`
-- [ ] `BackendDnsPage` — `com/mlmvpn/scanner/ui/settings/NetworkSettingPages.kt`
-- [ ] `LocalPortPage` — `com/mlmvpn/scanner/ui/settings/NetworkSettingPages.kt`
-- [ ] `ProxyModePage` — `com/mlmvpn/scanner/ui/settings/NetworkSettingPages.kt`
-- [ ] `AllowLanPage` — `com/mlmvpn/scanner/ui/settings/NetworkSettingPages.kt`
+- [x] `IosTextScreen` — `com/mlmvpn/scanner/ui/settings/IosSettings.kt`
+- [x] `BackendDnsPage` — `com/mlmvpn/scanner/ui/settings/NetworkSettingPages.kt`
+- [x] `LocalPortPage` — `com/mlmvpn/scanner/ui/settings/NetworkSettingPages.kt`
+- [x] `ProxyModePage` — `com/mlmvpn/scanner/ui/settings/NetworkSettingPages.kt`
+- [x] `AllowLanPage` — `com/mlmvpn/scanner/ui/settings/NetworkSettingPages.kt`
 - [x] `SettingsScreen` — `com/mlmvpn/scanner/ui/settings/SettingsScreen.kt`
 - [x] `DisplayPage` — `com/mlmvpn/scanner/ui/settings/SettingsScreen.kt`
 - [x] `WallpaperPage` — `com/mlmvpn/scanner/ui/settings/SettingsScreen.kt`
 - [x] `PresetPickerPage` — `com/mlmvpn/scanner/ui/settings/SettingsScreen.kt`
-- [ ] `SmartIranPage` — `com/mlmvpn/scanner/ui/settings/SmartIranPage.kt`
+- [x] `SmartIranPage` — `com/mlmvpn/scanner/ui/settings/SmartIranPage.kt`
 - [ ] `UsageScreen` — `com/mlmvpn/scanner/ui/settings/UsageScreen.kt`
-- [ ] `VpnSettingsScreen` — `com/mlmvpn/scanner/ui/settings/VpnSettingsScreen.kt`
+- [x] `VpnSettingsScreen` — `com/mlmvpn/scanner/ui/settings/VpnSettingsScreen.kt`
 - [x] `AppPickerPage` — `com/mlmvpn/scanner/ui/settings/VpnSettingsScreen.kt`
 ### spider
 
@@ -723,7 +723,7 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 - [ ] `roomLine` — `com/mlmvpn/scanner/ui/configstudio/StudioCentralNewUserScreen.kt`
 - [ ] `StudioCombineHandover` — `com/mlmvpn/scanner/ui/configstudio/StudioCombineHandover.kt`
 - [ ] `androidx` — `com/mlmvpn/scanner/ui/configstudio/StudioConfigBuilderScreen.kt`
-- [ ] `ConfigRow` — `com/mlmvpn/scanner/ui/configstudio/StudioConfigsScreen.kt`
+- [x] `ConfigRow` — `com/mlmvpn/scanner/ui/configstudio/StudioConfigsScreen.kt`
 - [ ] `expiresInText` — `com/mlmvpn/scanner/ui/configstudio/StudioDashboardScreen.kt`
 - [ ] `timeLeftText` — `com/mlmvpn/scanner/ui/configstudio/StudioDashboardScreen.kt`
 - [ ] `countOrDash` — `com/mlmvpn/scanner/ui/configstudio/StudioDashboardScreen.kt`
@@ -1491,8 +1491,8 @@ Toast / short transient feedback call sites (OS-rendered surfaces; validate app 
 - [ ] `com/mlmvpn/scanner/ui/settings/CloudResourcesScreens.kt` — Toast × 1
 - [ ] `com/mlmvpn/scanner/ui/settings/GeminiExitRow.kt` — Toast × 2
 - [x] `com/mlmvpn/scanner/ui/settings/SettingsScreen.kt` — Toast × 3 (replaced with Dusk snackbars)
-- [ ] `com/mlmvpn/scanner/ui/settings/SmartIranPage.kt` — Toast × 1
-- [ ] `com/mlmvpn/scanner/ui/settings/VpnSettingsScreen.kt` — Toast × 1
+- [x] `com/mlmvpn/scanner/ui/settings/SmartIranPage.kt` — Toast × 1 (replaced with Dusk snackbar)
+- [x] `com/mlmvpn/scanner/ui/settings/VpnSettingsScreen.kt` — Toast × 1 (replaced with Dusk snackbar)
 - [ ] `com/mlmvpn/scanner/ui/settings/WarpIdRelayRow.kt` — Toast × 2
 - [ ] `com/mlmvpn/scanner/ui/spider/SpiderConfigs.kt` — Toast × 1
 - [ ] `com/mlmvpn/scanner/ui/spider/SpiderScreen.kt` — Toast × 1

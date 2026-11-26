@@ -4,6 +4,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -13,7 +14,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.mlmvpn.scanner.R
 import com.mlmvpn.scanner.data.studio.StudioState
 import com.mlmvpn.scanner.data.studio.StudioStore
@@ -25,7 +25,7 @@ import com.mlmvpn.scanner.ui.configstudio.parts.InfoCard
 import com.mlmvpn.scanner.ui.configstudio.parts.PageIntro
 import com.mlmvpn.scanner.ui.configstudio.parts.ProblemCard
 import com.mlmvpn.scanner.ui.configstudio.parts.WizardBusy
-import com.mlmvpn.scanner.ui.settings.Ios
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 import com.mlmvpn.scanner.ui.settings.IosScreen
 import com.mlmvpn.scanner.ui.settings.SettingsFooter
 import com.mlmvpn.scanner.ui.settings.SettingsGroup
@@ -74,14 +74,14 @@ fun StudioNodeGroupsScreen(
         trailing = {
             Text(
                 S(R.string.studio_node_group_new),
-                color = Ios.Blue,
-                fontSize = 16.sp,
+                color = DuskTheme.primary,
+                style = MaterialTheme.typography.labelLarge,
                 modifier = Modifier.clickable(onClick = onNewGroup)
-                    .padding(horizontal = 4.dp, vertical = 6.dp),
+                    .padding(horizontal = DuskTheme.space1, vertical = DuskTheme.space2),
             )
         },
     ) {
-        Spacer(Modifier.height(10.dp))
+        Spacer(Modifier.height(DuskTheme.space2))
         PageIntro(S(R.string.studio_node_groups_sub))
 
         if (state.nodeGroupsStale.isNotEmpty()) {
@@ -89,7 +89,7 @@ fun StudioNodeGroupsScreen(
                 S(R.string.studio_node_group_engine_old)
                     .replace("%1\$s", state.nodeGroupsStale.joinToString("، "))
             )
-            Spacer(Modifier.height(10.dp))
+            Spacer(Modifier.height(DuskTheme.space2))
         }
 
         if (loading) {
@@ -105,7 +105,7 @@ fun StudioNodeGroupsScreen(
                 actionLabel = S(R.string.studio_node_group_new),
                 onAction = onNewGroup,
             )
-            Spacer(Modifier.height(28.dp))
+            Spacer(Modifier.height(DuskTheme.space5))
             return@IosScreen
         }
 
@@ -128,9 +128,9 @@ fun StudioNodeGroupsScreen(
                             ?.takeIf { state.fleetLabels.size > 1 }
                             ?.let { append(" · $it") }
                     },
-                    titleColor = if (group.enabled) Ios.Label else Ios.SecondaryLabel,
+                    titleColor = if (group.enabled) DuskTheme.onSurface else DuskTheme.muted,
                     icon = StudioIcons.EndpointGroups,
-                    tint = if (group.enabled) Ios.Purple else Ios.Gray,
+                    tint = if (group.enabled) DuskTheme.purple else DuskTheme.disabled,
                     onClick = { onEditGroup(group) },
                 )
             }
@@ -140,7 +140,7 @@ fun StudioNodeGroupsScreen(
         // Said once, on the screen that would otherwise let the word imply it. The engine cannot
         // steer traffic; it can only decide what a client sees first.
         InfoCard(S(R.string.studio_node_group_truth))
-        Spacer(Modifier.height(28.dp))
+        Spacer(Modifier.height(DuskTheme.space5))
     }
 }
 

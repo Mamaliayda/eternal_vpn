@@ -15,8 +15,8 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -47,12 +47,11 @@ import com.mlmvpn.scanner.ui.configstudio.design.StatusLine
 import com.mlmvpn.scanner.ui.configstudio.design.StudioBadge
 import com.mlmvpn.scanner.ui.configstudio.design.StudioIcons
 import com.mlmvpn.scanner.ui.configstudio.design.StudioSeparator
-import com.mlmvpn.scanner.ui.configstudio.design.StudioType
 import com.mlmvpn.scanner.ui.configstudio.parts.InfoCard
 import com.mlmvpn.scanner.ui.configstudio.parts.protocolTint
 import com.mlmvpn.scanner.ui.configstudio.parts.ProblemCard
 import com.mlmvpn.scanner.ui.configstudio.parts.WizardBusy
-import com.mlmvpn.scanner.ui.settings.Ios
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 import com.mlmvpn.scanner.ui.settings.IosAlert
 import com.mlmvpn.scanner.ui.settings.IosAlertAction
 import com.mlmvpn.scanner.ui.settings.IosScreen
@@ -133,9 +132,9 @@ fun StudioConfigsScreen(
         backLabel = username.ifBlank { S(R.string.studio_users) },
         onRefresh = { reload() },
     ) {
-        Spacer(Modifier.height(10.dp))
-        note?.let { InfoCard(it); Spacer(Modifier.height(12.dp)) }
-        error?.let { ProblemCard(it); Spacer(Modifier.height(12.dp)) }
+        Spacer(Modifier.height(DuskTheme.space2))
+        note?.let { InfoCard(it); Spacer(Modifier.height(DuskTheme.space3)) }
+        error?.let { ProblemCard(it); Spacer(Modifier.height(DuskTheme.space3)) }
 
         val list = configs
         when {
@@ -169,12 +168,12 @@ fun StudioConfigsScreen(
                     // list was both a duplicate and unreadable.
                 }
 
-                Spacer(Modifier.height(14.dp))
+                Spacer(Modifier.height(DuskTheme.space3))
                 SettingsGroup {
                     SettingsActionRow(
                         label = S(R.string.studio_config_add),
                         icon = StudioIcons.Add,
-                        tint = Ios.Blue,
+                        tint = DuskTheme.primary,
                         enabled = !busy,
                     ) { onAddConfig(null) }
                     // A copy of the newest one, which is what "another for their laptop" means:
@@ -185,7 +184,7 @@ fun StudioConfigsScreen(
                         SettingsActionRow(
                             label = S(R.string.studio_builder_clone),
                             icon = StudioIcons.Copy,
-                            tint = Ios.Indigo,
+                            tint = DuskTheme.indigo,
                             enabled = !busy,
                         ) { onAddConfig(draftOf(newest)) }
                     }
@@ -194,7 +193,7 @@ fun StudioConfigsScreen(
             }
         }
 
-        Spacer(Modifier.height(28.dp))
+        Spacer(Modifier.height(DuskTheme.space5))
     }
 
     confirmRotate?.let { config ->
@@ -332,22 +331,22 @@ private fun ConfigRow(config: StudioConfig, onClick: () -> Unit) {
             .fillMaxWidth()
             .heightIn(min = 56.dp)
             .clickable(onClick = onClick)
-            .padding(horizontal = 16.dp, vertical = 10.dp),
+            .padding(horizontal = DuskTheme.space4, vertical = DuskTheme.space2),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Box(
-            modifier = Modifier.size(30.dp).clip(RoundedCornerShape(8.dp)).background(tint.copy(alpha = 0.18f)),
+            modifier = Modifier.size(30.dp).clip(DuskTheme.glyphShape).background(tint.copy(alpha = 0.18f)),
             contentAlignment = Alignment.Center,
         ) {
             Icon(StudioIcons.Config, contentDescription = null, tint = tint, modifier = Modifier.size(17.dp))
         }
-        Spacer(Modifier.width(12.dp))
+        Spacer(Modifier.width(DuskTheme.space3))
         Column(modifier = Modifier.weight(1f)) {
             Text(
                 config.label?.let { ExitCountries.stripFlags(it) }?.takeIf { it.isNotBlank() }
                     ?: S(R.string.studio_config_unnamed),
-                color = if (config.enabled) Ios.Label else Ios.SecondaryLabel,
-                fontSize = StudioType.Callout,
+                color = if (config.enabled) DuskTheme.onSurface else DuskTheme.muted,
+                style = MaterialTheme.typography.bodyMedium,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
@@ -357,23 +356,23 @@ private fun ConfigRow(config: StudioConfig, onClick: () -> Unit) {
                 val cc = config.exitCc
                 if (!LocationConfigs.isOffered(shape)) {
                     // Kept, and listed, but not served: see LocationConfigs.OFFERED.
-                    StatusLine(S(R.string.studio_config_xhttp_paused), Ios.Orange)
+                    StatusLine(S(R.string.studio_config_xhttp_paused), DuskTheme.accent)
                 } else if (cc != null) {
                     CountryBadge(cc)
                     Text(
                         ExitCountries.label(cc) + (config.exitIp?.let { " · $it" } ?: ""),
-                        color = Ios.SecondaryLabel,
-                        fontSize = StudioType.Caption,
+                        color = DuskTheme.muted,
+                        style = MaterialTheme.typography.labelSmall,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
                     )
                 } else if (!config.enabled) {
-                    StatusLine(S(R.string.studio_config_off), Ios.Gray)
+                    StatusLine(S(R.string.studio_config_off), DuskTheme.disabled)
                 } else {
                     Text(
                         S(R.string.studio_created_direct) + " · " + (config.routeKey?.let { "/$it" } ?: "/"),
-                        color = Ios.SecondaryLabel,
-                        fontSize = StudioType.Caption,
+                        color = DuskTheme.muted,
+                        style = MaterialTheme.typography.labelSmall,
                         fontFamily = if (config.routeKey != null) FontFamily.Monospace else null,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,

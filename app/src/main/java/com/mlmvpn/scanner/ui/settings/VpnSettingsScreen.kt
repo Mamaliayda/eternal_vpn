@@ -57,6 +57,7 @@ import androidx.core.graphics.drawable.toBitmap
 import com.mlmvpn.scanner.R
 import com.mlmvpn.scanner.ui.theme.DuskCard
 import com.mlmvpn.scanner.ui.theme.DuskTheme
+import com.mlmvpn.scanner.ui.theme.LocalDuskSnackbarHostState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -254,6 +255,7 @@ fun VpnSettingsScreen(onDismiss: () -> Unit) {
     // one page is open at a time, and a result from another method on screen would be a result
     // about the wrong line.
     val scope = rememberCoroutineScope()
+    val duskSnackbarHost = LocalDuskSnackbarHostState.current
     var mtuProbing by remember { mutableStateOf(false) }
     var mtuProbeAt by remember { mutableStateOf(0) }
     var mtuProbeResult by remember { mutableStateOf<com.mlmvpn.scanner.utils.MtuProbe.Result?>(null) }
@@ -345,7 +347,7 @@ fun VpnSettingsScreen(onDismiss: () -> Unit) {
                     SettingsRow(
                         title = mtuMethodLabel(m),
                         icon = Icons.Default.Tune,
-                        tint = Ios.Blue,
+                        tint = DuskTheme.primary,
                         value = shown.ifEmpty { fallback },
                         onClick = { push(MTU_ROUTE + m.id) },
                     )
@@ -360,7 +362,7 @@ fun VpnSettingsScreen(onDismiss: () -> Unit) {
                 SettingsRow(
                     title = stringResource(R.string.vpn_mtu_global),
                     icon = Icons.Default.Tune,
-                    tint = Ios.Gray,
+                    tint = DuskTheme.disabled,
                     value = globalShown,
                     onClick = { push(MTU_ROUTE + MTU_GLOBAL) },
                 )
@@ -385,7 +387,7 @@ fun VpnSettingsScreen(onDismiss: () -> Unit) {
                         value = mtuText[slot].orEmpty(),
                         onValueChange = { raw -> mtuText[slot] = raw.filter { it.isDigit() }.take(4) },
                         icon = Icons.Default.Tune,
-                        tint = Ios.Blue,
+                        tint = DuskTheme.primary,
                         placeholder = if (method != null) method.default.toString()
                                       else stringResource(R.string.vpn_mtu_auto),
                         numeric = true,
@@ -399,11 +401,11 @@ fun VpnSettingsScreen(onDismiss: () -> Unit) {
                             label = if (mtuProbing) stringResource(R.string.vpn_mtu_measuring, mtuProbeAt)
                                     else stringResource(R.string.vpn_mtu_measure),
                             icon = Icons.Default.Speed,
-                            tint = Ios.Blue,
+                            tint = DuskTheme.primary,
                             // Colour on this screen means state, so it stays on the glyph. A
                             // blue sentence in a list of black ones reads as a link, not as the
                             // ordinary action it is.
-                            labelColor = Ios.Label,
+                            labelColor = DuskTheme.onSurface,
                             busy = mtuProbing,
                             onClick = {
                                 mtuProbing = true
@@ -423,8 +425,8 @@ fun VpnSettingsScreen(onDismiss: () -> Unit) {
                             SettingsActionRow(
                                 label = stringResource(R.string.vpn_mtu_apply, found),
                                 icon = Icons.Default.Check,
-                                tint = Ios.Green,
-                                labelColor = Ios.Label,
+                                tint = DuskTheme.success,
+                                labelColor = DuskTheme.onSurface,
                                 onClick = { mtuText[slot] = found.toString(); commitMtu(slot) },
                             )
                         }
@@ -506,18 +508,16 @@ fun VpnSettingsScreen(onDismiss: () -> Unit) {
                     title = stringResource(R.string.vpn_always_on),
                     subtitle = stringResource(R.string.vpn_always_on_desc),
                     icon = Icons.Default.VpnKey,
-                    tint = Ios.Green,
+                    tint = DuskTheme.success,
                     onClick = {
                         try {
                             val intent = Intent("android.settings.VPN_SETTINGS")
                             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
                             context.startActivity(intent)
                         } catch (e: Exception) {
-                            android.widget.Toast.makeText(
-                                context,
-                                context.getString(R.string.vpn_cannot_open),
-                                android.widget.Toast.LENGTH_SHORT,
-                            ).show()
+                            scope.launch {
+                                duskSnackbarHost.showSnackbar(context.getString(R.string.vpn_cannot_open))
+                            }
                         }
                     },
                 )
@@ -528,7 +528,7 @@ fun VpnSettingsScreen(onDismiss: () -> Unit) {
                 SettingsRow(
                     title = stringResource(R.string.vpn_mtu_label),
                     icon = Icons.Default.Tune,
-                    tint = Ios.Blue,
+                    tint = DuskTheme.primary,
                     value = stringResource(R.string.vpn_mtu_row_value),
                     onClick = { push(V_MTU) },
                 )
@@ -536,7 +536,7 @@ fun VpnSettingsScreen(onDismiss: () -> Unit) {
                 SettingsRow(
                     title = stringResource(R.string.vpn_quick_tile_count),
                     icon = Icons.Default.Widgets,
-                    tint = Ios.Orange,
+                    tint = DuskTheme.accent,
                     value = tileCount,
                     onClick = { push(V_TILE) },
                 )
@@ -552,9 +552,9 @@ fun VpnSettingsScreen(onDismiss: () -> Unit) {
                         else -> Icons.Default.Public
                     },
                     tint = when (routingMode) {
-                        "ALLOW" -> Ios.Green
-                        "BYPASS" -> Ios.Red
-                        else -> Ios.Indigo
+                        "ALLOW" -> DuskTheme.success
+                        "BYPASS" -> DuskTheme.error
+                        else -> DuskTheme.indigo
                     },
                     value = modeOptions.firstOrNull { it.key == routingMode }?.label,
                     onClick = { push(V_MODE) },
@@ -566,7 +566,7 @@ fun VpnSettingsScreen(onDismiss: () -> Unit) {
                     SettingsRow(
                         title = stringResource(R.string.vpn_selected_apps),
                         icon = Icons.Default.Speed,
-                        tint = Ios.Purple,
+                        tint = DuskTheme.purple,
                         value = stringResource(R.string.vpn_apps_count, selectedApps.size),
                         onClick = { push(V_APPS) },
                     )
@@ -622,7 +622,7 @@ internal fun AppPickerPage(
             Icon(
                 Icons.Default.Search,
                 contentDescription = null,
-                tint = Ios.SecondaryLabel,
+                tint = DuskTheme.muted,
                 modifier = Modifier.size(17.dp),
             )
             Spacer(Modifier.width(7.dp))
@@ -630,15 +630,15 @@ internal fun AppPickerPage(
                 value = query,
                 onValueChange = { query = it },
                 singleLine = true,
-                textStyle = MaterialTheme.typography.bodyLarge.copy(color = Ios.Label),
-                cursorBrush = SolidColor(Ios.Blue),
+                textStyle = MaterialTheme.typography.bodyLarge.copy(color = DuskTheme.onSurface),
+                cursorBrush = SolidColor(DuskTheme.primary),
                 modifier = Modifier.fillMaxWidth(),
                 decorationBox = { inner ->
                     Box {
                         if (query.isEmpty()) {
                             Text(
                                 stringResource(R.string.vpn_search_app),
-                                color = Ios.SecondaryLabel,
+                                color = DuskTheme.muted,
                                 style = MaterialTheme.typography.bodyLarge,
                             )
                         }
@@ -653,7 +653,7 @@ internal fun AppPickerPage(
                 modifier = Modifier.fillMaxWidth().height(120.dp),
                 contentAlignment = Alignment.Center,
             ) {
-                CircularProgressIndicator(color = Ios.Blue)
+                CircularProgressIndicator(color = DuskTheme.primary)
             }
             return@IosScreen
         }
@@ -692,15 +692,15 @@ internal fun AppPickerPage(
                             modifier = Modifier
                                 .size(34.dp)
                                 .clip(DuskTheme.circleShape)
-                                .background(Ios.Gray.copy(alpha = 0.4f))
+                                .background(DuskTheme.disabled.copy(alpha = 0.4f))
                         )
                     }
                     Spacer(Modifier.width(12.dp))
                     Column(modifier = Modifier.weight(1f)) {
-                        Text(app.name, color = Ios.Label, style = MaterialTheme.typography.bodyMedium, maxLines = 1)
+                        Text(app.name, color = DuskTheme.onSurface, style = MaterialTheme.typography.bodyMedium, maxLines = 1)
                         Text(
                             app.packageName,
-                            color = Ios.SecondaryLabel,
+                            color = DuskTheme.muted,
                             style = MaterialTheme.typography.labelSmall,
                             maxLines = 1,
                         )
@@ -709,7 +709,7 @@ internal fun AppPickerPage(
                         Icon(
                             Icons.Default.Check,
                             contentDescription = null,
-                            tint = Ios.Blue,
+                            tint = DuskTheme.primary,
                             modifier = Modifier.size(20.dp),
                         )
                     }

@@ -16,6 +16,7 @@ import com.mlmvpn.scanner.R
 import com.mlmvpn.scanner.utils.LocalPort
 import com.mlmvpn.scanner.utils.NetworkSettings
 import com.mlmvpn.scanner.utils.S
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 
 // =================================================================================================
 // The four network settings, each on a page of its own with the control AND the explanation.
@@ -104,7 +105,7 @@ fun ProxyModePage(
         onBack = onBack,
         backLabel = backLabel,
     ) {
-        Spacer(Modifier.height(14.dp))
+        Spacer(Modifier.height(DuskTheme.space3))
         SettingsGroup {
             SettingsToggle(
                 title = stringResource(R.string.settings_proxy_mode),
@@ -112,11 +113,11 @@ fun ProxyModePage(
                 checked = checked,
                 onCheckedChange = onCheckedChange,
                 icon = Icons.Default.SwapHoriz,
-                tint = Ios.Purple,
+                tint = DuskTheme.purple,
             )
         }
         SettingsFooter(S(R.string.help_proxy_mode_body))
-        Spacer(Modifier.height(28.dp))
+        Spacer(Modifier.height(DuskTheme.space5))
     }
 }
 
@@ -144,7 +145,7 @@ fun AllowLanPage(
         onBack = onBack,
         backLabel = backLabel,
     ) {
-        Spacer(Modifier.height(14.dp))
+        Spacer(Modifier.height(DuskTheme.space3))
         SettingsGroup {
             SettingsToggle(
                 title = stringResource(R.string.settings_allow_lan),
@@ -152,10 +153,10 @@ fun AllowLanPage(
                 checked = checked,
                 onCheckedChange = onCheckedChange,
                 icon = Icons.Default.Wifi,
-                tint = Ios.Teal,
+                tint = DuskTheme.blueGray,
             )
         }
         SettingsFooter(S(R.string.help_lan_body, port))
-        Spacer(Modifier.height(28.dp))
+        Spacer(Modifier.height(DuskTheme.space5))
     }
 }

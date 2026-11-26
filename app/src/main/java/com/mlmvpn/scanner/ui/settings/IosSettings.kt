@@ -711,7 +711,7 @@ fun IosScreen(
     val topInset = com.mlmvpn.scanner.ui.LocalContentTopInset.current
     val bottomInset = com.mlmvpn.scanner.ui.LocalSystemBottomPadding.current
     val hasBar = title != null || onBack != null || trailing != null
-    val barHeight = if (hasBar) 44.dp else 0.dp
+    val barHeight = if (hasBar) DuskTheme.navIconSize else 0.dp
     val refresh = rememberIosRefreshState(onRefresh)
 
     val scrollState = rememberScrollState()
@@ -796,7 +796,7 @@ fun IosScreen(
                 // last visible row was cut off by a hard line with the buttons floating on top
                 // of it. Softened over the bar's own height plus a little, so the fade is
                 // finished before the content the user is actually reading.
-                .fadingEdges(top = topInset + barHeight, bottom = bottomInset + 24.dp)
+                .fadingEdges(top = topInset + barHeight, bottom = bottomInset + DuskTheme.space5)
                 .then(
                     if (!scrollable) Modifier
                     else Modifier.nestedScroll(if (onRefresh != null) refresh.connection else overscroll)
@@ -818,15 +818,15 @@ fun IosScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(
-                            start = 20.dp,
-                            end = 20.dp,
+                            start = DuskTheme.space5,
+                            end = DuskTheme.space5,
                             top = 18.dp + 30.dp * travel,
                             bottom = 22.dp + 30.dp * travel,
                         )
                 ) {
                     Text(
                         largeTitle,
-                        color = Ios.Label,
+                        color = DuskTheme.onSurface,
                         style = MaterialTheme.typography.displaySmall,
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier.align(BiasAlignment(-1f + travel, 0f)),
@@ -841,13 +841,13 @@ fun IosScreen(
         }
 
         if (hasBar) {
-            Box(modifier = Modifier.fillMaxWidth().height(topInset + 44.dp).padding(top = topInset)) {
+            Box(modifier = Modifier.fillMaxWidth().height(topInset + DuskTheme.navIconSize).padding(top = topInset)) {
                 if (onBack != null) {
                     Row(
                         modifier = Modifier
                             .align(Alignment.CenterStart)
                             .clickable(onClick = onBack)
-                            .padding(horizontal = 12.dp, vertical = 6.dp),
+                            .padding(horizontal = DuskTheme.space3, vertical = DuskTheme.space1),
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
                         // WHITE, not the accent.
@@ -861,9 +861,9 @@ fun IosScreen(
                         Icon(
                             Icons.Default.ChevronRight,
                             contentDescription = null,
-                            tint = Ios.Label,
+                            tint = DuskTheme.onSurface,
                             modifier = Modifier
-                                .size(22.dp)
+                                .size(DuskTheme.iconSize)
                                 // Points back the way you came, which is rightward in Persian.
                                 .scale(
                                     scaleX = if (LocalLayoutDirection.current == LayoutDirection.Rtl) 1f else -1f,
@@ -871,7 +871,7 @@ fun IosScreen(
                                 ),
                         )
                         if (backLabel != null) {
-                            Text(backLabel, color = Ios.Label, style = MaterialTheme.typography.bodyLarge)
+                            Text(backLabel, color = DuskTheme.onSurface, style = MaterialTheme.typography.bodyLarge)
                         }
                     }
                 }
@@ -881,7 +881,7 @@ fun IosScreen(
                     // called "کانفیگ ایران ۱ — پیش‌فرض (Google DoH)" overlapped it completely.
                     Text(
                         title,
-                        color = Ios.Label,
+                        color = DuskTheme.onSurface,
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.SemiBold,
                         maxLines = 1,
@@ -987,13 +987,13 @@ fun IosTextScreen(
     numeric: Boolean = false,
 ) {
     IosScreen(title = title, onBack = onBack, backLabel = backLabel) {
-        Spacer(Modifier.height(14.dp))
+        Spacer(Modifier.height(DuskTheme.space3))
         SettingsGroup {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .heightIn(min = 46.dp)
-                    .padding(horizontal = 16.dp, vertical = 8.dp),
+                    .padding(horizontal = DuskTheme.space4, vertical = DuskTheme.space2),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 BasicTextField(
@@ -1001,9 +1001,9 @@ fun IosTextScreen(
                     onValueChange = onValueChange,
                     singleLine = true,
                     textStyle = MaterialTheme.typography.titleMedium.copy(
-                        color = if (error != null) Ios.Destructive else Ios.Label,
+                        color = if (error != null) DuskTheme.error else DuskTheme.onSurface,
                     ),
-                    cursorBrush = SolidColor(Ios.Blue),
+                    cursorBrush = SolidColor(DuskTheme.primary),
                     keyboardOptions = KeyboardOptions(
                         keyboardType = if (numeric) {
                             androidx.compose.ui.text.input.KeyboardType.Number
@@ -1017,7 +1017,7 @@ fun IosTextScreen(
                             if (value.isEmpty() && placeholder.isNotEmpty()) {
                                 Text(
                                     placeholder,
-                                    color = Ios.SecondaryLabel.copy(alpha = 0.6f),
+                                    color = DuskTheme.muted.copy(alpha = 0.6f),
                                     style = MaterialTheme.typography.titleMedium,
                                 )
                             }
@@ -1031,12 +1031,12 @@ fun IosTextScreen(
         if (note != null) {
             Text(
                 note,
-                color = if (error != null) Ios.Destructive else Ios.SecondaryLabel,
+                color = if (error != null) DuskTheme.error else DuskTheme.muted,
                 style = MaterialTheme.typography.bodySmall,
-                modifier = Modifier.padding(start = 32.dp, end = 32.dp, top = 8.dp),
+                modifier = Modifier.padding(start = DuskTheme.space6, end = DuskTheme.space6, top = DuskTheme.space2),
             )
         }
-        Spacer(Modifier.height(24.dp))
+        Spacer(Modifier.height(DuskTheme.space5))
     }
 }
 

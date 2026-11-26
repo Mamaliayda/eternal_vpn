@@ -41,6 +41,7 @@ import com.mlmvpn.core.tunnel.SmartIranRoute
 import com.mlmvpn.scanner.store.tr
 import com.mlmvpn.scanner.ui.amnezia.fa
 import com.mlmvpn.scanner.ui.theme.DuskTheme
+import com.mlmvpn.scanner.ui.theme.LocalDuskSnackbarHostState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -53,6 +54,7 @@ import kotlinx.coroutines.withContext
 internal fun SmartIranPage(backLabel: String, onBack: () -> Unit, onChanged: (Boolean) -> Unit) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
+    val duskSnackbarHost = LocalDuskSnackbarHostState.current
     var on by remember { mutableStateOf(SmartIranRoute.enabled(context)) }
     var stats by remember { mutableStateOf(0 to 0) }
     var updated by remember { mutableStateOf(SmartIranLists.lastUpdated(context)) }
@@ -74,7 +76,7 @@ internal fun SmartIranPage(backLabel: String, onBack: () -> Unit, onChanged: (Bo
     }
 
     IosScreen(title = tr("مسیریابی هوشمند ایران", "Smart Iran Routing"), onBack = onBack, backLabel = backLabel) {
-        SettingsGroup(modifier = Modifier.padding(top = 12.dp)) {
+        SettingsGroup(modifier = Modifier.padding(top = DuskTheme.space3)) {
             SettingsToggle(
                 title = tr("مسیریابی هوشمند ایران", "Smart Iran Routing"),
                 subtitle = tr("سایت‌ها و برنامه‌های ایرانی بدون VPN، مستقیم", "Iranian sites and apps go direct, without the VPN"),
@@ -85,7 +87,7 @@ internal fun SmartIranPage(backLabel: String, onBack: () -> Unit, onChanged: (Bo
                     onChanged(it)
                     if (it) scope.launch(Dispatchers.IO) { SmartIranLists.refresh(context); updated = SmartIranLists.lastUpdated(context); version++ }
                 },
-                icon = Icons.Default.AltRoute, tint = Ios.Green,
+                icon = Icons.Default.AltRoute, tint = DuskTheme.success,
             )
         }
         SettingsFooter(tr(
@@ -110,7 +112,7 @@ internal fun SmartIranPage(backLabel: String, onBack: () -> Unit, onChanged: (Bo
             Separator()
             SettingsActionRow(
                 label = if (updating) tr("در حال به‌روزرسانی…", "Updating…") else tr("به‌روزرسانی الان", "Update now"),
-                icon = Icons.Default.Refresh, tint = Ios.Orange, busy = updating,
+                icon = Icons.Default.Refresh, tint = DuskTheme.accent, busy = updating,
             ) {
                 updating = true
                 scope.launch(Dispatchers.IO) {
@@ -121,9 +123,12 @@ internal fun SmartIranPage(backLabel: String, onBack: () -> Unit, onChanged: (Bo
                     updating = false
                     version++
                     withContext(Dispatchers.Main) {
-                        android.widget.Toast.makeText(context,
-                            if (ok) tr("فهرست‌ها به‌روز شد", "Lists updated") else tr("دریافت نشد؛ نسخهٔ فعلی می‌ماند", "Could not download; the current lists stay"),
-                            android.widget.Toast.LENGTH_SHORT).show()
+                        scope.launch {
+                            duskSnackbarHost.showSnackbar(
+                                if (ok) tr("فهرست‌ها به‌روز شد", "Lists updated")
+                                else tr("دریافت نشد؛ نسخهٔ فعلی می‌ماند", "Could not download; the current lists stay"),
+                            )
+                        }
                     }
                 }
             }
@@ -138,7 +143,7 @@ internal fun SmartIranPage(backLabel: String, onBack: () -> Unit, onChanged: (Bo
         SettingsGroup {
             val shown = if (showAll) apps else apps.filter { it.outside || it.suggested }
             if (shown.isEmpty()) {
-                Text(tr("برنامهٔ ایرانی‌ای پیدا نشد", "No Iranian app found"), color = Ios.SecondaryLabel, style = androidx.compose.material3.MaterialTheme.typography.bodyMedium,
+                Text(tr("برنامهٔ ایرانی‌ای پیدا نشد", "No Iranian app found"), color = DuskTheme.muted, style = androidx.compose.material3.MaterialTheme.typography.bodyMedium,
                     modifier = Modifier.padding(16.dp))
             }
             shown.forEachIndexed { i, a ->
@@ -151,14 +156,14 @@ internal fun SmartIranPage(backLabel: String, onBack: () -> Unit, onChanged: (Bo
             Separator()
             SettingsActionRow(
                 label = if (showAll) tr("فقط برنامه‌های ایرانی", "Iranian apps only") else tr("نمایش همهٔ برنامه‌ها برای افزودن", "Show every app to add"),
-                icon = Icons.Default.Apps, tint = Ios.Blue,
+                icon = Icons.Default.Apps, tint = DuskTheme.primary,
             ) { showAll = !showAll }
         }
         SettingsFooter(tr(
             "${fa(outsideCount)} برنامه بیرون از VPN است. برنامه‌های ایرانی خودکار پیدا می‌شوند؛ هر کدام را می‌توانید خاموش کنید یا برنامهٔ دیگری اضافه کنید. «پیشنهاد» یعنی از بازار یا مایکت نصب شده.",
             "$outsideCount app(s) are outside the VPN. Iranian apps are found automatically; you can switch any off or add another. «Suggested» means it came from Bazaar or Myket.",
         ))
-        Spacer(Modifier.height(36.dp))
+        Spacer(Modifier.height(DuskTheme.space6))
     }
 }
 
@@ -183,19 +188,19 @@ private fun AppToggleRow(a: AppRow, onChange: (Boolean) -> Unit) {
         }?.also { appIconCache.put(a.pkg, it) }
     }
     Row(
-        Modifier.fillMaxWidth().clickable { onChange(!a.outside) }.heightIn(min = 52.dp).padding(horizontal = 16.dp, vertical = 8.dp),
+        Modifier.fillMaxWidth().clickable { onChange(!a.outside) }.heightIn(min = 52.dp).padding(horizontal = DuskTheme.space4, vertical = DuskTheme.space2),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Box(Modifier.size(32.dp).clip(DuskTheme.glyphShape)) { icon?.let { Image(it, contentDescription = null, modifier = Modifier.size(32.dp)) } }
-        Spacer(Modifier.width(12.dp))
+        Spacer(Modifier.width(DuskTheme.space3))
         Column(Modifier.weight(1f)) {
-            Text(a.label, color = Ios.Label, style = androidx.compose.material3.MaterialTheme.typography.bodyMedium, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            Text(a.label, color = DuskTheme.onSurface, style = androidx.compose.material3.MaterialTheme.typography.bodyMedium, maxLines = 1, overflow = TextOverflow.Ellipsis)
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(a.pkg, color = Ios.SecondaryLabel, style = androidx.compose.material3.MaterialTheme.typography.labelSmall, maxLines = 1, overflow = TextOverflow.Ellipsis, modifier = Modifier.weight(1f, fill = false))
+                Text(a.pkg, color = DuskTheme.muted, style = androidx.compose.material3.MaterialTheme.typography.labelSmall, maxLines = 1, overflow = TextOverflow.Ellipsis, modifier = Modifier.weight(1f, fill = false))
                 if (a.suggested && !a.outside) {
-                    Spacer(Modifier.width(6.dp))
-                    Text(tr("پیشنهاد", "Suggested"), color = Ios.Orange, style = androidx.compose.material3.MaterialTheme.typography.labelSmall, fontWeight = FontWeight.SemiBold,
-                        modifier = Modifier.clip(DuskTheme.controlShape).background(Ios.Orange.copy(alpha = 0.16f)).padding(horizontal = 5.dp, vertical = 1.dp))
+                    Spacer(Modifier.width(DuskTheme.space1))
+                    Text(tr("پیشنهاد", "Suggested"), color = DuskTheme.accent, style = androidx.compose.material3.MaterialTheme.typography.labelSmall, fontWeight = FontWeight.SemiBold,
+                        modifier = Modifier.clip(DuskTheme.controlShape).background(DuskTheme.accent.copy(alpha = 0.16f)).padding(horizontal = 5.dp, vertical = 1.dp))
                 }
             }
         }

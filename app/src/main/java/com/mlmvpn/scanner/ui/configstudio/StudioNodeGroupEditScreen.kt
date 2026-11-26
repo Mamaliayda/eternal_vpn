@@ -25,7 +25,7 @@ import com.mlmvpn.scanner.ui.configstudio.parts.PageIntro
 import com.mlmvpn.scanner.ui.configstudio.parts.ProblemCard
 import com.mlmvpn.scanner.ui.configstudio.parts.WizardField
 import com.mlmvpn.scanner.ui.configstudio.parts.WizardPrimary
-import com.mlmvpn.scanner.ui.settings.Ios
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 import com.mlmvpn.scanner.ui.settings.IosAlert
 import com.mlmvpn.scanner.ui.settings.IosAlertAction
 import com.mlmvpn.scanner.ui.settings.IosScreen
@@ -103,10 +103,10 @@ fun StudioNodeGroupEditScreen(
         onBack = if (busy) null else onBack,
         backLabel = S(R.string.studio_node_groups),
     ) {
-        Spacer(Modifier.height(10.dp))
+        Spacer(Modifier.height(DuskTheme.space2))
         PageIntro(S(R.string.studio_node_group_edit_sub))
 
-        error?.let { ProblemCard(it); Spacer(Modifier.height(12.dp)) }
+        error?.let { ProblemCard(it); Spacer(Modifier.height(DuskTheme.space3)) }
 
         SettingsSectionHeader(S(R.string.studio_node_group_name))
         WizardField(name, { name = it; error = null }, S(R.string.studio_node_group_name_hint), ltr = false)
@@ -134,7 +134,7 @@ fun StudioNodeGroupEditScreen(
         InfoCard(S(R.string.studio_node_group_priority_note))
 
         // ---- on or off --------------------------------------------------------------------
-        Spacer(Modifier.height(12.dp))
+        Spacer(Modifier.height(DuskTheme.space3))
         SettingsGroup {
             SettingsToggle(
                 title = S(R.string.studio_node_group_enabled),
@@ -178,7 +178,7 @@ fun StudioNodeGroupEditScreen(
                 .replace("%2\$s", faNum(members.size))
         )
 
-        Spacer(Modifier.height(14.dp))
+        Spacer(Modifier.height(DuskTheme.space3))
         WizardPrimary(S(R.string.studio_save), busy = busy, enabled = name.isNotBlank()) { save() }
 
         if (existing != null) {
@@ -187,14 +187,14 @@ fun StudioNodeGroupEditScreen(
                 SettingsActionRow(
                     label = S(R.string.studio_delete),
                     icon = StudioIcons.Delete,
-                    tint = Ios.Red,
+                    tint = DuskTheme.error,
                     enabled = !busy,
                 ) { confirmDelete = true }
             }
             InfoCard(S(R.string.studio_node_group_delete_note))
         }
 
-        Spacer(Modifier.height(28.dp))
+        Spacer(Modifier.height(DuskTheme.space5))
     }
 
     if (confirmDelete && existing != null) {
