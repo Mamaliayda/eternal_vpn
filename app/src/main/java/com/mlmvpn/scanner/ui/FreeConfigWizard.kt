@@ -30,6 +30,7 @@ import androidx.compose.material.icons.filled.TravelExplore
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.Composable
@@ -42,7 +43,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -51,8 +51,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mlmvpn.scanner.engines.freeconfig.FreeConfigEngine
 import com.mlmvpn.scanner.models.VpnNode
-import com.mlmvpn.scanner.ui.home.frostedGlass
-import com.mlmvpn.scanner.ui.settings.Ios
 import com.mlmvpn.scanner.ui.settings.IosScreen
 import com.mlmvpn.scanner.ui.settings.SettingsActionRow
 import com.mlmvpn.scanner.ui.settings.SettingsFooter
@@ -60,9 +58,8 @@ import com.mlmvpn.scanner.ui.settings.SettingsGroup
 import com.mlmvpn.scanner.ui.settings.SettingsRow
 import com.mlmvpn.scanner.ui.settings.SettingsSectionHeader
 import com.mlmvpn.scanner.ui.settings.SettingsSlider
-import com.mlmvpn.scanner.ui.theme.CardShape
-import com.mlmvpn.scanner.ui.theme.ControlShape
-import com.mlmvpn.scanner.ui.theme.PanelShape
+import com.mlmvpn.scanner.ui.theme.DuskCard
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 import kotlinx.coroutines.launch
 import com.mlmvpn.scanner.R
 import com.mlmvpn.scanner.utils.S
@@ -266,25 +263,25 @@ private fun BusyStep(
     IosScreen(title = title, onBack = onBack, backLabel = S(R.string.add_r2)) {
         Spacer(Modifier.height(60.dp))
         Column(
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 32.dp),
+            modifier = Modifier.fillMaxWidth().padding(horizontal = DuskTheme.space6),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Box(
                 modifier = Modifier
                     .size(72.dp)
                     .clip(CircleShape)
-                    .background(Ios.SecondaryLabel.copy(alpha = 0.12f)),
+                    .background(DuskTheme.muted.copy(alpha = 0.12f)),
                 contentAlignment = Alignment.Center,
             ) {
-                Icon(icon, contentDescription = null, tint = Ios.SecondaryLabel, modifier = Modifier.size(34.dp))
+                Icon(icon, contentDescription = null, tint = DuskTheme.muted, modifier = Modifier.size(34.dp))
             }
-            Spacer(Modifier.height(18.dp))
-            Text(headline, color = Ios.Label, fontSize = 17.sp, fontWeight = FontWeight.SemiBold)
-            Spacer(Modifier.height(8.dp))
+            Spacer(Modifier.height(DuskTheme.space4))
+            Text(headline, color = DuskTheme.onSurface, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold)
+            Spacer(Modifier.height(DuskTheme.space2))
             Text(
                 body,
-                color = Ios.SecondaryLabel,
-                fontSize = 13.sp,
+                color = DuskTheme.muted,
+                style = MaterialTheme.typography.bodySmall,
                 lineHeight = 21.sp,
                 textAlign = TextAlign.Center,
             )
@@ -292,20 +289,20 @@ private fun BusyStep(
                 Spacer(Modifier.height(22.dp))
                 CircularProgressIndicator(
                     modifier = Modifier.size(24.dp),
-                    color = Ios.SecondaryLabel,
+                    color = DuskTheme.muted,
                     strokeWidth = 2.dp,
                 )
             }
         }
 
         if (actionLabel != null && onAction != null) {
-            Spacer(Modifier.height(24.dp))
+            Spacer(Modifier.height(DuskTheme.space5))
             SettingsGroup {
                 SettingsActionRow(actionLabel, actionIcon, onClick = onAction)
             }
         }
 
-        Spacer(Modifier.height(28.dp))
+        Spacer(Modifier.height(DuskTheme.space5))
     }
 }
 
@@ -328,7 +325,7 @@ private fun PickPoolStep(
     onGoToNodes: () -> Unit,
 ) {
     IosScreen(title = S(R.string.free_configs), onBack = onBack, backLabel = S(R.string.home_r2)) {
-        Spacer(Modifier.height(14.dp))
+        Spacer(Modifier.height(DuskTheme.space3))
 
         // The second-visit path. As a page inside Add-Node this was unnecessary -- the user was
         // standing in the node list and could see what they already had. Opened from the home
@@ -339,7 +336,7 @@ private fun PickPoolStep(
                     title = S(R.string.the_free_configs_you_already_have),
                     subtitle = S(R.string.in_v2ray_the_folder, FreeConfigEngine.GROUP_NAME),
                     icon = Icons.Default.Bolt,
-                    tint = Ios.Green,
+                    tint = DuskTheme.success,
                     value = faCount(ownedCount),
                     onClick = onGoToNodes,
                 )
@@ -358,7 +355,7 @@ private fun PickPoolStep(
                     title = p.title,
                     subtitle = p.why.takeIf { it.isNotBlank() },
                     icon = Icons.Default.Bolt,
-                    tint = if (index == 0) Ios.Green else Ios.Gray,
+                    tint = if (index == 0) DuskTheme.success else DuskTheme.disabled,
                     // A negative count means "not known until it is downloaded" -- a dash rather
                     // than a zero, which would read as an empty category.
                     value = if (p.count >= 0) faCount(p.count) else "—",
@@ -383,7 +380,7 @@ private fun PickPoolStep(
             }
         }
 
-        Spacer(Modifier.height(28.dp))
+        Spacer(Modifier.height(DuskTheme.space5))
     }
 }
 
@@ -399,7 +396,7 @@ private fun PickCountStep(
     onConfirm: () -> Unit,
 ) {
     IosScreen(title = S(R.string.count), onBack = onBack, backLabel = S(R.string.batches)) {
-        Spacer(Modifier.height(14.dp))
+        Spacer(Modifier.height(DuskTheme.space3))
 
         if (poolTitle.isNotBlank()) {
             SettingsSectionHeader(S(R.string.selected_batch))
@@ -408,7 +405,7 @@ private fun PickCountStep(
                     title = poolTitle,
                     subtitle = poolWhy.takeIf { it.isNotBlank() },
                     icon = Icons.Default.Bolt,
-                    tint = Ios.Green,
+                    tint = DuskTheme.success,
                     value = S(R.string.change),
                     onClick = onBack,
                 )
@@ -424,10 +421,10 @@ private fun PickCountStep(
             range = 1f..available.toFloat().coerceAtLeast(1f),
         )
 
-        Spacer(Modifier.height(12.dp))
+        Spacer(Modifier.height(DuskTheme.space3))
         Row(
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            modifier = Modifier.fillMaxWidth().padding(horizontal = DuskTheme.space4),
+            horizontalArrangement = Arrangement.spacedBy(DuskTheme.space2),
         ) {
             listOf(50, 100, 300, available).filter { it in 1..available }.distinct().forEach { quick ->
                 QuickPickChip(
@@ -443,18 +440,18 @@ private fun PickCountStep(
                 S(R.string.connection_so_a_larger_number_means_a)
         )
 
-        Spacer(Modifier.height(14.dp))
+        Spacer(Modifier.height(DuskTheme.space3))
         SettingsGroup {
             SettingsActionRow(
                 label = S(R.string.fetch_configs, faCount(desiredCount)),
                 icon = Icons.Default.Download,
-                tint = Ios.Green,
+                tint = DuskTheme.success,
                 enabled = available > 0,
                 onClick = onConfirm,
             )
         }
 
-        Spacer(Modifier.height(28.dp))
+        Spacer(Modifier.height(DuskTheme.space5))
     }
 }
 
@@ -467,20 +464,20 @@ private fun QuickPickChip(
 ) {
     Box(
         modifier = modifier
-            .clip(ControlShape)
+            .clip(DuskTheme.glyphShape)
             // Tinted glass with white type, like every other selectable chip in the app -- this
             // was a solid accent slab with dark text on it.
             .background(
-                if (selected) Color.White.copy(alpha = 0.20f) else Color.White.copy(alpha = 0.07f)
+                if (selected) DuskTheme.white.copy(alpha = 0.20f) else DuskTheme.white.copy(alpha = 0.07f)
             )
             .clickable(onClick = onClick)
-            .padding(vertical = 10.dp),
+            .padding(vertical = DuskTheme.space3),
         contentAlignment = Alignment.Center,
     ) {
         Text(
             faCount(value),
-            color = if (selected) Ios.Label else Ios.SecondaryLabel,
-            fontSize = 13.sp,
+            color = if (selected) DuskTheme.onSurface else DuskTheme.muted,
+            style = MaterialTheme.typography.bodySmall,
             fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Normal,
         )
     }
@@ -499,52 +496,52 @@ private fun FetchingStep(
     val animated by animateFloatAsState(targetValue = fraction, label = "fetchProgress")
 
     IosScreen(title = S(R.string.fetching_r2), onBack = onBack, backLabel = S(R.string.count)) {
-        Spacer(Modifier.height(20.dp))
+        Spacer(Modifier.height(DuskTheme.space4))
 
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp)
-                .frostedGlass(CardShape)
+                .padding(horizontal = DuskTheme.space4)
+                .frostedGlass(DuskTheme.tileShape)
                 .padding(18.dp),
         ) {
             Text(
                 S(R.string.fetching_and_testing_configs),
-                color = Ios.Label,
-                fontSize = 16.sp,
+                color = DuskTheme.onSurface,
+                style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.SemiBold,
             )
-            Spacer(Modifier.height(6.dp))
+            Spacer(Modifier.height(DuskTheme.space1 + 2.dp))
             Text(
                 S(R.string.only_configs_that_actually_connected_are_added),
-                color = Ios.SecondaryLabel,
-                fontSize = 13.sp,
+                color = DuskTheme.muted,
+                style = MaterialTheme.typography.bodySmall,
                 lineHeight = 20.sp,
             )
-            Spacer(Modifier.height(18.dp))
+            Spacer(Modifier.height(DuskTheme.space4))
             LinearProgressIndicator(
                 progress = animated,
                 modifier = Modifier.fillMaxWidth().height(6.dp).clip(CircleShape),
-                color = Ios.Green,
-                trackColor = Color.White.copy(alpha = 0.14f),
+                color = DuskTheme.success,
+                trackColor = DuskTheme.white.copy(alpha = 0.14f),
             )
-            Spacer(Modifier.height(12.dp))
+            Spacer(Modifier.height(DuskTheme.space3))
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                 Text(
                     S(R.string.tested_r2, faCount(progress.tested), faCount(progress.candidates)),
-                    color = Ios.SecondaryLabel,
-                    fontSize = 12.sp,
+                    color = DuskTheme.muted,
+                    style = MaterialTheme.typography.bodySmall,
                 )
                 Text(
                     S(R.string.connected_r2, faCount(progress.working), faCount(progress.target)),
-                    color = Ios.Green,
-                    fontSize = 12.sp,
+                    color = DuskTheme.success,
+                    style = MaterialTheme.typography.bodySmall,
                     fontWeight = FontWeight.SemiBold,
                 )
             }
         }
 
-        Spacer(Modifier.height(16.dp))
+        Spacer(Modifier.height(DuskTheme.space4))
         SettingsGroup {
             SettingsActionRow(
                 label = if (stopping) S(R.string.stopping)
@@ -560,7 +557,7 @@ private fun FetchingStep(
                 S(R.string.was_found_is_kept)
         )
 
-        Spacer(Modifier.height(28.dp))
+        Spacer(Modifier.height(DuskTheme.space5))
     }
 }
 
@@ -574,91 +571,91 @@ private fun ResultsStep(
     onBack: () -> Unit,
 ) {
     IosScreen(title = S(R.string.result), onBack = onBack, backLabel = S(R.string.add_r2), scrollable = false) {
-        Spacer(Modifier.height(14.dp))
+        Spacer(Modifier.height(DuskTheme.space3))
 
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp)
-                .frostedGlass(PanelShape)
+                .padding(horizontal = DuskTheme.space4)
+                .frostedGlass(DuskTheme.chartShape)
                 .padding(16.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Icon(
                 Icons.Default.CheckCircle,
                 contentDescription = null,
-                tint = Ios.Green,
+                tint = DuskTheme.success,
                 modifier = Modifier.size(22.dp),
             )
             Spacer(Modifier.width(10.dp))
             Text(
                 S(R.string.configs_connected_and_ready, faCount(results.size)),
-                color = Ios.Label,
-                fontSize = 15.sp,
+                color = DuskTheme.onSurface,
+                style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.SemiBold,
             )
         }
 
         if (alreadyOwnedCount > 0) {
-            Spacer(Modifier.height(10.dp))
+            Spacer(Modifier.height(DuskTheme.space2 + 2.dp))
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp)
-                    .clip(PanelShape)
-                    .background(Ios.Yellow.copy(alpha = 0.12f))
+                    .padding(horizontal = DuskTheme.space4)
+                    .clip(DuskTheme.chartShape)
+                    .background(DuskTheme.accent.copy(alpha = 0.12f))
                     .padding(14.dp),
                 verticalAlignment = Alignment.Top,
             ) {
                 Icon(
                     Icons.Default.CheckCircle,
                     contentDescription = null,
-                    tint = Ios.Yellow,
+                    tint = DuskTheme.accent,
                     modifier = Modifier.size(18.dp),
                 )
                 Spacer(Modifier.width(10.dp))
                 Text(
                     S(R.string.you_already_have_of_these_so, faCount(alreadyOwnedCount)) +
                         S(R.string.new_configs_will_be_moved_across, faCount(newCount)),
-                    color = Ios.Label,
-                    fontSize = 12.sp,
+                    color = DuskTheme.onSurface,
+                    style = MaterialTheme.typography.bodySmall,
                     lineHeight = 19.sp,
                 )
             }
         }
 
-        Spacer(Modifier.height(14.dp))
+        Spacer(Modifier.height(DuskTheme.space3))
 
         LazyColumn(
             modifier = Modifier
                 .weight(1f)
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp)
-                .frostedGlass(CardShape),
+                .padding(horizontal = DuskTheme.space4)
+                .frostedGlass(DuskTheme.tileShape),
             contentPadding = PaddingValues(vertical = 6.dp),
         ) {
             items(results) { node ->
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 14.dp, vertical = 9.dp),
+                        .padding(horizontal = DuskTheme.space3, vertical = DuskTheme.space2 + 1.dp),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Text(
                         node.name,
-                        color = Ios.Label,
-                        fontSize = 13.sp,
+                        color = DuskTheme.onSurface,
+                        style = MaterialTheme.typography.bodySmall,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
                         modifier = Modifier.weight(1f),
                     )
                     Spacer(Modifier.width(8.dp))
-                    Text(node.type.uppercase(), color = Ios.SecondaryLabel, fontSize = 11.sp)
+                    Text(node.type.uppercase(), color = DuskTheme.muted, style = MaterialTheme.typography.labelSmall)
                 }
             }
         }
 
-        Spacer(Modifier.height(12.dp))
+        Spacer(Modifier.height(DuskTheme.space3))
         SettingsGroup {
             SettingsActionRow(
                 label = if (alreadyOwnedCount > 0) {
@@ -667,7 +664,7 @@ private fun ResultsStep(
                     S(R.string.move_to_the_connection_page)
                 },
                 icon = Icons.Default.Download,
-                tint = Ios.Green,
+                tint = DuskTheme.success,
                 enabled = newCount > 0,
                 onClick = onTransfer,
             )
@@ -676,7 +673,7 @@ private fun ResultsStep(
             SettingsFooter(S(R.string.you_already_have_all_of_these_configs))
         }
 
-        Spacer(Modifier.height(20.dp))
+        Spacer(Modifier.height(DuskTheme.space4))
     }
 }
 
@@ -702,45 +699,45 @@ private fun DoneStep(
     onClose: () -> Unit,
 ) {
     IosScreen(title = S(R.string.ready_r2), onBack = onClose, backLabel = S(R.string.home_r2)) {
-        Spacer(Modifier.height(24.dp))
+        Spacer(Modifier.height(DuskTheme.space5))
 
         Column(
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 32.dp),
+            modifier = Modifier.fillMaxWidth().padding(horizontal = DuskTheme.space6),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Icon(
                 Icons.Default.CheckCircle,
                 contentDescription = null,
-                tint = Ios.Green,
+                tint = DuskTheme.success,
                 modifier = Modifier.size(52.dp),
             )
-            Spacer(Modifier.height(14.dp))
+            Spacer(Modifier.height(DuskTheme.space3))
             Text(
                 faCount(imported) + S(R.string.configs_added),
-                color = Ios.Label,
-                fontSize = 19.sp,
+                color = DuskTheme.onSurface,
+                style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Bold,
             )
-            Spacer(Modifier.height(8.dp))
+            Spacer(Modifier.height(DuskTheme.space2))
             Text(
                 S(R.string.all_of_them_passed_a_real_test) +
                     S(R.string.the) + com.mlmvpn.scanner.engines.freeconfig.FreeConfigEngine.GROUP_NAME +
                     S(R.string.folder_r2),
-                color = Ios.SecondaryLabel,
-                fontSize = 13.sp,
+                color = DuskTheme.muted,
+                style = MaterialTheme.typography.bodySmall,
                 lineHeight = 21.sp,
                 textAlign = TextAlign.Center,
             )
         }
 
-        Spacer(Modifier.height(28.dp))
+        Spacer(Modifier.height(DuskTheme.space5))
 
         SettingsSectionHeader(S(R.string.next_step))
         SettingsGroup {
             SettingsActionRow(
                 label = S(R.string.go_to_v2ray_and_connect),
                 icon = Icons.Default.Bolt,
-                tint = Ios.Blue,
+                tint = DuskTheme.primary,
             ) { onGoToNodes(firstNode) }
         }
         SettingsFooter(

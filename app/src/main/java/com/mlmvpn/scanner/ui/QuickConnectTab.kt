@@ -3,7 +3,6 @@ package com.mlmvpn.scanner.ui
 import android.app.Activity
 import android.content.Intent
 import android.net.VpnService
-import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.core.FastOutSlowInEasing
@@ -24,6 +23,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
@@ -45,7 +45,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mlmvpn.scanner.MyVpnService
 import com.mlmvpn.scanner.quick.*
-import com.mlmvpn.scanner.ui.settings.Ios
 import com.mlmvpn.scanner.ui.settings.IosAlert
 import com.mlmvpn.scanner.ui.settings.IosAlertAction
 import com.mlmvpn.scanner.ui.settings.IosScreen
@@ -53,6 +52,8 @@ import com.mlmvpn.scanner.ui.settings.SettingsActionRow
 import com.mlmvpn.scanner.ui.settings.SettingsFooter
 import com.mlmvpn.scanner.ui.settings.SettingsGroup
 import com.mlmvpn.scanner.ui.settings.SettingsSectionHeader
+import com.mlmvpn.scanner.ui.theme.DuskTheme
+import com.mlmvpn.scanner.ui.theme.LocalDuskSnackbarHostState
 import com.mlmvpn.scanner.ui.theme.PanelShape
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
@@ -78,6 +79,8 @@ enum class QuickState { IDLE, SEARCHING, CONNECTING, CONNECTED, DISCONNECTING }
 @Composable
 fun QuickConnectTab(onBack: () -> Unit = {}) {
     val hostContext = LocalContext.current
+    val snackbarScope = rememberCoroutineScope()
+    val duskSnackbarHost = LocalDuskSnackbarHostState.current
     var savedRevision by remember { mutableStateOf(0) }
     var showServers by remember { mutableStateOf(false) }
 
@@ -94,11 +97,11 @@ fun QuickConnectTab(onBack: () -> Unit = {}) {
                 val added = QuickSavedStore.addAll(hostContext, nodes)
                 savedRevision++
                 showServers = false
-                Toast.makeText(
-                    hostContext,
-                    faCount(added) + S(R.string.servers_added_to_the_connection_page),
-                    Toast.LENGTH_SHORT,
-                ).show()
+                snackbarScope.launch {
+                    duskSnackbarHost.showSnackbar(
+                        faCount(added) + S(R.string.servers_added_to_the_connection_page)
+                    )
+                }
             },
         )
         return
@@ -387,18 +390,18 @@ fun QuickConnectTab(onBack: () -> Unit = {}) {
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
             contentPadding = PaddingValues(
-                top = 8.dp,
-                bottom = LocalSystemBottomPadding.current + 24.dp,
+                top = DuskTheme.space2,
+                bottom = LocalSystemBottomPadding.current + DuskTheme.space5,
             )
         ) {
             item {
                 // The navigation bar already carries the screen's name; this is the breathing
                 // room the removed 22sp title used to provide.
-                Spacer(Modifier.height(28.dp))
+                Spacer(Modifier.height(DuskTheme.space5))
                 Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
                     ConnectOrb(state = state, onClick = { onBigButton() })
                 }
-                Spacer(Modifier.height(18.dp))
+                Spacer(Modifier.height(DuskTheme.space3 + DuskTheme.space1))
             }
 
             item {
@@ -413,22 +416,22 @@ fun QuickConnectTab(onBack: () -> Unit = {}) {
                         }
                     },
                     color = when (state) {
-                        QuickState.CONNECTED -> Ios.Green
-                        QuickState.DISCONNECTING -> Ios.Destructive
-                        else -> Ios.SecondaryLabel
+                        QuickState.CONNECTED -> DuskTheme.success
+                        QuickState.DISCONNECTING -> DuskTheme.error
+                        else -> DuskTheme.muted
                     },
-                    fontSize = 14.sp,
+                    style = MaterialTheme.typography.bodyMedium,
                     textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp)
+                    modifier = Modifier.fillMaxWidth().padding(horizontal = DuskTheme.space5)
                 )
                 com.mlmvpn.scanner.ui.RouteChips()
-                Spacer(Modifier.height(14.dp))
+                Spacer(Modifier.height(DuskTheme.space3))
             }
 
             egress?.let {
                 item {
                     EgressBanner(it)
-                    Spacer(Modifier.height(8.dp))
+                    Spacer(Modifier.height(DuskTheme.space2))
                 }
             }
 
@@ -440,25 +443,25 @@ fun QuickConnectTab(onBack: () -> Unit = {}) {
                     SettingsActionRow(
                         label = S(R.string.server_list_and_country_scan),
                         icon = Icons.Default.Dns,
-                        tint = Ios.Gray,
+                        tint = DuskTheme.disabled,
                     ) { showServers = true }
                     if (saved.isNotEmpty()) {
                         Separator()
                         SettingsActionRow(
                             label = if (testingAll) S(R.string.stop_testing) else S(R.string.test_all_my_servers),
                             icon = if (testingAll) Icons.Default.Stop else Icons.Default.NetworkCheck,
-                            tint = if (testingAll) Ios.Orange else Ios.Gray,
-                            labelColor = Ios.Label,
+                            tint = if (testingAll) DuskTheme.accent else DuskTheme.disabled,
+                            labelColor = DuskTheme.onSurface,
                         ) { if (testingAll) QuickScanner.stopMeasuring() else testAllSaved() }
                         Separator()
                         SettingsActionRow(
                             label = S(R.string.clear_list),
                             icon = Icons.Default.DeleteSweep,
-                            tint = Ios.Destructive,
+                            tint = DuskTheme.error,
                         ) { confirmDelete = true }
                     }
                 }
-                Spacer(Modifier.height(4.dp))
+                Spacer(Modifier.height(DuskTheme.space1))
             }
 
             if (poolNodes.isNotEmpty()) {
@@ -488,17 +491,17 @@ fun QuickConnectTab(onBack: () -> Unit = {}) {
                 )
                 if (testingAll) {
                     val (done, total) = testProgress
-                    Column(modifier = Modifier.padding(horizontal = 20.dp)) {
+                    Column(modifier = Modifier.padding(horizontal = DuskTheme.space4 + DuskTheme.space1)) {
                         Text(
                             S(R.string.testing_2) + faCount(done) + S(R.string.of) + faCount(total),
-                            color = Ios.SecondaryLabel,
-                            fontSize = 12.sp,
+                            color = DuskTheme.muted,
+                            style = MaterialTheme.typography.bodySmall,
                         )
-                        Spacer(Modifier.height(6.dp))
+                        Spacer(Modifier.height(DuskTheme.space1 + 2.dp))
                         LinearProgressIndicator(
                             progress = if (total > 0) done.toFloat() / total else 0f,
-                            color = Ios.Blue,
-                            trackColor = Color.White.copy(alpha = 0.12f),
+                            color = DuskTheme.primary,
+                            trackColor = DuskTheme.white.copy(alpha = 0.12f),
                             modifier = Modifier.fillMaxWidth().height(3.dp).clip(CircleShape)
                         )
                     }
@@ -586,10 +589,10 @@ fun QuickConnectTab(onBack: () -> Unit = {}) {
 @Composable
 private fun ConnectOrb(state: QuickState, onClick: () -> Unit) {
     val ringColor = when (state) {
-        QuickState.CONNECTED -> Ios.Green
-        QuickState.DISCONNECTING -> Ios.Destructive
-        QuickState.IDLE -> Ios.SecondaryLabel
-        else -> Ios.Blue
+        QuickState.CONNECTED -> DuskTheme.success
+        QuickState.DISCONNECTING -> DuskTheme.error
+        QuickState.IDLE -> DuskTheme.muted
+        else -> DuskTheme.primary
     }
     val working = state == QuickState.SEARCHING || state == QuickState.CONNECTING
 
@@ -625,7 +628,7 @@ private fun ConnectOrb(state: QuickState, onClick: () -> Unit) {
     ) {
         // Read outside the draw lambda: the palette is composable, and a DrawScope is not a
         // composable context.
-        val trackColor = Color.White.copy(alpha = 0.10f)
+        val trackColor = DuskTheme.white.copy(alpha = 0.10f)
         Canvas(modifier = Modifier.fillMaxSize()) {
             val stroke = 10.dp.toPx()
             val inset = stroke / 2 + 8.dp.toPx()
@@ -683,7 +686,7 @@ private fun ConnectOrb(state: QuickState, onClick: () -> Unit) {
                 .size(150.dp)
                 .clip(CircleShape)
                 .background(
-                    if (state == QuickState.IDLE) Color.White.copy(alpha = 0.07f)
+                    if (state == QuickState.IDLE) DuskTheme.white.copy(alpha = 0.07f)
                     else ringColor.copy(alpha = 0.16f)
                 )
                 .clickable { onClick() },
@@ -701,10 +704,10 @@ private fun ConnectOrb(state: QuickState, onClick: () -> Unit) {
                     contentDescription = null,
                     // White, not the accent: the ring already carries the state, and an accent
                     // glyph inside an accent ring is the same word said twice.
-                    tint = Ios.Label,
-                    modifier = Modifier.size(44.dp)
+                    tint = DuskTheme.onSurface,
+                    modifier = Modifier.size(DuskTheme.navIconSize)
                 )
-                Spacer(Modifier.height(8.dp))
+                Spacer(Modifier.height(DuskTheme.space2))
                 Text(
                     when (state) {
                         QuickState.IDLE -> S(R.string.connect)
@@ -713,7 +716,7 @@ private fun ConnectOrb(state: QuickState, onClick: () -> Unit) {
                         QuickState.CONNECTED -> S(R.string.disconnect_2)
                         QuickState.DISCONNECTING -> S(R.string.disconnecting)
                     },
-                    color = Ios.Label, fontSize = 14.sp, fontWeight = FontWeight.SemiBold
+                    color = DuskTheme.onSurface, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.SemiBold
                 )
             }
         }
@@ -724,26 +727,26 @@ private fun ConnectOrb(state: QuickState, onClick: () -> Unit) {
 @Composable
 private fun EgressBanner(res: EgressResult) {
     val (text, tint) = when {
-        !res.ok -> S(R.string.egress_not_checked, res.error) to Ios.Orange
+        !res.ok -> S(R.string.egress_not_checked, res.error) to DuskTheme.accent
         // A reading whose IP matches the phone's own is not the exit; it is a request that
         // never entered the tunnel. Saying "verified" there would be a lie.
         !res.tunnelled ->
-            S(R.string.connected_but_the_exit_country_was_not) to Ios.Orange
+            S(R.string.connected_but_the_exit_country_was_not) to DuskTheme.accent
         // WARP reports the USER's country by design, so this is transit, not location.
         res.warp ->
-            S(R.string.route_verified_warp_the_exit_country_cannot, res.colo ?: "—") to Ios.Green
+            S(R.string.route_verified_warp_the_exit_country_cannot, res.colo ?: "—") to DuskTheme.success
         else ->
-            S(R.string.real_exit, res.country?.label ?: res.loc, res.colo ?: "—", res.ip ?: "") to Ios.Green
+            S(R.string.real_exit, res.country?.label ?: res.loc, res.colo ?: "—", res.ip ?: "") to DuskTheme.success
     }
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp)
+            .padding(horizontal = DuskTheme.space4)
             .clip(PanelShape)
             .background(tint.copy(alpha = 0.13f))
-            .padding(12.dp),
+            .padding(DuskTheme.space3),
     ) {
-        Text(text, color = Ios.Label, fontSize = 12.sp, lineHeight = 20.sp)
+        Text(text, color = DuskTheme.onSurface, style = MaterialTheme.typography.bodySmall, lineHeight = 20.sp)
     }
 }
 
@@ -760,10 +763,10 @@ private fun PoolRow(node: QuickNode, connected: Boolean) {
         modifier = Modifier
             .fillMaxWidth()
             .heightIn(min = 50.dp)
-            .padding(horizontal = 16.dp, vertical = 8.dp),
+            .padding(horizontal = DuskTheme.space4, vertical = DuskTheme.space2),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Text(node.flag ?: "🏳️", fontSize = 20.sp)
+        Text(node.flag ?: "🏳️", style = MaterialTheme.typography.titleSmall)
         Spacer(Modifier.width(10.dp))
         Column(modifier = Modifier.weight(1f)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -771,26 +774,26 @@ private fun PoolRow(node: QuickNode, connected: Boolean) {
                     Icon(
                         Icons.Default.CheckCircle,
                         contentDescription = null,
-                        tint = Ios.Green,
-                        modifier = Modifier.size(14.dp),
+                        tint = DuskTheme.success,
+                        modifier = Modifier.size(DuskTheme.space3),
                     )
                     Spacer(Modifier.width(5.dp))
                 }
                 Text(
                     node.countryName ?: node.country ?: S(R.string.unknown),
-                    color = Ios.Label,
-                    fontSize = 15.sp,
+                    color = DuskTheme.onSurface,
+                    style = MaterialTheme.typography.bodyMedium,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )
             }
-            Text(node.protocol.uppercase(), color = Ios.SecondaryLabel, fontSize = 11.sp)
+            Text(node.protocol.uppercase(), color = DuskTheme.muted, style = MaterialTheme.typography.labelSmall)
         }
         if (node.delay > 0) {
             Text(
                 faCount(node.delay) + " ms",
-                color = if (node.delay < 400) Ios.Green else Ios.Orange,
-                fontSize = 13.sp,
+                color = if (node.delay < 400) DuskTheme.success else DuskTheme.accent,
+                style = MaterialTheme.typography.bodySmall,
                 fontWeight = FontWeight.SemiBold,
             )
             Spacer(Modifier.width(8.dp))
@@ -798,8 +801,8 @@ private fun PoolRow(node: QuickNode, connected: Boolean) {
         Icon(
             Icons.Default.Lock,
             contentDescription = null,
-            tint = Ios.SecondaryLabel.copy(alpha = 0.6f),
-            modifier = Modifier.size(14.dp),
+            tint = DuskTheme.muted.copy(alpha = 0.6f),
+            modifier = Modifier.size(DuskTheme.space3),
         )
     }
 }
@@ -822,15 +825,15 @@ private fun SavedRow(
         modifier = Modifier
             .fillMaxWidth()
             .heightIn(min = 54.dp)
-            .padding(start = 16.dp, end = 8.dp, top = 8.dp, bottom = 8.dp),
+            .padding(start = DuskTheme.space4, end = DuskTheme.space2, top = DuskTheme.space2, bottom = DuskTheme.space2),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(row.flag ?: "🏳️", fontSize = 20.sp)
+        Text(row.flag ?: "🏳️", style = MaterialTheme.typography.titleSmall)
         Spacer(Modifier.width(10.dp))
         Column(
             modifier = Modifier
                 .weight(1f)
-                .clip(RoundedCornerShape(8.dp))
+                .clip(DuskTheme.glyphShape)
                 .clickable { onConnect() }
                 .padding(vertical = 4.dp)
         ) {
@@ -839,32 +842,32 @@ private fun SavedRow(
                     Icon(
                         Icons.Default.CheckCircle,
                         contentDescription = null,
-                        tint = Ios.Green,
-                        modifier = Modifier.size(14.dp),
+                        tint = DuskTheme.success,
+                        modifier = Modifier.size(DuskTheme.space3),
                     )
                     Spacer(Modifier.width(5.dp))
                 }
                 Text(
                     row.name,
-                    color = Ios.Label,
-                    fontSize = 15.sp,
+                    color = DuskTheme.onSurface,
+                    style = MaterialTheme.typography.bodyMedium,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                     modifier = Modifier.weight(1f, fill = false),
                 )
                 if (row.isNew) {
                     Spacer(Modifier.width(6.dp))
-                    Badge(S(R.string.new_str), Ios.Green)
+                    Badge(S(R.string.new_str), DuskTheme.success)
                 }
                 if (row.isDead) {
                     Spacer(Modifier.width(6.dp))
-                    Badge(S(R.string.dead_2), Ios.Destructive)
+                    Badge(S(R.string.dead_2), DuskTheme.error)
                 }
             }
             Text(
                 listOfNotNull(row.countryName, row.protocol.uppercase()).joinToString(" · "),
-                color = Ios.SecondaryLabel,
-                fontSize = 11.sp,
+                color = DuskTheme.muted,
+                style = MaterialTheme.typography.labelSmall,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
@@ -878,24 +881,24 @@ private fun SavedRow(
                 else -> "—"
             },
             color = when {
-                row.delay in 1..399 -> Ios.Green
-                row.delay in 400..999 -> Ios.Orange
-                row.isDead -> Ios.Destructive
-                else -> Ios.SecondaryLabel
+                row.delay in 1..399 -> DuskTheme.success
+                row.delay in 400..999 -> DuskTheme.accent
+                row.isDead -> DuskTheme.error
+                else -> DuskTheme.muted
             },
-            fontSize = 13.sp, fontWeight = FontWeight.SemiBold
+            style = MaterialTheme.typography.bodySmall, fontWeight = FontWeight.SemiBold
         )
         Icon(
             Icons.Default.Refresh,
             contentDescription = S(R.string.retest),
-            tint = Ios.SecondaryLabel,
-            modifier = Modifier.size(30.dp).clip(CircleShape).clickable(onClick = onTest).padding(7.dp),
+            tint = DuskTheme.muted,
+            modifier = Modifier.size(DuskTheme.iconSize + DuskTheme.space2).clip(CircleShape).clickable(onClick = onTest).padding(7.dp),
         )
         Icon(
             Icons.Default.Close,
             contentDescription = S(R.string.delete),
-            tint = Ios.Destructive,
-            modifier = Modifier.size(30.dp).clip(CircleShape).clickable(onClick = onDelete).padding(7.dp),
+            tint = DuskTheme.error,
+            modifier = Modifier.size(DuskTheme.iconSize + DuskTheme.space2).clip(CircleShape).clickable(onClick = onDelete).padding(7.dp),
         )
     }
 }
@@ -904,10 +907,10 @@ private fun SavedRow(
 internal fun Badge(text: String, color: Color) {
     Box(
         modifier = Modifier
-            .clip(RoundedCornerShape(6.dp))
+            .clip(RoundedCornerShape(DuskTheme.space1 + 2.dp))
             .background(color.copy(alpha = 0.18f))
-            .padding(horizontal = 6.dp, vertical = 2.dp),
+            .padding(horizontal = DuskTheme.space1 + 2.dp, vertical = 2.dp),
     ) {
-        Text(text, color = color, fontSize = 10.sp, fontWeight = FontWeight.Medium)
+        Text(text, color = color, style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Medium)
     }
 }

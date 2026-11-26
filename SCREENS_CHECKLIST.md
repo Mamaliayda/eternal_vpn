@@ -1,6 +1,6 @@
 # Eternal VPN — screen redesign checklist
 
-> **Progress: 303 / 1203 complete** — each checked row is fully migrated; unverified routes and states remain unchecked.
+> **Progress: 319 / 1203 complete** — each checked row is fully migrated; unverified routes and states remain unchecked.
 
 > Inventory generated from Kotlin source on 2026-11-26. A row is considered migrated only after its visible composition, nested states, and overlays are reviewed against the Soft Dusk tokens. Shared theme inheritance alone does **not** count as a completed visual redesign.
 
@@ -110,10 +110,10 @@ Found 230 screen-like public/internal composables across 133 Kotlin files (the f
 - [ ] `FixedIpScreen` — `com/mlmvpn/scanner/ui/FixedIpScreen.kt`
 ### FreeConfigTab.kt
 
-- [ ] `FreeConfigTab` — `com/mlmvpn/scanner/ui/FreeConfigTab.kt`
+- [x] `FreeConfigTab` — `com/mlmvpn/scanner/ui/FreeConfigTab.kt`
 ### FreeConfigWizard.kt
 
-- [ ] `FreeConfigWizard` — `com/mlmvpn/scanner/ui/FreeConfigWizard.kt`
+- [x] `FreeConfigWizard` — `com/mlmvpn/scanner/ui/FreeConfigWizard.kt`
 ### GameTab.kt
 
 - [ ] `GameTab` — `com/mlmvpn/scanner/ui/GameTab.kt`
@@ -143,7 +143,7 @@ Found 230 screen-like public/internal composables across 133 Kotlin files (the f
 - [x] `GuidePage` — `com/mlmvpn/scanner/ui/OpenVpnScreen.kt`
 ### QuickConnectTab.kt
 
-- [ ] `QuickConnectTab` — `com/mlmvpn/scanner/ui/QuickConnectTab.kt`
+- [x] `QuickConnectTab` — `com/mlmvpn/scanner/ui/QuickConnectTab.kt`
 ### QuickServersScreen.kt
 
 - [x] `QuickServersScreen` — `com/mlmvpn/scanner/ui/QuickServersScreen.kt`
@@ -476,13 +476,13 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 - [ ] `CoachBar` — `com/mlmvpn/scanner/ui/CombineCoach.kt`
 ### FreeConfigWizard.kt
 
-- [ ] `BusyStep` — `com/mlmvpn/scanner/ui/FreeConfigWizard.kt`
-- [ ] `PickPoolStep` — `com/mlmvpn/scanner/ui/FreeConfigWizard.kt`
-- [ ] `PickCountStep` — `com/mlmvpn/scanner/ui/FreeConfigWizard.kt`
-- [ ] `QuickPickChip` — `com/mlmvpn/scanner/ui/FreeConfigWizard.kt`
-- [ ] `FetchingStep` — `com/mlmvpn/scanner/ui/FreeConfigWizard.kt`
-- [ ] `ResultsStep` — `com/mlmvpn/scanner/ui/FreeConfigWizard.kt`
-- [ ] `DoneStep` — `com/mlmvpn/scanner/ui/FreeConfigWizard.kt`
+- [x] `BusyStep` — `com/mlmvpn/scanner/ui/FreeConfigWizard.kt`
+- [x] `PickPoolStep` — `com/mlmvpn/scanner/ui/FreeConfigWizard.kt`
+- [x] `PickCountStep` — `com/mlmvpn/scanner/ui/FreeConfigWizard.kt`
+- [x] `QuickPickChip` — `com/mlmvpn/scanner/ui/FreeConfigWizard.kt`
+- [x] `FetchingStep` — `com/mlmvpn/scanner/ui/FreeConfigWizard.kt`
+- [x] `ResultsStep` — `com/mlmvpn/scanner/ui/FreeConfigWizard.kt`
+- [x] `DoneStep` — `com/mlmvpn/scanner/ui/FreeConfigWizard.kt`
 ### GameTab.kt
 
 - [ ] `pingColor` — `com/mlmvpn/scanner/ui/GameTab.kt`
@@ -529,11 +529,11 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 - [x] `Field` — `com/mlmvpn/scanner/ui/OpenVpnScreen.kt`
 ### QuickConnectTab.kt
 
-- [ ] `ConnectOrb` — `com/mlmvpn/scanner/ui/QuickConnectTab.kt`
-- [ ] `EgressBanner` — `com/mlmvpn/scanner/ui/QuickConnectTab.kt`
-- [ ] `PoolRow` — `com/mlmvpn/scanner/ui/QuickConnectTab.kt`
-- [ ] `SavedRow` — `com/mlmvpn/scanner/ui/QuickConnectTab.kt`
-- [ ] `Badge` — `com/mlmvpn/scanner/ui/QuickConnectTab.kt`
+- [x] `ConnectOrb` — `com/mlmvpn/scanner/ui/QuickConnectTab.kt`
+- [x] `EgressBanner` — `com/mlmvpn/scanner/ui/QuickConnectTab.kt`
+- [x] `PoolRow` — `com/mlmvpn/scanner/ui/QuickConnectTab.kt`
+- [x] `SavedRow` — `com/mlmvpn/scanner/ui/QuickConnectTab.kt`
+- [x] `Badge` — `com/mlmvpn/scanner/ui/QuickConnectTab.kt`
 ### QuickServersScreen.kt
 
 - [x] `QuickCountryRow` — `com/mlmvpn/scanner/ui/QuickServersScreen.kt`
@@ -1457,7 +1457,7 @@ Toast / short transient feedback call sites (OS-rendered surfaces; validate app 
 - [ ] `com/mlmvpn/scanner/ui/GameTab.kt` — Toast × 6
 - [x] `com/mlmvpn/scanner/ui/NodesTab.kt` — Toast × 19 (replaced with Dusk snackbars)
 - [x] `com/mlmvpn/scanner/ui/OpenVpnScreen.kt` — Toast × 1
-- [ ] `com/mlmvpn/scanner/ui/QuickConnectTab.kt` — Toast × 1
+- [x] `com/mlmvpn/scanner/ui/QuickConnectTab.kt` — Toast × 1 (replaced with Dusk snackbar)
 - [x] `com/mlmvpn/scanner/ui/ScannerTab.kt` — Toast × 20 (replaced with Dusk snackbars)
 - [ ] `com/mlmvpn/scanner/ui/aether/AetherScreen.kt` — Toast × 4
 - [ ] `com/mlmvpn/scanner/ui/amnezia/AmneziaScreen.kt` — Toast × 3
