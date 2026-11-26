@@ -23,11 +23,25 @@ jobs:
         with:
           lfs: true
 
+      # Build the exact Xray gomobile API this app uses. Keep the source commit pinned:
+      # its generated AAR is intentionally not committed, and must match VlessXrayInjector.
+      - name: Check out Xray Android library source
+        uses: actions/checkout@v4
+        with:
+          repository: 2dust/AndroidLibXrayLite
+          ref: 1314c9af79518a03300803019c8264c737bb3596
+          path: xray-library
+
       - name: Set up Java
         uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: ${{ env.JAVA_VERSION }}
+
+      - name: Set up Go
+        uses: actions/setup-go@v6
+        with:
+          go-version-file: xray-library/go.mod
 
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3
@@ -36,7 +50,20 @@ jobs:
           packages: platform-tools
 
       - name: Install Android SDK packages
-        run: sdkmanager "platforms;android-36" "build-tools;35.0.0"
+        run: |
+          sdkmanager "platforms;android-36" "build-tools;35.0.0" "ndk;28.2.13676358"
+          echo "ANDROID_NDK_HOME=$ANDROID_HOME/ndk/28.2.13676358" >> "$GITHUB_ENV"
+
+      - name: Build Xray Android library
+        working-directory: xray-library
+        run: |
+          go install golang.org/x/mobile/cmd/gomobile@v0.0.0-20260508232728-bebd421c7fa8
+          echo "$(go env GOPATH)/bin" >> "$GITHUB_PATH"
+          export PATH="$(go env GOPATH)/bin:$PATH"
+          gomobile init
+          gomobile bind -v -androidapi 24 -trimpath -ldflags='-s -w -buildid=' ./
+          mkdir -p "$GITHUB_WORKSPACE/app/libs"
+          cp libv2ray.aar "$GITHUB_WORKSPACE/app/libs/libv2ray.aar"
 
       - name: Configure Gradle
         uses: gradle/actions/setup-gradle@v4

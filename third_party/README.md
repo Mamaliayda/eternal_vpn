@@ -1,4 +1,26 @@
-# Upstream artifacts
+# Upstream Android cores
+
+Both VPN engines are kept in the APK. Psiphon's gomobile runtime is relocated to avoid
+colliding with Xray's runtime; Xray's AAR is built from pinned public source during CI so the
+binary itself does not need to be committed.
+
+## Xray Android library
+
+The app uses the `libv2ray` API from AndroidLibXrayLite v26.5.9, including the process-finder
+hook implemented by `VlessXrayInjector.kt`. The Android APK workflow checks out the source at
+commit `1314c9af79518a03300803019c8264c737bb3596`, builds its AAR with gomobile and the
+Android NDK, and places it in `app/libs/libv2ray.aar` before Gradle runs. The upstream source
+already includes its geoip/geosite data assets.
+
+- Repository: <https://github.com/2dust/AndroidLibXrayLite>
+- Release: <https://github.com/2dust/AndroidLibXrayLite/releases/tag/v26.5.9>
+- Source commit: `1314c9af79518a03300803019c8264c737bb3596`
+- License: LGPL-3.0 (see the upstream repository)
+
+To build this dependency locally, check out that commit, install Go 1.26, JDK 17, Android
+SDK/NDK 28.2.13676358, then run `gomobile init` and
+`gomobile bind -v -androidapi 24 -trimpath -ldflags='-s -w -buildid=' ./` from the source
+checkout. Copy its generated `libv2ray.aar` to `app/libs/` before building the app.
 
 ## Psiphon Android library 2.0.39
 
