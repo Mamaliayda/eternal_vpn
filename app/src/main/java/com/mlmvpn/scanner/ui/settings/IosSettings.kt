@@ -69,7 +69,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalLayoutDirection
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -465,9 +464,8 @@ fun SettingsTextRow(
                     value = value,
                     onValueChange = onValueChange,
                     singleLine = true,
-                    textStyle = TextStyle(
+                    textStyle = MaterialTheme.typography.bodyLarge.copy(
                         color = if (error != null) Ios.Destructive else Ios.SecondaryLabel,
-                        style = MaterialTheme.typography.bodyLarge,
                         textAlign = TextAlign.End,
                     ),
                     cursorBrush = SolidColor(Ios.Blue),
@@ -1002,9 +1000,8 @@ fun IosTextScreen(
                     value = value,
                     onValueChange = onValueChange,
                     singleLine = true,
-                    textStyle = TextStyle(
+                    textStyle = MaterialTheme.typography.titleMedium.copy(
                         color = if (error != null) Ios.Destructive else Ios.Label,
-                        style = MaterialTheme.typography.titleMedium,
                     ),
                     cursorBrush = SolidColor(Ios.Blue),
                     keyboardOptions = KeyboardOptions(
