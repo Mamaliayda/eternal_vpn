@@ -26,8 +26,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.mlmvpn.scanner.ui.settings.Ios
 import com.mlmvpn.scanner.ui.settings.SettingsGroup
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 
 /**
  * A volume, typed in megabytes or gigabytes.
@@ -93,13 +93,13 @@ fun VolumeField(
                     onValueChange = onValueChange,
                     singleLine = true,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-                    textStyle = TextStyle(color = Ios.Label, fontSize = 17.sp),
-                    cursorBrush = SolidColor(Ios.Blue),
+                    textStyle = TextStyle(color = DuskTheme.onSurface, fontSize = 17.sp),
+                    cursorBrush = SolidColor(DuskTheme.primary),
                     modifier = Modifier.weight(1f),
                     decorationBox = { inner ->
                         Box {
                             if (value.isEmpty()) {
-                                Text(placeholder, color = Ios.SecondaryLabel.copy(alpha = 0.6f), fontSize = 17.sp)
+                                Text(placeholder, color = DuskTheme.muted.copy(alpha = 0.6f), fontSize = 17.sp)
                             }
                             inner()
                         }
@@ -111,14 +111,14 @@ fun VolumeField(
                     Box(
                         modifier = Modifier
                             .padding(start = 4.dp)
-                            .background(if (sel) Ios.Blue else Color.Transparent, RoundedCornerShape(8.dp))
+                            .background(if (sel) DuskTheme.primary else Color.Transparent, RoundedCornerShape(8.dp))
                             .clickable { onUnitChange(u) }
                             .padding(horizontal = 12.dp, vertical = 6.dp),
                         contentAlignment = Alignment.Center,
                     ) {
                         Text(
                             u.label,
-                            color = if (sel) Color.White else Ios.SecondaryLabel,
+                            color = if (sel) Color.White else DuskTheme.muted,
                             fontSize = 14.sp,
                             fontWeight = if (sel) FontWeight.SemiBold else FontWeight.Normal,
                         )

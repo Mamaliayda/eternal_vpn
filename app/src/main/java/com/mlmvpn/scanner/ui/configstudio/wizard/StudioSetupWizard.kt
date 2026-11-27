@@ -29,13 +29,13 @@ import com.mlmvpn.scanner.ui.configstudio.parts.StepDots
 import com.mlmvpn.scanner.ui.configstudio.parts.StepHeader
 import com.mlmvpn.scanner.ui.configstudio.parts.WizardBusy
 import com.mlmvpn.scanner.ui.configstudio.parts.WizardPrimary
-import com.mlmvpn.scanner.ui.settings.Ios
 import com.mlmvpn.scanner.ui.settings.IosScreen
 import com.mlmvpn.scanner.ui.settings.SettingsActionRow
 import com.mlmvpn.scanner.ui.settings.SettingsGroup
 import com.mlmvpn.scanner.ui.settings.SettingsRow
 import com.mlmvpn.scanner.ui.settings.SettingsSectionHeader
 import com.mlmvpn.scanner.utils.S
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 import kotlinx.coroutines.launch
 
 /**
@@ -230,7 +230,7 @@ private fun androidx.compose.foundation.layout.ColumnScope.AccountStep(
                 SettingsActionRow(
                     label = acc.name.ifEmpty { acc.email },
                     icon = StudioIcons.Accounts,
-                    tint = Ios.Blue,
+                    tint = DuskTheme.primary,
                 ) { onPick(acc) }
             }
         }
@@ -334,7 +334,7 @@ private fun androidx.compose.foundation.layout.ColumnScope.DoneStep(
         SettingsRow(
             title = S(R.string.studio_cap_quota),
             icon = StudioIcons.Volume,
-            tint = Ios.Green,
+            tint = DuskTheme.success,
             showChevron = false,
         )
         if (deviceLimits != null) {
@@ -342,7 +342,7 @@ private fun androidx.compose.foundation.layout.ColumnScope.DoneStep(
             SettingsRow(
                 title = if (deviceLimits) S(R.string.studio_account_devices_on) else S(R.string.studio_account_devices_off),
                 icon = StudioIcons.Devices,
-                tint = if (deviceLimits) Ios.Green else Ios.Orange,
+                tint = if (deviceLimits) DuskTheme.success else DuskTheme.accent,
                 showChevron = false,
             )
         }
@@ -350,7 +350,7 @@ private fun androidx.compose.foundation.layout.ColumnScope.DoneStep(
     if (deviceLimits == false) {
         NoticeCard(
             icon = StudioIcons.Devices,
-            tint = Ios.Orange,
+            tint = DuskTheme.accent,
             title = S(R.string.studio_account_devices_off),
             body = S(R.string.studio_account_devices_denied),
         )

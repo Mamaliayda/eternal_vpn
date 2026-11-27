@@ -53,7 +53,6 @@ import com.mlmvpn.scanner.ui.configstudio.parts.StudioShare
 import com.mlmvpn.scanner.ui.configstudio.parts.WizardBusy
 import com.mlmvpn.scanner.ui.configstudio.parts.WizardField
 import com.mlmvpn.scanner.ui.configstudio.parts.WizardPrimary
-import com.mlmvpn.scanner.ui.settings.Ios
 import com.mlmvpn.scanner.ui.settings.IosAlert
 import com.mlmvpn.scanner.ui.settings.IosAlertAction
 import com.mlmvpn.scanner.ui.settings.IosScreen
@@ -64,6 +63,7 @@ import com.mlmvpn.scanner.ui.settings.SettingsRow
 import com.mlmvpn.scanner.ui.settings.SettingsSectionHeader
 import com.mlmvpn.scanner.ui.settings.SettingsToggle
 import com.mlmvpn.scanner.utils.S
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 import kotlinx.coroutines.launch
 
 /**
@@ -306,7 +306,7 @@ fun StudioUserDetailScreen(
                 SettingsActionRow(
                     label = S(R.string.studio_copy_link),
                     icon = StudioIcons.Copy,
-                    tint = Ios.Blue,
+                    tint = DuskTheme.primary,
                 ) {
                     clipboard.setText(AnnotatedString(s.url))
                     note = S_copied(context)
@@ -319,7 +319,7 @@ fun StudioUserDetailScreen(
                 SettingsActionRow(
                     label = S(R.string.studio_share),
                     icon = StudioIcons.Share,
-                    tint = Ios.Blue,
+                    tint = DuskTheme.primary,
                 ) {
                     StudioShare.shareText(
                         context, s.url,
@@ -330,13 +330,13 @@ fun StudioUserDetailScreen(
                 SettingsActionRow(
                     label = if (showQr) S(R.string.studio_qr_hide) else S(R.string.studio_qr),
                     icon = StudioIcons.Qr,
-                    tint = Ios.Indigo,
+                    tint = DuskTheme.indigo,
                 ) { showQr = !showQr }
                 Separator()
                 SettingsActionRow(
                     label = S(R.string.studio_export_file),
                     icon = StudioIcons.Export,
-                    tint = Ios.Green,
+                    tint = DuskTheme.success,
                 ) {
                     // The link plus who it belongs to. A bare URL in a text file is something
                     // nobody can identify a week later, and identifying it is the whole reason to
@@ -357,7 +357,7 @@ fun StudioUserDetailScreen(
                     SettingsActionRow(
                         label = S(R.string.studio_sub_page_open),
                         icon = StudioIcons.OpenPage,
-                        tint = Ios.Teal,
+                        tint = DuskTheme.secondary,
                     ) {
                         try {
                             context.startActivity(
@@ -375,7 +375,7 @@ fun StudioUserDetailScreen(
                 SettingsActionRow(
                     label = S(R.string.studio_rotate),
                     icon = StudioIcons.Credential,
-                    tint = Ios.Orange,
+                    tint = DuskTheme.accent,
                     enabled = !busy,
                 ) { confirmRotate = true }
             }
@@ -444,7 +444,7 @@ fun StudioUserDetailScreen(
 
             report.failedToRead -> NoticeCard(
                 icon = StudioIcons.Warning,
-                tint = Ios.Orange,
+                tint = DuskTheme.accent,
                 title = S(R.string.studio_devices_read_failed_title),
                 body = S(R.string.studio_devices_read_failed_body),
             )
@@ -457,7 +457,7 @@ fun StudioUserDetailScreen(
                 if (limit != null) {
                     NoticeCard(
                         icon = StudioIcons.Devices,
-                        tint = Ios.Orange,
+                        tint = DuskTheme.accent,
                         title = S(R.string.studio_new_devices_off_title),
                         body = S(R.string.studio_new_devices_off_body),
                     )
@@ -475,7 +475,7 @@ fun StudioUserDetailScreen(
                         } ?: S(R.string.studio_devices_online_n).replace("%1\$s", faNum(report.live)),
                         subtitle = S(R.string.studio_devices_seen_n).replace("%1\$s", faNum(report.activeCount)),
                         icon = StudioIcons.Devices,
-                        tint = if (full) Ios.Orange else Ios.Green,
+                        tint = if (full) DuskTheme.accent else DuskTheme.success,
                         showChevron = false,
                     )
                     // The monitor-only switch, and only where there is a limit for it to switch:
@@ -487,7 +487,7 @@ fun StudioUserDetailScreen(
                             checked = u.policy.enforcement == Enforcement.STRICT,
                             subtitle = S(R.string.studio_enforcement_sub),
                             icon = StudioIcons.Block,
-                            tint = Ios.Red,
+                            tint = DuskTheme.error,
                             onCheckedChange = { strict ->
                                 if (busy) return@SettingsToggle
                                 busy = true; error = null
@@ -524,7 +524,7 @@ fun StudioUserDetailScreen(
                 SettingsActionRow(
                     label = S(R.string.studio_renew),
                     icon = StudioIcons.Renew,
-                    tint = Ios.Green,
+                    tint = DuskTheme.success,
                     enabled = !busy,
                 ) { renewing = true }
             }
@@ -598,7 +598,7 @@ fun StudioUserDetailScreen(
                     SettingsActionRow(
                         label = S(R.string.studio_usage_reset),
                         icon = StudioIcons.ResetUsage,
-                        tint = Ios.Orange,
+                        tint = DuskTheme.accent,
                         enabled = !busy,
                     ) { confirmResetUsage = true }
                 }
@@ -620,7 +620,7 @@ fun StudioUserDetailScreen(
                 value = if (u.locations.isEmpty()) S(R.string.studio_user_kind_simple)
                 else S(R.string.studio_user_kind_multi),
                 icon = StudioIcons.Locations,
-                tint = Ios.Indigo,
+                tint = DuskTheme.indigo,
                 showChevron = false,
             )
             if (u.locations.isNotEmpty()) {
@@ -629,7 +629,7 @@ fun StudioUserDetailScreen(
                     title = S(R.string.studio_user_countries),
                     subtitle = u.locations.joinToString("، ") { ExitCountries.label(it) },
                     icon = StudioIcons.OwnServer,
-                    tint = Ios.Teal,
+                    tint = DuskTheme.secondary,
                     showChevron = false,
                 )
             }
@@ -638,14 +638,14 @@ fun StudioUserDetailScreen(
                 title = S(R.string.studio_user_ports),
                 value = u.ports.ifEmpty { listOf(443) }.joinToString("، "),
                 icon = StudioIcons.Endpoints,
-                tint = Ios.Gray,
+                tint = DuskTheme.disabled,
                 showChevron = false,
             )
             Separator()
             SettingsActionRow(
                 label = S(R.string.studio_user_edit_locations),
                 icon = StudioIcons.Edit,
-                tint = Ios.Blue,
+                tint = DuskTheme.primary,
                 onClick = { onEditLocations(u.username) },
             )
         }
@@ -655,7 +655,7 @@ fun StudioUserDetailScreen(
             SettingsRow(
                 title = S(R.string.studio_section_configs),
                 icon = StudioIcons.Config,
-                tint = Ios.Indigo,
+                tint = DuskTheme.indigo,
                 onClick = { onOpenConfigs(u.username) },
             )
             Separator()
@@ -665,7 +665,7 @@ fun StudioUserDetailScreen(
                 title = S(R.string.studio_combine),
                 subtitle = S(R.string.studio_combine_row_sub),
                 icon = StudioIcons.Combine,
-                tint = Ios.Teal,
+                tint = DuskTheme.secondary,
                 onClick = { onCombine(u.username) },
             )
         }
@@ -677,7 +677,7 @@ fun StudioUserDetailScreen(
             SettingsActionRow(
                 label = if (on) S(R.string.studio_disable) else S(R.string.studio_enable),
                 icon = StudioIcons.Power,
-                tint = if (on) Ios.Orange else Ios.Green,
+                tint = if (on) DuskTheme.accent else DuskTheme.success,
                 enabled = !busy,
             ) {
                 busy = true; error = null
@@ -696,7 +696,7 @@ fun StudioUserDetailScreen(
                 SettingsActionRow(
                     label = com.mlmvpn.scanner.store.tr("انتقال به ورکر مرکزی", "Move to the central Worker"),
                     icon = StudioIcons.Combine,
-                    tint = Ios.Indigo,
+                    tint = DuskTheme.indigo,
                     enabled = !busy,
                 ) { confirmMove = true }
             }
@@ -727,7 +727,7 @@ fun StudioUserDetailScreen(
                                 // rather than shown as a zero: "connected and nothing went
                                 // through" is a different problem from "connected and used 2 MB",
                                 // and a `۰` reads as the second.
-                                titleColor = if (session.carriedNothing) Ios.Orange else Ios.Label,
+                                titleColor = if (session.carriedNothing) DuskTheme.accent else DuskTheme.onSurface,
                                 subtitle = listOfNotNull(
                                     session.configLabel,
                                     sessionLength(session.durationMs),
@@ -749,7 +749,7 @@ fun StudioUserDetailScreen(
                         SettingsRow(
                             title = activityLabel(entry.kind),
                             value = whenText(entry.ts),
-                            titleColor = if (entry.severity == ActivitySeverity.ERROR) Ios.Red else Ios.Orange,
+                            titleColor = if (entry.severity == ActivitySeverity.ERROR) DuskTheme.error else DuskTheme.accent,
                             showChevron = false,
                         )
                     }
@@ -763,7 +763,7 @@ fun StudioUserDetailScreen(
             SettingsActionRow(
                 label = S(R.string.studio_delete),
                 icon = StudioIcons.Delete,
-                tint = Ios.Red,
+                tint = DuskTheme.error,
                 enabled = !busy,
             ) { confirmDelete = true }
         }
@@ -926,16 +926,16 @@ private fun DeviceRow(device: StudioDevice, onClick: () -> Unit) {
     ) {
         Text(
             device.clientHint?.take(40) ?: S(R.string.studio_device_unknown),
-            color = if (device.blocked) Ios.SecondaryLabel else Ios.Label,
+            color = if (device.blocked) DuskTheme.muted else DuskTheme.onSurface,
             fontSize = StudioType.Body,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
         )
         Spacer(Modifier.height(4.dp))
         when {
-            device.blocked -> StatusLine(S(R.string.studio_device_blocked), Ios.Red)
-            device.online -> StatusLine(S(R.string.studio_device_online), Ios.Green)
-            else -> StatusLine(deviceSubtitle(device), Ios.Gray)
+            device.blocked -> StatusLine(S(R.string.studio_device_blocked), DuskTheme.error)
+            device.online -> StatusLine(S(R.string.studio_device_online), DuskTheme.success)
+            else -> StatusLine(deviceSubtitle(device), DuskTheme.disabled)
         }
     }
 }

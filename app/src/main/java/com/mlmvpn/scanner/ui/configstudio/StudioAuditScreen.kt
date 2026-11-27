@@ -37,7 +37,6 @@ import com.mlmvpn.scanner.ui.configstudio.parts.InfoCard
 import com.mlmvpn.scanner.ui.configstudio.parts.ProblemCard
 import com.mlmvpn.scanner.ui.configstudio.parts.StudioListRow
 import com.mlmvpn.scanner.ui.configstudio.parts.WizardBusy
-import com.mlmvpn.scanner.ui.settings.Ios
 import com.mlmvpn.scanner.ui.settings.IosRefreshIndicator
 import com.mlmvpn.scanner.ui.settings.IosScreen
 import com.mlmvpn.scanner.ui.settings.SettingsActionRow
@@ -45,6 +44,7 @@ import com.mlmvpn.scanner.ui.settings.SettingsGroup
 import com.mlmvpn.scanner.ui.settings.SettingsSectionHeader
 import com.mlmvpn.scanner.ui.settings.rememberIosRefreshState
 import com.mlmvpn.scanner.utils.S
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 import kotlinx.coroutines.launch
 
 /**
@@ -149,7 +149,7 @@ fun StudioAuditScreen(
                                 SettingsActionRow(
                                     label = S(R.string.studio_audit_more),
                                     icon = StudioIcons.Activity,
-                                    tint = Ios.Blue,
+                                    tint = DuskTheme.primary,
                                     busy = loadingMore,
                                     enabled = !loadingMore,
                                 ) { scope.launch { load(true) } }
@@ -178,22 +178,22 @@ private fun AuditRow(entry: AuditEntry) {
             Row(modifier = Modifier.fillMaxWidth()) {
                 Text(
                     actionLabel(entry.action),
-                    color = if (isBootstrap) Ios.Orange else Ios.Label,
+                    color = if (isBootstrap) DuskTheme.accent else DuskTheme.onSurface,
                     fontSize = 15.sp,
                     fontWeight = FontWeight.Medium,
                     modifier = Modifier.weight(1f),
                 )
-                Text(whenText(entry.ts), color = Ios.SecondaryLabel, fontSize = 12.sp)
+                Text(whenText(entry.ts), color = DuskTheme.muted, fontSize = 12.sp)
             }
             Spacer(Modifier.height(3.dp))
             Text(
                 entry.actor.ifBlank { S(R.string.studio_device_unknown) },
-                color = Ios.SecondaryLabel,
+                color = DuskTheme.muted,
                 fontSize = 12.sp,
             )
             if (isBootstrap) {
                 Spacer(Modifier.height(4.dp))
-                Text(S(R.string.studio_audit_bootstrap_note), color = Ios.Orange, fontSize = 11.sp)
+                Text(S(R.string.studio_audit_bootstrap_note), color = DuskTheme.accent, fontSize = 11.sp)
             }
         }
     }

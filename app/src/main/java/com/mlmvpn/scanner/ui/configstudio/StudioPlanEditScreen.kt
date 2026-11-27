@@ -31,7 +31,6 @@ import com.mlmvpn.scanner.ui.configstudio.parts.WizardPrimary
 import com.mlmvpn.scanner.ui.configstudio.parts.VolumeField
 import com.mlmvpn.scanner.ui.configstudio.parts.parseVolumeBytes
 import com.mlmvpn.scanner.ui.configstudio.parts.volumeToField
-import com.mlmvpn.scanner.ui.settings.Ios
 import com.mlmvpn.scanner.ui.settings.IosAlert
 import com.mlmvpn.scanner.ui.settings.IosAlertAction
 import com.mlmvpn.scanner.ui.settings.IosScreen
@@ -41,6 +40,7 @@ import com.mlmvpn.scanner.ui.settings.SettingsGroup
 import com.mlmvpn.scanner.ui.settings.SettingsSectionHeader
 import com.mlmvpn.scanner.ui.settings.SettingsToggle
 import com.mlmvpn.scanner.utils.S
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 import kotlinx.coroutines.launch
 
 /**
@@ -241,7 +241,7 @@ fun StudioPlanEditScreen(
         } else {
             NoticeCard(
                 icon = StudioIcons.Devices,
-                tint = Ios.Orange,
+                tint = DuskTheme.accent,
                 title = S(R.string.studio_new_devices_off_title),
                 body = if (enforcing == 0) S(R.string.studio_cap_plan_none)
                 else S(R.string.studio_cap_plan_mixed)
@@ -316,7 +316,7 @@ fun StudioPlanEditScreen(
                 SettingsActionRow(
                     label = S(R.string.studio_plan_apply),
                     icon = StudioIcons.ApplyToUsers,
-                    tint = Ios.Orange,
+                    tint = DuskTheme.accent,
                     enabled = !busy && (n ?: 0) > 0,
                 ) { confirmApply = true }
 
@@ -324,7 +324,7 @@ fun StudioPlanEditScreen(
                 SettingsActionRow(
                     label = S(R.string.studio_plan_archive),
                     icon = StudioIcons.Archive,
-                    tint = Ios.Red,
+                    tint = DuskTheme.error,
                     enabled = !busy,
                 ) { confirmArchive = true }
             }

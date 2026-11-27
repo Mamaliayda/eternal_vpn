@@ -24,13 +24,13 @@ import com.mlmvpn.scanner.ui.configstudio.parts.InfoCard
 import com.mlmvpn.scanner.ui.configstudio.parts.PageIntro
 import com.mlmvpn.scanner.ui.configstudio.parts.ProblemCard
 import com.mlmvpn.scanner.ui.configstudio.parts.WizardBusy
-import com.mlmvpn.scanner.ui.settings.Ios
 import com.mlmvpn.scanner.ui.settings.IosScreen
 import com.mlmvpn.scanner.ui.settings.SettingsFooter
 import com.mlmvpn.scanner.ui.settings.SettingsGroup
 import com.mlmvpn.scanner.ui.settings.SettingsRow
 import com.mlmvpn.scanner.ui.settings.SettingsSectionHeader
 import com.mlmvpn.scanner.utils.S
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 
 /**
  * «قالب‌ها» — the config shapes this fleet carries.
@@ -73,7 +73,7 @@ fun StudioTemplatesScreen(
         trailing = {
             Text(
                 S(R.string.studio_template_new),
-                color = Ios.Blue,
+                color = DuskTheme.primary,
                 fontSize = 16.sp,
                 modifier = Modifier.clickable(onClick = onNewTemplate)
                     .padding(horizontal = 4.dp, vertical = 6.dp),
@@ -127,7 +127,7 @@ fun StudioTemplatesScreen(
                         driftLine(template, state),
                     ).joinToString(" · ").ifBlank { null },
                     icon = StudioIcons.Template,
-                    tint = if (template.isDefault) Ios.Blue else Ios.Gray,
+                    tint = if (template.isDefault) DuskTheme.primary else DuskTheme.disabled,
                     onClick = { onEditTemplate(template) },
                 )
             }

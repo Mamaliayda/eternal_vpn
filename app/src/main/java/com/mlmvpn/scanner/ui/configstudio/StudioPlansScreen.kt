@@ -24,13 +24,13 @@ import com.mlmvpn.scanner.ui.configstudio.design.StudioIcons
 import com.mlmvpn.scanner.ui.configstudio.parts.InfoCard
 import com.mlmvpn.scanner.ui.configstudio.parts.ProblemCard
 import com.mlmvpn.scanner.ui.configstudio.parts.WizardBusy
-import com.mlmvpn.scanner.ui.settings.Ios
 import com.mlmvpn.scanner.ui.settings.IosScreen
 import com.mlmvpn.scanner.ui.settings.SettingsFooter
 import com.mlmvpn.scanner.ui.settings.SettingsGroup
 import com.mlmvpn.scanner.ui.settings.SettingsRow
 import com.mlmvpn.scanner.ui.settings.SettingsSectionHeader
 import com.mlmvpn.scanner.utils.S
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 
 /**
  * «بسته‌ها» — the sets of terms this operator hands out.
@@ -77,7 +77,7 @@ fun StudioPlansScreen(
         trailing = {
             Text(
                 S(R.string.studio_plan_new),
-                color = Ios.Blue,
+                color = DuskTheme.primary,
                 fontSize = 16.sp,
                 modifier = Modifier
                     .clickable(enabled = !busy, onClick = onNewPlan)
@@ -122,7 +122,7 @@ fun StudioPlansScreen(
                                 driftLine(plan, answered, state.fleetLabels),
                             ).joinToString(" · ").ifBlank { null },
                             icon = StudioIcons.Plan,
-                            tint = if (plan.isDefault) Ios.Blue else Ios.Gray,
+                            tint = if (plan.isDefault) DuskTheme.primary else DuskTheme.disabled,
                             onClick = { onEditPlan(plan) },
                         )
                     }
@@ -139,7 +139,7 @@ fun StudioPlansScreen(
             SettingsRow(
                 title = S(R.string.studio_templates),
                 icon = StudioIcons.Template,
-                tint = Ios.Purple,
+                tint = DuskTheme.purple,
                 value = if (state.templates.isEmpty()) null else faNum(state.templates.size),
                 onClick = onOpenTemplates,
             )

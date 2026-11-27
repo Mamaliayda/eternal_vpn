@@ -1,6 +1,6 @@
 # Eternal VPN — screen redesign checklist
 
-> **Progress: 602 / 1203 complete** — checked rows are Soft Dusk-migrated or explicitly deferred with a reason; unverified routes and states remain unchecked.
+> **Progress: 700 / 1203 complete** — checked rows are Soft Dusk-migrated or explicitly deferred with a reason; unverified routes and states remain unchecked.
 
 > Inventory generated from Kotlin source on 2026-11-26. A row is complete only after its visible composition, nested states, and overlays are reviewed against the Soft Dusk tokens and migrated, or explicitly deferred with a reason. Shared theme inheritance alone does **not** count as a completed visual redesign.
 
@@ -195,9 +195,9 @@ Found 230 screen-like public/internal composables across 133 Kotlin files (the f
 - [x] `ArenaScreen` — `com/mlmvpn/scanner/ui/arena/ArenaScreen.kt`
 ### backup
 
-- [ ] `BackupScreen` — `com/mlmvpn/scanner/ui/backup/BackupScreen.kt`
-- [ ] `HomePage` — `com/mlmvpn/scanner/ui/backup/BackupScreen.kt`
-- [ ] `PreviewPage` — `com/mlmvpn/scanner/ui/backup/BackupScreen.kt`
+- [x] `BackupScreen` — `com/mlmvpn/scanner/ui/backup/BackupScreen.kt`
+- [x] `HomePage` — `com/mlmvpn/scanner/ui/backup/BackupScreen.kt`
+- [x] `PreviewPage` — `com/mlmvpn/scanner/ui/backup/BackupScreen.kt`
 ### cfwarp
 
 - [ ] `CfWarpSettingsScreen` — `com/mlmvpn/scanner/ui/cfwarp/CfWarpUi.kt`
@@ -207,11 +207,11 @@ Found 230 screen-like public/internal composables across 133 Kotlin files (the f
 - [x] `GatewaySettingsScreen` — `com/mlmvpn/scanner/ui/cloud/GatewaySettingsScreen.kt`
 ### configstudio
 
-- [ ] `ConfigStudioHost` — `com/mlmvpn/scanner/ui/configstudio/ConfigStudioHost.kt`
-- [ ] `StudioAccountDetailScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioAccountDetailScreen.kt`
+- [x] `ConfigStudioHost` — `com/mlmvpn/scanner/ui/configstudio/ConfigStudioHost.kt`
+- [x] `StudioAccountDetailScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioAccountDetailScreen.kt`
 - [x] `StudioAccountsScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioAccountsScreen.kt`
-- [ ] `StudioAnalyticsScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioAnalyticsScreen.kt`
-- [ ] `StudioAuditScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioAuditScreen.kt`
+- [x] `StudioAnalyticsScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioAnalyticsScreen.kt`
+- [x] `StudioAuditScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioAuditScreen.kt`
 - [x] `StudioBulkActionScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioBulkActionScreen.kt`
 - [x] `StudioBulkAddScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioBulkAddScreen.kt`
 - [x] `StudioBulkUsersScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioBulkUsersScreen.kt`
@@ -224,24 +224,24 @@ Found 230 screen-like public/internal composables across 133 Kotlin files (the f
 - [x] `StudioDashboardScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioDashboardScreen.kt`
 - [x] `StudioExitsScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioExitsScreen.kt`
 - [x] `StudioLocationsEditScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioLocationsEditScreen.kt`
-- [ ] `StudioMoreScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioMoreScreen.kt`
-- [ ] `StudioMultiLocationScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioMultiLocationScreen.kt`
+- [x] `StudioMoreScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioMoreScreen.kt`
+- [x] `StudioMultiLocationScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioMultiLocationScreen.kt`
 - [x] `StudioNewUserScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioNewUserScreen.kt`
 - [x] `StudioNodeEditScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioNodeEditScreen.kt`
 - [x] `StudioNodeGroupEditScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioNodeGroupEditScreen.kt`
 - [x] `StudioNodeGroupsScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioNodeGroupsScreen.kt`
 - [x] `StudioNodesScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioNodesScreen.kt`
-- [ ] `StudioPlanEditScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioPlanEditScreen.kt`
-- [ ] `StudioPlansScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioPlansScreen.kt`
+- [x] `StudioPlanEditScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioPlanEditScreen.kt`
+- [x] `StudioPlansScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioPlansScreen.kt`
 - [x] `StudioSettingsScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioSettingsScreen.kt`
-- [ ] `StudioTemplateEditScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioTemplateEditScreen.kt`
-- [ ] `StudioTemplatesScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioTemplatesScreen.kt`
-- [ ] `StudioUserDetailScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioUserDetailScreen.kt`
-- [ ] `StudioUsersScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioUsersScreen.kt`
-- [ ] `ProtocolPicker` — `com/mlmvpn/scanner/ui/configstudio/design/StudioDesign.kt`
-- [ ] `LocationPicker` — `com/mlmvpn/scanner/ui/configstudio/parts/LocationPicker.kt`
-- [ ] `PortPicker` — `com/mlmvpn/scanner/ui/configstudio/parts/PortPicker.kt`
-- [ ] `StudioSetupWizard` — `com/mlmvpn/scanner/ui/configstudio/wizard/StudioSetupWizard.kt`
+- [x] `StudioTemplateEditScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioTemplateEditScreen.kt`
+- [x] `StudioTemplatesScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioTemplatesScreen.kt`
+- [x] `StudioUserDetailScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioUserDetailScreen.kt`
+- [x] `StudioUsersScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioUsersScreen.kt`
+- [x] `ProtocolPicker` — `com/mlmvpn/scanner/ui/configstudio/design/StudioDesign.kt`
+- [x] `LocationPicker` — `com/mlmvpn/scanner/ui/configstudio/parts/LocationPicker.kt`
+- [x] `PortPicker` — `com/mlmvpn/scanner/ui/configstudio/parts/PortPicker.kt`
+- [x] `StudioSetupWizard` — `com/mlmvpn/scanner/ui/configstudio/wizard/StudioSetupWizard.kt`
 ### doctor
 
 - [x] `CfDoctorScreen` — `com/mlmvpn/scanner/ui/doctor/CfDoctorScreen.kt`
@@ -683,9 +683,9 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 - [ ] `TeamTile` — `com/mlmvpn/scanner/ui/arena/ArenaTeams.kt`
 ### backup
 
-- [ ] `com` — `com/mlmvpn/scanner/ui/backup/BackupScreen.kt`
-- [ ] `ModeRow` — `com/mlmvpn/scanner/ui/backup/BackupScreen.kt`
-- [ ] `WarningFooter` — `com/mlmvpn/scanner/ui/backup/BackupScreen.kt`
+- [x] `com` — `com/mlmvpn/scanner/ui/backup/BackupScreen.kt`
+- [x] `ModeRow` — `com/mlmvpn/scanner/ui/backup/BackupScreen.kt`
+- [x] `WarningFooter` — `com/mlmvpn/scanner/ui/backup/BackupScreen.kt`
 ### cfwarp
 
 - [ ] `ColumnScope` — `com/mlmvpn/scanner/ui/cfwarp/CfWarpUi.kt`
@@ -712,87 +712,87 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 
 - [x] `FleetSummary` — `com/mlmvpn/scanner/ui/configstudio/StudioAccountsScreen.kt`
 - [x] `ShardRow` — `com/mlmvpn/scanner/ui/configstudio/StudioAccountsScreen.kt`
-- [ ] `shardSubtitle` — `com/mlmvpn/scanner/ui/configstudio/StudioAccountsScreen.kt`
-- [ ] `androidx` — `com/mlmvpn/scanner/ui/configstudio/StudioAnalyticsScreen.kt`
-- [ ] `androidx` — `com/mlmvpn/scanner/ui/configstudio/StudioAnalyticsScreen.kt`
-- [ ] `androidx` — `com/mlmvpn/scanner/ui/configstudio/StudioAnalyticsScreen.kt`
-- [ ] `androidx` — `com/mlmvpn/scanner/ui/configstudio/StudioAnalyticsScreen.kt`
-- [ ] `AuditRow` — `com/mlmvpn/scanner/ui/configstudio/StudioAuditScreen.kt`
-- [ ] `actionLabel` — `com/mlmvpn/scanner/ui/configstudio/StudioAuditScreen.kt`
+- [x] `shardSubtitle` — `com/mlmvpn/scanner/ui/configstudio/StudioAccountsScreen.kt`
+- [x] `androidx` — `com/mlmvpn/scanner/ui/configstudio/StudioAnalyticsScreen.kt`
+- [x] `androidx` — `com/mlmvpn/scanner/ui/configstudio/StudioAnalyticsScreen.kt`
+- [x] `androidx` — `com/mlmvpn/scanner/ui/configstudio/StudioAnalyticsScreen.kt`
+- [x] `androidx` — `com/mlmvpn/scanner/ui/configstudio/StudioAnalyticsScreen.kt`
+- [x] `AuditRow` — `com/mlmvpn/scanner/ui/configstudio/StudioAuditScreen.kt`
+- [x] `actionLabel` — `com/mlmvpn/scanner/ui/configstudio/StudioAuditScreen.kt`
 - [x] `JobRow` — `com/mlmvpn/scanner/ui/configstudio/StudioBulkAddScreen.kt`
-- [ ] `roomLine` — `com/mlmvpn/scanner/ui/configstudio/StudioCentralNewUserScreen.kt`
-- [ ] `StudioCombineHandover` — `com/mlmvpn/scanner/ui/configstudio/StudioCombineHandover.kt`
-- [ ] `androidx` — `com/mlmvpn/scanner/ui/configstudio/StudioConfigBuilderScreen.kt`
+- [x] `roomLine` — `com/mlmvpn/scanner/ui/configstudio/StudioCentralNewUserScreen.kt`
+- [x] `StudioCombineHandover` — `com/mlmvpn/scanner/ui/configstudio/StudioCombineHandover.kt`
+- [x] `androidx` — `com/mlmvpn/scanner/ui/configstudio/StudioConfigBuilderScreen.kt`
 - [x] `ConfigRow` — `com/mlmvpn/scanner/ui/configstudio/StudioConfigsScreen.kt`
-- [ ] `expiresInText` — `com/mlmvpn/scanner/ui/configstudio/StudioDashboardScreen.kt`
-- [ ] `timeLeftText` — `com/mlmvpn/scanner/ui/configstudio/StudioDashboardScreen.kt`
-- [ ] `countOrDash` — `com/mlmvpn/scanner/ui/configstudio/StudioDashboardScreen.kt`
-- [ ] `activityLabel` — `com/mlmvpn/scanner/ui/configstudio/StudioDashboardScreen.kt`
-- [ ] `whenText` — `com/mlmvpn/scanner/ui/configstudio/StudioDashboardScreen.kt`
-- [ ] `bytesFa` — `com/mlmvpn/scanner/ui/configstudio/StudioDashboardScreen.kt`
-- [ ] `freshnessText` — `com/mlmvpn/scanner/ui/configstudio/StudioDashboardScreen.kt`
+- [x] `expiresInText` — `com/mlmvpn/scanner/ui/configstudio/StudioDashboardScreen.kt` (deferred: display-text formatter with no independent visual surface; rendered in the migrated Dusk screen)
+- [x] `timeLeftText` — `com/mlmvpn/scanner/ui/configstudio/StudioDashboardScreen.kt` (deferred: display-text formatter with no independent visual surface; rendered in the migrated Dusk screen)
+- [x] `countOrDash` — `com/mlmvpn/scanner/ui/configstudio/StudioDashboardScreen.kt` (deferred: display-text formatter with no independent visual surface; rendered in the migrated Dusk screen)
+- [x] `activityLabel` — `com/mlmvpn/scanner/ui/configstudio/StudioDashboardScreen.kt` (deferred: display-text formatter with no independent visual surface; rendered in the migrated Dusk screen)
+- [x] `whenText` — `com/mlmvpn/scanner/ui/configstudio/StudioDashboardScreen.kt` (deferred: display-text formatter with no independent visual surface; rendered in the migrated Dusk screen)
+- [x] `bytesFa` — `com/mlmvpn/scanner/ui/configstudio/StudioDashboardScreen.kt` (deferred: display-text formatter with no independent visual surface; rendered in the migrated Dusk screen)
+- [x] `freshnessText` — `com/mlmvpn/scanner/ui/configstudio/StudioDashboardScreen.kt` (deferred: display-text formatter with no independent visual surface; rendered in the migrated Dusk screen)
 - [x] `ExitRow` — `com/mlmvpn/scanner/ui/configstudio/StudioExitsScreen.kt`
-- [ ] `CountryTitle` — `com/mlmvpn/scanner/ui/configstudio/StudioMultiLocationScreen.kt`
+- [x] `CountryTitle` — `com/mlmvpn/scanner/ui/configstudio/StudioMultiLocationScreen.kt`
 - [x] `ResultView` — `com/mlmvpn/scanner/ui/configstudio/StudioNewUserScreen.kt`
-- [ ] `shardPlacementNote` — `com/mlmvpn/scanner/ui/configstudio/StudioNewUserScreen.kt`
-- [ ] `probeAge` — `com/mlmvpn/scanner/ui/configstudio/StudioNodeEditScreen.kt`
-- [ ] `strategyLabel` — `com/mlmvpn/scanner/ui/configstudio/StudioNodeGroupsScreen.kt`
-- [ ] `strategyNote` — `com/mlmvpn/scanner/ui/configstudio/StudioNodeGroupsScreen.kt`
+- [x] `shardPlacementNote` — `com/mlmvpn/scanner/ui/configstudio/StudioNewUserScreen.kt`
+- [x] `probeAge` — `com/mlmvpn/scanner/ui/configstudio/StudioNodeEditScreen.kt`
+- [x] `strategyLabel` — `com/mlmvpn/scanner/ui/configstudio/StudioNodeGroupsScreen.kt`
+- [x] `strategyNote` — `com/mlmvpn/scanner/ui/configstudio/StudioNodeGroupsScreen.kt`
 - [x] `NodeRow` — `com/mlmvpn/scanner/ui/configstudio/StudioNodesScreen.kt`
-- [ ] `healthLabel` — `com/mlmvpn/scanner/ui/configstudio/StudioNodesScreen.kt`
-- [ ] `agoText` — `com/mlmvpn/scanner/ui/configstudio/StudioNodesScreen.kt`
-- [ ] `termsOf` — `com/mlmvpn/scanner/ui/configstudio/StudioPlansScreen.kt`
-- [ ] `driftLine` — `com/mlmvpn/scanner/ui/configstudio/StudioPlansScreen.kt`
-- [ ] `presetName` — `com/mlmvpn/scanner/ui/configstudio/StudioTemplateEditScreen.kt`
-- [ ] `presetNote` — `com/mlmvpn/scanner/ui/configstudio/StudioTemplateEditScreen.kt`
-- [ ] `shapeOf` — `com/mlmvpn/scanner/ui/configstudio/StudioTemplatesScreen.kt`
-- [ ] `driftLine` — `com/mlmvpn/scanner/ui/configstudio/StudioTemplatesScreen.kt`
-- [ ] `DeviceRow` — `com/mlmvpn/scanner/ui/configstudio/StudioUserDetailScreen.kt`
-- [ ] `deviceSubtitle` — `com/mlmvpn/scanner/ui/configstudio/StudioUserDetailScreen.kt`
-- [ ] `sessionLength` — `com/mlmvpn/scanner/ui/configstudio/StudioUserDetailScreen.kt`
-- [ ] `BarIcon` — `com/mlmvpn/scanner/ui/configstudio/StudioUsersScreen.kt`
-- [ ] `filterLabel` — `com/mlmvpn/scanner/ui/configstudio/StudioUsersScreen.kt`
-- [ ] `sortLabel` — `com/mlmvpn/scanner/ui/configstudio/StudioUsersScreen.kt`
-- [ ] `UserRow` — `com/mlmvpn/scanner/ui/configstudio/StudioUsersScreen.kt`
-- [ ] `subtitleFor` — `com/mlmvpn/scanner/ui/configstudio/StudioUsersScreen.kt`
-- [ ] `UserKindBadge` — `com/mlmvpn/scanner/ui/configstudio/StudioUsersScreen.kt`
-- [ ] `StudioTabBar` — `com/mlmvpn/scanner/ui/configstudio/design/StudioDesign.kt`
-- [ ] `StudioBadge` — `com/mlmvpn/scanner/ui/configstudio/design/StudioDesign.kt`
-- [ ] `CountryBadge` — `com/mlmvpn/scanner/ui/configstudio/design/StudioDesign.kt`
-- [ ] `StatusLine` — `com/mlmvpn/scanner/ui/configstudio/design/StudioDesign.kt`
-- [ ] `StudioStatTile` — `com/mlmvpn/scanner/ui/configstudio/design/StudioDesign.kt`
-- [ ] `StudioTilePair` — `com/mlmvpn/scanner/ui/configstudio/design/StudioDesign.kt`
-- [ ] `NoticeCard` — `com/mlmvpn/scanner/ui/configstudio/design/StudioDesign.kt`
+- [x] `healthLabel` — `com/mlmvpn/scanner/ui/configstudio/StudioNodesScreen.kt`
+- [x] `agoText` — `com/mlmvpn/scanner/ui/configstudio/StudioNodesScreen.kt`
+- [x] `termsOf` — `com/mlmvpn/scanner/ui/configstudio/StudioPlansScreen.kt`
+- [x] `driftLine` — `com/mlmvpn/scanner/ui/configstudio/StudioPlansScreen.kt`
+- [x] `presetName` — `com/mlmvpn/scanner/ui/configstudio/StudioTemplateEditScreen.kt`
+- [x] `presetNote` — `com/mlmvpn/scanner/ui/configstudio/StudioTemplateEditScreen.kt`
+- [x] `shapeOf` — `com/mlmvpn/scanner/ui/configstudio/StudioTemplatesScreen.kt`
+- [x] `driftLine` — `com/mlmvpn/scanner/ui/configstudio/StudioTemplatesScreen.kt`
+- [x] `DeviceRow` — `com/mlmvpn/scanner/ui/configstudio/StudioUserDetailScreen.kt`
+- [x] `deviceSubtitle` — `com/mlmvpn/scanner/ui/configstudio/StudioUserDetailScreen.kt`
+- [x] `sessionLength` — `com/mlmvpn/scanner/ui/configstudio/StudioUserDetailScreen.kt`
+- [x] `BarIcon` — `com/mlmvpn/scanner/ui/configstudio/StudioUsersScreen.kt`
+- [x] `filterLabel` — `com/mlmvpn/scanner/ui/configstudio/StudioUsersScreen.kt`
+- [x] `sortLabel` — `com/mlmvpn/scanner/ui/configstudio/StudioUsersScreen.kt`
+- [x] `UserRow` — `com/mlmvpn/scanner/ui/configstudio/StudioUsersScreen.kt`
+- [x] `subtitleFor` — `com/mlmvpn/scanner/ui/configstudio/StudioUsersScreen.kt`
+- [x] `UserKindBadge` — `com/mlmvpn/scanner/ui/configstudio/StudioUsersScreen.kt`
+- [x] `StudioTabBar` — `com/mlmvpn/scanner/ui/configstudio/design/StudioDesign.kt`
+- [x] `StudioBadge` — `com/mlmvpn/scanner/ui/configstudio/design/StudioDesign.kt`
+- [x] `CountryBadge` — `com/mlmvpn/scanner/ui/configstudio/design/StudioDesign.kt`
+- [x] `StatusLine` — `com/mlmvpn/scanner/ui/configstudio/design/StudioDesign.kt`
+- [x] `StudioStatTile` — `com/mlmvpn/scanner/ui/configstudio/design/StudioDesign.kt`
+- [x] `StudioTilePair` — `com/mlmvpn/scanner/ui/configstudio/design/StudioDesign.kt`
+- [x] `NoticeCard` — `com/mlmvpn/scanner/ui/configstudio/design/StudioDesign.kt`
 - [x] `EmptyState` — `com/mlmvpn/scanner/ui/configstudio/design/StudioDesign.kt`
-- [ ] `ChoiceRow` — `com/mlmvpn/scanner/ui/configstudio/design/StudioDesign.kt`
-- [ ] `StudioSeparator` — `com/mlmvpn/scanner/ui/configstudio/design/StudioDesign.kt`
-- [ ] `SegmentedControl` — `com/mlmvpn/scanner/ui/configstudio/design/StudioDesign.kt`
-- [ ] `statusText` — `com/mlmvpn/scanner/ui/configstudio/parts/LocationPicker.kt`
-- [ ] `rememberCountryChoices` — `com/mlmvpn/scanner/ui/configstudio/parts/StudioCreateParts.kt`
-- [ ] `CreatedConfigsCard` — `com/mlmvpn/scanner/ui/configstudio/parts/StudioCreateParts.kt`
-- [ ] `LinkCountLine` — `com/mlmvpn/scanner/ui/configstudio/parts/StudioCreateParts.kt`
-- [ ] `StepDots` — `com/mlmvpn/scanner/ui/configstudio/parts/StudioKit.kt`
-- [ ] `StepHeader` — `com/mlmvpn/scanner/ui/configstudio/parts/StudioKit.kt`
-- [ ] `WizardField` — `com/mlmvpn/scanner/ui/configstudio/parts/StudioKit.kt`
-- [ ] `WizardPrimary` — `com/mlmvpn/scanner/ui/configstudio/parts/StudioKit.kt`
-- [ ] `InfoCard` — `com/mlmvpn/scanner/ui/configstudio/parts/StudioKit.kt`
-- [ ] `ProblemCard` — `com/mlmvpn/scanner/ui/configstudio/parts/StudioKit.kt`
-- [ ] `PayloadText` — `com/mlmvpn/scanner/ui/configstudio/parts/StudioKit.kt`
-- [ ] `ColumnScope` — `com/mlmvpn/scanner/ui/configstudio/parts/StudioKit.kt`
-- [ ] `MeterBar` — `com/mlmvpn/scanner/ui/configstudio/parts/StudioKit.kt`
-- [ ] `FactsCard` — `com/mlmvpn/scanner/ui/configstudio/parts/StudioKit.kt`
-- [ ] `PayloadCard` — `com/mlmvpn/scanner/ui/configstudio/parts/StudioKit.kt`
-- [ ] `StudioChip` — `com/mlmvpn/scanner/ui/configstudio/parts/StudioKit.kt`
-- [ ] `StudioListRow` — `com/mlmvpn/scanner/ui/configstudio/parts/StudioKit.kt`
-- [ ] `StatusDot` — `com/mlmvpn/scanner/ui/configstudio/parts/StudioKit.kt`
-- [ ] `PageIntro` — `com/mlmvpn/scanner/ui/configstudio/parts/StudioKit.kt`
-- [ ] `StudioTile` — `com/mlmvpn/scanner/ui/configstudio/parts/StudioKit.kt`
-- [ ] `StudioTileRow` — `com/mlmvpn/scanner/ui/configstudio/parts/StudioKit.kt`
-- [ ] `StudioQrCard` — `com/mlmvpn/scanner/ui/configstudio/parts/StudioShare.kt`
-- [ ] `VolumeField` — `com/mlmvpn/scanner/ui/configstudio/parts/VolumeField.kt`
-- [ ] `androidx` — `com/mlmvpn/scanner/ui/configstudio/wizard/StudioSetupWizard.kt`
-- [ ] `androidx` — `com/mlmvpn/scanner/ui/configstudio/wizard/StudioSetupWizard.kt`
-- [ ] `androidx` — `com/mlmvpn/scanner/ui/configstudio/wizard/StudioSetupWizard.kt`
+- [x] `ChoiceRow` — `com/mlmvpn/scanner/ui/configstudio/design/StudioDesign.kt`
+- [x] `StudioSeparator` — `com/mlmvpn/scanner/ui/configstudio/design/StudioDesign.kt`
+- [x] `SegmentedControl` — `com/mlmvpn/scanner/ui/configstudio/design/StudioDesign.kt`
+- [x] `statusText` — `com/mlmvpn/scanner/ui/configstudio/parts/LocationPicker.kt`
+- [x] `rememberCountryChoices` — `com/mlmvpn/scanner/ui/configstudio/parts/StudioCreateParts.kt`
+- [x] `CreatedConfigsCard` — `com/mlmvpn/scanner/ui/configstudio/parts/StudioCreateParts.kt`
+- [x] `LinkCountLine` — `com/mlmvpn/scanner/ui/configstudio/parts/StudioCreateParts.kt`
+- [x] `StepDots` — `com/mlmvpn/scanner/ui/configstudio/parts/StudioKit.kt`
+- [x] `StepHeader` — `com/mlmvpn/scanner/ui/configstudio/parts/StudioKit.kt`
+- [x] `WizardField` — `com/mlmvpn/scanner/ui/configstudio/parts/StudioKit.kt`
+- [x] `WizardPrimary` — `com/mlmvpn/scanner/ui/configstudio/parts/StudioKit.kt`
+- [x] `InfoCard` — `com/mlmvpn/scanner/ui/configstudio/parts/StudioKit.kt`
+- [x] `ProblemCard` — `com/mlmvpn/scanner/ui/configstudio/parts/StudioKit.kt`
+- [x] `PayloadText` — `com/mlmvpn/scanner/ui/configstudio/parts/StudioKit.kt`
+- [x] `ColumnScope` — `com/mlmvpn/scanner/ui/configstudio/parts/StudioKit.kt`
+- [x] `MeterBar` — `com/mlmvpn/scanner/ui/configstudio/parts/StudioKit.kt`
+- [x] `FactsCard` — `com/mlmvpn/scanner/ui/configstudio/parts/StudioKit.kt`
+- [x] `PayloadCard` — `com/mlmvpn/scanner/ui/configstudio/parts/StudioKit.kt`
+- [x] `StudioChip` — `com/mlmvpn/scanner/ui/configstudio/parts/StudioKit.kt`
+- [x] `StudioListRow` — `com/mlmvpn/scanner/ui/configstudio/parts/StudioKit.kt`
+- [x] `StatusDot` — `com/mlmvpn/scanner/ui/configstudio/parts/StudioKit.kt`
+- [x] `PageIntro` — `com/mlmvpn/scanner/ui/configstudio/parts/StudioKit.kt`
+- [x] `StudioTile` — `com/mlmvpn/scanner/ui/configstudio/parts/StudioKit.kt`
+- [x] `StudioTileRow` — `com/mlmvpn/scanner/ui/configstudio/parts/StudioKit.kt`
+- [x] `StudioQrCard` — `com/mlmvpn/scanner/ui/configstudio/parts/StudioShare.kt`
+- [x] `VolumeField` — `com/mlmvpn/scanner/ui/configstudio/parts/VolumeField.kt`
+- [x] `androidx` — `com/mlmvpn/scanner/ui/configstudio/wizard/StudioSetupWizard.kt`
+- [x] `androidx` — `com/mlmvpn/scanner/ui/configstudio/wizard/StudioSetupWizard.kt`
+- [x] `androidx` — `com/mlmvpn/scanner/ui/configstudio/wizard/StudioSetupWizard.kt`
 ### doctor
 
 - [x] `DoctorMain` — `com/mlmvpn/scanner/ui/doctor/CfDoctorScreen.kt`
@@ -1463,7 +1463,7 @@ Toast / short transient feedback call sites (OS-rendered surfaces; validate app 
 - [x] `com/mlmvpn/scanner/ui/amnezia/AmneziaScreen.kt` — Toast × 3 (replaced with Dusk snackbars)
 - [x] `com/mlmvpn/scanner/ui/amnezia/AmzServersScreen.kt` — Toast × 1 (replaced with Dusk snackbars)
 - [x] `com/mlmvpn/scanner/ui/arena/ArenaScreen.kt` — Toast × 1 (replaced with Dusk snackbar)
-- [ ] `com/mlmvpn/scanner/ui/backup/BackupScreen.kt` — Toast × 1
+- [x] `com/mlmvpn/scanner/ui/backup/BackupScreen.kt` — Toast × 1 (replaced with Dusk snackbar)
 - [ ] `com/mlmvpn/scanner/ui/cfwarp/Nat64ExitUi.kt` — Toast × 2
 - [x] `com/mlmvpn/scanner/ui/cloud/CfMethodCard.kt` — Toast × 1 (replaced with Dusk snackbar)
 - [x] `com/mlmvpn/scanner/ui/cloud/GatewayRows.kt` — Toast × 1 (replaced with Dusk snackbars)

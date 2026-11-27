@@ -45,11 +45,8 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import com.mlmvpn.scanner.ui.home.frostedGlass
-import com.mlmvpn.scanner.ui.settings.Ios
 import com.mlmvpn.scanner.ui.settings.SettingsGroup
-import com.mlmvpn.scanner.ui.theme.CardShape
-import com.mlmvpn.scanner.ui.theme.PanelShape
-import com.mlmvpn.scanner.ui.theme.ControlShape
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 
 /**
  * The wizard chrome, extracted once.
@@ -79,9 +76,9 @@ fun StepDots(current: Int, total: Int) {
                     .width(if (i == current) 20.dp else 6.dp)
                     .background(
                         when {
-                            i == current -> Ios.Blue
-                            i < current -> Ios.Blue.copy(alpha = 0.45f)
-                            else -> Ios.SecondaryLabel.copy(alpha = 0.30f)
+                            i == current -> DuskTheme.primary
+                            i < current -> DuskTheme.primary.copy(alpha = 0.45f)
+                            else -> DuskTheme.muted.copy(alpha = 0.30f)
                         },
                         RoundedCornerShape(3.dp),
                     )
@@ -95,7 +92,7 @@ fun StepHeader(title: String, subtitle: String) {
     Spacer(Modifier.height(18.dp))
     Text(
         title,
-        color = Ios.Label,
+        color = DuskTheme.onSurface,
         fontSize = 22.sp,
         fontWeight = FontWeight.Bold,
         modifier = Modifier.padding(horizontal = 20.dp),
@@ -103,7 +100,7 @@ fun StepHeader(title: String, subtitle: String) {
     Spacer(Modifier.height(8.dp))
     Text(
         subtitle,
-        color = Ios.SecondaryLabel,
+        color = DuskTheme.muted,
         fontSize = 14.sp,
         lineHeight = 23.sp,
         modifier = Modifier.padding(horizontal = 20.dp),
@@ -155,11 +152,11 @@ fun WizardField(
                     singleLine = lines <= 1,
                     minLines = lines,
                     textStyle = TextStyle(
-                        color = Ios.Label,
+                        color = DuskTheme.onSurface,
                         fontSize = 17.sp,
                         fontFamily = if (monospace) FontFamily.Monospace else FontFamily.Default,
                     ),
-                    cursorBrush = SolidColor(Ios.Blue),
+                    cursorBrush = SolidColor(DuskTheme.primary),
                     // The field fills the whole box. A box of several lines is taller than that many
                     // lines of text, and a tap on its lower part used to land outside the field and
                     // do nothing -- the note box on a person's page looked open and was not.
@@ -170,7 +167,7 @@ fun WizardField(
                             if (value.isEmpty()) {
                                 Text(
                                     placeholder,
-                                    color = Ios.SecondaryLabel.copy(alpha = 0.6f),
+                                    color = DuskTheme.muted.copy(alpha = 0.6f),
                                     fontSize = 17.sp,
                                 )
                             }
@@ -202,7 +199,7 @@ fun WizardPrimary(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp)
-            .background(if (active) Ios.Blue else Ios.Blue.copy(alpha = 0.35f), ControlShape)
+            .background(if (active) DuskTheme.primary else DuskTheme.primary.copy(alpha = 0.35f), DuskTheme.controlShape)
             .then(if (active) Modifier.clickable(onClick = onClick) else Modifier)
             .heightIn(min = 50.dp)
             .padding(vertical = 14.dp),
@@ -240,10 +237,10 @@ fun InfoCard(text: String, underHeader: Boolean = false) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(start = 16.dp, end = 16.dp, top = if (underHeader) 0.dp else 10.dp)
-            .frostedGlass(CardShape)
+            .frostedGlass(DuskTheme.cardShape)
             .padding(16.dp),
     ) {
-        Text(text, color = Ios.SecondaryLabel, fontSize = 13.sp, lineHeight = 22.sp)
+        Text(text, color = DuskTheme.muted, fontSize = 13.sp, lineHeight = 22.sp)
     }
 }
 
@@ -254,10 +251,10 @@ fun ProblemCard(text: String, underHeader: Boolean = false) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(start = 16.dp, end = 16.dp, top = if (underHeader) 0.dp else 10.dp)
-            .background(Ios.Red.copy(alpha = 0.12f), CardShape)
+            .background(DuskTheme.error.copy(alpha = 0.12f), DuskTheme.cardShape)
             .padding(16.dp),
     ) {
-        Text(text, color = Ios.Label, fontSize = 13.sp, lineHeight = 22.sp)
+        Text(text, color = DuskTheme.onSurface, fontSize = 13.sp, lineHeight = 22.sp)
     }
 }
 
@@ -274,7 +271,7 @@ fun PayloadText(value: String, modifier: Modifier = Modifier) {
         Text(
             value,
             modifier = modifier,
-            color = Ios.Label,
+            color = DuskTheme.onSurface,
             fontSize = 12.sp,
             lineHeight = 19.sp,
             fontFamily = FontFamily.Monospace,
@@ -288,12 +285,12 @@ fun PayloadText(value: String, modifier: Modifier = Modifier) {
 fun ColumnScope.WizardBusy(message: String) {
     Spacer(Modifier.height(28.dp))
     Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-        CircularProgressIndicator(modifier = Modifier.size(28.dp), color = Ios.Blue, strokeWidth = 3.dp)
+        CircularProgressIndicator(modifier = Modifier.size(28.dp), color = DuskTheme.primary, strokeWidth = 3.dp)
     }
     Spacer(Modifier.height(14.dp))
     Text(
         message,
-        color = Ios.SecondaryLabel,
+        color = DuskTheme.muted,
         fontSize = 14.sp,
         textAlign = TextAlign.Center,
         modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp),
@@ -313,7 +310,7 @@ fun MeterBar(fraction: Float?, tint: Color, modifier: Modifier = Modifier) {
     if (fraction == null) return
     Box(
         modifier = modifier.fillMaxWidth().height(4.dp)
-            .background(Ios.Separator, RoundedCornerShape(2.dp))
+            .background(DuskTheme.outline.copy(alpha = 0.22f), RoundedCornerShape(2.dp))
     ) {
         Box(
             modifier = Modifier.fillMaxWidth(fraction.coerceIn(0f, 1f)).height(4.dp)
@@ -339,7 +336,7 @@ fun FactsCard(text: String) {
     SettingsGroup {
         Text(
             text,
-            color = Ios.Label,
+            color = DuskTheme.onSurface,
             fontSize = 15.sp,
             lineHeight = 25.sp,
             modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 13.dp),
@@ -361,7 +358,7 @@ fun PayloadCard(value: String, modifier: Modifier = Modifier) {
         modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp)
-            .frostedGlass(CardShape)
+            .frostedGlass(DuskTheme.cardShape)
             .padding(horizontal = 16.dp, vertical = 13.dp),
     ) {
         PayloadText(value, Modifier.fillMaxWidth())
@@ -372,8 +369,8 @@ fun PayloadCard(value: String, modifier: Modifier = Modifier) {
  * A filter chip.
  *
  * One of these, not three. The user list and the analytics ranges each grew their own, at 14dp and
- * 10dp, against an [Ios.Card] fill — and both painted the SELECTED label `Ios.Card` as well, a
- * near-black on a blue ground that is not readable at any size. [ControlShape] is the app's radius
+ * 10dp, against an [DuskTheme.surface] fill — and both painted the SELECTED label `DuskTheme.surface` as well, a
+ * near-black on a blue ground that is not readable at any size. [DuskTheme.controlShape] is the app's radius
  * for a thing you press, glass is what an unfilled control sits on everywhere else, and the label
  * is white in both states because the fill is what says which one is chosen.
  */
@@ -386,14 +383,14 @@ fun StudioChip(
 ) {
     Text(
         label,
-        color = Ios.Label,
+        color = DuskTheme.onSurface,
         fontSize = 13.sp,
         fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Normal,
         textAlign = TextAlign.Center,
         modifier = modifier
             .then(
-                if (selected) Modifier.background(Ios.Blue, ControlShape)
-                else Modifier.frostedGlass(ControlShape)
+                if (selected) Modifier.background(DuskTheme.primary, DuskTheme.controlShape)
+                else Modifier.frostedGlass(DuskTheme.controlShape)
             )
             .clickable(onClick = onClick)
             .padding(horizontal = 14.dp, vertical = 7.dp),
@@ -403,7 +400,7 @@ fun StudioChip(
 /**
  * The frame for one item in a list this feature scrolls itself.
  *
- * Glass, like every other card in the app. Both list screens were filling theirs with [Ios.Card] —
+ * Glass, like every other card in the app. Both list screens were filling theirs with [DuskTheme.surface] —
  * the OPAQUE #1C1C1E the palette keeps only as the no-wallpaper fallback — so a row of users sat as
  * a flat black slab among translucent cards above and below it. These were the only two places in
  * the app that drew a card that way.
@@ -414,7 +411,7 @@ fun StudioListRow(onClick: (() -> Unit)? = null, content: @Composable RowScope.(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 4.dp)
-            .frostedGlass(CardShape)
+            .frostedGlass(DuskTheme.cardShape)
             .then(if (onClick != null) Modifier.clickable(onClick = onClick) else Modifier)
             .padding(horizontal = 14.dp, vertical = 12.dp),
         verticalAlignment = Alignment.CenterVertically,
@@ -441,7 +438,7 @@ fun StatusDot(color: Color) {
 fun PageIntro(text: String) {
     Text(
         text,
-        color = Ios.SecondaryLabel,
+        color = DuskTheme.muted,
         fontSize = 14.sp,
         lineHeight = 23.sp,
         modifier = Modifier.fillMaxWidth().padding(start = 20.dp, end = 20.dp, bottom = 4.dp),
@@ -477,8 +474,8 @@ fun StudioTile(
         modifier = modifier
             .scale(scale)
             .height(96.dp)
-            .clip(PanelShape)
-            .frostedGlass(PanelShape)
+            .clip(DuskTheme.cardShape)
+            .frostedGlass(DuskTheme.cardShape)
             .clickable(interactionSource = interaction, indication = null, onClick = onClick)
             .padding(horizontal = 8.dp, vertical = 12.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -496,7 +493,7 @@ fun StudioTile(
         Spacer(Modifier.height(9.dp))
         Text(
             label,
-            color = Ios.Label,
+            color = DuskTheme.onSurface,
             fontSize = 12.sp,
             lineHeight = 15.sp,
             fontWeight = FontWeight.Medium,

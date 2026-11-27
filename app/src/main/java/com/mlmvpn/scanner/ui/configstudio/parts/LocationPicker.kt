@@ -25,11 +25,10 @@ import com.mlmvpn.scanner.data.studio.domain.ExitCountries
 import com.mlmvpn.scanner.ui.configstudio.design.CountryBadge
 import com.mlmvpn.scanner.ui.configstudio.design.StudioType
 import com.mlmvpn.scanner.ui.configstudio.faNum
-import com.mlmvpn.scanner.ui.settings.Ios
 import com.mlmvpn.scanner.ui.settings.SettingsGroup
 import com.mlmvpn.scanner.ui.settings.SettingsToggle
-import com.mlmvpn.scanner.ui.theme.ControlShape
 import com.mlmvpn.scanner.utils.S
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 
 /** What is known about a country's server right now, shown on its chip -- as words, not symbols. */
 sealed interface CountryStatus {
@@ -70,8 +69,8 @@ fun LocationPicker(
             val st = status[cc]
             Row(
                 modifier = Modifier
-                    .background(if (on) Ios.Blue.copy(alpha = 0.22f) else Color.Transparent, ControlShape)
-                    .border(1.dp, if (on) Ios.Blue else Ios.SecondaryLabel.copy(alpha = 0.35f), ControlShape)
+                    .background(if (on) DuskTheme.primary.copy(alpha = 0.22f) else Color.Transparent, DuskTheme.controlShape)
+                    .border(1.dp, if (on) DuskTheme.primary else DuskTheme.muted.copy(alpha = 0.35f), DuskTheme.controlShape)
                     .clickable { onToggle(cc) }
                     .padding(horizontal = 10.dp, vertical = 7.dp),
                 verticalAlignment = Alignment.CenterVertically,
@@ -81,7 +80,7 @@ fun LocationPicker(
                 Column {
                     Text(
                         ExitCountries.name(cc),
-                        color = Ios.Label,
+                        color = DuskTheme.onSurface,
                         fontSize = StudioType.Subhead,
                         fontWeight = if (on) FontWeight.SemiBold else FontWeight.Normal,
                     )
@@ -115,9 +114,10 @@ private fun statusText(st: CountryStatus): String = when (st) {
     CountryStatus.None -> S(R.string.studio_country_none)
 }
 
+@Composable
 private fun statusColor(st: CountryStatus): Color = when (st) {
-    CountryStatus.Own -> Color(0xFF30D158)
-    CountryStatus.Checking -> Color(0xFF98989F)
-    is CountryStatus.Verified -> Color(0xFF30D158)
-    CountryStatus.None -> Color(0xFFFF9F0A)
+    CountryStatus.Own -> DuskTheme.success
+    CountryStatus.Checking -> DuskTheme.disabled
+    is CountryStatus.Verified -> DuskTheme.success
+    CountryStatus.None -> DuskTheme.accent
 }

@@ -22,8 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.FileProvider
 import com.mlmvpn.scanner.ui.home.frostedGlass
-import com.mlmvpn.scanner.ui.settings.Ios
-import com.mlmvpn.scanner.ui.theme.CardShape
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 import java.io.File
 
 /**
@@ -156,7 +155,7 @@ fun StudioQrCard(value: String, tooLongNote: String) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp)
-            .frostedGlass(CardShape)
+            .frostedGlass(DuskTheme.cardShape)
             .padding(18.dp),
         contentAlignment = Alignment.Center,
     ) {
@@ -176,7 +175,7 @@ fun StudioQrCard(value: String, tooLongNote: String) {
             Column(modifier = Modifier.fillMaxWidth()) {
                 Text(
                     tooLongNote,
-                    color = Ios.SecondaryLabel,
+                    color = DuskTheme.muted,
                     fontSize = 13.sp,
                     lineHeight = 22.sp,
                     textAlign = TextAlign.Center,

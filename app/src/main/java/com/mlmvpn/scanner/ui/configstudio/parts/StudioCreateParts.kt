@@ -38,9 +38,9 @@ import com.mlmvpn.scanner.ui.configstudio.design.StudioIcons
 import com.mlmvpn.scanner.ui.configstudio.design.StudioSeparator
 import com.mlmvpn.scanner.ui.configstudio.design.StudioType
 import com.mlmvpn.scanner.ui.configstudio.faNum
-import com.mlmvpn.scanner.ui.settings.Ios
 import com.mlmvpn.scanner.ui.settings.SettingsGroup
 import com.mlmvpn.scanner.utils.S
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Semaphore
 import kotlinx.coroutines.sync.withPermit
@@ -134,14 +134,14 @@ fun CreatedConfigsCard(made: List<LocationConfigs.Made>) {
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
                         LocationConfigs.shortName(m.shape) + if (m.shape == ConfigShape.VLESS_XHTTP) "" else " · WebSocket",
-                        color = Ios.Label,
+                        color = DuskTheme.onSurface,
                         fontSize = StudioType.Callout,
                         fontWeight = FontWeight.Medium,
                     )
                     val where = m.country?.let { ExitCountries.name(it) } ?: S(R.string.studio_created_direct)
                     Text(
                         where + (m.config.exitIp?.let { " · $it" } ?: ""),
-                        color = Ios.SecondaryLabel,
+                        color = DuskTheme.muted,
                         fontSize = StudioType.Caption,
                     )
                 }
@@ -152,10 +152,11 @@ fun CreatedConfigsCard(made: List<LocationConfigs.Made>) {
 }
 
 /** One colour per protocol, used wherever a protocol is drawn. */
+@Composable
 fun protocolTint(shape: ConfigShape) = when (shape) {
-    ConfigShape.VLESS_WS -> androidx.compose.ui.graphics.Color(0xFF0A84FF)
-    ConfigShape.TROJAN_WS -> androidx.compose.ui.graphics.Color(0xFFBF5AF2)
-    ConfigShape.VLESS_XHTTP -> androidx.compose.ui.graphics.Color(0xFFFF9F0A)
+    ConfigShape.VLESS_WS -> DuskTheme.primary
+    ConfigShape.TROJAN_WS -> DuskTheme.purple
+    ConfigShape.VLESS_XHTTP -> DuskTheme.accent
 }
 
 /** «این کاربر ۶ سرور می‌گیرد» -- how many entries the person's app will list, before creating. */
@@ -167,11 +168,11 @@ fun LinkCountLine(shapes: Int, countries: Int, includeDirect: Boolean, ports: In
             modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 12.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Icon(StudioIcons.Info, contentDescription = null, tint = Ios.SecondaryLabel, modifier = Modifier.size(18.dp))
+            Icon(StudioIcons.Info, contentDescription = null, tint = DuskTheme.muted, modifier = Modifier.size(18.dp))
             Spacer(Modifier.width(10.dp))
             Text(
                 S(R.string.studio_link_count).replace("%1\$s", faNum(n)),
-                color = Ios.Label,
+                color = DuskTheme.onSurface,
                 fontSize = StudioType.Subhead,
             )
         }

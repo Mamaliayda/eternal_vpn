@@ -9,13 +9,13 @@ import com.mlmvpn.scanner.R
 import com.mlmvpn.scanner.data.PanelBuild
 import com.mlmvpn.scanner.data.studio.StudioState
 import com.mlmvpn.scanner.ui.configstudio.design.StudioIcons
-import com.mlmvpn.scanner.ui.settings.Ios
 import com.mlmvpn.scanner.ui.settings.IosScreen
 import com.mlmvpn.scanner.ui.settings.SettingsFooter
 import com.mlmvpn.scanner.ui.settings.SettingsGroup
 import com.mlmvpn.scanner.ui.settings.SettingsRow
 import com.mlmvpn.scanner.ui.settings.SettingsSectionHeader
 import com.mlmvpn.scanner.utils.S
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 
 /**
  * «بیشتر» -- every place in Config Studio that is not a person or a figure, once, under the name
@@ -53,7 +53,7 @@ fun StudioMoreScreen(
                 title = S(R.string.studio_plans),
                 subtitle = S(R.string.studio_more_plans_sub),
                 icon = StudioIcons.Plan,
-                tint = Ios.Orange,
+                tint = DuskTheme.accent,
                 onClick = onOpenPlans,
             )
             Separator()
@@ -61,7 +61,7 @@ fun StudioMoreScreen(
                 title = S(R.string.studio_templates),
                 subtitle = S(R.string.studio_more_templates_sub),
                 icon = StudioIcons.Template,
-                tint = Ios.Purple,
+                tint = DuskTheme.purple,
                 onClick = onOpenTemplates,
             )
         }
@@ -72,7 +72,7 @@ fun StudioMoreScreen(
                 title = S(R.string.studio_more_locations),
                 subtitle = S(R.string.studio_more_locations_sub),
                 icon = StudioIcons.Locations,
-                tint = Ios.Indigo,
+                tint = DuskTheme.indigo,
                 onClick = onOpenLocations,
             )
             Separator()
@@ -81,7 +81,7 @@ fun StudioMoreScreen(
                 subtitle = S(R.string.studio_more_nodes_sub),
                 value = state.nodes.takeIf { it.isNotEmpty() }?.let { faNum(it.size) },
                 icon = StudioIcons.Endpoints,
-                tint = Ios.Teal,
+                tint = DuskTheme.secondary,
                 onClick = onOpenNodes,
             )
         }
@@ -91,21 +91,21 @@ fun StudioMoreScreen(
             SettingsRow(
                 title = S(R.string.studio_config_for),
                 icon = StudioIcons.Config,
-                tint = Ios.Blue,
+                tint = DuskTheme.primary,
                 onClick = onNewConfig,
             )
             Separator()
             SettingsRow(
                 title = S(R.string.studio_bulk_new_title),
                 icon = StudioIcons.BulkUsers,
-                tint = Ios.Green,
+                tint = DuskTheme.success,
                 onClick = onBulkUsers,
             )
             Separator()
             SettingsRow(
                 title = S(R.string.studio_combine),
                 icon = StudioIcons.Combine,
-                tint = Ios.Purple,
+                tint = DuskTheme.purple,
                 onClick = onCombine,
             )
         }
@@ -117,14 +117,14 @@ fun StudioMoreScreen(
                 subtitle = if (stale > 0) S(R.string.studio_more_accounts_stale).replace("%1\$s", faNum(stale)) else null,
                 value = faNum(state.installations.size),
                 icon = StudioIcons.Accounts,
-                tint = if (stale > 0) Ios.Blue else Ios.Gray,
+                tint = if (stale > 0) DuskTheme.primary else DuskTheme.disabled,
                 onClick = onOpenAccounts,
             )
             Separator()
             SettingsRow(
                 title = S(R.string.studio_settings_title),
                 icon = StudioIcons.Settings,
-                tint = Ios.Gray,
+                tint = DuskTheme.disabled,
                 onClick = onOpenSettings,
             )
             Separator()
@@ -132,7 +132,7 @@ fun StudioMoreScreen(
                 title = S(R.string.studio_more_history),
                 subtitle = S(R.string.studio_more_history_sub),
                 icon = StudioIcons.Audit,
-                tint = Ios.Teal,
+                tint = DuskTheme.secondary,
                 onClick = onOpenAudit,
             )
         }

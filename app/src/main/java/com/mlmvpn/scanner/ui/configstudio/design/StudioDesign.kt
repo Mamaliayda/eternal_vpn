@@ -49,14 +49,10 @@ import com.mlmvpn.scanner.R
 import com.mlmvpn.scanner.data.studio.config.ConfigShape
 import com.mlmvpn.scanner.data.studio.config.LocationConfigs
 import com.mlmvpn.scanner.ui.home.frostedGlass
-import com.mlmvpn.scanner.ui.settings.Ios
 import com.mlmvpn.scanner.ui.settings.SettingsGroup
-import com.mlmvpn.scanner.ui.theme.CardShape
-import com.mlmvpn.scanner.ui.theme.ControlShape
 import com.mlmvpn.scanner.ui.theme.DuskCard
 import com.mlmvpn.scanner.ui.theme.DuskPill
 import com.mlmvpn.scanner.ui.theme.DuskTheme
-import com.mlmvpn.scanner.ui.theme.PanelShape
 import com.mlmvpn.scanner.utils.S
 
 /**
@@ -117,11 +113,11 @@ fun StudioTabBar(
                 StudioTab.STATS -> (if (isSel) StudioIcons.StatsSelected else StudioIcons.Stats) to S(R.string.studio_tab_stats)
                 StudioTab.MORE -> (if (isSel) StudioIcons.MoreSelected else StudioIcons.More) to S(R.string.studio_tab_more)
             }
-            val tint = if (isSel) Ios.Blue else Ios.SecondaryLabel
+            val tint = if (isSel) DuskTheme.primary else DuskTheme.muted
             Column(
                 modifier = Modifier
                     .weight(1f)
-                    .clip(ControlShape)
+                    .clip(DuskTheme.controlShape)
                     .clickable { onSelect(tab) }
                     .padding(vertical = 6.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -146,7 +142,7 @@ fun StudioTabBar(
 @Composable
 fun StudioBadge(
     text: String,
-    tint: Color = Ios.SecondaryLabel,
+    tint: Color = DuskTheme.muted,
     icon: ImageVector? = null,
     modifier: Modifier = Modifier,
 ) {
@@ -173,12 +169,12 @@ fun CountryBadge(cc: String, modifier: Modifier = Modifier) {
     CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
         Text(
             cc.uppercase(),
-            color = Ios.Label,
+            color = DuskTheme.onSurface,
             fontSize = StudioType.Tiny,
             fontWeight = FontWeight.Bold,
             fontFamily = FontFamily.Monospace,
             modifier = modifier
-                .border(1.dp, Ios.SecondaryLabel.copy(alpha = 0.45f), RoundedCornerShape(5.dp))
+                .border(1.dp, DuskTheme.muted.copy(alpha = 0.45f), RoundedCornerShape(5.dp))
                 .padding(horizontal = 5.dp, vertical = 1.dp),
         )
     }
@@ -190,7 +186,7 @@ fun StatusLine(text: String, tint: Color, modifier: Modifier = Modifier) {
     Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
         Box(modifier = Modifier.size(8.dp).background(tint, CircleShape))
         Spacer(Modifier.width(6.dp))
-        Text(text, color = Ios.SecondaryLabel, fontSize = StudioType.Caption, maxLines = 1, overflow = TextOverflow.Ellipsis)
+        Text(text, color = DuskTheme.muted, fontSize = StudioType.Caption, maxLines = 1, overflow = TextOverflow.Ellipsis)
     }
 }
 
@@ -215,8 +211,8 @@ fun StudioStatTile(
     Column(
         modifier = modifier
             .scale(scale)
-            .clip(PanelShape)
-            .frostedGlass(PanelShape)
+            .clip(DuskTheme.cardShape)
+            .frostedGlass(DuskTheme.cardShape)
             .then(if (onClick != null) Modifier.clickable(interactionSource = interaction, indication = null, onClick = onClick) else Modifier)
             .padding(horizontal = 14.dp, vertical = 12.dp),
     ) {
@@ -228,13 +224,13 @@ fun StudioStatTile(
                 Icon(icon, contentDescription = null, tint = tint, modifier = Modifier.size(17.dp))
             }
             Spacer(Modifier.width(8.dp))
-            Text(label, color = Ios.SecondaryLabel, fontSize = StudioType.Caption, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            Text(label, color = DuskTheme.muted, fontSize = StudioType.Caption, maxLines = 1, overflow = TextOverflow.Ellipsis)
         }
         Spacer(Modifier.height(10.dp))
-        Text(value, color = Ios.Label, fontSize = 24.sp, fontWeight = FontWeight.Bold, maxLines = 1)
+        Text(value, color = DuskTheme.onSurface, fontSize = 24.sp, fontWeight = FontWeight.Bold, maxLines = 1)
         if (detail != null) {
             Spacer(Modifier.height(2.dp))
-            Text(detail, color = Ios.SecondaryLabel, fontSize = StudioType.Tiny, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            Text(detail, color = DuskTheme.muted, fontSize = StudioType.Tiny, maxLines = 1, overflow = TextOverflow.Ellipsis)
         }
     }
 }
@@ -268,7 +264,7 @@ fun NoticeCard(
         modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 5.dp)
-            .frostedGlass(CardShape)
+            .frostedGlass(DuskTheme.cardShape)
             .padding(14.dp),
         verticalAlignment = Alignment.Top,
     ) {
@@ -280,19 +276,19 @@ fun NoticeCard(
         }
         Spacer(Modifier.width(12.dp))
         Column(modifier = Modifier.weight(1f)) {
-            Text(title, color = Ios.Label, fontSize = StudioType.Callout, fontWeight = FontWeight.SemiBold)
+            Text(title, color = DuskTheme.onSurface, fontSize = StudioType.Callout, fontWeight = FontWeight.SemiBold)
             if (body != null) {
                 Spacer(Modifier.height(4.dp))
-                Text(body, color = Ios.SecondaryLabel, fontSize = StudioType.Footnote, lineHeight = 21.sp)
+                Text(body, color = DuskTheme.muted, fontSize = StudioType.Footnote, lineHeight = 21.sp)
             }
             if (actionLabel != null && onAction != null) {
                 Spacer(Modifier.height(10.dp))
                 Text(
                     actionLabel,
-                    color = Ios.Blue,
+                    color = DuskTheme.primary,
                     fontSize = StudioType.Subhead,
                     fontWeight = FontWeight.SemiBold,
-                    modifier = Modifier.clip(ControlShape).clickable(onClick = onAction).padding(vertical = 2.dp),
+                    modifier = Modifier.clip(DuskTheme.controlShape).clickable(onClick = onAction).padding(vertical = 2.dp),
                 )
             }
         }
@@ -374,12 +370,12 @@ fun ChoiceRow(
         Column(modifier = Modifier.weight(1f)) {
             Text(
                 title,
-                color = if (enabled) Ios.Label else Ios.SecondaryLabel,
+                color = if (enabled) DuskTheme.onSurface else DuskTheme.muted,
                 fontSize = StudioType.Body,
             )
             if (subtitle != null) {
                 Spacer(Modifier.height(2.dp))
-                Text(subtitle, color = Ios.SecondaryLabel, fontSize = StudioType.Caption, lineHeight = 17.sp)
+                Text(subtitle, color = DuskTheme.muted, fontSize = StudioType.Caption, lineHeight = 17.sp)
             }
         }
         Spacer(Modifier.width(8.dp))
@@ -388,8 +384,8 @@ fun ChoiceRow(
                 .size(22.dp)
                 .clip(CircleShape)
                 .then(
-                    if (selected) Modifier.background(Ios.Blue)
-                    else Modifier.border(1.5.dp, Ios.SecondaryLabel.copy(alpha = 0.5f), CircleShape)
+                    if (selected) Modifier.background(DuskTheme.primary)
+                    else Modifier.border(1.5.dp, DuskTheme.muted.copy(alpha = 0.5f), CircleShape)
                 ),
             contentAlignment = Alignment.Center,
         ) {
@@ -449,7 +445,7 @@ fun StudioSeparator() {
             .fillMaxWidth()
             .padding(start = 16.dp)
             .height(0.5.dp)
-            .background(Ios.Separator)
+            .background(DuskTheme.outline.copy(alpha = 0.22f))
     )
 }
 
@@ -468,14 +464,14 @@ fun SegmentedControl(
         modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 6.dp)
-            .frostedGlass(ControlShape)
+            .frostedGlass(DuskTheme.controlShape)
             .padding(3.dp),
     ) {
         options.forEachIndexed { i, label ->
             val sel = i == selectedIndex
             Text(
                 label,
-                color = if (sel) Color.White else Ios.Label,
+                color = if (sel) Color.White else DuskTheme.onSurface,
                 fontSize = StudioType.Subhead,
                 fontWeight = if (sel) FontWeight.SemiBold else FontWeight.Normal,
                 textAlign = TextAlign.Center,
@@ -483,7 +479,7 @@ fun SegmentedControl(
                 modifier = Modifier
                     .weight(1f)
                     .clip(RoundedCornerShape(9.dp))
-                    .then(if (sel) Modifier.background(Ios.Blue) else Modifier)
+                    .then(if (sel) Modifier.background(DuskTheme.primary) else Modifier)
                     .clickable { onSelect(i) }
                     .padding(vertical = 7.dp),
             )

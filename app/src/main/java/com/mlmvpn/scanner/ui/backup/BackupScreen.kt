@@ -3,7 +3,6 @@ package com.mlmvpn.scanner.ui.backup
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -50,7 +49,8 @@ import com.mlmvpn.scanner.backup.BackupStage
 import com.mlmvpn.scanner.backup.RestoreApplier
 import com.mlmvpn.scanner.backup.RestoreMode
 import com.mlmvpn.scanner.store.tr
-import com.mlmvpn.scanner.ui.settings.Ios
+import com.mlmvpn.scanner.ui.theme.DuskTheme
+import com.mlmvpn.scanner.ui.theme.rememberDuskSnackbarAction
 import com.mlmvpn.scanner.ui.settings.IosAlert
 import com.mlmvpn.scanner.ui.settings.IosAlertAction
 import com.mlmvpn.scanner.ui.settings.IosScreen
@@ -99,6 +99,7 @@ private class Notice(val title: String, val message: String?)
 @Composable
 fun BackupScreen(onBack: () -> Unit) {
     val context = LocalContext.current
+    val notify = rememberDuskSnackbarAction()
     val app = context.applicationContext
     val scope = rememberCoroutineScope()
     val farsi = AppLocaleManager.isFarsi()
@@ -198,7 +199,7 @@ fun BackupScreen(onBack: () -> Unit) {
                 runCatching { context.contentResolver.openOutputStream(uri, "wt")!!.use { it.write(bytes) } }.isSuccess
             }
             if (ok) {
-                Toast.makeText(context, tr("فایل پشتیبان ذخیره شد.", "Backup saved."), Toast.LENGTH_SHORT).show()
+                notify(tr("فایل پشتیبان ذخیره شد.", "Backup saved."))
             } else {
                 notice = Notice(tr("ذخیره نشد", "Not saved"), tr("در آن جا نمی‌شد نوشت. جای دیگری را انتخاب کنید.", "That place could not be written to. Pick another."))
             }
@@ -257,7 +258,7 @@ fun BackupScreen(onBack: () -> Unit) {
                     SettingsRow(
                         title = tr("انتخاب روش‌ها", "Choose methods"),
                         icon = Icons.Default.Tune,
-                        tint = Ios.Indigo,
+                        tint = DuskTheme.indigo,
                         value = if (on == methods.size) tr("همه", "All") else tr(
                             BackupNames.persianDigits("$on از ${methods.size}"),
                             "$on of ${methods.size}",
@@ -274,7 +275,7 @@ fun BackupScreen(onBack: () -> Unit) {
                     value = password,
                     onValueChange = { password = it; exported = null },
                     icon = Icons.Default.Lock,
-                    tint = Ios.Orange,
+                    tint = DuskTheme.accent,
                     placeholder = tr("بدون رمز", "None"),
                     error = passwordError,
                     secret = true,
@@ -286,7 +287,7 @@ fun BackupScreen(onBack: () -> Unit) {
                         value = repeat,
                         onValueChange = { repeat = it },
                         icon = Icons.Default.Lock,
-                        tint = Ios.Orange,
+                        tint = DuskTheme.accent,
                         error = repeatError,
                         secret = true,
                     )
@@ -315,7 +316,7 @@ fun BackupScreen(onBack: () -> Unit) {
                 SettingsActionRow(
                     label = tr("ذخیره در گوشی", "Save to phone"),
                     icon = Icons.Default.Save,
-                    tint = Ios.Blue,
+                    tint = DuskTheme.primary,
                     busy = busy == "save",
                     enabled = canExport,
                     onClick = {
@@ -373,7 +374,7 @@ fun BackupScreen(onBack: () -> Unit) {
                     value = filePassword,
                     onValueChange = { filePassword = it; wrongPassword = false },
                     icon = Icons.Default.LockOpen,
-                    tint = Ios.Orange,
+                    tint = DuskTheme.accent,
                     error = if (wrongPassword) tr("رمز درست نیست", "Wrong password") else null,
                     secret = true,
                 )
@@ -384,7 +385,7 @@ fun BackupScreen(onBack: () -> Unit) {
                 SettingsActionRow(
                     label = tr("باز کردن", "Open"),
                     icon = Icons.Default.LockOpen,
-                    tint = Ios.Blue,
+                    tint = DuskTheme.primary,
                     busy = busy == "password",
                     enabled = filePassword.isNotBlank() && busy == null,
                     onClick = {
@@ -524,15 +525,15 @@ private fun HomePage(
                 title = tr("گرفتن خروجی", "Export"),
                 subtitle = tr("تنظیمات، حساب‌ها و کانفیگ‌ها در یک فایل", "Settings, accounts and configs in one file"),
                 icon = Icons.Default.FileUpload,
-                tint = Ios.Blue,
+                tint = DuskTheme.primary,
                 onClick = onExport,
             )
             Separator()
             SettingsActionRow(
                 label = tr("بازگردانی از فایل", "Restore from a file"),
                 icon = Icons.Default.FileDownload,
-                tint = Ios.Green,
-                labelColor = Ios.Label,
+                tint = DuskTheme.success,
+                labelColor = DuskTheme.onSurface,
                 busy = busy == "open",
                 enabled = busy == null,
                 onClick = onImport,
@@ -596,7 +597,7 @@ private fun PreviewPage(
                             onCheckedChange = { onTick(item.id, it) },
                         )
                     } else {
-                        SettingsRow(title = item.title, subtitle = blocked, titleColor = Ios.SecondaryLabel, showChevron = false)
+                        SettingsRow(title = item.title, subtitle = blocked, titleColor = DuskTheme.muted, showChevron = false)
                     }
                 }
             }
@@ -607,7 +608,7 @@ private fun PreviewPage(
             SettingsGroup {
                 unknown.forEachIndexed { i, item ->
                     if (i > 0) Separator()
-                    SettingsRow(title = item.title, subtitle = item.blocked, titleColor = Ios.SecondaryLabel, showChevron = false)
+                    SettingsRow(title = item.title, subtitle = item.blocked, titleColor = DuskTheme.muted, showChevron = false)
                 }
             }
         }
@@ -637,8 +638,8 @@ private fun PreviewPage(
             SettingsActionRow(
                 label = tr("بازگردانی", "Restore") + if (count > 0) " (" + countText(count) + ")" else "",
                 icon = Icons.Default.Restore,
-                tint = Ios.Green,
-                labelColor = Ios.Label,
+                tint = DuskTheme.success,
+                labelColor = DuskTheme.onSurface,
                 busy = busy,
                 enabled = count > 0 && !busy,
                 onClick = onRestore,
@@ -678,8 +679,8 @@ private fun ModeRow(label: String, selected: Boolean, onClick: () -> Unit) {
             .padding(horizontal = 16.dp, vertical = 9.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Text(label, color = Ios.Label, fontSize = 16.sp, modifier = Modifier.weight(1f))
-        if (selected) Icon(Icons.Default.Check, contentDescription = null, tint = Ios.Blue, modifier = Modifier.size(20.dp))
+        Text(label, color = DuskTheme.onSurface, fontSize = 16.sp, modifier = Modifier.weight(1f))
+        if (selected) Icon(Icons.Default.Check, contentDescription = null, tint = DuskTheme.primary, modifier = Modifier.size(20.dp))
     }
 }
 
@@ -687,7 +688,7 @@ private fun ModeRow(label: String, selected: Boolean, onClick: () -> Unit) {
 private fun WarningFooter(text: String) {
     Text(
         text,
-        color = Ios.Orange,
+        color = DuskTheme.accent,
         fontSize = 13.sp,
         lineHeight = 21.sp,
         modifier = Modifier.padding(start = 32.dp, end = 32.dp, top = 8.dp),

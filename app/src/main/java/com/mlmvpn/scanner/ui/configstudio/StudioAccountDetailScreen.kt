@@ -32,7 +32,6 @@ import com.mlmvpn.scanner.ui.configstudio.parts.PayloadCard
 import com.mlmvpn.scanner.ui.configstudio.parts.ProblemCard
 import com.mlmvpn.scanner.ui.configstudio.parts.WizardBusy
 import com.mlmvpn.scanner.ui.configstudio.parts.WizardField
-import com.mlmvpn.scanner.ui.settings.Ios
 import com.mlmvpn.scanner.ui.settings.IosAlert
 import com.mlmvpn.scanner.ui.settings.IosAlertAction
 import com.mlmvpn.scanner.ui.settings.IosScreen
@@ -42,6 +41,7 @@ import com.mlmvpn.scanner.ui.settings.SettingsRow
 import com.mlmvpn.scanner.ui.settings.SettingsSectionHeader
 import com.mlmvpn.scanner.ui.settings.SettingsToggle
 import com.mlmvpn.scanner.utils.S
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 import kotlinx.coroutines.launch
 
 /**
@@ -179,7 +179,7 @@ fun StudioAccountDetailScreen(
                     title = if (i.isHealthy) S(R.string.studio_engine_healthy)
                     else S(R.string.studio_engine_unreachable),
                     icon = if (i.isHealthy) StudioIcons.Ok else StudioIcons.Warning,
-                    tint = if (i.isHealthy) Ios.Green else Ios.Orange,
+                    tint = if (i.isHealthy) DuskTheme.success else DuskTheme.accent,
                     showChevron = false,
                 )
                 // Whether a device limit set on this account is really applied: true only where the
@@ -189,14 +189,14 @@ fun StudioAccountDetailScreen(
                 SettingsRow(
                     title = if (devicesOn) S(R.string.studio_account_devices_on) else S(R.string.studio_account_devices_off),
                     icon = StudioIcons.Devices,
-                    tint = if (devicesOn) Ios.Green else Ios.Orange,
+                    tint = if (devicesOn) DuskTheme.success else DuskTheme.accent,
                     showChevron = false,
                 )
             }
             if (!i.can("enforcement.strict") && i.reachable) {
                 NoticeCard(
                     icon = StudioIcons.Devices,
-                    tint = Ios.Orange,
+                    tint = DuskTheme.accent,
                     title = S(R.string.studio_account_devices_off),
                     body = S(R.string.studio_account_devices_off_body),
                 )
@@ -213,7 +213,7 @@ fun StudioAccountDetailScreen(
                 SettingsActionRow(
                     label = S(R.string.studio_check_now),
                     icon = StudioIcons.Refresh,
-                    tint = Ios.Blue,
+                    tint = DuskTheme.primary,
                     enabled = !busy,
                 ) { scope.launch { refresh() } }
 
@@ -226,7 +226,7 @@ fun StudioAccountDetailScreen(
                 SettingsActionRow(
                     label = if (stale) S(R.string.studio_engine_update_available) else S(R.string.studio_repair),
                     icon = if (stale) StudioIcons.EngineUpdate else StudioIcons.Repair,
-                    tint = if (stale) Ios.Orange else Ios.Green,
+                    tint = if (stale) DuskTheme.accent else DuskTheme.success,
                     enabled = !busy,
                 ) {
                     busy = true; error = null; note = null
@@ -272,7 +272,7 @@ fun StudioAccountDetailScreen(
                 SettingsActionRow(
                     label = S(R.string.studio_save),
                     icon = StudioIcons.Save,
-                    tint = Ios.Blue,
+                    tint = DuskTheme.primary,
                     enabled = !busy,
                 ) {
                     busy = true; error = null; note = null
@@ -322,7 +322,7 @@ fun StudioAccountDetailScreen(
                         SettingsActionRow(
                             label = S(R.string.studio_remove_worker),
                             icon = StudioIcons.Delete,
-                            tint = Ios.Red,
+                            tint = DuskTheme.error,
                             enabled = !busy,
                         ) { confirmRemove = name }
                     }
@@ -343,9 +343,9 @@ fun StudioAccountDetailScreen(
                     },
                     icon = if (r.ok) StudioIcons.Ok else StudioIcons.Warning,
                     tint = when {
-                        r.ok -> Ios.Green
-                        r.pageCode != null -> Ios.Orange
-                        else -> Ios.Red
+                        r.ok -> DuskTheme.success
+                        r.pageCode != null -> DuskTheme.accent
+                        else -> DuskTheme.error
                     },
                     value = r.pageLatencyMs?.let {
                         S(R.string.studio_reach_latency).replace("%1\$s", faNum(it))
@@ -357,7 +357,7 @@ fun StudioAccountDetailScreen(
             SettingsActionRow(
                 label = if (busy) S(R.string.studio_reach_testing) else S(R.string.studio_reach_test),
                 icon = StudioIcons.Test,
-                tint = Ios.Green,
+                tint = DuskTheme.success,
                 busy = busy,
                 enabled = !busy,
             ) {
@@ -396,7 +396,7 @@ fun StudioAccountDetailScreen(
             SettingsActionRow(
                 label = S(R.string.studio_domain_attach),
                 icon = StudioIcons.Domain,
-                tint = Ios.Blue,
+                tint = DuskTheme.primary,
                 enabled = !busy && newDomain.isNotBlank(),
             ) {
                 busy = true; error = null; note = null
@@ -439,9 +439,9 @@ fun StudioAccountDetailScreen(
                             null -> S(R.string.studio_perm_unknown)
                         },
                         titleColor = when (perm.granted) {
-                            false -> Ios.Red
-                            null -> Ios.SecondaryLabel
-                            else -> Ios.Label
+                            false -> DuskTheme.error
+                            null -> DuskTheme.muted
+                            else -> DuskTheme.onSurface
                         },
                         showChevron = false,
                     )
@@ -454,7 +454,7 @@ fun StudioAccountDetailScreen(
             SettingsActionRow(
                 label = if (busy) S(R.string.studio_perm_checking) else S(R.string.studio_perm_check),
                 icon = StudioIcons.Verified,
-                tint = Ios.Purple,
+                tint = DuskTheme.purple,
                 busy = busy,
                 enabled = !busy,
             ) {
@@ -470,7 +470,7 @@ fun StudioAccountDetailScreen(
             SettingsActionRow(
                 label = S(R.string.studio_reinstall),
                 icon = StudioIcons.Reinstall,
-                tint = Ios.Orange,
+                tint = DuskTheme.accent,
                 enabled = !busy,
             ) { confirmReinstall = true }
         }
@@ -480,7 +480,7 @@ fun StudioAccountDetailScreen(
             SettingsActionRow(
                 label = S(R.string.studio_uninstall),
                 icon = StudioIcons.Uninstall,
-                tint = Ios.Red,
+                tint = DuskTheme.error,
                 enabled = !busy,
             ) { confirmUninstall = true }
         }
@@ -490,7 +490,7 @@ fun StudioAccountDetailScreen(
             SettingsActionRow(
                 label = S(R.string.studio_account_disconnect),
                 icon = StudioIcons.Disconnect,
-                tint = Ios.Red,
+                tint = DuskTheme.error,
                 enabled = !busy,
             ) { confirmDisconnect = true }
         }

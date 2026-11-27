@@ -16,8 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.mlmvpn.scanner.ui.settings.Ios
-import com.mlmvpn.scanner.ui.theme.ControlShape
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 
 /**
  * Which ports a multi-location subscription is served on.
@@ -42,14 +41,14 @@ fun PortPicker(picked: Set<Int>, onToggle: (Int) -> Unit) {
             val on = port in picked
             Box(
                 modifier = Modifier
-                    .background(if (on) Ios.Blue else Color.Transparent, ControlShape)
-                    .border(1.dp, if (on) Ios.Blue else Ios.SecondaryLabel.copy(alpha = 0.35f), ControlShape)
+                    .background(if (on) DuskTheme.primary else Color.Transparent, DuskTheme.controlShape)
+                    .border(1.dp, if (on) DuskTheme.primary else DuskTheme.muted.copy(alpha = 0.35f), DuskTheme.controlShape)
                     .clickable { onToggle(port) }
                     .padding(horizontal = 14.dp, vertical = 8.dp),
             ) {
                 Text(
                     port.toString(),
-                    color = if (on) Color.White else Ios.Label,
+                    color = if (on) Color.White else DuskTheme.onSurface,
                     fontSize = 14.sp,
                     fontWeight = if (on) FontWeight.SemiBold else FontWeight.Normal,
                 )

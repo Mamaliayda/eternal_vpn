@@ -34,7 +34,6 @@ import com.mlmvpn.scanner.ui.configstudio.parts.PayloadCard
 import com.mlmvpn.scanner.ui.configstudio.parts.ProblemCard
 import com.mlmvpn.scanner.ui.configstudio.parts.WizardField
 import com.mlmvpn.scanner.ui.configstudio.parts.WizardPrimary
-import com.mlmvpn.scanner.ui.settings.Ios
 import com.mlmvpn.scanner.ui.settings.IosAlert
 import com.mlmvpn.scanner.ui.settings.IosAlertAction
 import com.mlmvpn.scanner.ui.settings.IosScreen
@@ -45,6 +44,7 @@ import com.mlmvpn.scanner.ui.settings.SettingsRow
 import com.mlmvpn.scanner.ui.settings.SettingsSectionHeader
 import com.mlmvpn.scanner.ui.settings.SettingsToggle
 import com.mlmvpn.scanner.utils.S
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Semaphore
 import kotlinx.coroutines.sync.withPermit
@@ -175,7 +175,7 @@ fun StudioMultiLocationScreen(
         PageIntro(S(R.string.studio_locations_intro))
 
         if (fleet.isEmpty()) {
-            NoticeCard(icon = StudioIcons.EngineUpdate, tint = Ios.Blue, title = S(R.string.studio_home_update_title),
+            NoticeCard(icon = StudioIcons.EngineUpdate, tint = DuskTheme.primary, title = S(R.string.studio_home_update_title),
                 body = S(R.string.studio_locations_needs_update))
             Spacer(Modifier.height(28.dp))
             return@IosScreen
@@ -205,7 +205,7 @@ fun StudioMultiLocationScreen(
                 subtitle = if (own.isEmpty()) S(R.string.studio_locations_own_none)
                 else own.joinToString("، ") { ExitCountries.name(it) },
                 icon = StudioIcons.OwnServer,
-                tint = Ios.Green,
+                tint = DuskTheme.success,
                 onClick = onOpenExits,
             )
         }
@@ -219,7 +219,7 @@ fun StudioMultiLocationScreen(
             SettingsActionRow(
                 label = if (copiedCmd) S(R.string.studio_copied) else S(R.string.studio_locations_vps_copy),
                 icon = StudioIcons.Copy,
-                tint = Ios.Blue,
+                tint = DuskTheme.primary,
             ) {
                 clipboard.setText(AnnotatedString(command))
                 copiedCmd = true
@@ -280,9 +280,9 @@ fun StudioMultiLocationScreen(
                             },
                             icon = if (v != null && v.first > 0) StudioIcons.Verified else StudioIcons.PublicServer,
                             tint = when {
-                                v == null -> Ios.Gray
-                                v.first > 0 -> Ios.Green
-                                else -> Ios.Orange
+                                v == null -> DuskTheme.disabled
+                                v.first > 0 -> DuskTheme.success
+                                else -> DuskTheme.accent
                             },
                             value = cc,
                             showChevron = false,
@@ -295,7 +295,7 @@ fun StudioMultiLocationScreen(
                     SettingsActionRow(
                         label = S(R.string.studio_locations_check_all),
                         icon = StudioIcons.Test,
-                        tint = Ios.Blue,
+                        tint = DuskTheme.primary,
                         busy = checking.isNotEmpty(),
                         onClick = { check(countries.filter { it !in checking }) },
                     )
@@ -306,7 +306,7 @@ fun StudioMultiLocationScreen(
 
         SettingsSectionHeader(S(R.string.studio_locations_use))
         SettingsGroup {
-            SettingsActionRow(label = S(R.string.studio_new_user), icon = StudioIcons.NewUser, tint = Ios.Green, onClick = onNewUser)
+            SettingsActionRow(label = S(R.string.studio_new_user), icon = StudioIcons.NewUser, tint = DuskTheme.success, onClick = onNewUser)
         }
         SettingsFooter(S(R.string.studio_locations_use_note))
         Spacer(Modifier.height(28.dp))
@@ -319,6 +319,6 @@ internal fun CountryTitle(cc: String) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         CountryBadge(cc)
         Spacer(Modifier.width(8.dp))
-        androidx.compose.material3.Text(ExitCountries.name(cc), color = Ios.Label)
+        androidx.compose.material3.Text(ExitCountries.name(cc), color = DuskTheme.onSurface)
     }
 }

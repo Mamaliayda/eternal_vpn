@@ -40,13 +40,13 @@ import com.mlmvpn.scanner.ui.configstudio.parts.InfoCard
 import com.mlmvpn.scanner.ui.configstudio.parts.ProblemCard
 import com.mlmvpn.scanner.ui.configstudio.parts.StudioChip
 import com.mlmvpn.scanner.ui.configstudio.parts.WizardBusy
-import com.mlmvpn.scanner.ui.settings.Ios
 import com.mlmvpn.scanner.ui.settings.IosScreen
 import com.mlmvpn.scanner.ui.settings.SettingsFooter
 import com.mlmvpn.scanner.ui.settings.SettingsGroup
 import com.mlmvpn.scanner.ui.settings.SettingsRow
 import com.mlmvpn.scanner.ui.settings.SettingsSectionHeader
 import com.mlmvpn.scanner.utils.S
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 
 /**
  * Traffic over time, who used it, and what carried it.
@@ -199,7 +199,7 @@ fun StudioAnalyticsScreen(
                     values = s.points.map { it.totalBytes.toFloat() },
                     stamps = s.points.map { it.ts },
                     daily = s.daily,
-                    tint = Ios.Blue,
+                    tint = DuskTheme.primary,
                     modifier = Modifier.padding(horizontal = 16.dp),
                 )
                 // Under the chart, not inside a card of its own. A footer is the grey line iOS
@@ -220,7 +220,7 @@ fun StudioAnalyticsScreen(
                     values = c.points.map { it.count.toFloat() },
                     stamps = c.points.map { it.ts },
                     daily = range != "24h",
-                    tint = Ios.Teal,
+                    tint = DuskTheme.secondary,
                     modifier = Modifier.padding(horizontal = 16.dp),
                 )
                 SettingsFooter(
@@ -234,7 +234,7 @@ fun StudioAnalyticsScreen(
                     values = c.points.map { it.count.toFloat() },
                     stamps = c.points.map { it.ts },
                     daily = true,
-                    tint = Ios.Green,
+                    tint = DuskTheme.success,
                     modifier = Modifier.padding(horizontal = 16.dp),
                 )
                 SettingsFooter(
@@ -302,7 +302,7 @@ private fun androidx.compose.foundation.layout.ColumnScope.SummarySection(s: Ana
             value = faNum(s.refusals) + " · " + faNum((s.refusalRate * 100).toInt()) + "٪",
             // Red only when it is actually worth acting on. Every account refuses somebody
             // occasionally — an expired subscriber whose client keeps retrying is one row a day.
-            titleColor = if (s.refusalRate >= 0.2f) Ios.Red else Ios.Label,
+            titleColor = if (s.refusalRate >= 0.2f) DuskTheme.error else DuskTheme.onSurface,
             showChevron = false,
         )
     }
@@ -396,7 +396,7 @@ private fun androidx.compose.foundation.layout.ColumnScope.TimeChart(
 ) {
     if (values.isEmpty()) return
     val peak = values.maxOrNull()?.coerceAtLeast(1f) ?: 1f
-    val ground = Ios.Separator
+    val ground = DuskTheme.outline.copy(alpha = 0.22f)
 
     Canvas(modifier = modifier.fillMaxWidth().height(120.dp)) {
         val n = values.size
@@ -420,14 +420,14 @@ private fun androidx.compose.foundation.layout.ColumnScope.TimeChart(
     ) {
         Text(
             chartStamp(stamps.first(), daily),
-            color = Ios.SecondaryLabel,
+            color = DuskTheme.muted,
             fontSize = 11.sp,
             modifier = Modifier.weight(1f),
             textAlign = TextAlign.Start,
         )
         Text(
             chartStamp(stamps.last(), daily),
-            color = Ios.SecondaryLabel,
+            color = DuskTheme.muted,
             fontSize = 11.sp,
             modifier = Modifier.weight(1f),
             textAlign = TextAlign.End,

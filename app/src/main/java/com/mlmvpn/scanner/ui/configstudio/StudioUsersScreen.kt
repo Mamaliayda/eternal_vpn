@@ -55,13 +55,13 @@ import com.mlmvpn.scanner.ui.configstudio.parts.StudioChip
 import com.mlmvpn.scanner.ui.configstudio.parts.StudioListRow
 import com.mlmvpn.scanner.ui.configstudio.parts.WizardField
 import com.mlmvpn.scanner.ui.configstudio.parts.WizardPrimary
-import com.mlmvpn.scanner.ui.settings.Ios
 import com.mlmvpn.scanner.ui.settings.IosAlert
 import com.mlmvpn.scanner.ui.settings.IosAlertAction
 import com.mlmvpn.scanner.ui.settings.IosRefreshIndicator
 import com.mlmvpn.scanner.ui.settings.IosScreen
 import com.mlmvpn.scanner.ui.settings.rememberIosRefreshState
 import com.mlmvpn.scanner.utils.S
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 
 /**
  * «کاربران» -- the list, read entirely from the local index (build 18 redesign).
@@ -154,14 +154,14 @@ fun StudioUsersScreen(
                     BarIcon(
                         icon = StudioIcons.Select,
                         description = if (selecting) S(R.string.studio_select_done) else S(R.string.studio_select),
-                        tint = if (selecting) Ios.Blue else Ios.Label,
+                        tint = if (selecting) DuskTheme.primary else DuskTheme.onSurface,
                     ) {
                         selecting = !selecting
                         if (!selecting) selected.clear()
                     }
                 }
                 if (!selecting) {
-                    BarIcon(StudioIcons.NewUser, S(R.string.studio_new_user), Ios.Label, onNewUser)
+                    BarIcon(StudioIcons.NewUser, S(R.string.studio_new_user), DuskTheme.onSurface, onNewUser)
                 }
             }
         })
@@ -238,7 +238,7 @@ fun StudioUsersScreen(
                 ) {
                     Text(
                         S(R.string.studio_matched_n).replace("%1\$s", faNum(matched)),
-                        color = Ios.SecondaryLabel,
+                        color = DuskTheme.muted,
                         fontSize = StudioType.Caption,
                         modifier = Modifier.weight(1f),
                     )
@@ -246,7 +246,7 @@ fun StudioUsersScreen(
                         val allChosen = rows.isNotEmpty() && rows.all { selected.containsKey(refOf(it).key) }
                         Text(
                             if (allChosen) S(R.string.studio_select_none) else S(R.string.studio_select_all),
-                            color = Ios.Blue,
+                            color = DuskTheme.primary,
                             fontSize = StudioType.Caption,
                             modifier = Modifier
                                 .clickable {
@@ -258,7 +258,7 @@ fun StudioUsersScreen(
                     } else {
                         Text(
                             sortLabel(sort),
-                            color = Ios.Blue,
+                            color = DuskTheme.primary,
                             fontSize = StudioType.Caption,
                             modifier = Modifier.clickable { sortSheet = true }.padding(vertical = 6.dp),
                         )
@@ -270,7 +270,7 @@ fun StudioUsersScreen(
                 item {
                     NoticeCard(
                         icon = StudioIcons.Error,
-                        tint = Ios.Red,
+                        tint = DuskTheme.error,
                         title = S(R.string.studio_home_unreachable_title),
                         body = S(R.string.studio_account_unreachable).replace("%1\$s", state.unreachable.joinToString("، ")),
                     )
@@ -341,7 +341,7 @@ fun StudioUsersScreen(
 internal fun BarIcon(
     icon: androidx.compose.ui.graphics.vector.ImageVector,
     description: String,
-    tint: androidx.compose.ui.graphics.Color = Ios.Label,
+    tint: androidx.compose.ui.graphics.Color = DuskTheme.onSurface,
     onClick: () -> Unit,
 ) {
     Icon(
@@ -394,15 +394,15 @@ private fun UserRow(
             Icon(
                 imageVector = if (chosen) Icons.Filled.CheckCircle else Icons.Filled.RadioButtonUnchecked,
                 contentDescription = null,
-                tint = if (chosen) Ios.Blue else Ios.SecondaryLabel.copy(alpha = 0.5f),
+                tint = if (chosen) DuskTheme.primary else DuskTheme.muted.copy(alpha = 0.5f),
                 modifier = Modifier.size(21.dp),
             )
         } else {
             StatusDot(
                 when (stopped) {
-                    null -> Ios.Green
-                    StoppedReason.EXPIRED, StoppedReason.OUT_OF_VOLUME -> Ios.Orange
-                    else -> Ios.SecondaryLabel
+                    null -> DuskTheme.success
+                    StoppedReason.EXPIRED, StoppedReason.OUT_OF_VOLUME -> DuskTheme.accent
+                    else -> DuskTheme.muted
                 }
             )
         }
@@ -411,7 +411,7 @@ private fun UserRow(
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
                     user.username,
-                    color = Ios.Label,
+                    color = DuskTheme.onSurface,
                     fontSize = StudioType.Body,
                     fontWeight = FontWeight.Medium,
                     maxLines = 1,
@@ -424,12 +424,12 @@ private fun UserRow(
             Spacer(Modifier.height(3.dp))
             Text(
                 (shard?.let { "$it · " } ?: "") + subtitleFor(user, stopped),
-                color = Ios.SecondaryLabel,
+                color = DuskTheme.muted,
                 fontSize = StudioType.Caption,
             )
             user.usage.fractionOf(user.policy.quotaBytes)?.let { fraction ->
                 Spacer(Modifier.height(6.dp))
-                MeterBar(fraction = fraction, tint = if (fraction >= 1f) Ios.Red else Ios.Blue)
+                MeterBar(fraction = fraction, tint = if (fraction >= 1f) DuskTheme.error else DuskTheme.primary)
             }
         }
     }
@@ -470,7 +470,7 @@ internal fun UserKindBadge(user: StudioUser) {
     Row(horizontalArrangement = Arrangement.spacedBy(3.dp), verticalAlignment = Alignment.CenterVertically) {
         user.locations.take(3).forEach { CountryBadge(it) }
         if (user.locations.size > 3) {
-            Text("+" + faNum(user.locations.size - 3), color = Ios.SecondaryLabel, fontSize = StudioType.Tiny)
+            Text("+" + faNum(user.locations.size - 3), color = DuskTheme.muted, fontSize = StudioType.Tiny)
         }
     }
 }

@@ -33,7 +33,6 @@ import com.mlmvpn.scanner.ui.configstudio.parts.PageIntro
 import com.mlmvpn.scanner.ui.configstudio.parts.ProblemCard
 import com.mlmvpn.scanner.ui.configstudio.parts.WizardField
 import com.mlmvpn.scanner.ui.configstudio.parts.WizardPrimary
-import com.mlmvpn.scanner.ui.settings.Ios
 import com.mlmvpn.scanner.ui.settings.IosAlert
 import com.mlmvpn.scanner.ui.settings.IosAlertAction
 import com.mlmvpn.scanner.ui.settings.IosScreen
@@ -43,6 +42,7 @@ import com.mlmvpn.scanner.ui.settings.SettingsRow
 import com.mlmvpn.scanner.ui.settings.SettingsSectionHeader
 import com.mlmvpn.scanner.ui.settings.SettingsToggle
 import com.mlmvpn.scanner.utils.S
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 import kotlinx.coroutines.launch
 
 /**
@@ -135,7 +135,7 @@ fun StudioTemplateEditScreen(
                         subtitle = presetNote(preset),
                         value = preset.shape.label,
                         icon = StudioIcons.Template,
-                        tint = Ios.Indigo,
+                        tint = DuskTheme.indigo,
                         showChevron = false,
                         onClick = {
                             draft = preset.toDraft()
@@ -268,7 +268,7 @@ fun StudioTemplateEditScreen(
                 SettingsActionRow(
                     label = S(R.string.studio_template_clone),
                     icon = StudioIcons.Copy,
-                    tint = Ios.Blue,
+                    tint = DuskTheme.primary,
                     enabled = !busy,
                 ) {
                     // A clone is a save under a NEW id, and the screen stays where it is with the
@@ -296,7 +296,7 @@ fun StudioTemplateEditScreen(
                 SettingsActionRow(
                     label = S(R.string.studio_delete),
                     icon = StudioIcons.Delete,
-                    tint = Ios.Red,
+                    tint = DuskTheme.error,
                     enabled = !busy,
                 ) { confirmDelete = true }
             }
