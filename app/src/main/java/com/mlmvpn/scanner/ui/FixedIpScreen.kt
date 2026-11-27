@@ -1,29 +1,22 @@
-﻿package com.mlmvpn.scanner.ui
+package com.mlmvpn.scanner.ui
 
-import androidx.compose.foundation.layout.height
 import com.mlmvpn.scanner.ui.home.frostedGlass
 import com.mlmvpn.scanner.ui.theme.*
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Semaphore
@@ -60,14 +53,13 @@ data class ProxyIpModel(
 fun FixedIpScreen(onDismiss: () -> Unit) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
+    val snackbarHostState = LocalDuskSnackbarHostState.current
     
-    val bgColor = BgDark
-    val surfaceColor = SurfaceDark
-    val primaryColor = Primary
-    val textColor = TextPrimary
-    val mutedColor = TextMuted
-    val greenOk = Color(0xFF81C995)
-    val redError = RedError
+    val primaryColor = DuskTheme.primary
+    val textColor = DuskTheme.onSurface
+    val mutedColor = DuskTheme.muted
+    val greenOk = DuskTheme.success
+    val redError = DuskTheme.error
 
     var countries by remember { mutableStateOf<List<CountryInfo>>(emptyList()) }
     var selectedCountry by remember { mutableStateOf<CountryInfo?>(null) }
@@ -126,45 +118,39 @@ fun FixedIpScreen(onDismiss: () -> Unit) {
         backLabel = if (selectedCountry == null) S(R.string.home) else S(R.string.countries),
         scrollable = false,
     ) {
-        run { val topPad = 8.dp
+        run { val topPad = DuskTheme.space2
         Box(modifier = Modifier.fillMaxSize()) {
             if (selectedCountry == null) {
                 // Country List
                 LazyColumn(
                     contentPadding = PaddingValues(
-                        start = 16.dp,
-                        end = 16.dp,
+                        start = DuskTheme.space4,
+                        end = DuskTheme.space4,
                         top = topPad,
-                        bottom = com.mlmvpn.scanner.ui.LocalSystemBottomPadding.current + 24.dp,
+                        bottom = com.mlmvpn.scanner.ui.LocalSystemBottomPadding.current + DuskTheme.space5,
                     ),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                    verticalArrangement = Arrangement.spacedBy(DuskTheme.space2)
                 ) {
                     items(countries) { country ->
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                // Real refraction rather than the flat card colour: these rows
-                                // sit directly on the wallpaper, so a solid fill reads as a
-                                // sticker on it while the rest of the app reads as glass.
-                                .frostedGlass(CardShape)
-                                .clip(CardShape)
-                                .clickable {
-                                    selectedCountry = country
-                                    loadIps(context, country.code) { ips ->
-                                        proxyIps = ips
-                                    }
-                                }
-                                .padding(16.dp),
-                            verticalAlignment = Alignment.CenterVertically
+                        DuskCard(
+                            modifier = Modifier.fillMaxWidth().clickable {
+                                selectedCountry = country
+                                loadIps(context, country.code) { ips -> proxyIps = ips }
+                            },
+                            shape = DuskTheme.chartShape,
+                            contentPadding = PaddingValues(DuskTheme.space4),
                         ) {
-                            Text(country.flag, fontSize = 24.sp)
-                            Spacer(modifier = Modifier.width(16.dp))
-                            Text(country.name, color = textColor, fontSize = 16.sp, fontWeight = FontWeight.Medium)
-                            Spacer(modifier = Modifier.weight(1f))
-                            Icon(Icons.Default.ChevronRight, contentDescription = null, tint = mutedColor)
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Text(country.flag, style = MaterialTheme.typography.titleLarge)
+                                Spacer(modifier = Modifier.width(DuskTheme.space4))
+                                Text(country.name, color = textColor, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Medium)
+                                Spacer(modifier = Modifier.weight(1f))
+                                Icon(Icons.Default.ChevronRight, contentDescription = null, tint = mutedColor)
+                            }
                         }
                     }
                 }
+
             } else {
                 // IP list runs the full height of the Box; the test button floats over its
                 // bottom edge rather than being stacked above it in a Column. As a Column child it
@@ -172,13 +158,13 @@ fun FixedIpScreen(onDismiss: () -> Unit) {
                 // laid over the same space -- so it was both in the wrong place and half hidden.
                 LazyColumn(
                         contentPadding = PaddingValues(
-                            start = 16.dp,
-                            end = 16.dp,
+                            start = DuskTheme.space4,
+                            end = DuskTheme.space4,
                             top = topPad,
                             // The last row has to clear the floating button, not slide under it.
-                            bottom = com.mlmvpn.scanner.ui.LocalSystemBottomPadding.current + 96.dp,
+                            bottom = com.mlmvpn.scanner.ui.LocalSystemBottomPadding.current + DuskTheme.floatingActionClearance,
                         ),
-                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                        verticalArrangement = Arrangement.spacedBy(DuskTheme.space2)
                     ) {
                         items(proxyIps) { model ->
                             val statusColor = when (model.status) {
@@ -194,18 +180,16 @@ fun FixedIpScreen(onDismiss: () -> Unit) {
                                 IpStatus.UNKNOWN -> androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.fixed_ip_status_unknown)
                             }
 
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .frostedGlass(CardShape)
-                                    .clip(CardShape)
-                                    .padding(12.dp),
-                                verticalAlignment = Alignment.CenterVertically
+                            DuskCard(
+                                modifier = Modifier.fillMaxWidth(),
+                                shape = DuskTheme.chartShape,
+                                contentPadding = PaddingValues(DuskTheme.space3),
                             ) {
+                                Row(verticalAlignment = Alignment.CenterVertically) {
                                 Column(modifier = Modifier.weight(1f)) {
-                                    Text("${model.ip}:${model.port}", color = textColor, fontSize = 16.sp, fontWeight = FontWeight.Bold)
-                                    Spacer(modifier = Modifier.height(4.dp))
-                                    Text(statusText, color = statusColor, fontSize = 12.sp)
+                                    Text("${model.ip}:${model.port}", color = textColor, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+                                    Spacer(modifier = Modifier.height(DuskTheme.space1))
+                                    Text(statusText, color = statusColor, style = MaterialTheme.typography.bodySmall)
                                 }
 
                                 if (model.status == IpStatus.VALID) {
@@ -214,12 +198,13 @@ fun FixedIpScreen(onDismiss: () -> Unit) {
                                             val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                                             val clip = ClipData.newPlainText("Proxy IP", model.ip)
                                             clipboard.setPrimaryClip(clip)
-                                            android.widget.Toast.makeText(context, context.getString(com.mlmvpn.scanner.R.string.fixed_ip_copied), android.widget.Toast.LENGTH_SHORT).show()
+                                            scope.launch { snackbarHostState.showSnackbar(context.getString(com.mlmvpn.scanner.R.string.fixed_ip_copied)) }
                                         },
-                                        modifier = Modifier.frostedGlass(RoundedCornerShape(8.dp))
+                                        modifier = Modifier.frostedGlass(DuskTheme.glyphShape)
                                     ) {
                                         Icon(Icons.Default.ContentCopy, contentDescription = "Copy", tint = greenOk)
                                     }
+                                }
                                 }
                             }
                         }
@@ -245,28 +230,20 @@ fun FixedIpScreen(onDismiss: () -> Unit) {
                         .align(Alignment.BottomCenter)
                         .fillMaxWidth()
                         .padding(
-                            start = 16.dp,
-                            end = 16.dp,
-                            bottom = com.mlmvpn.scanner.ui.LocalSystemBottomPadding.current + 16.dp,
+                            start = DuskTheme.space4,
+                            end = DuskTheme.space4,
+                            bottom = com.mlmvpn.scanner.ui.LocalSystemBottomPadding.current + DuskTheme.space4,
                         )
-                        .height(52.dp),
+                        .height(DuskTheme.actionHeight),
                     enabled = !isTesting,
                     // Tinted glass with an accent rim and accent text -- the same primary action
                     // treatment as Save and Connect. It was a solid accent slab with BLACK text.
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = primaryColor.copy(alpha = 0.22f),
-                        contentColor = primaryColor,
-                        disabledContainerColor = primaryColor.copy(alpha = 0.08f),
-                        disabledContentColor = mutedColor,
-                    ),
-                    border = androidx.compose.foundation.BorderStroke(
-                        width = 1.5.dp,
-                        color = if (isTesting) BorderDark else primaryColor,
-                    ),
-                    shape = ControlShape
+                    colors = iosButtonColors(primaryColor),
+                    border = iosButtonBorder(primaryColor, enabled = !isTesting),
+                    shape = DuskTheme.controlShape
                 ) {
                     Icon(if (isTesting) Icons.Default.HourglassEmpty else Icons.Default.PlayArrow, contentDescription = null)
-                    Spacer(modifier = Modifier.width(8.dp))
+                    Spacer(modifier = Modifier.width(DuskTheme.space2))
                     Text(if (isTesting) androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.fixed_ip_testing) else androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.fixed_ip_start_test), fontWeight = FontWeight.Bold)
                 }
             }

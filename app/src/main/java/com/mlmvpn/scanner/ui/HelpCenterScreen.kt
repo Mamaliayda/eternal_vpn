@@ -19,6 +19,7 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -31,21 +32,17 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.mlmvpn.scanner.ui.settings.Ios
 import com.mlmvpn.scanner.ui.settings.IosScreen
 import com.mlmvpn.scanner.ui.settings.SettingsGroup
 import com.mlmvpn.scanner.ui.settings.SettingsRow
 import com.mlmvpn.scanner.ui.settings.SettingsSectionHeader
-import com.mlmvpn.scanner.ui.theme.BadgeShape
-import com.mlmvpn.scanner.ui.theme.ControlShape
-import com.mlmvpn.scanner.ui.theme.PanelShape
+import com.mlmvpn.scanner.ui.theme.DuskTheme.controlShape
+import com.mlmvpn.scanner.ui.theme.DuskTheme.tileShape
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 import com.mlmvpn.scanner.R
 import com.mlmvpn.scanner.utils.S
 
@@ -131,7 +128,7 @@ fun HelpCenterScreen(onDismiss: () -> Unit) {
         onBack = onDismiss,
         backLabel = if (isFa) "خانه" else "Home",
     ) {
-        Spacer(Modifier.height(10.dp))
+        Spacer(Modifier.height(DuskTheme.space2))
 
         HelpSearchField(
             value = searchQuery,
@@ -139,7 +136,7 @@ fun HelpCenterScreen(onDismiss: () -> Unit) {
             placeholder = if (isFa) "جست‌وجو در آموزش‌ها" else "Search tutorials",
         )
 
-        Spacer(Modifier.height(18.dp))
+        Spacer(Modifier.height(DuskTheme.space4))
 
         if (query.isNotBlank()) {
             SettingsSectionHeader(
@@ -158,10 +155,10 @@ fun HelpCenterScreen(onDismiss: () -> Unit) {
                         "Nothing matched. Search covers both titles and article text, so a shorter " +
                             "word may work better."
                     },
-                    color = Ios.SecondaryLabel,
-                    fontSize = 13.sp,
-                    lineHeight = 21.sp,
-                    modifier = Modifier.padding(horizontal = 20.dp),
+                    color = DuskTheme.muted,
+                    style = MaterialTheme.typography.bodyMedium,
+                    lineHeight = MaterialTheme.typography.bodyMedium.lineHeight,
+                    modifier = Modifier.padding(horizontal = DuskTheme.space5),
                 )
             } else {
                 SettingsGroup {
@@ -171,7 +168,7 @@ fun HelpCenterScreen(onDismiss: () -> Unit) {
                             title = article.title,
                             subtitle = sections[sectionOf(article.id)],
                             icon = article.icon,
-                            tint = Ios.Gray,
+                            tint = DuskTheme.disabled,
                             onClick = { openArticleId = article.id },
                         )
                     }
@@ -185,7 +182,7 @@ fun HelpCenterScreen(onDismiss: () -> Unit) {
                     title = if (isFa) "پرسش‌های پرتکرار" else "Frequently asked questions",
                     subtitle = if (isFa) "جواب کوتاه سؤال‌هایی که زیاد پرسیده می‌شود" else "Short answers to common questions",
                     icon = Icons.Default.LiveHelp,
-                    tint = Ios.Teal,
+                    tint = DuskTheme.indigo,
                     onClick = { showFaq = true },
                 )
             }
@@ -193,7 +190,7 @@ fun HelpCenterScreen(onDismiss: () -> Unit) {
             sections.forEachIndexed { sectionIndex, sectionTitle ->
                 val inSection = articles.filter { sectionOf(it.id) == sectionIndex }
                 if (inSection.isEmpty()) return@forEachIndexed
-                Spacer(Modifier.height(20.dp))
+                Spacer(Modifier.height(DuskTheme.space5))
                 SettingsSectionHeader(sectionTitle)
                 SettingsGroup {
                     inSection.forEachIndexed { index, article ->
@@ -201,7 +198,7 @@ fun HelpCenterScreen(onDismiss: () -> Unit) {
                         SettingsRow(
                             title = article.title,
                             icon = article.icon,
-                            tint = Ios.Gray,
+                            tint = DuskTheme.disabled,
                             onClick = { openArticleId = article.id },
                         )
                     }
@@ -209,7 +206,7 @@ fun HelpCenterScreen(onDismiss: () -> Unit) {
             }
         }
 
-        Spacer(Modifier.height(24.dp))
+        Spacer(Modifier.height(DuskTheme.space5))
     }
 }
 
@@ -229,30 +226,30 @@ private fun HelpSearchField(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp)
-            .clip(ControlShape)
-            .background(Color.White.copy(alpha = 0.07f))
-            .heightIn(min = 40.dp)
-            .padding(horizontal = 10.dp),
+            .padding(horizontal = DuskTheme.space4)
+            .clip(DuskTheme.controlShape)
+            .background(DuskTheme.outline.copy(alpha = 0.07f))
+            .heightIn(min = DuskTheme.navIconSize)
+            .padding(horizontal = DuskTheme.space2),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Icon(
             Icons.Default.Search,
             contentDescription = null,
-            tint = Ios.SecondaryLabel,
-            modifier = Modifier.size(17.dp),
+            tint = DuskTheme.muted,
+            modifier = Modifier.size(DuskTheme.inlineIconSize),
         )
-        Spacer(Modifier.width(8.dp))
+        Spacer(Modifier.width(DuskTheme.space2))
         BasicTextField(
             value = value,
             onValueChange = onValueChange,
             singleLine = true,
-            textStyle = TextStyle(color = Ios.Label, fontSize = 15.sp),
-            cursorBrush = SolidColor(Ios.Blue),
+            textStyle = MaterialTheme.typography.bodyLarge.copy(color = DuskTheme.onSurface),
+            cursorBrush = SolidColor(DuskTheme.primary),
             modifier = Modifier.weight(1f),
             decorationBox = { inner ->
                 if (value.isEmpty()) {
-                    Text(placeholder, color = Ios.SecondaryLabel.copy(alpha = 0.7f), fontSize = 15.sp)
+                    Text(placeholder, color = DuskTheme.muted.copy(alpha = 0.7f), style = MaterialTheme.typography.bodyLarge)
                 }
                 inner()
             },
@@ -261,9 +258,9 @@ private fun HelpSearchField(
             Icon(
                 Icons.Default.Cancel,
                 contentDescription = null,
-                tint = Ios.SecondaryLabel,
+                tint = DuskTheme.muted,
                 modifier = Modifier
-                    .size(17.dp)
+                    .size(DuskTheme.inlineIconSize)
                     .clip(CircleShape)
                     .clickable { onValueChange("") },
             )
@@ -279,39 +276,39 @@ fun HelpArticleScreen(article: HelpArticle, isFa: Boolean, onBack: () -> Unit) {
         onBack = onBack,
         backLabel = if (isFa) "آموزش‌ها" else "Tutorials",
     ) {
-        Spacer(Modifier.height(12.dp))
+        Spacer(Modifier.height(DuskTheme.space3))
         Row(
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp),
+            modifier = Modifier.fillMaxWidth().padding(horizontal = DuskTheme.space5),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Box(
                 modifier = Modifier
-                    .size(40.dp)
-                    .clip(RoundedCornerShape(12.dp))
-                    .background(Color.White.copy(alpha = 0.08f)),
+                    .size(DuskTheme.navIconSize)
+                    .clip(RoundedCornerShape(DuskTheme.space3))
+                    .background(DuskTheme.outline.copy(alpha = 0.08f)),
                 contentAlignment = Alignment.Center,
             ) {
                 Icon(
                     article.icon,
                     contentDescription = null,
-                    tint = Ios.Label,
-                    modifier = Modifier.size(21.dp),
+                    tint = DuskTheme.onSurface,
+                    modifier = Modifier.size(DuskTheme.iconSize),
                 )
             }
-            Spacer(Modifier.width(12.dp))
+            Spacer(Modifier.width(DuskTheme.space3))
             Text(
                 article.title,
-                color = Ios.Label,
-                fontSize = 19.sp,
+                color = DuskTheme.onSurface,
+                style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Bold,
-                lineHeight = 27.sp,
+                lineHeight = MaterialTheme.typography.titleLarge.lineHeight,
                 modifier = Modifier.weight(1f),
             )
         }
 
-        Spacer(Modifier.height(18.dp))
+        Spacer(Modifier.height(DuskTheme.space4))
         HelpBody(article.content)
-        Spacer(Modifier.height(32.dp))
+        Spacer(Modifier.height(DuskTheme.space6))
     }
 }
 
@@ -324,52 +321,52 @@ fun HelpFaqScreen(isFa: Boolean, onBack: () -> Unit) {
         onBack = onBack,
         backLabel = if (isFa) "آموزش‌ها" else "Tutorials",
     ) {
-        Spacer(Modifier.height(14.dp))
+        Spacer(Modifier.height(DuskTheme.space3))
         faqs.forEachIndexed { index, faq ->
-            if (index > 0) Spacer(Modifier.height(10.dp))
+            if (index > 0) Spacer(Modifier.height(DuskTheme.space2))
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp)
-                    .clip(PanelShape)
-                    .background(Color.White.copy(alpha = 0.05f))
-                    .padding(14.dp),
+                    .padding(horizontal = DuskTheme.space4)
+                    .clip(DuskTheme.tileShape)
+                    .background(DuskTheme.outline.copy(alpha = 0.05f))
+                    .padding(DuskTheme.space3),
             ) {
                 Row(verticalAlignment = Alignment.Top) {
                     Icon(
                         Icons.Default.HelpOutline,
                         contentDescription = null,
-                        tint = Ios.SecondaryLabel,
-                        modifier = Modifier.size(17.dp).padding(top = 2.dp),
+                        tint = DuskTheme.muted,
+                        modifier = Modifier.size(DuskTheme.inlineIconSize).padding(top = DuskTheme.microSpace),
                     )
-                    Spacer(Modifier.width(9.dp))
+                    Spacer(Modifier.width(DuskTheme.space2))
                     Text(
                         faq.q,
-                        color = Ios.Label,
-                        fontSize = 14.sp,
+                        color = DuskTheme.onSurface,
+                        style = MaterialTheme.typography.bodyMedium,
                         fontWeight = FontWeight.SemiBold,
-                        lineHeight = 22.sp,
+                        lineHeight = MaterialTheme.typography.bodyMedium.lineHeight,
                     )
                 }
-                Spacer(Modifier.height(9.dp))
+                Spacer(Modifier.height(DuskTheme.space2))
                 Row(verticalAlignment = Alignment.Top) {
                     Icon(
                         Icons.Default.CheckCircleOutline,
                         contentDescription = null,
-                        tint = Ios.Green,
-                        modifier = Modifier.size(17.dp).padding(top = 2.dp),
+                        tint = DuskTheme.success,
+                        modifier = Modifier.size(DuskTheme.inlineIconSize).padding(top = DuskTheme.microSpace),
                     )
-                    Spacer(Modifier.width(9.dp))
+                    Spacer(Modifier.width(DuskTheme.space2))
                     Text(
                         faq.a,
-                        color = Ios.SecondaryLabel,
-                        fontSize = 13.sp,
-                        lineHeight = 22.sp,
+                        color = DuskTheme.muted,
+                        style = MaterialTheme.typography.bodyMedium,
+                        lineHeight = MaterialTheme.typography.bodyMedium.lineHeight,
                     )
                 }
             }
         }
-        Spacer(Modifier.height(28.dp))
+        Spacer(Modifier.height(DuskTheme.space5))
     }
 }
 
@@ -409,7 +406,7 @@ private val STEP = Regex(S(R.string.s_0_9_s))
 @Composable
 private fun HelpBody(content: String) {
     val lines = content.split("\n")
-    Column(modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp)) {
+    Column(modifier = Modifier.fillMaxWidth().padding(horizontal = DuskTheme.space5)) {
         var previousWasBlank = true
         for (raw in lines) {
             val line = raw.trim()
@@ -422,83 +419,83 @@ private fun HelpBody(content: String) {
                 // Warnings were detected by looking for the emoji and then tinted orange -- still
                 // one more line of running text. A callout is the shape that actually stops the eye.
                 line.contains("⚠️") -> {
-                    Spacer(Modifier.height(14.dp))
+                    Spacer(Modifier.height(DuskTheme.space3))
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .clip(PanelShape)
-                            .background(Ios.Orange.copy(alpha = 0.13f))
-                            .padding(12.dp),
+                            .clip(DuskTheme.tileShape)
+                            .background(DuskTheme.accent.copy(alpha = 0.13f))
+                            .padding(DuskTheme.space3),
                         verticalAlignment = Alignment.Top,
                     ) {
                         Icon(
                             Icons.Default.WarningAmber,
                             contentDescription = null,
-                            tint = Ios.Orange,
-                            modifier = Modifier.size(17.dp).padding(top = 1.dp),
+                            tint = DuskTheme.accent,
+                            modifier = Modifier.size(DuskTheme.inlineIconSize).padding(top = DuskTheme.hairlineSpace),
                         )
-                        Spacer(Modifier.width(9.dp))
+                        Spacer(Modifier.width(DuskTheme.space2))
                         Text(
                             markdownLine(
                                 line.replace("⚠️", "").trim(),
-                                Ios.Label.copy(alpha = 0.92f),
-                                Ios.Label,
+                                DuskTheme.onSurface.copy(alpha = 0.92f),
+                                DuskTheme.onSurface,
                             ),
-                            fontSize = 13.sp,
-                            lineHeight = 22.sp,
+                            style = MaterialTheme.typography.bodyMedium,
+                            lineHeight = MaterialTheme.typography.bodyMedium.lineHeight,
                         )
                     }
-                    Spacer(Modifier.height(4.dp))
+                    Spacer(Modifier.height(DuskTheme.space1))
                 }
 
                 isHeading(line) -> {
-                    Spacer(Modifier.height(if (previousWasBlank) 16.dp else 10.dp))
+                    Spacer(Modifier.height(if (previousWasBlank) DuskTheme.space4 else DuskTheme.space2))
                     Text(
                         line.trim('*'),
-                        color = Ios.Label,
-                        fontSize = 15.sp,
+                        color = DuskTheme.onSurface,
+                        style = MaterialTheme.typography.bodyLarge,
                         fontWeight = FontWeight.Bold,
-                        lineHeight = 24.sp,
+                        lineHeight = MaterialTheme.typography.titleMedium.lineHeight,
                     )
-                    Spacer(Modifier.height(7.dp))
+                    Spacer(Modifier.height(DuskTheme.space2))
                 }
 
                 STEP.matches(line) -> {
                     val m = STEP.find(line)!!
                     Row(
-                        modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
+                        modifier = Modifier.fillMaxWidth().padding(vertical = DuskTheme.space1),
                         verticalAlignment = Alignment.Top,
                     ) {
                         Box(
                             modifier = Modifier
-                                .size(19.dp)
+                                .size(DuskTheme.inlineIconSize)
                                 .clip(CircleShape)
-                                .background(Color.White.copy(alpha = 0.10f)),
+                                .background(DuskTheme.outline.copy(alpha = 0.10f)),
                             contentAlignment = Alignment.Center,
                         ) {
                             Text(
                                 m.groupValues[1],
-                                color = Ios.SecondaryLabel,
-                                fontSize = 10.sp,
+                                color = DuskTheme.muted,
+                                style = MaterialTheme.typography.labelSmall,
                                 fontWeight = FontWeight.Bold,
                             )
                         }
-                        Spacer(Modifier.width(10.dp))
+                        Spacer(Modifier.width(DuskTheme.space2))
                         Text(
-                            markdownLine(m.groupValues[2], Ios.SecondaryLabel, Ios.Label),
-                            fontSize = 13.sp,
-                            lineHeight = 23.sp,
+                            markdownLine(m.groupValues[2], DuskTheme.muted, DuskTheme.onSurface),
+                            style = MaterialTheme.typography.bodyMedium,
+                            lineHeight = MaterialTheme.typography.bodyMedium.lineHeight,
                             modifier = Modifier.weight(1f),
                         )
                     }
                 }
 
                 else -> {
-                    Spacer(Modifier.height(if (previousWasBlank) 8.dp else 5.dp))
+                    Spacer(Modifier.height(if (previousWasBlank) DuskTheme.space2 else DuskTheme.space2))
                     Text(
-                        markdownLine(line, Ios.SecondaryLabel, Ios.Label),
-                        fontSize = 13.sp,
-                        lineHeight = 23.sp,
+                        markdownLine(line, DuskTheme.muted, DuskTheme.onSurface),
+                        style = MaterialTheme.typography.bodyMedium,
+                        lineHeight = MaterialTheme.typography.bodyMedium.lineHeight,
                     )
                 }
             }

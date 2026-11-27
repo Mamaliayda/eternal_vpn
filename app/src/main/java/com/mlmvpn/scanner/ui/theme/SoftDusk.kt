@@ -94,6 +94,12 @@ object DuskTheme {
     val space4 = 16.dp
     val space5 = 24.dp
     val space6 = 32.dp
+    val microSpace = 2.dp
+    val hairlineSpace = 1.dp
+    val inlineIconSize = 18.dp
+    val actionHeight = 52.dp
+    val floatingActionClearance = 96.dp
+    val progressStroke = 2.dp
 
     val cardShape = RoundedCornerShape(28.dp)
     val controlShape = RoundedCornerShape(50)

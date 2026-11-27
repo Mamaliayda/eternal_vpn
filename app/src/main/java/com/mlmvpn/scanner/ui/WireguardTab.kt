@@ -1,13 +1,11 @@
 package com.mlmvpn.scanner.ui
 
 import com.mlmvpn.scanner.ui.theme.*
-import androidx.compose.ui.graphics.Color
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.VpnService
 import android.provider.Settings
-import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.core.*
@@ -15,7 +13,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.PowerSettingsNew
@@ -32,7 +29,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.mlmvpn.scanner.MyVpnService
 import com.mlmvpn.scanner.utils.AmneziaWgConfigGenerator
 import kotlinx.coroutines.*
@@ -507,8 +503,8 @@ fun WireguardTab() {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(AppColors.BgDark)
-            .padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 24.dp)
+            .background(DuskTheme.background)
+            .padding(start = DuskTheme.space4, end = DuskTheme.space4, top = DuskTheme.space4, bottom = DuskTheme.space5)
     ) {
         Column(
             modifier = Modifier
@@ -519,17 +515,17 @@ fun WireguardTab() {
             // Title
             Text(
                 S(R.string.wireguard),
-                color = AppColors.TextPrimary,
-                fontSize = 26.sp,
+                color = DuskTheme.onSurface,
+                style = MaterialTheme.typography.headlineMedium,
                 fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(bottom = 4.dp)
+                modifier = Modifier.padding(bottom = DuskTheme.space1)
             )
             Text(
                 S(R.string.a_fast_secure_connection_over_the_wireguard),
-                color = AppColors.TextMuted,
-                fontSize = 13.sp,
+                color = DuskTheme.muted,
+                style = MaterialTheme.typography.bodySmall,
                 textAlign = TextAlign.Center,
-                modifier = Modifier.padding(bottom = 24.dp)
+                modifier = Modifier.padding(bottom = DuskTheme.space5)
             )
 
             // ═══════════════════════════════════════════════
@@ -537,23 +533,21 @@ fun WireguardTab() {
             // ═══════════════════════════════════════════════
             Text(
                 S(R.string.first_server_uae),
-                color = AppColors.Primary,
-                fontSize = 16.sp,
+                color = DuskTheme.primary,
+                style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(bottom = 8.dp)
+                    .padding(bottom = DuskTheme.space2)
             )
 
-            Card(
-                colors = CardDefaults.cardColors(containerColor = AppColors.SurfaceDark),
-                shape = RoundedCornerShape(16.dp),
-                modifier = Modifier.fillMaxWidth()
+            DuskCard(
+                modifier = Modifier.fillMaxWidth(),
+                shape = DuskTheme.cardShape,
+                contentPadding = PaddingValues(DuskTheme.space5),
             ) {
                 Column(
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(24.dp),
+                    Modifier.fillMaxWidth(),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     when (trialState) {
@@ -561,36 +555,36 @@ fun WireguardTab() {
                             Icon(
                                 Icons.Rounded.SportsEsports,
                                 contentDescription = null,
-                                tint = AppColors.Primary,
-                                modifier = Modifier.size(48.dp)
+                                tint = DuskTheme.primary,
+                                modifier = Modifier.size(DuskTheme.navIconSize)
                             )
-                            Spacer(Modifier.height(12.dp))
-                            Text(S(R.string.s_3_hour_trial_of_the_uae_server), color = AppColors.TextPrimary, fontSize = 18.sp, fontWeight = FontWeight.Bold)
-                            Spacer(Modifier.height(8.dp))
+                            Spacer(Modifier.height(DuskTheme.space3))
+                            Text(S(R.string.s_3_hour_trial_of_the_uae_server), color = DuskTheme.onSurface, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+                            Spacer(Modifier.height(DuskTheme.space2))
                             Text(
                                 S(R.string.a_dedicated_uae_server_with_low_ping),
-                                color = AppColors.TextMuted,
-                                fontSize = 12.sp,
+                                color = DuskTheme.muted,
+                                style = MaterialTheme.typography.bodySmall,
                                 textAlign = TextAlign.Center,
-                                lineHeight = 20.sp
+                                lineHeight = MaterialTheme.typography.bodyMedium.lineHeight
                             )
-                            Spacer(Modifier.height(16.dp))
+                            Spacer(Modifier.height(DuskTheme.space4))
                             
                             OutlinedTextField(
                                 value = nickname,
                                 onValueChange = { nickname = it },
-                                label = { Text(S(R.string.your_in_game_name_optional), color = AppColors.TextMuted) },
+                                label = { Text(S(R.string.your_in_game_name_optional), color = DuskTheme.muted) },
                                 modifier = Modifier.fillMaxWidth(),
                                 colors = iosFieldColors(),
-                                singleLine = true
-                            ,
-        shape = ControlShape,)
+                                singleLine = true,
+                                shape = DuskTheme.controlShape,
+                            )
                         }
 
                         UaeTrialEngine.TrialState.LOADING -> {
-                            CircularProgressIndicator(color = AppColors.Primary, modifier = Modifier.size(48.dp))
-                            Spacer(Modifier.height(12.dp))
-                            Text(S(R.string.fetching_the_config), color = AppColors.TextMuted, fontSize = 14.sp)
+                            CircularProgressIndicator(color = DuskTheme.primary, modifier = Modifier.size(DuskTheme.navIconSize))
+                            Spacer(Modifier.height(DuskTheme.space3))
+                            Text(S(R.string.fetching_the_config), color = DuskTheme.muted, style = MaterialTheme.typography.bodyMedium)
                         }
 
                         UaeTrialEngine.TrialState.ACTIVE -> {
@@ -613,50 +607,50 @@ fun WireguardTab() {
                             if (connected) {
                                 Box(
                                     modifier = Modifier
-                                        .size(12.dp)
+                                        .size(DuskTheme.space3)
                                         .scale(scale)
                                         .clip(CircleShape)
-                                        .background(AppColors.Primary)
+                                        .background(DuskTheme.primary)
                                 )
-                                Spacer(Modifier.height(8.dp))
+                                Spacer(Modifier.height(DuskTheme.space2))
                             }
 
                             Icon(
                                 Icons.Rounded.Timer,
                                 contentDescription = null,
-                                tint = if (m < 5 && h == 0) AppColors.Error else AppColors.Primary,
-                                modifier = Modifier.size(36.dp)
+                                tint = if (m < 5 && h == 0) DuskTheme.error else DuskTheme.primary,
+                                modifier = Modifier.size(DuskTheme.navIconSize)
                             )
-                            Spacer(Modifier.height(8.dp))
+                            Spacer(Modifier.height(DuskTheme.space2))
                             Text(
                                 timeStr,
-                                color = if (m < 5 && h == 0) AppColors.Error else AppColors.TextPrimary,
-                                fontSize = 40.sp,
+                                color = if (m < 5 && h == 0) DuskTheme.error else DuskTheme.onSurface,
+                                style = MaterialTheme.typography.displaySmall,
                                 fontWeight = FontWeight.Bold,
-                                modifier = Modifier.padding(vertical = 8.dp)
+                                modifier = Modifier.padding(vertical = DuskTheme.space2)
                             )
                             
                             if (totalBytes > 0) {
-                                Spacer(Modifier.height(8.dp))
+                                Spacer(Modifier.height(DuskTheme.space2))
                                 val usedMb = String.format("%.1f", usedBytes / 1048576f)
                                 val totalMb = String.format("%.1f", totalBytes / 1048576f)
                                 val progress = (usedBytes.toFloat() / totalBytes.toFloat()).coerceIn(0f, 1f)
-                                val pbColor = if (progress > 0.9f) AppColors.Error else AppColors.Primary
+                                val pbColor = if (progress > 0.9f) DuskTheme.error else DuskTheme.primary
                                 
                                 Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth(0.8f)) {
                                     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                                         Text(
                                             S(R.string.data_left_mb, String.format("%.1f", (totalBytes - usedBytes) / 1048576f)),
-                                            color = AppColors.TextMuted, fontSize = 11.sp,
+                                            color = DuskTheme.muted, style = MaterialTheme.typography.labelSmall,
                                         )
-                                        Text("$usedMb / $totalMb MB", color = AppColors.TextMuted, fontSize = 11.sp)
+                                        Text("$usedMb / $totalMb MB", color = DuskTheme.muted, style = MaterialTheme.typography.labelSmall)
                                     }
-                                    Spacer(Modifier.height(4.dp))
+                                    Spacer(Modifier.height(DuskTheme.space1))
                                     LinearProgressIndicator(
                                         progress = progress,
-                                        modifier = Modifier.fillMaxWidth().height(6.dp).clip(RoundedCornerShape(8.dp)),
+                                        modifier = Modifier.fillMaxWidth().height(DuskTheme.space2).clip(DuskTheme.controlShape),
                                         color = pbColor,
-                                        trackColor = AppColors.SurfaceVariant
+                                        trackColor = DuskTheme.raisedSurface
                                     )
                                 }
                             }
@@ -664,33 +658,38 @@ fun WireguardTab() {
                             if (connected) {
                                 Text(
                                     S(R.string.your_time_is_counting_down),
-                                    color = AppColors.Primary,
-                                    fontSize = 12.sp,
+                                    color = DuskTheme.primary,
+                                    style = MaterialTheme.typography.bodySmall,
                                     fontWeight = FontWeight.Bold
                                 )
                             } else {
                                 Text(
                                     S(R.string.the_clock_is_paused_only_time_spent),
-                                    color = AppColors.TextMuted,
-                                    fontSize = 11.sp,
+                                    color = DuskTheme.muted,
+                                    style = MaterialTheme.typography.labelSmall,
                                     textAlign = TextAlign.Center
                                 )
                             }
                         }
 
                         UaeTrialEngine.TrialState.EXPIRED -> {
-                            Text("⏰", fontSize = 48.sp)
-                            Spacer(Modifier.height(12.dp))
-                            Text(S(R.string.the_first_server_s_trial_time_has), color = AppColors.Error, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                            Text("⏰", style = MaterialTheme.typography.displaySmall)
+                            Spacer(Modifier.height(DuskTheme.space3))
+                            Text(S(R.string.the_first_server_s_trial_time_has), color = DuskTheme.error, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
                         }
 
                         UaeTrialEngine.TrialState.ERROR -> {
-                            Text("⚠️", fontSize = 48.sp)
-                            Spacer(Modifier.height(12.dp))
-                            Text(trialError ?: S(R.string.unknown_error), color = AppColors.Error, fontSize = 14.sp, textAlign = TextAlign.Center)
-                            Spacer(Modifier.height(16.dp))
-                            Button(onClick = { UaeTrialEngine.reset() }) {
-                                Text(S(R.string.try_again_3))
+                            Text("⚠️", style = MaterialTheme.typography.displaySmall)
+                            Spacer(Modifier.height(DuskTheme.space3))
+                            Text(trialError ?: S(R.string.unknown_error), color = DuskTheme.error, style = MaterialTheme.typography.bodyMedium, textAlign = TextAlign.Center)
+                            Spacer(Modifier.height(DuskTheme.space4))
+                            Button(
+                                onClick = { UaeTrialEngine.reset() },
+                                colors = iosButtonColors(DuskTheme.primary),
+                                border = iosButtonBorder(DuskTheme.primary),
+                                shape = DuskTheme.controlShape,
+                            ) {
+                                Text(S(R.string.try_again_3), style = MaterialTheme.typography.labelLarge)
                             }
                         }
                     }
@@ -698,7 +697,7 @@ fun WireguardTab() {
             }
 
             // Server 1 action button
-            Spacer(Modifier.height(12.dp))
+            Spacer(Modifier.height(DuskTheme.space3))
             when {
                 trialState == UaeTrialEngine.TrialState.IDLE -> {
                     Button(
@@ -717,16 +716,14 @@ fun WireguardTab() {
                         },
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(52.dp),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = AppColors.Primary,
-                            contentColor = AppColors.BgDark
-                        ),
-                        shape = RoundedCornerShape(16.dp)
+                            .height(DuskTheme.actionHeight),
+                        colors = iosButtonColors(DuskTheme.primary),
+                        border = iosButtonBorder(DuskTheme.primary),
+                        shape = DuskTheme.controlShape
                     ) {
-                        Icon(Icons.Rounded.SportsEsports, contentDescription = null, modifier = Modifier.size(22.dp))
-                        Spacer(Modifier.width(12.dp))
-                        Text(S(R.string.start_the_first_server), fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                        Icon(Icons.Rounded.SportsEsports, contentDescription = null, modifier = Modifier.size(DuskTheme.iconSize))
+                        Spacer(Modifier.width(DuskTheme.space3))
+                        Text(S(R.string.start_the_first_server), style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
                     }
                 }
 
@@ -744,16 +741,14 @@ fun WireguardTab() {
                         },
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(52.dp),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = AppColors.Primary,
-                            contentColor = AppColors.BgDark
-                        ),
-                        shape = RoundedCornerShape(16.dp)
+                            .height(DuskTheme.actionHeight),
+                        colors = iosButtonColors(DuskTheme.primary),
+                        border = iosButtonBorder(DuskTheme.primary),
+                        shape = DuskTheme.controlShape
                     ) {
-                        Icon(Icons.Rounded.Speed, contentDescription = null, modifier = Modifier.size(22.dp))
-                        Spacer(Modifier.width(12.dp))
-                        Text(S(R.string.turn_on_the_first_server), fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                        Icon(Icons.Rounded.Speed, contentDescription = null, modifier = Modifier.size(DuskTheme.iconSize))
+                        Spacer(Modifier.width(DuskTheme.space3))
+                        Text(S(R.string.turn_on_the_first_server), style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
                     }
                 }
 
@@ -763,18 +758,14 @@ fun WireguardTab() {
                         enabled = false,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(52.dp),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = AppColors.SurfaceVariant,
-                            contentColor = AppColors.PrimaryBlue,
-                            disabledContainerColor = AppColors.SurfaceVariant,
-                            disabledContentColor = AppColors.PrimaryBlue
-                        ),
-                        shape = RoundedCornerShape(16.dp)
+                            .height(DuskTheme.actionHeight),
+                        colors = iosButtonColors(DuskTheme.primary),
+                        border = iosButtonBorder(DuskTheme.primary, enabled = false),
+                        shape = DuskTheme.controlShape
                     ) {
-                        CircularProgressIndicator(color = AppColors.PrimaryBlue, strokeWidth = 2.dp, modifier = Modifier.size(20.dp))
-                        Spacer(Modifier.width(12.dp))
-                        Text(S(R.string.connecting_3), fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                        CircularProgressIndicator(color = DuskTheme.primary, strokeWidth = DuskTheme.progressStroke, modifier = Modifier.size(DuskTheme.space5))
+                        Spacer(Modifier.width(DuskTheme.space3))
+                        Text(S(R.string.connecting_3), style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
                     }
                 }
 
@@ -783,16 +774,14 @@ fun WireguardTab() {
                         onClick = { stopVpnSafely(context) },
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(52.dp),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = AppColors.Error.copy(alpha = 0.18f),
-                            contentColor = AppColors.Error
-                        ),
-                        shape = RoundedCornerShape(16.dp)
+                            .height(DuskTheme.actionHeight),
+                        colors = iosButtonColors(DuskTheme.error),
+                        border = iosButtonBorder(DuskTheme.error),
+                        shape = DuskTheme.controlShape
                     ) {
-                        Icon(Icons.Rounded.PowerSettingsNew, contentDescription = null, modifier = Modifier.size(22.dp))
-                        Spacer(Modifier.width(12.dp))
-                        Text(S(R.string.stop_the_first_server), fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                        Icon(Icons.Rounded.PowerSettingsNew, contentDescription = null, modifier = Modifier.size(DuskTheme.iconSize))
+                        Spacer(Modifier.width(DuskTheme.space3))
+                        Text(S(R.string.stop_the_first_server), style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
                     }
                 }
 
@@ -803,13 +792,13 @@ fun WireguardTab() {
 
             // Features (show only when the server is idle)
             if (trialState == UaeTrialEngine.TrialState.IDLE) {
-                Spacer(Modifier.height(16.dp))
-                Card(
-                    colors = CardDefaults.cardColors(containerColor = AppColors.SurfaceDark),
-                    shape = CardShape,
-                    modifier = Modifier.fillMaxWidth()
+                Spacer(Modifier.height(DuskTheme.space4))
+                DuskCard(
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = DuskTheme.cardShape,
+                    contentPadding = PaddingValues(DuskTheme.space4),
                 ) {
-                    Column(Modifier.padding(16.dp)) {
+                    Column(Modifier.fillMaxWidth()) {
                         FeatureRow("🚀", S(R.string.first_server_uae_2), S(R.string.ping_tuned_for_games))
                         FeatureRow("⏳", S(R.string.s_3_hours_of_use), S(R.string.time_is_only_deducted_while_connected))
                         FeatureRow("🔒", S(R.string.secure_and_fast), S(R.string.amneziawg_protocol))
@@ -825,14 +814,14 @@ private fun FeatureRow(emoji: String, title: String, desc: String) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 6.dp),
+            .padding(vertical = DuskTheme.space2),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(emoji, fontSize = 20.sp)
-        Spacer(Modifier.width(12.dp))
+        Text(emoji, style = MaterialTheme.typography.titleSmall)
+        Spacer(Modifier.width(DuskTheme.space3))
         Column {
-            Text(title, color = AppColors.TextPrimary, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
-            Text(desc, color = AppColors.TextMuted, fontSize = 11.sp)
+            Text(title, color = DuskTheme.onSurface, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.SemiBold)
+            Text(desc, color = DuskTheme.muted, style = MaterialTheme.typography.labelSmall)
         }
     }
 }
@@ -866,19 +855,4 @@ private fun startGameVpn(context: Context, config: UaeTrialEngine.TrialConfig) {
         putExtra("NODE_ID", "game_uae_trial") // Critical for tracking!
     }
     com.mlmvpn.scanner.utils.SafeStart.service(context, intent)
-}
-
-
-// App color palette used by the WireGuard tab. Previously defined in the (now removed)
-// WARP tab file; relocated here since this tab is its only remaining user.
-object AppColors {
-    val BgDark = Color(0xFF171717)
-    val SurfaceDark = Color(0xFF222222)
-    val SurfaceVariant = Color(0xFF2A2A2A)
-    val Primary = Color(0xFF81C995)
-    val PrimaryBlue = Color(0xFF8AB4F8)
-    val TextPrimary = Color(0xFFE8EAED)
-    val TextMuted = Color(0xFF9AA0A6)
-    val BorderDark = Color(0xFF333333)
-    val Error = Color(0xFFF28B82)
 }
