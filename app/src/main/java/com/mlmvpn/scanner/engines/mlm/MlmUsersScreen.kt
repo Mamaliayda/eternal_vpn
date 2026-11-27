@@ -93,31 +93,31 @@ fun MlmUsersScreen(
             )) {
             // Header
             Row(
-                modifier = Modifier.fillMaxWidth().padding(16.dp),
+                modifier = Modifier.fillMaxWidth().padding(DuskTheme.space4),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 IconButton(onClick = onDismiss) {
-                    Icon(Icons.Default.Close, contentDescription = "Close", tint = TextPrimary)
+                    Icon(Icons.Default.Close, contentDescription = "Close", tint = DuskTheme.onSurface)
                 }
-                Text(S(R.string.user_management_mlm), color = TextPrimary, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                Text(S(R.string.user_management_mlm), color = DuskTheme.onSurface, style = MaterialTheme.typography.titleMedium)
                 IconButton(onClick = { loadUsers() }) {
-                    Icon(Icons.Default.Refresh, contentDescription = "Refresh", tint = Primary)
+                    Icon(Icons.Default.Refresh, contentDescription = "Refresh", tint = DuskTheme.primary)
                 }
             }
 
-            Divider(color = BorderDark)
+            Divider(color = DuskTheme.outline)
 
             // List
             if (isLoading) {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    CircularProgressIndicator(color = Primary)
+                    CircularProgressIndicator(color = DuskTheme.primary)
                 }
             } else {
                 LazyColumn(
-                    modifier = Modifier.weight(1f).padding(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(12.dp),
-                    contentPadding = PaddingValues(bottom = 24.dp)
+                    modifier = Modifier.weight(1f).padding(DuskTheme.space4),
+                    verticalArrangement = Arrangement.spacedBy(DuskTheme.space3),
+                    contentPadding = PaddingValues(bottom = DuskTheme.space5)
                 ) {
                     items(users) { user ->
                         MlmUserCard(
@@ -140,8 +140,8 @@ fun MlmUsersScreen(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp)
-                    .padding(bottom = 24.dp),
+                    .padding(DuskTheme.space4)
+                    .padding(bottom = DuskTheme.space5),
                 contentAlignment = Alignment.CenterEnd
             ) {
                 FloatingActionButton(
@@ -149,8 +149,8 @@ fun MlmUsersScreen(
                         editingUser = null
                         showAddUserDialog = true
                     },
-                    containerColor = Primary,
-                    contentColor = BgDark
+                    containerColor = DuskTheme.accent,
+                    contentColor = DuskTheme.onAccent
                 ) {
                     Icon(Icons.Default.Add, "Add User")
                 }
@@ -195,48 +195,48 @@ fun MlmUserCard(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .frostedGlass(RoundedCornerShape(16.dp))
+            .frostedGlass(DuskTheme.chartShape)
             .clickable { isExpanded = !isExpanded }
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth().padding(16.dp),
+            modifier = Modifier.fillMaxWidth().padding(DuskTheme.space4),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Box(
                 modifier = Modifier
-                    .size(10.dp)
+                    .size(DuskTheme.space2)
                     .clip(CircleShape)
                     .background(
                         when {
-                            user.isActive == 0 -> RedError
-                            user.isOnline == 1 -> GreenOk
-                            else -> TextDim
+                            user.isActive == 0 -> DuskTheme.error
+                            user.isOnline == 1 -> DuskTheme.success
+                            else -> DuskTheme.disabled
                         }
                     )
             )
-            Spacer(modifier = Modifier.width(12.dp))
+            Spacer(modifier = Modifier.width(DuskTheme.space3))
             Column(modifier = Modifier.weight(1f)) {
-                Text(user.username, color = TextPrimary, fontWeight = FontWeight.Bold, fontSize = 16.sp)
+                Text(user.username, color = DuskTheme.onSurface, style = MaterialTheme.typography.titleMedium)
                 // The byte counter where the engine has one, rounded: `used_gb` is a float mirror,
                 // and truncating it to whole megabytes showed a third figure beside the two others.
                 val usedMb = user.usedBytes?.takeIf { it > 0 }?.let { Math.round(it / 1048576.0).toInt() }
                     ?: Math.round((user.usedGb ?: 0f) * 1024).toInt()
                 val limitStr = if (user.limitGb != null) S(R.string.gb, user.limitGb) else S(R.string.unlimited)
-                Text(S(R.string.used_so_far_usedmb_mb_of_limitstr, usedMb, limitStr), color = TextMuted, fontSize = 12.sp)
+                Text(S(R.string.used_so_far_usedmb_mb_of_limitstr, usedMb, limitStr), color = DuskTheme.muted, style = MaterialTheme.typography.bodySmall)
                 if (user.limitGb != null && user.limitGb > 0f) {
                     val progress = ((user.usedGb ?: 0f) / user.limitGb).coerceIn(0f, 1f)
-                    val progColor = if (progress > 0.9f) RedError else if (progress > 0.7f) YellowWarn else GreenOk
-                    Spacer(modifier = Modifier.height(6.dp))
+                    val progColor = if (progress > 0.9f) DuskTheme.error else if (progress > 0.7f) DuskTheme.accent else DuskTheme.success
+                    Spacer(modifier = Modifier.height(DuskTheme.space2))
                     LinearProgressIndicator(
                         progress = progress,
-                        modifier = Modifier.fillMaxWidth().height(4.dp).clip(RoundedCornerShape(8.dp)),
+                        modifier = Modifier.fillMaxWidth().height(DuskTheme.space1).clip(RoundedCornerShape(DuskTheme.space2)),
                         color = progColor,
-                        trackColor = BorderDark
+                        trackColor = DuskTheme.outline
                     )
                 }
             }
             if (isBusy) {
-                CircularProgressIndicator(modifier = Modifier.size(20.dp), color = Primary, strokeWidth = 2.dp)
+                CircularProgressIndicator(modifier = Modifier.size(DuskTheme.iconSize), color = DuskTheme.primary, strokeWidth = 2.dp)
             } else {
                 IconButton(onClick = {
                     isBusy = true
@@ -253,20 +253,20 @@ fun MlmUserCard(
                     Icon(
                         if (user.isActive == 1) Icons.Default.Pause else Icons.Default.PlayArrow,
                         contentDescription = "Toggle",
-                        tint = if (user.isActive == 1) TextMuted else GreenOk
+                        tint = if (user.isActive == 1) DuskTheme.muted else DuskTheme.success
                     )
                 }
             }
         }
 
         AnimatedVisibility(visible = isExpanded) {
-            Column(modifier = Modifier.fillMaxWidth().background(BgDark.copy(alpha = 0.5f)).padding(16.dp)) {
+            Column(modifier = Modifier.fillMaxWidth().background(DuskTheme.background.copy(alpha = 0.5f)).padding(DuskTheme.space4)) {
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                     InfoItem(S(R.string.port), user.port.toString())
                     InfoItem(S(R.string.validity), if (user.expiryDays != null) S(R.string.days, user.expiryDays) else "∞")
                     InfoItem(S(R.string.protocol), (user.connectionType ?: "xhttp").uppercase())
                 }
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(DuskTheme.space4))
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
                     ActionBtn(Icons.Default.Download, S(R.string.get_config)) {
                         isBusy = true
@@ -322,7 +322,7 @@ fun MlmUserCard(
                     ActionBtn(Icons.Default.Edit, S(R.string.edit)) {
                         onEditUser()
                     }
-                    ActionBtn(Icons.Default.Delete, S(R.string.delete), RedError) {
+                    ActionBtn(Icons.Default.Delete, S(R.string.delete), DuskTheme.error) {
                         showDeleteConfirm = true
                     }
                 }
@@ -365,20 +365,20 @@ fun MlmUserCard(
 @Composable
 fun InfoItem(label: String, value: String) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Text(label, color = TextMuted, fontSize = 10.sp)
-        Text(value, color = TextPrimary, fontSize = 12.sp, fontWeight = FontWeight.Medium)
+        Text(label, color = DuskTheme.muted, style = MaterialTheme.typography.labelSmall)
+        Text(value, color = DuskTheme.onSurface, style = MaterialTheme.typography.bodySmall, fontWeight = FontWeight.Medium)
     }
 }
 
 @Composable
-fun ActionBtn(icon: androidx.compose.ui.graphics.vector.ImageVector, label: String, tint: Color = Primary, onClick: () -> Unit) {
+fun ActionBtn(icon: androidx.compose.ui.graphics.vector.ImageVector, label: String, tint: Color = DuskTheme.primary, onClick: () -> Unit) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.clickable { onClick() }.padding(8.dp)
+        modifier = Modifier.clickable { onClick() }.padding(DuskTheme.space2)
     ) {
-        Icon(icon, contentDescription = label, tint = tint, modifier = Modifier.size(24.dp))
-        Spacer(modifier = Modifier.height(4.dp))
-        Text(label, color = tint, fontSize = 10.sp)
+        Icon(icon, contentDescription = label, tint = tint, modifier = Modifier.size(DuskTheme.iconSize))
+        Spacer(modifier = Modifier.height(DuskTheme.space1))
+        Text(label, color = tint, style = MaterialTheme.typography.labelSmall)
     }
 }
 

@@ -8,9 +8,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import com.mlmvpn.scanner.models.CloudAccount
@@ -62,72 +59,72 @@ fun MlmSettingsScreen(
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
                 .padding(
-                    start = 24.dp,
-                    end = 24.dp,
-                    top = com.mlmvpn.scanner.ui.LocalContentTopInset.current + 24.dp,
-                    bottom = com.mlmvpn.scanner.ui.LocalSystemBottomPadding.current + 24.dp,
+                    start = DuskTheme.space5,
+                    end = DuskTheme.space5,
+                    top = com.mlmvpn.scanner.ui.LocalContentTopInset.current + DuskTheme.space5,
+                    bottom = com.mlmvpn.scanner.ui.LocalSystemBottomPadding.current + DuskTheme.space5,
                 )
-                .padding(bottom = 24.dp)
+                .padding(bottom = DuskTheme.space5)
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 IconButton(onClick = onDismiss) {
-                    Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = TextPrimary)
+                    Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = DuskTheme.onSurface)
                 }
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(S(R.string.global_worker_settings), color = TextPrimary, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                Spacer(modifier = Modifier.width(DuskTheme.space2))
+                Text(S(R.string.global_worker_settings), color = DuskTheme.onSurface, style = MaterialTheme.typography.titleMedium)
             }
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(DuskTheme.space4))
 
         if (isLoading) {
             Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-                CircularProgressIndicator(color = Primary)
+                CircularProgressIndicator(color = DuskTheme.primary)
             }
         } else {
             OutlinedTextField(
                 value = proxyIp,
                 onValueChange = { proxyIp = it },
-                label = { Text(S(R.string.proxy_ip_label), color = TextMuted) },
+                label = { Text(S(R.string.proxy_ip_label), color = DuskTheme.muted) },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true,
                 colors = iosFieldColors()
             ,
         shape = ControlShape,)
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(DuskTheme.space2))
             OutlinedTextField(
                 value = iata,
                 onValueChange = { iata = it },
-                label = { Text(S(R.string.location_iata), color = TextMuted) },
+                label = { Text(S(R.string.location_iata), color = DuskTheme.muted) },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true,
                 colors = iosFieldColors()
             ,
         shape = ControlShape,)
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(DuskTheme.space2))
             OutlinedTextField(
                 value = fragLen,
                 onValueChange = { fragLen = it },
-                label = { Text(S(R.string.fragment_length_e_g_20_30), color = TextMuted) },
+                label = { Text(S(R.string.fragment_length_e_g_20_30), color = DuskTheme.muted) },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true,
                 colors = iosFieldColors()
             ,
         shape = ControlShape,)
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(DuskTheme.space2))
             OutlinedTextField(
                 value = fragInt,
                 onValueChange = { fragInt = it },
-                label = { Text(S(R.string.fragment_interval_e_g_1_2), color = TextMuted) },
+                label = { Text(S(R.string.fragment_interval_e_g_1_2), color = DuskTheme.muted) },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true,
                 colors = iosFieldColors()
             ,
         shape = ControlShape,)
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(DuskTheme.space5))
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
                 TextButton(onClick = onDismiss, enabled = !isSaving) {
-                    Text(S(R.string.cancel_3), color = TextMuted)
+                    Text(S(R.string.cancel_3), color = DuskTheme.muted)
                 }
-                Spacer(modifier = Modifier.width(8.dp))
+                Spacer(modifier = Modifier.width(DuskTheme.space2))
                 Button(
                     onClick = {
                         isSaving = true
@@ -150,8 +147,8 @@ fun MlmSettingsScreen(
                     },
                     enabled = !isSaving
                 ) {
-                    if (isSaving) CircularProgressIndicator(modifier = Modifier.size(16.dp), color = BgDark)
-                    else Text(S(R.string.save_3), color = BgDark)
+                    if (isSaving) CircularProgressIndicator(modifier = Modifier.size(DuskTheme.space4), color = DuskTheme.onSurface)
+                    else Text(S(R.string.save_3), color = DuskTheme.onSurface)
                 }
             }
         }

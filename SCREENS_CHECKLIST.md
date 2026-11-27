@@ -1,6 +1,6 @@
 # Eternal VPN — screen redesign checklist
 
-> **Progress: 338 / 1203 complete** — each checked row is fully migrated; unverified routes and states remain unchecked.
+> **Progress: 344 / 1203 complete** — each checked row is fully migrated; unverified routes and states remain unchecked.
 
 > Inventory generated from Kotlin source on 2026-11-26. A row is considered migrated only after its visible composition, nested states, and overlays are reviewed against the Soft Dusk tokens. Shared theme inheritance alone does **not** count as a completed visual redesign.
 
@@ -64,9 +64,9 @@ Found 230 screen-like public/internal composables across 133 Kotlin files (the f
 
 ### com
 
-- [ ] `EdgSettingsScreen` — `com/mlmvpn/scanner/engines/edg/EdgSettingsScreen.kt`
-- [ ] `MlmSettingsScreen` — `com/mlmvpn/scanner/engines/mlm/MlmSettingsScreen.kt`
-- [ ] `MlmUsersScreen` — `com/mlmvpn/scanner/engines/mlm/MlmUsersScreen.kt`
+- [x] `EdgSettingsScreen` — `com/mlmvpn/scanner/engines/edg/EdgSettingsScreen.kt`
+- [x] `MlmSettingsScreen` — `com/mlmvpn/scanner/engines/mlm/MlmSettingsScreen.kt`
+- [x] `MlmUsersScreen` — `com/mlmvpn/scanner/engines/mlm/MlmUsersScreen.kt`
 - [x] `AddMlmUserDialog` — `com/mlmvpn/scanner/engines/mlm/MlmUsersScreen.kt`
 - [ ] `NahanSettingsScreen` — `com/mlmvpn/scanner/engines/nahan/NahanSettingsScreen.kt`
 - [x] `AddNahanUserDialog` — `com/mlmvpn/scanner/engines/nahan/NahanSettingsScreen.kt`
@@ -425,9 +425,9 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 
 ### com
 
-- [ ] `MlmUserCard` — `com/mlmvpn/scanner/engines/mlm/MlmUsersScreen.kt`
-- [ ] `InfoItem` — `com/mlmvpn/scanner/engines/mlm/MlmUsersScreen.kt`
-- [ ] `ActionBtn` — `com/mlmvpn/scanner/engines/mlm/MlmUsersScreen.kt`
+- [x] `MlmUserCard` — `com/mlmvpn/scanner/engines/mlm/MlmUsersScreen.kt`
+- [x] `InfoItem` — `com/mlmvpn/scanner/engines/mlm/MlmUsersScreen.kt`
+- [x] `ActionBtn` — `com/mlmvpn/scanner/engines/mlm/MlmUsersScreen.kt`
 - [ ] `NahanSectionHeader` — `com/mlmvpn/scanner/engines/nahan/NahanSettingsScreen.kt`
 - [ ] `NahanTextField` — `com/mlmvpn/scanner/engines/nahan/NahanSettingsScreen.kt`
 - [ ] `NahanUserCard` — `com/mlmvpn/scanner/engines/nahan/NahanSettingsScreen.kt`

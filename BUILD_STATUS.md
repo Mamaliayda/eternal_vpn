@@ -4,6 +4,8 @@
 
 | Commit | Run | Result | Errors fixed / notes |
 |---|---:|---|---|
+| `b885b3144164b784b92833ea2a325434b5f88613` | [45972217421](https://github.com/Mamaliayda/eternal_vpn/actions/runs/45972217421) | Green | `assembleDebug` passed in 25m45s; debug APK and build-log artifacts uploaded. APK workflow trigger widened from this one branch to `arena/**`. Node.js 20 deprecation and missing `go.mod` cache notices only. |
+| `b885b3144164b784b92833ea2a325434b5f88613` | [45972217363](https://github.com/Mamaliayda/eternal_vpn/actions/runs/45972217363) | Green | Release APK build passed in 23m21s; APK/checksum artifacts uploaded. Node.js 20 deprecation and missing `go.mod` cache notices only. |
 | `4170f47068f8553fc6997025b0b453e5d120784e` | [45965728210](https://github.com/Mamaliayda/eternal_vpn/actions/runs/45965728210) | Green | `assembleDebug` passed in 20m52s; debug APK and build-log artifacts uploaded. Node.js 20 deprecation and missing `go.mod` cache notices only. |
 | `4170f47068f8553fc6997025b0b453e5d120784e` | [45965728066](https://github.com/Mamaliayda/eternal_vpn/actions/runs/45965728066) | Green | Release APK build passed in 28m15s; APK/checksum artifacts uploaded. Node.js 20 deprecation and missing `go.mod` cache notices only. |
 | `536e9017c84dbd51748ddc2a92d87225d192a29e` | [45961363628](https://github.com/Mamaliayda/eternal_vpn/actions/runs/45961363628) | Green | `assembleDebug` passed in 32m5s; debug APK and build-log artifacts uploaded. Non-blocking Node.js 20 deprecation and missing `go.mod` cache warnings only. |

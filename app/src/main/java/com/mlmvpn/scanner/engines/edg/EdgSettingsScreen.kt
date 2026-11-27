@@ -21,10 +21,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.mlmvpn.scanner.models.CloudAccount
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -35,16 +33,6 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
 import java.io.IOException
 import com.mlmvpn.scanner.R
-
-// Colors
-private val BgDark = Color(0xFF0F172A)
-private val SurfaceDark = Color(0xFF1E293B)
-private val BorderDark = Color(0xFF334155)
-private val Primary = Color(0xFF3B82F6) // Google Blue
-private val TextPrimary = Color(0xFFF8FAFC)
-private val TextMuted = Color(0xFF94A3B8)
-private val RedError = Color(0xFFEF4444)
-private val GreenOk = Color(0xFF10B981)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -134,36 +122,35 @@ fun EdgSettingsScreen(
             )) {
             // Header
             Row(
-                modifier = Modifier.fillMaxWidth().padding(16.dp),
+                modifier = Modifier.fillMaxWidth().padding(DuskTheme.space4),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Box(
                         modifier = Modifier
-                            .size(36.dp)
-                            .background(Primary.copy(alpha = 0.15f), ControlShape),
+                            .size(DuskTheme.navIconSize)
+                            .background(DuskTheme.primary.copy(alpha = 0.15f), ControlShape),
                         contentAlignment = Alignment.Center
                     ) {
                         Icon(
                             Icons.Default.Tune,
                             contentDescription = null,
-                            tint = TextMuted,
-                            modifier = Modifier.size(20.dp)
+                            tint = DuskTheme.muted,
+                            modifier = Modifier.size(DuskTheme.iconSize)
                         )
                     }
-                    Spacer(modifier = Modifier.width(12.dp))
+                    Spacer(modifier = Modifier.width(DuskTheme.space3))
                     Column {
                         Text(
                             androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.edg_settings_title),
-                            color = TextPrimary,
-                            fontSize = 17.sp,
-                            fontWeight = FontWeight.Bold
+                            color = DuskTheme.onSurface,
+                            style = MaterialTheme.typography.titleMedium
                         )
                         Text(
                             account.name,
-                            color = TextMuted,
-                            fontSize = 11.sp,
+                            color = DuskTheme.muted,
+                            style = MaterialTheme.typography.labelSmall,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
                             modifier = Modifier.widthIn(max = 200.dp)
@@ -171,43 +158,43 @@ fun EdgSettingsScreen(
                     }
                 }
                 IconButton(onClick = onDismiss, enabled = !isSaving) {
-                    Icon(Icons.Default.Close, contentDescription = androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.common_close), tint = TextMuted)
+                    Icon(Icons.Default.Close, contentDescription = androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.common_close), tint = DuskTheme.muted)
                 }
             }
 
-            Divider(color = BorderDark)
+            Divider(color = DuskTheme.outline)
 
             if (isLoading) {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    CircularProgressIndicator(color = Primary)
+                    CircularProgressIndicator(color = DuskTheme.primary)
                 }
             } else if (loadError != null) {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.padding(32.dp)) {
-                        Icon(Icons.Default.ErrorOutline, contentDescription = null, tint = RedError, modifier = Modifier.size(48.dp))
-                        Spacer(modifier = Modifier.height(16.dp))
-                        Text(loadError!!, color = TextMuted, fontSize = 14.sp)
+                    Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.padding(DuskTheme.space6)) {
+                        Icon(Icons.Default.ErrorOutline, contentDescription = null, tint = DuskTheme.error, modifier = Modifier.size(DuskTheme.navIconSize))
+                        Spacer(modifier = Modifier.height(DuskTheme.space4))
+                        Text(loadError!!, color = DuskTheme.muted, style = MaterialTheme.typography.bodyMedium)
                     }
                 }
             } else {
                 Column(
-                    modifier = Modifier.weight(1f).verticalScroll(rememberScrollState()).padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 24.dp),
-                    verticalArrangement = Arrangement.spacedBy(20.dp)
+                    modifier = Modifier.weight(1f).verticalScroll(rememberScrollState()).padding(start = DuskTheme.space4, end = DuskTheme.space4, top = DuskTheme.space4, bottom = DuskTheme.space5),
+                    verticalArrangement = Arrangement.spacedBy(DuskTheme.space5)
                 ) {
                     // Proxy IP
-                    Column(modifier = Modifier.fillMaxWidth().frostedGlass(ControlShape).border(1.dp, BorderDark, ControlShape).padding(16.dp)) {
+                    Column(modifier = Modifier.fillMaxWidth().frostedGlass(ControlShape).border(1.dp, DuskTheme.outline, ControlShape).padding(DuskTheme.space4)) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
-                            Icon(Icons.Default.Dns, contentDescription = null, tint = TextMuted, modifier = Modifier.size(20.dp))
-                            Spacer(modifier = Modifier.width(8.dp))
-                            Text(androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.edg_proxy_ip_title), color = TextPrimary, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                            Icon(Icons.Default.Dns, contentDescription = null, tint = DuskTheme.muted, modifier = Modifier.size(DuskTheme.iconSize))
+                            Spacer(modifier = Modifier.width(DuskTheme.space2))
+                            Text(androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.edg_proxy_ip_title), color = DuskTheme.onSurface, style = MaterialTheme.typography.titleMedium)
                         }
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Text(androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.edg_proxy_ip_desc), color = TextMuted, fontSize = 12.sp)
-                        Spacer(modifier = Modifier.height(12.dp))
+                        Spacer(modifier = Modifier.height(DuskTheme.space2))
+                        Text(androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.edg_proxy_ip_desc), color = DuskTheme.muted, style = MaterialTheme.typography.bodySmall)
+                        Spacer(modifier = Modifier.height(DuskTheme.space3))
                         OutlinedTextField(
                             value = proxyIp,
                             onValueChange = { proxyIp = it },
-                            placeholder = { Text(androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.edg_proxy_ip_hint), color = TextMuted) },
+                            placeholder = { Text(androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.edg_proxy_ip_hint), color = DuskTheme.muted) },
                             colors = iosFieldColors(),
                             modifier = Modifier.fillMaxWidth(),
                             singleLine = true
@@ -217,7 +204,7 @@ fun EdgSettingsScreen(
                 }
 
                 // Save Button
-                Box(modifier = Modifier.fillMaxWidth().frostedGlass(androidx.compose.ui.graphics.RectangleShape).padding(16.dp)) {
+                Box(modifier = Modifier.fillMaxWidth().frostedGlass(androidx.compose.ui.graphics.RectangleShape).padding(DuskTheme.space4)) {
                     Button(
                         onClick = {
                             coroutineScope.launch {
@@ -269,15 +256,15 @@ fun EdgSettingsScreen(
                         },
                         modifier = Modifier.fillMaxWidth().height(50.dp),
                         enabled = !isSaving,
-                        colors = iosButtonColors(Primary),
-                        border = iosButtonBorder(Primary, enabled = !isSaving)) {
+                        colors = iosButtonColors(DuskTheme.primary),
+                        border = iosButtonBorder(DuskTheme.primary, enabled = !isSaving)) {
                         if (isSaving) {
-                            CircularProgressIndicator( modifier = Modifier.size(24.dp))
+                            CircularProgressIndicator( modifier = Modifier.size(DuskTheme.space5))
                         } else {
-                            Text(androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.edg_save_settings), color = TextPrimary, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                            Text(androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.edg_save_settings), color = DuskTheme.onSurface, style = MaterialTheme.typography.titleMedium)
                         }
                     }
-                    Spacer(modifier = Modifier.height(24.dp))
+                    Spacer(modifier = Modifier.height(DuskTheme.space5))
                 }
             }
         }
