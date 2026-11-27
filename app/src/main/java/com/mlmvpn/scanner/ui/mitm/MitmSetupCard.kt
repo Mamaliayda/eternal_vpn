@@ -10,7 +10,6 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.ContentCopy
@@ -36,11 +35,9 @@ import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import com.mlmvpn.scanner.mitm.MitmCertManager
@@ -126,18 +123,18 @@ fun MitmSetupCard() {
     }
 
     val allDone = certExists && certTrusted && configReady
-    val accent = if (allDone) GreenOk else Primary
+    val accent = if (allDone) DuskTheme.success else DuskTheme.primary
 
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(16.dp))
+            .clip(DuskTheme.chartShape)
             .background(
                 Brush.verticalGradient(
-                    listOf(accent.copy(alpha = 0.13f), SurfaceDark.copy(alpha = 0.55f))
+                    listOf(accent.copy(alpha = 0.13f), DuskTheme.surface.copy(alpha = 0.55f))
                 )
             )
-            .border(1.dp, accent.copy(alpha = 0.40f), RoundedCornerShape(16.dp))
+            .border(DuskTheme.hairlineSpace, accent.copy(alpha = 0.40f), DuskTheme.chartShape)
             .padding(16.dp)
     ) {
         // ---- header (also the accordion toggle) ------------------------------------
@@ -145,7 +142,7 @@ fun MitmSetupCard() {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .clip(ControlShape)
+                .clip(DuskTheme.controlShape)
                 .clickable { cardOpenState = !cardOpenValue },
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -165,28 +162,28 @@ fun MitmSetupCard() {
             }
             Spacer(Modifier.width(12.dp))
             Column(Modifier.weight(1f)) {
-                Text(S(R.string.domain_fronting_no_server), color = TextPrimary, fontWeight = FontWeight.Bold, fontSize = 15.sp)
+                Text(S(R.string.domain_fronting_no_server), color = DuskTheme.onSurface, fontWeight = FontWeight.Bold, style = MaterialTheme.typography.bodyLarge)
                 Spacer(Modifier.height(2.dp))
                 Text(
                     if (allDone && !cardOpenValue) S(R.string.ready_pick_the_config_below)
                     else S(R.string.youtube_instagram_whatsapp_facebook_and_reddit_with),
-                    color = TextMuted, fontSize = 11.sp, lineHeight = 15.sp
+                    color = DuskTheme.muted, style = MaterialTheme.typography.bodySmall
                 )
             }
             if (allDone) {
                 Box(
                     modifier = Modifier
-                        .clip(CardShape)
-                        .background(GreenOk.copy(alpha = 0.18f))
+                        .clip(DuskTheme.cardShape)
+                        .background(DuskTheme.success.copy(alpha = 0.18f))
                         .padding(horizontal = 10.dp, vertical = 4.dp)
                 ) {
-                    Text(S(R.string.ready_2), color = GreenOk, fontSize = 10.sp, fontWeight = FontWeight.Bold)
+                    Text(S(R.string.ready_2), color = DuskTheme.success, style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold)
                 }
             }
             Spacer(Modifier.width(4.dp))
             Icon(
                 Icons.Default.ExpandMore, contentDescription = if (cardOpenValue) S(R.string.collapse) else S(R.string.expand),
-                tint = TextMuted, modifier = Modifier.size(20.dp).rotate(cardArrow)
+                tint = DuskTheme.muted, modifier = Modifier.size(20.dp).rotate(cardArrow)
             )
         }
 
@@ -230,7 +227,7 @@ fun MitmSetupCard() {
                     text = if (busy) S(R.string.preparing) else S(R.string.start_setup),
                     icon = Icons.Default.Rocket,
                     enabled = !busy,
-                    accent = Primary
+                    accent = DuskTheme.primary
                 ) {
                     busy = true
                     error = null
@@ -249,7 +246,7 @@ fun MitmSetupCard() {
                     text = S(R.string.install_the_certificate),
                     icon = Icons.Default.Shield,
                     enabled = true,
-                    accent = YellowWarn
+                    accent = DuskTheme.accent
                 ) {
                     error = null
                     val intent = MitmCertManager.installIntent(context)
@@ -262,7 +259,7 @@ fun MitmSetupCard() {
                 Spacer(Modifier.height(8.dp))
                 Text(
                     S(R.string.in_the_window_that_opens_accept_the),
-                    color = TextMuted, fontSize = 11.sp, lineHeight = 16.sp
+                    color = DuskTheme.muted, style = MaterialTheme.typography.bodySmall
                 )
             }
             !certTrusted -> {
@@ -274,7 +271,7 @@ fun MitmSetupCard() {
                     text = if (exportedName != null) S(R.string.open_android_settings) else S(R.string.save_the_certificate_to_downloads),
                     icon = if (exportedName != null) Icons.Default.Shield else Icons.Default.Download,
                     enabled = !busy,
-                    accent = YellowWarn
+                    accent = DuskTheme.accent
                 ) {
                     error = null
                     if (exportedName == null) {
@@ -295,26 +292,26 @@ fun MitmSetupCard() {
                 if (exportedName == null) {
                     Text(
                         S(R.string.android_11_and_above_does_not_let),
-                        color = TextMuted, fontSize = 11.sp, lineHeight = 16.sp
+                        color = DuskTheme.muted, style = MaterialTheme.typography.bodySmall
                     )
                 } else {
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .clip(ControlShape)
-                            .background(SurfaceDark.copy(alpha = 0.7f))
+                            .clip(DuskTheme.controlShape)
+                            .background(DuskTheme.surface.copy(alpha = 0.7f))
                             .padding(12.dp)
                     ) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
-                            Icon(Icons.Default.Check, null, tint = GreenOk, modifier = Modifier.size(15.dp))
+                            Icon(Icons.Default.Check, null, tint = DuskTheme.success, modifier = Modifier.size(15.dp))
                             Spacer(Modifier.width(6.dp))
                             Text(
                                 S(R.string.file_saved_download_folder_exportedname, exportedName),
-                                color = GreenOk, fontSize = 11.sp, fontWeight = FontWeight.Medium
+                                color = DuskTheme.success, style = MaterialTheme.typography.bodySmall, fontWeight = FontWeight.Medium
                             )
                         }
                         Spacer(Modifier.height(8.dp))
-                        Text(S(R.string.now_in_android_settings), color = TextPrimary, fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                        Text(S(R.string.now_in_android_settings), color = DuskTheme.onSurface, style = MaterialTheme.typography.bodySmall, fontWeight = FontWeight.Bold)
                         Spacer(Modifier.height(5.dp))
                         listOf(
                             S(R.string.security_more_security_settings),
@@ -324,15 +321,15 @@ fun MitmSetupCard() {
                             S(R.string.pick_exportedname_from_the_download_folder, exportedName)
                         ).forEachIndexed { i, line ->
                             Row(modifier = Modifier.padding(bottom = 3.dp), verticalAlignment = Alignment.Top) {
-                                Text("${i + 1}.", color = YellowWarn, fontSize = 10.sp, fontWeight = FontWeight.Bold)
+                                Text("${i + 1}.", color = DuskTheme.accent, style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold)
                                 Spacer(Modifier.width(5.dp))
-                                Text(line, color = TextMuted, fontSize = 10.sp, lineHeight = 15.sp)
+                                Text(line, color = DuskTheme.muted, style = MaterialTheme.typography.labelSmall)
                             }
                         }
                         Spacer(Modifier.height(4.dp))
                         Text(
                             S(R.string.if_these_options_sit_somewhere_slightly_different),
-                            color = TextDim, fontSize = 10.sp, lineHeight = 14.sp
+                            color = DuskTheme.muted, style = MaterialTheme.typography.labelSmall
                         )
                     }
                 }
@@ -341,16 +338,16 @@ fun MitmSetupCard() {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clip(ControlShape)
-                        .background(GreenOk.copy(alpha = 0.12f))
+                        .clip(DuskTheme.controlShape)
+                        .background(DuskTheme.success.copy(alpha = 0.12f))
                         .padding(12.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Icon(Icons.Default.Check, null, tint = GreenOk, modifier = Modifier.size(18.dp))
+                    Icon(Icons.Default.Check, null, tint = DuskTheme.success, modifier = Modifier.size(18.dp))
                     Spacer(Modifier.width(8.dp))
                     Text(
                         S(R.string.everything_is_ready_pick_the_config_below),
-                        color = GreenOk, fontSize = 12.sp, fontWeight = FontWeight.Medium
+                        color = DuskTheme.success, style = MaterialTheme.typography.bodySmall, fontWeight = FontWeight.Medium
                     )
                 }
             }
@@ -359,9 +356,9 @@ fun MitmSetupCard() {
         error?.let {
             Spacer(Modifier.height(10.dp))
             Row(verticalAlignment = Alignment.Top) {
-                Icon(Icons.Default.ErrorOutline, null, tint = RedError, modifier = Modifier.size(16.dp))
+                Icon(Icons.Default.ErrorOutline, null, tint = DuskTheme.error, modifier = Modifier.size(16.dp))
                 Spacer(Modifier.width(6.dp))
-                Text(it, color = RedError, fontSize = 11.sp, lineHeight = 16.sp)
+                Text(it, color = DuskTheme.error, style = MaterialTheme.typography.bodySmall)
             }
         }
 
@@ -370,20 +367,20 @@ fun MitmSetupCard() {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .clip(ControlShape)
-                .background(YellowWarn.copy(alpha = 0.09f))
-                .border(1.dp, YellowWarn.copy(alpha = 0.30f), ControlShape)
+                .clip(DuskTheme.controlShape)
+                .background(DuskTheme.accent.copy(alpha = 0.09f))
+                .border(DuskTheme.hairlineSpace, DuskTheme.accent.copy(alpha = 0.30f), DuskTheme.controlShape)
                 .padding(12.dp),
             verticalAlignment = Alignment.Top
         ) {
-            Icon(Icons.Default.Language, null, tint = YellowWarn, modifier = Modifier.size(18.dp))
+            Icon(Icons.Default.Language, null, tint = DuskTheme.accent, modifier = Modifier.size(18.dp))
             Spacer(Modifier.width(10.dp))
             Column {
-                Text(S(R.string.works_in_the_browser_only), color = YellowWarn, fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                Text(S(R.string.works_in_the_browser_only), color = DuskTheme.accent, style = MaterialTheme.typography.bodySmall, fontWeight = FontWeight.Bold)
                 Spacer(Modifier.height(3.dp))
                 Text(
                     S(R.string.open_the_sites_in_chrome_or_any),
-                    color = TextMuted, fontSize = 11.sp, lineHeight = 16.sp
+                    color = DuskTheme.muted, style = MaterialTheme.typography.bodySmall
                 )
             }
         }
@@ -397,20 +394,20 @@ fun MitmSetupCard() {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .clip(RoundedCornerShape(8.dp))
+                .clip(DuskTheme.glyphShape)
                 .clickable { guideExpanded = !guideExpanded }
                 .padding(vertical = 6.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Icon(Icons.Default.HelpOutline, null, tint = TextMuted, modifier = Modifier.size(15.dp))
+            Icon(Icons.Default.HelpOutline, null, tint = DuskTheme.muted, modifier = Modifier.size(15.dp))
             Spacer(Modifier.width(6.dp))
             Text(
                 S(R.string.certificate_installation_by_phone_brand),
-                color = TextPrimary, fontSize = 11.sp, fontWeight = FontWeight.Medium
+                color = DuskTheme.onSurface, style = MaterialTheme.typography.bodySmall, fontWeight = FontWeight.Medium
             )
             Spacer(Modifier.weight(1f))
             Icon(
-                Icons.Default.ExpandMore, null, tint = TextMuted,
+                Icons.Default.ExpandMore, null, tint = DuskTheme.muted,
                 modifier = Modifier.size(18.dp).rotate(guideArrow)
             )
         }
@@ -419,37 +416,37 @@ fun MitmSetupCard() {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clip(ControlShape)
-                    .background(SurfaceDark.copy(alpha = 0.7f))
+                    .clip(DuskTheme.controlShape)
+                    .background(DuskTheme.surface.copy(alpha = 0.7f))
                     .padding(12.dp)
             ) {
                 Text(
                     S(R.string.the_quickest_way_on_any_phone_type),
-                    color = TextPrimary, fontSize = 11.sp, lineHeight = 16.sp
+                    color = DuskTheme.onSurface, style = MaterialTheme.typography.bodySmall
                 )
                 Spacer(Modifier.height(6.dp))
                 Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                     listOf("certificate", S(R.string.certificate), "credentials").forEach { kw ->
                         Box(
                             modifier = Modifier
-                                .clip(RoundedCornerShape(8.dp))
-                                .background(Primary.copy(alpha = 0.15f))
+                                .clip(DuskTheme.glyphShape)
+                                .background(DuskTheme.primary.copy(alpha = 0.15f))
                                 .padding(horizontal = 8.dp, vertical = 3.dp)
                         ) {
-                            Text(kw, color = TextPrimary, fontSize = 10.sp, fontFamily = FontFamily.Monospace)
+                            Text(kw, color = DuskTheme.onSurface, style = MaterialTheme.typography.labelSmall, fontFamily = DuskTheme.monoFontFamily)
                         }
                     }
                 }
                 Spacer(Modifier.height(4.dp))
                 Text(
                     S(R.string.then_tap_something_like_install_a_certificate, MitmCertManager.EXPORT_FILE_NAME),
-                    color = TextMuted, fontSize = 10.sp, lineHeight = 15.sp
+                    color = DuskTheme.muted, style = MaterialTheme.typography.labelSmall
                 )
 
                 Spacer(Modifier.height(10.dp))
-                Box(Modifier.fillMaxWidth().height(1.dp).background(BorderDark))
+                Box(Modifier.fillMaxWidth().height(1.dp).background(DuskTheme.outline))
                 Spacer(Modifier.height(10.dp))
-                Text(S(R.string.the_manual_path_by_brand), color = TextPrimary, fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                Text(S(R.string.the_manual_path_by_brand), color = DuskTheme.onSurface, style = MaterialTheme.typography.bodySmall, fontWeight = FontWeight.Bold)
                 Spacer(Modifier.height(8.dp))
 
                 BrandPath(
@@ -488,20 +485,20 @@ fun MitmSetupCard() {
 
                 Spacer(Modifier.height(10.dp))
                 Row(verticalAlignment = Alignment.Top) {
-                    Icon(Icons.Default.Info, null, tint = YellowWarn, modifier = Modifier.size(13.dp))
+                    Icon(Icons.Default.Info, null, tint = DuskTheme.accent, modifier = Modifier.size(13.dp))
                     Spacer(Modifier.width(6.dp))
                     Text(
                         S(R.string.if_your_phone_has_no_screen_lock),
-                        color = TextMuted, fontSize = 10.sp, lineHeight = 15.sp
+                        color = DuskTheme.muted, style = MaterialTheme.typography.labelSmall
                     )
                 }
                 Spacer(Modifier.height(6.dp))
                 Row(verticalAlignment = Alignment.Top) {
-                    Icon(Icons.Default.Language, null, tint = TextDim, modifier = Modifier.size(13.dp))
+                    Icon(Icons.Default.Language, null, tint = DuskTheme.muted, modifier = Modifier.size(13.dp))
                     Spacer(Modifier.width(6.dp))
                     Text(
                         S(R.string.firefox_does_not_accept_user_installed_certificates),
-                        color = TextDim, fontSize = 10.sp, lineHeight = 15.sp
+                        color = DuskTheme.muted, style = MaterialTheme.typography.labelSmall
                     )
                 }
             }
@@ -513,15 +510,15 @@ fun MitmSetupCard() {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .clip(RoundedCornerShape(8.dp))
+                .clip(DuskTheme.glyphShape)
                 .clickable { expanded = !expanded }
                 .padding(vertical = 6.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(S(R.string.certificate_details_and_management), color = TextMuted, fontSize = 11.sp, fontWeight = FontWeight.Medium)
+            Text(S(R.string.certificate_details_and_management), color = DuskTheme.muted, style = MaterialTheme.typography.bodySmall, fontWeight = FontWeight.Medium)
             Spacer(Modifier.weight(1f))
             Icon(
-                Icons.Default.ExpandMore, null, tint = TextMuted,
+                Icons.Default.ExpandMore, null, tint = DuskTheme.muted,
                 modifier = Modifier.size(18.dp).rotate(arrow)
             )
         }
@@ -533,27 +530,27 @@ fun MitmSetupCard() {
                 val fp = remember(certExists) { MitmCertManager.fingerprint(context) }
                 if (fp != null) {
                     Spacer(Modifier.height(6.dp))
-                    Text(S(R.string.fingerprint_sha_256), color = TextDim, fontSize = 10.sp)
+                    Text(S(R.string.fingerprint_sha_256), color = DuskTheme.muted, style = MaterialTheme.typography.labelSmall)
                     Spacer(Modifier.height(3.dp))
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Text(
-                            fp, color = TextMuted, fontSize = 9.sp,
-                            fontFamily = FontFamily.Monospace, lineHeight = 13.sp,
+                            fp, color = DuskTheme.muted, style = MaterialTheme.typography.labelSmall,
+                            fontFamily = DuskTheme.monoFontFamily,
                             modifier = Modifier.weight(1f)
                         )
                         IconButton(onClick = { clipboard.setText(AnnotatedString(fp)) }, modifier = Modifier.size(28.dp)) {
-                            Icon(Icons.Default.ContentCopy, "copy", tint = TextMuted, modifier = Modifier.size(14.dp))
+                            Icon(Icons.Default.ContentCopy, "copy", tint = DuskTheme.muted, modifier = Modifier.size(14.dp))
                         }
                     }
                 }
 
                 Spacer(Modifier.height(10.dp))
                 Row(verticalAlignment = Alignment.Top) {
-                    Icon(Icons.Default.Info, null, tint = TextDim, modifier = Modifier.size(14.dp))
+                    Icon(Icons.Default.Info, null, tint = DuskTheme.muted, modifier = Modifier.size(14.dp))
                     Spacer(Modifier.width(6.dp))
                     Text(
                         S(R.string.this_certificate_belongs_to_this_phone_alone),
-                        color = TextDim, fontSize = 10.sp, lineHeight = 15.sp
+                        color = DuskTheme.muted, style = MaterialTheme.typography.labelSmall
                     )
                 }
 
@@ -575,27 +572,27 @@ fun MitmSetupCard() {
                             }
                         },
                         enabled = !busy,
-                        shape = ControlShape,
-                        border = androidx.compose.foundation.BorderStroke(1.dp, BorderDark),
+                        shape = DuskTheme.controlShape,
+                        border = androidx.compose.foundation.BorderStroke(DuskTheme.hairlineSpace, DuskTheme.outline),
                         modifier = Modifier.weight(1f)
                     ) {
-                        Icon(Icons.Default.Refresh, null, tint = TextMuted, modifier = Modifier.size(14.dp))
+                        Icon(Icons.Default.Refresh, null, tint = DuskTheme.muted, modifier = Modifier.size(14.dp))
                         Spacer(Modifier.width(6.dp))
-                        Text(S(R.string.build_a_new_certificate), color = TextMuted, fontSize = 11.sp)
+                        Text(S(R.string.build_a_new_certificate), color = DuskTheme.muted, style = MaterialTheme.typography.bodySmall)
                     }
                     OutlinedButton(
                         onClick = { runCatching { context.startActivity(MitmCertManager.securitySettingsIntent()) } },
-                        shape = ControlShape,
-                        border = androidx.compose.foundation.BorderStroke(1.dp, BorderDark),
+                        shape = DuskTheme.controlShape,
+                        border = androidx.compose.foundation.BorderStroke(DuskTheme.hairlineSpace, DuskTheme.outline),
                         modifier = Modifier.weight(1f)
                     ) {
-                        Text(S(R.string.security_settings), color = TextMuted, fontSize = 11.sp)
+                        Text(S(R.string.security_settings), color = DuskTheme.muted, style = MaterialTheme.typography.bodySmall)
                     }
                 }
                 Spacer(Modifier.height(4.dp))
                 Text(
                     S(R.string.if_you_build_a_new_certificate_you),
-                    color = TextDim, fontSize = 10.sp, lineHeight = 14.sp
+                    color = DuskTheme.muted, style = MaterialTheme.typography.labelSmall
                 )
             }
         }
@@ -614,9 +611,9 @@ private fun StepRow(
     isLast: Boolean = false
 ) {
     val color = when {
-        done -> GreenOk
-        active -> Primary
-        else -> TextDim
+        done -> DuskTheme.success
+        active -> DuskTheme.primary
+        else -> DuskTheme.muted
     }
     Row(modifier = Modifier.fillMaxWidth()) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -624,14 +621,14 @@ private fun StepRow(
                 modifier = Modifier
                     .size(22.dp)
                     .clip(CircleShape)
-                    .background(if (done) GreenOk.copy(alpha = 0.20f) else Color.Transparent)
+                    .background(if (done) DuskTheme.success.copy(alpha = 0.20f) else DuskTheme.transparent)
                     .border(1.dp, color.copy(alpha = if (done) 0f else 0.55f), CircleShape),
                 contentAlignment = Alignment.Center
             ) {
                 if (done) {
-                    Icon(Icons.Default.Check, null, tint = GreenOk, modifier = Modifier.size(13.dp))
+                    Icon(Icons.Default.Check, null, tint = DuskTheme.success, modifier = Modifier.size(13.dp))
                 } else {
-                    Text("$index", color = color, fontSize = 10.sp, fontWeight = FontWeight.Bold)
+                    Text("$index", color = color, style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold)
                 }
             }
             if (!isLast) {
@@ -639,7 +636,7 @@ private fun StepRow(
                     modifier = Modifier
                         .width(1.dp)
                         .height(26.dp)
-                        .background(if (done) GreenOk.copy(alpha = 0.35f) else BorderDark)
+                        .background(if (done) DuskTheme.success.copy(alpha = 0.35f) else DuskTheme.outline)
                 )
             }
         }
@@ -647,12 +644,12 @@ private fun StepRow(
         Column(modifier = Modifier.padding(bottom = if (isLast) 0.dp else 6.dp)) {
             Text(
                 title,
-                color = if (done || active) TextPrimary else TextMuted,
-                fontSize = 12.sp,
+                color = if (done || active) DuskTheme.onSurface else DuskTheme.muted,
+                style = MaterialTheme.typography.bodySmall,
                 fontWeight = if (active) FontWeight.Bold else FontWeight.Medium
             )
             Spacer(Modifier.height(2.dp))
-            Text(subtitle, color = TextDim, fontSize = 10.sp, lineHeight = 14.sp)
+            Text(subtitle, color = DuskTheme.muted, style = MaterialTheme.typography.labelSmall)
         }
     }
 }
@@ -668,43 +665,35 @@ private fun ActionButton(
     Button(
         onClick = onClick,
         enabled = enabled,
-        shape = ControlShape,
+        shape = DuskTheme.controlShape,
         // Tinted glass with an accent rim and accent text -- the primary-action treatment used by
         // Save in the add-node form and by the connect button. The old solid accent fill with
         // BgDark text on it was the last survivor of the pre-redesign button style, and on the
         // yellow accent it put near-black text on near-yellow, which is what was reported.
-        colors = ButtonDefaults.buttonColors(
-            containerColor = accent.copy(alpha = 0.22f),
-            contentColor = accent,
-            disabledContainerColor = accent.copy(alpha = 0.08f),
-            disabledContentColor = TextDim,
-        ),
-        border = androidx.compose.foundation.BorderStroke(
-            width = 1.5.dp,
-            color = if (enabled) accent else BorderDark,
-        ),
+        colors = iosButtonColors(accent),
+        border = iosButtonBorder(accent, enabled),
         modifier = Modifier.fillMaxWidth().height(46.dp)
     ) {
         Icon(icon, null, modifier = Modifier.size(18.dp))
         Spacer(Modifier.width(8.dp))
-        Text(text, fontSize = 13.sp, fontWeight = FontWeight.Bold)
+        Text(text, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Bold)
     }
 }
 
 @Composable
 private fun BrandPath(brand: String, path: String, isLast: Boolean = false) {
     Column(modifier = Modifier.padding(bottom = if (isLast) 0.dp else 9.dp)) {
-        Text(brand, color = TextPrimary, fontSize = 10.5.sp, fontWeight = FontWeight.Bold)
+        Text(brand, color = DuskTheme.onSurface, style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold)
         Spacer(Modifier.height(2.dp))
-        Text(path, color = TextMuted, fontSize = 10.sp, lineHeight = 15.sp)
+        Text(path, color = DuskTheme.muted, style = MaterialTheme.typography.labelSmall)
     }
 }
 
 @Composable
 private fun InfoLine(label: String, value: String) {
     Column {
-        Text(label, color = TextDim, fontSize = 10.sp)
+        Text(label, color = DuskTheme.muted, style = MaterialTheme.typography.labelSmall)
         Spacer(Modifier.height(2.dp))
-        Text(value, color = TextMuted, fontSize = 11.sp, textAlign = TextAlign.Start)
+        Text(value, color = DuskTheme.muted, style = MaterialTheme.typography.bodySmall, textAlign = TextAlign.Start)
     }
 }

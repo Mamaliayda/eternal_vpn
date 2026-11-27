@@ -22,8 +22,8 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.horizontalScroll
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -33,13 +33,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.runtime.CompositionLocalProvider
 import com.mlmvpn.scanner.store.tr
 import com.mlmvpn.scanner.ui.theme.DuskTheme
@@ -157,12 +155,12 @@ private fun ConfigureScreen(
             .statusBarsPadding()
             .navigationBarsPadding()
             .verticalScroll(rememberScrollState())
-            .padding(vertical = 16.dp),
+            .padding(vertical = DuskTheme.space4),
     ) {
-        Text(tr("ویجت استدیو", "Widget Studio"), color = DuskTheme.onSurface, fontSize = 26.sp, fontWeight = FontWeight.Bold,
+        Text(tr("ویجت استدیو", "Widget Studio"), color = DuskTheme.onSurface, style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(horizontal = 20.dp))
-        Text(tr("یک طرح برای این ویجت انتخاب کنید", "Choose a design for this widget"), color = DuskTheme.muted, fontSize = 14.sp,
-            modifier = Modifier.padding(horizontal = 20.dp, vertical = 4.dp))
+        Text(tr("یک طرح برای این ویجت انتخاب کنید", "Choose a design for this widget"), color = DuskTheme.muted, style = MaterialTheme.typography.bodyMedium,
+            modifier = Modifier.padding(horizontal = 20.dp, vertical = DuskTheme.space1))
 
         val mine = data.templates
         if (mine.isNotEmpty()) {
@@ -171,18 +169,18 @@ private fun ConfigureScreen(
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 4.dp)
-                        .clip(RoundedCornerShape(18.dp))
+                        .padding(horizontal = DuskTheme.space4, vertical = DuskTheme.space1)
+                        .clip(DuskTheme.tileShape)
                         .background(DuskTheme.raisedSurface)
                         .clickable { onPick(t.id) }
-                        .padding(10.dp),
+                        .padding(DuskTheme.space2_5),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Box(modifier = Modifier.width(120.dp)) { TemplatePreview(t.copy(size = size), PreviewState.CONNECTED, width = if (size == StudioSize.SMALL) 70.dp else 120.dp) }
                     Spacer(Modifier.width(12.dp))
                     Column(Modifier.weight(1f)) {
-                        Text(t.name.ifBlank { t.style.title }, color = DuskTheme.onSurface, fontSize = 15.sp, fontWeight = FontWeight.SemiBold)
-                        Text(WidgetMethods.app(t.method)?.let { WidgetPainter.labelOf(it) } ?: t.method, color = DuskTheme.muted, fontSize = 12.sp)
+                        Text(t.name.ifBlank { t.style.title }, color = DuskTheme.onSurface, style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.SemiBold)
+                        Text(WidgetMethods.app(t.method)?.let { WidgetPainter.labelOf(it) } ?: t.method, color = DuskTheme.muted, style = MaterialTheme.typography.labelMedium)
                     }
                 }
             }
@@ -197,22 +195,22 @@ private fun ConfigureScreen(
                 val on = app.id == method
                 Column(
                     modifier = Modifier
-                        .clip(RoundedCornerShape(14.dp))
-                        .background(if (on) DuskTheme.rose.copy(alpha = 0.32f) else Color.Transparent)
+                        .clip(DuskTheme.glyphShape)
+                        .background(if (on) DuskTheme.rose.copy(alpha = 0.32f) else DuskTheme.transparent)
                         .clickable { method = app.id }
-                        .padding(6.dp),
+                        .padding(DuskTheme.space1_5),
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     // No lamp for the chosen one: green on a tile means connected everywhere in the
                     // app; the highlight behind it is what says chosen.
                     AppIconTile(app = app, size = 40.dp)
-                    Spacer(Modifier.height(4.dp))
-                    Text(WidgetPainter.labelOf(app), color = DuskTheme.onSurface, fontSize = 10.5.sp, maxLines = 1, textAlign = TextAlign.Center,
+                    Spacer(Modifier.height(DuskTheme.space1))
+                    Text(WidgetPainter.labelOf(app), color = DuskTheme.onSurface, style = MaterialTheme.typography.labelSmall, maxLines = 1, textAlign = TextAlign.Center,
                         modifier = Modifier.width(58.dp))
                 }
             }
         }
-        Spacer(Modifier.height(8.dp))
+        Spacer(Modifier.height(DuskTheme.space2))
         // Stable samples for the pictures (a fresh id on every pass would redraw them for nothing);
         // the design that is kept gets its own id when it is picked.
         val samples = remember(method, size) {
@@ -227,29 +225,29 @@ private fun ConfigureScreen(
             }
         }
 
-        Spacer(Modifier.height(18.dp))
+        Spacer(Modifier.height(DuskTheme.space4))
         Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp)
-                .clip(RoundedCornerShape(16.dp))
+                .clip(DuskTheme.chartShape)
                 .background(DuskTheme.accent)
                 .clickable { onStudio(fresh(StudioStyle.GLASS)) }
                 .padding(vertical = 14.dp),
             contentAlignment = Alignment.Center,
         ) {
-            Text(tr("طراحی کامل در ویجت استدیو", "Design it fully in Widget Studio"), color = DuskTheme.onAccent, fontSize = 15.sp, fontWeight = FontWeight.SemiBold)
+            Text(tr("طراحی کامل در ویجت استدیو", "Design it fully in Widget Studio"), color = DuskTheme.onAccent, style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.SemiBold)
         }
         Spacer(Modifier.height(10.dp))
         Text(
-            tr("انصراف", "Cancel"), color = DuskTheme.muted, fontSize = 15.sp, textAlign = TextAlign.Center,
-            modifier = Modifier.fillMaxWidth().clickable(onClick = onCancel).padding(12.dp),
+            tr("انصراف", "Cancel"), color = DuskTheme.muted, style = MaterialTheme.typography.bodyLarge, textAlign = TextAlign.Center,
+            modifier = Modifier.fillMaxWidth().clickable(onClick = onCancel).padding(DuskTheme.space3),
         )
     }
 }
 
 @Composable
 private fun Heading(text: String) {
-    Text(text, color = DuskTheme.muted, fontSize = 13.sp,
-        modifier = Modifier.padding(start = 20.dp, end = 20.dp, top = 22.dp, bottom = 8.dp))
+    Text(text, color = DuskTheme.muted, style = MaterialTheme.typography.bodySmall,
+        modifier = Modifier.padding(start = DuskTheme.space5, end = DuskTheme.space5, top = DuskTheme.space5, bottom = DuskTheme.space2))
 }

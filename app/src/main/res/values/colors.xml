@@ -24,4 +24,20 @@
     <color name="dusk_on_surface_dim">#C1BED0</color>
     <!-- Generated QR modules require a stable neutral backing for reliable scanning. -->
     <color name="dusk_qr_surface">#FFFFFF</color>
+    <!-- Shared native brand/status accents used by XML widget previews and selector surfaces. -->
+    <color name="dusk_widget_warp_start">#FFFFA82E</color>
+    <color name="dusk_widget_warp_end">#FFDB8000</color>
+    <color name="dusk_widget_fronting_start">#FFFFD52E</color>
+    <color name="dusk_widget_fronting_end">#FFDBAF00</color>
+    <color name="dusk_widget_emergency_start">#FFFF5E55</color>
+    <color name="dusk_widget_emergency_end">#FFDB3329</color>
+    <color name="dusk_widget_antisanction_start">#FF59D177</color>
+    <color name="dusk_widget_antisanction_end">#FF2DAB4D</color>
+    <color name="dusk_widget_quick_start">#FF2E92FF</color>
+    <color name="dusk_widget_quick_end">#FF0069DB</color>
+    <color name="dusk_nav_pressed_overlay">#288AB4F8</color>
+    <color name="dusk_chip_green_overlay">#1A81C995</color>
+    <color name="dusk_chip_blue_overlay">#1A8AB4F8</color>
+    <color name="dusk_badge_active_fill">#1A0DFF9E</color>
+    <color name="dusk_badge_active_stroke">#4D0DFF9E</color>
 </resources>

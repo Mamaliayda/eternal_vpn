@@ -37,21 +37,21 @@
     <style name="App.Button.Outlined" parent="Widget.MaterialComponents.Button.OutlinedButton">
         <item name="strokeColor">@color/dusk_primary</item>
         <item name="android:textColor">@color/dusk_primary</item>
-        <item name="cornerRadius">12dp</item>
+        <item name="cornerRadius">@dimen/dusk_button_radius</item>
     </style>
     <style name="App.Button.Filled" parent="Widget.MaterialComponents.Button">
         <item name="backgroundTint">@color/dusk_primary</item>
         <item name="android:textColor">@color/dusk_background</item>
-        <item name="cornerRadius">12dp</item>
+        <item name="cornerRadius">@dimen/dusk_button_radius</item>
     </style>
     <style name="App.TextInput" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="boxStrokeColor">@color/dusk_outline</item>
         <item name="hintTextColor">@color/dusk_on_surface_variant</item>
         <item name="android:textColorHint">@color/dusk_on_surface_dim</item>
-        <item name="boxCornerRadiusTopStart">12dp</item>
-        <item name="boxCornerRadiusTopEnd">12dp</item>
-        <item name="boxCornerRadiusBottomStart">12dp</item>
-        <item name="boxCornerRadiusBottomEnd">12dp</item>
+        <item name="boxCornerRadiusTopStart">@dimen/dusk_button_radius</item>
+        <item name="boxCornerRadiusTopEnd">@dimen/dusk_button_radius</item>
+        <item name="boxCornerRadiusBottomStart">@dimen/dusk_button_radius</item>
+        <item name="boxCornerRadiusBottomEnd">@dimen/dusk_button_radius</item>
     </style>
     <style name="App.TextInput.Active" parent="App.TextInput">
         <item name="boxStrokeColor">@color/dusk_primary</item>

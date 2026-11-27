@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Native-view geometry equivalents for the shared Soft Dusk shape scale. -->
+    <dimen name="dusk_button_radius">12dp</dimen>
+    <dimen name="dusk_card_radius">28dp</dimen>
+    <dimen name="dusk_dialog_radius">24dp</dimen>
+    <dimen name="dusk_chip_radius">6dp</dimen>
+    <dimen name="dusk_badge_radius">8dp</dimen>
+</resources>

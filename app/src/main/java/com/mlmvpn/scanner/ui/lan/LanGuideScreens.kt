@@ -20,16 +20,19 @@ import androidx.compose.material.icons.filled.DesktopWindows
 import androidx.compose.material.icons.filled.Laptop
 import androidx.compose.material.icons.filled.PhoneIphone
 import androidx.compose.material.icons.filled.Tv
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.mlmvpn.scanner.R
 import com.mlmvpn.scanner.lan.LanSetupServer.ClientOs
 import com.mlmvpn.scanner.lan.LanStatus
@@ -124,7 +127,7 @@ fun LanGuideScreen(os: ClientOs, status: LanStatus, backLabel: String, onBack: (
     val steps = stringResource(guideStepsRes(os)).split('\n').filter { it.isNotBlank() }
 
     IosScreen(title = stringResource(guideNameRes(os)), onBack = onBack, backLabel = backLabel) {
-        Spacer(Modifier.height(14.dp))
+        Spacer(Modifier.height(DuskTheme.space3))
         SettingsGroup {
             Column(Modifier.fillMaxWidth().padding(vertical = 6.dp)) {
                 steps.forEachIndexed { index, step ->
@@ -141,7 +144,7 @@ fun LanGuideScreen(os: ClientOs, status: LanStatus, backLabel: String, onBack: (
                             Text(
                                 "${index + 1}",
                                 color = DuskTheme.primary,
-                                fontSize = 12.sp,
+                                style = MaterialTheme.typography.labelMedium,
                                 fontWeight = FontWeight.Bold,
                             )
                         }
@@ -149,8 +152,7 @@ fun LanGuideScreen(os: ClientOs, status: LanStatus, backLabel: String, onBack: (
                         Text(
                             step,
                             color = DuskTheme.onSurface,
-                            fontSize = 14.5.sp,
-                            lineHeight = 21.sp,
+                            style = MaterialTheme.typography.bodyMedium,
                             modifier = Modifier.weight(1f),
                         )
                     }
@@ -158,7 +160,7 @@ fun LanGuideScreen(os: ClientOs, status: LanStatus, backLabel: String, onBack: (
             }
         }
 
-        Spacer(Modifier.height(22.dp))
+        Spacer(Modifier.height(DuskTheme.space5))
         SettingsSectionHeader(stringResource(R.string.lan_section_address))
         SettingsGroup {
             if (usesPac) {
@@ -170,7 +172,7 @@ fun LanGuideScreen(os: ClientOs, status: LanStatus, backLabel: String, onBack: (
             }
         }
         SettingsFooter(stringResource(R.string.lanweb_note_names))
-        Spacer(Modifier.height(28.dp))
+        Spacer(Modifier.height(DuskTheme.space5))
     }
 }
 
@@ -178,8 +180,11 @@ fun LanGuideScreen(os: ClientOs, status: LanStatus, backLabel: String, onBack: (
 @Composable
 private fun GuideValue(label: String, value: String) {
     Column(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 13.dp)) {
-        Text(label, color = DuskTheme.muted, fontSize = 12.sp)
-        Spacer(Modifier.height(3.dp))
-        Text(value, color = DuskTheme.onSurface, fontSize = 15.sp, fontFamily = FontFamily.Monospace)
+        Text(label, color = DuskTheme.muted, style = MaterialTheme.typography.labelMedium)
+        Spacer(Modifier.height(DuskTheme.microSpace))
+        CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
+            Text(value, color = DuskTheme.onSurface, style = MaterialTheme.typography.bodyLarge,
+                fontFamily = DuskTheme.monoFontFamily, textAlign = TextAlign.Start)
+        }
     }
 }

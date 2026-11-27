@@ -3,8 +3,8 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:width="108dp" android:height="108dp">
         <shape android:shape="rectangle">
-            <corners android:radius="28dp" />
-            <gradient android:angle="270" android:startColor="#FFFFD52E" android:endColor="#FFDBAF00" />
+            <corners android:radius="@dimen/dusk_card_radius" />
+            <gradient android:angle="270" android:startColor="@color/dusk_widget_fronting_start" android:endColor="@color/dusk_widget_fronting_end" />
         </shape>
     </item>
     <item android:width="56dp" android:height="56dp" android:gravity="center" android:drawable="@drawable/ic_glyph_swap" />

@@ -21,10 +21,10 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -39,7 +39,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.mlmvpn.core.tunnel.IpFormatter
 import com.mlmvpn.core.warp.Ipv4ExitRunner
 import com.mlmvpn.core.warp.Ipv4ExitSession
@@ -49,7 +48,6 @@ import com.mlmvpn.scanner.ui.emergency.faDigits
 import com.mlmvpn.scanner.ui.home.frostedGlass
 import com.mlmvpn.scanner.ui.settings.SettingsFooter
 import com.mlmvpn.scanner.ui.settings.SettingsSectionHeader
-import com.mlmvpn.scanner.ui.theme.PanelShape
 import com.mlmvpn.scanner.ui.tunnel.CountryLabel
 
 private fun fa(n: Number): String = faDigits(n.toString())
@@ -61,7 +59,7 @@ enum class ExitWay { IPV6, IPV4 }
 @Composable
 fun ExitWaySwitch(selected: ExitWay, onSelect: (ExitWay) -> Unit) {
     Row(
-        Modifier.fillMaxWidth().padding(horizontal = 16.dp).frostedGlass(RoundedCornerShape(12.dp)).padding(3.dp),
+        Modifier.fillMaxWidth().padding(horizontal = 16.dp).frostedGlass(DuskTheme.chartShape).padding(DuskTheme.microSpace),
     ) {
         for ((way, label) in listOf(
             ExitWay.IPV6 to tr("IPv6 · دروازهٔ NAT64", "IPv6 · NAT64 gateway"),
@@ -69,14 +67,14 @@ fun ExitWaySwitch(selected: ExitWay, onSelect: (ExitWay) -> Unit) {
         )) {
             val sel = way == selected
             Box(
-                Modifier.weight(1f).clip(RoundedCornerShape(10.dp))
-                    .background(if (sel) DuskTheme.primary else Color.Transparent)
+                Modifier.weight(1f).clip(DuskTheme.controlShape)
+                    .background(if (sel) DuskTheme.primary else DuskTheme.transparent)
                     .clickable { onSelect(way) }
                     .padding(vertical = 9.dp),
                 contentAlignment = Alignment.Center,
             ) {
-                Text(label, fontSize = 13.sp, fontWeight = if (sel) FontWeight.SemiBold else FontWeight.Normal,
-                    color = if (sel) Color.White else DuskTheme.muted)
+                Text(label, style = MaterialTheme.typography.labelMedium, fontWeight = if (sel) FontWeight.SemiBold else FontWeight.Normal,
+                    color = if (sel) DuskTheme.onPrimary else DuskTheme.muted)
             }
         }
     }
@@ -284,17 +282,17 @@ private fun ExitWayRow(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp)
-            .frostedGlass(PanelShape)
+            .frostedGlass(DuskTheme.chartShape)
             .combinedClickable(onClick = onClick, onLongClick = onLongClick)
             .heightIn(min = 54.dp)
             .padding(horizontal = 14.dp, vertical = 9.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Text(flag, fontSize = 22.sp)
+        Text(flag, style = MaterialTheme.typography.headlineSmall)
         Spacer(Modifier.width(12.dp))
         Column(modifier = Modifier.weight(1f)) {
-            Text(name, color = DuskTheme.onSurface, fontSize = 16.sp, maxLines = 1)
-            if (detail.isNotBlank()) Text(detail, color = detailColor, fontSize = 11.sp, maxLines = 4)
+            Text(name, color = DuskTheme.onSurface, style = MaterialTheme.typography.bodyLarge, maxLines = 1)
+            if (detail.isNotBlank()) Text(detail, color = detailColor, style = MaterialTheme.typography.bodySmall, maxLines = 4)
         }
         if (selected) {
             Spacer(Modifier.width(4.dp))

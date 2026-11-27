@@ -38,7 +38,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.mlmvpn.core.tunnel.IpFormatter
 import com.mlmvpn.core.tunnel.TunnelVpnService
 import com.mlmvpn.core.warp.CfWarpEngine
@@ -53,7 +52,6 @@ import com.mlmvpn.scanner.ui.settings.SettingsFooter
 import com.mlmvpn.scanner.ui.settings.SettingsGroup
 import com.mlmvpn.scanner.ui.settings.SettingsRow
 import com.mlmvpn.scanner.ui.settings.SettingsSectionHeader
-import com.mlmvpn.scanner.ui.theme.PanelShape
 import com.mlmvpn.scanner.ui.theme.DuskTheme
 import com.mlmvpn.scanner.ui.theme.rememberDuskSnackbarAction
 import com.mlmvpn.scanner.ui.theme.iosFieldColors
@@ -360,17 +358,17 @@ private fun ExitRow(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = if (onLongClick == null) 16.dp else 0.dp)
-            .frostedGlass(PanelShape)
+            .frostedGlass(DuskTheme.chartShape)
             .combinedClickable(onClick = onClick, onLongClick = onLongClick)
             .heightIn(min = 54.dp)
             .padding(horizontal = 14.dp, vertical = 9.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Text(flag, fontSize = 22.sp)
+        Text(flag, style = MaterialTheme.typography.headlineSmall)
         Spacer(Modifier.width(12.dp))
         Column(modifier = Modifier.weight(1f)) {
-            Text(name, color = DuskTheme.onSurface, fontSize = 16.sp, maxLines = 1)
-            if (detail.isNotBlank()) Text(detail, color = detailColor, fontSize = 11.sp, maxLines = 3)
+            Text(name, color = DuskTheme.onSurface, style = MaterialTheme.typography.bodyLarge, maxLines = 1)
+            if (detail.isNotBlank()) Text(detail, color = detailColor, style = MaterialTheme.typography.bodySmall, maxLines = 3)
         }
         if (selected) {
             Spacer(Modifier.width(4.dp))

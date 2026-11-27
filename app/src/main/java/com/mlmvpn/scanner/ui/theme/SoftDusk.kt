@@ -49,6 +49,9 @@ object DuskTheme {
     val blueGray = Color(0xFF58657A)
     val cream = Color(0xFFFFF8F1)
     val white = Color(0xFFFFFFFF)
+    val transparent = Color.Transparent
+    /** Fixed-width family reserved for addresses, ports, and other exact technical values. */
+    val monoFontFamily = FontFamily.Monospace
     /** Dedicated neutral backing keeps generated QR modules scannable in either appearance. */
     val qrSurface = Color.White
     /** Brand colors used only inside product identity and branded link illustrations. */

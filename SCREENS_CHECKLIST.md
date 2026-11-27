@@ -1,6 +1,6 @@
 # Eternal VPN — screen redesign checklist
 
-> **Progress: 952 / 1203 complete** — checked rows are migrated; uncompleted items are unchecked and carry a `deferred:` reason where applicable.
+> **Progress: 980 / 1205 complete** — checked rows are migrated; uncompleted items are unchecked and carry a `deferred:` reason where applicable.
 
 > Inventory generated from Kotlin source on 2026-11-26. A row is complete only after its visible composition, nested states, and overlays are reviewed against Soft Dusk tokens and migrated. Uncompleted rows remain unchecked and include a `deferred:` reason where work is intentionally postponed. Shared theme inheritance alone does **not** count as a completed visual redesign.
 
@@ -201,7 +201,7 @@ Found 230 screen-like public/internal composables across 133 Kotlin files (the f
 ### cfwarp
 
 - [x] `CfWarpSettingsScreen` — `com/mlmvpn/scanner/ui/cfwarp/CfWarpUi.kt` (Dusk semantic color tokens and shared grouped settings controls).
-- [ ] `Nat64ExitScreen` — `com/mlmvpn/scanner/ui/cfwarp/Nat64ExitUi.kt`
+- [x] `Nat64ExitScreen` — `com/mlmvpn/scanner/ui/cfwarp/Nat64ExitUi.kt` (Dusk palette, shared grouped controls, semantic type scale and RTL-aware directional padding)
 ### cloud
 
 - [x] `GatewaySettingsScreen` — `com/mlmvpn/scanner/ui/cloud/GatewaySettingsScreen.kt`
@@ -301,7 +301,7 @@ Found 230 screen-like public/internal composables across 133 Kotlin files (the f
 - [x] `IosModalHost` — `com/mlmvpn/scanner/ui/home/ModalHost.kt`
 ### lan
 
-- [ ] `LanGuideScreen` — `com/mlmvpn/scanner/ui/lan/LanGuideScreens.kt`
+- [x] `LanGuideScreen` — `com/mlmvpn/scanner/ui/lan/LanGuideScreens.kt` (Dusk palette and typography tokens with address values explicitly rendered LTR)
 - [x] `LanScreen` — `com/mlmvpn/scanner/ui/lan/LanScreen.kt` (Dusk semantic status palette for sharing, hotspot, security and empty/error states)
 ### mae
 
@@ -356,9 +356,9 @@ Found 230 screen-like public/internal composables across 133 Kotlin files (the f
 - [x] `AppPickerPage` — `com/mlmvpn/scanner/ui/settings/VpnSettingsScreen.kt`
 ### spider
 
-- [ ] `SpiderScreen` — `com/mlmvpn/scanner/ui/spider/SpiderScreen.kt`
-- [ ] `NewUserPage` — `com/mlmvpn/scanner/ui/spider/SpiderScreen.kt`
-- [ ] `NewExitPage` — `com/mlmvpn/scanner/ui/spider/SpiderScreen.kt`
+- [x] `SpiderScreen` — `com/mlmvpn/scanner/ui/spider/SpiderScreen.kt` (already uses shared settings groups, semantic Dusk colors, common snackbar/alert surfaces; verified no hardcoded style literals)
+- [x] `NewUserPage` — `com/mlmvpn/scanner/ui/spider/SpiderScreen.kt` (shared settings form/group/action components)
+- [x] `NewExitPage` — `com/mlmvpn/scanner/ui/spider/SpiderScreen.kt` (shared settings form/group/action components)
 ### store
 
 - [ ] `StoreScreen` — `com/mlmvpn/scanner/ui/store/StoreScreen.kt`
@@ -417,7 +417,7 @@ Found 230 screen-like public/internal composables across 133 Kotlin files (the f
 - [x] `EmailDialog` — `com/mlmvpn/scanner/ui/windscribe/WindscribeScreen.kt`
 ### com
 
-- [ ] `ConfigureScreen` — `com/mlmvpn/scanner/widget/studio/StudioConfigureActivity.kt`
+- [x] `ConfigureScreen` — `com/mlmvpn/scanner/widget/studio/StudioConfigureActivity.kt` (semantic Dusk colors, shared shapes, typography and spacing tokens)
 
 ## Supporting and leaf composables
 
@@ -689,11 +689,11 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 ### cfwarp
 
 - [ ] `ColumnScope` — `com/mlmvpn/scanner/ui/cfwarp/CfWarpUi.kt` (deferred: receiver signature only; rendered rows are shared Dusk settings components).
-- [ ] `ExitWaySwitch` — `com/mlmvpn/scanner/ui/cfwarp/Ipv4ExitUi.kt`
-- [ ] `ColumnScope` — `com/mlmvpn/scanner/ui/cfwarp/Ipv4ExitUi.kt`
-- [ ] `ExitWayRow` — `com/mlmvpn/scanner/ui/cfwarp/Ipv4ExitUi.kt`
-- [ ] `ColumnScope` — `com/mlmvpn/scanner/ui/cfwarp/Nat64ExitUi.kt`
-- [ ] `ExitRow` — `com/mlmvpn/scanner/ui/cfwarp/Nat64ExitUi.kt`
+- [x] `ExitWaySwitch` — `com/mlmvpn/scanner/ui/cfwarp/Ipv4ExitUi.kt` (shared Dusk button shape, semantic colors and Material type scale)
+- [ ] `ColumnScope` — `com/mlmvpn/scanner/ui/cfwarp/Ipv4ExitUi.kt` (deferred: receiver type only; no independent visual surface)
+- [x] `ExitWayRow` — `com/mlmvpn/scanner/ui/cfwarp/Ipv4ExitUi.kt` (shared Dusk shape/palette and Material typography; row layout inherits RTL)
+- [ ] `ColumnScope` — `com/mlmvpn/scanner/ui/cfwarp/Nat64ExitUi.kt` (deferred: receiver type only; no independent visual surface)
+- [x] `ExitRow` — `com/mlmvpn/scanner/ui/cfwarp/Nat64ExitUi.kt` (shared Dusk palette, shape and Material typography tokens)
 ### cloud
 
 - [x] `CfMethodCard` — `com/mlmvpn/scanner/ui/cloud/CfMethodCard.kt`
@@ -966,11 +966,11 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 > Audit note: the literal colors in `Wallpapers.PRESETS` are curated user-selectable wallpaper artwork, not component styling; the glass DstIn black/white values are alpha masks.
 ### lan
 
-- [ ] `LanDiagram` — `com/mlmvpn/scanner/ui/lan/LanDiagram.kt`
-- [ ] `Hop` — `com/mlmvpn/scanner/ui/lan/LanDiagram.kt`
-- [ ] `Link` — `com/mlmvpn/scanner/ui/lan/LanDiagram.kt`
-- [ ] `GuideListSection` — `com/mlmvpn/scanner/ui/lan/LanGuideScreens.kt`
-- [ ] `GuideValue` — `com/mlmvpn/scanner/ui/lan/LanGuideScreens.kt`
+- [x] `LanDiagram` — `com/mlmvpn/scanner/ui/lan/LanDiagram.kt` (Dusk semantic status colors, glyph/connector shapes and label typography)
+- [x] `Hop` — `com/mlmvpn/scanner/ui/lan/LanDiagram.kt` (shared Dusk status semantics, shape and label type scale)
+- [x] `Link` — `com/mlmvpn/scanner/ui/lan/LanDiagram.kt` (Dusk success/neutral colors and shared pill shape)
+- [x] `GuideListSection` — `com/mlmvpn/scanner/ui/lan/LanGuideScreens.kt` (delegates to shared Dusk section, row and footer components)
+- [x] `GuideValue` — `com/mlmvpn/scanner/ui/lan/LanGuideScreens.kt` (Dusk type/color tokens and explicit LTR monospace technical values)
 - [x] `LanStateCard` — `com/mlmvpn/scanner/ui/lan/LanScreen.kt` (Dusk blocker/status card)
 - [x] `StateGlyph` — `com/mlmvpn/scanner/ui/lan/LanScreen.kt` (Dusk status illustration)
 - [x] `ActionButton` — `com/mlmvpn/scanner/ui/lan/LanScreen.kt` (Dusk action semantic colors)
@@ -989,9 +989,9 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 - [x] `detail` — `com/mlmvpn/scanner/ui/lan/LanScreen.kt` (localized blocker explanation rendered in Dusk typography)
 ### lantern
 
-- [ ] `ColumnScope` — `com/mlmvpn/scanner/ui/lantern/LanternUi.kt`
-- [ ] `LanternLiveCard` — `com/mlmvpn/scanner/ui/lantern/LanternUi.kt`
-- [ ] `ModeRow` — `com/mlmvpn/scanner/ui/lantern/LanternUi.kt`
+- [ ] `ColumnScope` — `com/mlmvpn/scanner/ui/lantern/LanternUi.kt` (deferred: receiver type only; no independent visual surface)
+- [x] `LanternLiveCard` — `com/mlmvpn/scanner/ui/lantern/LanternUi.kt` (shared Dusk shape/status colors and Material typography)
+- [x] `ModeRow` — `com/mlmvpn/scanner/ui/lantern/LanternUi.kt` (Dusk colors and Material type scale; flow inherits RTL)
 ### mae
 
 - [x] `MaeAppIcon` — `com/mlmvpn/scanner/ui/mae/MaeAppIcon.kt` (shared squircle shape, palette and typography scale tokens)
@@ -1014,11 +1014,11 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 - [x] `ServiceChip` — `com/mlmvpn/scanner/ui/mae/MaeScreen.kt`
 ### mitm
 
-- [ ] `MitmSetupCard` — `com/mlmvpn/scanner/ui/mitm/MitmSetupCard.kt`
-- [ ] `StepRow` — `com/mlmvpn/scanner/ui/mitm/MitmSetupCard.kt`
-- [ ] `ActionButton` — `com/mlmvpn/scanner/ui/mitm/MitmSetupCard.kt`
-- [ ] `BrandPath` — `com/mlmvpn/scanner/ui/mitm/MitmSetupCard.kt`
-- [ ] `InfoLine` — `com/mlmvpn/scanner/ui/mitm/MitmSetupCard.kt`
+- [x] `MitmSetupCard` — `com/mlmvpn/scanner/ui/mitm/MitmSetupCard.kt` (Dusk semantic colors/shapes, Material typography and shared action components)
+- [x] `StepRow` — `com/mlmvpn/scanner/ui/mitm/MitmSetupCard.kt` (Dusk status colors and shared type scale)
+- [x] `ActionButton` — `com/mlmvpn/scanner/ui/mitm/MitmSetupCard.kt` (shared Dusk button colors and border)
+- [x] `BrandPath` — `com/mlmvpn/scanner/ui/mitm/MitmSetupCard.kt` (Dusk typography/colors with logical flow)
+- [x] `InfoLine` — `com/mlmvpn/scanner/ui/mitm/MitmSetupCard.kt` (Dusk typography/colors and start-aligned content)
 ### npv
 
 - [x] `RefreshQuestions` — `com/mlmvpn/scanner/ui/npv/NpvScreen.kt` (Dusk confirmation surface)
@@ -1132,8 +1132,8 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 - [x] `WorkerSetupRow` — `com/mlmvpn/scanner/ui/settings/WorkerSetupRow.kt`
 ### spider
 
-- [ ] `SpiderCloudRows` — `com/mlmvpn/scanner/ui/spider/SpiderConfigs.kt`
-- [ ] `SpiderRow` — `com/mlmvpn/scanner/ui/spider/SpiderConfigs.kt`
+- [x] `SpiderCloudRows` — `com/mlmvpn/scanner/ui/spider/SpiderConfigs.kt` (semantic Dusk colors and shared row structure)
+- [x] `SpiderRow` — `com/mlmvpn/scanner/ui/spider/SpiderConfigs.kt` (Dusk colors and Material typography)
 ### store
 
 - [ ] `ColumnScope` — `com/mlmvpn/scanner/ui/store/StoreScreen.kt`
@@ -1181,8 +1181,8 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 - [x] `Modifier` — `com/mlmvpn/scanner/ui/theme/IosButtons.kt` (shared Dusk palette/shape/spacing tokens)
 - [x] `DuskCard` — `com/mlmvpn/scanner/ui/theme/SoftDusk.kt`
 - [x] `DuskPill` — `com/mlmvpn/scanner/ui/theme/SoftDusk.kt`
-- [ ] `duskColorScheme` — `com/mlmvpn/scanner/ui/theme/SoftDusk.kt`
-- [ ] `MlmVpnTheme` — `com/mlmvpn/scanner/ui/theme/Theme.kt`
+- [x] `duskColorScheme` — `com/mlmvpn/scanner/ui/theme/SoftDusk.kt`
+- [x] `MlmVpnTheme` — `com/mlmvpn/scanner/ui/theme/Theme.kt`
 ### tunnel
 
 - [ ] `withFlag` — `com/mlmvpn/scanner/ui/tunnel/CountryLabel.kt`
@@ -1275,7 +1275,7 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 ### com
 
 - [ ] `LocaleProvider` — `com/mlmvpn/scanner/utils/AppLocaleManager.kt`
-- [ ] `Heading` — `com/mlmvpn/scanner/widget/studio/StudioConfigureActivity.kt`
+- [x] `Heading` — `com/mlmvpn/scanner/widget/studio/StudioConfigureActivity.kt` (semantic Dusk colors, shared shapes, typography and spacing tokens)
 
 ## Android activities and fragments
 
@@ -1383,7 +1383,9 @@ Manifest-declared widget receivers (rendering/state audited together with their 
 
 ## Native XML and Android resource surfaces
 
-- [x] `app/src/main/res/values/themes.xml` — platform windows, splash background, bars and native Material controls use Soft Dusk night tokens. — platform theme, system dialogs and bars.
+- [x] `app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml`, `ic_launcher_round.xml` and `drawable/ic_launcher_monochrome.xml` — adaptive and monochrome themed icons use the Dusk launcher artwork.
+- [x] `app/src/main/res/values/dimens.xml` — native-view radii map to centralized Soft Dusk button, card, dialog, chip and badge shape resources.
+- [x] `app/src/main/res/values/themes.xml` — platform windows, splash background, bars and native Material controls use Soft Dusk night tokens and shared dimension resources.
 - [x] `app/src/main/res/values/colors.xml` — native color resources are named dusk_* and map to Soft Dusk night tokens; QR backing remains neutral white. — legacy palette references.
 - [x] `app/src/main/res/layout/dialog_edit_node.xml` — native edit dialog uses shared Dusk palette, Vazirmatn and start/end positioning.
 - [x] `app/src/main/res/layout/dialog_share_node.xml` — native share dialog uses Dusk surface/text and semantic QR backing.

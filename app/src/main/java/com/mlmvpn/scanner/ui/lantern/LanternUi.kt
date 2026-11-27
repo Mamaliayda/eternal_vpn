@@ -15,13 +15,13 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AutoAwesome
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.FormatListBulleted
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -38,7 +38,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.mlmvpn.core.lantern.LanternEngine
 import com.mlmvpn.scanner.store.tr
 import com.mlmvpn.scanner.ui.emergency.faDigits
@@ -191,7 +190,7 @@ private fun LanternLiveCard(live: LanternEngine.Live) {
     var all by rememberSaveable { mutableStateOf(false) }
     SettingsSectionHeader(tr("وضعیت لنترن", "Lantern's status"))
     Column(
-        Modifier.fillMaxWidth().padding(horizontal = 16.dp).frostedGlass(RoundedCornerShape(16.dp)).padding(14.dp),
+        Modifier.fillMaxWidth().padding(horizontal = 16.dp).frostedGlass(DuskTheme.chartShape).padding(14.dp),
         verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {
         val head = when {
@@ -210,17 +209,17 @@ private fun LanternLiveCard(live: LanternEngine.Live) {
             live.running -> DuskTheme.onSurface
             live.error != null -> DuskTheme.error
             else -> DuskTheme.muted
-        }, fontSize = 15.sp, fontWeight = FontWeight.SemiBold, lineHeight = 21.sp)
-        if (!live.running && live.error != null) Text(live.error, color = DuskTheme.muted, fontSize = 12.sp, lineHeight = 18.sp)
-        if (live.running && live.exhausted) LanternEngine.blockedMessage()?.let { Text(it, color = DuskTheme.muted, fontSize = 12.sp, lineHeight = 18.sp) }
+        }, style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.SemiBold)
+        if (!live.running && live.error != null) Text(live.error, color = DuskTheme.muted, style = MaterialTheme.typography.bodySmall)
+        if (live.running && live.exhausted) LanternEngine.blockedMessage()?.let { Text(it, color = DuskTheme.muted, style = MaterialTheme.typography.bodySmall) }
         val lines = if (all) live.log else live.log.takeLast(6)
         if (lines.isNotEmpty()) {
             Spacer(Modifier.heightIn(min = 4.dp))
-            lines.forEach { Text("· $it", color = DuskTheme.muted, fontSize = 12.sp, lineHeight = 17.sp) }
+            lines.forEach { Text("· $it", color = DuskTheme.muted, style = MaterialTheme.typography.bodySmall) }
         }
         if (live.log.size > 6) {
             Text(if (all) tr("کوتاه‌تر", "Less") else tr("همهٔ گزارش (${faDigits(live.log.size.toString())} خط)", "The whole log (${live.log.size} lines)"),
-                color = DuskTheme.primary, fontSize = 13.sp, modifier = Modifier.clickable { all = !all }.padding(top = 4.dp))
+                color = DuskTheme.primary, style = MaterialTheme.typography.labelMedium, modifier = Modifier.clickable { all = !all }.padding(top = 4.dp))
         }
     }
 }
@@ -232,8 +231,8 @@ private fun ModeRow(title: String, detail: String, selected: Boolean, onClick: (
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Column(Modifier.weight(1f)) {
-            Text(title, color = DuskTheme.onSurface, fontSize = 16.sp)
-            Text(detail, color = DuskTheme.muted, fontSize = 12.sp, lineHeight = 18.sp)
+            Text(title, color = DuskTheme.onSurface, style = MaterialTheme.typography.bodyLarge)
+            Text(detail, color = DuskTheme.muted, style = MaterialTheme.typography.bodySmall)
         }
         if (selected) {
             Spacer(Modifier.width(8.dp))

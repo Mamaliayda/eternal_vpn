@@ -13,23 +13,21 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Laptop
 import androidx.compose.material.icons.filled.Public
 import androidx.compose.material.icons.filled.Smartphone
 import androidx.compose.material.icons.filled.VpnLock
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.mlmvpn.scanner.R
 import com.mlmvpn.scanner.lan.EngineShare
 import com.mlmvpn.scanner.lan.LanStatus
@@ -80,23 +78,22 @@ private fun Hop(labelRes: Int, icon: ImageVector, live: Boolean, modifier: Modif
     Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
         Box(
             modifier = Modifier
-                .size(44.dp)
-                .background(tint.copy(alpha = if (live) 0.20f else 0.10f), RoundedCornerShape(13.dp)),
+                .size(DuskTheme.navIconSize)
+                .background(tint.copy(alpha = if (live) 0.20f else 0.10f), DuskTheme.glyphShape),
             contentAlignment = Alignment.Center,
         ) {
             Icon(
                 icon,
                 contentDescription = null,
                 tint = if (live) tint else DuskTheme.disabled,
-                modifier = Modifier.size(21.dp),
+                modifier = Modifier.size(DuskTheme.iconSize),
             )
         }
-        Spacer(Modifier.height(7.dp))
+        Spacer(Modifier.height(DuskTheme.space1_5))
         Text(
             stringResource(labelRes),
             color = if (live) DuskTheme.onSurface else DuskTheme.muted,
-            fontSize = 11.sp,
-            lineHeight = 14.sp,
+            style = MaterialTheme.typography.labelSmall,
             textAlign = TextAlign.Center,
         )
     }
@@ -111,8 +108,8 @@ private fun Link(live: Boolean) {
             .width(18.dp)
             .height(2.dp)
             .background(
-                if (live) DuskTheme.success else Color.White.copy(alpha = 0.14f),
-                RoundedCornerShape(1.dp),
+                if (live) DuskTheme.success else DuskTheme.white.copy(alpha = 0.14f),
+                DuskTheme.controlShape,
             ),
     )
 }
