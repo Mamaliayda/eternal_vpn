@@ -173,6 +173,7 @@ class WidgetConnectService : Service() {
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
         )
         val n = NotificationCompat.Builder(this, CHANNEL_ID)
+            .setColor(androidx.core.content.ContextCompat.getColor(this, R.color.gs_primary))
             .setSmallIcon(R.drawable.ic_notification)
             .setContentTitle(title)
             .setContentText(text)
@@ -197,6 +198,7 @@ class WidgetConnectService : Service() {
             PendingIntent.getActivity(this, 0, it, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
         }
         return NotificationCompat.Builder(this, CHANNEL_ID)
+            .setColor(androidx.core.content.ContextCompat.getColor(this, R.color.gs_primary))
             .setSmallIcon(R.drawable.ic_notification)
             .setContentTitle("MLMVPN")
             .setContentText(text)

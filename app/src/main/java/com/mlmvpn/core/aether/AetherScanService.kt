@@ -165,6 +165,7 @@ class AetherScanService : Service() {
             Intent(this, AetherScanService::class.java).apply { action = ACTION_STOP },
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
         val builder = NotificationCompat.Builder(this, CHANNEL_ID)
+            .setColor(androidx.core.content.ContextCompat.getColor(this, R.color.gs_primary))
             .setSmallIcon(R.drawable.ic_vpn)
             .setContentTitle(title)
             .setOngoing(true)

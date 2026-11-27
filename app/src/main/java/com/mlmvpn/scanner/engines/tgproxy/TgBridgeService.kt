@@ -133,6 +133,7 @@ class TgBridgeService : Service() {
         val stop = PendingIntent.getService(this, 1, Intent(this, TgBridgeService::class.java).setAction(ACTION_STOP),
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
         val b = NotificationCompat.Builder(this, CHANNEL_ID)
+            .setColor(androidx.core.content.ContextCompat.getColor(this, R.color.gs_primary))
             .setContentTitle(tr("پل تلگرام", "Telegram bridge"))
             .setContentText(text)
             .setSmallIcon(R.drawable.ic_scanner)

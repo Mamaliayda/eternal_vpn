@@ -89,8 +89,8 @@ object WidgetPainter {
         val a = opacity / 100f
         val fill = Paint(Paint.ANTI_ALIAS_FLAG).apply {
             shader = LinearGradient(0f, 0f, 0f, h,
-                WidgetPaint.alpha(0xFF2C2C30.toInt(), 0.18f + a * 0.70f),
-                WidgetPaint.alpha(0xFF0E0E10.toInt(), 0.24f + a * 0.70f),
+                WidgetPaint.alpha(0xFF34334D.toInt(), 0.18f + a * 0.70f),
+                WidgetPaint.alpha(0xFF191D32.toInt(), 0.24f + a * 0.70f),
                 Shader.TileMode.CLAMP)
         }
         c.drawPath(path, fill)
@@ -164,8 +164,8 @@ object WidgetPainter {
         val align = if (rtl) WidgetArt.Align.RIGHT else WidgetArt.Align.LEFT
         val name = WidgetArt.fit(labelOf(app), shadowed(WidgetArt.paint(ctx, 15f * d, 0xFFFFFFFF.toInt(), WidgetArt.Weight.BOLD), d, !style.card), textW, rtl, 0.76f)
         val stateColor = when {
-            view.up -> 0xFF5AF08A.toInt()
-            view.connecting -> 0xFFFFC15A.toInt()
+            view.up -> WidgetPaint.GREEN
+            view.connecting -> WidgetPaint.AMBER
             else -> 0xC8FFFFFF.toInt()
         }
         val state = if (style.status || style.label) WidgetArt.firstFitting(stateLines(view, style),
@@ -194,8 +194,8 @@ object WidgetPainter {
         }
         if (style.status) {
             val color = when {
-                view.up -> 0xFF5AF08A.toInt()
-                view.connecting -> 0xFFFFC15A.toInt()
+                view.up -> WidgetPaint.GREEN
+                view.connecting -> WidgetPaint.AMBER
                 else -> 0xC8FFFFFF.toInt()
             }
             WidgetArt.firstFitting(stateLines(view, style), shadowed(WidgetArt.paint(ctx, 11.5f * d, color), d, !style.card), w - pad * 2, rtl)

@@ -18,11 +18,11 @@ import kotlin.math.min
  */
 object WidgetPaint {
 
-    // The lamp colours: iOS's system green and orange, as the board's lamp uses.
-    const val GREEN = 0xFF34C759.toInt()
-    const val AMBER = 0xFFFF9F0A.toInt()
-    const val GRAY = 0xFF8E8E93.toInt()
-    const val RED = 0xFFFF453A.toInt()
+    // Shared Dusk semantic status colours, used by both home-screen widget families.
+    const val GREEN = 0xFF9BCFB4.toInt() // Dusk night success
+    const val AMBER = 0xFFFFA39B.toInt() // Dusk night accent while connecting
+    const val GRAY = 0xFFC1BED0.toInt() // Dusk night muted
+    const val RED = 0xFFFFB4AB.toInt() // Dusk night error
 
     fun alpha(color: Int, a: Float): Int = ColorUtils.setAlphaComponent(color, (a.coerceIn(0f, 1f) * 255).toInt())
 
@@ -53,13 +53,13 @@ object WidgetPaint {
      */
     fun lamp(canvas: Canvas, cx: Float, cy: Float, d: Float, connecting: Boolean) {
         val ring = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-            color = 0xFF0B0B0C.toInt()
-            setShadowLayer(d * 0.2f, 0f, d * 0.08f, 0x66000000)
+            color = 0xFF191D32.toInt()
+            setShadowLayer(d * 0.2f, 0f, d * 0.08f, 0x66191D32)
         }
         canvas.drawCircle(cx, cy, d / 2f, ring)
         val inner = d / 2f - max(1.5f, d * 0.14f)
-        val top = if (connecting) 0xFFFFC15A.toInt() else 0xFF5AF08A.toInt()
-        val bottom = if (connecting) 0xFFE58A00.toInt() else 0xFF2FBF5C.toInt()
+        val top = if (connecting) AMBER else GREEN
+        val bottom = if (connecting) 0xFFE98583.toInt() else 0xFF43765A.toInt()
         val dot = Paint(Paint.ANTI_ALIAS_FLAG).apply {
             shader = LinearGradient(0f, cy - inner, 0f, cy + inner, top, bottom, Shader.TileMode.CLAMP)
         }

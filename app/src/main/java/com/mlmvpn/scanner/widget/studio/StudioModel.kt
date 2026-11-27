@@ -230,7 +230,7 @@ data class StudioPreset(
 
 object StudioPresets {
     val ALL: List<StudioPreset> = listOf(
-        StudioPreset(StudioStyle.GLASS, 0xFF39E58C.toInt(), 0xFF0F2236.toInt(), 46, 28, ButtonStyle.RING, StudioSize.MEDIUM,
+        StudioPreset(StudioStyle.GLASS, 0xFF9BCFB4.toInt(), 0xFF191D32.toInt(), 46, 28, ButtonStyle.RING, StudioSize.MEDIUM,
             setOf(Info.BRAND, Info.METHOD, Info.STATUS, Info.COUNTRY, Info.SPEED)),
         StudioPreset(StudioStyle.MINIMAL, 0xFFE9EBEE.toInt(), 0xFF131518.toInt(), 94, 22, ButtonStyle.PILL, StudioSize.MEDIUM,
             setOf(Info.METHOD, Info.COUNTRY, Info.SPEED)),

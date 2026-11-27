@@ -100,8 +100,9 @@ import com.mlmvpn.scanner.engines.github.GtExitRule
 import com.mlmvpn.scanner.engines.github.GtExitUi
 import com.mlmvpn.scanner.engines.github.GtGithub
 import com.mlmvpn.scanner.engines.github.GtSession
-import com.mlmvpn.scanner.ui.settings.Ios
 import com.mlmvpn.scanner.ui.settings.IosAlert
+import com.mlmvpn.scanner.ui.theme.DuskTheme
+import com.mlmvpn.scanner.ui.theme.rememberDuskSnackbarAction
 import com.mlmvpn.scanner.ui.settings.IosAlertAction
 import com.mlmvpn.scanner.ui.settings.IosScreen
 import com.mlmvpn.scanner.ui.settings.SettingsActionRow
@@ -128,6 +129,7 @@ import com.mlmvpn.scanner.store.tr
 @Composable
 fun GithubTunnelScreen(onBack: () -> Unit, onOpenScanner: () -> Unit, onOpenCloud: () -> Unit) {
     val context = LocalContext.current
+    val showSnackbar = rememberDuskSnackbarAction()
     LaunchedEffect(Unit) { GtEngine.attach(context) }
     val st by GtEngine.state.collectAsState()
     val running by MyVpnService.isRunningFlow.collectAsState()
@@ -280,10 +282,10 @@ fun GithubTunnelScreen(onBack: () -> Unit, onOpenScanner: () -> Unit, onOpenClou
                 onClick = { dialAction?.invoke() },
             )
             Spacer(Modifier.height(14.dp))
-            Text(headline, color = Ios.Label, fontSize = 20.sp, fontWeight = FontWeight.Bold, textAlign = TextAlign.Center,
+            Text(headline, color = DuskTheme.onSurface, fontSize = 20.sp, fontWeight = FontWeight.Bold, textAlign = TextAlign.Center,
                 modifier = Modifier.padding(horizontal = 24.dp))
             Spacer(Modifier.height(6.dp))
-            Text(line, color = Ios.SecondaryLabel, fontSize = 13.sp, lineHeight = 20.sp, textAlign = TextAlign.Center,
+            Text(line, color = DuskTheme.muted, fontSize = 13.sp, lineHeight = 20.sp, textAlign = TextAlign.Center,
                 modifier = Modifier.padding(horizontal = 28.dp))
         }
         com.mlmvpn.scanner.ui.RouteChips()
@@ -295,21 +297,21 @@ fun GithubTunnelScreen(onBack: () -> Unit, onOpenScanner: () -> Unit, onOpenClou
             else -> null
         }
         if (failure != null && failure.first.isNotBlank()) {
-            Notice(failure.first, Ios.Red)
+            Notice(failure.first, DuskTheme.error)
             when (failure.second) {
-                "NO_CLEAN_IP" -> SettingsGroup { SettingsActionRow(stringResource(R.string.gt_fix_scanner), Icons.Default.Radar, Ios.Blue, onClick = onOpenScanner) }
+                "NO_CLEAN_IP" -> SettingsGroup { SettingsActionRow(stringResource(R.string.gt_fix_scanner), Icons.Default.Radar, DuskTheme.primary, onClick = onOpenScanner) }
                 "BROKER_NOT_DEPLOYED", "BROKER_NEEDS_UPDATE" -> Unit
                 "RUN_DIED_EARLY", "NONE_AVAILABLE" -> SettingsGroup {
-                    SettingsActionRow(stringResource(R.string.gt_add_account), Icons.Default.Add, Ios.Green, onClick = { GtEngine.signIn(adding = true) })
+                    SettingsActionRow(stringResource(R.string.gt_add_account), Icons.Default.Add, DuskTheme.success, onClick = { GtEngine.signIn(adding = true) })
                 }
                 else -> if (live) SettingsGroup {
-                    SettingsActionRow(stringResource(R.string.gt_fix_retry), Icons.Default.Autorenew, Ios.Blue, onClick = { withVpnConsent { GtEngine.connect() } })
+                    SettingsActionRow(stringResource(R.string.gt_fix_retry), Icons.Default.Autorenew, DuskTheme.primary, onClick = { withVpnConsent { GtEngine.connect() } })
                 }
             }
         }
 
         // ── the GitHub code ───────────────────────────────────────────────────────────
-        st.signIn?.let { SignInCard(it, context) }
+        st.signIn?.let { SignInCard(it, context, showSnackbar) }
 
         // ── what is still missing ───────────────────────────────────────────────────────
         if (!setupDone || (!live && !connected && !building)) {
@@ -360,24 +362,24 @@ fun GithubTunnelScreen(onBack: () -> Unit, onOpenScanner: () -> Unit, onOpenClou
             SettingsSectionHeader(stringResource(R.string.gt_sec_session))
             SettingsGroup {
                 SettingsRow(stringResource(R.string.gt_time_left), icon = Icons.Default.Schedule,
-                    tint = if (session.status == "EXPIRING_SOON") Ios.Orange else Ios.Green,
+                    tint = if (session.status == "EXPIRING_SOON") DuskTheme.accent else DuskTheme.success,
                     value = countdown(session.expiresAt, now), showChevron = false)
                 if (session.runnerCountry.isNotBlank()) {
                     Separator()
-                    SettingsRow(stringResource(R.string.gt_server_place), icon = Icons.Default.Place, tint = Ios.Blue,
+                    SettingsRow(stringResource(R.string.gt_server_place), icon = Icons.Default.Place, tint = DuskTheme.primary,
                         value = listOf(countryName(session.runnerCountry), session.runnerCity).filter { it.isNotBlank() }.joinToString(" — "),
                         showChevron = false)
                 }
                 Separator()
-                SettingsRow(stringResource(R.string.gt_on_account), icon = Icons.Default.AccountCircle, tint = Ios.Gray,
+                SettingsRow(stringResource(R.string.gt_on_account), icon = Icons.Default.AccountCircle, tint = DuskTheme.disabled,
                     value = "@" + session.accountLogin, showChevron = false)
                 Separator()
                 SettingsToggle(stringResource(R.string.gt_autorenew), checked = st.autoRenew,
-                    onCheckedChange = { GtEngine.setAutoRenew(it) }, icon = Icons.Default.Autorenew, tint = Ios.Teal,
+                    onCheckedChange = { GtEngine.setAutoRenew(it) }, icon = Icons.Default.Autorenew, tint = DuskTheme.secondary,
                     subtitle = if (st.renewing) stringResource(R.string.gt_renewing_now) else stringResource(R.string.gt_autorenew_hint))
                 Separator()
                 var confirmEnd by remember { mutableStateOf(false) }
-                SettingsActionRow(stringResource(R.string.gt_end_session), Icons.Default.StopCircle, Ios.Orange,
+                SettingsActionRow(stringResource(R.string.gt_end_session), Icons.Default.StopCircle, DuskTheme.accent,
                     onClick = { confirmEnd = true })
                 if (confirmEnd) IosAlert(
                     title = stringResource(R.string.gt_end_title),
@@ -396,16 +398,16 @@ fun GithubTunnelScreen(onBack: () -> Unit, onOpenScanner: () -> Unit, onOpenClou
         if (connected || st.link.ips.isNotEmpty()) {
             SettingsSectionHeader(stringResource(R.string.gt_sec_link))
             SettingsGroup {
-                SettingsRow(stringResource(R.string.gt_clean_ips), icon = Icons.Default.Link, tint = Ios.Orange,
+                SettingsRow(stringResource(R.string.gt_clean_ips), icon = Icons.Default.Link, tint = DuskTheme.accent,
                     value = st.link.ips.joinToString("، ").ifBlank { "—" }, showChevron = false)
                 if (st.link.delayMs > 0) {
                     Separator()
-                    SettingsRow(stringResource(R.string.gt_delay), icon = Icons.Default.Speed, tint = Ios.Green,
+                    SettingsRow(stringResource(R.string.gt_delay), icon = Icons.Default.Speed, tint = DuskTheme.success,
                         value = stringResource(R.string.gt_ms, st.link.delayMs.toInt()), showChevron = false)
                 }
                 if (connected) {
                     Separator()
-                    SettingsActionRow(stringResource(R.string.disconnect), Icons.Default.PowerSettingsNew, Ios.Red,
+                    SettingsActionRow(stringResource(R.string.disconnect), Icons.Default.PowerSettingsNew, DuskTheme.error,
                         onClick = { GtEngine.disconnect() })
                 }
             }
@@ -417,13 +419,13 @@ fun GithubTunnelScreen(onBack: () -> Unit, onOpenScanner: () -> Unit, onOpenClou
         // ── the exit country ────────────────────────────────────────────────────────────
         SettingsSectionHeader(stringResource(R.string.gt_sec_exit))
         SettingsGroup {
-            SettingsRow(stringResource(R.string.gt_exit_country), icon = Icons.Default.Public, tint = Ios.Blue,
+            SettingsRow(stringResource(R.string.gt_exit_country), icon = Icons.Default.Public, tint = DuskTheme.primary,
                 value = if (ex.prefs.country.isBlank()) stringResource(R.string.gt_exit_fastest) else CountryLabel.withFlag(ex.prefs.country),
                 subtitle = if (ex.prefs.country.isBlank()) stringResource(R.string.gt_exit_fastest_detail) else null,
                 onClick = { page = "country" })
             if (ex.prefs.country.isNotBlank()) {
                 Separator()
-                SettingsRow(stringResource(R.string.gt_exit_provider), icon = Icons.Default.Hub, tint = Ios.Purple,
+                SettingsRow(stringResource(R.string.gt_exit_provider), icon = Icons.Default.Hub, tint = DuskTheme.purple,
                     value = providerLabel(ex.prefs.provider),
                     subtitle = providerNote(ex.prefs.provider),
                     onClick = {
@@ -434,7 +436,7 @@ fun GithubTunnelScreen(onBack: () -> Unit, onOpenScanner: () -> Unit, onOpenClou
             if (connected) {
                 val busyExit = ex.job == "preparing" || ex.job == "switching"
                 Separator()
-                SettingsRow(stringResource(R.string.gt_exit_seen), icon = Icons.Default.Visibility, tint = Ios.Green,
+                SettingsRow(stringResource(R.string.gt_exit_seen), icon = Icons.Default.Visibility, tint = DuskTheme.success,
                     value = when {
                         busyExit -> stringResource(R.string.gt_working)
                         ex.seenCountry.isNotBlank() -> CountryLabel.withFlag(ex.seenCountry)
@@ -446,10 +448,10 @@ fun GithubTunnelScreen(onBack: () -> Unit, onOpenScanner: () -> Unit, onOpenClou
                 // Measured, not labelled: where a STUN server sees this tunnel's UDP come from.
                 SettingsRow(stringResource(R.string.gt_exit_udp), icon = Icons.Default.Call,
                     tint = when {
-                        ex.udpState == "none" -> Ios.Red
-                        ex.udpState == "ok" && ex.seenCountry.isNotBlank() && ex.udpCountry != ex.seenCountry -> Ios.Orange
-                        ex.udpState == "ok" -> Ios.Green
-                        else -> Ios.Gray
+                        ex.udpState == "none" -> DuskTheme.error
+                        ex.udpState == "ok" && ex.seenCountry.isNotBlank() && ex.udpCountry != ex.seenCountry -> DuskTheme.accent
+                        ex.udpState == "ok" -> DuskTheme.success
+                        else -> DuskTheme.disabled
                     },
                     value = when {
                         busyExit || ex.udpState == "testing" -> stringResource(R.string.gt_exit_udp_testing)
@@ -468,9 +470,9 @@ fun GithubTunnelScreen(onBack: () -> Unit, onOpenScanner: () -> Unit, onOpenClou
             }
         }
         when (ex.job) {
-            "preparing" -> Notice(stringResource(R.string.gt_exit_preparing, countryName(ex.jobCountry)), Ios.Blue)
-            "switching" -> Notice(stringResource(R.string.gt_exit_switching), Ios.Blue)
-            "partial", "failed" -> if (ex.jobError.isNotBlank()) Notice(stringResource(R.string.gt_exit_problem, ex.jobError), Ios.Orange)
+            "preparing" -> Notice(stringResource(R.string.gt_exit_preparing, countryName(ex.jobCountry)), DuskTheme.primary)
+            "switching" -> Notice(stringResource(R.string.gt_exit_switching), DuskTheme.primary)
+            "partial", "failed" -> if (ex.jobError.isNotBlank()) Notice(stringResource(R.string.gt_exit_problem, ex.jobError), DuskTheme.accent)
         }
         SettingsFooter(stringResource(R.string.gt_exit_footer) + " " + stringResource(R.string.gt_exit_udp_footer))
 
@@ -484,7 +486,7 @@ fun GithubTunnelScreen(onBack: () -> Unit, onOpenScanner: () -> Unit, onOpenClou
                     SettingsRow(
                         title = CountryLabel.withFlag(x.country) + (if (x.city.isNotBlank()) " — " + x.city else ""),
                         icon = Icons.Default.Dns,
-                        tint = when (x.state) { "ready" -> Ios.Green; "starting" -> Ios.Orange; else -> Ios.Red },
+                        tint = when (x.state) { "ready" -> DuskTheme.success; "starting" -> DuskTheme.accent; else -> DuskTheme.error },
                         value = when {
                             x.state == "ready" && x.id == ex.use -> stringResource(R.string.gt_exit_role_default)
                             x.state == "ready" && x.id in ex.inUse -> stringResource(R.string.gt_exit_role_rule)
@@ -507,7 +509,7 @@ fun GithubTunnelScreen(onBack: () -> Unit, onOpenScanner: () -> Unit, onOpenClou
                 if (i > 0) Separator()
                 SettingsRow(
                     title = CountryLabel.withFlag(r.country) + (if (r.provider.isNotBlank()) " · " + providerLabel(r.provider) else ""),
-                    icon = Icons.Default.Language, tint = Ios.Teal,
+                    icon = Icons.Default.Language, tint = DuskTheme.secondary,
                     subtitle = ruleSummary(context, r),
                     onClick = {
                         draft = RuleDraft(i, r.country, r.provider, r.domains.joinToString(" "), r.apps.toSet())
@@ -516,7 +518,7 @@ fun GithubTunnelScreen(onBack: () -> Unit, onOpenScanner: () -> Unit, onOpenClou
                 )
             }
             if (ex.prefs.rules.isNotEmpty()) Separator()
-            SettingsActionRow(stringResource(R.string.gt_rule_add), Icons.Default.Add, Ios.Green,
+            SettingsActionRow(stringResource(R.string.gt_rule_add), Icons.Default.Add, DuskTheme.success,
                 onClick = { draft = RuleDraft(); page = "rule" })
         }
         SettingsFooter(stringResource(R.string.gt_rules_footer))
@@ -530,13 +532,13 @@ fun GithubTunnelScreen(onBack: () -> Unit, onOpenScanner: () -> Unit, onOpenClou
                 SettingsRow(
                     title = "@" + a.login,
                     icon = Icons.Default.AccountCircle,
-                    tint = when (a.health) { "OK" -> if (a.disabled) Ios.Gray else Ios.Green; "AUTH_REQUIRED" -> Ios.Red; else -> Ios.Orange },
+                    tint = when (a.health) { "OK" -> if (a.disabled) DuskTheme.disabled else DuskTheme.success; "AUTH_REQUIRED" -> DuskTheme.error; else -> DuskTheme.accent },
                     value = accountState(a),
                     onClick = { menuFor = a },
                 )
             }
             if (st.accounts.isNotEmpty()) Separator()
-            SettingsActionRow(stringResource(R.string.gt_add_account), Icons.Default.Add, Ios.Green,
+            SettingsActionRow(stringResource(R.string.gt_add_account), Icons.Default.Add, DuskTheme.success,
                 busy = st.signIn?.waiting == true, onClick = { GtEngine.signIn(adding = st.accounts.isNotEmpty()) })
             menuFor?.let { a ->
                 IosAlert(
@@ -564,11 +566,11 @@ fun GithubTunnelScreen(onBack: () -> Unit, onOpenScanner: () -> Unit, onOpenClou
         SettingsSectionHeader(tr("ورکر کلادفلر (اختیاری)", "Cloudflare Worker (optional)"))
         SettingsGroup {
             if (cloudAccounts.isEmpty()) {
-                SettingsActionRow(stringResource(R.string.gt_broker_need_cf), Icons.Default.Cloud, Ios.CloudflareOrange, onClick = onOpenCloud)
+                SettingsActionRow(stringResource(R.string.gt_broker_need_cf), Icons.Default.Cloud, DuskTheme.cloudflareOrange, onClick = onOpenCloud)
             } else {
                 SettingsRow(
                     title = stringResource(R.string.gt_broker_account),
-                    icon = Icons.Default.Cloud, tint = Ios.CloudflareOrange,
+                    icon = Icons.Default.Cloud, tint = DuskTheme.cloudflareOrange,
                     value = cf?.let { it.name.ifBlank { it.email } } ?: "—",
                     showChevron = cloudAccounts.size > 1,
                     onClick = if (cloudAccounts.size > 1) ({
@@ -580,21 +582,21 @@ fun GithubTunnelScreen(onBack: () -> Unit, onOpenScanner: () -> Unit, onOpenClou
                     Separator()
                     // The address as the second line, not the trailing value: a workers.dev name is long
                     // enough to squeeze the label into two broken lines.
-                    SettingsRow(stringResource(R.string.gt_broker_address), icon = Icons.Default.Link, tint = Ios.Indigo,
+                    SettingsRow(stringResource(R.string.gt_broker_address), icon = Icons.Default.Link, tint = DuskTheme.indigo,
                         subtitle = st.broker.effectiveUrl.removePrefix("https://"), showChevron = false,
-                        onClick = { copy(context, st.broker.effectiveUrl) })
+                        onClick = { copy(context, st.broker.effectiveUrl, showSnackbar) })
                 }
                 Separator()
                 SettingsActionRow(
                     stringResource(if (st.broker.deployed) R.string.gt_broker_update else R.string.gt_broker_deploy),
-                    Icons.Default.CloudUpload, Ios.Blue,
+                    Icons.Default.CloudUpload, DuskTheme.primary,
                     busy = st.brokerBusy,
                     enabled = cf != null,
                     onClick = { cf?.let { GtEngine.deployBroker(it) } },
                 )
             }
         }
-        if (st.brokerError.isNotBlank()) Notice(st.brokerError, Ios.Red)
+        if (st.brokerError.isNotBlank()) Notice(st.brokerError, DuskTheme.error)
         SettingsFooter(stringResource(R.string.gt_broker_footer))
         }
 
@@ -609,7 +611,7 @@ fun GithubTunnelScreen(onBack: () -> Unit, onOpenScanner: () -> Unit, onOpenClou
                 )
                 if (customUrl.trim() != st.broker.customUrl) {
                     Separator()
-                    SettingsActionRow(stringResource(R.string.gt_save), Icons.Default.CheckCircle, Ios.Blue,
+                    SettingsActionRow(stringResource(R.string.gt_save), Icons.Default.CheckCircle, DuskTheme.primary,
                         onClick = { GtEngine.setCustomUrl(customUrl) })
                 }
             }
@@ -620,8 +622,8 @@ fun GithubTunnelScreen(onBack: () -> Unit, onOpenScanner: () -> Unit, onOpenClou
         SettingsSectionHeader(stringResource(R.string.gt_sec_more))
         var confirmReset by remember { mutableStateOf(false) }
         SettingsGroup {
-            SettingsActionRow(stringResource(R.string.gt_reset), Icons.Default.DeleteForever, Ios.Red,
-                labelColor = Ios.Red, onClick = { confirmReset = true })
+            SettingsActionRow(stringResource(R.string.gt_reset), Icons.Default.DeleteForever, DuskTheme.error,
+                labelColor = DuskTheme.error, onClick = { confirmReset = true })
         }
         SettingsFooter(stringResource(R.string.gt_reset_footer))
         if (confirmReset) IosAlert(
@@ -645,7 +647,7 @@ fun GithubTunnelScreen(onBack: () -> Unit, onOpenScanner: () -> Unit, onOpenClou
 
 @Composable
 private fun Dial(on: Boolean, working: Boolean, failed: Boolean, enabled: Boolean, label: String, onClick: () -> Unit) {
-    val accent = when { on -> Ios.Green; failed -> Ios.Red; else -> Ios.Indigo }
+    val accent = when { on -> DuskTheme.success; failed -> DuskTheme.error; else -> DuskTheme.indigo }
     val spin = if (working) {
         rememberInfiniteTransition(label = "gt-dial").animateFloat(0f, 360f,
             infiniteRepeatable(tween(1400, easing = LinearEasing)), label = "gt-spin").value
@@ -684,57 +686,57 @@ private fun Notice(text: String, tint: Color) {
     ) {
         Icon(Icons.Default.ErrorOutline, null, tint = tint, modifier = Modifier.size(18.dp).padding(top = 1.dp))
         Spacer(Modifier.width(10.dp))
-        Text(text, color = Ios.Label, fontSize = 13.sp, lineHeight = 20.sp)
+        Text(text, color = DuskTheme.onSurface, fontSize = 13.sp, lineHeight = 20.sp)
     }
 }
 
 @Composable
-private fun SignInCard(s: com.mlmvpn.scanner.engines.github.GtSignIn, context: Context) {
+private fun SignInCard(s: com.mlmvpn.scanner.engines.github.GtSignIn, context: Context, showSnackbar: (String) -> Unit) {
     SettingsSectionHeader(stringResource(if (s.adding) R.string.gt_signin_add_title else R.string.gt_signin_title))
     SettingsGroup {
         Column(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 14.dp), horizontalAlignment = Alignment.CenterHorizontally) {
             if (s.userCode.isBlank() && s.error.isBlank()) {
-                CircularProgressIndicator(Modifier.size(22.dp), color = Ios.Blue, strokeWidth = 2.dp)
+                CircularProgressIndicator(Modifier.size(22.dp), color = DuskTheme.primary, strokeWidth = 2.dp)
                 Spacer(Modifier.height(8.dp))
-                Text(stringResource(R.string.gt_signin_making), color = Ios.SecondaryLabel, fontSize = 13.sp)
+                Text(stringResource(R.string.gt_signin_making), color = DuskTheme.muted, fontSize = 13.sp)
             } else if (s.userCode.isNotBlank()) {
-                Text(stringResource(R.string.gt_signin_enter), color = Ios.SecondaryLabel, fontSize = 13.sp, textAlign = TextAlign.Center)
+                Text(stringResource(R.string.gt_signin_enter), color = DuskTheme.muted, fontSize = 13.sp, textAlign = TextAlign.Center)
                 Spacer(Modifier.height(10.dp))
-                Text(s.userCode, color = Ios.Label, fontSize = 30.sp, fontWeight = FontWeight.Bold, fontFamily = FontFamily.Monospace,
+                Text(s.userCode, color = DuskTheme.onSurface, fontSize = 30.sp, fontWeight = FontWeight.Bold, fontFamily = FontFamily.Monospace,
                     letterSpacing = 4.sp,
                     modifier = Modifier.clip(RoundedCornerShape(12.dp)).background(Color.White.copy(alpha = 0.08f))
-                        .clickable { copy(context, s.userCode) }.padding(horizontal = 22.dp, vertical = 8.dp))
+                        .clickable { copy(context, s.userCode, showSnackbar) }.padding(horizontal = 22.dp, vertical = 8.dp))
                 Spacer(Modifier.height(6.dp))
-                Text(s.verificationUri, color = Ios.SecondaryLabel, fontSize = 11.sp, fontFamily = FontFamily.Monospace)
+                Text(s.verificationUri, color = DuskTheme.muted, fontSize = 11.sp, fontFamily = FontFamily.Monospace)
                 if (s.waiting) {
                     Spacer(Modifier.height(10.dp))
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        CircularProgressIndicator(Modifier.size(14.dp), color = Ios.SecondaryLabel, strokeWidth = 2.dp)
+                        CircularProgressIndicator(Modifier.size(14.dp), color = DuskTheme.muted, strokeWidth = 2.dp)
                         Spacer(Modifier.width(8.dp))
-                        Text(stringResource(R.string.gt_signin_waiting), color = Ios.SecondaryLabel, fontSize = 12.sp)
+                        Text(stringResource(R.string.gt_signin_waiting), color = DuskTheme.muted, fontSize = 12.sp)
                     }
                 }
             }
             if (s.error.isNotBlank()) {
                 Spacer(Modifier.height(8.dp))
-                Text(s.error, color = Ios.Red, fontSize = 13.sp, textAlign = TextAlign.Center)
+                Text(s.error, color = DuskTheme.error, fontSize = 13.sp, textAlign = TextAlign.Center)
             }
         }
         if (s.userCode.isNotBlank() && s.waiting) {
             Separator()
-            SettingsActionRow(stringResource(R.string.gt_signin_open), Icons.Default.OpenInBrowser, Ios.Blue, onClick = {
-                copy(context, s.userCode)
+            SettingsActionRow(stringResource(R.string.gt_signin_open), Icons.Default.OpenInBrowser, DuskTheme.primary, onClick = {
+                copy(context, s.userCode, showSnackbar)
                 runCatching { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(s.verificationUri)).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)) }
             })
             Separator()
-            SettingsActionRow(stringResource(R.string.gt_signin_copy), Icons.Default.ContentCopy, Ios.Label, onClick = { copy(context, s.userCode) })
+            SettingsActionRow(stringResource(R.string.gt_signin_copy), Icons.Default.ContentCopy, DuskTheme.onSurface, onClick = { copy(context, s.userCode, showSnackbar) })
         }
         if (!s.waiting) {
             Separator()
-            SettingsActionRow(stringResource(R.string.gt_fix_retry), Icons.Default.Autorenew, Ios.Blue, onClick = { GtEngine.signIn(s.adding) })
+            SettingsActionRow(stringResource(R.string.gt_fix_retry), Icons.Default.Autorenew, DuskTheme.primary, onClick = { GtEngine.signIn(s.adding) })
         }
         Separator()
-        SettingsActionRow(stringResource(R.string.cancel_2), Icons.Default.StopCircle, Ios.SecondaryLabel, onClick = { GtEngine.cancelSignIn() })
+        SettingsActionRow(stringResource(R.string.cancel_2), Icons.Default.StopCircle, DuskTheme.muted, onClick = { GtEngine.cancelSignIn() })
     }
     SettingsFooter(stringResource(if (s.adding) R.string.gt_signin_add_footer else R.string.gt_signin_footer))
 }
@@ -752,23 +754,23 @@ private fun SetupStep(number: Int, current: Int, title: String, value: String, b
     ) {
         Box(
             Modifier.size(26.dp).clip(CircleShape).background(
-                when { done -> Ios.Green; active -> Ios.Blue; else -> Color.White.copy(alpha = 0.12f) }
+                when { done -> DuskTheme.success; active -> DuskTheme.primary; else -> Color.White.copy(alpha = 0.12f) }
             ),
             contentAlignment = Alignment.Center,
         ) {
             when {
                 done -> Icon(Icons.Default.CheckCircle, null, tint = Color.White, modifier = Modifier.size(18.dp))
                 active && busy -> CircularProgressIndicator(Modifier.size(14.dp), color = Color.White, strokeWidth = 2.dp)
-                else -> Text(com.mlmvpn.scanner.ui.faCount(number), color = if (active) Color.White else Ios.SecondaryLabel,
+                else -> Text(com.mlmvpn.scanner.ui.faCount(number), color = if (active) Color.White else DuskTheme.muted,
                     fontSize = 13.sp, fontWeight = FontWeight.Bold)
             }
         }
         Spacer(Modifier.width(12.dp))
-        Text(title, color = if (done || active) Ios.Label else Ios.SecondaryLabel, fontSize = 15.sp,
+        Text(title, color = if (done || active) DuskTheme.onSurface else DuskTheme.muted, fontSize = 15.sp,
             fontWeight = if (active) FontWeight.SemiBold else FontWeight.Normal, modifier = Modifier.weight(1f))
         if (value.isNotBlank()) {
             Spacer(Modifier.width(8.dp))
-            Text(value, color = if (active) Ios.Blue else Ios.SecondaryLabel, fontSize = 14.sp, maxLines = 1)
+            Text(value, color = if (active) DuskTheme.primary else DuskTheme.muted, fontSize = 14.sp, maxLines = 1)
         }
     }
 }
@@ -778,13 +780,13 @@ private fun StepRow(label: String, done: Boolean, active: Boolean) {
     Row(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 11.dp), verticalAlignment = Alignment.CenterVertically) {
         Box(Modifier.size(22.dp), contentAlignment = Alignment.Center) {
             when {
-                done -> Icon(Icons.Default.CheckCircle, null, tint = Ios.Green, modifier = Modifier.size(20.dp))
-                active -> CircularProgressIndicator(Modifier.size(16.dp), color = Ios.Blue, strokeWidth = 2.dp)
+                done -> Icon(Icons.Default.CheckCircle, null, tint = DuskTheme.success, modifier = Modifier.size(20.dp))
+                active -> CircularProgressIndicator(Modifier.size(16.dp), color = DuskTheme.primary, strokeWidth = 2.dp)
                 else -> Box(Modifier.size(10.dp).clip(CircleShape).background(Color.White.copy(alpha = 0.2f)))
             }
         }
         Spacer(Modifier.width(12.dp))
-        Text(label, color = if (done || active) Ios.Label else Ios.SecondaryLabel, fontSize = 15.sp,
+        Text(label, color = if (done || active) DuskTheme.onSurface else DuskTheme.muted, fontSize = 15.sp,
             fontWeight = if (active) FontWeight.SemiBold else FontWeight.Normal)
     }
 }
@@ -796,7 +798,7 @@ private fun LogBlock(lines: List<String>) {
             .background(Color.Black.copy(alpha = 0.28f)).padding(12.dp),
         verticalArrangement = Arrangement.spacedBy(3.dp),
     ) {
-        lines.forEach { Text(it, color = Ios.SecondaryLabel, fontSize = 12.sp, lineHeight = 18.sp) }
+        lines.forEach { Text(it, color = DuskTheme.muted, fontSize = 12.sp, lineHeight = 18.sp) }
     }
 }
 
@@ -944,12 +946,12 @@ private fun RuleEditorPage(
     ) {
         SettingsSectionHeader(stringResource(R.string.gt_rule_sec_where))
         SettingsGroup {
-            SettingsRow(stringResource(R.string.gt_rule_country), icon = Icons.Default.Public, tint = Ios.Blue,
+            SettingsRow(stringResource(R.string.gt_rule_country), icon = Icons.Default.Public, tint = DuskTheme.primary,
                 value = if (draft.country.isBlank()) stringResource(R.string.gt_rule_pick) else CountryLabel.withFlag(draft.country),
                 subtitle = draft.country.takeIf { it.isNotBlank() }?.let { exitDetail(ex, it) }?.ifBlank { null },
                 onClick = onPickCountry)
             Separator()
-            SettingsRow(stringResource(R.string.gt_exit_provider), icon = Icons.Default.Hub, tint = Ios.Purple,
+            SettingsRow(stringResource(R.string.gt_exit_provider), icon = Icons.Default.Hub, tint = DuskTheme.purple,
                 value = providerLabel(draft.provider), subtitle = providerNote(draft.provider),
                 onClick = {
                     val order = listOf("", "vpngate", "psiphon")
@@ -971,7 +973,7 @@ private fun RuleEditorPage(
                 SelectedAppRow(context, pkg, onRemove = { onChange(draft.copy(apps = draft.apps - pkg)) })
                 Separator()
             }
-            SettingsActionRow(stringResource(R.string.gt_rule_pick_apps), Icons.Default.Apps, Ios.Blue, onClick = onPickApps)
+            SettingsActionRow(stringResource(R.string.gt_rule_pick_apps), Icons.Default.Apps, DuskTheme.primary, onClick = onPickApps)
         }
         SettingsFooter(stringResource(
             when {
@@ -982,12 +984,12 @@ private fun RuleEditorPage(
         ))
 
         SettingsGroup(modifier = Modifier.padding(top = 18.dp)) {
-            SettingsActionRow(stringResource(R.string.gt_rule_save), Icons.Default.CheckCircle, Ios.Blue,
+            SettingsActionRow(stringResource(R.string.gt_rule_save), Icons.Default.CheckCircle, DuskTheme.primary,
                 enabled = problem == null, onClick = onSave)
             if (draft.index >= 0) {
                 Separator()
-                SettingsActionRow(stringResource(R.string.gt_rule_remove), Icons.Default.DeleteForever, Ios.Red,
-                    labelColor = Ios.Red, onClick = onDelete)
+                SettingsActionRow(stringResource(R.string.gt_rule_remove), Icons.Default.DeleteForever, DuskTheme.error,
+                    labelColor = DuskTheme.error, onClick = onDelete)
             }
         }
         if (problem != null) SettingsFooter(problem)
@@ -1001,15 +1003,15 @@ private fun SitesField(value: String, onChange: (String) -> Unit) {
     androidx.compose.foundation.text.BasicTextField(
         value = value,
         onValueChange = onChange,
-        textStyle = androidx.compose.ui.text.TextStyle(color = Ios.Label, fontSize = 15.sp,
+        textStyle = androidx.compose.ui.text.TextStyle(color = DuskTheme.onSurface, fontSize = 15.sp,
             textDirection = androidx.compose.ui.text.style.TextDirection.Ltr),
-        cursorBrush = androidx.compose.ui.graphics.SolidColor(Ios.Blue),
+        cursorBrush = androidx.compose.ui.graphics.SolidColor(DuskTheme.primary),
         keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(keyboardType = androidx.compose.ui.text.input.KeyboardType.Uri),
         modifier = Modifier.fillMaxWidth().heightIn(min = 96.dp).padding(horizontal = 16.dp, vertical = 12.dp),
         decorationBox = { inner ->
             Box {
                 if (value.isEmpty()) {
-                    Text("instagram.com  x.com  telegram.org", color = Ios.SecondaryLabel, fontSize = 15.sp,
+                    Text("instagram.com  x.com  telegram.org", color = DuskTheme.muted, fontSize = 15.sp,
                         style = androidx.compose.ui.text.TextStyle(textDirection = androidx.compose.ui.text.style.TextDirection.Ltr))
                 }
                 inner()
@@ -1034,15 +1036,15 @@ private fun SelectedAppRow(context: Context, pkg: String, onRemove: () -> Unit) 
                 modifier = Modifier.size(30.dp).clip(RoundedCornerShape(7.dp)),
             )
         } else {
-            Box(Modifier.size(30.dp).clip(RoundedCornerShape(7.dp)).background(Ios.Gray.copy(alpha = 0.4f)))
+            Box(Modifier.size(30.dp).clip(RoundedCornerShape(7.dp)).background(DuskTheme.disabled.copy(alpha = 0.4f)))
         }
         Spacer(Modifier.width(12.dp))
         Column(Modifier.weight(1f)) {
-            Text(label, color = Ios.Label, fontSize = 15.sp, maxLines = 1)
-            Text(pkg, color = Ios.SecondaryLabel, fontSize = 11.sp, maxLines = 1)
+            Text(label, color = DuskTheme.onSurface, fontSize = 15.sp, maxLines = 1)
+            Text(pkg, color = DuskTheme.muted, fontSize = 11.sp, maxLines = 1)
         }
         Icon(Icons.Default.Close, contentDescription = stringResource(R.string.gt_rule_app_remove),
-            tint = Ios.SecondaryLabel,
+            tint = DuskTheme.muted,
             modifier = Modifier.size(34.dp).clip(CircleShape).clickable(onClick = onRemove).padding(7.dp))
     }
 }
@@ -1075,10 +1077,10 @@ private fun accountState(a: GtAccount): String = when {
     else -> S(R.string.gt_ready)
 }
 
-private fun copy(context: Context, text: String) {
+private fun copy(context: Context, text: String, showSnackbar: (String) -> Unit) {
     runCatching {
         val cm = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         cm.setPrimaryClip(ClipData.newPlainText("MLMVPN", text))
-        android.widget.Toast.makeText(context, S(R.string.gt_copied), android.widget.Toast.LENGTH_SHORT).show()
+        showSnackbar(S(R.string.gt_copied))
     }
 }

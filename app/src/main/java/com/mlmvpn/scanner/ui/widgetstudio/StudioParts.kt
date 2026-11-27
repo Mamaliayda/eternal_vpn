@@ -41,7 +41,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mlmvpn.scanner.store.tr
-import com.mlmvpn.scanner.ui.settings.Ios
+import com.mlmvpn.scanner.ui.home.Appearance
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 import com.mlmvpn.scanner.utils.AppLocaleManager
 import com.mlmvpn.scanner.widget.MethodView
 import com.mlmvpn.scanner.widget.WidgetLive
@@ -139,7 +140,7 @@ fun PreviewStateChips(state: PreviewState, onChange: (PreviewState) -> Unit, mod
     Row(
         modifier = modifier
             .clip(RoundedCornerShape(50))
-            .background(Color.White.copy(alpha = 0.10f))
+            .background(DuskTheme.raisedSurface.copy(alpha = 0.55f))
             .padding(3.dp),
         horizontalArrangement = Arrangement.spacedBy(3.dp),
     ) {
@@ -152,12 +153,12 @@ fun PreviewStateChips(state: PreviewState, onChange: (PreviewState) -> Unit, mod
             Box(
                 modifier = Modifier
                     .clip(RoundedCornerShape(50))
-                    .background(if (on) Color.White.copy(alpha = 0.22f) else Color.Transparent)
+                    .background(if (on) DuskTheme.primary.copy(alpha = 0.28f) else Color.Transparent)
                     .clickable { onChange(s) }
                     .padding(horizontal = 12.dp, vertical = 6.dp),
                 contentAlignment = Alignment.Center,
             ) {
-                Text(label, color = if (on) Color.White else Ios.SecondaryLabel, fontSize = 12.5.sp, fontWeight = if (on) FontWeight.SemiBold else FontWeight.Normal)
+                Text(label, color = if (on) DuskTheme.onSurface else DuskTheme.muted, fontSize = 12.5.sp, fontWeight = if (on) FontWeight.SemiBold else FontWeight.Normal)
             }
         }
     }
@@ -172,13 +173,13 @@ fun PreviewStage(modifier: Modifier = Modifier, content: @Composable () -> Unit)
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(26.dp))
+            .clip(DuskTheme.cardShape)
             .background(
                 Brush.linearGradient(
-                    listOf(Color(0xFF1B2A4A), Color(0xFF3B2A5C), Color(0xFF7A4A5E), Color(0xFF233B5A)),
+                    if (Appearance.isDark()) listOf(DuskTheme.navyNight, DuskTheme.lavenderNight, DuskTheme.nightCard, DuskTheme.rose) else listOf(DuskTheme.blush, DuskTheme.rose, DuskTheme.cream, DuskTheme.lavenderNight),
                 )
             )
-            .border(0.7.dp, Color.White.copy(alpha = 0.14f), RoundedCornerShape(26.dp))
+            .border(0.7.dp, DuskTheme.outline.copy(alpha = 0.35f), DuskTheme.cardShape)
             .padding(18.dp),
         contentAlignment = Alignment.Center,
     ) { content() }
@@ -199,7 +200,7 @@ fun PresetCard(template: WidgetTemplate, title: String, onClick: () -> Unit, car
             TemplatePreview(template, PreviewState.CONNECTED, width = cardWidth - 30.dp)
         }
         Spacer(Modifier.height(6.dp))
-        Text(title, color = Ios.Label, fontSize = 13.sp, fontWeight = FontWeight.Medium, textAlign = TextAlign.Center,
+        Text(title, color = DuskTheme.onSurface, fontSize = 13.sp, fontWeight = FontWeight.Medium, textAlign = TextAlign.Center,
             maxLines = 1, overflow = TextOverflow.Ellipsis)
     }
 }
@@ -211,7 +212,7 @@ fun Swatch(color: Int, selected: Boolean, onClick: () -> Unit, size: Dp = 34.dp)
         modifier = Modifier
             .size(size)
             .clip(RoundedCornerShape(50))
-            .border(if (selected) 2.5.dp else 0.7.dp, if (selected) Color.White else Color.White.copy(alpha = 0.25f), RoundedCornerShape(50))
+            .border(if (selected) 2.5.dp else 0.7.dp, if (selected) DuskTheme.onSurface else DuskTheme.outline, RoundedCornerShape(50))
             .padding(if (selected) 4.dp else 0.dp)
             .clip(RoundedCornerShape(50))
             .background(Color(color))

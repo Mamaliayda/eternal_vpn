@@ -3,7 +3,6 @@ package com.mlmvpn.scanner.ui.tunnel
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
-import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -65,8 +64,9 @@ import com.mlmvpn.core.tunnel.bridge.BridgeTransport
 import com.mlmvpn.scanner.R
 import com.mlmvpn.scanner.ui.emergency.faDigits
 import com.mlmvpn.scanner.ui.home.frostedGlass
-import com.mlmvpn.scanner.ui.settings.Ios
 import com.mlmvpn.scanner.ui.settings.IosScreen
+import com.mlmvpn.scanner.ui.theme.DuskTheme
+import com.mlmvpn.scanner.ui.theme.rememberDuskSnackbarAction
 import com.mlmvpn.scanner.ui.settings.SettingsActionRow
 import com.mlmvpn.scanner.ui.settings.SettingsFooter
 import com.mlmvpn.scanner.ui.settings.SettingsGroup
@@ -114,6 +114,7 @@ private enum class Sort { HEALTH, SPEED, COUNTRY, SOURCE }
 @Composable
 fun TorBridgesScreen(onBack: () -> Unit, backLabel: String) {
     val ctx = LocalContext.current
+    val showSnackbar = rememberDuskSnackbarAction()
     LaunchedEffect(Unit) {
         kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.IO) { BridgeManager.init(ctx) }
         BridgeManager.refreshIfDue(ctx)
@@ -125,15 +126,15 @@ fun TorBridgesScreen(onBack: () -> Unit, backLabel: String) {
         "add" -> { AddBridgesPage(onBack = { page = "list" }); return }
         "detail" -> {
             val e = BridgeManager.state.collectAsState().value.entries.firstOrNull { it.bridge.id == openId }
-            if (e != null) { BridgeDetailPage(e, onBack = { page = "list" }); return }
+            if (e != null) { BridgeDetailPage(e, onBack = { page = "list" }, showSnackbar = showSnackbar); return }
             page = "list"
         }
     }
-    BridgeListPage(onBack, backLabel, onAdd = { page = "add" }, onOpen = { openId = it; page = "detail" })
+    BridgeListPage(onBack, backLabel, onAdd = { page = "add" }, onOpen = { openId = it; page = "detail" }, showSnackbar = showSnackbar)
 }
 
 @Composable
-private fun BridgeListPage(onBack: () -> Unit, backLabel: String, onAdd: () -> Unit, onOpen: (String) -> Unit) {
+private fun BridgeListPage(onBack: () -> Unit, backLabel: String, onAdd: () -> Unit, onOpen: (String) -> Unit, showSnackbar: (String) -> Unit) {
     val ctx = LocalContext.current
     val state by BridgeManager.state.collectAsState()
     var choice by remember { mutableStateOf(BridgeManager.choice(ctx)) }
@@ -171,12 +172,12 @@ private fun BridgeListPage(onBack: () -> Unit, backLabel: String, onAdd: () -> U
                     title = stringResource(R.string.tor_br_pinned_row,
                         (pinned.country?.let { CountryLabel.withFlag(it) } ?: stringResource(R.string.tor_br_country_unknown)) + " · " + pinned.bridge.transport.label),
                     subtitle = stringResource(R.string.tor_br_pinned_note),
-                    icon = Icons.Default.PushPin, tint = Ios.Orange, showChevron = true,
+                    icon = Icons.Default.PushPin, tint = DuskTheme.accent, showChevron = true,
                     onClick = { onOpen(pinned.bridge.id) },
                 )
                 Separator()
                 SettingsActionRow(
-                    label = stringResource(R.string.tor_br_unpin), icon = Icons.Default.AutoMode, tint = Ios.Blue,
+                    label = stringResource(R.string.tor_br_unpin), icon = Icons.Default.AutoMode, tint = DuskTheme.primary,
                     onClick = { BridgeManager.setPinned(ctx, null); pinnedId = null },
                 )
             }
@@ -194,19 +195,19 @@ private fun BridgeListPage(onBack: () -> Unit, backLabel: String, onAdd: () -> U
                     state.lastRefreshAt > 0 -> stringResource(R.string.tor_br_updated, ago(state.lastRefreshAt))
                     else -> null
                 },
-                icon = Icons.Default.Speed, tint = if (ok > 0) Ios.Green else Ios.Gray, showChevron = false,
+                icon = Icons.Default.Speed, tint = if (ok > 0) DuskTheme.success else DuskTheme.disabled, showChevron = false,
             )
             Separator()
             SettingsActionRow(
                 label = stringResource(if (state.refreshing) R.string.tor_br_refreshing else R.string.tor_br_refresh),
-                icon = Icons.Default.Refresh, tint = Ios.Blue, busy = state.refreshing,
+                icon = Icons.Default.Refresh, tint = DuskTheme.primary, busy = state.refreshing,
                 enabled = !state.refreshing, onClick = { BridgeManager.refresh(ctx, force = true) },
             )
             Separator()
             SettingsActionRow(
                 label = if (state.testing) stringResource(R.string.tor_br_testing, fa(state.testDone), fa(state.testTotal))
                 else stringResource(R.string.tor_br_test_all),
-                icon = Icons.Default.Speed, tint = Ios.Green, busy = state.testing,
+                icon = Icons.Default.Speed, tint = DuskTheme.success, busy = state.testing,
                 enabled = !state.testing && state.entries.isNotEmpty(),
                 onClick = { BridgeManager.testAll(ctx, filter?.let { f -> BridgeTransport.entries.firstOrNull { it.name == f } }) },
             )
@@ -214,17 +215,17 @@ private fun BridgeListPage(onBack: () -> Unit, backLabel: String, onAdd: () -> U
             if (dead > 0) {
                 Separator()
                 SettingsActionRow(
-                    label = stringResource(R.string.tor_br_remove_dead, fa(dead)), icon = Icons.Default.DeleteSweep, tint = Ios.Red,
+                    label = stringResource(R.string.tor_br_remove_dead, fa(dead)), icon = Icons.Default.DeleteSweep, tint = DuskTheme.error,
                     enabled = !state.testing,
                     onClick = {
                         val n = BridgeManager.remove(ctx, BridgeManager.deadIds())
                         pinnedId = BridgeManager.pinned(ctx)?.bridge?.id
-                        Toast.makeText(ctx, ctx.getString(R.string.tor_br_removed_n, fa(n)), Toast.LENGTH_SHORT).show()
+                        showSnackbar(ctx.getString(R.string.tor_br_removed_n, fa(n)))
                     },
                 )
             }
             Separator()
-            SettingsActionRow(label = stringResource(R.string.tor_br_add), icon = Icons.Default.Add, tint = Ios.Purple, onClick = onAdd)
+            SettingsActionRow(label = stringResource(R.string.tor_br_add), icon = Icons.Default.Add, tint = DuskTheme.purple, onClick = onAdd)
         }
 
         SettingsFooter(stringResource(R.string.tor_exit_tip))
@@ -275,7 +276,7 @@ private fun BridgeListPage(onBack: () -> Unit, backLabel: String, onAdd: () -> U
                     if (sort == Sort.COUNTRY && country == null && (i == 0 || page[i - 1].country != e.country)) {
                         Text(
                             e.country?.let { CountryLabel.withFlag(it) } ?: stringResource(R.string.tor_br_country_unknown),
-                            color = Ios.SecondaryLabel, fontSize = 13.sp, fontWeight = FontWeight.SemiBold,
+                            color = DuskTheme.muted, fontSize = 13.sp, fontWeight = FontWeight.SemiBold,
                             modifier = Modifier.padding(top = if (i == 0) 0.dp else 8.dp, start = 4.dp),
                         )
                     }
@@ -285,7 +286,7 @@ private fun BridgeListPage(onBack: () -> Unit, backLabel: String, onAdd: () -> U
             if (shown.size > visible) {
                 val left = shown.size - visible
                 Text(
-                    stringResource(R.string.tor_br_more, fa(minOf(PAGE_STEP, left)), fa(left)), color = Ios.Blue, fontSize = 15.sp,
+                    stringResource(R.string.tor_br_more, fa(minOf(PAGE_STEP, left)), fa(left)), color = DuskTheme.primary, fontSize = 15.sp,
                     modifier = Modifier.fillMaxWidth().clickable { visible += PAGE_STEP }.padding(vertical = 12.dp, horizontal = 20.dp),
                 )
             }
@@ -345,7 +346,7 @@ private fun ChoiceRow(
     SettingsRow(
         title = stringResource(title), subtitle = stringResource(sub),
         icon = if (value == current) Icons.Default.Check else icon,
-        tint = if (value == current) Ios.Green else Ios.Gray,
+        tint = if (value == current) DuskTheme.success else DuskTheme.disabled,
         showChevron = false, onClick = { onPick(value) },
     )
 }
@@ -353,15 +354,15 @@ private fun ChoiceRow(
 @Composable
 private fun Chip(label: String, selected: Boolean, onClick: () -> Unit) {
     Box(
-        Modifier.clip(RoundedCornerShape(50)).background(if (selected) Ios.Blue else Color.White.copy(alpha = 0.10f))
+        Modifier.clip(RoundedCornerShape(50)).background(if (selected) DuskTheme.primary else DuskTheme.outline.copy(alpha = 0.18f))
             .clickable(onClick = onClick).padding(horizontal = 12.dp, vertical = 6.dp),
-    ) { Text(label, color = if (selected) Color.White else Ios.Label, fontSize = 13.sp) }
+    ) { Text(label, color = if (selected) DuskTheme.onPrimary else DuskTheme.onSurface, fontSize = 13.sp) }
 }
 
 @Composable
 private fun Note(text: String) {
     Text(
-        text, color = Ios.Orange, fontSize = 13.sp, lineHeight = 20.sp,
+        text, color = DuskTheme.accent, fontSize = 13.sp, lineHeight = 20.sp,
         modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 4.dp),
     )
 }
@@ -372,7 +373,7 @@ private fun BridgeRow(e: Entry, pinned: Boolean, onClick: () -> Unit) {
     // A plain card, not frostedGlass: the glass redraws the wallpaper under every row, and
     // hundreds of those were what froze the list.
     Row(
-        Modifier.fillMaxWidth().clip(RoundedCornerShape(14.dp)).background(Ios.CardOverWallpaper).clickable(onClick = onClick)
+        Modifier.fillMaxWidth().clip(RoundedCornerShape(14.dp)).background(DuskTheme.surface).clickable(onClick = onClick)
             .heightIn(min = 54.dp).padding(horizontal = 14.dp, vertical = 9.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -381,12 +382,12 @@ private fun BridgeRow(e: Entry, pinned: Boolean, onClick: () -> Unit) {
         Column(Modifier.weight(1f)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(e.country?.let { CountryLabel.localized(it) } ?: stringResource(R.string.tor_br_country_unknown),
-                    color = Ios.Label, fontSize = 15.sp, maxLines = 1, modifier = Modifier.weight(1f, fill = false))
+                    color = DuskTheme.onSurface, fontSize = 15.sp, maxLines = 1, modifier = Modifier.weight(1f, fill = false))
                 Spacer(Modifier.width(6.dp))
-                Tag(e.bridge.transport.label, Ios.Indigo)
-                if (pinned) { Spacer(Modifier.width(4.dp)); Tag(stringResource(R.string.tor_br_pinned_tag), Ios.Orange) }
-                if (e.custom) { Spacer(Modifier.width(4.dp)); Tag(stringResource(R.string.tor_br_mine_tag), Ios.Purple) }
-                else if (e.official) { Spacer(Modifier.width(4.dp)); Tag(stringResource(R.string.tor_br_official), Ios.Teal) }
+                Tag(e.bridge.transport.label, DuskTheme.indigo)
+                if (pinned) { Spacer(Modifier.width(4.dp)); Tag(stringResource(R.string.tor_br_pinned_tag), DuskTheme.accent) }
+                if (e.custom) { Spacer(Modifier.width(4.dp)); Tag(stringResource(R.string.tor_br_mine_tag), DuskTheme.purple) }
+                else if (e.official) { Spacer(Modifier.width(4.dp)); Tag(stringResource(R.string.tor_br_official), DuskTheme.secondary) }
             }
             Text(statusLine(e), color = statusColor(e.status), fontSize = 12.sp, maxLines = 1)
         }
@@ -416,16 +417,16 @@ private fun statusLine(e: Entry): String {
 /** Composable: the Ios colours follow the theme (light / dark). */
 @Composable
 private fun statusColor(s: Status) = when (s) {
-    Status.OK -> Ios.Green
-    Status.FAILED, Status.WAS_OK -> Ios.Red
-    Status.NEEDS_IPV6 -> Ios.Orange
-    Status.UNTESTED -> Ios.SecondaryLabel
+    Status.OK -> DuskTheme.success
+    Status.FAILED, Status.WAS_OK -> DuskTheme.error
+    Status.NEEDS_IPV6 -> DuskTheme.accent
+    Status.UNTESTED -> DuskTheme.muted
 }
 
 // ── one bridge ──────────────────────────────────────────────────────────────────────────────────
 
 @Composable
-private fun BridgeDetailPage(e: Entry, onBack: () -> Unit) {
+private fun BridgeDetailPage(e: Entry, onBack: () -> Unit, showSnackbar: (String) -> Unit) {
     val ctx = LocalContext.current
     val state by BridgeManager.state.collectAsState()
     var isPinned by remember { mutableStateOf(BridgeManager.pinned(ctx)?.bridge?.id == e.bridge.id) }
@@ -452,27 +453,27 @@ private fun BridgeDetailPage(e: Entry, onBack: () -> Unit) {
         SettingsGroup(modifier = Modifier.padding(top = 14.dp)) {
             SettingsActionRow(
                 label = stringResource(if (isPinned) R.string.tor_br_unpin else R.string.tor_br_use_this),
-                icon = if (isPinned) Icons.Default.AutoMode else Icons.Default.PushPin, tint = Ios.Orange,
+                icon = if (isPinned) Icons.Default.AutoMode else Icons.Default.PushPin, tint = DuskTheme.accent,
                 onClick = {
                     BridgeManager.setPinned(ctx, if (isPinned) null else e.bridge.id)
                     isPinned = !isPinned
                 },
             )
             Separator()
-            SettingsActionRow(label = stringResource(R.string.tor_br_test_one), icon = Icons.Default.Speed, tint = Ios.Green,
+            SettingsActionRow(label = stringResource(R.string.tor_br_test_one), icon = Icons.Default.Speed, tint = DuskTheme.success,
                 busy = state.testing, onClick = { BridgeManager.testOne(ctx, e.bridge.id) })
             Separator()
-            SettingsActionRow(label = stringResource(R.string.tor_br_copy), icon = Icons.Default.ContentCopy, tint = Ios.Blue,
-                onClick = { copy(ctx, e.bridge.line) })
+            SettingsActionRow(label = stringResource(R.string.tor_br_copy), icon = Icons.Default.ContentCopy, tint = DuskTheme.primary,
+                onClick = { copy(ctx, e.bridge.line, showSnackbar) })
             Separator()
-            SettingsActionRow(label = stringResource(R.string.tor_br_remove), icon = Icons.Default.Delete, tint = Ios.Red,
+            SettingsActionRow(label = stringResource(R.string.tor_br_remove), icon = Icons.Default.Delete, tint = DuskTheme.error,
                 onClick = { BridgeManager.remove(ctx, setOf(e.bridge.id)); onBack() })
         }
         if (isPinned) SettingsFooter(stringResource(R.string.tor_br_pinned_note))
         // The technical part, for whoever wants it.
         SettingsSectionHeader(stringResource(R.string.tor_br_d_line))
         Text(
-            e.bridge.line, color = Ios.SecondaryLabel, fontSize = 11.sp, fontFamily = FontFamily.Monospace, lineHeight = 16.sp,
+            e.bridge.line, color = DuskTheme.muted, fontSize = 11.sp, fontFamily = FontFamily.Monospace, lineHeight = 16.sp,
             modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp).frostedGlass(RoundedCornerShape(12.dp)).padding(12.dp),
         )
         SettingsFooter(stringResource(R.string.tor_br_d_footer))
@@ -480,9 +481,9 @@ private fun BridgeDetailPage(e: Entry, onBack: () -> Unit) {
     }
 }
 
-private fun copy(ctx: Context, text: String) {
+private fun copy(ctx: Context, text: String, showSnackbar: (String) -> Unit) {
     (ctx.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager).setPrimaryClip(ClipData.newPlainText("bridge", text))
-    Toast.makeText(ctx, ctx.getString(R.string.tor_br_copied), Toast.LENGTH_SHORT).show()
+    showSnackbar(ctx.getString(R.string.tor_br_copied))
 }
 
 // ── adding one's own ────────────────────────────────────────────────────────────────────────────
@@ -501,18 +502,18 @@ private fun AddBridgesPage(onBack: () -> Unit) {
         ) {
             BasicTextField(
                 value = text, onValueChange = { text = it; result = null },
-                textStyle = TextStyle(color = Ios.Label, fontSize = 12.sp, fontFamily = FontFamily.Monospace),
-                cursorBrush = SolidColor(Ios.Blue),
+                textStyle = TextStyle(color = DuskTheme.onSurface, fontSize = 12.sp, fontFamily = FontFamily.Monospace),
+                cursorBrush = SolidColor(DuskTheme.primary),
                 modifier = Modifier.fillMaxWidth(),
                 decorationBox = { inner ->
-                    Box { if (text.isEmpty()) Text(stringResource(R.string.tor_br_add_hint), color = Ios.SecondaryLabel, fontSize = 13.sp); inner() }
+                    Box { if (text.isEmpty()) Text(stringResource(R.string.tor_br_add_hint), color = DuskTheme.muted, fontSize = 13.sp); inner() }
                 },
             )
         }
         SettingsFooter(stringResource(R.string.tor_br_add_footer))
         SettingsGroup {
             SettingsActionRow(
-                label = stringResource(R.string.tor_br_add_button), icon = Icons.Default.Add, tint = Ios.Purple,
+                label = stringResource(R.string.tor_br_add_button), icon = Icons.Default.Add, tint = DuskTheme.purple,
                 enabled = text.isNotBlank(),
                 onClick = { result = BridgeManager.addCustom(ctx, text); if (result?.bad?.isEmpty() == true) text = "" },
             )
@@ -524,14 +525,14 @@ private fun AddBridgesPage(onBack: () -> Unit) {
                 if (r.bad.isNotEmpty()) add(stringResource(R.string.tor_br_bad, fa(r.bad.size)))
                 if (r.added == 0 && r.duplicates == 0 && r.bad.isEmpty()) add(stringResource(R.string.tor_br_nothing))
             }
-            Text(lines.joinToString("\n"), color = if (r.bad.isEmpty()) Ios.Green else Ios.Orange, fontSize = 14.sp, lineHeight = 22.sp,
+            Text(lines.joinToString("\n"), color = if (r.bad.isEmpty()) DuskTheme.success else DuskTheme.accent, fontSize = 14.sp, lineHeight = 22.sp,
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 10.dp))
             if (r.bad.isNotEmpty()) {
-                Text(stringResource(if (details) R.string.tor_br_hide_details else R.string.tor_br_show_details), color = Ios.Blue, fontSize = 13.sp,
+                Text(stringResource(if (details) R.string.tor_br_hide_details else R.string.tor_br_show_details), color = DuskTheme.primary, fontSize = 13.sp,
                     modifier = Modifier.clickable { details = !details }.padding(horizontal = 20.dp, vertical = 4.dp))
                 if (details) {
                     r.bad.forEach { b ->
-                        Text("• " + badReason(b.error) + "\n" + b.input.take(90), color = Ios.SecondaryLabel, fontSize = 11.sp, lineHeight = 16.sp,
+                        Text("• " + badReason(b.error) + "\n" + b.input.take(90), color = DuskTheme.muted, fontSize = 11.sp, lineHeight = 16.sp,
                             modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 3.dp))
                     }
                 }
@@ -588,11 +589,11 @@ fun TorEntryCard(exitCode: String) {
             .padding(horizontal = 16.dp, vertical = 12.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Text(stringResource(R.string.tor_entry_from), color = Ios.SecondaryLabel, fontSize = 13.sp)
+        Text(stringResource(R.string.tor_entry_from), color = DuskTheme.muted, fontSize = 13.sp)
         Spacer(Modifier.weight(1f))
         Text(
             (entry?.let { CountryLabel.withFlag(it) } ?: stringResource(R.string.tor_br_country_unknown)) + " · " + e.bridge.transport.label,
-            color = Ios.Label, fontSize = 15.sp, maxLines = 1,
+            color = DuskTheme.onSurface, fontSize = 15.sp, maxLines = 1,
         )
     }
     val exit = exitCode.uppercase().takeIf { IpFormatter.isRealCountry(it) }
@@ -600,7 +601,7 @@ fun TorEntryCard(exitCode: String) {
         Text(
             stringResource(R.string.tor_entry_exit_differ, CountryLabel.localized(entry), CountryLabel.localized(exit)) +
                 "\n" + stringResource(R.string.tor_exit_tip),
-            color = Ios.SecondaryLabel, fontSize = 12.sp, lineHeight = 19.sp,
+            color = DuskTheme.muted, fontSize = 12.sp, lineHeight = 19.sp,
             modifier = Modifier.fillMaxWidth().padding(horizontal = 4.dp, vertical = 8.dp),
         )
     }

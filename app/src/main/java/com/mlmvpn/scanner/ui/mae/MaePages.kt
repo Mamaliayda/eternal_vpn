@@ -56,6 +56,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mlmvpn.scanner.ui.theme.DuskPill
 import com.mlmvpn.scanner.ui.theme.DuskTheme
+import com.mlmvpn.scanner.ui.theme.rememberDuskSnackbarAction
 import com.mlmvpn.scanner.R
 import com.mlmvpn.scanner.engines.mae.MaeEngine
 import com.mlmvpn.scanner.engines.mae.model.ServiceDef
@@ -64,7 +65,6 @@ import com.mlmvpn.scanner.engines.mae.route.FragmentRoute
 import com.mlmvpn.scanner.engines.mae.route.ServerlessRoute
 import com.mlmvpn.scanner.engines.mae.route.UserConfigRoute
 import com.mlmvpn.scanner.engines.mae.store.MaeState
-import com.mlmvpn.scanner.ui.settings.Ios
 import com.mlmvpn.scanner.ui.settings.IosScreen
 import com.mlmvpn.scanner.ui.settings.SettingsActionRow
 import com.mlmvpn.scanner.ui.settings.SettingsFooter
@@ -143,7 +143,7 @@ internal fun MaeOnboarding(
             }
         }
         SettingsGroup(modifier = Modifier.padding(top = 16.dp)) {
-            SettingsActionRow(label = stringResource(R.string.mae_add_app), icon = Icons.Default.Apps, tint = Ios.Blue) {
+            SettingsActionRow(label = stringResource(R.string.mae_add_app), icon = Icons.Default.Apps, tint = DuskTheme.primary) {
                 // Whatever is picked so far is kept; the picker then adds to it.
                 onAddApp(picked.toList(), sites)
             }
@@ -154,7 +154,7 @@ internal fun MaeOnboarding(
             SettingsTextRow(title = stringResource(R.string.mae_add_site), value = site,
                 onValueChange = { site = it; siteError = null }, placeholder = stringResource(R.string.mae_add_site_hint), error = siteError)
             Separator()
-            SettingsActionRow(label = stringResource(R.string.mae_add), icon = Icons.Default.Add, tint = Ios.Blue) {
+            SettingsActionRow(label = stringResource(R.string.mae_add), icon = Icons.Default.Add, tint = DuskTheme.primary) {
                 val def = com.mlmvpn.scanner.engines.mae.registry.ServiceRegistry.customSite(site)
                 if (def == null) siteError = invalid else { sites = (sites + def.displayName).distinct(); site = "" }
             }
@@ -282,7 +282,7 @@ private fun ForeignExitsList(onOpenTile: (String) -> Unit) {
                 title = r.title,
                 subtitle = r.status,
                 icon = Icons.Default.Public,
-                tint = if (r.inUse) Ios.Green else Ios.Orange,
+                tint = if (r.inUse) DuskTheme.success else DuskTheme.accent,
                 value = if (r.inUse) stringResource(R.string.on_2) else null,
                 onClick = { onOpenTile(r.tile) },
             )
@@ -299,6 +299,7 @@ private fun ForeignExitsList(onOpenTile: (String) -> Unit) {
 @Composable
 internal fun MaeManageScreen(onBack: () -> Unit, openPicker: Boolean = false, onOpenTile: (String) -> Unit = {}) {
     val context = LocalContext.current
+    val showNotice = rememberDuskSnackbarAction()
     val scope = rememberCoroutineScope()
     // The rows, as the main screen has them: worked out off the main thread and emitted only
     // when a row changes -- the raw state changes many times a second while apps are checked.
@@ -416,18 +417,18 @@ internal fun MaeManageScreen(onBack: () -> Unit, openPicker: Boolean = false, on
                             .padding(horizontal = 16.dp, vertical = 8.dp),
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
-                        Icon(Icons.Default.AddCircle, contentDescription = null, tint = Ios.Green, modifier = Modifier.size(24.dp))
+                        Icon(Icons.Default.AddCircle, contentDescription = null, tint = DuskTheme.success, modifier = Modifier.size(24.dp))
                         Spacer(Modifier.width(12.dp))
                         MaeAppIcon(s, name, 30.dp)
                         Spacer(Modifier.width(12.dp))
-                        Text(name, color = Ios.Label, fontSize = 16.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                        Text(name, color = DuskTheme.onSurface, fontSize = 16.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
                     }
                 }
             }
         }
 
         SettingsGroup(modifier = Modifier.padding(top = 20.dp)) {
-            SettingsRow(title = stringResource(R.string.mae_add_app), icon = Icons.Default.Apps, tint = Ios.Blue,
+            SettingsRow(title = stringResource(R.string.mae_add_app), icon = Icons.Default.Apps, tint = DuskTheme.primary,
                 onClick = { showPicker = true })
         }
 
@@ -436,7 +437,7 @@ internal fun MaeManageScreen(onBack: () -> Unit, openPicker: Boolean = false, on
             SettingsTextRow(title = stringResource(R.string.mae_add_site), value = site,
                 onValueChange = { site = it; siteError = null }, placeholder = stringResource(R.string.mae_add_site_hint), error = siteError)
             Separator()
-            SettingsActionRow(label = stringResource(R.string.mae_add), icon = Icons.Default.Add, tint = Ios.Blue, labelColor = Ios.Blue,
+            SettingsActionRow(label = stringResource(R.string.mae_add), icon = Icons.Default.Add, tint = DuskTheme.primary, labelColor = DuskTheme.primary,
                 enabled = site.isNotBlank()) {
                 val typed = site
                 when (val id = MaeEngine.addSite(typed)) {
@@ -445,8 +446,7 @@ internal fun MaeManageScreen(onBack: () -> Unit, openPicker: Boolean = false, on
                         site = ""
                         // A known app's site selects the app itself: say so, not silently.
                         if (!id.startsWith("site:")) MaeEngine.serviceDef(id)?.let { def ->
-                            android.widget.Toast.makeText(context, context.getString(R.string.mae_site_is_app, typed.trim(), serviceName(context, def)),
-                                android.widget.Toast.LENGTH_LONG).show()
+                            showNotice(context.getString(R.string.mae_site_is_app, typed.trim(), serviceName(context, def)))
                         }
                     }
                 }
@@ -466,7 +466,7 @@ internal fun MaeManageScreen(onBack: () -> Unit, openPicker: Boolean = false, on
             SettingsRow(
                 title = com.mlmvpn.scanner.store.tr("ورکر مرکزی", "Central Worker"),
                 icon = Icons.Default.Public,
-                tint = Ios.CloudflareOrange,
+                tint = DuskTheme.cloudflareOrange,
                 subtitle = when {
                     exitBusy -> stringResource(R.string.mae_foreign_exit_working)
                     gw != null -> gw.host
@@ -484,7 +484,7 @@ internal fun MaeManageScreen(onBack: () -> Unit, openPicker: Boolean = false, on
                     SettingsActionRow(
                         label = com.mlmvpn.scanner.store.tr("راه‌اندازی ورکر مرکزی", "Set up the central Worker"),
                         icon = Icons.Default.CloudUpload,
-                        tint = Ios.CloudflareOrange, busy = exitBusy,
+                        tint = DuskTheme.cloudflareOrange, busy = exitBusy,
                     ) {
                         if (exitBusy) return@SettingsActionRow
                         exitBusy = true; exitError = null
@@ -524,11 +524,11 @@ private fun ManageAppRow(v: MaeEngine.ServiceView, name: String, subtitle: Strin
         Box(Modifier.alpha(if (v.paused) 0.45f else 1f)) { MaeAppIcon(v.def, name, 36.dp) }
         Spacer(Modifier.width(12.dp))
         Column(Modifier.weight(1f)) {
-            Text(name, color = if (v.paused) Ios.SecondaryLabel else Ios.Label, fontSize = 16.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
-            Text(subtitle, color = Ios.SecondaryLabel, fontSize = 12.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            Text(name, color = if (v.paused) DuskTheme.muted else DuskTheme.onSurface, fontSize = 16.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            Text(subtitle, color = DuskTheme.muted, fontSize = 12.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
         }
         Icon(
-            Icons.Default.ChevronRight, contentDescription = null, tint = Ios.Chevron,
+            Icons.Default.ChevronRight, contentDescription = null, tint = DuskTheme.disabled,
             modifier = Modifier.size(18.dp).scale(if (LocalLayoutDirection.current == LayoutDirection.Rtl) -1f else 1f, 1f),
         )
     }
@@ -542,7 +542,7 @@ private fun DestructiveRow(label: String, enabled: Boolean = true, onClick: () -
             .heightIn(min = 48.dp).padding(horizontal = 16.dp, vertical = 12.dp),
         contentAlignment = Alignment.Center,
     ) {
-        Text(label, color = if (enabled) Ios.Red else Ios.SecondaryLabel, fontSize = 16.sp, fontWeight = FontWeight.Medium)
+        Text(label, color = if (enabled) DuskTheme.error else DuskTheme.muted, fontSize = 16.sp, fontWeight = FontWeight.Medium)
     }
 }
 
@@ -572,14 +572,14 @@ private fun MaeAppDetail(
         Column(Modifier.fillMaxWidth().padding(top = 20.dp, bottom = 6.dp), horizontalAlignment = Alignment.CenterHorizontally) {
             MaeAppIcon(v.def, name, 72.dp)
             Spacer(Modifier.height(10.dp))
-            Text(name, color = Ios.Label, fontSize = 22.sp, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            Text(name, color = DuskTheme.onSurface, fontSize = 22.sp, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
             val now = when {
                 v.def.id in testing -> stringResource(R.string.mae_phase_testing)
                 v.paused -> stringResource(R.string.mae_phase_paused)
                 v.routeId != null -> routeName(context, v.routeId, v.family, v.country)
                 else -> stringResource(R.string.mae_phase_waiting)
             }
-            Text(now, color = Ios.SecondaryLabel, fontSize = 14.sp)
+            Text(now, color = DuskTheme.muted, fontSize = 14.sp)
         }
 
         SettingsGroup(modifier = Modifier.padding(top = 14.dp)) {
@@ -588,7 +588,7 @@ private fun MaeAppDetail(
                 checked = !v.paused,
                 onCheckedChange = { MaeEngine.setPaused(v.def.id, !it) },
                 icon = Icons.Default.PowerSettingsNew,
-                tint = Ios.Green,
+                tint = DuskTheme.success,
             )
         }
         SettingsFooter(stringResource(R.string.mae_app_enabled_footer))
@@ -621,8 +621,8 @@ private fun MaeAppDetail(
             SettingsActionRow(
                 label = stringResource(R.string.mae_recheck),
                 icon = Icons.Default.Refresh,
-                tint = Ios.Blue,
-                labelColor = Ios.Blue,
+                tint = DuskTheme.primary,
+                labelColor = DuskTheme.primary,
                 busy = v.def.id in testing,
                 enabled = !v.paused,
             ) { MaeEngine.recheck(v.def.id) }
@@ -643,10 +643,10 @@ private fun CheckRow(label: String, detail: String?, checked: Boolean, onClick: 
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Column(Modifier.weight(1f)) {
-            Text(label, color = Ios.Label, fontSize = 16.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
-            if (detail != null) Text(detail, color = Ios.SecondaryLabel, fontSize = 12.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            Text(label, color = DuskTheme.onSurface, fontSize = 16.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            if (detail != null) Text(detail, color = DuskTheme.muted, fontSize = 12.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
         }
-        if (checked) Icon(Icons.Default.Check, contentDescription = null, tint = Ios.Blue, modifier = Modifier.size(20.dp))
+        if (checked) Icon(Icons.Default.Check, contentDescription = null, tint = DuskTheme.primary, modifier = Modifier.size(20.dp))
     }
 }
 
@@ -658,11 +658,11 @@ private fun SetupRow(label: String, detail: String, onClick: () -> Unit) {
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Column(Modifier.weight(1f)) {
-            Text(label, color = Ios.Label, fontSize = 16.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
-            Text(detail, color = Ios.Orange, fontSize = 12.sp, maxLines = 2, overflow = TextOverflow.Ellipsis)
+            Text(label, color = DuskTheme.onSurface, fontSize = 16.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            Text(detail, color = DuskTheme.accent, fontSize = 12.sp, maxLines = 2, overflow = TextOverflow.Ellipsis)
         }
         Icon(
-            Icons.Default.ChevronRight, contentDescription = null, tint = Ios.Chevron,
+            Icons.Default.ChevronRight, contentDescription = null, tint = DuskTheme.disabled,
             modifier = Modifier.size(18.dp).scale(if (LocalLayoutDirection.current == LayoutDirection.Rtl) -1f else 1f, 1f),
         )
     }
@@ -708,7 +708,7 @@ internal fun MaeDiagnosticsScreen(onBack: () -> Unit) {
                 Separator()
                 SettingsRow(title = stringResource(R.string.mae_route), value = (p?.routeId ?: "—") + (p?.let { " · ${it.family} · ${"%.2f".format(it.confidence)}" } ?: ""), showChevron = false)
                 Separator()
-                SettingsActionRow(label = stringResource(R.string.mae_diag_retest), icon = Icons.Default.Refresh, tint = Ios.Blue) {
+                SettingsActionRow(label = stringResource(R.string.mae_diag_retest), icon = Icons.Default.Refresh, tint = DuskTheme.primary) {
                     MaeEngine.enqueue(def.id, incident = true)
                 }
             }
@@ -747,6 +747,7 @@ internal fun MaeDiagnosticsScreen(onBack: () -> Unit) {
 @Composable
 private fun InstalledAppPicker(onBack: () -> Unit) {
     val context = LocalContext.current
+    val showNotice = rememberDuskSnackbarAction()
     fun chosenOf(s: MaeState) = s.selected.mapNotNull { MaeEngine.serviceDef(it.id) }.flatMap { it.packages }.toSet()
     // The ticks change only when the selection does -- not with every probe result, which used to
     // rebuild the whole list many times a second right after a tap.
@@ -789,7 +790,7 @@ private fun InstalledAppPicker(onBack: () -> Unit) {
                 // packages (YouTube Music is YouTube) the whole app: asked first.
                 confirm = label to existing
             } else if (MaeEngine.addInstalledApp(pkg, label) is MaeEngine.AddApp.NoDomain) {
-                android.widget.Toast.makeText(context, noDomain.format(label), android.widget.Toast.LENGTH_LONG).show()
+                showNotice(noDomain.format(label))
             }
         },
     )

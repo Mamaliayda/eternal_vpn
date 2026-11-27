@@ -71,7 +71,6 @@ import com.mlmvpn.scanner.engines.fenix.FenixEngine.Failure
 import com.mlmvpn.scanner.engines.fenix.FenixEngine.SignIn
 import com.mlmvpn.scanner.ui.emergency.faDigits
 import com.mlmvpn.scanner.ui.home.frostedGlass
-import com.mlmvpn.scanner.ui.settings.Ios
 import com.mlmvpn.scanner.ui.theme.DuskPill
 import com.mlmvpn.scanner.ui.theme.DuskTheme
 import com.mlmvpn.scanner.ui.settings.IosScreen
@@ -144,11 +143,11 @@ fun FenixScreen(onBack: () -> Unit) {
         }
         Spacer(Modifier.height(8.dp))
         Text(
-            stringResource(R.string.fenix_title), color = Ios.Label, fontSize = 32.sp, fontWeight = FontWeight.Bold,
+            stringResource(R.string.fenix_title), color = DuskTheme.onSurface, fontSize = 32.sp, fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth(),
         )
         Text(
-            stringResource(R.string.fenix_tagline), color = Ios.SecondaryLabel, fontSize = 13.sp,
+            stringResource(R.string.fenix_tagline), color = DuskTheme.muted, fontSize = 13.sp,
             textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp, vertical = 4.dp),
         )
         Spacer(Modifier.height(14.dp))
@@ -194,14 +193,14 @@ private fun Ready(accounts: List<AccountView>, onCountry: () -> Unit, onAccounts
     SettingsGroup {
         SettingsRow(
             title = stringResource(R.string.fenix_country),
-            icon = Icons.Default.Public, tint = Ios.Blue,
+            icon = Icons.Default.Public, tint = DuskTheme.primary,
             value = countryValue(country, pings),
             onClick = onCountry,
         )
         Separator()
         SettingsRow(
             title = stringResource(R.string.fenix_accounts_row),
-            icon = Icons.Default.DataUsage, tint = Ios.Green,
+            icon = Icons.Default.DataUsage, tint = DuskTheme.success,
             value = if (total > 0) stringResource(R.string.fenix_quota_value, gb(left), gb(total)) else faDigits(accounts.size.toString()),
             subtitle = stringResource(R.string.fenix_accounts_count, faDigits(accounts.size.toString())),
             onClick = onAccounts,
@@ -214,7 +213,7 @@ private fun Ready(accounts: List<AccountView>, onCountry: () -> Unit, onAccounts
     Spacer(Modifier.height(14.dp))
     Text(
         statusText(conn),
-        color = if (conn is Conn.Failed) Ios.Orange else Ios.SecondaryLabel,
+        color = if (conn is Conn.Failed) DuskTheme.accent else DuskTheme.muted,
         fontSize = 14.sp, textAlign = TextAlign.Center,
         modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp),
     )
@@ -226,7 +225,7 @@ private fun Ready(accounts: List<AccountView>, onCountry: () -> Unit, onAccounts
             title = stringResource(R.string.fenix_mae_toggle),
             checked = forMae,
             onCheckedChange = { forMae = it; FenixEngine.forMae = it },
-            icon = Icons.Default.AutoAwesome, tint = Ios.Blue,
+            icon = Icons.Default.AutoAwesome, tint = DuskTheme.primary,
         )
     }
     SettingsFooter(stringResource(R.string.fenix_mae_footer))
@@ -249,11 +248,11 @@ private fun AccountsPage(onBack: () -> Unit, onAdd: () -> Unit) {
         }
         Spacer(Modifier.height(18.dp))
         SettingsGroup {
-            SettingsActionRow(label = stringResource(R.string.fenix_add_web), icon = Icons.Default.PersonAdd, tint = Ios.Orange, onClick = onAdd)
+            SettingsActionRow(label = stringResource(R.string.fenix_add_web), icon = Icons.Default.PersonAdd, tint = DuskTheme.accent, onClick = onAdd)
             Separator()
             SettingsActionRow(
                 label = stringResource(if (refreshing) R.string.fenix_refreshing else R.string.fenix_refresh),
-                icon = Icons.Default.Refresh, tint = Ios.Green, busy = refreshing,
+                icon = Icons.Default.Refresh, tint = DuskTheme.success, busy = refreshing,
                 onClick = { FenixEngine.refreshAll(force = true) },
             )
         }
@@ -285,11 +284,11 @@ private fun AccountsPage(onBack: () -> Unit, onAdd: () -> Unit) {
 private fun AccountCard(a: AccountView, onRemove: () -> Unit) {
     Column(Modifier.fillMaxWidth().frostedGlass(RoundedCornerShape(14.dp)).padding(14.dp)) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Text(a.email.ifBlank { "—" }, color = Ios.Label, fontSize = 15.sp, fontWeight = FontWeight.SemiBold, maxLines = 1, modifier = Modifier.weight(1f))
+            Text(a.email.ifBlank { "—" }, color = DuskTheme.onSurface, fontSize = 15.sp, fontWeight = FontWeight.SemiBold, maxLines = 1, modifier = Modifier.weight(1f))
             val badge = when {
-                a.signedOut -> stringResource(R.string.fenix_badge_signed_out) to Ios.Red
-                a.exhausted -> stringResource(R.string.fenix_badge_used_up) to Ios.Orange
-                a.active -> stringResource(R.string.fenix_badge_active) to Ios.Green
+                a.signedOut -> stringResource(R.string.fenix_badge_signed_out) to DuskTheme.error
+                a.exhausted -> stringResource(R.string.fenix_badge_used_up) to DuskTheme.accent
+                a.active -> stringResource(R.string.fenix_badge_active) to DuskTheme.success
                 else -> null
             }
             badge?.let { (t, c) ->
@@ -304,20 +303,20 @@ private fun AccountCard(a: AccountView, onRemove: () -> Unit) {
             LinearProgressIndicator(
                 progress = (left.toFloat() / limit).coerceIn(0f, 1f),
                 modifier = Modifier.fillMaxWidth().height(6.dp).clip(RoundedCornerShape(3.dp)),
-                color = if (a.exhausted) Ios.Orange else Ios.Green,
-                trackColor = Ios.Gray.copy(alpha = 0.25f),
+                color = if (a.exhausted) DuskTheme.accent else DuskTheme.success,
+                trackColor = DuskTheme.disabled.copy(alpha = 0.25f),
             )
             Spacer(Modifier.height(6.dp))
-            Text(stringResource(R.string.fenix_card_left, gb(left), gb(limit)), color = Ios.Label, fontSize = 13.sp)
+            Text(stringResource(R.string.fenix_card_left, gb(left), gb(limit)), color = DuskTheme.onSurface, fontSize = 13.sp)
         } else {
-            Text(stringResource(R.string.fenix_card_unknown), color = Ios.SecondaryLabel, fontSize = 13.sp)
+            Text(stringResource(R.string.fenix_card_unknown), color = DuskTheme.muted, fontSize = 13.sp)
         }
-        a.resetAt?.let { r -> Text(resetLine(r), color = Ios.SecondaryLabel, fontSize = 12.sp) }
+        a.resetAt?.let { r -> Text(resetLine(r), color = DuskTheme.muted, fontSize = 12.sp) }
         if (a.quotaAt > 0) {
-            Text(stringResource(R.string.fenix_card_checked, agoText(a.quotaAt)), color = Ios.SecondaryLabel, fontSize = 11.sp)
+            Text(stringResource(R.string.fenix_card_checked, agoText(a.quotaAt)), color = DuskTheme.muted, fontSize = 11.sp)
         }
         Text(
-            stringResource(R.string.fenix_remove), color = Ios.Red, fontSize = 13.sp,
+            stringResource(R.string.fenix_remove), color = DuskTheme.error, fontSize = 13.sp,
             modifier = Modifier.padding(top = 6.dp).clickable(role = Role.Button, onClick = onRemove),
         )
     }
@@ -366,7 +365,7 @@ private fun MozillaSignInPage(onBack: () -> Unit) {
     IosScreen(title = stringResource(R.string.fenix_add_web_title), onBack = onBack, backLabel = stringResource(R.string.fenix_title), scrollable = false) {
         Text(
             if (busy) stringResource(R.string.fenix_adding) else stringResource(R.string.fenix_add_web_hint),
-            color = if (busy) Ios.Green else Ios.SecondaryLabel, fontSize = 13.sp, textAlign = TextAlign.Center,
+            color = if (busy) DuskTheme.success else DuskTheme.muted, fontSize = 13.sp, textAlign = TextAlign.Center,
             modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 6.dp),
         )
         error?.let { ErrorText(it) }
@@ -515,7 +514,7 @@ private fun ErrorText(f: Failure) {
 
 @Composable
 private fun ConnectButton(connected: Boolean, busy: Boolean, onClick: () -> Unit) {
-    val ring = when { connected -> Ios.Green; busy -> Ios.Orange; else -> Ios.Gray }
+    val ring = when { connected -> DuskTheme.success; busy -> DuskTheme.accent; else -> DuskTheme.disabled }
     val label = stringResource(if (connected || busy) R.string.fenix_disconnect else R.string.fenix_connect)
     Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
         Box(
@@ -527,7 +526,7 @@ private fun ConnectButton(connected: Boolean, busy: Boolean, onClick: () -> Unit
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Icon(Icons.Default.PowerSettingsNew, contentDescription = null, tint = ring, modifier = Modifier.size(44.dp))
                 Spacer(Modifier.height(4.dp))
-                Text(label, color = Ios.Label, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
+                Text(label, color = DuskTheme.onSurface, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
             }
         }
     }
@@ -615,7 +614,7 @@ private fun FenixCountryPicker(onBack: () -> Unit) {
                     seen[s.country]?.takeIf { it != s.country }?.let { stringResource(R.string.fenix_exits_in, countryName(it)) },
                 ).joinToString(" · ")
                 CountryRow(flag(s.country), countryName(s.country), detail, current == s.country,
-                    detailColor = when { p == null -> Ios.SecondaryLabel; p < 0 -> Ios.Red; else -> Ios.Green }) { choose(s.country) }
+                    detailColor = when { p == null -> DuskTheme.muted; p < 0 -> DuskTheme.error; else -> DuskTheme.success }) { choose(s.country) }
             }
         }
         SettingsFooter(stringResource(R.string.fenix_country_footer))
@@ -624,7 +623,7 @@ private fun FenixCountryPicker(onBack: () -> Unit) {
 }
 
 @Composable
-private fun CountryRow(flag: String, name: String, detail: String, selected: Boolean, detailColor: Color = Ios.SecondaryLabel, onClick: () -> Unit) {
+private fun CountryRow(flag: String, name: String, detail: String, selected: Boolean, detailColor: Color = DuskTheme.muted, onClick: () -> Unit) {
     Row(
         Modifier.fillMaxWidth().frostedGlass(RoundedCornerShape(14.dp)).clickable(onClick = onClick)
             .heightIn(min = 52.dp).padding(horizontal = 14.dp, vertical = 9.dp),
@@ -633,10 +632,10 @@ private fun CountryRow(flag: String, name: String, detail: String, selected: Boo
         Text(flag, fontSize = 22.sp)
         Spacer(Modifier.width(12.dp))
         Column(Modifier.weight(1f)) {
-            Text(name, color = Ios.Label, fontSize = 16.sp, maxLines = 1)
+            Text(name, color = DuskTheme.onSurface, fontSize = 16.sp, maxLines = 1)
             if (detail.isNotBlank()) Text(detail, color = detailColor, fontSize = 11.sp, maxLines = 2)
         }
-        if (selected) Text("✓", color = Ios.Blue, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+        if (selected) Text("✓", color = DuskTheme.primary, fontSize = 18.sp, fontWeight = FontWeight.Bold)
     }
 }
 

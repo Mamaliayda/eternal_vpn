@@ -30,8 +30,8 @@ import com.mlmvpn.core.geph.GephForward
 import com.mlmvpn.core.geph.GephSettings
 import com.mlmvpn.core.geph.GephSettings.Coverage
 import com.mlmvpn.scanner.R
-import com.mlmvpn.scanner.ui.settings.Ios
 import com.mlmvpn.scanner.ui.settings.IosScreen
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 import com.mlmvpn.scanner.ui.settings.SettingsActionRow
 import com.mlmvpn.scanner.ui.settings.SettingsFooter
 import com.mlmvpn.scanner.ui.settings.SettingsGroup
@@ -72,7 +72,7 @@ fun GephSettingsScreen(onBack: () -> Unit, backLabel: String) {
             SettingsRow(
                 title = stringResource(R.string.geph_coverage_vpn),
                 icon = if (coverage == Coverage.VPN) Icons.Default.Check else Icons.Default.VpnLock,
-                tint = if (coverage == Coverage.VPN) Ios.Green else Ios.Gray,
+                tint = if (coverage == Coverage.VPN) DuskTheme.success else DuskTheme.muted,
                 subtitle = stringResource(R.string.geph_coverage_vpn_sub),
                 showChevron = false,
                 onClick = {
@@ -87,7 +87,7 @@ fun GephSettingsScreen(onBack: () -> Unit, backLabel: String) {
             SettingsRow(
                 title = stringResource(R.string.geph_coverage_proxy),
                 icon = if (coverage == Coverage.PROXY) Icons.Default.Check else Icons.Default.Router,
-                tint = if (coverage == Coverage.PROXY) Ios.Green else Ios.Gray,
+                tint = if (coverage == Coverage.PROXY) DuskTheme.success else DuskTheme.muted,
                 subtitle = stringResource(R.string.geph_coverage_proxy_sub),
                 showChevron = false,
                 onClick = {
@@ -107,13 +107,13 @@ fun GephSettingsScreen(onBack: () -> Unit, backLabel: String) {
                 val socks = "$host:${GephSettings.SOCKS_PORT}"
                 val http = "$host:${GephSettings.HTTP_PORT}"
                 SettingsRow(
-                    title = "SOCKS5", icon = Icons.Default.ContentCopy, tint = Ios.Blue,
+                    title = "SOCKS5", icon = Icons.Default.ContentCopy, tint = DuskTheme.primary,
                     value = socks, showChevron = false,
                     onClick = { copyToClipboard(ctx, "SOCKS5", socks) },
                 )
                 Separator()
                 SettingsRow(
-                    title = "HTTP", icon = Icons.Default.ContentCopy, tint = Ios.Blue,
+                    title = "HTTP", icon = Icons.Default.ContentCopy, tint = DuskTheme.primary,
                     value = http, showChevron = false,
                     onClick = { copyToClipboard(ctx, "HTTP", http) },
                 )
@@ -123,7 +123,7 @@ fun GephSettingsScreen(onBack: () -> Unit, backLabel: String) {
                     checked = listenAll,
                     onCheckedChange = { listenAll = it; GephSettings.setListenAll(ctx, it); applyGephNow(ctx) },
                     icon = Icons.Default.Lan,
-                    tint = Ios.Teal,
+                    tint = DuskTheme.secondary,
                     subtitle = stringResource(R.string.geph_listen_all_sub),
                 )
                 Separator()
@@ -132,7 +132,7 @@ fun GephSettingsScreen(onBack: () -> Unit, backLabel: String) {
                     checked = pac,
                     onCheckedChange = { pac = it; GephSettings.setPac(ctx, it); applyGephNow(ctx) },
                     icon = Icons.Default.SettingsEthernet,
-                    tint = Ios.Indigo,
+                    tint = DuskTheme.indigo,
                     subtitle = if (pac) "http://$host:${GephSettings.PAC_PORT}/proxy.pac" else stringResource(R.string.geph_pac_sub),
                 )
             }
@@ -147,7 +147,7 @@ fun GephSettingsScreen(onBack: () -> Unit, backLabel: String) {
                 checked = allowDirect,
                 onCheckedChange = { allowDirect = it; GephSettings.setAllowDirect(ctx, it); applyGephNow(ctx) },
                 icon = Icons.Default.SwapHoriz,
-                tint = Ios.Orange,
+                tint = DuskTheme.accent,
                 subtitle = stringResource(R.string.geph_allow_direct_sub),
             )
             Separator()
@@ -156,7 +156,7 @@ fun GephSettingsScreen(onBack: () -> Unit, backLabel: String) {
                 checked = spoofDns,
                 onCheckedChange = { spoofDns = it; GephSettings.setSpoofDns(ctx, it); applyGephNow(ctx) },
                 icon = Icons.Default.Dns,
-                tint = Ios.Blue,
+                tint = DuskTheme.primary,
                 subtitle = stringResource(R.string.geph_spoof_dns_sub),
             )
         }
@@ -170,7 +170,7 @@ fun GephSettingsScreen(onBack: () -> Unit, backLabel: String) {
                 checked = blockAds,
                 onCheckedChange = { blockAds = it; GephSettings.setBlockAds(ctx, it); applyGephNow(ctx) },
                 icon = Icons.Default.Block,
-                tint = Ios.Red,
+                tint = DuskTheme.error,
             )
             Separator()
             SettingsToggle(
@@ -178,7 +178,7 @@ fun GephSettingsScreen(onBack: () -> Unit, backLabel: String) {
                 checked = blockAdult,
                 onCheckedChange = { blockAdult = it; GephSettings.setBlockAdult(ctx, it); applyGephNow(ctx) },
                 icon = Icons.Default.NoAdultContent,
-                tint = Ios.Pink,
+                tint = DuskTheme.coral,
             )
         }
         SettingsFooter(stringResource(R.string.geph_filter_footer))
@@ -191,7 +191,7 @@ fun GephSettingsScreen(onBack: () -> Unit, backLabel: String) {
                 checked = allowLan,
                 onCheckedChange = { allowLan = it; GephSettings.setAllowLan(ctx, it); applyGephNow(ctx) },
                 icon = Icons.Default.Lan,
-                tint = Ios.Teal,
+                tint = DuskTheme.secondary,
                 subtitle = stringResource(R.string.geph_allow_lan_sub),
             )
         }
@@ -204,7 +204,7 @@ fun GephSettingsScreen(onBack: () -> Unit, backLabel: String) {
                 SettingsRow(
                     title = f.listen,
                     icon = Icons.Default.Delete,
-                    tint = Ios.Red,
+                    tint = DuskTheme.error,
                     value = f.connect,
                     showChevron = false,
                     onClick = {
@@ -220,7 +220,7 @@ fun GephSettingsScreen(onBack: () -> Unit, backLabel: String) {
                 value = newListen,
                 onValueChange = { newListen = it },
                 icon = Icons.Default.Public,
-                tint = Ios.Gray,
+                tint = DuskTheme.muted,
                 placeholder = "127.0.0.1:2222",
                 error = forwardError,
             )
@@ -230,14 +230,14 @@ fun GephSettingsScreen(onBack: () -> Unit, backLabel: String) {
                 value = newConnect,
                 onValueChange = { newConnect = it },
                 icon = Icons.Default.Shield,
-                tint = Ios.Gray,
+                tint = DuskTheme.muted,
                 placeholder = "example.com:22",
             )
             Separator()
             SettingsActionRow(
                 label = stringResource(R.string.geph_forward_add),
                 icon = Icons.Default.Add,
-                tint = Ios.Blue,
+                tint = DuskTheme.primary,
                 enabled = newListen.isNotBlank() && newConnect.isNotBlank(),
                 onClick = {
                     if (!GephSettings.validForward(newListen, newConnect)) {

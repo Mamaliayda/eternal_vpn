@@ -56,22 +56,18 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // The app's UI is always dark (darkColorScheme below is hardcoded, it never follows the
-        // system light/dark setting) -- but enableEdgeToEdge() with no args picks status/nav bar
-        // ICON color from the SYSTEM's light/dark setting, not from what the app actually draws.
-        // A phone in system light mode got dark status-bar icons over the app's dark background:
-        // invisible clock/battery. Forcing SystemBarStyle.dark(...) always gives light icons,
-        // which is correct either way since the background here never changes.
+        com.mlmvpn.scanner.utils.AppLocaleManager.init(this)
+        com.mlmvpn.scanner.ui.home.Appearance.init(this)
+        // Both bars stay transparent over the full-bleed Dusk backdrop. Their icon contrast is
+        // updated from the app's selected appearance below, not the phone's unrelated system mode.
         enableEdgeToEdge(
             statusBarStyle = SystemBarStyle.dark(android.graphics.Color.TRANSPARENT),
-            navigationBarStyle = SystemBarStyle.dark(android.graphics.Color.TRANSPARENT)
+            navigationBarStyle = SystemBarStyle.dark(android.graphics.Color.TRANSPARENT),
         )
         Log.d("LanguageSwitch", "MainActivity.onCreate called")
-        com.mlmvpn.scanner.utils.AppLocaleManager.init(this)
         // Seeds the wallpaper choice before the first frame, so the backdrop the user picked is
         // the one they see on launch rather than a flash of the default.
         com.mlmvpn.scanner.ui.home.Wallpapers.init(this)
-        com.mlmvpn.scanner.ui.home.Appearance.init(this)
 
         com.mlmvpn.scanner.engines.subgenerator.SubGenManager(this).startAutoSync()
 
@@ -86,6 +82,12 @@ class MainActivity : AppCompatActivity() {
             // tokens. Individual feature layouts are being migrated route by route; this root
             // scheme is the foundation, not a claim that every legacy screen is finished.
             com.mlmvpn.scanner.ui.theme.MlmVpnTheme {
+                val darkAppearance = com.mlmvpn.scanner.ui.home.Appearance.isDark()
+                androidx.compose.runtime.SideEffect {
+                    val bars = androidx.core.view.WindowCompat.getInsetsController(window, window.decorView)
+                    bars.isAppearanceLightStatusBars = !darkAppearance
+                    bars.isAppearanceLightNavigationBars = !darkAppearance
+                }
                 val systemBars = androidx.compose.foundation.layout.WindowInsets.systemBars.asPaddingValues()
                 // The app-wide text size rides on the DENSITY's fontScale rather than on the
                 // Typography. It has to: nearly every Text in this app passes an explicit

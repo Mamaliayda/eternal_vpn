@@ -74,7 +74,7 @@ import com.mlmvpn.scanner.engines.scout.Tri
 import com.mlmvpn.scanner.store.tr
 import com.mlmvpn.scanner.ui.home.AppIconTile
 import com.mlmvpn.scanner.ui.home.frostedGlass
-import com.mlmvpn.scanner.ui.settings.Ios
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 import java.util.Locale
 
 internal val CardShape22 = RoundedCornerShape(22.dp)
@@ -99,12 +99,12 @@ internal fun statusLabel(s: ScoutStatus): String = when (s) {
 
 @Composable
 internal fun statusColor(s: ScoutStatus): Color = when (s) {
-    ScoutStatus.WORKS -> Ios.Green
-    ScoutStatus.WEAK -> Ios.Orange
-    ScoutStatus.FAILED -> Ios.Red
-    ScoutStatus.CHECKING, ScoutStatus.ON_DEMAND -> Ios.Blue
-    ScoutStatus.SERVICE_DOWN -> Ios.Yellow
-    else -> Ios.Gray
+    ScoutStatus.WORKS -> DuskTheme.success
+    ScoutStatus.WEAK -> DuskTheme.accent
+    ScoutStatus.FAILED -> DuskTheme.error
+    ScoutStatus.CHECKING, ScoutStatus.ON_DEMAND -> DuskTheme.primary
+    ScoutStatus.SERVICE_DOWN -> DuskTheme.accent
+    else -> DuskTheme.disabled
 }
 
 internal fun stepLabel(s: Step?): String = when (s) {
@@ -178,7 +178,7 @@ internal fun megabytes(bytes: Long) = String.format(Locale.US, "%.1f", bytes / 1
 internal fun ScoutLogo(running: Boolean, size: Dp = 128.dp) {
     val t = rememberInfiniteTransition(label = "radar")
     val phase by t.animateFloat(0f, 1f, infiniteRepeatable(tween(if (running) 1_800 else 3_600, easing = LinearEasing)), label = "phase")
-    val ring = Ios.Blue
+    val ring = DuskTheme.primary
     Box(Modifier.size(size), contentAlignment = Alignment.Center) {
         Canvas(Modifier.size(size)) {
             val max = this.size.minDimension / 2
@@ -201,7 +201,7 @@ internal fun ScoutLogo(running: Boolean, size: Dp = 128.dp) {
 internal fun ProgressRing(fraction: Float, center: @Composable () -> Unit) {
     val anim by animateFloatAsState(fraction.coerceIn(0f, 1f), tween(500), label = "ring")
     val track = Color.White.copy(alpha = 0.12f)
-    val fill = Ios.Blue
+    val fill = DuskTheme.primary
     Box(Modifier.size(150.dp), contentAlignment = Alignment.Center) {
         Canvas(Modifier.size(150.dp)) {
             val w = 9.dp.toPx()
@@ -234,7 +234,7 @@ internal fun StatusPill(s: ScoutStatus) {
 internal fun MethodIcon(id: String, size: Dp) {
     val app = ScoutRegistry.byId(id)?.homeApp()
     if (app != null) AppIconTile(app = app, size = size)
-    else Box(Modifier.size(size).clip(RoundedCornerShape(size * 0.24f)).background(Ios.Gray))
+    else Box(Modifier.size(size).clip(RoundedCornerShape(size * 0.24f)).background(DuskTheme.disabled))
 }
 
 @Composable
@@ -246,9 +246,9 @@ internal fun MethodRow(m: MethodResult, onClick: () -> Unit) {
         MethodIcon(m.id, 36.dp)
         Spacer(Modifier.width(12.dp))
         Column(Modifier.weight(1f)) {
-            Text(methodTitle(m.id), color = Ios.Label, fontSize = 16.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            Text(methodTitle(m.id), color = DuskTheme.onSurface, fontSize = 16.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
             val line = methodLine(m)
-            if (line.isNotBlank()) Text(line, color = Ios.SecondaryLabel, fontSize = 12.sp, maxLines = 2, overflow = TextOverflow.Ellipsis)
+            if (line.isNotBlank()) Text(line, color = DuskTheme.muted, fontSize = 12.sp, maxLines = 2, overflow = TextOverflow.Ellipsis)
         }
         Spacer(Modifier.width(8.dp))
         StatusPill(if (m.step != null && !m.status.finished) ScoutStatus.CHECKING else m.status)
@@ -264,7 +264,7 @@ internal fun MethodCard(items: List<MethodResult>, onOpen: (String) -> Unit) {
                 val shown = remember { MutableTransitionState(false).apply { targetState = true } }
                 AnimatedVisibility(shown, enter = fadeIn(tween(350)) + expandVertically(tween(350))) {
                     Column {
-                        if (i > 0) Box(Modifier.fillMaxWidth().padding(start = 62.dp).height(0.5.dp).background(Ios.Separator))
+                        if (i > 0) Box(Modifier.fillMaxWidth().padding(start = 62.dp).height(0.5.dp).background(DuskTheme.outline))
                         MethodRow(m) { onOpen(m.id) }
                     }
                 }
@@ -283,15 +283,15 @@ internal fun FoldSection(title: String, items: List<MethodResult>, startOpen: Bo
         Modifier.fillMaxWidth().clickable { open = !open }.padding(start = 20.dp, end = 20.dp, top = 22.dp, bottom = 7.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Text("$title (${items.size})", color = Ios.SecondaryLabel, fontSize = 13.sp, modifier = Modifier.weight(1f))
-        Icon(Icons.Default.ExpandMore, null, tint = Ios.SecondaryLabel, modifier = Modifier.size(18.dp).rotate(turn))
+        Text("$title (${items.size})", color = DuskTheme.muted, fontSize = 13.sp, modifier = Modifier.weight(1f))
+        Icon(Icons.Default.ExpandMore, null, tint = DuskTheme.muted, modifier = Modifier.size(18.dp).rotate(turn))
     }
     AnimatedVisibility(open) { MethodCard(items, onOpen) }
 }
 
 @Composable
 internal fun SectionTitle(text: String) {
-    Text(text, color = Ios.SecondaryLabel, fontSize = 13.sp, modifier = Modifier.padding(start = 20.dp, end = 20.dp, top = 22.dp, bottom = 7.dp))
+    Text(text, color = DuskTheme.muted, fontSize = 13.sp, modifier = Modifier.padding(start = 20.dp, end = 20.dp, top = 22.dp, bottom = 7.dp))
 }
 
 // ---- «اینترنت شما» in brief ----------------------------------------------------------------------
@@ -338,8 +338,8 @@ internal fun LineCard(l: LineFacts, onOpen: () -> Unit) {
         Modifier.fillMaxWidth().padding(horizontal = 16.dp).frostedGlass(CardShape22).clickable(onClick = onOpen).padding(14.dp),
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Text(tr("اینترنت شما", "Your internet"), color = Ios.Label, fontSize = 16.sp, fontWeight = FontWeight.SemiBold, modifier = Modifier.weight(1f))
-            Icon(Icons.Default.ChevronRight, null, tint = Ios.Chevron, modifier = Modifier.size(18.dp)
+            Text(tr("اینترنت شما", "Your internet"), color = DuskTheme.onSurface, fontSize = 16.sp, fontWeight = FontWeight.SemiBold, modifier = Modifier.weight(1f))
+            Icon(Icons.Default.ChevronRight, null, tint = DuskTheme.disabled, modifier = Modifier.size(18.dp)
                 .scale(if (LocalLayoutDirection.current == LayoutDirection.Rtl) -1f else 1f, 1f))
         }
         Spacer(Modifier.height(10.dp))
@@ -351,7 +351,7 @@ internal fun LineCard(l: LineFacts, onOpen: () -> Unit) {
 
 @Composable
 private fun LineChip(c: Chip) {
-    val color = when (c.good) { true -> Ios.Green; false -> Ios.Orange; null -> Ios.Label }
+    val color = when (c.good) { true -> DuskTheme.success; false -> DuskTheme.accent; null -> DuskTheme.onSurface }
     val pending = c.value == null
     val a = if (pending) {
         val t = rememberInfiniteTransition(label = "chip")
@@ -361,7 +361,7 @@ private fun LineChip(c: Chip) {
         Modifier.clip(RoundedCornerShape(10.dp)).background(Color.White.copy(alpha = 0.08f)).padding(horizontal = 9.dp, vertical = 5.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Text(c.label, color = Ios.SecondaryLabel, fontSize = 12.sp)
+        Text(c.label, color = DuskTheme.muted, fontSize = 12.sp)
         Spacer(Modifier.width(5.dp))
         Text(c.value ?: "…", color = color.copy(alpha = a), fontSize = 12.sp, fontWeight = FontWeight.SemiBold)
     }
@@ -371,8 +371,8 @@ private fun LineChip(c: Chip) {
 @Composable
 internal fun Stat(value: String, label: String, modifier: Modifier = Modifier) {
     Column(modifier, horizontalAlignment = Alignment.CenterHorizontally) {
-        Text(value, color = Ios.Label, fontSize = 18.sp, fontWeight = FontWeight.SemiBold, maxLines = 1)
-        Text(label, color = Ios.SecondaryLabel, fontSize = 11.sp, textAlign = TextAlign.Center, maxLines = 2)
+        Text(value, color = DuskTheme.onSurface, fontSize = 18.sp, fontWeight = FontWeight.SemiBold, maxLines = 1)
+        Text(label, color = DuskTheme.muted, fontSize = 11.sp, textAlign = TextAlign.Center, maxLines = 2)
     }
 }
 

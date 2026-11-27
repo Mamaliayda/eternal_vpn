@@ -58,10 +58,10 @@ import com.mlmvpn.scanner.engines.flux.core.model.FluxUiState
 import com.mlmvpn.scanner.engines.flux.core.model.IpMode
 import com.mlmvpn.scanner.engines.flux.core.model.Tri
 import com.mlmvpn.scanner.ui.home.frostedGlass
-import com.mlmvpn.scanner.ui.settings.Ios
 import com.mlmvpn.scanner.ui.settings.IosOption
 import com.mlmvpn.scanner.ui.settings.IosPickerScreen
 import com.mlmvpn.scanner.ui.settings.IosScreen
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 import com.mlmvpn.scanner.ui.settings.IosTextScreen
 import com.mlmvpn.scanner.ui.settings.SettingsActionRow
 import com.mlmvpn.scanner.ui.settings.SettingsFooter
@@ -131,7 +131,7 @@ private fun FluxMain(onBack: () -> Unit, onCountry: () -> Unit, onDiagnostics: (
         // The title is also the developer's door: a long press opens diagnostics.
         Text(
             stringResource(R.string.flux_title_short),
-            color = Ios.Label, fontSize = 34.sp, fontWeight = FontWeight.Bold, textAlign = TextAlign.Center,
+            color = DuskTheme.onSurface, fontSize = 34.sp, fontWeight = FontWeight.Bold, textAlign = TextAlign.Center,
             modifier = Modifier.fillMaxWidth().longPress(onDiagnostics),
         )
         Spacer(Modifier.height(18.dp))
@@ -139,7 +139,7 @@ private fun FluxMain(onBack: () -> Unit, onCountry: () -> Unit, onDiagnostics: (
         SettingsGroup {
             SettingsRow(
                 title = stringResource(R.string.flux_country),
-                icon = Icons.Default.Public, tint = Ios.Blue,
+                icon = Icons.Default.Public, tint = DuskTheme.primary,
                 value = prefs.country?.let { countryLabel(it) } ?: stringResource(R.string.flux_country_auto),
                 // Open while connected too: a new country moves the tunnel to a route for it.
                 onClick = onCountry,
@@ -157,7 +157,7 @@ private fun FluxMain(onBack: () -> Unit, onCountry: () -> Unit, onDiagnostics: (
         Spacer(Modifier.height(14.dp))
         Text(
             statusText(ui, connected, searching),
-            color = if (ui is FluxUiState.Failed) Ios.Orange else Ios.SecondaryLabel,
+            color = if (ui is FluxUiState.Failed) DuskTheme.accent else DuskTheme.muted,
             fontSize = 14.sp, textAlign = TextAlign.Center,
             modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp),
         )
@@ -200,12 +200,12 @@ private fun IpSelector(mode: IpMode, enabled: Boolean, onSelect: (IpMode) -> Uni
             val sel = m == mode
             Box(
                 Modifier.weight(1f).clip(RoundedCornerShape(10.dp))
-                    .background(if (sel) Ios.Blue else Color.Transparent)
+                    .background(if (sel) DuskTheme.primary else Color.Transparent)
                     .then(if (enabled) Modifier.clickable(role = Role.RadioButton) { onSelect(m) } else Modifier)
                     .padding(vertical = 10.dp),
                 contentAlignment = Alignment.Center,
             ) {
-                Text(label, color = if (sel) Color.White else Ios.Label, fontSize = 15.sp, fontWeight = if (sel) FontWeight.SemiBold else FontWeight.Normal)
+                Text(label, color = if (sel) Color.White else DuskTheme.onSurface, fontSize = 15.sp, fontWeight = if (sel) FontWeight.SemiBold else FontWeight.Normal)
             }
         }
     }
@@ -214,9 +214,9 @@ private fun IpSelector(mode: IpMode, enabled: Boolean, onSelect: (IpMode) -> Uni
 @Composable
 private fun ConnectButton(connected: Boolean, busy: Boolean, onClick: () -> Unit) {
     val ring = when {
-        connected -> Ios.Green
-        busy -> Ios.Orange
-        else -> Ios.Gray
+        connected -> DuskTheme.success
+        busy -> DuskTheme.accent
+        else -> DuskTheme.disabled
     }
     val label = stringResource(if (connected || busy) R.string.flux_disconnect else R.string.flux_connect)
     Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
@@ -233,7 +233,7 @@ private fun ConnectButton(connected: Boolean, busy: Boolean, onClick: () -> Unit
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Icon(Icons.Default.PowerSettingsNew, contentDescription = null, tint = ring, modifier = Modifier.size(44.dp))
                 Spacer(Modifier.height(4.dp))
-                Text(label, color = Ios.Label, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
+                Text(label, color = DuskTheme.onSurface, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
             }
         }
     }
@@ -297,12 +297,12 @@ private fun FluxDiagnosticsScreen(onBack: () -> Unit, onAddSub: () -> Unit) {
         SettingsGroup {
             subs.forEachIndexed { i, url ->
                 if (i > 0) Separator()
-                SettingsActionRow(label = url.take(60), icon = Icons.Default.Delete, tint = Ios.Red, onClick = {
+                SettingsActionRow(label = url.take(60), icon = Icons.Default.Delete, tint = DuskTheme.error, onClick = {
                     subs = subs - url; FluxEngine.setUserSubscriptions(subs)
                 })
             }
             if (subs.isNotEmpty()) Separator()
-            SettingsActionRow(label = stringResource(R.string.flux_diag_add_sub), icon = Icons.Default.Add, tint = Ios.Blue, onClick = onAddSub)
+            SettingsActionRow(label = stringResource(R.string.flux_diag_add_sub), icon = Icons.Default.Add, tint = DuskTheme.primary, onClick = onAddSub)
         }
         SettingsFooter(stringResource(R.string.flux_diag_subs_footer))
         Spacer(Modifier.height(40.dp))
@@ -332,7 +332,7 @@ private fun Mono(lines: List<String>) {
     Column(
         Modifier.fillMaxWidth().padding(horizontal = 16.dp).frostedGlass(RoundedCornerShape(14.dp)).padding(12.dp),
     ) {
-        lines.forEach { Text(it, color = Ios.Label, fontSize = 11.sp, fontFamily = FontFamily.Monospace, lineHeight = 15.sp) }
+        lines.forEach { Text(it, color = DuskTheme.onSurface, fontSize = 11.sp, fontFamily = FontFamily.Monospace, lineHeight = 15.sp) }
     }
 }
 

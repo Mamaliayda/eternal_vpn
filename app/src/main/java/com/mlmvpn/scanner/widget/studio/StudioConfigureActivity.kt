@@ -24,9 +24,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.darkColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -44,6 +42,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.runtime.CompositionLocalProvider
 import com.mlmvpn.scanner.store.tr
+import com.mlmvpn.scanner.ui.theme.DuskTheme
+import com.mlmvpn.scanner.ui.theme.MlmVpnTheme
 import com.mlmvpn.scanner.ui.home.AppIconTile
 import com.mlmvpn.scanner.ui.widgetstudio.PresetCard
 import com.mlmvpn.scanner.ui.widgetstudio.PreviewStage
@@ -99,7 +99,7 @@ class StudioConfigureActivity : ComponentActivity() {
         }
         val rtl = AppLocaleManager.isFarsi()
         setContent {
-            MaterialTheme(colorScheme = darkColorScheme()) {
+            MlmVpnTheme {
                 CompositionLocalProvider(LocalLayoutDirection provides if (rtl) LayoutDirection.Rtl else LayoutDirection.Ltr) {
                     ConfigureScreen(
                         size = size,
@@ -153,15 +153,15 @@ private fun ConfigureScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFF101114))
+            .background(DuskTheme.background)
             .statusBarsPadding()
             .navigationBarsPadding()
             .verticalScroll(rememberScrollState())
             .padding(vertical = 16.dp),
     ) {
-        Text(tr("ویجت استدیو", "Widget Studio"), color = Color.White, fontSize = 26.sp, fontWeight = FontWeight.Bold,
+        Text(tr("ویجت استدیو", "Widget Studio"), color = DuskTheme.onSurface, fontSize = 26.sp, fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(horizontal = 20.dp))
-        Text(tr("یک طرح برای این ویجت انتخاب کنید", "Choose a design for this widget"), color = Color.White.copy(alpha = 0.65f), fontSize = 14.sp,
+        Text(tr("یک طرح برای این ویجت انتخاب کنید", "Choose a design for this widget"), color = DuskTheme.muted, fontSize = 14.sp,
             modifier = Modifier.padding(horizontal = 20.dp, vertical = 4.dp))
 
         val mine = data.templates
@@ -173,7 +173,7 @@ private fun ConfigureScreen(
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp, vertical = 4.dp)
                         .clip(RoundedCornerShape(18.dp))
-                        .background(Color.White.copy(alpha = 0.07f))
+                        .background(DuskTheme.raisedSurface)
                         .clickable { onPick(t.id) }
                         .padding(10.dp),
                     verticalAlignment = Alignment.CenterVertically,
@@ -181,8 +181,8 @@ private fun ConfigureScreen(
                     Box(modifier = Modifier.width(120.dp)) { TemplatePreview(t.copy(size = size), PreviewState.CONNECTED, width = if (size == StudioSize.SMALL) 70.dp else 120.dp) }
                     Spacer(Modifier.width(12.dp))
                     Column(Modifier.weight(1f)) {
-                        Text(t.name.ifBlank { t.style.title }, color = Color.White, fontSize = 15.sp, fontWeight = FontWeight.SemiBold)
-                        Text(WidgetMethods.app(t.method)?.let { WidgetPainter.labelOf(it) } ?: t.method, color = Color.White.copy(alpha = 0.6f), fontSize = 12.sp)
+                        Text(t.name.ifBlank { t.style.title }, color = DuskTheme.onSurface, fontSize = 15.sp, fontWeight = FontWeight.SemiBold)
+                        Text(WidgetMethods.app(t.method)?.let { WidgetPainter.labelOf(it) } ?: t.method, color = DuskTheme.muted, fontSize = 12.sp)
                     }
                 }
             }
@@ -198,7 +198,7 @@ private fun ConfigureScreen(
                 Column(
                     modifier = Modifier
                         .clip(RoundedCornerShape(14.dp))
-                        .background(if (on) Color.White.copy(alpha = 0.16f) else Color.Transparent)
+                        .background(if (on) DuskTheme.rose.copy(alpha = 0.32f) else Color.Transparent)
                         .clickable { method = app.id }
                         .padding(6.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
@@ -207,7 +207,7 @@ private fun ConfigureScreen(
                     // app; the highlight behind it is what says chosen.
                     AppIconTile(app = app, size = 40.dp)
                     Spacer(Modifier.height(4.dp))
-                    Text(WidgetPainter.labelOf(app), color = Color.White, fontSize = 10.5.sp, maxLines = 1, textAlign = TextAlign.Center,
+                    Text(WidgetPainter.labelOf(app), color = DuskTheme.onSurface, fontSize = 10.5.sp, maxLines = 1, textAlign = TextAlign.Center,
                         modifier = Modifier.width(58.dp))
                 }
             }
@@ -233,16 +233,16 @@ private fun ConfigureScreen(
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp)
                 .clip(RoundedCornerShape(16.dp))
-                .background(Color(0xFF0A84FF))
+                .background(DuskTheme.accent)
                 .clickable { onStudio(fresh(StudioStyle.GLASS)) }
                 .padding(vertical = 14.dp),
             contentAlignment = Alignment.Center,
         ) {
-            Text(tr("طراحی کامل در ویجت استدیو", "Design it fully in Widget Studio"), color = Color.White, fontSize = 15.sp, fontWeight = FontWeight.SemiBold)
+            Text(tr("طراحی کامل در ویجت استدیو", "Design it fully in Widget Studio"), color = DuskTheme.onAccent, fontSize = 15.sp, fontWeight = FontWeight.SemiBold)
         }
         Spacer(Modifier.height(10.dp))
         Text(
-            tr("انصراف", "Cancel"), color = Color.White.copy(alpha = 0.7f), fontSize = 15.sp, textAlign = TextAlign.Center,
+            tr("انصراف", "Cancel"), color = DuskTheme.muted, fontSize = 15.sp, textAlign = TextAlign.Center,
             modifier = Modifier.fillMaxWidth().clickable(onClick = onCancel).padding(12.dp),
         )
     }
@@ -250,6 +250,6 @@ private fun ConfigureScreen(
 
 @Composable
 private fun Heading(text: String) {
-    Text(text, color = Color.White.copy(alpha = 0.65f), fontSize = 13.sp,
+    Text(text, color = DuskTheme.muted, fontSize = 13.sp,
         modifier = Modifier.padding(start = 20.dp, end = 20.dp, top = 22.dp, bottom = 8.dp))
 }

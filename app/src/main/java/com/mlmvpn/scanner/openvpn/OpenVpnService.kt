@@ -427,6 +427,7 @@ class OpenVpnService : VpnService() {
         val open = PendingIntent.getActivity(this, 610, Intent(this, MainActivity::class.java), PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
         val stop = PendingIntent.getService(this, 611, Intent(this, OpenVpnService::class.java).setAction(DISCONNECT), PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
         return NotificationCompat.Builder(this, CHANNEL).setSmallIcon(R.drawable.ic_notification)
+            .setColor(androidx.core.content.ContextCompat.getColor(this, R.color.gs_primary))
             .setContentTitle("MLMVPN · OpenVPN").setContentText(status).setContentIntent(open)
             .setOnlyAlertOnce(true).setOngoing(OpenVpnRuntime.connection.value.active)
             .addAction(0, "Disconnect", stop).build()

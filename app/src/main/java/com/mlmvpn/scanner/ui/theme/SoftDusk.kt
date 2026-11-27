@@ -82,6 +82,8 @@ object DuskTheme {
     val onSurface: Color @Composable get() = if (Appearance.isDark()) nightText else lightText
     val muted: Color @Composable get() = if (Appearance.isDark()) nightMuted else lightMuted
     val onAccent: Color @Composable get() = if (Appearance.isDark()) navyNight else navy
+    val onPrimary: Color @Composable get() = if (Appearance.isDark()) navyNight else white
+    val onSuccess: Color @Composable get() = if (Appearance.isDark()) navyNight else white
     val onError: Color @Composable get() = if (Appearance.isDark()) navyNight else white
     val success: Color @Composable get() = if (Appearance.isDark()) Color(0xFF9BCFB4) else Color(0xFF43765A)
     val disabled: Color @Composable get() = if (Appearance.isDark()) Color(0xFF9B98AD) else Color(0xFF8E93A0)

@@ -13,7 +13,7 @@
         android:text="Share Configuration"
         android:textColor="@color/gs_on_surface"
         android:textSize="20sp"
-        android:fontFamily="sans-serif-medium"
+        android:fontFamily="@font/iransansx"
         android:layout_marginBottom="24dp" />
 
     <!-- QR Code Image -->
@@ -21,7 +21,7 @@
         android:id="@+id/iv_qr_code"
         android:layout_width="200dp"
         android:layout_height="200dp"
-        android:background="#FFFFFF"
+        android:background="@color/dusk_qr_surface"
         android:padding="8dp"
         android:layout_marginBottom="24dp" />
 

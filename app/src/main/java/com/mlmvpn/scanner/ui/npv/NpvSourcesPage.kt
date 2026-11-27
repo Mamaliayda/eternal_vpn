@@ -1,6 +1,5 @@
 package com.mlmvpn.scanner.ui.npv
 
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -67,8 +66,9 @@ import com.mlmvpn.scanner.engines.npv.NpvLibrary.Shelf
 import com.mlmvpn.scanner.store.tr
 import com.mlmvpn.scanner.ui.amnezia.ActionSheet
 import com.mlmvpn.scanner.ui.amnezia.fa
-import com.mlmvpn.scanner.ui.settings.Ios
 import com.mlmvpn.scanner.ui.settings.IosScreen
+import com.mlmvpn.scanner.ui.theme.DuskTheme
+import com.mlmvpn.scanner.ui.theme.rememberDuskSnackbarAction
 import com.mlmvpn.scanner.ui.settings.SettingsActionRow
 import com.mlmvpn.scanner.ui.settings.SettingsFooter
 import com.mlmvpn.scanner.ui.settings.SettingsGroup
@@ -91,6 +91,7 @@ internal fun NpvSourcesPage(
     onConnect: (NpvLibrary.Entry) -> Unit,
 ) {
     val ctx = LocalContext.current
+    val showNotice = rememberDuskSnackbarAction()
     val scope = rememberCoroutineScope()
     val refresh by NpvEngine.refresh.collectAsState()
     val measure by NpvEngine.measuring.collectAsState()
@@ -130,11 +131,11 @@ internal fun NpvSourcesPage(
                 AddChannel { text ->
                     val ch = NpvEngine.channelOf(text)
                     if (ch == null) {
-                        Toast.makeText(ctx, tr("نشانی کانال درست نیست", "Not a channel address"), Toast.LENGTH_SHORT).show()
+                        showNotice(tr("نشانی کانال درست نیست", "Not a channel address"))
                         false
                     } else {
                         scope.io { NpvEngine.addChannel(ctx, text) }
-                        Toast.makeText(ctx, tr("@$ch اضافه شد؛ با «بررسی کانفیگ‌های تازه» خوانده می‌شود", "@$ch added; «Check for new configs» reads it"), Toast.LENGTH_LONG).show()
+                        showNotice(tr("@$ch اضافه شد؛ با «بررسی کانفیگ‌های تازه» خوانده می‌شود", "@$ch added; «Check for new configs» reads it"))
                         true
                     }
                 }
@@ -146,7 +147,7 @@ internal fun NpvSourcesPage(
                         if (mine.isEmpty()) {
                             Text(
                                 tr("هنوز کانالی اضافه نکرده‌اید.", "You have not added a channel yet."),
-                                color = Ios.SecondaryLabel, fontSize = 14.sp, modifier = Modifier.padding(16.dp),
+                                color = DuskTheme.muted, fontSize = 14.sp, modifier = Modifier.padding(16.dp),
                             )
                         }
                         mine.forEachIndexed { i, ch ->
@@ -164,7 +165,7 @@ internal fun NpvSourcesPage(
                         title = tr("کانال‌های پیش‌فرض (${fa(defaults.size)})", "Default channels (${defaults.size})"),
                         subtitle = if (checked == 0L) tr("هنوز بررسی نشده", "Not checked yet")
                             else tr("آخرین بررسی ${ago(checked)} · ${fa(withNew)} کانال پست تازه داشت", "Checked ${ago(checked)} · $withNew had new posts"),
-                        icon = Icons.Default.Send, tint = Ios.Teal,
+                        icon = Icons.Default.Send, tint = DuskTheme.secondary,
                         value = if (showDefaults) tr("بستن", "Hide") else tr("نمایش", "Show"),
                         showChevron = false,
                         onClick = { showDefaults = !showDefaults },
@@ -182,7 +183,7 @@ internal fun NpvSourcesPage(
                         MeasureRow(Shelf.STORE, store.size, measure) { ScanGuard.run(ScanGuard.Reason.DELAY_TEST) { NpvEngine.measure(ctx, Shelf.STORE) } }
                         if (broken > 0 && !storeBusy) {
                             Separator()
-                            SettingsActionRow(label = tr("حذف خراب‌ها (${fa(broken)})", "Delete the broken ones ($broken)"), icon = Icons.Default.DeleteSweep, tint = Ios.Red) {
+                            SettingsActionRow(label = tr("حذف خراب‌ها (${fa(broken)})", "Delete the broken ones ($broken)"), icon = Icons.Default.DeleteSweep, tint = DuskTheme.error) {
                                 scope.io { NpvEngine.removeBroken(ctx, Shelf.STORE) }
                             }
                         }
@@ -191,30 +192,30 @@ internal fun NpvSourcesPage(
                             Separator()
                             SettingsActionRow(
                                 label = if (all) tr("برداشتن علامت‌ها", "Clear the ticks") else tr("علامت زدن همهٔ سالم‌ها (${fa(healthyIds.size)})", "Tick every working one (${healthyIds.size})"),
-                                icon = Icons.Default.CheckCircle, tint = Ios.Green,
+                                icon = Icons.Default.CheckCircle, tint = DuskTheme.success,
                             ) { selected = if (all) emptySet() else healthyIds.toSet() }
                         }
                         if (selected.isNotEmpty()) {
                             Separator()
                             SettingsActionRow(
                                 label = tr("فرستادن ${fa(selected.size)} کانفیگ علامت‌خورده به صفحهٔ اصلی", "Send the ${selected.size} ticked to the main page"),
-                                icon = Icons.Default.Home, tint = Ios.Blue,
+                                icon = Icons.Default.Home, tint = DuskTheme.primary,
                             ) {
                                 val ids = selected
                                 selected = emptySet()
                                 scope.io { NpvEngine.move(ctx, ids, Shelf.MAIN) }
-                                Toast.makeText(ctx, tr("${fa(ids.size)} کانفیگ به صفحهٔ اصلی رفت", "${ids.size} configs sent to the main page"), Toast.LENGTH_SHORT).show()
+                                showNotice(tr("${fa(ids.size)} کانفیگ به صفحهٔ اصلی رفت", "${ids.size} configs sent to the main page"))
                             }
                         }
                         if (store.isNotEmpty()) {
                             Separator()
-                            SettingsActionRow(label = tr("حذف همهٔ انبار", "Empty the store"), icon = Icons.Default.DeleteForever, tint = Ios.Red) { confirmClear = true }
+                            SettingsActionRow(label = tr("حذف همهٔ انبار", "Empty the store"), icon = Icons.Default.DeleteForever, tint = DuskTheme.error) { confirmClear = true }
                         }
                     }
                     if (store.isEmpty()) {
                         Text(
                             tr("انبار خالی است. «بررسی کانفیگ‌های تازه» را بزنید.", "The store is empty. Tap «Check for new configs»."),
-                            color = Ios.SecondaryLabel, fontSize = 14.sp, modifier = Modifier.fillMaxWidth().padding(horizontal = 32.dp, vertical = 16.dp),
+                            color = DuskTheme.muted, fontSize = 14.sp, modifier = Modifier.fillMaxWidth().padding(horizontal = 32.dp, vertical = 16.dp),
                         )
                     }
                 }
@@ -272,13 +273,13 @@ internal fun NpvSourcesPage(
 
     menuFor?.let { e ->
         ActionSheet(title = e.name, onDismiss = { menuFor = null }) {
-            SettingsActionRow(label = tr("اتصال", "Connect"), icon = Icons.Default.PowerSettingsNew, tint = Ios.Green) { menuFor = null; onConnect(e) }
+            SettingsActionRow(label = tr("اتصال", "Connect"), icon = Icons.Default.PowerSettingsNew, tint = DuskTheme.success) { menuFor = null; onConnect(e) }
             Separator()
-            SettingsActionRow(label = tr("فرستادن به صفحهٔ اصلی", "Send to the main page"), icon = Icons.Default.Home, tint = Ios.Blue) {
+            SettingsActionRow(label = tr("فرستادن به صفحهٔ اصلی", "Send to the main page"), icon = Icons.Default.Home, tint = DuskTheme.primary) {
                 menuFor = null; scope.io { NpvEngine.move(ctx, listOf(e.id), Shelf.MAIN) }
             }
             Separator()
-            SettingsActionRow(label = tr("حذف", "Delete"), icon = Icons.Default.Delete, tint = Ios.Red) {
+            SettingsActionRow(label = tr("حذف", "Delete"), icon = Icons.Default.Delete, tint = DuskTheme.error) {
                 menuFor = null; scope.io { NpvEngine.remove(ctx, listOf(e.id)) }
             }
         }
@@ -313,7 +314,7 @@ private fun RefreshCard(r: NpvEngine.Refresh, defaults: Int, onStart: () -> Unit
     Column {
         SettingsGroup(Modifier.padding(top = 8.dp)) {
             if (!r.running) {
-                SettingsActionRow(label = tr("بررسی کانفیگ‌های تازه", "Check for new configs"), icon = Icons.Default.Sync, tint = Ios.Orange, onClick = onStart)
+                SettingsActionRow(label = tr("بررسی کانفیگ‌های تازه", "Check for new configs"), icon = Icons.Default.Sync, tint = DuskTheme.accent, onClick = onStart)
             }
             if (r.running || r.outcome != null) {
                 if (!r.running) Separator()
@@ -399,14 +400,14 @@ private fun Steps(r: NpvEngine.Refresh) {
             },
         )
         when (r.outcome) {
-            NpvEngine.Outcome.NOTHING_NEW -> Text(tr("چیز تازه‌ای نبود.", "Nothing new."), color = Ios.SecondaryLabel, fontSize = 13.sp)
-            NpvEngine.Outcome.STOPPED -> Text(tr("متوقف شد.", "Stopped."), color = Ios.Orange, fontSize = 13.sp)
-            NpvEngine.Outcome.FAILED -> Text(tr("خطا: ", "Error: ") + (r.note ?: ""), color = Ios.Red, fontSize = 13.sp)
-            NpvEngine.Outcome.TESTED, NpvEngine.Outcome.STORED -> Text(tr("تمام شد.", "Done."), color = Ios.Green, fontSize = 13.sp, fontWeight = FontWeight.SemiBold)
+            NpvEngine.Outcome.NOTHING_NEW -> Text(tr("چیز تازه‌ای نبود.", "Nothing new."), color = DuskTheme.muted, fontSize = 13.sp)
+            NpvEngine.Outcome.STOPPED -> Text(tr("متوقف شد.", "Stopped."), color = DuskTheme.accent, fontSize = 13.sp)
+            NpvEngine.Outcome.FAILED -> Text(tr("خطا: ", "Error: ") + (r.note ?: ""), color = DuskTheme.error, fontSize = 13.sp)
+            NpvEngine.Outcome.TESTED, NpvEngine.Outcome.STORED -> Text(tr("تمام شد.", "Done."), color = DuskTheme.success, fontSize = 13.sp, fontWeight = FontWeight.SemiBold)
             else -> Unit
         }
         if (r.running && r.ask == NpvEngine.Ask.NONE) {
-            TextButton(onClick = { NpvEngine.cancelRefresh() }) { Text(tr("توقف", "Stop"), color = Ios.Orange) }
+            TextButton(onClick = { NpvEngine.cancelRefresh() }) { Text(tr("توقف", "Stop"), color = DuskTheme.accent) }
         }
     }
 }
@@ -414,10 +415,10 @@ private fun Steps(r: NpvEngine.Refresh) {
 @Composable
 private fun StepLine(n: Int, title: String, state: StepState, fraction: Float?, detail: String) {
     val color = when (state) {
-        StepState.DONE -> Ios.Green
-        StepState.ACTIVE -> Ios.Orange
-        StepState.FAILED -> Ios.Red
-        else -> Ios.SecondaryLabel
+        StepState.DONE -> DuskTheme.success
+        StepState.ACTIVE -> DuskTheme.accent
+        StepState.FAILED -> DuskTheme.error
+        else -> DuskTheme.muted
     }
     Column {
         Row(verticalAlignment = Alignment.CenterVertically) {
@@ -427,15 +428,15 @@ private fun StepLine(n: Int, title: String, state: StepState, fraction: Float?, 
             }
             Spacer(Modifier.width(8.dp))
             Text(
-                title, color = if (state == StepState.WAITING || state == StepState.SKIPPED) Ios.SecondaryLabel else Ios.Label,
+                title, color = if (state == StepState.WAITING || state == StepState.SKIPPED) DuskTheme.muted else DuskTheme.onSurface,
                 fontSize = 14.sp, fontWeight = FontWeight.SemiBold, modifier = Modifier.weight(1f),
             )
             val shownFraction = when (state) { StepState.DONE -> 1f; StepState.ACTIVE -> fraction; else -> null }
-            if (shownFraction != null) Text(fa("${(shownFraction * 100).toInt()}") + "٪", color = Ios.SecondaryLabel, fontSize = 12.sp)
+            if (shownFraction != null) Text(fa("${(shownFraction * 100).toInt()}") + "٪", color = DuskTheme.muted, fontSize = 12.sp)
         }
         if (detail.isNotBlank()) {
             Text(
-                detail, color = if (state == StepState.FAILED) Ios.Red else Ios.SecondaryLabel, fontSize = 12.sp, lineHeight = 18.sp,
+                detail, color = if (state == StepState.FAILED) DuskTheme.error else DuskTheme.muted, fontSize = 12.sp, lineHeight = 18.sp,
                 modifier = Modifier.padding(start = 30.dp, top = 2.dp),
             )
         }
@@ -465,10 +466,10 @@ private fun AddChannel(onAdd: (String) -> Boolean) {
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Box(Modifier.weight(1f)) {
-                    if (text.isEmpty()) Text("t.me/channel  ·  @channel", color = Ios.SecondaryLabel, fontSize = 16.sp)
+                    if (text.isEmpty()) Text("t.me/channel  ·  @channel", color = DuskTheme.muted, fontSize = 16.sp)
                     BasicTextField(
                         value = text, onValueChange = { text = it }, singleLine = true,
-                        textStyle = TextStyle(color = Ios.Label, fontSize = 16.sp), cursorBrush = SolidColor(Ios.Blue),
+                        textStyle = TextStyle(color = DuskTheme.onSurface, fontSize = 16.sp), cursorBrush = SolidColor(DuskTheme.primary),
                         modifier = Modifier.fillMaxWidth(),
                     )
                 }
@@ -488,14 +489,14 @@ private fun ChannelRow(ch: String, st: NpvEngine.ChannelState?, onRemove: (() ->
         Modifier.fillMaxWidth().heightIn(min = 50.dp).padding(start = 16.dp, end = if (onRemove != null) 4.dp else 16.dp, top = 6.dp, bottom = 6.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Icon(Icons.Default.Send, contentDescription = null, tint = Ios.Teal, modifier = Modifier.size(18.dp))
+        Icon(Icons.Default.Send, contentDescription = null, tint = DuskTheme.secondary, modifier = Modifier.size(18.dp))
         Spacer(Modifier.width(10.dp))
         Column(Modifier.weight(1f)) {
-            Text("@$ch", color = Ios.Label, fontSize = 15.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
-            Text(channelLine(st), color = if (st?.error != null) Ios.Orange else Ios.SecondaryLabel, fontSize = 12.sp, maxLines = 2, overflow = TextOverflow.Ellipsis)
+            Text("@$ch", color = DuskTheme.onSurface, fontSize = 15.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            Text(channelLine(st), color = if (st?.error != null) DuskTheme.accent else DuskTheme.muted, fontSize = 12.sp, maxLines = 2, overflow = TextOverflow.Ellipsis)
         }
         if (onRemove != null) {
-            IconButton(onClick = onRemove) { Icon(Icons.Default.Close, contentDescription = tr("برداشتن", "Remove"), tint = Ios.SecondaryLabel) }
+            IconButton(onClick = onRemove) { Icon(Icons.Default.Close, contentDescription = tr("برداشتن", "Remove"), tint = DuskTheme.muted) }
         }
     }
 }
@@ -530,17 +531,17 @@ private fun FileRow(e: NpvLibrary.Entry) {
     Row(
         Modifier.fillMaxWidth().clickable {
             val link = e.uri
-            if (link == null || !NpvEngine.openPost(ctx, link)) Toast.makeText(ctx, tr("تلگرام باز نشد", "Telegram did not open"), Toast.LENGTH_SHORT).show()
+            if (link == null || !NpvEngine.openPost(ctx, link)) showNotice(tr("تلگرام باز نشد", "Telegram did not open"))
         }.heightIn(min = 50.dp).padding(horizontal = 16.dp, vertical = 8.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Icon(Icons.Default.Description, contentDescription = null, tint = if (npv) Ios.Purple else Ios.Blue, modifier = Modifier.size(20.dp))
+        Icon(Icons.Default.Description, contentDescription = null, tint = if (npv) DuskTheme.purple else DuskTheme.primary, modifier = Modifier.size(20.dp))
         Spacer(Modifier.width(10.dp))
         Column(Modifier.weight(1f)) {
-            Text(e.name, color = Ios.Label, fontSize = 15.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            Text(e.name, color = DuskTheme.onSurface, fontSize = 15.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
             Text(
                 sourceLabel(e.source) + " · " + (if (npv) tr("فایل NPV Tunnel", "NPV Tunnel file") else tr("فایل متنی", "text file")) + tr(" · باز کردن در تلگرام", " · open in Telegram"),
-                color = Ios.SecondaryLabel, fontSize = 12.sp, maxLines = 1, overflow = TextOverflow.Ellipsis,
+                color = DuskTheme.muted, fontSize = 12.sp, maxLines = 1, overflow = TextOverflow.Ellipsis,
             )
         }
     }

@@ -3,7 +3,6 @@ package com.mlmvpn.scanner.ui.mae
 import android.app.Activity
 import android.content.Context
 import android.net.VpnService
-import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.core.Animatable
@@ -27,6 +26,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.IntOffset
 import com.mlmvpn.scanner.ui.theme.DuskPill
 import com.mlmvpn.scanner.ui.theme.DuskTheme
+import com.mlmvpn.scanner.ui.theme.rememberDuskSnackbarAction
 import com.mlmvpn.scanner.ui.collectWhileVisible
 import com.mlmvpn.scanner.ui.settings.SettingsFooter
 import kotlinx.coroutines.Dispatchers
@@ -100,7 +100,6 @@ import com.mlmvpn.scanner.engines.mae.route.UsExitRoute
 import com.mlmvpn.scanner.engines.mae.route.UserConfigRoute
 import com.mlmvpn.scanner.engines.mae.route.WarpRoute
 import com.mlmvpn.scanner.engines.mae.route.WorkerRoute
-import com.mlmvpn.scanner.ui.settings.Ios
 import com.mlmvpn.scanner.ui.settings.IosScreen
 import com.mlmvpn.scanner.ui.settings.SettingsGroup
 import com.mlmvpn.scanner.ui.settings.SettingsRow
@@ -167,9 +166,9 @@ fun MaeScreen(onBack: () -> Unit, onOpenTile: (String) -> Unit = {}) {
         IosScreen(title = stringResource(R.string.mae_title), onBack = onBack, backLabel = stringResource(R.string.home)) {
             Box(Modifier.fillMaxWidth().padding(top = 96.dp), contentAlignment = Alignment.Center) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    CircularProgressIndicator(color = Ios.Blue)
+                    CircularProgressIndicator(color = DuskTheme.primary)
                     Spacer(Modifier.height(12.dp))
-                    Text(stringResource(R.string.mae_loading), color = Ios.SecondaryLabel, fontSize = 14.sp)
+                    Text(stringResource(R.string.mae_loading), color = DuskTheme.muted, fontSize = 14.sp)
                 }
             }
         }
@@ -181,6 +180,7 @@ fun MaeScreen(onBack: () -> Unit, onOpenTile: (String) -> Unit = {}) {
 @Composable
 private fun MaeContent(onBack: () -> Unit, onOpenTile: (String) -> Unit) {
     val context = LocalContext.current
+    val showNotice = rememberDuskSnackbarAction()
     // Only whether onboarding is done: the whole state changes many times a second during checks.
     val onboarded by remember { MaeEngine.store.state.map { it.onboarded }.distinctUntilChanged() }
         .collectAsState(MaeEngine.store.current.onboarded)
@@ -203,7 +203,7 @@ private fun MaeContent(onBack: () -> Unit, onOpenTile: (String) -> Unit) {
         null -> {
             IosScreen(title = stringResource(R.string.mae_title), onBack = onBack, backLabel = stringResource(R.string.home)) {
                 Box(Modifier.fillMaxWidth().padding(top = 96.dp), contentAlignment = Alignment.Center) {
-                    CircularProgressIndicator(color = Ios.Blue)
+                    CircularProgressIndicator(color = DuskTheme.primary)
                 }
             }
             return
@@ -307,7 +307,7 @@ private fun MaeContent(onBack: () -> Unit, onOpenTile: (String) -> Unit) {
                 testing.isNotEmpty() -> stringResource(R.string.mae_status_checking, testing.size)
                 else -> stringResource(R.string.mae_status_idle)
             },
-            color = Ios.SecondaryLabel,
+            color = DuskTheme.muted,
             fontSize = 14.sp,
             textAlign = TextAlign.Center,
             // A developer's door, not a button: no click role for a screen reader to announce.
@@ -321,16 +321,16 @@ private fun MaeContent(onBack: () -> Unit, onOpenTile: (String) -> Unit) {
             Modifier.fillMaxWidth().padding(start = 20.dp, end = 8.dp, top = 22.dp, bottom = 3.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Text(stringResource(R.string.mae_your_services), color = Ios.SecondaryLabel, fontSize = 13.sp, modifier = Modifier.weight(1f))
+            Text(stringResource(R.string.mae_your_services), color = DuskTheme.muted, fontSize = 13.sp, modifier = Modifier.weight(1f))
             val idle = views.any { !it.paused } && testing.size < views.count { !it.paused }
             Row(
                 Modifier.clip(RoundedCornerShape(50)).then(if (idle) Modifier.combinedClickableCompat { MaeEngine.recheckAll() } else Modifier)
                     .padding(horizontal = 12.dp, vertical = 6.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                Icon(Icons.Default.Refresh, contentDescription = null, tint = if (idle) Ios.Blue else Ios.SecondaryLabel, modifier = Modifier.size(16.dp))
+                Icon(Icons.Default.Refresh, contentDescription = null, tint = if (idle) DuskTheme.primary else DuskTheme.muted, modifier = Modifier.size(16.dp))
                 Spacer(Modifier.width(4.dp))
-                Text(stringResource(R.string.mae_recheck_all), color = if (idle) Ios.Blue else Ios.SecondaryLabel, fontSize = 14.sp)
+                Text(stringResource(R.string.mae_recheck_all), color = if (idle) DuskTheme.primary else DuskTheme.muted, fontSize = 14.sp)
             }
         }
         SettingsGroup {
@@ -348,7 +348,7 @@ private fun MaeContent(onBack: () -> Unit, onOpenTile: (String) -> Unit) {
                             onRecheck = { MaeEngine.recheck(v.def.id) },
                             onOk = {
                                 MaeEngine.feedbackOk(v.def.id)
-                                if (connected) Toast.makeText(context, context.getString(R.string.mae_thanks), Toast.LENGTH_SHORT).show()
+                                if (connected) showNotice(context.getString(R.string.mae_thanks))
                             }, onFail = { MaeEngine.feedbackFailed(v.def.id) },
                             setUp = unset,
                             onSetUp = { if (unset.size == 1) onOpenTile(unset[0].tile) else setUpFor = serviceName(context, v.def) })
@@ -358,7 +358,7 @@ private fun MaeContent(onBack: () -> Unit, onOpenTile: (String) -> Unit) {
         }
         SettingsFooter(stringResource(R.string.mae_swipe_hint))
         SettingsGroup(modifier = Modifier.padding(top = 14.dp)) {
-            SettingsRow(title = stringResource(R.string.mae_manage), icon = Icons.Default.Tune, tint = Ios.Blue,
+            SettingsRow(title = stringResource(R.string.mae_manage), icon = Icons.Default.Tune, tint = DuskTheme.primary,
                 onClick = { page = Page.MANAGE })
         }
         Spacer(Modifier.height(40.dp))
@@ -421,7 +421,7 @@ private fun SwipeActionsRow(
             // Delete, on the physical right: revealed by a swipe to the left.
             SwipeAction(
                 width = with(density) { (-shown).toDp() },
-                color = Ios.Red,
+                color = DuskTheme.error,
                 icon = Icons.Default.Delete,
                 label = stringResource(R.string.mae_remove),
                 modifier = Modifier.matchParentSize().wrapContentWidth(AbsoluteAlignment.Right),
@@ -431,7 +431,7 @@ private fun SwipeActionsRow(
             // Check again, on the physical left: revealed by a swipe to the right.
             SwipeAction(
                 width = with(density) { shown.toDp() },
-                color = Ios.Blue,
+                color = DuskTheme.primary,
                 icon = Icons.Default.Refresh,
                 label = stringResource(R.string.mae_recheck),
                 modifier = Modifier.matchParentSize().wrapContentWidth(AbsoluteAlignment.Left),
@@ -477,9 +477,9 @@ private fun SwipeAction(
 @Composable
 private fun ConnectButton(connected: Boolean, connecting: Boolean, onClick: () -> Unit) {
     val ring = when {
-        connected -> Ios.Green
-        connecting -> Ios.Orange
-        else -> Ios.Gray
+        connected -> DuskTheme.success
+        connecting -> DuskTheme.accent
+        else -> DuskTheme.disabled
     }
     val label = stringResource(if (connected || connecting) R.string.mae_disconnect else R.string.mae_connect)
     Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
@@ -496,7 +496,7 @@ private fun ConnectButton(connected: Boolean, connecting: Boolean, onClick: () -
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Icon(Icons.Default.PowerSettingsNew, contentDescription = null, tint = ring, modifier = Modifier.size(44.dp))
                 Spacer(Modifier.height(4.dp))
-                Text(label, color = Ios.Label, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
+                Text(label, color = DuskTheme.onSurface, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
             }
         }
     }
@@ -545,12 +545,12 @@ private fun ServiceRow(
     val context = LocalContext.current
     val name = serviceName(context, v.def)
     val (statusRes, dot) = when (v.phase) {
-        MaeEngine.Phase.READY -> R.string.mae_phase_ready to Ios.Green
-        MaeEngine.Phase.TESTING -> R.string.mae_phase_testing to Ios.Orange
-        MaeEngine.Phase.WAITING -> R.string.mae_phase_waiting to Ios.Gray
-        MaeEngine.Phase.NO_FOREIGN_ROUTE -> R.string.mae_phase_no_foreign to Ios.Red
-        MaeEngine.Phase.BLOCKED -> R.string.mae_phase_blocked to Ios.Red
-        MaeEngine.Phase.PAUSED -> R.string.mae_phase_paused to Ios.Gray
+        MaeEngine.Phase.READY -> R.string.mae_phase_ready to DuskTheme.success
+        MaeEngine.Phase.TESTING -> R.string.mae_phase_testing to DuskTheme.accent
+        MaeEngine.Phase.WAITING -> R.string.mae_phase_waiting to DuskTheme.disabled
+        MaeEngine.Phase.NO_FOREIGN_ROUTE -> R.string.mae_phase_no_foreign to DuskTheme.error
+        MaeEngine.Phase.BLOCKED -> R.string.mae_phase_blocked to DuskTheme.error
+        MaeEngine.Phase.PAUSED -> R.string.mae_phase_paused to DuskTheme.disabled
     }
     val status = buildString {
         append(stringResource(statusRes))
@@ -577,13 +577,13 @@ private fun ServiceRow(
                 MaeAppIcon(v.def, name, 36.dp)
                 Box(
                     Modifier.align(Alignment.BottomEnd).size(12.dp).clip(CircleShape)
-                        .background(Ios.Card).padding(2.dp).clip(CircleShape).background(dot),
+                        .background(DuskTheme.surface).padding(2.dp).clip(CircleShape).background(dot),
                 )
             }
             Spacer(Modifier.width(12.dp))
             Column(Modifier.weight(1f)) {
-                Text(name, color = Ios.Label, fontSize = 16.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
-                Text(status, color = Ios.SecondaryLabel, fontSize = 12.sp, maxLines = 2, overflow = TextOverflow.Ellipsis)
+                Text(name, color = DuskTheme.onSurface, fontSize = 16.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                Text(status, color = DuskTheme.muted, fontSize = 12.sp, maxLines = 2, overflow = TextOverflow.Ellipsis)
                 // No exit abroad worked for this app: right under it, what is not set up yet -- the
                 // user's ask (2026-10-18), shown only while one of FENIX / Proton / Windscribe is missing.
                 val noExit = v.phase == MaeEngine.Phase.NO_FOREIGN_ROUTE || note?.kind == MaeEngine.NoteKind.NO_FOREIGN_EXIT
@@ -591,7 +591,7 @@ private fun ServiceRow(
                     val names = sayList(setUp.map { it.title })
                     Text(
                         com.mlmvpn.scanner.store.tr("$names را راه‌اندازی کنید", "Set up $names"),
-                        color = Ios.Orange, fontSize = 12.sp, fontWeight = FontWeight.Medium,
+                        color = DuskTheme.accent, fontSize = 12.sp, fontWeight = FontWeight.Medium,
                         maxLines = 2, overflow = TextOverflow.Ellipsis,
                         modifier = Modifier.combinedClickableCompat(onSetUp),
                     )
@@ -600,19 +600,19 @@ private fun ServiceRow(
             if (!v.paused) {
                 // Check again: a spinner while this app is being checked.
                 Box(Modifier.size(40.dp), contentAlignment = Alignment.Center) {
-                    if (testing) CircularProgressIndicator(Modifier.size(18.dp), strokeWidth = 2.dp, color = Ios.Blue)
+                    if (testing) CircularProgressIndicator(Modifier.size(18.dp), strokeWidth = 2.dp, color = DuskTheme.primary)
                     else IconButton(onClick = onRecheck, modifier = Modifier.size(40.dp)) {
-                        Icon(Icons.Default.Refresh, contentDescription = stringResource(R.string.mae_recheck_cd, name), tint = Ios.Blue, modifier = Modifier.size(20.dp))
+                        Icon(Icons.Default.Refresh, contentDescription = stringResource(R.string.mae_recheck_cd, name), tint = DuskTheme.primary, modifier = Modifier.size(20.dp))
                     }
                 }
                 // Feedback is about MAE's route: without MAE connected it would grade a route
                 // that carried nothing. Dimmed, and a tap says why.
                 val a = if (connected) 1f else 0.35f
                 IconButton(onClick = onOk, modifier = Modifier.size(40.dp).alpha(a)) {
-                    Icon(Icons.Outlined.ThumbUp, contentDescription = stringResource(R.string.mae_feedback_opened_cd, name), tint = Ios.Green, modifier = Modifier.size(20.dp))
+                    Icon(Icons.Outlined.ThumbUp, contentDescription = stringResource(R.string.mae_feedback_opened_cd, name), tint = DuskTheme.success, modifier = Modifier.size(20.dp))
                 }
                 IconButton(onClick = onFail, modifier = Modifier.size(40.dp).alpha(a)) {
-                    Icon(Icons.Outlined.ThumbDown, contentDescription = stringResource(R.string.mae_feedback_failed_cd, name), tint = Ios.Red, modifier = Modifier.size(20.dp))
+                    Icon(Icons.Outlined.ThumbDown, contentDescription = stringResource(R.string.mae_feedback_failed_cd, name), tint = DuskTheme.error, modifier = Modifier.size(20.dp))
                 }
             }
         }
@@ -624,7 +624,7 @@ private fun ServiceRow(
                 note.kind == MaeEngine.NoteKind.OFFLINE
             Text(
                 noteText(v, note),
-                color = if (warn) Ios.Orange else Ios.SecondaryLabel,
+                color = if (warn) DuskTheme.accent else DuskTheme.muted,
                 fontSize = 12.sp,
                 lineHeight = 18.sp,
                 modifier = Modifier.fillMaxWidth().padding(start = 64.dp, end = 16.dp, bottom = 10.dp),
@@ -678,7 +678,7 @@ private fun SymptomDialog(
             Column {
                 Text(
                     stringResource(R.string.mae_ask_subtitle, ask.level),
-                    color = Ios.SecondaryLabel,
+                    color = DuskTheme.muted,
                     style = MaterialTheme.typography.bodySmall,
                 )
                 Spacer(Modifier.height(8.dp))
@@ -686,12 +686,12 @@ private fun SymptomDialog(
                     val chosenBefore = symptom == ask.previous
                     Row(
                         Modifier.fillMaxWidth().clip(DuskTheme.chartShape)
-                            .background(if (chosenBefore) Ios.Blue.copy(alpha = 0.15f) else Color.Transparent)
+                            .background(if (chosenBefore) DuskTheme.primary.copy(alpha = 0.15f) else Color.Transparent)
                             .combinedClickableCompat { onAnswer(symptom) }
                             .padding(horizontal = 8.dp, vertical = 12.dp),
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
-                        Text(stringResource(label), color = Ios.Label, style = MaterialTheme.typography.bodyMedium)
+                        Text(stringResource(label), color = DuskTheme.onSurface, style = MaterialTheme.typography.bodyMedium)
                     }
                 }
             }

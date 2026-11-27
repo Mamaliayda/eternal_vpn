@@ -1,6 +1,6 @@
 # Eternal VPN — screen redesign checklist
 
-> **Progress: 700 / 1203 complete** — checked rows are Soft Dusk-migrated or explicitly deferred with a reason; unverified routes and states remain unchecked.
+> **Progress: 977 / 1203 complete** — checked rows are Soft Dusk-migrated or explicitly deferred with a reason; unverified routes and states remain unchecked.
 
 > Inventory generated from Kotlin source on 2026-11-26. A row is complete only after its visible composition, nested states, and overlays are reviewed against the Soft Dusk tokens and migrated, or explicitly deferred with a reason. Shared theme inheritance alone does **not** count as a completed visual redesign.
 
@@ -15,9 +15,9 @@
 ## Main destination registry
 
 All launcher destinations registered in `HomeDestinations` (the app board entry points):
-- [ ] `amnezia`
+- [x] `amnezia` — route reviewed against the migrated Soft Dusk Amnezia screen and nested settings; routing unchanged.
 - [ ] `antisanction`
-- [ ] `cloud`
+- [x] `cloud` — route reviewed against the migrated Cloud screens, account groups and Dusk feedback surfaces; routing unchanged.
 - [ ] `configstudio`
 - [ ] `emergency_2`
 - [ ] `emergency_3`
@@ -37,8 +37,8 @@ All launcher destinations registered in `HomeDestinations` (the app board entry 
 - [x] `nodes`
 - [ ] `npv`
 - [ ] `openvpn`
-- [ ] `outline`
-- [ ] `proton`
+- [x] `outline` — route reviewed against the migrated Outline screen and source-management page; routing unchanged.
+- [x] `proton` — route reviewed against the migrated Proton screen and web/helper states; routing unchanged.
 - [x] `psiphon`
 - [x] `quick`
 - [x] `scanner`
@@ -116,9 +116,9 @@ Found 230 screen-like public/internal composables across 133 Kotlin files (the f
 - [x] `FreeConfigWizard` — `com/mlmvpn/scanner/ui/FreeConfigWizard.kt`
 ### GameTab.kt
 
-- [ ] `GameTab` — `com/mlmvpn/scanner/ui/GameTab.kt`
-- [ ] `GamePickerPage` — `com/mlmvpn/scanner/ui/GameTab.kt`
-- [ ] `RegionPickerPage` — `com/mlmvpn/scanner/ui/GameTab.kt`
+- [x] `GameTab` — `com/mlmvpn/scanner/ui/GameTab.kt` (all interactive states use Dusk semantic palette and feedback)
+- [x] `GamePickerPage` — `com/mlmvpn/scanner/ui/GameTab.kt` (Dusk shapes, text and selected states)
+- [x] `RegionPickerPage` — `com/mlmvpn/scanner/ui/GameTab.kt` (Dusk rows and ping severity colors)
 ### HelpCenterScreen.kt
 
 - [x] `HelpCenterScreen` — `com/mlmvpn/scanner/ui/HelpCenterScreen.kt`
@@ -200,7 +200,7 @@ Found 230 screen-like public/internal composables across 133 Kotlin files (the f
 - [x] `PreviewPage` — `com/mlmvpn/scanner/ui/backup/BackupScreen.kt`
 ### cfwarp
 
-- [ ] `CfWarpSettingsScreen` — `com/mlmvpn/scanner/ui/cfwarp/CfWarpUi.kt`
+- [x] `CfWarpSettingsScreen` — `com/mlmvpn/scanner/ui/cfwarp/CfWarpUi.kt` (Dusk semantic color tokens and shared grouped settings controls).
 - [ ] `Nat64ExitScreen` — `com/mlmvpn/scanner/ui/cfwarp/Nat64ExitUi.kt`
 ### cloud
 
@@ -261,37 +261,37 @@ Found 230 screen-like public/internal composables across 133 Kotlin files (the f
 - [ ] `SniBuildPage` — `com/mlmvpn/scanner/ui/emergency/SniConfigPages.kt`
 ### fenix
 
-- [ ] `FenixScreen` — `com/mlmvpn/scanner/ui/fenix/FenixScreen.kt`
-- [ ] `AccountsPage` — `com/mlmvpn/scanner/ui/fenix/FenixScreen.kt`
-- [ ] `MozillaSignInPage` — `com/mlmvpn/scanner/ui/fenix/FenixScreen.kt`
-- [ ] `MozillaCheckPage` — `com/mlmvpn/scanner/ui/fenix/FenixScreen.kt`
-- [ ] `FenixCountryPicker` — `com/mlmvpn/scanner/ui/fenix/FenixScreen.kt`
+- [x] `FenixScreen` — `com/mlmvpn/scanner/ui/fenix/FenixScreen.kt` (Dusk semantic colors and shared settings surfaces)
+- [x] `AccountsPage` — `com/mlmvpn/scanner/ui/fenix/FenixScreen.kt` (Dusk grouped account management)
+- [x] `MozillaSignInPage` — `com/mlmvpn/scanner/ui/fenix/FenixScreen.kt` (deferred: Mozilla-hosted sign-in page owns its webpage styling; app shell remains Dusk)
+- [x] `MozillaCheckPage` — `com/mlmvpn/scanner/ui/fenix/FenixScreen.kt` (deferred: Mozilla-hosted verification page owns its webpage styling; app shell remains Dusk)
+- [x] `FenixCountryPicker` — `com/mlmvpn/scanner/ui/fenix/FenixScreen.kt` (Dusk selection and ping status colors)
 ### flux
 
-- [ ] `FluxScreen` — `com/mlmvpn/scanner/ui/flux/FluxScreen.kt`
-- [ ] `CountryPicker` — `com/mlmvpn/scanner/ui/flux/FluxScreen.kt`
-- [ ] `FluxDiagnosticsScreen` — `com/mlmvpn/scanner/ui/flux/FluxScreen.kt`
+- [x] `FluxScreen` — `com/mlmvpn/scanner/ui/flux/FluxScreen.kt` (Dusk semantic palette and page composition)
+- [x] `CountryPicker` — `com/mlmvpn/scanner/ui/flux/FluxScreen.kt` (Dusk country-selection rows)
+- [x] `FluxDiagnosticsScreen` — `com/mlmvpn/scanner/ui/flux/FluxScreen.kt` (Dusk diagnostic sections and controls)
 ### game
 
-- [ ] `GameBoosterHost` — `com/mlmvpn/scanner/ui/game/GameBoostScreen.kt`
-- [ ] `GameBoostScreen` — `com/mlmvpn/scanner/ui/game/GameBoostScreen.kt`
-- [ ] `HelpPage` — `com/mlmvpn/scanner/ui/game/GameBoostScreen.kt`
-- [ ] `GamePickerPage` — `com/mlmvpn/scanner/ui/game/GameBoostScreen.kt`
-- [ ] `RegionPickerPage` — `com/mlmvpn/scanner/ui/game/GameBoostScreen.kt`
-- [ ] `AddGamePage` — `com/mlmvpn/scanner/ui/game/GameBoostScreen.kt`
-- [ ] `AdvancedPage` — `com/mlmvpn/scanner/ui/game/GameBoostScreen.kt`
+- [x] `GameBoosterHost` — `com/mlmvpn/scanner/ui/game/GameBoostScreen.kt` (host routes between Dusk game surfaces without changing behavior)
+- [x] `GameBoostScreen` — `com/mlmvpn/scanner/ui/game/GameBoostScreen.kt` (Dusk semantic colors, selected states and snackbar feedback)
+- [x] `HelpPage` — `com/mlmvpn/scanner/ui/game/GameBoostScreen.kt` (Dusk grouped content and status colors)
+- [x] `GamePickerPage` — `com/mlmvpn/scanner/ui/game/GameBoostScreen.kt` (Dusk app selection rows)
+- [x] `RegionPickerPage` — `com/mlmvpn/scanner/ui/game/GameBoostScreen.kt` (Dusk country selection and failure states)
+- [x] `AddGamePage` — `com/mlmvpn/scanner/ui/game/GameBoostScreen.kt` (Dusk app addition rows)
+- [x] `AdvancedPage` — `com/mlmvpn/scanner/ui/game/GameBoostScreen.kt` (Dusk control states and snackbar feedback)
 ### geph
 
 - [ ] `GephAccountScreen` — `com/mlmvpn/scanner/ui/geph/GephAccountScreen.kt`
 - [ ] `GephExitScreen` — `com/mlmvpn/scanner/ui/geph/GephExitScreen.kt`
 - [ ] `GephNewsScreen` — `com/mlmvpn/scanner/ui/geph/GephInfoScreens.kt`
 - [ ] `GephSessionsScreen` — `com/mlmvpn/scanner/ui/geph/GephInfoScreens.kt`
-- [ ] `GephSettingsScreen` — `com/mlmvpn/scanner/ui/geph/GephSettingsScreen.kt`
+- [x] `GephSettingsScreen` — `com/mlmvpn/scanner/ui/geph/GephSettingsScreen.kt` (Dusk semantic colors and shared grouped settings controls).
 ### github
 
-- [ ] `GithubTunnelScreen` — `com/mlmvpn/scanner/ui/github/GithubTunnelScreen.kt`
-- [ ] `ExitCountryPage` — `com/mlmvpn/scanner/ui/github/GithubTunnelScreen.kt`
-- [ ] `RuleEditorPage` — `com/mlmvpn/scanner/ui/github/GithubTunnelScreen.kt`
+- [x] `GithubTunnelScreen` — `com/mlmvpn/scanner/ui/github/GithubTunnelScreen.kt` (Dusk semantic palette across tunnel setup, connection, account, relay and routing states)
+- [x] `ExitCountryPage` — `com/mlmvpn/scanner/ui/github/GithubTunnelScreen.kt` (shared region picker retained; Dusk provider/status colors)
+- [x] `RuleEditorPage` — `com/mlmvpn/scanner/ui/github/GithubTunnelScreen.kt` (Dusk form, selection and validation states)
 ### home
 
 - [x] `IranConfigsScreen` — `com/mlmvpn/scanner/ui/home/BuiltInProfilesScreen.kt`
@@ -302,19 +302,19 @@ Found 230 screen-like public/internal composables across 133 Kotlin files (the f
 ### lan
 
 - [ ] `LanGuideScreen` — `com/mlmvpn/scanner/ui/lan/LanGuideScreens.kt`
-- [ ] `LanScreen` — `com/mlmvpn/scanner/ui/lan/LanScreen.kt`
+- [x] `LanScreen` — `com/mlmvpn/scanner/ui/lan/LanScreen.kt` (Dusk semantic status palette for sharing, hotspot, security and empty/error states)
 ### mae
 
-- [ ] `MaeManageScreen` — `com/mlmvpn/scanner/ui/mae/MaePages.kt`
-- [ ] `MaeDiagnosticsScreen` — `com/mlmvpn/scanner/ui/mae/MaePages.kt`
-- [ ] `InstalledAppPicker` — `com/mlmvpn/scanner/ui/mae/MaePages.kt`
-- [ ] `MaeScreen` — `com/mlmvpn/scanner/ui/mae/MaeScreen.kt`
+- [x] `MaeManageScreen` — `com/mlmvpn/scanner/ui/mae/MaePages.kt` (Dusk rows, control states and snackbar feedback)
+- [x] `MaeDiagnosticsScreen` — `com/mlmvpn/scanner/ui/mae/MaePages.kt` (Dusk diagnostic rows and status tones)
+- [x] `InstalledAppPicker` — `com/mlmvpn/scanner/ui/mae/MaePages.kt` (Dusk app picker and snackbar feedback)
+- [x] `MaeScreen` — `com/mlmvpn/scanner/ui/mae/MaeScreen.kt` (Dusk loading, connection and screen states)
 - [x] `SymptomDialog` — `com/mlmvpn/scanner/ui/mae/MaeScreen.kt`
 ### npv
 
-- [ ] `NpvScreen` — `com/mlmvpn/scanner/ui/npv/NpvScreen.kt`
-- [ ] `MainPage` — `com/mlmvpn/scanner/ui/npv/NpvScreen.kt`
-- [ ] `NpvSourcesPage` — `com/mlmvpn/scanner/ui/npv/NpvSourcesPage.kt`
+- [x] `NpvScreen` — `com/mlmvpn/scanner/ui/npv/NpvScreen.kt` (Dusk semantic palette, status indicators and snackbar feedback)
+- [x] `MainPage` — `com/mlmvpn/scanner/ui/npv/NpvScreen.kt` (Dusk config list, loading and empty states)
+- [x] `NpvSourcesPage` — `com/mlmvpn/scanner/ui/npv/NpvSourcesPage.kt` (Dusk source, refresh, progress and snackbar surfaces)
 ### outline
 
 - [x] `OutlineScreen` — `com/mlmvpn/scanner/ui/outline/OutlineScreen.kt`
@@ -331,7 +331,7 @@ Found 230 screen-like public/internal composables across 133 Kotlin files (the f
 - [ ] `SanctionAppsScreen` — `com/mlmvpn/scanner/ui/sanction/AntiSanctionScreen.kt`
 ### scout
 
-- [ ] `ScoutScreen` — `com/mlmvpn/scanner/ui/scout/ScoutScreen.kt`
+- [x] `ScoutScreen` — `com/mlmvpn/scanner/ui/scout/ScoutScreen.kt` (Dusk status colors and page-level progress, running, idle and offline states)
 - [x] `ScoutDialog` — `com/mlmvpn/scanner/ui/scout/ScoutScreen.kt`
 ### settings
 
@@ -385,10 +385,10 @@ Found 230 screen-like public/internal composables across 133 Kotlin files (the f
 - [x] `PsiphonCleanIpScreen` — `com/mlmvpn/scanner/ui/tunnel/PsiphonPages.kt` (Dusk semantic colors, shared compact pill and snackbar feedback)
 - [x] `PsiphonPairingScreen` — `com/mlmvpn/scanner/ui/tunnel/PsiphonPages.kt`
 - [ ] `RegionPickerScreen` — `com/mlmvpn/scanner/ui/tunnel/RegionPickerScreen.kt`
-- [ ] `TorBridgesScreen` — `com/mlmvpn/scanner/ui/tunnel/TorBridgesScreen.kt`
-- [ ] `BridgeListPage` — `com/mlmvpn/scanner/ui/tunnel/TorBridgesScreen.kt`
-- [ ] `BridgeDetailPage` — `com/mlmvpn/scanner/ui/tunnel/TorBridgesScreen.kt`
-- [ ] `AddBridgesPage` — `com/mlmvpn/scanner/ui/tunnel/TorBridgesScreen.kt`
+- [x] `TorBridgesScreen` — `com/mlmvpn/scanner/ui/tunnel/TorBridgesScreen.kt` (Dusk bridge-selection, status and snackbar actions)
+- [x] `BridgeListPage` — `com/mlmvpn/scanner/ui/tunnel/TorBridgesScreen.kt` (Dusk bridge list, filter, test and empty states)
+- [x] `BridgeDetailPage` — `com/mlmvpn/scanner/ui/tunnel/TorBridgesScreen.kt` (Dusk detail and copy feedback surfaces)
+- [x] `AddBridgesPage` — `com/mlmvpn/scanner/ui/tunnel/TorBridgesScreen.kt` (Dusk bridge-input, validation and result states)
 - [ ] `TorModeScreen` — `com/mlmvpn/scanner/ui/tunnel/TorModeScreen.kt`
 - [ ] `TransportAdvancedScreen` — `com/mlmvpn/scanner/ui/tunnel/TransportAdvancedScreen.kt`
 - [ ] `NumberPage` — `com/mlmvpn/scanner/ui/tunnel/TransportAdvancedScreen.kt`
@@ -402,16 +402,16 @@ Found 230 screen-like public/internal composables across 133 Kotlin files (the f
 - [ ] `UrnetworkRestoreScreen` — `com/mlmvpn/scanner/ui/urnetwork/UrnetworkUi.kt`
 ### widgetstudio
 
-- [ ] `WidgetStudioScreen` — `com/mlmvpn/scanner/ui/widgetstudio/WidgetStudioScreen.kt`
-- [ ] `LookTab` — `com/mlmvpn/scanner/ui/widgetstudio/WidgetStudioScreen.kt`
-- [ ] `ColorTab` — `com/mlmvpn/scanner/ui/widgetstudio/WidgetStudioScreen.kt`
-- [ ] `InfoTab` — `com/mlmvpn/scanner/ui/widgetstudio/WidgetStudioScreen.kt`
-- [ ] `SizeTab` — `com/mlmvpn/scanner/ui/widgetstudio/WidgetStudioScreen.kt`
-- [ ] `MethodPicker` — `com/mlmvpn/scanner/ui/widgetstudio/WidgetStudioScreen.kt`
-- [ ] `CountryPicker` — `com/mlmvpn/scanner/ui/widgetstudio/WidgetStudioScreen.kt`
+- [x] `WidgetStudioScreen` — `com/mlmvpn/scanner/ui/widgetstudio/WidgetStudioScreen.kt` (Soft Dusk editor, preview states and interaction feedback; user design data remains customizable)
+- [x] `LookTab` — `com/mlmvpn/scanner/ui/widgetstudio/WidgetStudioScreen.kt` (Dusk segmented controls and preview framing; style data preserved)
+- [x] `ColorTab` — `com/mlmvpn/scanner/ui/widgetstudio/WidgetStudioScreen.kt` (Dusk editor controls while user-selected template colors remain data)
+- [x] `InfoTab` — `com/mlmvpn/scanner/ui/widgetstudio/WidgetStudioScreen.kt` (Dusk settings rows and selected states)
+- [x] `SizeTab` — `com/mlmvpn/scanner/ui/widgetstudio/WidgetStudioScreen.kt` (Dusk size selection and shared cards)
+- [x] `MethodPicker` — `com/mlmvpn/scanner/ui/widgetstudio/WidgetStudioScreen.kt` (Dusk method rows and selection markers)
+- [x] `CountryPicker` — `com/mlmvpn/scanner/ui/widgetstudio/WidgetStudioScreen.kt` (Dusk country rows and loading state)
 ### windscribe
 
-- [ ] `WindscribeScreen` — `com/mlmvpn/scanner/ui/windscribe/WindscribeScreen.kt`
+- [x] `WindscribeScreen` — `com/mlmvpn/scanner/ui/windscribe/WindscribeScreen.kt` (Dusk semantic account, connection, testing and error colors)
 - [x] `LoginDialog` — `com/mlmvpn/scanner/ui/windscribe/WindscribeScreen.kt`
 - [x] `CaptchaDialog` — `com/mlmvpn/scanner/ui/windscribe/WindscribeScreen.kt`
 - [x] `EmailDialog` — `com/mlmvpn/scanner/ui/windscribe/WindscribeScreen.kt`
@@ -485,14 +485,14 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 - [x] `DoneStep` — `com/mlmvpn/scanner/ui/FreeConfigWizard.kt`
 ### GameTab.kt
 
-- [ ] `pingColor` — `com/mlmvpn/scanner/ui/GameTab.kt`
-- [ ] `GameCard` — `com/mlmvpn/scanner/ui/GameTab.kt`
-- [ ] `PickRow` — `com/mlmvpn/scanner/ui/GameTab.kt`
-- [ ] `section` — `com/mlmvpn/scanner/ui/GameTab.kt`
-- [ ] `BoostButton` — `com/mlmvpn/scanner/ui/GameTab.kt`
-- [ ] `ResultCard` — `com/mlmvpn/scanner/ui/GameTab.kt`
-- [ ] `LivePingCard` — `com/mlmvpn/scanner/ui/GameTab.kt`
-- [ ] `DedicatedDnsCard` — `com/mlmvpn/scanner/ui/GameTab.kt`
+- [x] `pingColor` — `com/mlmvpn/scanner/ui/GameTab.kt` (Dusk semantic status scale)
+- [x] `GameCard` — `com/mlmvpn/scanner/ui/GameTab.kt` (Dusk card and selection tokens)
+- [x] `PickRow` — `com/mlmvpn/scanner/ui/GameTab.kt` (Dusk text/status colors)
+- [x] `section` — `com/mlmvpn/scanner/ui/GameTab.kt` (shared Dusk settings section primitives)
+- [x] `BoostButton` — `com/mlmvpn/scanner/ui/GameTab.kt` (Dusk action/state colors and shared shape)
+- [x] `ResultCard` — `com/mlmvpn/scanner/ui/GameTab.kt` (Dusk result/status palette)
+- [x] `LivePingCard` — `com/mlmvpn/scanner/ui/GameTab.kt` (Dusk live-status tokens)
+- [x] `DedicatedDnsCard` — `com/mlmvpn/scanner/ui/GameTab.kt` (Dusk settings rows, states and async feedback)
 ### HelpCenterScreen.kt
 
 - [x] `HelpSearchField` — `com/mlmvpn/scanner/ui/HelpCenterScreen.kt`
@@ -637,7 +637,7 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 - [x] `failLine` — `com/mlmvpn/scanner/ui/amnezia/AmneziaScreen.kt` (deferred: localized string formatter has no independent visual surface; rendered within the Dusk-styled HeroCard)
 - [x] `subLine` — `com/mlmvpn/scanner/ui/amnezia/AmneziaScreen.kt`
 - [x] `LocationRow` — `com/mlmvpn/scanner/ui/amnezia/AmneziaScreen.kt`
-- [ ] `groupName` — `com/mlmvpn/scanner/ui/amnezia/AmzParts.kt`
+- [x] `groupName` — `com/mlmvpn/scanner/ui/amnezia/AmzParts.kt` (deferred: text formatter only; no independent visual surface).
 - [x] `kindColor` — `com/mlmvpn/scanner/ui/amnezia/AmzParts.kt`
 - [x] `delayColor` — `com/mlmvpn/scanner/ui/amnezia/AmzParts.kt`
 - [x] `Tag` — `com/mlmvpn/scanner/ui/amnezia/AmzParts.kt`
@@ -688,7 +688,7 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 - [x] `WarningFooter` — `com/mlmvpn/scanner/ui/backup/BackupScreen.kt`
 ### cfwarp
 
-- [ ] `ColumnScope` — `com/mlmvpn/scanner/ui/cfwarp/CfWarpUi.kt`
+- [x] `ColumnScope` — `com/mlmvpn/scanner/ui/cfwarp/CfWarpUi.kt` (deferred: receiver signature only; rendered rows are shared Dusk settings components).
 - [ ] `ExitWaySwitch` — `com/mlmvpn/scanner/ui/cfwarp/Ipv4ExitUi.kt`
 - [ ] `ColumnScope` — `com/mlmvpn/scanner/ui/cfwarp/Ipv4ExitUi.kt`
 - [ ] `ExitWayRow` — `com/mlmvpn/scanner/ui/cfwarp/Ipv4ExitUi.kt`
@@ -848,51 +848,51 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 ### fenix
 
 - [x] `Welcome` — `com/mlmvpn/scanner/ui/fenix/FenixScreen.kt`
-- [ ] `Ready` — `com/mlmvpn/scanner/ui/fenix/FenixScreen.kt`
-- [ ] `AccountCard` — `com/mlmvpn/scanner/ui/fenix/FenixScreen.kt`
-- [ ] `resetLine` — `com/mlmvpn/scanner/ui/fenix/FenixScreen.kt`
-- [ ] `agoText` — `com/mlmvpn/scanner/ui/fenix/FenixScreen.kt`
+- [x] `Ready` — `com/mlmvpn/scanner/ui/fenix/FenixScreen.kt` (Dusk state composition)
+- [x] `AccountCard` — `com/mlmvpn/scanner/ui/fenix/FenixScreen.kt` (Dusk account/status colors)
+- [x] `resetLine` — `com/mlmvpn/scanner/ui/fenix/FenixScreen.kt` (localized date formatter rendered with Dusk typography)
+- [x] `agoText` — `com/mlmvpn/scanner/ui/fenix/FenixScreen.kt` (localized time formatter rendered with Dusk typography)
 - [x] `PrimaryButton` — `com/mlmvpn/scanner/ui/fenix/FenixScreen.kt`
 - [x] `ErrorText` — `com/mlmvpn/scanner/ui/fenix/FenixScreen.kt`
-- [ ] `ConnectButton` — `com/mlmvpn/scanner/ui/fenix/FenixScreen.kt`
-- [ ] `statusText` — `com/mlmvpn/scanner/ui/fenix/FenixScreen.kt`
-- [ ] `failureText` — `com/mlmvpn/scanner/ui/fenix/FenixScreen.kt`
-- [ ] `countryValue` — `com/mlmvpn/scanner/ui/fenix/FenixScreen.kt`
-- [ ] `CountryRow` — `com/mlmvpn/scanner/ui/fenix/FenixScreen.kt`
+- [x] `ConnectButton` — `com/mlmvpn/scanner/ui/fenix/FenixScreen.kt` (Dusk connection-state control)
+- [x] `statusText` — `com/mlmvpn/scanner/ui/fenix/FenixScreen.kt` (localized state text rendered by Dusk typography)
+- [x] `failureText` — `com/mlmvpn/scanner/ui/fenix/FenixScreen.kt` (localized failure text rendered by Dusk typography)
+- [x] `countryValue` — `com/mlmvpn/scanner/ui/fenix/FenixScreen.kt` (deferred: localized country/value formatter; no independent visual surface)
+- [x] `CountryRow` — `com/mlmvpn/scanner/ui/fenix/FenixScreen.kt` (Dusk country selection row and semantic status tones)
 ### flux
 
-- [ ] `FluxMain` — `com/mlmvpn/scanner/ui/flux/FluxScreen.kt`
-- [ ] `statusText` — `com/mlmvpn/scanner/ui/flux/FluxScreen.kt`
-- [ ] `IpSelector` — `com/mlmvpn/scanner/ui/flux/FluxScreen.kt`
-- [ ] `ConnectButton` — `com/mlmvpn/scanner/ui/flux/FluxScreen.kt`
-- [ ] `AddSubscription` — `com/mlmvpn/scanner/ui/flux/FluxScreen.kt`
-- [ ] `Mono` — `com/mlmvpn/scanner/ui/flux/FluxScreen.kt`
+- [x] `FluxMain` — `com/mlmvpn/scanner/ui/flux/FluxScreen.kt` (Dusk connection states and semantic colors)
+- [x] `statusText` — `com/mlmvpn/scanner/ui/flux/FluxScreen.kt` (localized connection status rendered by Dusk typography)
+- [x] `IpSelector` — `com/mlmvpn/scanner/ui/flux/FluxScreen.kt` (Dusk selected/unselected control colors)
+- [x] `ConnectButton` — `com/mlmvpn/scanner/ui/flux/FluxScreen.kt` (Dusk connection-state control)
+- [x] `AddSubscription` — `com/mlmvpn/scanner/ui/flux/FluxScreen.kt` (Dusk source entry surface)
+- [x] `Mono` — `com/mlmvpn/scanner/ui/flux/FluxScreen.kt` (deferred: diagnostic text intentionally remains monospace data output; surrounding surface is Dusk)
 ### game
 
-- [ ] `GameIcon` — `com/mlmvpn/scanner/ui/game/GameBoostScreen.kt`
-- [ ] `GameRow` — `com/mlmvpn/scanner/ui/game/GameBoostScreen.kt`
-- [ ] `ValueRow` — `com/mlmvpn/scanner/ui/game/GameBoostScreen.kt`
-- [ ] `Chevron` — `com/mlmvpn/scanner/ui/game/GameBoostScreen.kt`
-- [ ] `regionLabel` — `com/mlmvpn/scanner/ui/game/GameBoostScreen.kt`
-- [ ] `StageList` — `com/mlmvpn/scanner/ui/game/GameBoostScreen.kt`
-- [ ] `stageTitle` — `com/mlmvpn/scanner/ui/game/GameBoostScreen.kt`
-- [ ] `evidence` — `com/mlmvpn/scanner/ui/game/GameBoostScreen.kt`
-- [ ] `ResultCard` — `com/mlmvpn/scanner/ui/game/GameBoostScreen.kt`
-- [ ] `StatsRow` — `com/mlmvpn/scanner/ui/game/GameBoostScreen.kt`
-- [ ] `verdictTitle` — `com/mlmvpn/scanner/ui/game/GameBoostScreen.kt`
-- [ ] `verdictDetail` — `com/mlmvpn/scanner/ui/game/GameBoostScreen.kt`
-- [ ] `kindLine` — `com/mlmvpn/scanner/ui/game/GameBoostScreen.kt`
-- [ ] `classLineText` — `com/mlmvpn/scanner/ui/game/GameBoostScreen.kt`
-- [ ] `symptomDone` — `com/mlmvpn/scanner/ui/game/GameBoostScreen.kt`
-- [ ] `causeText` — `com/mlmvpn/scanner/ui/game/GameBoostScreen.kt`
-- [ ] `LastSessionCard` — `com/mlmvpn/scanner/ui/game/GameBoostScreen.kt`
-- [ ] `FeedbackCard` — `com/mlmvpn/scanner/ui/game/GameBoostScreen.kt`
-- [ ] `RegionCard` — `com/mlmvpn/scanner/ui/game/GameBoostScreen.kt`
-- [ ] `ActionsRow` — `com/mlmvpn/scanner/ui/game/GameBoostScreen.kt`
-- [ ] `TipsCard` — `com/mlmvpn/scanner/ui/game/GameBoostScreen.kt`
-- [ ] `LiveCard` — `com/mlmvpn/scanner/ui/game/GameBoostScreen.kt`
-- [ ] `Sparkline` — `com/mlmvpn/scanner/ui/game/GameBoostScreen.kt`
-- [ ] `CheckRow` — `com/mlmvpn/scanner/ui/game/GameBoostScreen.kt`
+- [x] `GameIcon` — `com/mlmvpn/scanner/ui/game/GameBoostScreen.kt` (Dusk glyph shape around app artwork)
+- [x] `GameRow` — `com/mlmvpn/scanner/ui/game/GameBoostScreen.kt` (Dusk row typography and status colors)
+- [x] `ValueRow` — `com/mlmvpn/scanner/ui/game/GameBoostScreen.kt` (Dusk value/label contrast)
+- [x] `Chevron` — `com/mlmvpn/scanner/ui/game/GameBoostScreen.kt` (Dusk disabled/secondary icon tone)
+- [x] `regionLabel` — `com/mlmvpn/scanner/ui/game/GameBoostScreen.kt` (deferred: localized region formatter; no independent visual surface)
+- [x] `StageList` — `com/mlmvpn/scanner/ui/game/GameBoostScreen.kt` (Dusk stage progress/failure semantics)
+- [x] `stageTitle` — `com/mlmvpn/scanner/ui/game/GameBoostScreen.kt` (localized state label rendered by Dusk stage row)
+- [x] `evidence` — `com/mlmvpn/scanner/ui/game/GameBoostScreen.kt` (deferred: diagnostic text formatter rendered with Dusk secondary typography)
+- [x] `ResultCard` — `com/mlmvpn/scanner/ui/game/GameBoostScreen.kt` (Dusk outcome and severity colors)
+- [x] `StatsRow` — `com/mlmvpn/scanner/ui/game/GameBoostScreen.kt` (Dusk ping/data states; values remain diagnostic data)
+- [x] `verdictTitle` — `com/mlmvpn/scanner/ui/game/GameBoostScreen.kt` (localized outcome title rendered with Dusk typography)
+- [x] `verdictDetail` — `com/mlmvpn/scanner/ui/game/GameBoostScreen.kt` (localized outcome explanation rendered with Dusk typography)
+- [x] `kindLine` — `com/mlmvpn/scanner/ui/game/GameBoostScreen.kt` (localized mode label rendered with Dusk typography)
+- [x] `classLineText` — `com/mlmvpn/scanner/ui/game/GameBoostScreen.kt` (deferred: data label formatter; Dusk row applies visual styling)
+- [x] `symptomDone` — `com/mlmvpn/scanner/ui/game/GameBoostScreen.kt` (localized completion text rendered with Dusk typography)
+- [x] `causeText` — `com/mlmvpn/scanner/ui/game/GameBoostScreen.kt` (deferred: diagnostic cause formatter; no independent visual surface)
+- [x] `LastSessionCard` — `com/mlmvpn/scanner/ui/game/GameBoostScreen.kt` (Dusk session summary and state colors)
+- [x] `FeedbackCard` — `com/mlmvpn/scanner/ui/game/GameBoostScreen.kt` (Dusk feedback surface and on-success contrast)
+- [x] `RegionCard` — `com/mlmvpn/scanner/ui/game/GameBoostScreen.kt` (Dusk regional test status and ping severity)
+- [x] `ActionsRow` — `com/mlmvpn/scanner/ui/game/GameBoostScreen.kt` (Dusk success/action colors and contrast)
+- [x] `TipsCard` — `com/mlmvpn/scanner/ui/game/GameBoostScreen.kt` (Dusk preflight warning and error semantics)
+- [x] `LiveCard` — `com/mlmvpn/scanner/ui/game/GameBoostScreen.kt` (Dusk live status colors)
+- [x] `Sparkline` — `com/mlmvpn/scanner/ui/game/GameBoostScreen.kt` (Dusk severity token supplied to data visualization)
+- [x] `CheckRow` — `com/mlmvpn/scanner/ui/game/GameBoostScreen.kt` (Dusk selected state and icon colors)
 ### geph
 
 - [ ] `NoAccount` — `com/mlmvpn/scanner/ui/geph/GephAccountScreen.kt`
@@ -904,15 +904,15 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 - [ ] `GephLiveCard` — `com/mlmvpn/scanner/ui/geph/GephUi.kt`
 ### github
 
-- [ ] `Dial` — `com/mlmvpn/scanner/ui/github/GithubTunnelScreen.kt`
-- [ ] `Notice` — `com/mlmvpn/scanner/ui/github/GithubTunnelScreen.kt`
-- [ ] `SignInCard` — `com/mlmvpn/scanner/ui/github/GithubTunnelScreen.kt`
-- [ ] `SetupStep` — `com/mlmvpn/scanner/ui/github/GithubTunnelScreen.kt`
-- [ ] `StepRow` — `com/mlmvpn/scanner/ui/github/GithubTunnelScreen.kt`
-- [ ] `LogBlock` — `com/mlmvpn/scanner/ui/github/GithubTunnelScreen.kt`
-- [ ] `SitesField` — `com/mlmvpn/scanner/ui/github/GithubTunnelScreen.kt`
-- [ ] `SelectedAppRow` — `com/mlmvpn/scanner/ui/github/GithubTunnelScreen.kt`
-- [ ] `countryName` — `com/mlmvpn/scanner/ui/github/GithubTunnelScreen.kt`
+- [x] `Dial` — `com/mlmvpn/scanner/ui/github/GithubTunnelScreen.kt` (Dusk connection-state dial colors)
+- [x] `Notice` — `com/mlmvpn/scanner/ui/github/GithubTunnelScreen.kt` (Dusk error/status notice contrast)
+- [x] `SignInCard` — `com/mlmvpn/scanner/ui/github/GithubTunnelScreen.kt` (Dusk authentication code card and snackbar copy feedback)
+- [x] `SetupStep` — `com/mlmvpn/scanner/ui/github/GithubTunnelScreen.kt` (Dusk setup progress and status contrast)
+- [x] `StepRow` — `com/mlmvpn/scanner/ui/github/GithubTunnelScreen.kt` (Dusk setup completion semantics)
+- [x] `LogBlock` — `com/mlmvpn/scanner/ui/github/GithubTunnelScreen.kt` (Dusk muted diagnostics text)
+- [x] `SitesField` — `com/mlmvpn/scanner/ui/github/GithubTunnelScreen.kt` (Dusk input text and hint colors)
+- [x] `SelectedAppRow` — `com/mlmvpn/scanner/ui/github/GithubTunnelScreen.kt` (Dusk selected-app surface and text)
+- [x] `countryName` — `com/mlmvpn/scanner/ui/github/GithubTunnelScreen.kt` (localized country label rendered by shared region picker)
 ### home
 
 - [x] `ids` — `com/mlmvpn/scanner/ui/home/ActiveEngines.kt` (deferred: state-only engine ownership mapping; behavior intentionally preserved under UI-layer-only scope)
@@ -971,22 +971,22 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 - [ ] `Link` — `com/mlmvpn/scanner/ui/lan/LanDiagram.kt`
 - [ ] `GuideListSection` — `com/mlmvpn/scanner/ui/lan/LanGuideScreens.kt`
 - [ ] `GuideValue` — `com/mlmvpn/scanner/ui/lan/LanGuideScreens.kt`
-- [ ] `LanStateCard` — `com/mlmvpn/scanner/ui/lan/LanScreen.kt`
-- [ ] `StateGlyph` — `com/mlmvpn/scanner/ui/lan/LanScreen.kt`
-- [ ] `ActionButton` — `com/mlmvpn/scanner/ui/lan/LanScreen.kt`
-- [ ] `ShareTimerCard` — `com/mlmvpn/scanner/ui/lan/LanScreen.kt`
-- [ ] `DoctorSection` — `com/mlmvpn/scanner/ui/lan/LanScreen.kt`
-- [ ] `DoctorRow` — `com/mlmvpn/scanner/ui/lan/LanScreen.kt`
-- [ ] `HotspotCard` — `com/mlmvpn/scanner/ui/lan/LanScreen.kt`
-- [ ] `LabelledValue` — `com/mlmvpn/scanner/ui/lan/LanScreen.kt`
-- [ ] `SetupCard` — `com/mlmvpn/scanner/ui/lan/LanScreen.kt`
-- [ ] `SmallAction` — `com/mlmvpn/scanner/ui/lan/LanScreen.kt`
-- [ ] `AddressCard` — `com/mlmvpn/scanner/ui/lan/LanScreen.kt`
-- [ ] `CopyRow` — `com/mlmvpn/scanner/ui/lan/LanScreen.kt`
-- [ ] `SecurityBar` — `com/mlmvpn/scanner/ui/lan/LanScreen.kt`
-- [ ] `ClientsSection` — `com/mlmvpn/scanner/ui/lan/LanScreen.kt`
-- [ ] `headline` — `com/mlmvpn/scanner/ui/lan/LanScreen.kt`
-- [ ] `detail` — `com/mlmvpn/scanner/ui/lan/LanScreen.kt`
+- [x] `LanStateCard` — `com/mlmvpn/scanner/ui/lan/LanScreen.kt` (Dusk blocker/status card)
+- [x] `StateGlyph` — `com/mlmvpn/scanner/ui/lan/LanScreen.kt` (Dusk status illustration)
+- [x] `ActionButton` — `com/mlmvpn/scanner/ui/lan/LanScreen.kt` (Dusk action semantic colors)
+- [x] `ShareTimerCard` — `com/mlmvpn/scanner/ui/lan/LanScreen.kt` (Dusk timer selection and share state)
+- [x] `DoctorSection` — `com/mlmvpn/scanner/ui/lan/LanScreen.kt` (Dusk diagnostics sections)
+- [x] `DoctorRow` — `com/mlmvpn/scanner/ui/lan/LanScreen.kt` (Dusk pass/fail/warning states)
+- [x] `HotspotCard` — `com/mlmvpn/scanner/ui/lan/LanScreen.kt` (Dusk hotspot state and QR plate token)
+- [x] `LabelledValue` — `com/mlmvpn/scanner/ui/lan/LanScreen.kt` (Dusk label/value hierarchy and direction-aware numeric output)
+- [x] `SetupCard` — `com/mlmvpn/scanner/ui/lan/LanScreen.kt` (Dusk setup surface and neutral QR backing)
+- [x] `SmallAction` — `com/mlmvpn/scanner/ui/lan/LanScreen.kt` (Dusk compact action states)
+- [x] `AddressCard` — `com/mlmvpn/scanner/ui/lan/LanScreen.kt` (Dusk sharing endpoint surface)
+- [x] `CopyRow` — `com/mlmvpn/scanner/ui/lan/LanScreen.kt` (Dusk action tile and on-success contrast)
+- [x] `SecurityBar` — `com/mlmvpn/scanner/ui/lan/LanScreen.kt` (Dusk security indicator semantics)
+- [x] `ClientsSection` — `com/mlmvpn/scanner/ui/lan/LanScreen.kt` (Dusk connected-client and blocked-client states)
+- [x] `headline` — `com/mlmvpn/scanner/ui/lan/LanScreen.kt` (localized sharing status rendered in Dusk typography)
+- [x] `detail` — `com/mlmvpn/scanner/ui/lan/LanScreen.kt` (localized blocker explanation rendered in Dusk typography)
 ### lantern
 
 - [ ] `ColumnScope` — `com/mlmvpn/scanner/ui/lantern/LanternUi.kt`
@@ -996,21 +996,21 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 
 - [ ] `MaeAppIcon` — `com/mlmvpn/scanner/ui/mae/MaeAppIcon.kt`
 - [ ] `MaeCloudGate` — `com/mlmvpn/scanner/ui/mae/MaeCloudGate.kt`
-- [ ] `rememberInstalledRegistryIds` — `com/mlmvpn/scanner/ui/mae/MaePages.kt`
+- [x] `rememberInstalledRegistryIds` — `com/mlmvpn/scanner/ui/mae/MaePages.kt` (deferred: installed-app registry state only; no visual surface)
 - [x] `MaeOnboarding` — `com/mlmvpn/scanner/ui/mae/MaePages.kt`
-- [ ] `MaeConfirmRemove` — `com/mlmvpn/scanner/ui/mae/MaePages.kt`
-- [ ] `ForeignExitsList` — `com/mlmvpn/scanner/ui/mae/MaePages.kt`
-- [ ] `ManageAppRow` — `com/mlmvpn/scanner/ui/mae/MaePages.kt`
-- [ ] `DestructiveRow` — `com/mlmvpn/scanner/ui/mae/MaePages.kt`
-- [ ] `MaeAppDetail` — `com/mlmvpn/scanner/ui/mae/MaePages.kt`
-- [ ] `CheckRow` — `com/mlmvpn/scanner/ui/mae/MaePages.kt`
-- [ ] `SetupRow` — `com/mlmvpn/scanner/ui/mae/MaePages.kt`
-- [ ] `MaeContent` — `com/mlmvpn/scanner/ui/mae/MaeScreen.kt`
-- [ ] `SwipeActionsRow` — `com/mlmvpn/scanner/ui/mae/MaeScreen.kt`
-- [ ] `SwipeAction` — `com/mlmvpn/scanner/ui/mae/MaeScreen.kt`
-- [ ] `ConnectButton` — `com/mlmvpn/scanner/ui/mae/MaeScreen.kt`
-- [ ] `noteText` — `com/mlmvpn/scanner/ui/mae/MaeScreen.kt`
-- [ ] `ServiceRow` — `com/mlmvpn/scanner/ui/mae/MaeScreen.kt`
+- [x] `MaeConfirmRemove` — `com/mlmvpn/scanner/ui/mae/MaePages.kt` (shared Dusk alert surface)
+- [x] `ForeignExitsList` — `com/mlmvpn/scanner/ui/mae/MaePages.kt` (Dusk setup/status rows)
+- [x] `ManageAppRow` — `com/mlmvpn/scanner/ui/mae/MaePages.kt` (Dusk app row and semantic tones)
+- [x] `DestructiveRow` — `com/mlmvpn/scanner/ui/mae/MaePages.kt` (Dusk destructive/disabled states)
+- [x] `MaeAppDetail` — `com/mlmvpn/scanner/ui/mae/MaePages.kt` (Dusk detail surface and controls)
+- [x] `CheckRow` — `com/mlmvpn/scanner/ui/mae/MaePages.kt` (Dusk selected state and row contrast)
+- [x] `SetupRow` — `com/mlmvpn/scanner/ui/mae/MaePages.kt` (Dusk setup/status row)
+- [x] `MaeContent` — `com/mlmvpn/scanner/ui/mae/MaeScreen.kt` (Dusk service list and snackbar feedback)
+- [x] `SwipeActionsRow` — `com/mlmvpn/scanner/ui/mae/MaeScreen.kt` (Dusk swipe action surfaces and direction-aware layout)
+- [x] `SwipeAction` — `com/mlmvpn/scanner/ui/mae/MaeScreen.kt` (Dusk destructive/positive action states)
+- [x] `ConnectButton` — `com/mlmvpn/scanner/ui/mae/MaeScreen.kt` (Dusk connection state and shared shape)
+- [x] `noteText` — `com/mlmvpn/scanner/ui/mae/MaeScreen.kt` (localized state text rendered with Dusk typography)
+- [x] `ServiceRow` — `com/mlmvpn/scanner/ui/mae/MaeScreen.kt` (Dusk status, selection and feedback colors)
 - [x] `ServiceChip` — `com/mlmvpn/scanner/ui/mae/MaeScreen.kt`
 ### mitm
 
@@ -1021,19 +1021,19 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 - [ ] `InfoLine` — `com/mlmvpn/scanner/ui/mitm/MitmSetupCard.kt`
 ### npv
 
-- [ ] `RefreshQuestions` — `com/mlmvpn/scanner/ui/npv/NpvScreen.kt`
-- [ ] `HeroCard` — `com/mlmvpn/scanner/ui/npv/NpvScreen.kt`
-- [ ] `Orb` — `com/mlmvpn/scanner/ui/npv/NpvScreen.kt`
-- [ ] `Stat` — `com/mlmvpn/scanner/ui/npv/NpvScreen.kt`
-- [ ] `MeasureRow` — `com/mlmvpn/scanner/ui/npv/NpvScreen.kt`
-- [ ] `ConfigRow` — `com/mlmvpn/scanner/ui/npv/NpvScreen.kt`
-- [ ] `NativeRow` — `com/mlmvpn/scanner/ui/npv/NpvScreen.kt`
-- [ ] `RefreshCard` — `com/mlmvpn/scanner/ui/npv/NpvSourcesPage.kt`
-- [ ] `Steps` — `com/mlmvpn/scanner/ui/npv/NpvSourcesPage.kt`
-- [ ] `StepLine` — `com/mlmvpn/scanner/ui/npv/NpvSourcesPage.kt`
-- [ ] `AddChannel` — `com/mlmvpn/scanner/ui/npv/NpvSourcesPage.kt`
-- [ ] `ChannelRow` — `com/mlmvpn/scanner/ui/npv/NpvSourcesPage.kt`
-- [ ] `FileRow` — `com/mlmvpn/scanner/ui/npv/NpvSourcesPage.kt`
+- [x] `RefreshQuestions` — `com/mlmvpn/scanner/ui/npv/NpvScreen.kt` (Dusk confirmation surface)
+- [x] `HeroCard` — `com/mlmvpn/scanner/ui/npv/NpvScreen.kt` (Dusk connection state and semantic colors)
+- [x] `Orb` — `com/mlmvpn/scanner/ui/npv/NpvScreen.kt` (Dusk connection-state illustration)
+- [x] `Stat` — `com/mlmvpn/scanner/ui/npv/NpvScreen.kt` (Dusk data/status text hierarchy)
+- [x] `MeasureRow` — `com/mlmvpn/scanner/ui/npv/NpvScreen.kt` (Dusk measurement states)
+- [x] `ConfigRow` — `com/mlmvpn/scanner/ui/npv/NpvScreen.kt` (Dusk config status and selection)
+- [x] `NativeRow` — `com/mlmvpn/scanner/ui/npv/NpvScreen.kt` (Dusk native-file state)
+- [x] `RefreshCard` — `com/mlmvpn/scanner/ui/npv/NpvSourcesPage.kt` (Dusk refresh/progress state)
+- [x] `Steps` — `com/mlmvpn/scanner/ui/npv/NpvSourcesPage.kt` (Dusk step status semantics)
+- [x] `StepLine` — `com/mlmvpn/scanner/ui/npv/NpvSourcesPage.kt` (Dusk step progress and result colors)
+- [x] `AddChannel` — `com/mlmvpn/scanner/ui/npv/NpvSourcesPage.kt` (Dusk channel-entry and validation feedback)
+- [x] `ChannelRow` — `com/mlmvpn/scanner/ui/npv/NpvSourcesPage.kt` (Dusk source status and actions)
+- [x] `FileRow` — `com/mlmvpn/scanner/ui/npv/NpvSourcesPage.kt` (Dusk config/native file status)
 ### outline
 
 - [x] `OutlineUndoBar` — `com/mlmvpn/scanner/ui/outline/OutlineParts.kt`
@@ -1052,14 +1052,14 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 - [x] `ServerRow` — `com/mlmvpn/scanner/ui/outline/OutlineServersPage.kt`
 ### proton
 
-- [ ] `rememberVpnGate` — `com/mlmvpn/scanner/ui/proton/ProtonScreen.kt`
+- [x] `rememberVpnGate` — `com/mlmvpn/scanner/ui/proton/ProtonScreen.kt` (deferred: state/permission launcher helper; presentation belongs to Android and the Dusk page).
 - [x] `ProtonHome` — `com/mlmvpn/scanner/ui/proton/ProtonScreen.kt`
 - [x] `PingProgress` — `com/mlmvpn/scanner/ui/proton/ProtonScreen.kt`
 - [x] `ServerRow` — `com/mlmvpn/scanner/ui/proton/ProtonScreen.kt`
-- [ ] `statusText` — `com/mlmvpn/scanner/ui/proton/ProtonScreen.kt`
+- [x] `statusText` — `com/mlmvpn/scanner/ui/proton/ProtonScreen.kt` (localized state text rendered by the Dusk-styled screen).
 - [x] `PrimaryButton` — `com/mlmvpn/scanner/ui/proton/ProtonScreen.kt`
 - [x] `Message` — `com/mlmvpn/scanner/ui/proton/ProtonScreen.kt`
-- [ ] `helperName` — `com/mlmvpn/scanner/ui/proton/ProtonScreen.kt`
+- [x] `helperName` — `com/mlmvpn/scanner/ui/proton/ProtonScreen.kt` (deferred: helper-name formatter only; styling is owned by the Dusk row that renders it).
 - [x] `HelperProgress` — `com/mlmvpn/scanner/ui/proton/ProtonScreen.kt`
 - [x] `HelperChooser` — `com/mlmvpn/scanner/ui/proton/ProtonScreen.kt`
 ### sanction
@@ -1069,21 +1069,21 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 - [ ] `SanctionButton` — `com/mlmvpn/scanner/ui/sanction/AntiSanctionScreen.kt`
 ### scout
 
-- [ ] `statusColor` — `com/mlmvpn/scanner/ui/scout/ScoutParts.kt`
-- [ ] `methodTitle` — `com/mlmvpn/scanner/ui/scout/ScoutParts.kt`
-- [ ] `ScoutLogo` — `com/mlmvpn/scanner/ui/scout/ScoutParts.kt`
-- [ ] `ProgressRing` — `com/mlmvpn/scanner/ui/scout/ScoutParts.kt`
-- [ ] `StatusPill` — `com/mlmvpn/scanner/ui/scout/ScoutParts.kt`
-- [ ] `MethodIcon` — `com/mlmvpn/scanner/ui/scout/ScoutParts.kt`
-- [ ] `MethodRow` — `com/mlmvpn/scanner/ui/scout/ScoutParts.kt`
-- [ ] `MethodCard` — `com/mlmvpn/scanner/ui/scout/ScoutParts.kt`
-- [ ] `FoldSection` — `com/mlmvpn/scanner/ui/scout/ScoutParts.kt`
-- [ ] `SectionTitle` — `com/mlmvpn/scanner/ui/scout/ScoutParts.kt`
-- [ ] `LineCard` — `com/mlmvpn/scanner/ui/scout/ScoutParts.kt`
-- [ ] `LineChip` — `com/mlmvpn/scanner/ui/scout/ScoutParts.kt`
-- [ ] `Stat` — `com/mlmvpn/scanner/ui/scout/ScoutParts.kt`
-- [ ] `PillButton` — `com/mlmvpn/scanner/ui/scout/ScoutParts.kt`
-- [ ] `Dot` — `com/mlmvpn/scanner/ui/scout/ScoutParts.kt`
+- [x] `statusColor` — `com/mlmvpn/scanner/ui/scout/ScoutParts.kt` (Dusk semantic status mapping)
+- [x] `methodTitle` — `com/mlmvpn/scanner/ui/scout/ScoutParts.kt` (deferred: localized label helper; no independent visual surface)
+- [x] `ScoutLogo` — `com/mlmvpn/scanner/ui/scout/ScoutParts.kt` (Dusk illustration tones)
+- [x] `ProgressRing` — `com/mlmvpn/scanner/ui/scout/ScoutParts.kt` (Dusk progress indicator and semantic colors)
+- [x] `StatusPill` — `com/mlmvpn/scanner/ui/scout/ScoutParts.kt` (Dusk status chip)
+- [x] `MethodIcon` — `com/mlmvpn/scanner/ui/scout/ScoutParts.kt` (Dusk fallback icon tone; method artwork remains unchanged)
+- [x] `MethodRow` — `com/mlmvpn/scanner/ui/scout/ScoutParts.kt` (Dusk row text and status contrast)
+- [x] `MethodCard` — `com/mlmvpn/scanner/ui/scout/ScoutParts.kt` (Dusk card and connection state)
+- [x] `FoldSection` — `com/mlmvpn/scanner/ui/scout/ScoutParts.kt` (Dusk section heading and disclosure state)
+- [x] `SectionTitle` — `com/mlmvpn/scanner/ui/scout/ScoutParts.kt` (Dusk secondary text and spacing)
+- [x] `LineCard` — `com/mlmvpn/scanner/ui/scout/ScoutParts.kt` (Dusk network status card)
+- [x] `LineChip` — `com/mlmvpn/scanner/ui/scout/ScoutParts.kt` (Dusk network state colors)
+- [x] `Stat` — `com/mlmvpn/scanner/ui/scout/ScoutParts.kt` (Dusk metric text hierarchy)
+- [x] `PillButton` — `com/mlmvpn/scanner/ui/scout/ScoutParts.kt` (Dusk action states)
+- [x] `Dot` — `com/mlmvpn/scanner/ui/scout/ScoutParts.kt` (Dusk semantic network-state indicator)
 ### settings
 
 - [x] `CloudResourcesHub` — `com/mlmvpn/scanner/ui/settings/CloudResourcesScreens.kt` (Soft Dusk semantic colors and snackbar feedback)
@@ -1206,18 +1206,18 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 - [x] `OptionRow` — `com/mlmvpn/scanner/ui/tunnel/PsiphonPages.kt`
 - [x] `CountryRow` — `com/mlmvpn/scanner/ui/tunnel/PsiphonPages.kt`
 - [ ] `RegionRow` — `com/mlmvpn/scanner/ui/tunnel/RegionPickerScreen.kt`
-- [ ] `torBridgesValue` — `com/mlmvpn/scanner/ui/tunnel/TorBridgesScreen.kt`
-- [ ] `sortLabel` — `com/mlmvpn/scanner/ui/tunnel/TorBridgesScreen.kt`
-- [ ] `ChoiceRow` — `com/mlmvpn/scanner/ui/tunnel/TorBridgesScreen.kt`
-- [ ] `Chip` — `com/mlmvpn/scanner/ui/tunnel/TorBridgesScreen.kt`
-- [ ] `Note` — `com/mlmvpn/scanner/ui/tunnel/TorBridgesScreen.kt`
-- [ ] `BridgeRow` — `com/mlmvpn/scanner/ui/tunnel/TorBridgesScreen.kt`
-- [ ] `Tag` — `com/mlmvpn/scanner/ui/tunnel/TorBridgesScreen.kt`
-- [ ] `statusLine` — `com/mlmvpn/scanner/ui/tunnel/TorBridgesScreen.kt`
-- [ ] `statusColor` — `com/mlmvpn/scanner/ui/tunnel/TorBridgesScreen.kt`
-- [ ] `badReason` — `com/mlmvpn/scanner/ui/tunnel/TorBridgesScreen.kt`
-- [ ] `ago` — `com/mlmvpn/scanner/ui/tunnel/TorBridgesScreen.kt`
-- [ ] `TorEntryCard` — `com/mlmvpn/scanner/ui/tunnel/TorBridgesScreen.kt`
+- [x] `torBridgesValue` — `com/mlmvpn/scanner/ui/tunnel/TorBridgesScreen.kt` (localized bridge preference value rendered by Dusk settings row)
+- [x] `sortLabel` — `com/mlmvpn/scanner/ui/tunnel/TorBridgesScreen.kt` (localized sorting label rendered in Dusk control)
+- [x] `ChoiceRow` — `com/mlmvpn/scanner/ui/tunnel/TorBridgesScreen.kt` (Dusk source selection states)
+- [x] `Chip` — `com/mlmvpn/scanner/ui/tunnel/TorBridgesScreen.kt` (Dusk selection chip and contrast)
+- [x] `Note` — `com/mlmvpn/scanner/ui/tunnel/TorBridgesScreen.kt` (Dusk warning/info notice)
+- [x] `BridgeRow` — `com/mlmvpn/scanner/ui/tunnel/TorBridgesScreen.kt` (Dusk bridge card and source/status labels)
+- [x] `Tag` — `com/mlmvpn/scanner/ui/tunnel/TorBridgesScreen.kt` (Dusk semantic tag colors)
+- [x] `statusLine` — `com/mlmvpn/scanner/ui/tunnel/TorBridgesScreen.kt` (localized bridge state label rendered in Dusk typography)
+- [x] `statusColor` — `com/mlmvpn/scanner/ui/tunnel/TorBridgesScreen.kt` (Dusk semantic bridge status mapping)
+- [x] `badReason` — `com/mlmvpn/scanner/ui/tunnel/TorBridgesScreen.kt` (localized bridge validation message rendered in Dusk typography)
+- [x] `ago` — `com/mlmvpn/scanner/ui/tunnel/TorBridgesScreen.kt` (localized time value rendered in Dusk typography)
+- [x] `TorEntryCard` — `com/mlmvpn/scanner/ui/tunnel/TorBridgesScreen.kt` (Dusk bridge status summary card)
 - [ ] `Footer` — `com/mlmvpn/scanner/ui/tunnel/TransportAdvancedScreen.kt`
 - [ ] `ManualShapingGroup` — `com/mlmvpn/scanner/ui/tunnel/TransportAdvancedScreen.kt`
 - [ ] `ManualEndpointGroup` — `com/mlmvpn/scanner/ui/tunnel/TransportAdvancedScreen.kt`
@@ -1246,31 +1246,31 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 - [ ] `LocationRow` — `com/mlmvpn/scanner/ui/urnetwork/UrnetworkUi.kt`
 ### widgetstudio
 
-- [ ] `TemplatePreview` — `com/mlmvpn/scanner/ui/widgetstudio/StudioParts.kt`
-- [ ] `PreviewStateChips` — `com/mlmvpn/scanner/ui/widgetstudio/StudioParts.kt`
-- [ ] `PreviewStage` — `com/mlmvpn/scanner/ui/widgetstudio/StudioParts.kt`
-- [ ] `PresetCard` — `com/mlmvpn/scanner/ui/widgetstudio/StudioParts.kt`
-- [ ] `Swatch` — `com/mlmvpn/scanner/ui/widgetstudio/StudioParts.kt`
-- [ ] `StudioMain` — `com/mlmvpn/scanner/ui/widgetstudio/WidgetStudioScreen.kt`
-- [ ] `PrimaryButton` — `com/mlmvpn/scanner/ui/widgetstudio/WidgetStudioScreen.kt`
-- [ ] `com` — `com/mlmvpn/scanner/ui/widgetstudio/WidgetStudioScreen.kt`
-- [ ] `MethodStylePreview` — `com/mlmvpn/scanner/ui/widgetstudio/WidgetStudioScreen.kt`
-- [ ] `StudioEditor` — `com/mlmvpn/scanner/ui/widgetstudio/WidgetStudioScreen.kt`
-- [ ] `SwatchRow` — `com/mlmvpn/scanner/ui/widgetstudio/WidgetStudioScreen.kt`
-- [ ] `HueSlider` — `com/mlmvpn/scanner/ui/widgetstudio/WidgetStudioScreen.kt`
-- [ ] `CountryRow` — `com/mlmvpn/scanner/ui/widgetstudio/WidgetStudioScreen.kt`
-- [ ] `AddMethodWidget` — `com/mlmvpn/scanner/ui/widgetstudio/WidgetStudioScreen.kt`
+- [x] `TemplatePreview` — `com/mlmvpn/scanner/ui/widgetstudio/StudioParts.kt` (same widget renderer; user design remains customizable)
+- [x] `PreviewStateChips` — `com/mlmvpn/scanner/ui/widgetstudio/StudioParts.kt` (Dusk state chips)
+- [x] `PreviewStage` — `com/mlmvpn/scanner/ui/widgetstudio/StudioParts.kt` (light/night Soft Dusk backdrop and outline tokens)
+- [x] `PresetCard` — `com/mlmvpn/scanner/ui/widgetstudio/StudioParts.kt` (Dusk title and card framing; preset art is intentionally per-style)
+- [x] `Swatch` — `com/mlmvpn/scanner/ui/widgetstudio/StudioParts.kt` (selected ring uses Dusk tokens while swatch color remains user data)
+- [x] `StudioMain` — `com/mlmvpn/scanner/ui/widgetstudio/WidgetStudioScreen.kt` (Dusk screens, status summaries and controls)
+- [x] `PrimaryButton` — `com/mlmvpn/scanner/ui/widgetstudio/WidgetStudioScreen.kt` (Dusk action color and shared typography semantics)
+- [x] `com` — `com/mlmvpn/scanner/ui/widgetstudio/WidgetStudioScreen.kt` (TemplateRow uses Dusk card/text/action tokens)
+- [x] `MethodStylePreview` — `com/mlmvpn/scanner/ui/widgetstudio/WidgetStudioScreen.kt` (Dusk method-style preview and semantic statuses)
+- [x] `StudioEditor` — `com/mlmvpn/scanner/ui/widgetstudio/WidgetStudioScreen.kt` (Dusk preview, editor controls and content hierarchy)
+- [x] `SwatchRow` — `com/mlmvpn/scanner/ui/widgetstudio/WidgetStudioScreen.kt` (custom widget colors are data; selection UI uses Dusk)
+- [x] `HueSlider` — `com/mlmvpn/scanner/ui/widgetstudio/WidgetStudioScreen.kt` (custom accent editing remains data; control state uses shared Dusk slider)
+- [x] `CountryRow` — `com/mlmvpn/scanner/ui/widgetstudio/WidgetStudioScreen.kt` (Dusk country row and selected marker)
+- [x] `AddMethodWidget` — `com/mlmvpn/scanner/ui/widgetstudio/WidgetStudioScreen.kt` (Dusk method list and widget-placement explanation)
 ### windscribe
 
-- [ ] `Action` — `com/mlmvpn/scanner/ui/windscribe/WindscribeScreen.kt`
-- [ ] `ConnectButton` — `com/mlmvpn/scanner/ui/windscribe/WindscribeScreen.kt`
-- [ ] `accountSummary` — `com/mlmvpn/scanner/ui/windscribe/WindscribeScreen.kt`
-- [ ] `protocolName` — `com/mlmvpn/scanner/ui/windscribe/WindscribeScreen.kt`
-- [ ] `methodName` — `com/mlmvpn/scanner/ui/windscribe/WindscribeScreen.kt`
-- [ ] `connectionLabel` — `com/mlmvpn/scanner/ui/windscribe/WindscribeScreen.kt`
-- [ ] `TestProgress` — `com/mlmvpn/scanner/ui/windscribe/WindscribeScreen.kt`
-- [ ] `resultLine` — `com/mlmvpn/scanner/ui/windscribe/WindscribeScreen.kt`
-- [ ] `measurementLabel` — `com/mlmvpn/scanner/ui/windscribe/WindscribeScreen.kt`
+- [x] `Action` — `com/mlmvpn/scanner/ui/windscribe/WindscribeScreen.kt` (Dusk primary action with correct on-primary contrast)
+- [x] `ConnectButton` — `com/mlmvpn/scanner/ui/windscribe/WindscribeScreen.kt` (Dusk connection-state control)
+- [x] `accountSummary` — `com/mlmvpn/scanner/ui/windscribe/WindscribeScreen.kt` (deferred: account summary formatter displayed in Dusk rows)
+- [x] `protocolName` — `com/mlmvpn/scanner/ui/windscribe/WindscribeScreen.kt` (deferred: protocol label formatter; no independent visual surface)
+- [x] `methodName` — `com/mlmvpn/scanner/ui/windscribe/WindscribeScreen.kt` (deferred: method label formatter; no independent visual surface)
+- [x] `connectionLabel` — `com/mlmvpn/scanner/ui/windscribe/WindscribeScreen.kt` (localized status text rendered with Dusk typography)
+- [x] `TestProgress` — `com/mlmvpn/scanner/ui/windscribe/WindscribeScreen.kt` (Dusk progress track and semantic status colors)
+- [x] `resultLine` — `com/mlmvpn/scanner/ui/windscribe/WindscribeScreen.kt` (localized result text rendered in Dusk rows)
+- [x] `measurementLabel` — `com/mlmvpn/scanner/ui/windscribe/WindscribeScreen.kt` (localized measurement text rendered in Dusk typography)
 - [x] `CaptchaArt` — `com/mlmvpn/scanner/ui/windscribe/WindscribeScreen.kt`
 ### com
 
@@ -1281,12 +1281,12 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 
 No Android `Fragment` subclasses were found in the Java/Kotlin sources; the UI is Compose-based. The six activity classes:
 
-- [ ] `ShadeCollapseActivity` — `com/mlmvpn/core/tunnel/ShadeCollapseActivity.kt`
-- [ ] `MainActivity` — `com/mlmvpn/scanner/MainActivity.kt`
-- [ ] `AmzImportActivity` — `com/mlmvpn/scanner/ui/amnezia/AmzImportActivity.kt`
-- [ ] `NpvImportActivity` — `com/mlmvpn/scanner/ui/npv/NpvImportActivity.kt`
-- [ ] `WidgetActionActivity` — `com/mlmvpn/scanner/widget/WidgetActionActivity.kt`
-- [ ] `StudioConfigureActivity` — `com/mlmvpn/scanner/widget/studio/StudioConfigureActivity.kt`
+- [x] `ShadeCollapseActivity` — deferred: finishes before drawing; Android shade animation owns the only visible transition. — `com/mlmvpn/core/tunnel/ShadeCollapseActivity.kt`
+- [x] `MainActivity` — Soft Dusk theme and light system-bar icon styling are applied at the activity root. — `com/mlmvpn/scanner/MainActivity.kt`
+- [x] `AmzImportActivity` — deferred: ACTION_VIEW import dispatcher has no UI of its own. — `com/mlmvpn/scanner/ui/amnezia/AmzImportActivity.kt`
+- [x] `NpvImportActivity` — deferred: ACTION_VIEW importer only emits a platform Toast and launches the app; no owned screen UI. — `com/mlmvpn/scanner/ui/npv/NpvImportActivity.kt`
+- [x] `WidgetActionActivity` — deferred: transparent widget action trampoline finishes without drawing UI. — `com/mlmvpn/scanner/widget/WidgetActionActivity.kt`
+- [x] `StudioConfigureActivity` — Soft Dusk theme, color tokens, typography and layout direction applied to configuration UI. — `com/mlmvpn/scanner/widget/studio/StudioConfigureActivity.kt`
 
 ## Dialogs, sheets, popups and snackbars
 
@@ -1321,10 +1321,10 @@ Source inventory of Compose overlay hosts/call sites. Review each listed occurre
 
 ## Other visual/system surfaces
 
-- [ ] Android system VPN permission / app-permission prompts (OS-owned; entry points originate from connect actions).
-- [ ] Runtime notifications, ongoing VPN foreground notification, channels and quick-settings tiles.
-- [ ] Home-screen widgets and widget configuration/preview states.
-- [ ] Native XML dialogs/layouts and standalone import/configuration activities.
+- [x] Android system VPN permission / app-permission prompts — deferred: Android owns prompt rendering and color; app entry points are reviewed.
+- [x] Runtime notifications, ongoing VPN foreground notification, channels and quick-settings tiles — VPN notification accent follows Soft Dusk; tile and notification chrome are OS-rendered and cannot be branded by the app.
+- [x] Home-screen widgets and widget configuration/preview states — shared method/status palette migrated; Widget Studio configuration and previews use Dusk, while custom template choices remain user-controlled.
+- [x] Native XML dialogs/layouts and standalone import/configuration activities — owned UI migrated; import dispatchers are explicitly deferred above.
 - [ ] Loading, empty, offline, connected, connecting, failure, retry and permission-denied states across every destination.
 
 ## Audit criteria
@@ -1339,58 +1339,58 @@ Source inventory of Compose overlay hosts/call sites. Review each listed occurre
 ## Manifest-registered native entry points
 
 All Android activities declared in `app/src/main/AndroidManifest.xml` (including import/configuration launchers):
-- [ ] `.MainActivity`
-- [ ] `.ui.amnezia.AmzImportActivity`
-- [ ] `.ui.npv.NpvImportActivity`
-- [ ] `com.mlmvpn.core.tunnel.ShadeCollapseActivity`
-- [ ] `.widget.studio.StudioConfigureActivity`
-- [ ] `.widget.WidgetActionActivity`
+- [x] `.MainActivity` — Soft Dusk activity root and edge-to-edge system bars.
+- [x] `.ui.amnezia.AmzImportActivity` — deferred: import dispatcher has no UI.
+- [x] `.ui.npv.NpvImportActivity` — deferred: import dispatcher has no screen UI.
+- [x] `com.mlmvpn.core.tunnel.ShadeCollapseActivity` — deferred: invisible shade-collapse trampoline.
+- [x] `.widget.studio.StudioConfigureActivity` — Soft Dusk widget configuration surface.
+- [x] `.widget.WidgetActionActivity` — deferred: invisible widget-action trampoline.
 
 ## Home-screen widget providers and configurations
 
 Manifest-declared widget receivers (rendering/state audited together with their corresponding widget UI):
-- [ ] `.widget.MasqueWidget`
-- [ ] `.widget.WireguardWidget`
-- [ ] `.widget.WarpOnWarpWidget`
-- [ ] `.widget.WarpWidget`
-- [ ] `.widget.PsiphonWidget`
-- [ ] `.widget.TorWidget`
-- [ ] `.widget.GephWidget`
-- [ ] `.widget.LanternWidget`
-- [ ] `.widget.UrnetworkWidget`
-- [ ] `.widget.QuickWidget`
-- [ ] `.widget.MaeWidget`
-- [ ] `.widget.FluxWidget`
-- [ ] `.widget.FenixWidget`
-- [ ] `.widget.AmneziaWidget`
-- [ ] `.widget.ProtonWidget`
-- [ ] `.widget.WindscribeWidget`
-- [ ] `.widget.OutlineWidget`
-- [ ] `.widget.NpvWidget`
-- [ ] `.widget.GithubWidget`
-- [ ] `.widget.VpnGateWidget`
-- [ ] `.widget.OpenVpnWidget`
-- [ ] `.widget.V2rayWidget`
-- [ ] `.widget.IranWidget`
-- [ ] `.widget.FrontingWidget`
-- [ ] `.widget.AntiSanctionWidget`
-- [ ] `.widget.EmergencyGstWidget`
-- [ ] `.widget.EmergencySniWidget`
-- [ ] `.widget.studio.StudioWidgetSmall`
-- [ ] `.widget.studio.StudioWidgetMedium`
-- [ ] `.widget.studio.StudioWidgetLarge`
-- [ ] `.widget.studio.StudioPinReceiver`
+- [x] `.widget.MasqueWidget` — reviewed through shared Soft Dusk painter/status tokens; provider wiring and behavior unchanged.
+- [x] `.widget.WireguardWidget` — reviewed through shared Soft Dusk painter/status tokens; provider wiring and behavior unchanged.
+- [x] `.widget.WarpOnWarpWidget` — reviewed through shared Soft Dusk painter/status tokens; provider wiring and behavior unchanged.
+- [x] `.widget.WarpWidget` — reviewed through shared Soft Dusk painter/status tokens; provider wiring and behavior unchanged.
+- [x] `.widget.PsiphonWidget` — reviewed through shared Soft Dusk painter/status tokens; provider wiring and behavior unchanged.
+- [x] `.widget.TorWidget` — reviewed through shared Soft Dusk painter/status tokens; provider wiring and behavior unchanged.
+- [x] `.widget.GephWidget` — reviewed through shared Soft Dusk painter/status tokens; provider wiring and behavior unchanged.
+- [x] `.widget.LanternWidget` — reviewed through shared Soft Dusk painter/status tokens; provider wiring and behavior unchanged.
+- [x] `.widget.UrnetworkWidget` — reviewed through shared Soft Dusk painter/status tokens; provider wiring and behavior unchanged.
+- [x] `.widget.QuickWidget` — reviewed through shared Soft Dusk painter/status tokens; provider wiring and behavior unchanged.
+- [x] `.widget.MaeWidget` — reviewed through shared Soft Dusk painter/status tokens; provider wiring and behavior unchanged.
+- [x] `.widget.FluxWidget` — reviewed through shared Soft Dusk painter/status tokens; provider wiring and behavior unchanged.
+- [x] `.widget.FenixWidget` — reviewed through shared Soft Dusk painter/status tokens; provider wiring and behavior unchanged.
+- [x] `.widget.AmneziaWidget` — reviewed through shared Soft Dusk painter/status tokens; provider wiring and behavior unchanged.
+- [x] `.widget.ProtonWidget` — reviewed through shared Soft Dusk painter/status tokens; provider wiring and behavior unchanged.
+- [x] `.widget.WindscribeWidget` — reviewed through shared Soft Dusk painter/status tokens; provider wiring and behavior unchanged.
+- [x] `.widget.OutlineWidget` — reviewed through shared Soft Dusk painter/status tokens; provider wiring and behavior unchanged.
+- [x] `.widget.NpvWidget` — reviewed through shared Soft Dusk painter/status tokens; provider wiring and behavior unchanged.
+- [x] `.widget.GithubWidget` — reviewed through shared Soft Dusk painter/status tokens; provider wiring and behavior unchanged.
+- [x] `.widget.VpnGateWidget` — reviewed through shared Soft Dusk painter/status tokens; provider wiring and behavior unchanged.
+- [x] `.widget.OpenVpnWidget` — reviewed through shared Soft Dusk painter/status tokens; provider wiring and behavior unchanged.
+- [x] `.widget.V2rayWidget` — reviewed through shared Soft Dusk painter/status tokens; provider wiring and behavior unchanged.
+- [x] `.widget.IranWidget` — reviewed through shared Soft Dusk painter/status tokens; provider wiring and behavior unchanged.
+- [x] `.widget.FrontingWidget` — reviewed through shared Soft Dusk painter/status tokens; provider wiring and behavior unchanged.
+- [x] `.widget.AntiSanctionWidget` — reviewed through shared Soft Dusk painter/status tokens; provider wiring and behavior unchanged.
+- [x] `.widget.EmergencyGstWidget` — reviewed through shared Soft Dusk painter/status tokens; provider wiring and behavior unchanged.
+- [x] `.widget.EmergencySniWidget` — reviewed through shared Soft Dusk painter/status tokens; provider wiring and behavior unchanged.
+- [x] `.widget.studio.StudioWidgetSmall` — reviewed through shared Soft Dusk painter/status tokens; provider wiring and behavior unchanged.
+- [x] `.widget.studio.StudioWidgetMedium` — reviewed through shared Soft Dusk painter/status tokens; provider wiring and behavior unchanged.
+- [x] `.widget.studio.StudioWidgetLarge` — reviewed through shared Soft Dusk painter/status tokens; provider wiring and behavior unchanged.
+- [x] `.widget.studio.StudioPinReceiver` — reviewed through shared Soft Dusk painter/status tokens; provider wiring and behavior unchanged.
 
 ## Native XML and Android resource surfaces
 
-- [ ] `app/src/main/res/values/themes.xml` — platform theme, system dialogs and bars.
-- [ ] `app/src/main/res/values/colors.xml` — legacy palette references.
-- [ ] `app/src/main/res/layout/dialog_edit_node.xml`
-- [ ] `app/src/main/res/layout/dialog_share_node.xml`
-- [ ] `app/src/main/res/layout/widget_method.xml`
-- [ ] `app/src/main/res/layout/widget_studio_large.xml`
-- [ ] `app/src/main/res/layout/widget_studio_medium.xml`
-- [ ] `app/src/main/res/layout/widget_studio_small.xml`
+- [x] `app/src/main/res/values/themes.xml` — platform windows, splash background, bars and native Material controls use Soft Dusk night tokens. — platform theme, system dialogs and bars.
+- [x] `app/src/main/res/values/colors.xml` — legacy gs_* aliases now map to Soft Dusk night tokens; QR backing remains neutral white. — legacy palette references.
+- [x] `app/src/main/res/layout/dialog_edit_node.xml` — native edit dialog uses shared Dusk palette, Vazirmatn and start/end positioning.
+- [x] `app/src/main/res/layout/dialog_share_node.xml` — native share dialog uses Dusk surface/text and semantic QR backing.
+- [x] `app/src/main/res/layout/widget_method.xml` — image-backed; appearance is centralized in the shared Soft Dusk WidgetPainter.
+- [x] `app/src/main/res/layout/widget_studio_large.xml` — image-backed; custom user template rendered by shared studio painter.
+- [x] `app/src/main/res/layout/widget_studio_medium.xml` — image-backed; custom user template rendered by shared studio painter; physical halves are intentional tap zones.
+- [x] `app/src/main/res/layout/widget_studio_small.xml` — image-backed; custom user template rendered by shared studio painter.
 
 ## Custom alerts and transient feedback source inventory
 
@@ -1454,7 +1454,7 @@ Toast / short transient feedback call sites (OS-rendered surfaces; validate app 
 - [x] `com/mlmvpn/scanner/ui/CloudTab.kt` — Toast × 29 (replaced with Dusk snackbars)
 - [x] `com/mlmvpn/scanner/ui/CloudTroubleshootScreen.kt` — Toast × 1 (replaced with Dusk snackbar)
 - [x] `com/mlmvpn/scanner/ui/FixedIpScreen.kt` — Toast × 1 (replaced with Dusk snackbar)
-- [ ] `com/mlmvpn/scanner/ui/GameTab.kt` — Toast × 6
+- [x] `com/mlmvpn/scanner/ui/GameTab.kt` — Toast × 6 (replaced with activity-scoped Dusk snackbar feedback).
 - [x] `com/mlmvpn/scanner/ui/NodesTab.kt` — Toast × 19 (replaced with Dusk snackbars)
 - [x] `com/mlmvpn/scanner/ui/OpenVpnScreen.kt` — Toast × 1
 - [x] `com/mlmvpn/scanner/ui/QuickConnectTab.kt` — Toast × 1 (replaced with Dusk snackbar)
@@ -1474,16 +1474,16 @@ Toast / short transient feedback call sites (OS-rendered surfaces; validate app 
 - [ ] `com/mlmvpn/scanner/ui/emergency/EmergencyKit.kt` — Toast × 1
 - [ ] `com/mlmvpn/scanner/ui/emergency/EmergencyLevel2Screen.kt` — Toast × 1
 - [ ] `com/mlmvpn/scanner/ui/emergency/EmergencyLevel3Screen.kt` — Toast × 4
-- [ ] `com/mlmvpn/scanner/ui/game/GameBoostScreen.kt` — Toast × 4
+- [x] `com/mlmvpn/scanner/ui/game/GameBoostScreen.kt` — Toast × 4 (replaced with Dusk snackbar feedback).
 - [ ] `com/mlmvpn/scanner/ui/geph/GephUi.kt` — Toast × 1
-- [ ] `com/mlmvpn/scanner/ui/github/GithubTunnelScreen.kt` — Toast × 1
+- [x] `com/mlmvpn/scanner/ui/github/GithubTunnelScreen.kt` — Toast × 1 (clipboard confirmation moved to Dusk snackbar).
 - [x] `com/mlmvpn/scanner/ui/home/HomeConnectionWidget.kt` — Toast × 1 (replaced with DuskSnackbar)
 - [ ] `com/mlmvpn/scanner/ui/lantern/LanternUi.kt` — Toast × 1
-- [ ] `com/mlmvpn/scanner/ui/mae/MaePages.kt` — Toast × 2
-- [ ] `com/mlmvpn/scanner/ui/mae/MaeScreen.kt` — Toast × 1
+- [x] `com/mlmvpn/scanner/ui/mae/MaePages.kt` — Toast × 2 (replaced with Dusk snackbar feedback).
+- [x] `com/mlmvpn/scanner/ui/mae/MaeScreen.kt` — Toast × 1 (replaced with Dusk snackbar feedback).
 - [x] `com/mlmvpn/scanner/ui/npv/NpvImportActivity.kt` — Toast × 1 (deferred: standalone ACTION_VIEW import Activity has no Compose host)
-- [ ] `com/mlmvpn/scanner/ui/npv/NpvScreen.kt` — Toast × 4
-- [ ] `com/mlmvpn/scanner/ui/npv/NpvSourcesPage.kt` — Toast × 4
+- [x] `com/mlmvpn/scanner/ui/npv/NpvScreen.kt` — Toast × 4 (replaced with Dusk snackbar feedback).
+- [x] `com/mlmvpn/scanner/ui/npv/NpvSourcesPage.kt` — Toast × 4 (replaced with Dusk snackbar feedback).
 - [x] `com/mlmvpn/scanner/ui/outline/OutlineScreen.kt` — Toast × 2 (replaced with Dusk snackbars)
 - [x] `com/mlmvpn/scanner/ui/outline/OutlineServersPage.kt` — Toast × 1 (replaced with Dusk snackbars)
 - [x] `com/mlmvpn/scanner/ui/proton/ProtonScreen.kt` — Toast × 6 (replaced with Dusk snackbars, including file/import feedback)
@@ -1499,28 +1499,28 @@ Toast / short transient feedback call sites (OS-rendered surfaces; validate app 
 - [ ] `com/mlmvpn/scanner/ui/tgproxy/TgDomainPage.kt` — Toast × 1
 - [ ] `com/mlmvpn/scanner/ui/tgproxy/TgProxyScreen.kt` — Toast × 5
 - [x] `com/mlmvpn/scanner/ui/tunnel/PsiphonPages.kt` — Toast × 6 (replaced with Dusk snackbars)
-- [ ] `com/mlmvpn/scanner/ui/tunnel/TorBridgesScreen.kt` — Toast × 2
+- [x] `com/mlmvpn/scanner/ui/tunnel/TorBridgesScreen.kt` — Toast × 2 (removed/copied confirmation moved to Dusk snackbar).
 - [ ] `com/mlmvpn/scanner/ui/tunnel/TransportScreen.kt` — Toast × 5
 - [ ] `com/mlmvpn/scanner/ui/tunnel/WarpIdentityCard.kt` — Toast × 2
 - [ ] `com/mlmvpn/scanner/ui/urnetwork/UrnetworkUi.kt` — Toast × 4
-- [ ] `com/mlmvpn/scanner/ui/widgetstudio/WidgetStudioScreen.kt` — Toast × 1
-- [ ] `com/mlmvpn/scanner/ui/windscribe/WindscribeScreen.kt` — Toast × 1
+- [x] `com/mlmvpn/scanner/ui/widgetstudio/WidgetStudioScreen.kt` — Toast × 1 (replaced with activity-scoped Dusk snackbar).
+- [x] `com/mlmvpn/scanner/ui/windscribe/WindscribeScreen.kt` — Toast × 1 (replaced with Dusk snackbar feedback for missing-browser fallback).
 - [ ] `com/mlmvpn/scanner/utils/Donate.kt` — Toast × 2
 - [ ] `com/mlmvpn/scanner/utils/SafeClip.kt` — Toast × 2
 - [x] `com/mlmvpn/scanner/widget/WidgetActionActivity.kt` — Toast × 1 (deferred: app-widget trampoline can run without the Compose application UI)
 
 ## Notification builder sources
 
-- [ ] `com/mlmvpn/core/aether/AetherScanService.kt` — NotificationCompat.Builder × 1
-- [ ] `com/mlmvpn/scanner/data/IpScanService.kt` — NotificationCompat.Builder × 1
-- [ ] `com/mlmvpn/scanner/engines/game/booster/session/GameBoostService.kt` — NotificationCompat.Builder × 1
-- [ ] `com/mlmvpn/scanner/engines/scout/ScoutService.kt` — NotificationCompat.Builder × 1
-- [ ] `com/mlmvpn/scanner/engines/tgproxy/TgBridgeService.kt` — NotificationCompat.Builder × 1
-- [ ] `com/mlmvpn/scanner/engines/wireguard/WireguardScanService.kt` — NotificationCompat.Builder × 1
-- [ ] `com/mlmvpn/scanner/lan/LanNotification.kt` — NotificationCompat.Builder × 1
-- [ ] `com/mlmvpn/scanner/openvpn/OpenVpnService.kt` — NotificationCompat.Builder × 1
-- [ ] `com/mlmvpn/scanner/widget/WidgetConnectService.kt` — NotificationCompat.Builder × 2
-- [ ] `kittoku/mvc/service/SoftEtherVpnService.kt` — NotificationCompat.Builder × 2
+- [x] `com/mlmvpn/core/aether/AetherScanService.kt` — Dusk notification accent applied. × 1
+- [x] `com/mlmvpn/scanner/data/IpScanService.kt` — Dusk notification accent applied. × 1
+- [x] `com/mlmvpn/scanner/engines/game/booster/session/GameBoostService.kt` — Dusk notification accent applied. × 1
+- [x] `com/mlmvpn/scanner/engines/scout/ScoutService.kt` — Dusk notification accent applied. × 1
+- [x] `com/mlmvpn/scanner/engines/tgproxy/TgBridgeService.kt` — Dusk notification accent applied. × 1
+- [x] `com/mlmvpn/scanner/engines/wireguard/WireguardScanService.kt` — Dusk notification accent applied. × 1
+- [x] `com/mlmvpn/scanner/lan/LanNotification.kt` — Dusk notification accent applied. × 1
+- [x] `com/mlmvpn/scanner/openvpn/OpenVpnService.kt` — Dusk notification accent applied. × 1
+- [x] `com/mlmvpn/scanner/widget/WidgetConnectService.kt` — both failure and ongoing notifications use Dusk accent. × 2
+- [x] `kittoku/mvc/service/SoftEtherVpnService.kt` — both user-visible notifications use Dusk accent. × 2
 
 ## Current implementation note
 

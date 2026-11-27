@@ -40,6 +40,7 @@ import com.mlmvpn.scanner.R
 import com.mlmvpn.scanner.engines.windscribe.*
 import com.mlmvpn.scanner.ui.settings.*
 import com.mlmvpn.scanner.ui.theme.DuskTheme
+import com.mlmvpn.scanner.ui.theme.rememberDuskSnackbarAction
 import com.mlmvpn.scanner.ui.theme.iosFieldColors
 import java.text.DateFormat
 import java.util.Date
@@ -47,6 +48,7 @@ import java.util.Date
 @Composable
 fun WindscribeScreen(onBack: () -> Unit) {
     val context = LocalContext.current
+    val showNotice = rememberDuskSnackbarAction()
     val engine = WindscribeEngine
     LaunchedEffect(Unit) { engine.init(context) }
     val data by engine.data.collectAsState()
@@ -82,7 +84,7 @@ fun WindscribeScreen(onBack: () -> Unit) {
     fun webRegister() {
         try { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(engine.SIGN_UP_URL))) }
         catch (_: android.content.ActivityNotFoundException) {
-            android.widget.Toast.makeText(context, context.getString(R.string.studio_sub_page_no_browser), android.widget.Toast.LENGTH_LONG).show()
+            showNotice(context.getString(R.string.studio_sub_page_no_browser))
         }
     }
     BackHandler(accountsPage) { accountsPage = false }
@@ -100,10 +102,10 @@ fun WindscribeScreen(onBack: () -> Unit) {
                 items(data.accounts, key = { it.id }) { account ->
                     SettingsGroup {
                         SettingsRow(title = account.email ?: account.username, icon = if (account.id == data.activeId) Icons.Default.CheckCircle else Icons.Default.Person,
-                            tint = Ios.Blue, subtitle = accountSummary(account), value = if (account.id == data.activeId) stringResource(R.string.windscribe_active) else null,
+                            tint = DuskTheme.primary, subtitle = accountSummary(account), value = if (account.id == data.activeId) stringResource(R.string.windscribe_active) else null,
                             onClick = if (busy) null else { { engine.selectAccount(account.id) } })
                         Separator()
-                        SettingsRow(stringResource(R.string.windscribe_remove), icon = Icons.Default.Logout, tint = Ios.Red,
+                        SettingsRow(stringResource(R.string.windscribe_remove), icon = Icons.Default.Logout, tint = DuskTheme.error,
                             onClick = if (busy) null else { { engine.logout(account.id) } })
                     }
                 }
@@ -114,10 +116,10 @@ fun WindscribeScreen(onBack: () -> Unit) {
                     item { Action(stringResource(R.string.windscribe_login), !busy && !data.storageError) { login = true } }
                     item {
                         SettingsGroup {
-                            SettingsRow(title = stringResource(R.string.windscribe_register), icon = Icons.Default.PersonAdd, tint = Ios.Blue, onClick = { webRegister() })
+                            SettingsRow(title = stringResource(R.string.windscribe_register), icon = Icons.Default.PersonAdd, tint = DuskTheme.primary, onClick = { webRegister() })
                             if (data.accounts.isNotEmpty()) {
                                 Separator()
-                                SettingsRow(title = stringResource(R.string.windscribe_accounts), icon = Icons.Default.People, tint = Ios.Blue, onClick = { accountsPage = true })
+                                SettingsRow(title = stringResource(R.string.windscribe_accounts), icon = Icons.Default.People, tint = DuskTheme.primary, onClick = { accountsPage = true })
                             }
                         }
                     }
@@ -127,7 +129,7 @@ fun WindscribeScreen(onBack: () -> Unit) {
                         ConnectButton(connected = connection.phase == WsPhase.CONNECTED, busy = running && connection.phase != WsPhase.CONNECTED,
                             enabled = running || !busy) { if (running) engine.disconnect() else connect() }
                         Spacer(Modifier.height(12.dp))
-                        Text(connectionLabel(connection), color = if (connection.phase == WsPhase.ERROR) Ios.Orange else Ios.SecondaryLabel,
+                        Text(connectionLabel(connection), color = if (connection.phase == WsPhase.ERROR) DuskTheme.accent else DuskTheme.muted,
                             fontSize = 14.sp, textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp))
                         Spacer(Modifier.height(6.dp))
                         com.mlmvpn.scanner.ui.RouteChips()
@@ -135,14 +137,14 @@ fun WindscribeScreen(onBack: () -> Unit) {
                     item {
                         val active = data.active!!
                         SettingsGroup {
-                            SettingsRow(title = active.email ?: active.username, icon = Icons.Default.Person, tint = Ios.Blue,
+                            SettingsRow(title = active.email ?: active.username, icon = Icons.Default.Person, tint = DuskTheme.primary,
                                 value = stringResource(if (active.premium) R.string.windscribe_paid else R.string.windscribe_free), subtitle = accountSummary(active), showChevron = false)
                             Separator()
-                            SettingsRow(title = stringResource(R.string.windscribe_refresh), icon = Icons.Default.Refresh, tint = Ios.Blue, onClick = if (busy) null else { { engine.refresh() } })
+                            SettingsRow(title = stringResource(R.string.windscribe_refresh), icon = Icons.Default.Refresh, tint = DuskTheme.primary, onClick = if (busy) null else { { engine.refresh() } })
                             if (!active.verified) {
                                 Separator()
                                 SettingsRow(title = stringResource(if (active.email.isNullOrBlank()) R.string.windscribe_add_email else R.string.windscribe_verify_email), icon = Icons.Default.Email,
-                                    tint = Ios.Orange, onClick = if (busy) null else { { if (active.email.isNullOrBlank()) emailDialog = true else engine.sendVerification() } })
+                                    tint = DuskTheme.accent, onClick = if (busy) null else { { if (active.email.isNullOrBlank()) emailDialog = true else engine.sendVerification() } })
                             }
                         }
                         if (!active.sessionValid) {
@@ -155,13 +157,13 @@ fun WindscribeScreen(onBack: () -> Unit) {
                     }
                     item {
                         SettingsGroup {
-                            SettingsRow(title = stringResource(R.string.windscribe_protocol), icon = Icons.Default.Tune, tint = Ios.Blue,
+                            SettingsRow(title = stringResource(R.string.windscribe_protocol), icon = Icons.Default.Tune, tint = DuskTheme.primary,
                                 value = data.protocol?.let { protocolName(it) } ?: stringResource(R.string.windscribe_auto), onClick = if (busy) null else { { protocolDialog = true } })
                             Separator()
-                            SettingsRow(title = stringResource(R.string.windscribe_search_again), icon = Icons.Default.Autorenew, tint = Ios.Orange,
+                            SettingsRow(title = stringResource(R.string.windscribe_search_again), icon = Icons.Default.Autorenew, tint = DuskTheme.accent,
                                 onClick = if (busy) null else { { connect(again = true) } })
                             Separator()
-                            SettingsRow(title = stringResource(R.string.windscribe_accounts), icon = Icons.Default.People, tint = Ios.Blue, onClick = { accountsPage = true })
+                            SettingsRow(title = stringResource(R.string.windscribe_accounts), icon = Icons.Default.People, tint = DuskTheme.primary, onClick = { accountsPage = true })
                         }
                         SettingsFooter(stringResource(R.string.windscribe_methods_hint))
                     }
@@ -175,12 +177,12 @@ fun WindscribeScreen(onBack: () -> Unit) {
                                 val picked = data.servers.firstOrNull { it.id == data.selectedServer }
                                 // One server with every protocol: about a minute.
                                 if (picked != null) {
-                                    SettingsRow(title = stringResource(R.string.windscribe_test_one, picked.city), icon = Icons.Default.NetworkCheck, tint = Ios.Blue,
+                                    SettingsRow(title = stringResource(R.string.windscribe_test_one, picked.city), icon = Icons.Default.NetworkCheck, tint = DuskTheme.primary,
                                         subtitle = stringResource(R.string.windscribe_test_one_sub),
                                         onClick = if (busy) null else { { withVpn { engine.connect(context, benchmark = true, all = true, allOf = picked.dcId) } } })
                                     Separator()
                                 }
-                                SettingsRow(title = stringResource(R.string.windscribe_test_all), icon = Icons.Default.Speed, tint = Ios.Green,
+                                SettingsRow(title = stringResource(R.string.windscribe_test_all), icon = Icons.Default.Speed, tint = DuskTheme.success,
                                     subtitle = stringResource(R.string.windscribe_test_all_sub, data.servers.distinctBy { it.dcId }.size),
                                     onClick = if (busy) null else { { withVpn { engine.connect(context, benchmark = true, all = true) } } })
                             }
@@ -196,7 +198,7 @@ fun WindscribeScreen(onBack: () -> Unit) {
                             val server = data.servers.firstOrNull { it.id == best.method.serverId }
                             SettingsGroup {
                                 SettingsRow(title = stringResource(R.string.windscribe_test_best, server?.let { com.mlmvpn.scanner.ui.tunnel.CountryLabel.withFlag(it.country) + " · " + it.city }.orEmpty(), protocolName(best.method.protocol)),
-                                    icon = Icons.Default.EmojiEvents, tint = Ios.Orange, subtitle = resultLine(best, speed = true),
+                                    icon = Icons.Default.EmojiEvents, tint = DuskTheme.accent, subtitle = resultLine(best, speed = true),
                                     onClick = if (busy) null else { { withVpn { engine.connect(context, exact = best.method) } } })
                             }
                         }
@@ -205,7 +207,7 @@ fun WindscribeScreen(onBack: () -> Unit) {
                         item(key = "srv-$serverId") {
                             val server = data.servers.firstOrNull { it.id == serverId }
                             Text(server?.let { com.mlmvpn.scanner.ui.tunnel.CountryLabel.withFlag(it.country) + " · " + it.city }.orEmpty(),
-                                color = Ios.SecondaryLabel, fontSize = 13.sp, fontWeight = FontWeight.SemiBold,
+                                color = DuskTheme.muted, fontSize = 13.sp, fontWeight = FontWeight.SemiBold,
                                 modifier = Modifier.fillMaxWidth().padding(start = 32.dp, end = 32.dp, top = 14.dp, bottom = 6.dp))
                             SettingsGroup {
                                 rows.sortedWith(compareByDescending<WsMeasurement> { it.success }.thenComparator { a, b -> WsPlanner.SCORE.compare(b, a) })
@@ -213,7 +215,7 @@ fun WindscribeScreen(onBack: () -> Unit) {
                                         if (i > 0) Separator()
                                         SettingsRow(title = protocolName(r.method.protocol),
                                             icon = if (r.success) Icons.Default.CheckCircle else Icons.Default.Cancel,
-                                            tint = if (r.success) Ios.Green else Ios.Gray,
+                                            tint = if (r.success) DuskTheme.success else DuskTheme.disabled,
                                             value = if (r.success) r.downloadBps?.let { speedText(it) } ?: "—" else null,
                                             subtitle = resultLine(r),
                                             onClick = if (busy || !r.success) null else { { withVpn { engine.connect(context, exact = r.method) } } })
@@ -224,7 +226,7 @@ fun WindscribeScreen(onBack: () -> Unit) {
                     item {
                         SettingsSectionHeader(stringResource(R.string.windscribe_servers))
                         SettingsGroup {
-                            SettingsRow(title = stringResource(R.string.windscribe_best_server), icon = Icons.Default.AutoAwesome, tint = Ios.Blue,
+                            SettingsRow(title = stringResource(R.string.windscribe_best_server), icon = Icons.Default.AutoAwesome, tint = DuskTheme.primary,
                                 value = if (data.selectedServer == null) stringResource(R.string.windscribe_selected) else null,
                                 onClick = if (busy) null else { { engine.selectServer(null) } })
                         }
@@ -234,7 +236,7 @@ fun WindscribeScreen(onBack: () -> Unit) {
                     items(data.servers.groupBy { it.dcId }.values.sortedWith(compareBy<List<WsServer>> { it.first().country }.thenBy { it.first().city }), key = { it.first().dcId }) { nodes ->
                         val server = nodes.minBy { it.load ?: 100 }
                         SettingsGroup {
-                            SettingsRow(title = "${server.country} · ${server.city}", icon = Icons.Default.Public, tint = Ios.Blue,
+                            SettingsRow(title = "${server.country} · ${server.city}", icon = Icons.Default.Public, tint = DuskTheme.primary,
                                 subtitle = server.nick.takeIf { it.isNotBlank() }, value = if (nodes.any { it.id == data.selectedServer }) stringResource(R.string.windscribe_selected) else null,
                                 onClick = if (busy) null else { { engine.selectServer(server.id) } })
                         }
@@ -277,16 +279,16 @@ fun WindscribeScreen(onBack: () -> Unit) {
 @Composable private fun Action(text: String, enabled: Boolean, click: () -> Unit) {
     Box(
         Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 5.dp).clip(RoundedCornerShape(12.dp))
-            .background(if (enabled) Ios.Blue else Ios.Blue.copy(alpha = 0.4f))
+            .background(if (enabled) DuskTheme.primary else DuskTheme.primary.copy(alpha = 0.4f))
             .clickable(enabled = enabled, role = Role.Button, onClick = click)
             .padding(vertical = 13.dp),
         contentAlignment = Alignment.Center,
-    ) { Text(text, color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.SemiBold) }
+    ) { Text(text, color = DuskTheme.onPrimary, fontSize = 16.sp, fontWeight = FontWeight.SemiBold) }
 }
 
 /** The same round power button as FLUX: gray when off, orange while it searches, green when connected. */
 @Composable private fun ConnectButton(connected: Boolean, busy: Boolean, enabled: Boolean, onClick: () -> Unit) {
-    val ring = when { connected -> Ios.Green; busy -> Ios.Orange; else -> Ios.Gray }
+    val ring = when { connected -> DuskTheme.success; busy -> DuskTheme.accent; else -> DuskTheme.disabled }
     val label = stringResource(if (connected || busy) R.string.windscribe_disconnect_short else R.string.windscribe_connect)
     Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
         Box(
@@ -298,7 +300,7 @@ fun WindscribeScreen(onBack: () -> Unit) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Icon(Icons.Default.PowerSettingsNew, contentDescription = null, tint = ring, modifier = Modifier.size(44.dp))
                 Spacer(Modifier.height(4.dp))
-                Text(label, color = Ios.Label, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
+                Text(label, color = DuskTheme.onSurface, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
             }
         }
     }
@@ -333,15 +335,15 @@ private fun timestamp(value: Long) = DateFormat.getDateTimeInstance(DateFormat.S
     val server = connection.method?.let { m -> servers.firstOrNull { it.id == m.serverId } }
     Column(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 12.dp)) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Text(stringResource(R.string.windscribe_testing, connection.attempt, connection.total), color = Ios.Label, fontSize = 15.sp, modifier = Modifier.weight(1f))
-            Text(stringResource(R.string.windscribe_stop), color = Ios.Red, fontSize = 15.sp, fontWeight = FontWeight.SemiBold,
+            Text(stringResource(R.string.windscribe_testing, connection.attempt, connection.total), color = DuskTheme.onSurface, fontSize = 15.sp, modifier = Modifier.weight(1f))
+            Text(stringResource(R.string.windscribe_stop), color = DuskTheme.error, fontSize = 15.sp, fontWeight = FontWeight.SemiBold,
                 modifier = Modifier.clip(RoundedCornerShape(8.dp)).clickable(onClick = onStop).padding(horizontal = 8.dp, vertical = 4.dp))
         }
         Spacer(Modifier.height(10.dp))
         LinearProgressIndicator(progress = if (connection.total > 0) connection.attempt.toFloat() / connection.total else 0f,
-            color = Ios.Green, trackColor = Color.White.copy(alpha = 0.15f), modifier = Modifier.fillMaxWidth().height(4.dp).clip(RoundedCornerShape(2.dp)))
+            color = DuskTheme.success, trackColor = DuskTheme.outline.copy(alpha = 0.25f), modifier = Modifier.fillMaxWidth().height(4.dp).clip(RoundedCornerShape(2.dp)))
         Spacer(Modifier.height(8.dp))
-        Text(listOfNotNull(server?.city, connection.method?.let { protocolName(it.protocol) }).joinToString(" · "), color = Ios.SecondaryLabel, fontSize = 13.sp)
+        Text(listOfNotNull(server?.city, connection.method?.let { protocolName(it.protocol) }).joinToString(" · "), color = DuskTheme.muted, fontSize = 13.sp)
     }
 }
 

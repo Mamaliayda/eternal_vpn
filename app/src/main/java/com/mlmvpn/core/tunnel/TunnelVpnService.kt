@@ -1086,7 +1086,7 @@ class TunnelVpnService : VpnService(), TunnelEngine.CoreCallback, PsiphonTunnel.
          * Sampled from the launcher artwork's neon ring (#70E0B0 region), so the
          * shade row and the app icon read as the same brand.
          */
-        private const val NOTIFICATION_ACCENT = 0xFF70E0B0.toInt()
+        private const val NOTIFICATION_ACCENT = 0xFF9BCFB4.toInt()
 
         /** Where the home header's live up/down readout polls its figures from. */
         private const val SESSION_TRAFFIC_PREFS = "vpn_session_traffic"

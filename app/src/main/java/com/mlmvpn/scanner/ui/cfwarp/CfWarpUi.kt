@@ -31,8 +31,8 @@ import com.mlmvpn.core.warp.CfWarpEngine
 import com.mlmvpn.core.warp.WarpIdRelay
 import com.mlmvpn.scanner.R
 import com.mlmvpn.scanner.ui.emergency.faDigits
-import com.mlmvpn.scanner.ui.settings.Ios
 import com.mlmvpn.scanner.ui.settings.IosScreen
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 import com.mlmvpn.scanner.ui.settings.SettingsActionRow
 import com.mlmvpn.scanner.ui.settings.SettingsFooter
 import com.mlmvpn.scanner.ui.settings.SettingsGroup
@@ -72,7 +72,7 @@ fun ColumnScope.CfWarpPanel() {
             SettingsRow(
                 title = stringResource(R.string.cfwarp_colo),
                 icon = Icons.Default.Cloud,
-                tint = Ios.Orange,
+                tint = DuskTheme.accent,
                 value = live.colo ?: "—",
                 showChevron = false,
             )
@@ -93,7 +93,7 @@ fun ColumnScope.CfWarpPanel() {
         SettingsRow(
             title = stringResource(R.string.cfwarp_identity_row),
             icon = Icons.Default.Badge,
-            tint = Ios.Teal,
+            tint = DuskTheme.secondary,
             value = when {
                 !made -> stringResource(R.string.cfwarp_identity_none)
                 identity.via == WarpIdRelay.VIA_WORKER -> stringResource(R.string.cfwarp_identity_worker)
@@ -109,7 +109,7 @@ fun ColumnScope.CfWarpPanel() {
             SettingsActionRow(
                 label = stringResource(R.string.cfwarp_identity_reset),
                 icon = Icons.Default.Delete,
-                tint = Ios.Red,
+                tint = DuskTheme.error,
                 enabled = !cfwarpRunning(),
                 onClick = { confirmReset = true },
             )
@@ -163,7 +163,7 @@ fun CfWarpSettingsScreen(onBack: () -> Unit, backLabel: String) {
                 SettingsRow(
                     title = m.displayFa,
                     icon = if (m == scan) Icons.Default.Check else Icons.Default.Radar,
-                    tint = if (m == scan) Ios.Green else Ios.Gray,
+                    tint = if (m == scan) DuskTheme.success else DuskTheme.muted,
                     showChevron = false,
                     onClick = {
                         scan = m
@@ -182,7 +182,7 @@ fun CfWarpSettingsScreen(onBack: () -> Unit, backLabel: String) {
                 SettingsRow(
                     title = m.displayFa,
                     icon = if (m == ip) Icons.Default.Check else Icons.Default.Router,
-                    tint = if (m == ip) Ios.Green else Ios.Gray,
+                    tint = if (m == ip) DuskTheme.success else DuskTheme.muted,
                     showChevron = false,
                     onClick = {
                         ip = m
@@ -207,7 +207,7 @@ fun CfWarpSettingsScreen(onBack: () -> Unit, backLabel: String) {
                 SettingsRow(
                     title = label,
                     icon = if (value == noize) Icons.Default.Check else Icons.Default.Tune,
-                    tint = if (value == noize) Ios.Green else Ios.Gray,
+                    tint = if (value == noize) DuskTheme.success else DuskTheme.muted,
                     showChevron = false,
                     onClick = {
                         noize = value
@@ -226,7 +226,7 @@ fun CfWarpSettingsScreen(onBack: () -> Unit, backLabel: String) {
                 SettingsRow(
                     title = stringResource(R.string.cfwarp_seconds, faDigits(sec.toString())),
                     icon = if (sec == keepalive) Icons.Default.Check else Icons.Default.Timer,
-                    tint = if (sec == keepalive) Ios.Green else Ios.Gray,
+                    tint = if (sec == keepalive) DuskTheme.success else DuskTheme.muted,
                     showChevron = false,
                     onClick = {
                         keepalive = sec

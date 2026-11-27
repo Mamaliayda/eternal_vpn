@@ -1,6 +1,5 @@
 package com.mlmvpn.scanner.ui.widgetstudio
 
-import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -57,9 +56,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mlmvpn.scanner.store.tr
 import com.mlmvpn.scanner.ui.LocalTabVisible
+import com.mlmvpn.scanner.ui.theme.DuskTheme
+import com.mlmvpn.scanner.ui.theme.rememberDuskSnackbarAction
 import com.mlmvpn.scanner.ui.home.AppIconTile
 import com.mlmvpn.scanner.ui.home.Appearance
-import com.mlmvpn.scanner.ui.settings.Ios
 import com.mlmvpn.scanner.ui.settings.IosAlert
 import com.mlmvpn.scanner.ui.settings.IosAlertAction
 import com.mlmvpn.scanner.ui.settings.IosScreen
@@ -109,6 +109,7 @@ object StudioLaunch {
 @Composable
 fun WidgetStudioScreen(onBack: () -> Unit) {
     val context = LocalContext.current
+    val showNotice = rememberDuskSnackbarAction()
     val visible = LocalTabVisible.current
     var loaded by remember { mutableStateOf(false) }
     LaunchedEffect(Unit) {
@@ -209,7 +210,7 @@ fun WidgetStudioScreen(onBack: () -> Unit) {
                 onBack = { leaveEditor() },
                 onSave = {
                     save()
-                    Toast.makeText(context, tr("طرح ذخیره شد", "Design saved"), Toast.LENGTH_SHORT).show()
+                    showNotice(tr("طرح ذخیره شد", "Design saved"))
                 },
                 onPin = {
                     val saved = save()
@@ -328,13 +329,13 @@ private fun StudioMain(
             Spacer(Modifier.height(14.dp))
             Text(
                 tr("ویجت دلخواه خودتان را برای صفحهٔ اصلی گوشی بسازید", "Make a widget of your own for the phone's home screen"),
-                color = Ios.Label, fontSize = 17.sp, fontWeight = FontWeight.Bold, textAlign = TextAlign.Center,
+                color = DuskTheme.onSurface, fontSize = 17.sp, fontWeight = FontWeight.Bold, textAlign = TextAlign.Center,
             )
             Spacer(Modifier.height(4.dp))
             Text(
                 tr("رنگ، شیشه‌ای بودن، دکمهٔ اتصال، کشور و هر اطلاعاتی که می‌خواهید؛ هر چند طرح که بخواهید.",
                     "Colours, glass, the connect button, the country and whatever it shows; as many designs as you like."),
-                color = Ios.SecondaryLabel, fontSize = 13.sp, textAlign = TextAlign.Center,
+                color = DuskTheme.muted, fontSize = 13.sp, textAlign = TextAlign.Center,
             )
             Spacer(Modifier.height(14.dp))
             PrimaryButton(tr("ساخت ویجت جدید", "New widget"), onClick = onNew)
@@ -348,7 +349,7 @@ private fun StudioMain(
                 checked = Appearance.homeWidget,
                 onCheckedChange = { Appearance.setHomeWidget(context, it) },
                 icon = Icons.Default.ViewQuilt,
-                tint = Ios.Blue,
+                tint = DuskTheme.primary,
             )
         }
         SettingsFooter(tr("همین کلید در تنظیمات › صفحه نمایش هم هست.", "The same switch is in Settings › Display."))
@@ -381,7 +382,7 @@ private fun StudioMain(
             SettingsRow(
                 title = tr("افزودن ویجت یک روش به صفحهٔ گوشی", "Add a method's widget to the home screen"),
                 icon = Icons.Default.AddToHomeScreen,
-                tint = Ios.Green,
+                tint = DuskTheme.success,
                 onClick = onAddMethod,
             )
             Separator()
@@ -391,7 +392,7 @@ private fun StudioMain(
                 checked = methodStyle.card,
                 onCheckedChange = { onMethodStyle(methodStyle.copy(card = it)) },
                 icon = Icons.Default.CropSquare,
-                tint = Ios.Teal,
+                tint = DuskTheme.secondary,
             )
             Separator()
             SettingsToggle(
@@ -399,7 +400,7 @@ private fun StudioMain(
                 checked = methodStyle.label,
                 onCheckedChange = { onMethodStyle(methodStyle.copy(label = it)) },
                 icon = Icons.Default.Label,
-                tint = Ios.Purple,
+                tint = DuskTheme.purple,
             )
             Separator()
             SettingsToggle(
@@ -408,7 +409,7 @@ private fun StudioMain(
                 checked = methodStyle.status,
                 onCheckedChange = { onMethodStyle(methodStyle.copy(status = it)) },
                 icon = Icons.Default.Lightbulb,
-                tint = Ios.Yellow,
+                tint = DuskTheme.accent,
             )
             Separator()
             SettingsToggle(
@@ -417,7 +418,7 @@ private fun StudioMain(
                 checked = methodStyle.tapConnects,
                 onCheckedChange = { onMethodStyle(methodStyle.copy(tapConnects = it)) },
                 icon = Icons.Default.TouchApp,
-                tint = Ios.Orange,
+                tint = DuskTheme.accent,
             )
         }
         if (methodStyle.card) {
@@ -445,11 +446,11 @@ private fun PrimaryButton(text: String, onClick: () -> Unit, enabled: Boolean = 
             .fillMaxWidth()
             .heightIn(min = 50.dp)
             .clip(RoundedCornerShape(16.dp))
-            .background(if (enabled) Ios.Blue else Color.White.copy(alpha = 0.12f))
+            .background(if (enabled) DuskTheme.primary else DuskTheme.raisedSurface.copy(alpha = 0.55f))
             .clickable(enabled = enabled, onClick = onClick),
         contentAlignment = Alignment.Center,
     ) {
-        Text(text, color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
+        Text(text, color = DuskTheme.onSurface, fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
     }
 }
 
@@ -464,19 +465,19 @@ private fun com.mlmvpn.scanner.ui.settings.SettingsGroupScope.TemplateRow(t: Wid
         }
         Spacer(Modifier.width(12.dp))
         Column(modifier = Modifier.weight(1f)) {
-            Text(t.name.ifBlank { t.style.title }, color = Ios.Label, fontSize = 15.sp, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            Text(t.name.ifBlank { t.style.title }, color = DuskTheme.onSurface, fontSize = 15.sp, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
             val country = t.country?.let { WidgetFormat.flag(it) + " " + WidgetFormat.countryName(it) } ?: tr("کشور خودکار", "Auto country")
-            Text(methodTitle(t.method) + " · " + country, color = Ios.SecondaryLabel, fontSize = 12.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            Text(methodTitle(t.method) + " · " + country, color = DuskTheme.muted, fontSize = 12.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
             Text(
                 WidgetFormat.joined(t.size.title,
                     if (placed > 0) WidgetFormat.digits(tr("$placed ویجت روی صفحه", "$placed on the home screen")) else tr("هنوز روی صفحه نیست", "Not on the home screen yet")),
-                color = Ios.SecondaryLabel, fontSize = 11.5.sp, maxLines = 1,
+                color = DuskTheme.muted, fontSize = 11.5.sp, maxLines = 1,
             )
         }
         Icon(
             Icons.Default.AddToHomeScreen,
             contentDescription = tr("افزودن به صفحهٔ گوشی", "Add to the home screen"),
-            tint = Ios.Blue,
+            tint = DuskTheme.primary,
             modifier = Modifier.size(40.dp).clip(RoundedCornerShape(50)).clickable(onClick = onPin).padding(9.dp),
         )
     }
@@ -545,7 +546,7 @@ private fun StudioEditor(
         trailing = {
             Text(
                 tr("ذخیره", "Save"),
-                color = Ios.Label, fontSize = 16.sp, fontWeight = FontWeight.SemiBold,
+                color = DuskTheme.onSurface, fontSize = 16.sp, fontWeight = FontWeight.SemiBold,
                 modifier = Modifier.clip(RoundedCornerShape(10.dp)).clickable(onClick = onSave).padding(horizontal = 8.dp, vertical = 6.dp),
             )
         },
@@ -586,12 +587,12 @@ private fun StudioEditor(
 
         Spacer(Modifier.height(18.dp))
         SettingsGroup {
-            SettingsActionRow(label = tr("افزودن به صفحهٔ اصلی گوشی", "Add to the phone's home screen"), icon = Icons.Default.AddToHomeScreen, tint = Ios.Blue, onClick = onPin)
+            SettingsActionRow(label = tr("افزودن به صفحهٔ اصلی گوشی", "Add to the phone's home screen"), icon = Icons.Default.AddToHomeScreen, tint = DuskTheme.primary, onClick = onPin)
             if (!isNew) {
                 Separator()
                 SettingsActionRow(label = tr("ساخت یک کپی", "Duplicate"), icon = Icons.Default.ContentCopy, onClick = onDuplicate)
                 Separator()
-                SettingsActionRow(label = tr("حذف طرح", "Delete design"), icon = Icons.Default.Delete, tint = Ios.Destructive, onClick = { askDelete = true })
+                SettingsActionRow(label = tr("حذف طرح", "Delete design"), icon = Icons.Default.Delete, tint = DuskTheme.error, onClick = { askDelete = true })
             }
         }
         if (placed > 0) {
@@ -620,7 +621,7 @@ private fun <T> Segmented(options: List<Pair<T, String>>, selected: T, onSelect:
         modifier = modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(12.dp))
-            .background(Color.White.copy(alpha = 0.10f))
+            .background(DuskTheme.raisedSurface.copy(alpha = 0.5f))
             .padding(3.dp),
         horizontalArrangement = Arrangement.spacedBy(3.dp),
     ) {
@@ -630,12 +631,12 @@ private fun <T> Segmented(options: List<Pair<T, String>>, selected: T, onSelect:
                 modifier = Modifier
                     .weight(1f)
                     .clip(RoundedCornerShape(9.dp))
-                    .background(if (on) Color.White.copy(alpha = 0.24f) else Color.Transparent)
+                    .background(if (on) DuskTheme.primary.copy(alpha = 0.28f) else Color.Transparent)
                     .clickable { onSelect(key) }
                     .padding(vertical = 8.dp),
                 contentAlignment = Alignment.Center,
             ) {
-                Text(label, color = if (on) Color.White else Ios.SecondaryLabel, fontSize = 13.5.sp, fontWeight = if (on) FontWeight.SemiBold else FontWeight.Normal, maxLines = 1)
+                Text(label, color = if (on) Color.White else DuskTheme.muted, fontSize = 13.5.sp, fontWeight = if (on) FontWeight.SemiBold else FontWeight.Normal, maxLines = 1)
             }
         }
     }
@@ -658,7 +659,7 @@ private fun LookTab(draft: WidgetTemplate, onChange: (WidgetTemplate) -> Unit) {
                         corner = p.corner, button = p.button))
                 })
                 if (p.style == draft.style) {
-                    Icon(Icons.Default.Check, contentDescription = null, tint = Ios.Blue, modifier = Modifier.size(18.dp))
+                    Icon(Icons.Default.Check, contentDescription = null, tint = DuskTheme.primary, modifier = Modifier.size(18.dp))
                 } else Spacer(Modifier.height(18.dp))
             }
         }
@@ -751,7 +752,7 @@ private fun InfoTab(draft: WidgetTemplate, onChange: (WidgetTemplate) -> Unit, o
             title = tr("روش اتصال", "Connection method"),
             value = methodTitle(draft.method),
             icon = Icons.Default.Widgets,
-            tint = Ios.Indigo,
+            tint = DuskTheme.indigo,
             onClick = onMethod,
         )
         if (WidgetConnect.hasCountries(draft.method)) {
@@ -760,7 +761,7 @@ private fun InfoTab(draft: WidgetTemplate, onChange: (WidgetTemplate) -> Unit, o
                 title = tr("کشور", "Country"),
                 value = draft.country?.let { WidgetFormat.flag(it) + " " + WidgetFormat.countryName(it) } ?: tr("خودکار", "Automatic"),
                 icon = Icons.Default.Public,
-                tint = Ios.Teal,
+                tint = DuskTheme.secondary,
                 onClick = onCountry,
             )
         }
@@ -814,8 +815,8 @@ private fun MethodPicker(selected: String, onPick: (String) -> Unit, onBack: () 
                 ) {
                     AppIconTile(app = app, size = 34.dp)
                     Spacer(Modifier.width(12.dp))
-                    Text(WidgetPainter.labelOf(app), color = Ios.Label, fontSize = 16.sp, modifier = Modifier.weight(1f))
-                    if (app.id == selected) Icon(Icons.Default.Check, contentDescription = null, tint = Ios.Blue, modifier = Modifier.size(20.dp))
+                    Text(WidgetPainter.labelOf(app), color = DuskTheme.onSurface, fontSize = 16.sp, modifier = Modifier.weight(1f))
+                    if (app.id == selected) Icon(Icons.Default.Check, contentDescription = null, tint = DuskTheme.primary, modifier = Modifier.size(20.dp))
                 }
             }
         }
@@ -831,13 +832,13 @@ private fun CountryPicker(method: String, selected: String?, onPick: (String?) -
     IosScreen(title = tr("کشور", "Country"), onBack = onBack, backLabel = tr("طرح", "Design")) {
         Spacer(Modifier.height(14.dp))
         WidgetConnect.countryNote(method)?.let {
-            Text(it, color = Ios.SecondaryLabel, fontSize = 13.sp, lineHeight = 21.sp, modifier = Modifier.padding(horizontal = 24.dp))
+            Text(it, color = DuskTheme.muted, fontSize = 13.sp, lineHeight = 21.sp, modifier = Modifier.padding(horizontal = 24.dp))
             Spacer(Modifier.height(10.dp))
         }
         val countries = list
         if (countries == null) {
             Box(modifier = Modifier.fillMaxWidth().padding(30.dp), contentAlignment = Alignment.Center) {
-                CircularProgressIndicator(color = Ios.Label, strokeWidth = 2.dp, modifier = Modifier.size(26.dp))
+                CircularProgressIndicator(color = DuskTheme.onSurface, strokeWidth = 2.dp, modifier = Modifier.size(26.dp))
             }
         } else {
             SettingsGroup {
@@ -863,8 +864,8 @@ private fun CountryRow(name: String, flag: String, selected: Boolean, onClick: (
     ) {
         Text(flag, fontSize = 20.sp)
         Spacer(Modifier.width(12.dp))
-        Text(name, color = Ios.Label, fontSize = 16.sp, modifier = Modifier.weight(1f))
-        if (selected) Icon(Icons.Default.Check, contentDescription = null, tint = Ios.Blue, modifier = Modifier.size(20.dp))
+        Text(name, color = DuskTheme.onSurface, fontSize = 16.sp, modifier = Modifier.weight(1f))
+        if (selected) Icon(Icons.Default.Check, contentDescription = null, tint = DuskTheme.primary, modifier = Modifier.size(20.dp))
     }
 }
 
@@ -876,7 +877,7 @@ private fun AddMethodWidget(onBack: () -> Unit, onAdd: (String) -> Unit) {
         Text(
             tr("یک روش را بزنید تا ویجتش به صفحهٔ اصلی گوشی اضافه شود. با لمس ویجت، همان روش وصل یا قطع می‌شود.",
                 "Tap a method to add its widget to the phone's home screen. Tapping the widget then connects or disconnects that method."),
-            color = Ios.SecondaryLabel, fontSize = 13.sp, lineHeight = 21.sp, modifier = Modifier.padding(horizontal = 24.dp),
+            color = DuskTheme.muted, fontSize = 13.sp, lineHeight = 21.sp, modifier = Modifier.padding(horizontal = 24.dp),
         )
         Spacer(Modifier.height(10.dp))
         SettingsGroup {
@@ -890,10 +891,10 @@ private fun AddMethodWidget(onBack: () -> Unit, onAdd: (String) -> Unit) {
                     AppIconTile(app = app, size = 34.dp)
                     Spacer(Modifier.width(12.dp))
                     Column(modifier = Modifier.weight(1f)) {
-                        Text(WidgetPainter.labelOf(app), color = Ios.Label, fontSize = 16.sp)
-                        if (count > 0) Text(WidgetFormat.digits(tr("$count ویجت روی صفحه", "$count on the home screen")), color = Ios.SecondaryLabel, fontSize = 12.sp)
+                        Text(WidgetPainter.labelOf(app), color = DuskTheme.onSurface, fontSize = 16.sp)
+                        if (count > 0) Text(WidgetFormat.digits(tr("$count ویجت روی صفحه", "$count on the home screen")), color = DuskTheme.muted, fontSize = 12.sp)
                     }
-                    Icon(Icons.Default.AddToHomeScreen, contentDescription = null, tint = Ios.Blue, modifier = Modifier.size(22.dp))
+                    Icon(Icons.Default.AddToHomeScreen, contentDescription = null, tint = DuskTheme.primary, modifier = Modifier.size(22.dp))
                 }
             }
         }

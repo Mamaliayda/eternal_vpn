@@ -1,24 +1,15 @@
 package com.mlmvpn.scanner.ui
 
-import com.mlmvpn.scanner.ui.theme.TextPrimary
 import com.mlmvpn.scanner.ui.home.frostedGlass
 import androidx.compose.foundation.border
-import com.mlmvpn.scanner.ui.theme.YellowWarn
-import com.mlmvpn.scanner.ui.theme.RedError
-import com.mlmvpn.scanner.ui.theme.Primary
-import com.mlmvpn.scanner.ui.theme.GreenOk
-import com.mlmvpn.scanner.ui.theme.ControlShape
-import com.mlmvpn.scanner.ui.theme.CardShape
-import com.mlmvpn.scanner.ui.theme.BadgeShape
-import com.mlmvpn.scanner.ui.settings.Ios
 import androidx.compose.runtime.Composable
-import com.mlmvpn.scanner.ui.theme.*
+import com.mlmvpn.scanner.ui.theme.DuskTheme
+import com.mlmvpn.scanner.ui.theme.rememberDuskSnackbarAction
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
 import android.net.VpnService
-import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.core.*
@@ -70,53 +61,20 @@ import com.mlmvpn.scanner.utils.S
  * follows light mode too, which the hardcoded version could not.
  */
 private object GameColors {
-    /**
-     * The page fill. Transparent: the host already paints the wallpaper and its scrim behind
-     * every screen, and an opaque sheet here punched a hole through both.
-     */
-    val BgDark: Color
-        @Composable get() = Color.Transparent
-
-    /** Cards and panels: the glass the Settings groups use. */
-    val SurfaceDark: Color
-        @Composable get() = com.mlmvpn.scanner.ui.theme.SurfaceDark
-
-    /** A panel nested inside another one. */
-    val SurfaceVariant: Color
-        @Composable get() = Color.White.copy(alpha = 0.07f)
-
-    /** The boost accent. iOS green rather than Material A400, which was the loudest thing here. */
-    val GameGreen: Color
-        @Composable get() = GreenOk
-
-    val GameGreenDim: Color
-        @Composable get() = GreenOk
-
-    val PrimaryBlue: Color
-        @Composable get() = Primary
-
-    val TextPrimary: Color
-        @Composable get() = com.mlmvpn.scanner.ui.theme.TextPrimary
-
-    val TextMuted: Color
-        @Composable get() = com.mlmvpn.scanner.ui.theme.TextMuted
-
-    val BorderDark: Color
-        @Composable get() = com.mlmvpn.scanner.ui.theme.BorderDark
-
-    // The ping scale keeps four distinct steps -- it is data, and a reader has to tell 55ms from
-    // 140ms at a glance -- but each step is now the iOS colour of that severity.
-    val PingGood: Color
-        @Composable get() = GreenOk
-    val PingMedium: Color
-        @Composable get() = YellowWarn
-    val PingBad: Color
-        @Composable get() = Ios.Orange
-    val PingTerrible: Color
-        @Composable get() = RedError
-
-    val Gold: Color
-        @Composable get() = Ios.Yellow
+    val BgDark: Color @Composable get() = DuskTheme.background
+    val SurfaceDark: Color @Composable get() = DuskTheme.surface
+    val SurfaceVariant: Color @Composable get() = DuskTheme.raisedSurface
+    val GameGreen: Color @Composable get() = DuskTheme.success
+    val GameGreenDim: Color @Composable get() = DuskTheme.success
+    val PrimaryBlue: Color @Composable get() = DuskTheme.primary
+    val TextPrimary: Color @Composable get() = DuskTheme.onSurface
+    val TextMuted: Color @Composable get() = DuskTheme.muted
+    val BorderDark: Color @Composable get() = DuskTheme.outline
+    val PingGood: Color @Composable get() = DuskTheme.success
+    val PingMedium: Color @Composable get() = DuskTheme.purple
+    val PingBad: Color @Composable get() = DuskTheme.accent
+    val PingTerrible: Color @Composable get() = DuskTheme.error
+    val Gold: Color @Composable get() = DuskTheme.indigo
 }
 
 @Composable
@@ -138,6 +96,7 @@ private fun pingLabel(ping: Long): String = when {
 fun GameTab(onBack: () -> Unit = {}, onNavigateToCloud: (() -> Unit)? = null) {
 
     val context = LocalContext.current
+    val showNotice = rememberDuskSnackbarAction()
     val scope = rememberCoroutineScope()
     val boosterManager = remember { GameBoosterManager(context) }
 
@@ -218,7 +177,7 @@ fun GameTab(onBack: () -> Unit = {}, onNavigateToCloud: (() -> Unit)? = null) {
                 .remove("pending_boost_region")
                 .apply()
             runCatching { selectedMode = BoostMode.valueOf(pendingMode) }
-            Toast.makeText(context, S(R.string.the_previous_engine_was_turned_off_now), Toast.LENGTH_LONG).show()
+            showNotice(S(R.string.the_previous_engine_was_turned_off_now))
         }
     }
 
@@ -292,7 +251,7 @@ fun GameTab(onBack: () -> Unit = {}, onNavigateToCloud: (() -> Unit)? = null) {
             pendingBoostResult = null
         } else {
             pendingBoostResult = null
-            Toast.makeText(context, S(R.string.vpn_permission_denied), Toast.LENGTH_SHORT).show()
+            showNotice(S(R.string.vpn_permission_denied))
         }
     }
 
@@ -420,7 +379,7 @@ fun GameTab(onBack: () -> Unit = {}, onNavigateToCloud: (() -> Unit)? = null) {
                         Image(
                             bitmap = gameIcon.toBitmap(48, 48).asImageBitmap(),
                             contentDescription = null,
-                            modifier = Modifier.size(28.dp).clip(BadgeShape),
+                            modifier = Modifier.size(28.dp).clip(DuskTheme.glyphShape),
                         )
                     } else {
                         Box(modifier = Modifier.size(28.dp), contentAlignment = Alignment.Center) {
@@ -430,13 +389,13 @@ fun GameTab(onBack: () -> Unit = {}, onNavigateToCloud: (() -> Unit)? = null) {
                     Spacer(Modifier.width(12.dp))
                     Text(
                         S(R.string.game),
-                        color = com.mlmvpn.scanner.ui.settings.Ios.Label,
+                        color = DuskTheme.onSurface,
                         fontSize = 16.sp,
                         modifier = Modifier.weight(1f),
                     )
                     Text(
                         game?.name ?: "—",
-                        color = com.mlmvpn.scanner.ui.settings.Ios.SecondaryLabel,
+                        color = DuskTheme.muted,
                         fontSize = 15.sp,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
@@ -445,7 +404,7 @@ fun GameTab(onBack: () -> Unit = {}, onNavigateToCloud: (() -> Unit)? = null) {
                     Icon(
                         Icons.Default.ChevronLeft,
                         contentDescription = null,
-                        tint = com.mlmvpn.scanner.ui.settings.Ios.Chevron,
+                        tint = DuskTheme.disabled,
                         modifier = Modifier.size(18.dp),
                     )
                 }
@@ -456,7 +415,7 @@ fun GameTab(onBack: () -> Unit = {}, onNavigateToCloud: (() -> Unit)? = null) {
                         title = S(R.string.region),
                         value = currentServer?.displayName,
                         icon = Icons.Default.Language,
-                        tint = com.mlmvpn.scanner.ui.settings.Ios.Gray,
+                        tint = DuskTheme.muted,
                         onClick = { picker = "region" },
                     )
                 }
@@ -485,15 +444,15 @@ fun GameTab(onBack: () -> Unit = {}, onNavigateToCloud: (() -> Unit)? = null) {
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
                         Column(modifier = Modifier.weight(1f)) {
-                            Text(label, color = com.mlmvpn.scanner.ui.settings.Ios.Label, fontSize = 16.sp)
+                            Text(label, color = DuskTheme.onSurface, fontSize = 16.sp)
                             Spacer(Modifier.height(2.dp))
-                            Text(note, color = com.mlmvpn.scanner.ui.settings.Ios.SecondaryLabel, fontSize = 12.sp)
+                            Text(note, color = DuskTheme.muted, fontSize = 12.sp)
                         }
                         if (selectedMode == mode) {
                             Icon(
                                 Icons.Default.Check,
                                 contentDescription = null,
-                                tint = com.mlmvpn.scanner.ui.settings.Ios.Blue,
+                                tint = DuskTheme.primary,
                                 modifier = Modifier.size(19.dp),
                             )
                         }
@@ -564,13 +523,11 @@ fun GameTab(onBack: () -> Unit = {}, onNavigateToCloud: (() -> Unit)? = null) {
                                 dnsRemovedLocally = false
                                 dnsRefreshTick++
                             }
-                            Toast.makeText(
-                                context,
+                            showNotice(
                                 if (ok) {
                                     if (isFa) "DNS اختصاصی روی حساب شما فعال شد" else "Dedicated DNS is live"
                                 } else msg,
-                                Toast.LENGTH_LONG,
-                            ).show()
+                            )
                         }
                     }
                 },
@@ -585,13 +542,11 @@ fun GameTab(onBack: () -> Unit = {}, onNavigateToCloud: (() -> Unit)? = null) {
                             }
                             dnsDeploying = false
                             dnsRefreshTick++
-                            Toast.makeText(
-                                context,
+                            showNotice(
                                 if (ok) {
                                     if (isFa) "به آخرین نسخه به‌روز شد" else "Updated to the latest build"
                                 } else msg,
-                                Toast.LENGTH_LONG,
-                            ).show()
+                            )
                         }
                     }
                 },
@@ -609,7 +564,7 @@ fun GameTab(onBack: () -> Unit = {}, onNavigateToCloud: (() -> Unit)? = null) {
                                 dnsRegionResults = emptyList()
                                 dnsRefreshTick++
                             }
-                            Toast.makeText(context, msg, Toast.LENGTH_LONG).show()
+                            showNotice(msg)
                         }
                     }
                 },
@@ -624,7 +579,7 @@ fun GameTab(onBack: () -> Unit = {}, onNavigateToCloud: (() -> Unit)? = null) {
                             dnsProbing = false
                             dnsRefreshTick++ // refresh the cached "best region" badge
                             if (results.isEmpty()) {
-                                Toast.makeText(context, if (isFa) "هیچ منطقه‌ای جواب نداد — DNS اختصاصی یا اتصال را بررسی کنید" else S(R.string.no_region_responded), Toast.LENGTH_LONG).show()
+                                showNotice(if (isFa) "هیچ منطقه‌ای جواب نداد — DNS اختصاصی یا اتصال را بررسی کنید" else S(R.string.no_region_responded))
                             }
                         }
                     }
@@ -649,7 +604,7 @@ fun GameTab(onBack: () -> Unit = {}, onNavigateToCloud: (() -> Unit)? = null) {
             item {
                 Card(
                     colors = CardDefaults.cardColors(containerColor = GameColors.SurfaceDark),
-                    shape = CardShape,
+                    shape = DuskTheme.cardShape,
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Column(
@@ -869,7 +824,7 @@ fun GameTab(onBack: () -> Unit = {}, onNavigateToCloud: (() -> Unit)? = null) {
                 
                 Surface(
                     color = GameColors.GameGreen.copy(alpha = 0.1f),
-                    shape = ControlShape,
+                    shape = DuskTheme.controlShape,
                     border = BorderStroke(1.dp, GameColors.GameGreen.copy(alpha = 0.3f)),
                     modifier = Modifier.fillMaxWidth().padding(top = 12.dp)
                 ) {
@@ -918,7 +873,7 @@ fun GameTab(onBack: () -> Unit = {}, onNavigateToCloud: (() -> Unit)? = null) {
             item {
                 Surface(
                     color = GameColors.SurfaceDark,
-                    shape = ControlShape,
+                    shape = DuskTheme.controlShape,
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Row(
@@ -988,11 +943,11 @@ private fun GameCard(
         modifier = Modifier
             .width(90.dp)
             .scale(scale)
-            .frostedGlass(CardShape)
-            .clip(CardShape)
+            .frostedGlass(DuskTheme.cardShape)
+            .clip(DuskTheme.cardShape)
             .clickable(onClick = onClick),
         color = if (isSelected) GameColors.GameGreen.copy(alpha = 0.14f) else Color.Transparent,
-        shape = CardShape,
+        shape = DuskTheme.cardShape,
         border = BorderStroke(if (isSelected) 1.5.dp else 0.7.dp, borderColor)
     ) {
         Column(
@@ -1005,7 +960,7 @@ private fun GameCard(
                     contentDescription = game.name,
                     modifier = Modifier
                         .size(36.dp)
-                        .clip(BadgeShape)
+                        .clip(DuskTheme.glyphShape)
                 )
             } else {
                 Text(game.iconEmoji, fontSize = 28.sp)
@@ -1025,7 +980,7 @@ private fun GameCard(
             if (isInstalled) {
                 Box(
                     modifier = Modifier
-                        .background(GameColors.GameGreen.copy(alpha = 0.15f), BadgeShape)
+                        .background(GameColors.GameGreen.copy(alpha = 0.15f), DuskTheme.glyphShape)
                         .padding(horizontal = 6.dp, vertical = 2.dp)
                 ) {
                     Text("✓", color = GameColors.GameGreen, fontSize = 9.sp)
@@ -1066,17 +1021,17 @@ Row(
         Spacer(Modifier.width(12.dp))
     }
     Column(modifier = Modifier.weight(1f)) {
-        Text(title, color = Ios.Label, fontSize = 16.sp)
+        Text(title, color = DuskTheme.onSurface, fontSize = 16.sp)
         if (subtitle != null) {
             Spacer(Modifier.height(2.dp))
-            Text(subtitle, color = Ios.SecondaryLabel, fontSize = 12.sp)
+            Text(subtitle, color = DuskTheme.muted, fontSize = 12.sp)
         }
     }
     if (selected) {
         Icon(
             Icons.Default.Check,
             contentDescription = null,
-            tint = Ios.Blue,
+            tint = DuskTheme.primary,
             modifier = Modifier.size(19.dp),
         )
     }
@@ -1119,7 +1074,7 @@ com.mlmvpn.scanner.ui.settings.IosScreen(
                             Image(
                                 bitmap = icon.toBitmap(48, 48).asImageBitmap(),
                                 contentDescription = null,
-                                modifier = Modifier.size(28.dp).clip(BadgeShape),
+                                modifier = Modifier.size(28.dp).clip(DuskTheme.glyphShape),
                             )
                         } else {
                             Box(modifier = Modifier.size(28.dp), contentAlignment = Alignment.Center) {
@@ -1206,7 +1161,7 @@ private fun BoostButton(
         com.mlmvpn.scanner.ui.emergency.EmergencyDial(
             state = dialState,
             // The green of the home-screen tile this screen was opened from.
-            idleAccent = GreenOk,
+            idleAccent = DuskTheme.success,
             idleIcon = Icons.Default.Bolt,
             idleLabel = stringResource(R.string.game_boost_btn),
             runningLabel = stringResource(R.string.game_boosted),
@@ -1218,7 +1173,7 @@ private fun BoostButton(
             Spacer(Modifier.height(10.dp))
             Text(
                 S(R.string.measuring_of, faCount(progress.first), faCount(progress.second)),
-                color = com.mlmvpn.scanner.ui.settings.Ios.SecondaryLabel,
+                color = DuskTheme.muted,
                 fontSize = 12.sp,
             )
         }
@@ -1254,7 +1209,7 @@ private fun ResultCard(
 
     Surface(
         color = GameColors.SurfaceDark,
-        shape = ControlShape,
+        shape = DuskTheme.controlShape,
         border = BorderStroke(if (isBest) 2.dp else 1.dp, borderColor),
         modifier = Modifier.fillMaxWidth()
     ) {
@@ -1333,7 +1288,7 @@ private fun ResultCard(
 private fun LivePingCard(ping: Long, bestResult: BoostResult?) {
     Surface(
         color = GameColors.SurfaceDark,
-        shape = ControlShape,
+        shape = DuskTheme.controlShape,
         border = BorderStroke(1.dp, GameColors.GameGreen.copy(alpha = 0.3f)),
         modifier = Modifier.fillMaxWidth()
     ) {
@@ -1398,7 +1353,7 @@ private fun LivePingCard(ping: Long, bestResult: BoostResult?) {
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(6.dp)
-                        .background(GameColors.SurfaceVariant, BadgeShape)
+                        .background(GameColors.SurfaceVariant, DuskTheme.glyphShape)
                 ) {
                     Box(
                         modifier = Modifier
@@ -1408,7 +1363,7 @@ private fun LivePingCard(ping: Long, bestResult: BoostResult?) {
                                 Brush.horizontalGradient(
                                     listOf(GameColors.PingGood, pingColor(ping))
                                 ),
-                                BadgeShape
+                                DuskTheme.glyphShape
                             )
                     )
                 }
@@ -1470,7 +1425,7 @@ private fun DedicatedDnsCard(
                     com.mlmvpn.scanner.ui.settings.SettingsRow(
                         title = if (isFa) "حسابی وصل نیست" else "No account connected",
                         icon = Icons.Default.Cloud,
-                        tint = Ios.Gray,
+                        tint = DuskTheme.muted,
                         showChevron = false,
                     )
                 }
@@ -1483,20 +1438,20 @@ private fun DedicatedDnsCard(
                         CircularProgressIndicator(
                             modifier = Modifier.size(15.dp),
                             strokeWidth = 2.dp,
-                            color = Ios.SecondaryLabel,
+                            color = DuskTheme.muted,
                         )
                         Spacer(Modifier.width(10.dp))
                         Text(
                             deployProgress.second.ifEmpty {
                                 if (isFa) "در حال استقرار…" else "Deploying…"
                             },
-                            color = Ios.Label,
+                            color = DuskTheme.onSurface,
                             fontSize = 14.sp,
                             modifier = Modifier.weight(1f),
                         )
                         Text(
                             S(R.string.str_2, faCount(deployProgress.first)),
-                            color = Ios.SecondaryLabel,
+                            color = DuskTheme.muted,
                             fontSize = 13.sp,
                         )
                     }
@@ -1504,7 +1459,7 @@ private fun DedicatedDnsCard(
                     LinearProgressIndicator(
                         progress = (deployProgress.first / 100f).coerceIn(0f, 1f),
                         modifier = Modifier.fillMaxWidth().height(3.dp).clip(CircleShape),
-                        color = Ios.Blue,
+                        color = DuskTheme.primary,
                         trackColor = Color.White.copy(alpha = 0.12f),
                     )
                 }
@@ -1525,7 +1480,7 @@ private fun DedicatedDnsCard(
                     checked = enabled,
                     onCheckedChange = onEnabledChange,
                     icon = Icons.Default.Dns,
-                    tint = Ios.Gray,
+                    tint = DuskTheme.muted,
                 )
 
                 if (enabled) {
@@ -1536,7 +1491,7 @@ private fun DedicatedDnsCard(
                         title = if (isFa) "منطقه" else "Region",
                         value = if (isFa) region.nameFa else region.nameEn,
                         icon = Icons.Default.Public,
-                        tint = Ios.Gray,
+                        tint = DuskTheme.muted,
                         showChevron = false,
                     )
 
@@ -1549,11 +1504,11 @@ private fun DedicatedDnsCard(
                                 .padding(horizontal = 16.dp, vertical = 9.dp),
                             verticalAlignment = Alignment.CenterVertically,
                         ) {
-                            com.mlmvpn.scanner.ui.settings.SettingsGlyph(Icons.Default.Speed, Ios.Gray)
+                            com.mlmvpn.scanner.ui.settings.SettingsGlyph(Icons.Default.Speed, DuskTheme.muted)
                             Spacer(Modifier.width(12.dp))
                             Text(
                                 if (isFa) "پینگ از این منطقه" else "Ping via this region",
-                                color = Ios.Label,
+                                color = DuskTheme.onSurface,
                                 fontSize = 16.sp,
                                 modifier = Modifier.weight(1f),
                             )
@@ -1578,7 +1533,7 @@ private fun DedicatedDnsCard(
                             if (isFa) m.nameFa else m.nameEn
                         },
                         icon = Icons.Default.Tune,
-                        tint = Ios.Gray,
+                        tint = DuskTheme.muted,
                         onClick = {
                             onModeChange(if (mode == "auto") "manual" else "auto")
                         },
@@ -1600,7 +1555,7 @@ private fun DedicatedDnsCard(
                             ) {
                                 Text(
                                     if (isFa) r.nameFa else r.nameEn,
-                                    color = Ios.Label,
+                                    color = DuskTheme.onSurface,
                                     fontSize = 15.sp,
                                     modifier = Modifier.weight(1f),
                                 )
@@ -1617,7 +1572,7 @@ private fun DedicatedDnsCard(
                                     Icon(
                                         Icons.Default.Check,
                                         contentDescription = null,
-                                        tint = Ios.Blue,
+                                        tint = DuskTheme.primary,
                                         modifier = Modifier.size(18.dp),
                                     )
                                 }
@@ -1645,7 +1600,7 @@ private fun DedicatedDnsCard(
                     com.mlmvpn.scanner.ui.settings.SettingsActionRow(
                         label = if (isFa) "به‌روزرسانی به آخرین نسخه" else "Update to the latest build",
                         icon = Icons.Default.Refresh,
-                        tint = Ios.Orange,
+                        tint = DuskTheme.accent,
                     ) { onRedeploy() }
                 } else {
                     Separator()
@@ -1658,7 +1613,7 @@ private fun DedicatedDnsCard(
                 com.mlmvpn.scanner.ui.settings.SettingsActionRow(
                     label = if (isFa) "حذف DNS اختصاصی از کلادفلر" else "Remove dedicated DNS",
                     icon = Icons.Default.DeleteOutline,
-                    tint = Ios.Red,
+                    tint = DuskTheme.error,
                 ) { onRemove() }
             }
         }
@@ -1683,14 +1638,14 @@ private fun DedicatedDnsCard(
                 ) {
                     Text(
                         if (isFa) r.region.nameFa else r.region.nameEn,
-                        color = Ios.Label,
+                        color = DuskTheme.onSurface,
                         fontSize = 15.sp,
                     )
                     if (index == 0) {
                         Spacer(Modifier.width(8.dp))
                         Text(
                             if (isFa) "بهترین" else "best",
-                            color = Ios.SecondaryLabel,
+                            color = DuskTheme.muted,
                             fontSize = 11.sp,
                         )
                     }
@@ -1698,7 +1653,7 @@ private fun DedicatedDnsCard(
                     if (r.jitterMs > 0) {
                         Text(
                             (if (isFa) "نوسان " else "jit ") + "${r.jitterMs}ms",
-                            color = Ios.SecondaryLabel,
+                            color = DuskTheme.muted,
                             fontSize = 11.sp,
                         )
                         Spacer(Modifier.width(10.dp))
@@ -1714,7 +1669,7 @@ private fun DedicatedDnsCard(
                         Icon(
                             Icons.Default.Check,
                             contentDescription = null,
-                            tint = Ios.Blue,
+                            tint = DuskTheme.primary,
                             modifier = Modifier.size(18.dp),
                         )
                     }

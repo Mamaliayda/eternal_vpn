@@ -80,8 +80,8 @@ import com.mlmvpn.scanner.lan.LanShare
 import com.mlmvpn.scanner.lan.LanStatus
 import com.mlmvpn.scanner.lan.EngineShare as Engine
 import com.mlmvpn.scanner.lan.Medium
-import com.mlmvpn.scanner.ui.settings.Ios
 import com.mlmvpn.scanner.ui.settings.IosScreen
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 import com.mlmvpn.scanner.ui.settings.SettingsFooter
 import com.mlmvpn.scanner.ui.settings.SettingsGroup
 import com.mlmvpn.scanner.ui.settings.SettingsRow
@@ -355,7 +355,7 @@ fun LanScreen(
                     status = LanShare.status(context, status.clients)
                 },
                 icon = Icons.Default.Wifi,
-                tint = Ios.Teal,
+                tint = DuskTheme.secondary,
             )
         }
         SettingsFooter(stringResource(R.string.lan_settings_footer))
@@ -382,7 +382,7 @@ fun LanScreen(
                     lanPassword = next
                 },
                 icon = Icons.Default.Key,
-                tint = if (canAuth) Ios.Orange else Ios.Gray,
+                tint = if (canAuth) DuskTheme.accent else DuskTheme.disabled,
             )
             if (lanPassword != null) {
                 Separator()
@@ -390,7 +390,7 @@ fun LanScreen(
                     title = stringResource(R.string.lan_sec_generate),
                     value = lanPassword,
                     icon = Icons.Default.Key,
-                    tint = Ios.Orange,
+                    tint = DuskTheme.accent,
                     onClick = {
                         val next = newLanPassword()
                         NetworkSettings.setLanPassword(context, next)
@@ -409,7 +409,7 @@ fun LanScreen(
                     status = LanShare.status(context, status.clients)
                 },
                 icon = Icons.Default.Shield,
-                tint = Ios.Green,
+                tint = DuskTheme.success,
             )
         }
         SettingsFooter(stringResource(R.string.lan_sec_password_footer))
@@ -449,9 +449,9 @@ private fun LanStateCard(
 ) {
     val blocker = status.blocker
     val tint = when {
-        blocker != null -> Ios.Orange
-        status.inUse -> Ios.Green
-        else -> Ios.Teal
+        blocker != null -> DuskTheme.accent
+        status.inUse -> DuskTheme.success
+        else -> DuskTheme.secondary
     }
 
     SettingsGroup {
@@ -462,14 +462,14 @@ private fun LanStateCard(
                 Column(Modifier.weight(1f)) {
                     Text(
                         headline(status),
-                        color = Ios.Label,
+                        color = DuskTheme.onSurface,
                         fontSize = 19.sp,
                         fontWeight = FontWeight.Bold,
                     )
                     Spacer(Modifier.height(3.dp))
                     Text(
                         detail(status),
-                        color = Ios.SecondaryLabel,
+                        color = DuskTheme.muted,
                         fontSize = 14.sp,
                         lineHeight = 20.sp,
                     )
@@ -498,7 +498,7 @@ private fun LanStateCard(
                     }
                     ActionButton(
                         stringResource(R.string.lan_action_switch_engine),
-                        Ios.Gray,
+                        DuskTheme.disabled,
                         onConnectVpn,
                     )
                 }
@@ -518,7 +518,7 @@ private fun LanStateCard(
                     // that works on it.
                     ActionButton(
                         stringResource(R.string.lan_action_hotspot_settings),
-                        Ios.Gray,
+                        DuskTheme.disabled,
                         onOpenTethering,
                     )
                 }
@@ -616,7 +616,7 @@ private fun ShareTimerCard(until: Long, onPick: (Int) -> Unit) {
                     null
                 },
                 icon = Icons.Default.Timer,
-                tint = if (active) Ios.Blue else Ios.Gray,
+                tint = if (active) DuskTheme.primary else DuskTheme.disabled,
                 showChevron = false,
                 onClick = { onPick(minutes) },
             )
@@ -645,7 +645,7 @@ private fun DoctorSection(
             ),
             subtitle = stringResource(R.string.lan_doc_open_desc),
             icon = Icons.Default.MedicalServices,
-            tint = Ios.Blue,
+            tint = DuskTheme.primary,
             onClick = if (running) null else onRun,
         )
         rows?.forEach { row ->
@@ -657,7 +657,7 @@ private fun DoctorSection(
             SettingsRow(
                 title = stringResource(R.string.lan_doc_copy),
                 icon = Icons.Default.ContentCopy,
-                tint = Ios.Gray,
+                tint = DuskTheme.disabled,
                 onClick = { onCopy(rows) },
             )
         }
@@ -667,10 +667,10 @@ private fun DoctorSection(
 @Composable
 private fun DoctorRow(row: LanDoctor.Row, onFix: (LanDoctor.Fix) -> Unit) {
     val (icon, tint) = when (row.verdict) {
-        LanDoctor.Verdict.PASS -> Icons.Default.CheckCircle to Ios.Green
-        LanDoctor.Verdict.FAIL -> Icons.Default.Cancel to Ios.Red
-        LanDoctor.Verdict.WARN -> Icons.Default.HelpOutline to Ios.Orange
-        LanDoctor.Verdict.SKIP -> Icons.Default.RemoveCircleOutline to Ios.Gray
+        LanDoctor.Verdict.PASS -> Icons.Default.CheckCircle to DuskTheme.success
+        LanDoctor.Verdict.FAIL -> Icons.Default.Cancel to DuskTheme.error
+        LanDoctor.Verdict.WARN -> Icons.Default.HelpOutline to DuskTheme.accent
+        LanDoctor.Verdict.SKIP -> Icons.Default.RemoveCircleOutline to DuskTheme.disabled
     }
     Column {
         SettingsRow(
@@ -724,7 +724,7 @@ private fun HotspotCard(
                 title = stringResource(R.string.lan_action_hotspot_settings),
                 subtitle = stringResource(R.string.lan_hotspot_failed),
                 icon = Icons.Default.WifiTethering,
-                tint = Ios.Orange,
+                tint = DuskTheme.accent,
                 onClick = onOpenTethering,
             )
         }
@@ -750,7 +750,7 @@ private fun HotspotCard(
         ) {
             Text(
                 stringResource(R.string.lan_hotspot_started),
-                color = Ios.Green,
+                color = DuskTheme.success,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold,
             )
@@ -758,7 +758,7 @@ private fun HotspotCard(
                 Spacer(Modifier.height(8.dp))
                 Text(
                     stringResource(R.string.lan_hotspot_no_creds),
-                    color = Ios.SecondaryLabel,
+                    color = DuskTheme.muted,
                     fontSize = 13.sp,
                     lineHeight = 19.sp,
                     textAlign = TextAlign.Center,
@@ -768,7 +768,7 @@ private fun HotspotCard(
                     Spacer(Modifier.height(14.dp))
                     Box(
                         modifier = Modifier
-                            .background(Color.White, RoundedCornerShape(14.dp))
+                            .background(DuskTheme.qrSurface, RoundedCornerShape(14.dp))
                             .padding(12.dp),
                     ) {
                         Image(
@@ -787,7 +787,7 @@ private fun HotspotCard(
             SmallAction(
                 stringResource(R.string.lan_hotspot_stop),
                 Icons.Default.WifiTethering,
-                Ios.Gray,
+                DuskTheme.disabled,
                 onStop,
             )
         }
@@ -798,9 +798,9 @@ private fun HotspotCard(
 @Composable
 private fun LabelledValue(label: String, value: String) {
     Row(verticalAlignment = Alignment.CenterVertically) {
-        Text(label, color = Ios.SecondaryLabel, fontSize = 13.sp)
+        Text(label, color = DuskTheme.muted, fontSize = 13.sp)
         Spacer(Modifier.width(10.dp))
-        Text(value, color = Ios.Label, fontSize = 15.sp, fontFamily = FontFamily.Monospace)
+        Text(value, color = DuskTheme.onSurface, fontSize = 15.sp, fontFamily = FontFamily.Monospace)
     }
 }
 
@@ -838,7 +838,7 @@ private fun SetupCard(
                 // and every surface in this app is dark.
                 Box(
                     modifier = Modifier
-                        .background(Color.White, RoundedCornerShape(14.dp))
+                        .background(DuskTheme.qrSurface, RoundedCornerShape(14.dp))
                         .padding(12.dp),
                 ) {
                     Image(
@@ -851,7 +851,7 @@ private fun SetupCard(
             }
             Text(
                 url,
-                color = Ios.Label,
+                color = DuskTheme.onSurface,
                 fontSize = 15.sp,
                 fontFamily = FontFamily.Monospace,
             )
@@ -860,12 +860,12 @@ private fun SetupCard(
                 SmallAction(
                     stringResource(R.string.lanweb_copy),
                     Icons.Default.QrCode2,
-                    Ios.Teal,
+                    DuskTheme.secondary,
                 ) { onCopy(url) }
                 SmallAction(
                     stringResource(R.string.lan_share),
                     Icons.Default.Share,
-                    Ios.Blue,
+                    DuskTheme.primary,
                 ) { onShare(url) }
             }
         }
@@ -900,7 +900,7 @@ private fun AddressCard(status: LanStatus, onCopy: (String) -> Unit) {
             label = stringResource(R.string.lan_field_proxy),
             value = status.proxyEndpoint.orEmpty(),
             icon = Icons.Default.Router,
-            tint = Ios.Teal,
+            tint = DuskTheme.secondary,
             onCopy = onCopy,
         )
         Separator()
@@ -908,7 +908,7 @@ private fun AddressCard(status: LanStatus, onCopy: (String) -> Unit) {
             label = stringResource(R.string.lan_field_pac),
             value = status.pacUrl.orEmpty(),
             icon = Icons.Default.Lan,
-            tint = Ios.Blue,
+            tint = DuskTheme.primary,
             onCopy = onCopy,
         )
     }
@@ -941,15 +941,15 @@ private fun CopyRow(
             modifier = Modifier.size(28.dp).background(tint, RoundedCornerShape(8.dp)),
             contentAlignment = Alignment.Center,
         ) {
-            Icon(icon, contentDescription = null, tint = Color.White, modifier = Modifier.size(17.dp))
+            Icon(icon, contentDescription = null, tint = DuskTheme.onSuccess, modifier = Modifier.size(17.dp))
         }
         Spacer(Modifier.width(14.dp))
         Column(Modifier.weight(1f)) {
-            Text(label, color = Ios.SecondaryLabel, fontSize = 12.sp)
+            Text(label, color = DuskTheme.muted, fontSize = 12.sp)
             Spacer(Modifier.height(2.dp))
             Text(
                 value,
-                color = Ios.Label,
+                color = DuskTheme.onSurface,
                 fontSize = 15.sp,
                 fontFamily = FontFamily.Monospace,
                 textAlign = TextAlign.Start,
@@ -958,7 +958,7 @@ private fun CopyRow(
         Icon(
             Icons.Default.ContentCopy,
             contentDescription = null,
-            tint = Ios.Chevron,
+            tint = DuskTheme.disabled,
             modifier = Modifier.size(18.dp),
         )
     }
@@ -979,7 +979,7 @@ private fun CopyRow(
 private fun SecurityBar(status: LanStatus) {
     if (!status.lanEnabled || status.address == null) return
     val trusted = status.medium.isOwnNetwork
-    val tint = if (trusted) Ios.Green else Ios.Orange
+    val tint = if (trusted) DuskTheme.success else DuskTheme.accent
     SettingsGroup {
         Row(
             modifier = Modifier.fillMaxWidth().padding(16.dp),
@@ -1004,7 +1004,7 @@ private fun SecurityBar(status: LanStatus) {
                     stringResource(
                         if (trusted) R.string.lan_warn_own else R.string.lan_warn_public
                     ),
-                    color = Ios.SecondaryLabel,
+                    color = DuskTheme.muted,
                     fontSize = 13.sp,
                     lineHeight = 19.sp,
                 )
@@ -1030,7 +1030,7 @@ private fun ClientsSection(
                 title = stringResource(R.string.lan_clients_none),
                 subtitle = stringResource(R.string.lan_clients_none_desc),
                 icon = Icons.Default.Devices,
-                tint = Ios.Gray,
+                tint = DuskTheme.disabled,
                 showChevron = false,
             )
         } else {
@@ -1064,10 +1064,10 @@ private fun ClientsSection(
                             else -> Icons.Default.Devices
                         },
                         tint = when {
-                            isBlocked -> Ios.Red
-                            connected -> Ios.Green
-                            client.everConnected -> Ios.Teal
-                            else -> Ios.Gray
+                            isBlocked -> DuskTheme.error
+                            connected -> DuskTheme.success
+                            client.everConnected -> DuskTheme.secondary
+                            else -> DuskTheme.disabled
                         },
                         showChevron = false,
                     )
@@ -1077,7 +1077,7 @@ private fun ClientsSection(
                                 if (isBlocked) R.string.lan_sec_unblock else R.string.lan_sec_block
                             ),
                             Icons.Default.Block,
-                            if (isBlocked) Ios.Green else Ios.Red,
+                            if (isBlocked) DuskTheme.success else DuskTheme.error,
                         ) { onToggleBlock(client.address) }
                     }
                 }
