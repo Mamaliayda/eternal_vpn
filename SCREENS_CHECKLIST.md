@@ -1,6 +1,6 @@
 # Eternal VPN — screen redesign checklist
 
-> **Progress: 330 / 1203 complete** — each checked row is fully migrated; unverified routes and states remain unchecked.
+> **Progress: 334 / 1203 complete** — each checked row is fully migrated; unverified routes and states remain unchecked.
 
 > Inventory generated from Kotlin source on 2026-11-26. A row is considered migrated only after its visible composition, nested states, and overlays are reviewed against the Soft Dusk tokens. Shared theme inheritance alone does **not** count as a completed visual redesign.
 
@@ -213,12 +213,12 @@ Found 230 screen-like public/internal composables across 133 Kotlin files (the f
 - [ ] `StudioAnalyticsScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioAnalyticsScreen.kt`
 - [ ] `StudioAuditScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioAuditScreen.kt`
 - [ ] `StudioBulkActionScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioBulkActionScreen.kt`
-- [ ] `StudioBulkAddScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioBulkAddScreen.kt`
+- [x] `StudioBulkAddScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioBulkAddScreen.kt`
 - [ ] `StudioBulkUsersScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioBulkUsersScreen.kt`
-- [ ] `StudioCentralAccountScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioCentralAccountScreen.kt`
+- [x] `StudioCentralAccountScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioCentralAccountScreen.kt`
 - [ ] `StudioCentralBulkUsersScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioCentralBulkUsersScreen.kt`
 - [ ] `StudioCentralNewUserScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioCentralNewUserScreen.kt`
-- [ ] `StudioCentralUserScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioCentralUserScreen.kt`
+- [x] `StudioCentralUserScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioCentralUserScreen.kt`
 - [x] `StudioConfigBuilderScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioConfigBuilderScreen.kt`
 - [x] `StudioConfigsScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioConfigsScreen.kt`
 - [x] `StudioDashboardScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioDashboardScreen.kt`
@@ -719,7 +719,7 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 - [ ] `androidx` — `com/mlmvpn/scanner/ui/configstudio/StudioAnalyticsScreen.kt`
 - [ ] `AuditRow` — `com/mlmvpn/scanner/ui/configstudio/StudioAuditScreen.kt`
 - [ ] `actionLabel` — `com/mlmvpn/scanner/ui/configstudio/StudioAuditScreen.kt`
-- [ ] `JobRow` — `com/mlmvpn/scanner/ui/configstudio/StudioBulkAddScreen.kt`
+- [x] `JobRow` — `com/mlmvpn/scanner/ui/configstudio/StudioBulkAddScreen.kt`
 - [ ] `roomLine` — `com/mlmvpn/scanner/ui/configstudio/StudioCentralNewUserScreen.kt`
 - [ ] `StudioCombineHandover` — `com/mlmvpn/scanner/ui/configstudio/StudioCombineHandover.kt`
 - [ ] `androidx` — `com/mlmvpn/scanner/ui/configstudio/StudioConfigBuilderScreen.kt`

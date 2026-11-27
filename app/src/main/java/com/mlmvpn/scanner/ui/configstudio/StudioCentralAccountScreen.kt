@@ -12,7 +12,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.unit.dp
 import com.mlmvpn.scanner.R
 import com.mlmvpn.scanner.data.studio.StudioStore
 import com.mlmvpn.scanner.data.studio.api.StudioResult
@@ -27,7 +26,7 @@ import com.mlmvpn.scanner.ui.configstudio.parts.PayloadCard
 import com.mlmvpn.scanner.ui.configstudio.parts.ProblemCard
 import com.mlmvpn.scanner.ui.configstudio.parts.WizardField
 import com.mlmvpn.scanner.ui.configstudio.parts.WizardPrimary
-import com.mlmvpn.scanner.ui.settings.Ios
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 import com.mlmvpn.scanner.ui.settings.IosAlert
 import com.mlmvpn.scanner.ui.settings.IosAlertAction
 import com.mlmvpn.scanner.ui.settings.IosScreen
@@ -87,17 +86,17 @@ fun StudioCentralAccountScreen(
         val live = doc.liveCount(now)
         val people = doc.people.size
 
-        Spacer(Modifier.height(10.dp))
-        note?.let { InfoCard(it); Spacer(Modifier.height(12.dp)) }
-        error?.let { ProblemCard(it); Spacer(Modifier.height(12.dp)) }
+        Spacer(Modifier.height(DuskTheme.space2))
+        note?.let { InfoCard(it); Spacer(Modifier.height(DuskTheme.space3)) }
+        error?.let { ProblemCard(it); Spacer(Modifier.height(DuskTheme.space3)) }
 
         SettingsSectionHeader(tr("ورکر مرکزی", "Central Worker"))
         if (gw.installed) {
             PayloadCard(gw.url)
             if (doc.script.isNotBlank() && doc.script != gw.script) {
-                Spacer(Modifier.height(8.dp))
+                Spacer(Modifier.height(DuskTheme.space2))
                 NoticeCard(
-                    icon = StudioIcons.Warning, tint = Ios.Orange,
+                    icon = StudioIcons.Warning, tint = DuskTheme.accent,
                     title = tr("ورکر مرکزی این حساب عوض شده", "This account's central Worker changed"),
                     body = tr("لینک‌هایی که پیش‌تر فرستاده‌اید به ورکر قبلی اشاره می‌کنند. کانفیگ تازهٔ هر کاربر را از صفحهٔ خودش بگیرید و برایش بفرستید.",
                         "The links you sent before point at the old Worker. Take each person's new configs from their page and send them."),
@@ -110,11 +109,11 @@ fun StudioCentralAccountScreen(
 
         SettingsSectionHeader(tr("جا", "Room"))
         SettingsGroup {
-            SettingsRow(title = tr("کاربران", "People"), value = faNum(people), icon = StudioIcons.Users, tint = Ios.Blue, showChevron = false)
+            SettingsRow(title = tr("کاربران", "People"), value = faNum(people), icon = StudioIcons.Users, tint = DuskTheme.primary, showChevron = false)
             Separator()
-            SettingsRow(title = tr("الان روی ورکر", "On the Worker now"), value = faNum(live), icon = StudioIcons.Ok, tint = Ios.Green, showChevron = false)
+            SettingsRow(title = tr("الان روی ورکر", "On the Worker now"), value = faNum(live), icon = StudioIcons.Ok, tint = DuskTheme.success, showChevron = false)
             Separator()
-            SettingsRow(title = tr("جای خالی", "Places free"), value = faNum((gw.studioRoom - live).coerceAtLeast(0)), icon = StudioIcons.Add, tint = Ios.Gray, showChevron = false)
+            SettingsRow(title = tr("جای خالی", "Places free"), value = faNum((gw.studioRoom - live).coerceAtLeast(0)), icon = StudioIcons.Add, tint = DuskTheme.disabled, showChevron = false)
         }
         InfoCard(tr("ورکر مرکزی روی هر حساب تعداد مشخصی شناسه می‌پذیرد: یکی برای خود ورکر، یکی برای هر پنل وصل‌شده و بقیه برای کاربران استدیو. برای جای بیشتر، حساب کلادفلر دیگری اضافه کنید.",
             "A central Worker takes a set number of ids per account: one for itself, one per connected panel, and the rest for Studio people. For more room, add another Cloudflare account."))
@@ -126,11 +125,11 @@ fun StudioCentralAccountScreen(
                 else tr("فهرست در حساب کلادفلر ثبت است", "The list is on the Cloudflare account"),
                 subtitle = tr("دستگاه دیگر با همین حساب همین کاربران را می‌بیند.", "Another device with this account sees the same people."),
                 icon = StudioIcons.Activity,
-                tint = if (doc.unshared) Ios.Orange else Ios.Green,
+                tint = if (doc.unshared) DuskTheme.accent else DuskTheme.success,
                 showChevron = false,
             )
             Separator()
-            SettingsActionRow(label = tr("همین حالا هماهنگ کن", "Bring in step now"), icon = StudioIcons.Refresh, tint = Ios.Blue, enabled = !busy) {
+            SettingsActionRow(label = tr("همین حالا هماهنگ کن", "Bring in step now"), icon = StudioIcons.Refresh, tint = DuskTheme.primary, enabled = !busy) {
                 busy = true; error = null; note = null
                 scope.launch {
                     when (val r = store.centralApplyNow(account)) {
@@ -151,7 +150,7 @@ fun StudioCentralAccountScreen(
         SettingsSectionHeader(tr("راه تماس در پیام وضعیت", "Contact line in the status message"))
         WizardField(contact, { contact = it }, tr("مثلاً آیدی تلگرام", "e.g. a Telegram id"), ltr = false)
         if (contact.trim() != doc.contact.orEmpty()) {
-            Spacer(Modifier.height(10.dp))
+            Spacer(Modifier.height(DuskTheme.space2))
             WizardPrimary(S(R.string.studio_save), busy = busy) {
                 busy = true; error = null
                 scope.launch {
@@ -167,11 +166,11 @@ fun StudioCentralAccountScreen(
 
         SettingsSectionHeader(S(R.string.studio_section_danger))
         SettingsGroup {
-            SettingsActionRow(label = tr("جدا کردن از این گوشی", "Remove from this phone"), icon = StudioIcons.Disconnect, tint = Ios.Red, enabled = !busy) {
+            SettingsActionRow(label = tr("جدا کردن از این گوشی", "Remove from this phone"), icon = StudioIcons.Disconnect, tint = DuskTheme.error, enabled = !busy) {
                 confirmDisconnect = true
             }
         }
-        Spacer(Modifier.height(28.dp))
+        Spacer(Modifier.height(DuskTheme.space5))
     }
 
     if (confirmDisconnect) {

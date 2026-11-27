@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -20,8 +21,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.mlmvpn.scanner.R
 import com.mlmvpn.scanner.data.CloudManager
 import com.mlmvpn.scanner.data.studio.StudioDeployer
@@ -31,7 +30,7 @@ import com.mlmvpn.scanner.ui.configstudio.parts.PageIntro
 import com.mlmvpn.scanner.ui.configstudio.parts.ProblemCard
 import com.mlmvpn.scanner.ui.configstudio.parts.WizardField
 import com.mlmvpn.scanner.ui.configstudio.parts.WizardPrimary
-import com.mlmvpn.scanner.ui.settings.Ios
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 import com.mlmvpn.scanner.ui.settings.IosScreen
 import com.mlmvpn.scanner.ui.settings.SettingsFooter
 import com.mlmvpn.scanner.ui.settings.SettingsGroup
@@ -151,13 +150,13 @@ fun StudioBulkAddScreen(
         onBack = if (phase == Phase.RUNNING) null else onBack,
         backLabel = S(R.string.studio_accounts),
     ) {
-        Spacer(Modifier.height(10.dp))
+        Spacer(Modifier.height(DuskTheme.space2))
 
         when (phase) {
             Phase.PASTE -> {
                 PageIntro(S(R.string.studio_bulk_sub))
                 InfoCard(S(R.string.studio_bulk_format))
-                Spacer(Modifier.height(12.dp))
+                Spacer(Modifier.height(DuskTheme.space3))
                 WizardField(
                     raw,
                     { raw = it; parseError = null },
@@ -169,7 +168,7 @@ fun StudioBulkAddScreen(
                     S(R.string.studio_bulk_counted).replace("%1\$s", faNum(parseLines(raw).size))
                 )
                 parseError?.let { ProblemCard(it) }
-                Spacer(Modifier.height(16.dp))
+                Spacer(Modifier.height(DuskTheme.space4))
                 WizardPrimary(S(R.string.studio_bulk_start), enabled = raw.isNotBlank()) { start() }
                 InfoCard(S(R.string.studio_bulk_adopt_note))
             }
@@ -193,19 +192,19 @@ fun StudioBulkAddScreen(
 
                 if (phase == Phase.DONE) {
                     val failed = jobs.count { it.state == "failed" }
-                    Spacer(Modifier.height(12.dp))
+                    Spacer(Modifier.height(DuskTheme.space3))
                     if (failed > 0) {
                         ProblemCard(
                             S(R.string.studio_bulk_failed_n).replace("%1\$s", faNum(failed))
                         )
-                        Spacer(Modifier.height(10.dp))
+                        Spacer(Modifier.height(DuskTheme.space2))
                     }
                     WizardPrimary(S(R.string.studio_done), onClick = onFinished)
                 }
             }
         }
 
-        Spacer(Modifier.height(28.dp))
+        Spacer(Modifier.height(DuskTheme.space5))
     }
 }
 
@@ -213,15 +212,15 @@ fun StudioBulkAddScreen(
 @Composable
 private fun JobRow(job: Job) {
     Column(
-        modifier = Modifier.fillMaxWidth().heightIn(min = 44.dp)
-            .padding(horizontal = 16.dp, vertical = 9.dp),
+        modifier = Modifier.fillMaxWidth().heightIn(min = DuskTheme.navIconSize)
+            .padding(horizontal = DuskTheme.space4, vertical = DuskTheme.space2),
         verticalArrangement = Arrangement.Center,
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
-            Text(job.email, color = Ios.Label, fontSize = 15.sp, fontWeight = FontWeight.Medium)
+            Text(job.email, color = DuskTheme.onSurface, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Medium)
             Text(
                 when (job.state) {
                     "queued" -> S(R.string.studio_bulk_state_queued)
@@ -234,16 +233,16 @@ private fun JobRow(job: Job) {
                     else -> S(R.string.studio_bulk_state_failed)
                 },
                 color = when (job.state) {
-                    "ok" -> Ios.Green
-                    "failed" -> Ios.Red
-                    else -> Ios.SecondaryLabel
+                    "ok" -> DuskTheme.success
+                    "failed" -> DuskTheme.error
+                    else -> DuskTheme.muted
                 },
-                fontSize = 13.sp,
+                style = MaterialTheme.typography.bodySmall,
             )
         }
         job.detail?.let {
-            Spacer(Modifier.height(4.dp))
-            Text(it, color = Ios.SecondaryLabel, fontSize = 11.sp)
+            Spacer(Modifier.height(DuskTheme.space1))
+            Text(it, color = DuskTheme.muted, style = MaterialTheme.typography.labelSmall)
         }
     }
 }

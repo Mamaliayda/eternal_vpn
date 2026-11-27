@@ -17,7 +17,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.unit.dp
 import com.mlmvpn.scanner.R
 import com.mlmvpn.scanner.data.studio.StudioStore
 import com.mlmvpn.scanner.data.studio.api.RenewMode
@@ -39,7 +38,7 @@ import com.mlmvpn.scanner.ui.configstudio.parts.StudioShare
 import com.mlmvpn.scanner.ui.configstudio.parts.WizardBusy
 import com.mlmvpn.scanner.ui.configstudio.parts.WizardField
 import com.mlmvpn.scanner.ui.configstudio.parts.WizardPrimary
-import com.mlmvpn.scanner.ui.settings.Ios
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 import com.mlmvpn.scanner.ui.settings.IosAlert
 import com.mlmvpn.scanner.ui.settings.IosAlertAction
 import com.mlmvpn.scanner.ui.settings.IosScreen
@@ -147,9 +146,9 @@ fun StudioCentralUserScreen(
             return@IosScreen
         }
 
-        Spacer(Modifier.height(10.dp))
-        note?.let { InfoCard(it); Spacer(Modifier.height(12.dp)) }
-        error?.let { ProblemCard(it); Spacer(Modifier.height(12.dp)) }
+        Spacer(Modifier.height(DuskTheme.space2))
+        note?.let { InfoCard(it); Spacer(Modifier.height(DuskTheme.space3)) }
+        error?.let { ProblemCard(it); Spacer(Modifier.height(DuskTheme.space3)) }
 
         u.stoppedReason()?.let { reason ->
             ProblemCard(
@@ -158,12 +157,12 @@ fun StudioCentralUserScreen(
                     else -> S(R.string.studio_row_expired)
                 }
             )
-            Spacer(Modifier.height(14.dp))
+            Spacer(Modifier.height(DuskTheme.space3))
         }
         pendingText(u)?.let { text ->
-            NoticeCard(icon = StudioIcons.Refresh, tint = Ios.Orange, title = tr("در انتظار ورکر", "Waiting for the Worker"), body = text)
+            NoticeCard(icon = StudioIcons.Refresh, tint = DuskTheme.accent, title = tr("در انتظار ورکر", "Waiting for the Worker"), body = text)
             SettingsGroup {
-                SettingsActionRow(label = tr("همین حالا اعمال کن", "Apply now"), icon = StudioIcons.Refresh, tint = Ios.Blue, enabled = !busy) {
+                SettingsActionRow(label = tr("همین حالا اعمال کن", "Apply now"), icon = StudioIcons.Refresh, tint = DuskTheme.primary, enabled = !busy) {
                     busy = true; error = null
                     scope.launch {
                         when (val r = store.centralApplyNow(account)) {
@@ -175,7 +174,7 @@ fun StudioCentralUserScreen(
                     }
                 }
             }
-            Spacer(Modifier.height(6.dp))
+            Spacer(Modifier.height(DuskTheme.space1))
         }
 
         // ---- time --------------------------------------------------------------------
@@ -204,28 +203,28 @@ fun StudioCentralUserScreen(
                 // The first is the Worker's own name on 443 — the one most clients take as it is.
                 PayloadCard(list.first())
                 if (showAll) {
-                    for (link in list.drop(1)) { Spacer(Modifier.height(6.dp)); PayloadCard(link) }
+                    for (link in list.drop(1)) { Spacer(Modifier.height(DuskTheme.space1)); PayloadCard(link) }
                 }
-                Spacer(Modifier.height(10.dp))
+                Spacer(Modifier.height(DuskTheme.space2))
                 SettingsGroup {
-                    SettingsActionRow(label = tr("کپی همهٔ کانفیگ‌ها (${faNum(list.size)})", "Copy all configs (${list.size})"), icon = StudioIcons.Copy, tint = Ios.Blue) {
+                    SettingsActionRow(label = tr("کپی همهٔ کانفیگ‌ها (${faNum(list.size)})", "Copy all configs (${list.size})"), icon = StudioIcons.Copy, tint = DuskTheme.primary) {
                         clipboard.setText(AnnotatedString(list.joinToString("\n")))
                         note = S(R.string.studio_copied)
                     }
                     Separator()
-                    SettingsActionRow(label = S(R.string.studio_share), icon = StudioIcons.Share, tint = Ios.Blue) {
+                    SettingsActionRow(label = S(R.string.studio_share), icon = StudioIcons.Share, tint = DuskTheme.primary) {
                         StudioShare.shareText(context, list.joinToString("\n"), u.username)
                     }
                     Separator()
-                    SettingsActionRow(label = if (showQr) S(R.string.studio_qr_hide) else S(R.string.studio_qr), icon = StudioIcons.Qr, tint = Ios.Indigo) { showQr = !showQr }
+                    SettingsActionRow(label = if (showQr) S(R.string.studio_qr_hide) else S(R.string.studio_qr), icon = StudioIcons.Qr, tint = DuskTheme.indigo) { showQr = !showQr }
                     Separator()
                     SettingsActionRow(
                         label = if (showAll) tr("فقط کانفیگ اول", "Only the first config") else tr("نمایش همهٔ کانفیگ‌ها", "Show every config"),
-                        icon = StudioIcons.Config, tint = Ios.Gray,
+                        icon = StudioIcons.Config, tint = DuskTheme.disabled,
                     ) { showAll = !showAll }
                 }
                 if (showQr) {
-                    Spacer(Modifier.height(10.dp))
+                    Spacer(Modifier.height(DuskTheme.space2))
                     StudioQrCard(list.first(), S(R.string.studio_qr_too_long))
                 }
                 InfoCard(tr("همهٔ این کانفیگ‌ها یکی‌اند و فقط نشانی‌شان فرق دارد؛ اگر یکی روی اینترنت کاربر وصل نشد، بعدی را امتحان کند.",
@@ -238,9 +237,9 @@ fun StudioCentralUserScreen(
         val doc = remember(u) { CentralFleet.doc(context, installationId) }
         val message = CentralKit.statusMessage(u, doc?.contact)
         FactsCard(message)
-        Spacer(Modifier.height(8.dp))
+        Spacer(Modifier.height(DuskTheme.space2))
         SettingsGroup {
-            SettingsActionRow(label = tr("فرستادن پیام وضعیت", "Send the status message"), icon = StudioIcons.Share, tint = Ios.Green) {
+            SettingsActionRow(label = tr("فرستادن پیام وضعیت", "Send the status message"), icon = StudioIcons.Share, tint = DuskTheme.success) {
                 StudioShare.shareText(context, message, u.username)
             }
         }
@@ -248,10 +247,10 @@ fun StudioCentralUserScreen(
         // ---- note and tags ---------------------------------------------------------------
         SettingsSectionHeader(S(R.string.studio_section_labels))
         WizardField(value = tagsDraft, onValueChange = { tagsDraft = it; labelsTouched = true }, placeholder = S(R.string.studio_tags_hint), ltr = false)
-        Spacer(Modifier.height(8.dp))
+        Spacer(Modifier.height(DuskTheme.space2))
         WizardField(value = noteDraft, onValueChange = { noteDraft = it; labelsTouched = true }, placeholder = S(R.string.studio_note_hint), ltr = false, lines = 3)
         if (noteDraft.trim() != u.note.orEmpty() || centralSplitTags(tagsDraft) != u.tags) {
-            Spacer(Modifier.height(10.dp))
+            Spacer(Modifier.height(DuskTheme.space2))
             WizardPrimary(S(R.string.studio_save), busy = busy) {
                 act({ store.setLabels(account, userId, noteDraft.trim(), centralSplitTags(tagsDraft)).also { if (it is StudioResult.Ok) labelsTouched = false } },
                     context.getString(R.string.studio_saved))
@@ -262,17 +261,17 @@ fun StudioCentralUserScreen(
         SettingsSectionHeader(S(R.string.studio_renew_title))
         if (!renewing) {
             SettingsGroup {
-                SettingsActionRow(label = S(R.string.studio_renew), icon = StudioIcons.Renew, tint = Ios.Green, enabled = !busy) { renewing = true }
+                SettingsActionRow(label = S(R.string.studio_renew), icon = StudioIcons.Renew, tint = DuskTheme.success, enabled = !busy) { renewing = true }
             }
         } else {
-            Spacer(Modifier.height(4.dp))
-            Row(modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            Spacer(Modifier.height(DuskTheme.space1))
+            Row(modifier = Modifier.fillMaxWidth().padding(horizontal = DuskTheme.space4), horizontalArrangement = Arrangement.spacedBy(DuskTheme.space2)) {
                 StudioChip(S(R.string.studio_renew_dir_add), !reducing, Modifier.weight(1f)) { reducing = false }
                 StudioChip(S(R.string.studio_renew_dir_sub), reducing, Modifier.weight(1f)) { reducing = true }
             }
             SettingsSectionHeader(if (reducing) S(R.string.studio_renew_sub_days) else S(R.string.studio_renew_add_days))
             WizardField(addDays, { addDays = it }, "30")
-            Spacer(Modifier.height(12.dp))
+            Spacer(Modifier.height(DuskTheme.space3))
             WizardPrimary(if (reducing) S(R.string.studio_renew_reduce) else S(R.string.studio_renew_extend), busy = busy) {
                 val n = addDays.trim().toIntOrNull()?.let { kotlin.math.abs(it) * if (reducing) -1 else 1 }
                 if (n == null || n == 0) { error = context.getString(R.string.studio_renew_needs_input); return@WizardPrimary }
@@ -293,18 +292,18 @@ fun StudioCentralUserScreen(
             SettingsActionRow(
                 label = if (on) S(R.string.studio_disable) else S(R.string.studio_enable),
                 icon = StudioIcons.Power,
-                tint = if (on) Ios.Orange else Ios.Green,
+                tint = if (on) DuskTheme.accent else DuskTheme.success,
                 enabled = !busy,
             ) { act({ store.setEnabled(account, userId, !on) }) }
             Separator()
-            SettingsActionRow(label = tr("لینک تازه", "New link"), icon = StudioIcons.Credential, tint = Ios.Orange, enabled = !busy) { confirmRotate = true }
+            SettingsActionRow(label = tr("لینک تازه", "New link"), icon = StudioIcons.Credential, tint = DuskTheme.accent, enabled = !busy) { confirmRotate = true }
         }
 
         SettingsSectionHeader(S(R.string.studio_section_danger))
         SettingsGroup {
-            SettingsActionRow(label = S(R.string.studio_delete), icon = StudioIcons.Delete, tint = Ios.Red, enabled = !busy) { confirmDelete = true }
+            SettingsActionRow(label = S(R.string.studio_delete), icon = StudioIcons.Delete, tint = DuskTheme.error, enabled = !busy) { confirmDelete = true }
         }
-        Spacer(Modifier.height(28.dp))
+        Spacer(Modifier.height(DuskTheme.space5))
     }
 
     if (confirmRotate) {
