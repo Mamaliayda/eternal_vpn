@@ -25,8 +25,8 @@ import androidx.compose.ui.unit.sp
 import com.mlmvpn.scanner.engines.outline.OutlineBrain
 import com.mlmvpn.scanner.engines.outline.OutlineEngine
 import com.mlmvpn.scanner.store.tr
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 import com.mlmvpn.scanner.ui.amnezia.fa
-import com.mlmvpn.scanner.ui.settings.Ios
 import java.util.Locale
 
 /** Pieces the «Outline» pages share. */
@@ -89,17 +89,17 @@ internal fun OutlineUndoBar(modifier: Modifier = Modifier) {
         exit = androidx.compose.animation.slideOutVertically { it } + androidx.compose.animation.fadeOut(),
     ) {
         Row(
-            Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 16.dp)
-                .clip(RoundedCornerShape(16.dp)).background(Ios.DialogSurface)
-                .padding(start = 16.dp, end = 6.dp, top = 6.dp, bottom = 6.dp),
+            Modifier.fillMaxWidth().padding(horizontal = DuskTheme.space4, vertical = DuskTheme.space4)
+                .clip(RoundedCornerShape(DuskTheme.space4)).background(DuskTheme.surface)
+                .padding(start = DuskTheme.space4, end = DuskTheme.space1_5, top = DuskTheme.space1_5, bottom = DuskTheme.space1_5),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(tr("${fa(count)} سرور حذف شد", if (count == 1) "1 server deleted" else "$count servers deleted"),
-                color = Ios.Label, fontSize = 14.sp, modifier = Modifier.weight(1f))
+                color = DuskTheme.onSurface, fontSize = 14.sp, modifier = Modifier.weight(1f))
             Text(
-                tr("بازگردانی", "Undo"), color = Ios.Blue, fontSize = 15.sp, fontWeight = FontWeight.SemiBold,
-                modifier = Modifier.clip(RoundedCornerShape(10.dp)).clickable { OutlineEngine.undoDelete() }
-                    .padding(horizontal = 12.dp, vertical = 10.dp),
+                tr("بازگردانی", "Undo"), color = DuskTheme.primary, fontSize = 15.sp, fontWeight = FontWeight.SemiBold,
+                modifier = Modifier.clip(RoundedCornerShape(DuskTheme.space2_5)).clickable { OutlineEngine.undoDelete() }
+                    .padding(horizontal = DuskTheme.space3, vertical = DuskTheme.space2_5),
             )
         }
     }
@@ -120,10 +120,10 @@ internal fun KeyQr(value: String) {
             bmp.asImageBitmap()
         }.getOrNull()
     }
-    Box(Modifier.fillMaxWidth().padding(16.dp), contentAlignment = Alignment.Center) {
+    Box(Modifier.fillMaxWidth().padding(DuskTheme.space4), contentAlignment = Alignment.Center) {
         if (bitmap != null) {
             Image(bitmap, contentDescription = null,
-                modifier = Modifier.size(240.dp).background(Color.White, RoundedCornerShape(12.dp)).padding(10.dp))
+                modifier = Modifier.size(240.dp).background(DuskTheme.white, RoundedCornerShape(DuskTheme.space3)).padding(DuskTheme.space2_5))
         }
     }
 }

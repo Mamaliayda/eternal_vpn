@@ -38,7 +38,6 @@ import androidx.compose.ui.window.Dialog
 import com.mlmvpn.scanner.R
 import com.mlmvpn.scanner.engines.amnezia.AmzBrain
 import com.mlmvpn.scanner.engines.amnezia.AmzKind
-import com.mlmvpn.scanner.ui.settings.Ios
 import com.mlmvpn.scanner.ui.theme.DuskCard
 import com.mlmvpn.scanner.ui.theme.DuskTheme
 import com.mlmvpn.scanner.ui.settings.SettingsGroup
@@ -72,11 +71,11 @@ internal fun fa(s: String): String =
 internal fun kindLabel(k: AmzKind) = when (k) { AmzKind.HY2 -> "Hysteria2"; AmzKind.WG -> "WireGuard"; AmzKind.AWG -> "AmneziaWG" }
 
 @Composable
-internal fun kindColor(k: AmzKind) = when (k) { AmzKind.HY2 -> Ios.Purple; AmzKind.WG -> Ios.Teal; AmzKind.AWG -> Ios.Orange }
+internal fun kindColor(k: AmzKind) = when (k) { AmzKind.HY2 -> DuskTheme.purple; AmzKind.WG -> DuskTheme.secondary; AmzKind.AWG -> DuskTheme.accent }
 
-/** Delay colour bands: green under 300 ms, yellow under 800, orange above. */
+/** Delay bands: success under 300 ms, caution under 800, error above. */
 @Composable
-internal fun delayColor(ms: Long) = when { ms < 300 -> Ios.Green; ms < 800 -> Ios.Yellow; else -> Ios.Orange }
+internal fun delayColor(ms: Long) = when { ms < 300 -> DuskTheme.success; ms < 800 -> DuskTheme.accent; else -> DuskTheme.error }
 
 @Composable
 internal fun Tag(text: String, color: Color) {
@@ -91,7 +90,7 @@ internal fun DelayCapsule(ms: Long) {
     val c = delayColor(ms)
     Text(
         stringResource(R.string.amz_ms, fa(ms.toInt())), color = c, fontSize = 13.sp, fontWeight = FontWeight.SemiBold,
-        modifier = Modifier.clip(RoundedCornerShape(50)).background(c.copy(alpha = 0.15f)).padding(horizontal = 9.dp, vertical = 4.dp),
+        modifier = Modifier.clip(RoundedCornerShape(50)).background(c.copy(alpha = 0.15f)).padding(horizontal = 9.dp, vertical = DuskTheme.space1),
     )
 }
 
@@ -99,11 +98,11 @@ internal fun DelayCapsule(ms: Long) {
 @Composable
 internal fun BarIcon(icon: ImageVector, label: String, onClick: () -> Unit) {
     Box(
-        Modifier.size(36.dp).clip(CircleShape).background(Ios.CardOverWallpaper)
+        Modifier.size(36.dp).clip(CircleShape).background(DuskTheme.raisedSurface)
             .semantics { contentDescription = label }
             .clickable(role = Role.Button, onClick = onClick),
         contentAlignment = Alignment.Center,
-    ) { Icon(icon, contentDescription = null, tint = Ios.Label, modifier = Modifier.size(20.dp)) }
+    ) { Icon(icon, contentDescription = null, tint = DuskTheme.onSurface, modifier = Modifier.size(20.dp)) }
 }
 
 /** iOS's action sheet: a titled card of actions and a separate Cancel, over a dimmed screen. */
@@ -113,15 +112,15 @@ internal fun ActionSheet(title: String, onDismiss: () -> Unit, content: @Composa
         Column(Modifier.fillMaxWidth()) {
             Text(
                 title,
-                color = Ios.SecondaryLabel,
+                color = DuskTheme.muted,
                 style = MaterialTheme.typography.bodySmall,
                 textAlign = TextAlign.Center,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
-                modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 8.dp),
+                modifier = Modifier.fillMaxWidth().padding(horizontal = DuskTheme.space3, vertical = DuskTheme.space2),
             )
             SettingsGroup(horizontal = 0.dp, content = content)
-            Spacer(Modifier.height(8.dp))
+            Spacer(Modifier.height(DuskTheme.space2))
             DuskCard(
                 modifier = Modifier.fillMaxWidth(),
                 shape = DuskTheme.cardShape,
@@ -129,7 +128,7 @@ internal fun ActionSheet(title: String, onDismiss: () -> Unit, content: @Composa
             ) {
                 Box(
                     Modifier.fillMaxWidth().clip(DuskTheme.cardShape)
-                        .clickable(onClick = onDismiss).padding(vertical = 14.dp),
+                        .clickable(onClick = onDismiss).padding(vertical = DuskTheme.space3_5),
                     contentAlignment = Alignment.Center,
                 ) {
                     Text(
@@ -172,17 +171,17 @@ internal fun UndoBar(modifier: Modifier = Modifier) {
         exit = androidx.compose.animation.slideOutVertically { it } + androidx.compose.animation.fadeOut(),
     ) {
         Row(
-            Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 16.dp)
-                .clip(RoundedCornerShape(16.dp)).background(Ios.DialogSurface)
-                .padding(start = 16.dp, end = 6.dp, top = 6.dp, bottom = 6.dp),
+            Modifier.fillMaxWidth().padding(horizontal = DuskTheme.space4, vertical = DuskTheme.space4)
+                .clip(RoundedCornerShape(DuskTheme.space4)).background(DuskTheme.surface)
+                .padding(start = DuskTheme.space4, end = DuskTheme.space1_5, top = DuskTheme.space1_5, bottom = DuskTheme.space1_5),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Text(stringResource(R.string.amz_undo_deleted, fa(count)), color = Ios.Label, fontSize = 14.sp, modifier = Modifier.weight(1f))
+            Text(stringResource(R.string.amz_undo_deleted, fa(count)), color = DuskTheme.onSurface, fontSize = 14.sp, modifier = Modifier.weight(1f))
             Text(
-                stringResource(R.string.amz_undo), color = Ios.Blue, fontSize = 15.sp, fontWeight = FontWeight.SemiBold,
-                modifier = Modifier.clip(RoundedCornerShape(10.dp))
+                stringResource(R.string.amz_undo), color = DuskTheme.primary, fontSize = 15.sp, fontWeight = FontWeight.SemiBold,
+                modifier = Modifier.clip(RoundedCornerShape(DuskTheme.space2_5))
                     .clickable { com.mlmvpn.scanner.engines.amnezia.AmzEngine.undoDelete() }
-                    .padding(horizontal = 12.dp, vertical = 10.dp),
+                    .padding(horizontal = DuskTheme.space3, vertical = DuskTheme.space2_5),
             )
         }
     }

@@ -1,6 +1,6 @@
 # Eternal VPN — screen redesign checklist
 
-> **Progress: 371 / 1203 complete** — each checked row is fully migrated; unverified routes and states remain unchecked.
+> **Progress: 417 / 1203 complete** — each checked row is fully migrated; unverified routes and states remain unchecked.
 
 > Inventory generated from Kotlin source on 2026-11-26. A row is considered migrated only after its visible composition, nested states, and overlays are reviewed against the Soft Dusk tokens. Shared theme inheritance alone does **not** count as a completed visual redesign.
 
@@ -189,7 +189,7 @@ Found 230 screen-like public/internal composables across 133 Kotlin files (the f
 - [ ] `AmneziaScreen` — `com/mlmvpn/scanner/ui/amnezia/AmneziaScreen.kt`
 - [ ] `AmzSettingsScreen` — `com/mlmvpn/scanner/ui/amnezia/AmneziaScreen.kt`
 - [x] `ActionSheet` — `com/mlmvpn/scanner/ui/amnezia/AmzParts.kt`
-- [ ] `AmzServersScreen` — `com/mlmvpn/scanner/ui/amnezia/AmzServersScreen.kt`
+- [x] `AmzServersScreen` — `com/mlmvpn/scanner/ui/amnezia/AmzServersScreen.kt`
 ### arena
 
 - [ ] `ArenaScreen` — `com/mlmvpn/scanner/ui/arena/ArenaScreen.kt`
@@ -317,13 +317,13 @@ Found 230 screen-like public/internal composables across 133 Kotlin files (the f
 - [ ] `NpvSourcesPage` — `com/mlmvpn/scanner/ui/npv/NpvSourcesPage.kt`
 ### outline
 
-- [ ] `OutlineScreen` — `com/mlmvpn/scanner/ui/outline/OutlineScreen.kt`
-- [ ] `SourcesPage` — `com/mlmvpn/scanner/ui/outline/OutlineScreen.kt`
-- [ ] `OutlineServersPage` — `com/mlmvpn/scanner/ui/outline/OutlineServersPage.kt`
+- [x] `OutlineScreen` — `com/mlmvpn/scanner/ui/outline/OutlineScreen.kt`
+- [x] `SourcesPage` — `com/mlmvpn/scanner/ui/outline/OutlineScreen.kt`
+- [x] `OutlineServersPage` — `com/mlmvpn/scanner/ui/outline/OutlineServersPage.kt`
 ### proton
 
-- [ ] `ProtonScreen` — `com/mlmvpn/scanner/ui/proton/ProtonScreen.kt`
-- [ ] `ProtonWebPage` — `com/mlmvpn/scanner/ui/proton/ProtonScreen.kt`
+- [x] `ProtonScreen` — `com/mlmvpn/scanner/ui/proton/ProtonScreen.kt`
+- [x] `ProtonWebPage` — `com/mlmvpn/scanner/ui/proton/ProtonScreen.kt`
 ### sanction
 
 - [ ] `AntiSanctionScreen` — `com/mlmvpn/scanner/ui/sanction/AntiSanctionScreen.kt`
@@ -638,22 +638,22 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 - [ ] `subLine` — `com/mlmvpn/scanner/ui/amnezia/AmneziaScreen.kt`
 - [ ] `LocationRow` — `com/mlmvpn/scanner/ui/amnezia/AmneziaScreen.kt`
 - [ ] `groupName` — `com/mlmvpn/scanner/ui/amnezia/AmzParts.kt`
-- [ ] `kindColor` — `com/mlmvpn/scanner/ui/amnezia/AmzParts.kt`
-- [ ] `delayColor` — `com/mlmvpn/scanner/ui/amnezia/AmzParts.kt`
-- [ ] `Tag` — `com/mlmvpn/scanner/ui/amnezia/AmzParts.kt`
-- [ ] `DelayCapsule` — `com/mlmvpn/scanner/ui/amnezia/AmzParts.kt`
-- [ ] `BarIcon` — `com/mlmvpn/scanner/ui/amnezia/AmzParts.kt`
-- [ ] `UndoBar` — `com/mlmvpn/scanner/ui/amnezia/AmzParts.kt`
-- [ ] `SearchBar` — `com/mlmvpn/scanner/ui/amnezia/AmzServersScreen.kt`
-- [ ] `Segmented` — `com/mlmvpn/scanner/ui/amnezia/AmzServersScreen.kt`
-- [ ] `GroupChips` — `com/mlmvpn/scanner/ui/amnezia/AmzServersScreen.kt`
-- [ ] `Chip` — `com/mlmvpn/scanner/ui/amnezia/AmzServersScreen.kt`
-- [ ] `TestBar` — `com/mlmvpn/scanner/ui/amnezia/AmzServersScreen.kt`
-- [ ] `Pill` — `com/mlmvpn/scanner/ui/amnezia/AmzServersScreen.kt`
-- [ ] `PickRow` — `com/mlmvpn/scanner/ui/amnezia/AmzServersScreen.kt`
-- [ ] `GroupHeader` — `com/mlmvpn/scanner/ui/amnezia/AmzServersScreen.kt`
-- [ ] `SwipeRow` — `com/mlmvpn/scanner/ui/amnezia/AmzServersScreen.kt`
-- [ ] `ServerRow` — `com/mlmvpn/scanner/ui/amnezia/AmzServersScreen.kt`
+- [x] `kindColor` — `com/mlmvpn/scanner/ui/amnezia/AmzParts.kt`
+- [x] `delayColor` — `com/mlmvpn/scanner/ui/amnezia/AmzParts.kt`
+- [x] `Tag` — `com/mlmvpn/scanner/ui/amnezia/AmzParts.kt`
+- [x] `DelayCapsule` — `com/mlmvpn/scanner/ui/amnezia/AmzParts.kt`
+- [x] `BarIcon` — `com/mlmvpn/scanner/ui/amnezia/AmzParts.kt`
+- [x] `UndoBar` — `com/mlmvpn/scanner/ui/amnezia/AmzParts.kt`
+- [x] `SearchBar` — `com/mlmvpn/scanner/ui/amnezia/AmzServersScreen.kt`
+- [x] `Segmented` — `com/mlmvpn/scanner/ui/amnezia/AmzServersScreen.kt`
+- [x] `GroupChips` — `com/mlmvpn/scanner/ui/amnezia/AmzServersScreen.kt`
+- [x] `Chip` — `com/mlmvpn/scanner/ui/amnezia/AmzServersScreen.kt`
+- [x] `TestBar` — `com/mlmvpn/scanner/ui/amnezia/AmzServersScreen.kt`
+- [x] `Pill` — `com/mlmvpn/scanner/ui/amnezia/AmzServersScreen.kt`
+- [x] `PickRow` — `com/mlmvpn/scanner/ui/amnezia/AmzServersScreen.kt`
+- [x] `GroupHeader` — `com/mlmvpn/scanner/ui/amnezia/AmzServersScreen.kt`
+- [x] `SwipeRow` — `com/mlmvpn/scanner/ui/amnezia/AmzServersScreen.kt`
+- [x] `ServerRow` — `com/mlmvpn/scanner/ui/amnezia/AmzServersScreen.kt`
 ### arena
 
 - [ ] `ArenaEntryCard` — `com/mlmvpn/scanner/ui/arena/ArenaEntry.kt`
@@ -1036,32 +1036,32 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 - [ ] `FileRow` — `com/mlmvpn/scanner/ui/npv/NpvSourcesPage.kt`
 ### outline
 
-- [ ] `OutlineUndoBar` — `com/mlmvpn/scanner/ui/outline/OutlineParts.kt`
-- [ ] `KeyQr` — `com/mlmvpn/scanner/ui/outline/OutlineParts.kt`
-- [ ] `OutlineHome` — `com/mlmvpn/scanner/ui/outline/OutlineScreen.kt`
-- [ ] `TestProgress` — `com/mlmvpn/scanner/ui/outline/OutlineScreen.kt`
-- [ ] `HeroCard` — `com/mlmvpn/scanner/ui/outline/OutlineScreen.kt`
-- [ ] `Orb` — `com/mlmvpn/scanner/ui/outline/OutlineScreen.kt`
-- [ ] `StatTile` — `com/mlmvpn/scanner/ui/outline/OutlineScreen.kt`
-- [ ] `SearchBar` — `com/mlmvpn/scanner/ui/outline/OutlineServersPage.kt`
-- [ ] `Chip` — `com/mlmvpn/scanner/ui/outline/OutlineServersPage.kt`
-- [ ] `SortChip` — `com/mlmvpn/scanner/ui/outline/OutlineServersPage.kt`
-- [ ] `Pill` — `com/mlmvpn/scanner/ui/outline/OutlineServersPage.kt`
-- [ ] `PickRow` — `com/mlmvpn/scanner/ui/outline/OutlineServersPage.kt`
-- [ ] `SwipeRow` — `com/mlmvpn/scanner/ui/outline/OutlineServersPage.kt`
-- [ ] `ServerRow` — `com/mlmvpn/scanner/ui/outline/OutlineServersPage.kt`
+- [x] `OutlineUndoBar` — `com/mlmvpn/scanner/ui/outline/OutlineParts.kt`
+- [x] `KeyQr` — `com/mlmvpn/scanner/ui/outline/OutlineParts.kt`
+- [x] `OutlineHome` — `com/mlmvpn/scanner/ui/outline/OutlineScreen.kt`
+- [x] `TestProgress` — `com/mlmvpn/scanner/ui/outline/OutlineScreen.kt`
+- [x] `HeroCard` — `com/mlmvpn/scanner/ui/outline/OutlineScreen.kt`
+- [x] `Orb` — `com/mlmvpn/scanner/ui/outline/OutlineScreen.kt`
+- [x] `StatTile` — `com/mlmvpn/scanner/ui/outline/OutlineScreen.kt`
+- [x] `SearchBar` — `com/mlmvpn/scanner/ui/outline/OutlineServersPage.kt`
+- [x] `Chip` — `com/mlmvpn/scanner/ui/outline/OutlineServersPage.kt`
+- [x] `SortChip` — `com/mlmvpn/scanner/ui/outline/OutlineServersPage.kt`
+- [x] `Pill` — `com/mlmvpn/scanner/ui/outline/OutlineServersPage.kt`
+- [x] `PickRow` — `com/mlmvpn/scanner/ui/outline/OutlineServersPage.kt`
+- [x] `SwipeRow` — `com/mlmvpn/scanner/ui/outline/OutlineServersPage.kt`
+- [x] `ServerRow` — `com/mlmvpn/scanner/ui/outline/OutlineServersPage.kt`
 ### proton
 
 - [ ] `rememberVpnGate` — `com/mlmvpn/scanner/ui/proton/ProtonScreen.kt`
-- [ ] `ProtonHome` — `com/mlmvpn/scanner/ui/proton/ProtonScreen.kt`
-- [ ] `PingProgress` — `com/mlmvpn/scanner/ui/proton/ProtonScreen.kt`
-- [ ] `ServerRow` — `com/mlmvpn/scanner/ui/proton/ProtonScreen.kt`
+- [x] `ProtonHome` — `com/mlmvpn/scanner/ui/proton/ProtonScreen.kt`
+- [x] `PingProgress` — `com/mlmvpn/scanner/ui/proton/ProtonScreen.kt`
+- [x] `ServerRow` — `com/mlmvpn/scanner/ui/proton/ProtonScreen.kt`
 - [ ] `statusText` — `com/mlmvpn/scanner/ui/proton/ProtonScreen.kt`
-- [ ] `PrimaryButton` — `com/mlmvpn/scanner/ui/proton/ProtonScreen.kt`
-- [ ] `Message` — `com/mlmvpn/scanner/ui/proton/ProtonScreen.kt`
+- [x] `PrimaryButton` — `com/mlmvpn/scanner/ui/proton/ProtonScreen.kt`
+- [x] `Message` — `com/mlmvpn/scanner/ui/proton/ProtonScreen.kt`
 - [ ] `helperName` — `com/mlmvpn/scanner/ui/proton/ProtonScreen.kt`
-- [ ] `HelperProgress` — `com/mlmvpn/scanner/ui/proton/ProtonScreen.kt`
-- [ ] `HelperChooser` — `com/mlmvpn/scanner/ui/proton/ProtonScreen.kt`
+- [x] `HelperProgress` — `com/mlmvpn/scanner/ui/proton/ProtonScreen.kt`
+- [x] `HelperChooser` — `com/mlmvpn/scanner/ui/proton/ProtonScreen.kt`
 ### sanction
 
 - [ ] `AppRow` — `com/mlmvpn/scanner/ui/sanction/AntiSanctionScreen.kt`
@@ -1461,7 +1461,7 @@ Toast / short transient feedback call sites (OS-rendered surfaces; validate app 
 - [x] `com/mlmvpn/scanner/ui/ScannerTab.kt` — Toast × 20 (replaced with Dusk snackbars)
 - [ ] `com/mlmvpn/scanner/ui/aether/AetherScreen.kt` — Toast × 4
 - [ ] `com/mlmvpn/scanner/ui/amnezia/AmneziaScreen.kt` — Toast × 3
-- [ ] `com/mlmvpn/scanner/ui/amnezia/AmzServersScreen.kt` — Toast × 1
+- [x] `com/mlmvpn/scanner/ui/amnezia/AmzServersScreen.kt` — Toast × 1 (replaced with Dusk snackbars)
 - [ ] `com/mlmvpn/scanner/ui/arena/ArenaScreen.kt` — Toast × 1
 - [ ] `com/mlmvpn/scanner/ui/backup/BackupScreen.kt` — Toast × 1
 - [ ] `com/mlmvpn/scanner/ui/cfwarp/Nat64ExitUi.kt` — Toast × 2
@@ -1484,8 +1484,8 @@ Toast / short transient feedback call sites (OS-rendered surfaces; validate app 
 - [ ] `com/mlmvpn/scanner/ui/npv/NpvImportActivity.kt` — Toast × 1
 - [ ] `com/mlmvpn/scanner/ui/npv/NpvScreen.kt` — Toast × 4
 - [ ] `com/mlmvpn/scanner/ui/npv/NpvSourcesPage.kt` — Toast × 4
-- [ ] `com/mlmvpn/scanner/ui/outline/OutlineScreen.kt` — Toast × 2
-- [ ] `com/mlmvpn/scanner/ui/outline/OutlineServersPage.kt` — Toast × 1
+- [x] `com/mlmvpn/scanner/ui/outline/OutlineScreen.kt` — Toast × 2 (replaced with Dusk snackbars)
+- [x] `com/mlmvpn/scanner/ui/outline/OutlineServersPage.kt` — Toast × 1 (replaced with Dusk snackbars)
 - [ ] `com/mlmvpn/scanner/ui/proton/ProtonScreen.kt` — Toast × 6
 - [ ] `com/mlmvpn/scanner/ui/sanction/AntiSanctionScreen.kt` — Toast × 2
 - [ ] `com/mlmvpn/scanner/ui/settings/CloudResourcesScreens.kt` — Toast × 1

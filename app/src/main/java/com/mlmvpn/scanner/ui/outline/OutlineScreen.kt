@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.ClipboardManager
 import android.content.Context
 import android.net.VpnService
-import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -61,6 +60,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -93,11 +93,12 @@ import com.mlmvpn.scanner.engines.outline.OutlineServer
 import com.mlmvpn.scanner.engines.outline.OutlineSources
 import com.mlmvpn.scanner.engines.outline.OutlineTestProgress
 import com.mlmvpn.scanner.store.tr
+import com.mlmvpn.scanner.ui.theme.DuskTheme
+import com.mlmvpn.scanner.ui.theme.LocalDuskSnackbarHostState
 import com.mlmvpn.scanner.ui.LocalTabVisible
 import com.mlmvpn.scanner.ui.amnezia.BarIcon
 import com.mlmvpn.scanner.ui.amnezia.fa
 import com.mlmvpn.scanner.ui.home.frostedGlass
-import com.mlmvpn.scanner.ui.settings.Ios
 import com.mlmvpn.scanner.ui.settings.IosAlert
 import com.mlmvpn.scanner.ui.settings.IosAlertAction
 import com.mlmvpn.scanner.ui.settings.IosScreen
@@ -109,6 +110,7 @@ import com.mlmvpn.scanner.ui.settings.SettingsSectionHeader
 import com.mlmvpn.scanner.ui.settings.SettingsToggle
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 import java.util.Locale
 
 private enum class Page { MAIN, SERVERS, SOURCES }
@@ -121,6 +123,8 @@ private enum class Page { MAIN, SERVERS, SOURCES }
 @Composable
 fun OutlineScreen(onBack: () -> Unit) {
     val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+    val snackbarHostState = LocalDuskSnackbarHostState.current
     var ready by remember { mutableStateOf(OutlineEngine.isInitialized()) }
     val visible = LocalTabVisible.current
     LaunchedEffect(Unit) {
@@ -156,8 +160,9 @@ fun OutlineScreen(onBack: () -> Unit) {
     val paste = {
         val cm = context.getSystemService(Context.CLIPBOARD_SERVICE) as? ClipboardManager
         val text = cm?.primaryClip?.takeIf { it.itemCount > 0 }?.getItemAt(0)?.coerceToText(context)?.toString().orEmpty()
-        if (text.isBlank()) Toast.makeText(context, tr("کلیپ‌بورد خالی است", "The clipboard is empty"), Toast.LENGTH_SHORT).show()
-        else OutlineEngine.importText(context, text)
+        if (text.isBlank()) {
+            scope.launch { snackbarHostState.showSnackbar(tr("کلیپ‌بورد خالی است", "The clipboard is empty")) }
+        } else OutlineEngine.importText(context, text)
     }
     val qrLauncher = rememberLauncherForActivityResult(ScanContract()) { result ->
         result.contents?.takeIf { it.isNotBlank() }?.let { OutlineEngine.importText(context, it) }
@@ -200,7 +205,7 @@ fun OutlineScreen(onBack: () -> Unit) {
             is OutlineEngine.Notice.ShadowmereFailed -> tr("کلیدهای Shadowmere از داخل تونل هم نرسید؛ کمی بعد دوباره امتحان کنید",
                 "Shadowmere did not answer even through the tunnel; try again a little later")
         }
-        Toast.makeText(context, text, Toast.LENGTH_SHORT).show()
+        snackbarHostState.showSnackbar(text)
         OutlineEngine.consumeNotice()
     }
 
@@ -281,33 +286,33 @@ private fun OutlineHome(
         // The one-time note: these are other people's servers.
         if (!state.prefs.warned) {
             Row(
-                Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 6.dp).clip(RoundedCornerShape(16.dp))
-                    .background(Ios.Orange.copy(alpha = 0.16f)).padding(14.dp),
+                Modifier.fillMaxWidth().padding(horizontal = DuskTheme.space4, vertical = DuskTheme.space1_5).clip(RoundedCornerShape(DuskTheme.space4))
+                    .background(DuskTheme.accent.copy(alpha = 0.16f)).padding(DuskTheme.space3_5),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
                     tr("این سرورها عمومی‌اند و صاحبشان ناشناس است. برای بانک، رمز و حساب‌های مهم از آن‌ها استفاده نکنید.",
                         "These are public servers run by strangers. Don't use them for banking, passwords or important accounts."),
-                    color = Ios.Label, fontSize = 13.sp, lineHeight = 20.sp, modifier = Modifier.weight(1f),
+                    color = DuskTheme.onSurface, fontSize = 13.sp, lineHeight = 20.sp, modifier = Modifier.weight(1f),
                 )
-                Spacer(Modifier.width(8.dp))
-                Text(tr("متوجه شدم", "Got it"), color = Ios.Blue, fontSize = 14.sp, fontWeight = FontWeight.SemiBold,
-                    modifier = Modifier.clip(RoundedCornerShape(8.dp)).clickable { OutlineEngine.setPrefs { it.copy(warned = true) } }.padding(6.dp))
+                Spacer(Modifier.width(DuskTheme.space2))
+                Text(tr("متوجه شدم", "Got it"), color = DuskTheme.primary, fontSize = 14.sp, fontWeight = FontWeight.SemiBold,
+                    modifier = Modifier.clip(RoundedCornerShape(DuskTheme.space2)).clickable { OutlineEngine.setPrefs { it.copy(warned = true) } }.padding(DuskTheme.space1_5))
             }
         }
         // A key found on the clipboard, offered once.
         if (clipKey != null) {
             Row(
-                Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 6.dp).clip(RoundedCornerShape(16.dp))
-                    .background(Ios.Blue.copy(alpha = 0.18f)).padding(14.dp),
+                Modifier.fillMaxWidth().padding(horizontal = DuskTheme.space4, vertical = DuskTheme.space1_5).clip(RoundedCornerShape(DuskTheme.space4))
+                    .background(DuskTheme.primary.copy(alpha = 0.18f)).padding(DuskTheme.space3_5),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(tr("یک کلید Outline در کلیپ‌بورد هست. اضافه شود؟", "There's an Outline key on the clipboard. Add it?"),
-                    color = Ios.Label, fontSize = 13.sp, modifier = Modifier.weight(1f))
-                Text(tr("نه", "No"), color = Ios.SecondaryLabel, fontSize = 14.sp,
-                    modifier = Modifier.clip(RoundedCornerShape(8.dp)).clickable { onClipKey(false) }.padding(8.dp))
-                Text(tr("افزودن", "Add"), color = Ios.Blue, fontSize = 14.sp, fontWeight = FontWeight.SemiBold,
-                    modifier = Modifier.clip(RoundedCornerShape(8.dp)).clickable { onClipKey(true) }.padding(8.dp))
+                    color = DuskTheme.onSurface, fontSize = 13.sp, modifier = Modifier.weight(1f))
+                Text(tr("نه", "No"), color = DuskTheme.muted, fontSize = 14.sp,
+                    modifier = Modifier.clip(RoundedCornerShape(DuskTheme.space2)).clickable { onClipKey(false) }.padding(DuskTheme.space2))
+                Text(tr("افزودن", "Add"), color = DuskTheme.primary, fontSize = 14.sp, fontWeight = FontWeight.SemiBold,
+                    modifier = Modifier.clip(RoundedCornerShape(DuskTheme.space2)).clickable { onClipKey(true) }.padding(DuskTheme.space2))
             }
         }
 
@@ -332,7 +337,7 @@ private fun OutlineHome(
                 else -> tr("هنوز تست نشده", "Not tested yet")
             }
             SettingsRow(
-                title = tr("همهٔ سرورها", "All servers"), icon = Icons.Default.List, tint = Ios.Teal,
+                title = tr("همهٔ سرورها", "All servers"), icon = Icons.Default.List, tint = DuskTheme.secondary,
                 value = fa(alive) + " / " + fa(state.servers.size), subtitle = sub, onClick = onServers,
             )
             // Shadowmere's keys on their own: how many, how many answered here, and when Shadowmere
@@ -343,7 +348,7 @@ private fun OutlineHome(
                 val checked = sm.maxOf { it.checkedAt }
                 val live = remember(state.lastRefreshAt) { OutlineEngine.sourceInfo(OutlineSources.SHADOWMERE).first > 0 }
                 SettingsRow(
-                    title = "Shadowmere", icon = Icons.Default.Public, tint = Ios.Pink,
+                    title = "Shadowmere", icon = Icons.Default.Public, tint = DuskTheme.purple,
                     value = fa(sm.count { stats[it.id]?.alive == true }) + " / " + fa(sm.size),
                     subtitle = when {
                         !live -> tr("برچسب shadowmere · نسخهٔ همراه برنامه (${checkTime(checked)})؛ با روشن بودن یک تونل به‌روز می‌شود",
@@ -362,22 +367,22 @@ private fun OutlineHome(
                 TestProgress(progress)
             }
             if (!progress.running) {
-                SettingsActionRow(label = tr("تست سریع (بهترین‌ها)", "Quick test (the best)"), icon = Icons.Default.Bolt, tint = Ios.Green) { OutlineEngine.test(all = false) }
+                SettingsActionRow(label = tr("تست سریع (بهترین‌ها)", "Quick test (the best)"), icon = Icons.Default.Bolt, tint = DuskTheme.success) { OutlineEngine.test(all = false) }
                 Separator()
-                SettingsActionRow(label = tr("تست همهٔ سرورها", "Test every server"), icon = Icons.Default.Speed, tint = Ios.Indigo) { OutlineEngine.test(all = true) }
+                SettingsActionRow(label = tr("تست همهٔ سرورها", "Test every server"), icon = Icons.Default.Speed, tint = DuskTheme.indigo) { OutlineEngine.test(all = true) }
                 Separator()
-                SettingsActionRow(label = tr("حذف سرورهای قطع", "Remove dead servers"), icon = Icons.Default.DeleteSweep, tint = Ios.Red) { OutlineEngine.removeDead() }
+                SettingsActionRow(label = tr("حذف سرورهای قطع", "Remove dead servers"), icon = Icons.Default.DeleteSweep, tint = DuskTheme.error) { OutlineEngine.removeDead() }
             }
         }
 
         SettingsSectionHeader(tr("کلید شخصی", "Your own key"))
         SettingsGroup {
-            SettingsActionRow(label = tr("چسباندن کلید (ss:// یا ssconf://)", "Paste a key (ss:// or ssconf://)"), icon = Icons.Default.ContentPaste, tint = Ios.Teal, onClick = onPaste)
+            SettingsActionRow(label = tr("چسباندن کلید (ss:// یا ssconf://)", "Paste a key (ss:// or ssconf://)"), icon = Icons.Default.ContentPaste, tint = DuskTheme.secondary, onClick = onPaste)
             Separator()
-            SettingsActionRow(label = tr("اسکن QR", "Scan a QR"), icon = Icons.Default.QrCodeScanner, tint = Ios.Blue, onClick = onScan)
+            SettingsActionRow(label = tr("اسکن QR", "Scan a QR"), icon = Icons.Default.QrCodeScanner, tint = DuskTheme.primary, onClick = onScan)
             Separator()
             SettingsActionRow(label = if (refreshing) tr("در حال دریافت فهرست‌ها…", "Fetching the lists…") else tr("به‌روزرسانی فهرست‌ها", "Refresh the lists"),
-                icon = Icons.Default.Refresh, tint = Ios.Orange, busy = refreshing) { OutlineEngine.refresh(force = true) }
+                icon = Icons.Default.Refresh, tint = DuskTheme.accent, busy = refreshing) { OutlineEngine.refresh(force = true) }
         }
         SettingsFooter(tr(
             "سرورها از سایت Shadowmere و ${fa(OutlineSources.BUILT_IN.count { it.site == null })} فهرست عمومی گیت‌هاب گرفته می‌شوند. Shadowmere فیلتر است: کلیدهایش همراه برنامه می‌آید و فقط از داخل یکی از تونل‌های برنامه به‌روز می‌شود (با اتصال Outline خودکار). آخرین دریافت: ${ago(state.lastRefreshAt)}. پینگ فقط وقتی گرفته می‌شود که خودتان «تست» را بزنید.",
@@ -398,22 +403,22 @@ internal fun TestProgress(p: OutlineTestProgress) {
     LaunchedEffect(p.phaseStartedAt) { while (true) { now = System.currentTimeMillis(); delay(1_000) } }
     val secs = ((now - p.phaseStartedAt).coerceAtLeast(0) / 1_000).toInt()
     val clock = "%d:%02d".format(secs / 60, secs % 60)
-    Column(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 12.dp)) {
+    Column(Modifier.fillMaxWidth().padding(horizontal = DuskTheme.space4, vertical = DuskTheme.space3)) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text(
                 if (warp) tr("از داخل وارپ: ${fa(p.done)} از ${fa(p.total)} · ${fa(p.alive)} سالم", "Through WARP: ${p.done} of ${p.total} · ${p.alive} working")
                 else tr("سنجش مستقیم: ${fa(p.done)} از ${fa(p.total)} · ${fa(p.alive)} سالم", "Direct: ${p.done} of ${p.total} · ${p.alive} working"),
-                color = Ios.Label, fontSize = 15.sp, modifier = Modifier.weight(1f),
+                color = DuskTheme.onSurface, fontSize = 15.sp, modifier = Modifier.weight(1f),
             )
-            Text(fa(clock), color = Ios.SecondaryLabel, fontSize = 13.sp, modifier = Modifier.padding(horizontal = 6.dp))
-            Text(tr("توقف", "Stop"), color = Ios.Red, fontSize = 15.sp, fontWeight = FontWeight.SemiBold,
-                modifier = Modifier.clip(RoundedCornerShape(8.dp)).clickable { OutlineEngine.stopTest() }.padding(horizontal = 8.dp, vertical = 4.dp))
+            Text(fa(clock), color = DuskTheme.muted, fontSize = 13.sp, modifier = Modifier.padding(horizontal = DuskTheme.space1_5))
+            Text(tr("توقف", "Stop"), color = DuskTheme.error, fontSize = 15.sp, fontWeight = FontWeight.SemiBold,
+                modifier = Modifier.clip(RoundedCornerShape(DuskTheme.space2)).clickable { OutlineEngine.stopTest() }.padding(horizontal = DuskTheme.space2, vertical = DuskTheme.space1))
         }
-        Spacer(Modifier.height(10.dp))
+        Spacer(Modifier.height(DuskTheme.space2_5))
         LinearProgressIndicator(
             progress = if (p.total > 0) p.done.toFloat() / p.total else 0f,
-            color = if (warp) Ios.Orange else Ios.Green, trackColor = Color.White.copy(alpha = 0.15f),
-            modifier = Modifier.fillMaxWidth().height(4.dp).clip(RoundedCornerShape(2.dp)),
+            color = if (warp) DuskTheme.accent else DuskTheme.success, trackColor = DuskTheme.white.copy(alpha = 0.15f),
+            modifier = Modifier.fillMaxWidth().height(DuskTheme.space1).clip(RoundedCornerShape(2.dp)),
         )
         val note = when {
             warp && p.warpStarting -> tr("در حال روشن کردن وارپِ برنامه برای مرحلهٔ دوم؛ روی بعضی خط‌ها تا یک دقیقه طول می‌کشد.",
@@ -427,8 +432,8 @@ internal fun TestProgress(p: OutlineTestProgress) {
             else -> null
         }
         if (note != null) {
-            Spacer(Modifier.height(8.dp))
-            Text(note, color = Ios.SecondaryLabel, fontSize = 12.sp, lineHeight = 18.sp)
+            Spacer(Modifier.height(DuskTheme.space2))
+            Text(note, color = DuskTheme.muted, fontSize = 12.sp, lineHeight = 18.sp)
         }
     }
 }
@@ -440,30 +445,30 @@ private fun HeroCard(conn: OutlineConnect, server: OutlineServer?, speed: Outlin
     val connecting = conn is OutlineConnect.Connecting
     val connected = conn is OutlineConnect.Connected
     val tone by animateColorAsState(
-        when { connected -> Ios.Green; connecting -> Ios.Orange; conn is OutlineConnect.Failed -> Ios.Red; else -> OUTLINE_GREEN },
+        when { connected -> DuskTheme.success; connecting -> DuskTheme.accent; conn is OutlineConnect.Failed -> DuskTheme.error; else -> DuskTheme.success },
         animationSpec = tween(450), label = "tone",
     )
     Column(
-        Modifier.fillMaxWidth().padding(horizontal = 16.dp)
+        Modifier.fillMaxWidth().padding(horizontal = DuskTheme.space4)
             .frostedGlass(RoundedCornerShape(30.dp)).padding(horizontal = 20.dp, vertical = 18.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
             Row(
-                Modifier.clip(RoundedCornerShape(50)).background(tone.copy(alpha = 0.16f)).padding(horizontal = 10.dp, vertical = 5.dp),
+                Modifier.clip(RoundedCornerShape(50)).background(tone.copy(alpha = 0.16f)).padding(horizontal = DuskTheme.space2_5, vertical = 5.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Box(Modifier.size(7.dp).clip(CircleShape).background(tone))
-                Spacer(Modifier.width(6.dp))
-                Text(statusWord(conn), color = Ios.Label, fontSize = 12.sp, fontWeight = FontWeight.SemiBold, maxLines = 1)
+                Spacer(Modifier.width(DuskTheme.space1_5))
+                Text(statusWord(conn), color = DuskTheme.onSurface, fontSize = 12.sp, fontWeight = FontWeight.SemiBold, maxLines = 1)
             }
             Spacer(Modifier.weight(1f))
             Image(painterResource(R.drawable.ic_app_outline), contentDescription = null, contentScale = ContentScale.Fit, modifier = Modifier.size(30.dp))
         }
 
-        Spacer(Modifier.height(14.dp))
+        Spacer(Modifier.height(DuskTheme.space3_5))
         Orb(tone, connecting, connected, onButton)
-        Spacer(Modifier.height(14.dp))
+        Spacer(Modifier.height(DuskTheme.space3_5))
 
         Text(
             when (conn) {
@@ -471,22 +476,22 @@ private fun HeroCard(conn: OutlineConnect, server: OutlineServer?, speed: Outlin
                 is OutlineConnect.Connecting -> stepLine(conn)
                 else -> tr("آمادهٔ اتصال", "Ready to connect")
             },
-            color = Ios.Label, fontSize = 20.sp, fontWeight = FontWeight.Bold, textAlign = TextAlign.Center,
+            color = DuskTheme.onSurface, fontSize = 20.sp, fontWeight = FontWeight.Bold, textAlign = TextAlign.Center,
         )
-        Spacer(Modifier.height(4.dp))
+        Spacer(Modifier.height(DuskTheme.space1))
         Text(
-            subLine(conn, server), color = if (conn is OutlineConnect.Failed) Ios.Orange else Ios.SecondaryLabel,
+            subLine(conn, server), color = if (conn is OutlineConnect.Failed) DuskTheme.accent else DuskTheme.muted,
             fontSize = 13.sp, textAlign = TextAlign.Center, maxLines = 2, overflow = TextOverflow.Ellipsis,
         )
 
-        Spacer(Modifier.height(16.dp))
+        Spacer(Modifier.height(DuskTheme.space4))
         val label = when { connecting -> tr("لغو", "Cancel"); connected -> tr("قطع اتصال", "Disconnect"); else -> tr("اتصال به سریع‌ترین", "Connect to the fastest") }
         Box(
-            Modifier.fillMaxWidth().heightIn(min = 48.dp).clip(RoundedCornerShape(14.dp))
-                .background(if (connected || connecting) Color.White.copy(alpha = 0.14f) else OUTLINE_GREEN)
+            Modifier.fillMaxWidth().heightIn(min = 48.dp).clip(RoundedCornerShape(DuskTheme.space3_5))
+                .background(if (connected || connecting) DuskTheme.white.copy(alpha = 0.14f) else DuskTheme.success.copy(alpha = 0.22f))
                 .clickable(role = Role.Button, onClick = onButton),
             contentAlignment = Alignment.Center,
-        ) { Text(label, color = if (connecting) Ios.Orange else if (connected) Ios.Red else Color.White, fontSize = 17.sp, fontWeight = FontWeight.SemiBold) }
+        ) { Text(label, color = if (connecting) DuskTheme.accent else if (connected) DuskTheme.error else DuskTheme.onSurface, fontSize = 17.sp, fontWeight = FontWeight.SemiBold) }
 
         AnimatedVisibility(connected, enter = expandVertically() + fadeIn(), exit = shrinkVertically() + fadeOut()) {
             val c = conn as? OutlineConnect.Connected
@@ -497,12 +502,12 @@ private fun HeroCard(conn: OutlineConnect, server: OutlineServer?, speed: Outlin
                 val clock = if (secs >= 3600) "%d:%02d:%02d".format(Locale.US, secs / 3600, secs / 60 % 60, secs % 60)
                     else "%02d:%02d".format(Locale.US, secs / 60, secs % 60)
                 Column {
-                    Row(Modifier.fillMaxWidth().padding(top = 14.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Row(Modifier.fillMaxWidth().padding(top = DuskTheme.space3_5), horizontalArrangement = Arrangement.spacedBy(DuskTheme.space2)) {
                         StatTile(tr("پینگ", "Delay"), c.delayMs?.let { msText(it) } ?: "—", Modifier.weight(1f))
                         StatTile(tr("زمان", "Time"), fa(clock), Modifier.weight(1f))
                         StatTile(tr("خروجی", "Exit"), "${flagOf(c.country)} ${countryName(c.country)}", Modifier.weight(1f))
                     }
-                    Row(Modifier.fillMaxWidth().padding(top = 8.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Row(Modifier.fillMaxWidth().padding(top = DuskTheme.space2), horizontalArrangement = Arrangement.spacedBy(DuskTheme.space2)) {
                         StatTile(tr("آی‌پی خروجی", "Exit IP"), c.exitIp ?: "…", Modifier.weight(2f))
                         val speedLabel = when (speed) {
                             OutlineEngine.SpeedState.Running -> tr("در حال سنجش…", "Measuring…")
@@ -510,15 +515,13 @@ private fun HeroCard(conn: OutlineConnect, server: OutlineServer?, speed: Outlin
                             OutlineEngine.SpeedState.Failed -> tr("ناموفق؛ دوباره", "Failed; retry")
                             OutlineEngine.SpeedState.None -> tr("تست سرعت", "Speed test")
                         }
-                        StatTile(tr("سرعت", "Speed"), speedLabel, Modifier.weight(1f).clip(RoundedCornerShape(16.dp)).clickable(onClick = onSpeed))
+                        StatTile(tr("سرعت", "Speed"), speedLabel, Modifier.weight(1f).clip(RoundedCornerShape(DuskTheme.space4)).clickable(onClick = onSpeed))
                     }
                 }
             }
         }
     }
 }
-
-private val OUTLINE_GREEN = Color(0xFF2A9D7D)
 
 @Composable
 private fun Orb(tone: Color, connecting: Boolean, connected: Boolean, onClick: () -> Unit) {
@@ -536,13 +539,13 @@ private fun Orb(tone: Color, connecting: Boolean, connected: Boolean, onClick: (
         }
         Box(
             Modifier.size(124.dp).clip(CircleShape)
-                .background(Brush.linearGradient(listOf(lerp(tone, Color.White, 0.25f), lerp(tone, Color.Black, 0.25f))))
-                .border(1.5.dp, Color.White.copy(alpha = 0.35f), CircleShape)
+                .background(Brush.linearGradient(listOf(lerp(tone, DuskTheme.white, 0.25f), lerp(tone, Color.Black, 0.25f))))
+                .border(1.5.dp, DuskTheme.white.copy(alpha = 0.35f), CircleShape)
                 .semantics { contentDescription = label }
                 .clickable(role = Role.Button, onClick = onClick),
             contentAlignment = Alignment.Center,
         ) {
-            Icon(Icons.Default.PowerSettingsNew, contentDescription = null, tint = Color.White, modifier = Modifier.size(52.dp))
+            Icon(Icons.Default.PowerSettingsNew, contentDescription = null, tint = DuskTheme.white, modifier = Modifier.size(52.dp))
         }
     }
 }
@@ -550,12 +553,12 @@ private fun Orb(tone: Color, connecting: Boolean, connected: Boolean, onClick: (
 @Composable
 private fun StatTile(label: String, value: String, modifier: Modifier = Modifier) {
     Column(
-        modifier.clip(RoundedCornerShape(16.dp)).background(Color.White.copy(alpha = 0.08f)).padding(vertical = 10.dp, horizontal = 8.dp),
+        modifier.clip(RoundedCornerShape(DuskTheme.space4)).background(DuskTheme.white.copy(alpha = 0.08f)).padding(vertical = DuskTheme.space2_5, horizontal = DuskTheme.space2),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Text(label, color = Ios.SecondaryLabel, fontSize = 11.sp)
+        Text(label, color = DuskTheme.muted, fontSize = 11.sp)
         Spacer(Modifier.height(3.dp))
-        Text(value, color = Ios.Label, fontSize = 14.sp, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
+        Text(value, color = DuskTheme.onSurface, fontSize = 14.sp, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
     }
 }
 
@@ -600,7 +603,7 @@ private fun SourcesPage(onBack: () -> Unit) {
                 subtitle = tr("اگر سرور داده رد نکرد، سریع‌ترین بعدی (تا ۳ سرور)", "If a server carries nothing, the next fastest (up to 3)"),
                 checked = state.prefs.autoFallback,
                 onCheckedChange = { on -> OutlineEngine.setPrefs { it.copy(autoFallback = on) } },
-                icon = Icons.Default.Bolt, tint = Ios.Green,
+                icon = Icons.Default.Bolt, tint = DuskTheme.success,
             )
         }
         SettingsSectionHeader(tr("فهرست‌های عمومی", "Public lists"))

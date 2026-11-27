@@ -4,7 +4,6 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
-import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.expandVertically
@@ -68,6 +67,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -92,18 +92,20 @@ import com.mlmvpn.scanner.engines.outline.OutlineConnect
 import com.mlmvpn.scanner.engines.outline.OutlineEngine
 import com.mlmvpn.scanner.engines.outline.OutlineSources
 import com.mlmvpn.scanner.store.tr
+import com.mlmvpn.scanner.ui.theme.DuskTheme
+import com.mlmvpn.scanner.ui.theme.LocalDuskSnackbarHostState
 import com.mlmvpn.scanner.ui.amnezia.ActionSheet
 import com.mlmvpn.scanner.ui.amnezia.BarIcon
 import com.mlmvpn.scanner.ui.amnezia.DelayCapsule
 import com.mlmvpn.scanner.ui.amnezia.Tag
 import com.mlmvpn.scanner.ui.amnezia.fa
-import com.mlmvpn.scanner.ui.settings.Ios
 import com.mlmvpn.scanner.ui.settings.IosRefreshIndicator
 import com.mlmvpn.scanner.ui.settings.IosScreen
 import com.mlmvpn.scanner.ui.settings.SettingsActionRow
 import com.mlmvpn.scanner.ui.settings.rememberIosRefreshState
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 
 private enum class Filter { WORKING, ALL, FAVS, MINE }
 private enum class Sort { DELAY, SPEED, NEWEST }
@@ -148,6 +150,8 @@ internal fun OutlineServersPage(
     onBack: () -> Unit, onPicked: (String?) -> Unit, onPaste: () -> Unit, onScan: () -> Unit, startChip: String? = null,
 ) {
     val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+    val snackbarHostState = LocalDuskSnackbarHostState.current
     val state by OutlineEngine.store.state.collectAsState()
     val net by OutlineEngine.net.collectAsState()
     val pending by OutlineEngine.pending.collectAsState()
@@ -237,7 +241,7 @@ internal fun OutlineServersPage(
                 ) { filter = it }
             }
             item(key = "chips", contentType = "chips") {
-                LazyRow(contentPadding = PaddingValues(horizontal = 16.dp, vertical = 6.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                LazyRow(contentPadding = PaddingValues(horizontal = DuskTheme.space4, vertical = DuskTheme.space1_5), horizontalArrangement = Arrangement.spacedBy(DuskTheme.space2)) {
                     item(key = CHIP_ALL) { Chip(tr("همهٔ کشورها", "All countries"), chip == CHIP_ALL) { chip = CHIP_ALL } }
                     if (shadowmere.second > 0) item(key = CHIP_SM) {
                         Chip("shadowmere · " + if (shadowmere.first > 0) "${fa(shadowmere.first)}/${fa(shadowmere.second)}" else fa(shadowmere.second), chip == CHIP_SM) { chip = CHIP_SM }
@@ -248,30 +252,30 @@ internal fun OutlineServersPage(
                 }
             }
             item(key = "tools", contentType = "tools") {
-                Column(Modifier.fillMaxWidth().padding(vertical = 4.dp)) {
+                Column(Modifier.fillMaxWidth().padding(vertical = DuskTheme.space1)) {
                     AnimatedVisibility(progress.running, enter = expandVertically() + fadeIn(), exit = shrinkVertically() + fadeOut()) {
-                        Box(Modifier.padding(horizontal = 16.dp).clip(RoundedCornerShape(16.dp)).background(Ios.CardOverWallpaper)) {
+                        Box(Modifier.padding(horizontal = DuskTheme.space4).clip(RoundedCornerShape(DuskTheme.space4)).background(DuskTheme.raisedSurface)) {
                             TestProgress(progress)
                         }
                     }
                     AnimatedVisibility(refreshing && !progress.running, enter = fadeIn(), exit = fadeOut()) {
-                        Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(horizontal = 20.dp, vertical = 4.dp)) {
-                            CircularProgressIndicator(Modifier.size(14.dp), color = Ios.SecondaryLabel, strokeWidth = 2.dp)
-                            Spacer(Modifier.width(8.dp))
-                            Text(tr("در حال دریافت فهرست‌ها…", "Fetching the lists…"), color = Ios.SecondaryLabel, fontSize = 13.sp)
+                        Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(horizontal = 20.dp, vertical = DuskTheme.space1)) {
+                            CircularProgressIndicator(Modifier.size(DuskTheme.space3_5), color = DuskTheme.muted, strokeWidth = 2.dp)
+                            Spacer(Modifier.width(DuskTheme.space2))
+                            Text(tr("در حال دریافت فهرست‌ها…", "Fetching the lists…"), color = DuskTheme.muted, fontSize = 13.sp)
                         }
                     }
                     if (!progress.running) {
-                        LazyRow(contentPadding = PaddingValues(horizontal = 16.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                            item { Pill(tr("تست سریع", "Quick test"), Icons.Default.Bolt, Ios.Green) { OutlineEngine.test(all = false) } }
-                            if (chip == CHIP_SM) item { Pill(tr("تست همهٔ shadowmere", "Test all shadowmere"), Icons.Default.Speed, Ios.Pink) { OutlineEngine.test(all = true, source = OutlineSources.SHADOWMERE) } }
-                            else if (chip != CHIP_ALL) item { Pill(tr("تست ${countryName(chip)}", "Test ${countryName(chip)}"), Icons.Default.Speed, Ios.Blue) { OutlineEngine.test(all = true, country = chip) } }
-                            item { Pill(tr("تست همه", "Test all"), Icons.Default.Speed, Ios.Indigo) { OutlineEngine.test(all = true) } }
-                            item { Pill(tr("حذف قطع‌ها", "Remove dead"), Icons.Default.DeleteSweep, Ios.Red) { OutlineEngine.removeDead() } }
+                        LazyRow(contentPadding = PaddingValues(horizontal = DuskTheme.space4), horizontalArrangement = Arrangement.spacedBy(DuskTheme.space2)) {
+                            item { Pill(tr("تست سریع", "Quick test"), Icons.Default.Bolt, DuskTheme.success) { OutlineEngine.test(all = false) } }
+                            if (chip == CHIP_SM) item { Pill(tr("تست همهٔ shadowmere", "Test all shadowmere"), Icons.Default.Speed, DuskTheme.purple) { OutlineEngine.test(all = true, source = OutlineSources.SHADOWMERE) } }
+                            else if (chip != CHIP_ALL) item { Pill(tr("تست ${countryName(chip)}", "Test ${countryName(chip)}"), Icons.Default.Speed, DuskTheme.primary) { OutlineEngine.test(all = true, country = chip) } }
+                            item { Pill(tr("تست همه", "Test all"), Icons.Default.Speed, DuskTheme.indigo) { OutlineEngine.test(all = true) } }
+                            item { Pill(tr("حذف قطع‌ها", "Remove dead"), Icons.Default.DeleteSweep, DuskTheme.error) { OutlineEngine.removeDead() } }
                         }
                     }
-                    Row(Modifier.padding(horizontal = 16.dp, vertical = 6.dp), horizontalArrangement = Arrangement.spacedBy(6.dp), verticalAlignment = Alignment.CenterVertically) {
-                        Text(tr("مرتب‌سازی:", "Sort:"), color = Ios.SecondaryLabel, fontSize = 12.sp)
+                    Row(Modifier.padding(horizontal = DuskTheme.space4, vertical = DuskTheme.space1_5), horizontalArrangement = Arrangement.spacedBy(DuskTheme.space1_5), verticalAlignment = Alignment.CenterVertically) {
+                        Text(tr("مرتب‌سازی:", "Sort:"), color = DuskTheme.muted, fontSize = 12.sp)
                         SortChip(tr("پینگ", "Delay"), sort == Sort.DELAY) { sort = Sort.DELAY }
                         SortChip(tr("سرعت", "Speed"), sort == Sort.SPEED) { sort = Sort.SPEED }
                         SortChip(tr("جدیدترین", "Newest"), sort == Sort.NEWEST) { sort = Sort.NEWEST }
@@ -289,8 +293,8 @@ internal fun OutlineServersPage(
                             state.servers.isEmpty() -> tr("هنوز سروری نیست. فهرست‌ها را به‌روز کنید یا کلید خودتان را اضافه کنید.", "No servers yet. Refresh the lists or add your own key.")
                             else -> tr("با این فیلتر سروری نیست", "No server matches this filter")
                         },
-                        color = Ios.SecondaryLabel, fontSize = 14.sp, textAlign = TextAlign.Center, lineHeight = 22.sp,
-                        modifier = Modifier.fillMaxWidth().padding(horizontal = 32.dp, vertical = 40.dp),
+                        color = DuskTheme.muted, fontSize = 14.sp, textAlign = TextAlign.Center, lineHeight = 22.sp,
+                        modifier = Modifier.fillMaxWidth().padding(horizontal = DuskTheme.space6, vertical = 40.dp),
                     )
                 }
             }
@@ -321,11 +325,11 @@ internal fun OutlineServersPage(
 
     if (showAdd) {
         ActionSheet(title = tr("افزودن کلید Outline", "Add an Outline key"), onDismiss = { showAdd = false }) {
-            SettingsActionRow(label = tr("چسباندن از کلیپ‌بورد", "Paste from the clipboard"), icon = Icons.Default.ContentPaste, tint = Ios.Teal) { showAdd = false; onPaste() }
+            SettingsActionRow(label = tr("چسباندن از کلیپ‌بورد", "Paste from the clipboard"), icon = Icons.Default.ContentPaste, tint = DuskTheme.secondary) { showAdd = false; onPaste() }
             Separator()
-            SettingsActionRow(label = tr("اسکن QR", "Scan a QR"), icon = Icons.Default.QrCodeScanner, tint = Ios.Blue) { showAdd = false; onScan() }
+            SettingsActionRow(label = tr("اسکن QR", "Scan a QR"), icon = Icons.Default.QrCodeScanner, tint = DuskTheme.primary) { showAdd = false; onScan() }
             Separator()
-            SettingsActionRow(label = tr("به‌روزرسانی فهرست‌ها", "Refresh the lists"), icon = Icons.Default.Refresh, tint = Ios.Orange, busy = refreshing) {
+            SettingsActionRow(label = tr("به‌روزرسانی فهرست‌ها", "Refresh the lists"), icon = Icons.Default.Refresh, tint = DuskTheme.accent, busy = refreshing) {
                 showAdd = false; OutlineEngine.refresh(force = true)
             }
         }
@@ -335,17 +339,17 @@ internal fun OutlineServersPage(
         val sv = byId[id]
         if (sv == null) { menuFor = null } else {
             ActionSheet(title = "${flagOf(sv.country)}  ${sv.name}", onDismiss = { menuFor = null }) {
-                SettingsActionRow(label = tr("اتصال", "Connect"), icon = Icons.Default.PowerSettingsNew, tint = Ios.Green) { menuFor = null; onPicked(id) }
+                SettingsActionRow(label = tr("اتصال", "Connect"), icon = Icons.Default.PowerSettingsNew, tint = DuskTheme.success) { menuFor = null; onPicked(id) }
                 Separator()
-                SettingsActionRow(label = tr("تست همین سرور", "Test this server"), icon = Icons.Default.Speed, tint = Ios.Indigo) { menuFor = null; OutlineEngine.testOne(id) }
+                SettingsActionRow(label = tr("تست همین سرور", "Test this server"), icon = Icons.Default.Speed, tint = DuskTheme.indigo) { menuFor = null; OutlineEngine.testOne(id) }
                 Separator()
                 SettingsActionRow(label = if (id in state.favorites) tr("برداشتن ستاره", "Unstar") else tr("ستاره‌دار کردن", "Star"),
-                    icon = Icons.Default.Star, tint = Ios.Yellow) { menuFor = null; OutlineEngine.toggleFavorite(id) }
+                    icon = Icons.Default.Star, tint = DuskTheme.accent) { menuFor = null; OutlineEngine.toggleFavorite(id) }
                 Separator()
                 SettingsActionRow(label = tr("کپی کلید", "Copy the key"), icon = Icons.Default.ContentCopy) {
                     menuFor = null
                     (context.getSystemService(Context.CLIPBOARD_SERVICE) as? ClipboardManager)?.setPrimaryClip(ClipData.newPlainText("outline", sv.uri))
-                    Toast.makeText(context, tr("کپی شد", "Copied"), Toast.LENGTH_SHORT).show()
+                    scope.launch { snackbarHostState.showSnackbar(tr("کپی شد", "Copied")) }
                 }
                 Separator()
                 SettingsActionRow(label = tr("نمایش QR", "Show QR"), icon = Icons.Default.QrCode) { menuFor = null; qrFor = id }
@@ -359,7 +363,7 @@ internal fun OutlineServersPage(
                     }
                 }
                 Separator()
-                SettingsActionRow(label = tr("حذف", "Delete"), icon = Icons.Default.Delete, tint = Ios.Red) { menuFor = null; OutlineEngine.delete(listOf(id)) }
+                SettingsActionRow(label = tr("حذف", "Delete"), icon = Icons.Default.Delete, tint = DuskTheme.error) { menuFor = null; OutlineEngine.delete(listOf(id)) }
             }
         }
     }
@@ -377,22 +381,22 @@ internal fun OutlineServersPage(
 @Composable
 private fun SearchBar(query: String, onChange: (String) -> Unit) {
     Row(
-        Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 6.dp)
-            .clip(RoundedCornerShape(12.dp)).background(Ios.CardOverWallpaper).padding(horizontal = 10.dp, vertical = 9.dp),
+        Modifier.fillMaxWidth().padding(horizontal = DuskTheme.space4, vertical = DuskTheme.space1_5)
+            .clip(RoundedCornerShape(DuskTheme.space3)).background(DuskTheme.raisedSurface).padding(horizontal = DuskTheme.space2_5, vertical = 9.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Icon(Icons.Default.Search, contentDescription = null, tint = Ios.SecondaryLabel, modifier = Modifier.size(18.dp))
-        Spacer(Modifier.width(8.dp))
+        Icon(Icons.Default.Search, contentDescription = null, tint = DuskTheme.muted, modifier = Modifier.size(18.dp))
+        Spacer(Modifier.width(DuskTheme.space2))
         Box(Modifier.weight(1f)) {
-            if (query.isEmpty()) Text(tr("جستجو: نام، کشور، آدرس", "Search: name, country, address"), color = Ios.SecondaryLabel, fontSize = 16.sp)
+            if (query.isEmpty()) Text(tr("جستجو: نام، کشور، آدرس", "Search: name, country, address"), color = DuskTheme.muted, fontSize = 16.sp)
             BasicTextField(
                 value = query, onValueChange = onChange, singleLine = true,
-                textStyle = TextStyle(color = Ios.Label, fontSize = 16.sp), cursorBrush = SolidColor(Ios.Blue),
+                textStyle = TextStyle(color = DuskTheme.onSurface, fontSize = 16.sp), cursorBrush = SolidColor(DuskTheme.primary),
                 modifier = Modifier.fillMaxWidth(),
             )
         }
         if (query.isNotEmpty()) {
-            Icon(Icons.Default.Close, contentDescription = null, tint = Ios.SecondaryLabel,
+            Icon(Icons.Default.Close, contentDescription = null, tint = DuskTheme.muted,
                 modifier = Modifier.size(18.dp).clip(CircleShape).clickable { onChange("") })
         }
     }
@@ -401,66 +405,66 @@ private fun SearchBar(query: String, onChange: (String) -> Unit) {
 @Composable
 private fun <T> Segmented(options: List<Pair<T, String>>, selected: T, onSelect: (T) -> Unit) {
     Row(
-        Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 6.dp)
-            .clip(RoundedCornerShape(11.dp)).background(Ios.CardOverWallpaper).padding(3.dp),
+        Modifier.fillMaxWidth().padding(horizontal = DuskTheme.space4, vertical = DuskTheme.space1_5)
+            .clip(RoundedCornerShape(11.dp)).background(DuskTheme.raisedSurface).padding(3.dp),
         horizontalArrangement = Arrangement.spacedBy(3.dp),
     ) {
         options.forEach { (s, label) ->
             val sel = s == selected
-            val bg by animateColorAsState(if (sel) Color.White.copy(alpha = 0.22f) else Color.Transparent, label = "seg")
+            val bg by animateColorAsState(if (sel) DuskTheme.white.copy(alpha = 0.22f) else Color.Transparent, label = "seg")
             Box(
                 Modifier.weight(1f).clip(RoundedCornerShape(9.dp)).background(bg)
-                    .clickable(role = Role.RadioButton) { onSelect(s) }.padding(vertical = 8.dp),
+                    .clickable(role = Role.RadioButton) { onSelect(s) }.padding(vertical = DuskTheme.space2),
                 contentAlignment = Alignment.Center,
-            ) { Text(label, color = Ios.Label, fontSize = 13.sp, fontWeight = if (sel) FontWeight.SemiBold else FontWeight.Normal, maxLines = 1) }
+            ) { Text(label, color = DuskTheme.onSurface, fontSize = 13.sp, fontWeight = if (sel) FontWeight.SemiBold else FontWeight.Normal, maxLines = 1) }
         }
     }
 }
 
 @Composable
 private fun Chip(text: String, selected: Boolean, onClick: () -> Unit) {
-    val bg by animateColorAsState(if (selected) Ios.Blue else Ios.CardOverWallpaper, label = "chip")
-    Box(Modifier.clip(RoundedCornerShape(50)).background(bg).clickable(onClick = onClick).padding(horizontal = 14.dp, vertical = 8.dp)) {
-        Text(text, color = Color.White, fontSize = 13.sp, fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Normal, maxLines = 1)
+    val bg by animateColorAsState(if (selected) DuskTheme.accent else DuskTheme.raisedSurface, label = "chip")
+    Box(Modifier.clip(RoundedCornerShape(50)).background(bg).clickable(onClick = onClick).padding(horizontal = DuskTheme.space3_5, vertical = DuskTheme.space2)) {
+        Text(text, color = if (selected) DuskTheme.onAccent else DuskTheme.onSurface, fontSize = 13.sp, fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Normal, maxLines = 1)
     }
 }
 
 @Composable
 private fun SortChip(text: String, selected: Boolean, onClick: () -> Unit) {
     Text(
-        text, color = if (selected) Ios.Blue else Ios.SecondaryLabel, fontSize = 12.sp, fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Normal,
-        modifier = Modifier.clip(RoundedCornerShape(50)).background(if (selected) Ios.Blue.copy(alpha = 0.15f) else Color.Transparent)
-            .clickable(onClick = onClick).padding(horizontal = 10.dp, vertical = 5.dp),
+        text, color = if (selected) DuskTheme.primary else DuskTheme.muted, fontSize = 12.sp, fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Normal,
+        modifier = Modifier.clip(RoundedCornerShape(50)).background(if (selected) DuskTheme.primary.copy(alpha = 0.15f) else Color.Transparent)
+            .clickable(onClick = onClick).padding(horizontal = DuskTheme.space2_5, vertical = 5.dp),
     )
 }
 
 @Composable
 private fun Pill(text: String, icon: androidx.compose.ui.graphics.vector.ImageVector, tint: Color, onClick: () -> Unit) {
     Row(
-        Modifier.clip(RoundedCornerShape(50)).background(Ios.CardOverWallpaper).clickable(onClick = onClick).padding(horizontal = 12.dp, vertical = 8.dp),
+        Modifier.clip(RoundedCornerShape(50)).background(DuskTheme.raisedSurface).clickable(onClick = onClick).padding(horizontal = DuskTheme.space3, vertical = DuskTheme.space2),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Icon(icon, contentDescription = null, tint = tint, modifier = Modifier.size(16.dp))
-        Spacer(Modifier.width(6.dp))
-        Text(text, color = Ios.Label, fontSize = 13.sp, maxLines = 1)
+        Icon(icon, contentDescription = null, tint = tint, modifier = Modifier.size(DuskTheme.space4))
+        Spacer(Modifier.width(DuskTheme.space1_5))
+        Text(text, color = DuskTheme.onSurface, fontSize = 13.sp, maxLines = 1)
     }
 }
 
 @Composable
 private fun PickRow(onClick: () -> Unit) {
     Row(
-        Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 6.dp)
-            .clip(RoundedCornerShape(16.dp)).background(Color(0xFF2A9D7D).copy(alpha = 0.25f))
-            .clickable(onClick = onClick).padding(horizontal = 14.dp, vertical = 11.dp),
+        Modifier.fillMaxWidth().padding(horizontal = DuskTheme.space4, vertical = DuskTheme.space1_5)
+            .clip(RoundedCornerShape(DuskTheme.space4)).background(DuskTheme.success.copy(alpha = 0.25f))
+            .clickable(onClick = onClick).padding(horizontal = DuskTheme.space3_5, vertical = 11.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Box(Modifier.size(36.dp).clip(CircleShape).background(Color.White.copy(alpha = 0.14f)), contentAlignment = Alignment.Center) { Text("⚡", fontSize = 19.sp) }
-        Spacer(Modifier.width(12.dp))
+        Box(Modifier.size(36.dp).clip(CircleShape).background(DuskTheme.white.copy(alpha = 0.14f)), contentAlignment = Alignment.Center) { Text("⚡", fontSize = 19.sp) }
+        Spacer(Modifier.width(DuskTheme.space3))
         Column(Modifier.weight(1f)) {
-            Text(tr("اتصال به سریع‌ترین", "Connect to the fastest"), color = Ios.Label, fontSize = 15.sp, fontWeight = FontWeight.SemiBold, maxLines = 1)
-            Text(tr("سالم‌ترین سرور همین شبکه؛ اگر داده رد نکرد، بعدی", "The best server on this network; the next if it carries nothing"), color = Ios.SecondaryLabel, fontSize = 12.sp, maxLines = 1)
+            Text(tr("اتصال به سریع‌ترین", "Connect to the fastest"), color = DuskTheme.onSurface, fontSize = 15.sp, fontWeight = FontWeight.SemiBold, maxLines = 1)
+            Text(tr("سالم‌ترین سرور همین شبکه؛ اگر داده رد نکرد، بعدی", "The best server on this network; the next if it carries nothing"), color = DuskTheme.muted, fontSize = 12.sp, maxLines = 1)
         }
-        Icon(Icons.Default.PowerSettingsNew, contentDescription = null, tint = Ios.Label, modifier = Modifier.size(20.dp))
+        Icon(Icons.Default.PowerSettingsNew, contentDescription = null, tint = DuskTheme.onSurface, modifier = Modifier.size(20.dp))
     }
 }
 
@@ -482,10 +486,10 @@ private fun SwipeRow(model: RowModel, onClick: () -> Unit, onLongClick: () -> Un
             if (dismiss.dismissDirection != null) {
                 val armed = dismiss.targetValue == DismissValue.DismissedToStart
                 Box(
-                    Modifier.fillMaxSize().padding(horizontal = 16.dp, vertical = 3.dp)
-                        .clip(RoundedCornerShape(16.dp)).background(if (armed) Ios.Red else Ios.Red.copy(alpha = 0.45f)).padding(horizontal = 22.dp),
+                    Modifier.fillMaxSize().padding(horizontal = DuskTheme.space4, vertical = 3.dp)
+                        .clip(RoundedCornerShape(DuskTheme.space4)).background(if (armed) DuskTheme.error else DuskTheme.error.copy(alpha = 0.45f)).padding(horizontal = 22.dp),
                     contentAlignment = Alignment.CenterEnd,
-                ) { Icon(Icons.Default.Delete, contentDescription = null, tint = Color.White) }
+                ) { Icon(Icons.Default.Delete, contentDescription = null, tint = DuskTheme.white) }
             }
         },
         dismissContent = { ServerRow(model, onClick, onLongClick, onStar) },
@@ -495,28 +499,28 @@ private fun SwipeRow(model: RowModel, onClick: () -> Unit, onLongClick: () -> Un
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun ServerRow(m: RowModel, onClick: () -> Unit, onLongClick: () -> Unit, onStar: () -> Unit) {
-    val highlight = when (m.active) { 2 -> Ios.Green.copy(alpha = 0.22f); 1 -> Ios.Orange.copy(alpha = 0.18f); else -> Color.Transparent }
+    val highlight = when (m.active) { 2 -> DuskTheme.success.copy(alpha = 0.22f); 1 -> DuskTheme.accent.copy(alpha = 0.18f); else -> Color.Transparent }
     Row(
-        Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 3.dp)
-            .clip(RoundedCornerShape(16.dp)).background(Ios.CardOverWallpaper).background(highlight)
+        Modifier.fillMaxWidth().padding(horizontal = DuskTheme.space4, vertical = 3.dp)
+            .clip(RoundedCornerShape(DuskTheme.space4)).background(DuskTheme.raisedSurface).background(highlight)
             .combinedClickable(onClick = onClick, onLongClick = onLongClick)
-            .heightIn(min = 62.dp).padding(start = 12.dp, end = 12.dp, top = 9.dp, bottom = 9.dp),
+            .heightIn(min = 62.dp).padding(start = DuskTheme.space3, end = DuskTheme.space3, top = 9.dp, bottom = 9.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Box(Modifier.size(38.dp).clip(CircleShape).background(Color.White.copy(alpha = 0.10f)), contentAlignment = Alignment.Center) {
+        Box(Modifier.size(38.dp).clip(CircleShape).background(DuskTheme.white.copy(alpha = 0.10f)), contentAlignment = Alignment.Center) {
             Text(flagOf(m.country), fontSize = 20.sp)
         }
-        Spacer(Modifier.width(10.dp))
+        Spacer(Modifier.width(DuskTheme.space2_5))
         Column(Modifier.weight(1f)) {
-            Text(m.name, color = Ios.Label, fontSize = 15.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            Text(m.name, color = DuskTheme.onSurface, fontSize = 15.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
             Spacer(Modifier.height(3.dp))
             Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(5.dp)) {
-                Tag(countryName(m.country), Ios.Teal)
-                Tag(cipherLabel(m.method), Ios.Purple)
-                if (m.mine) Tag(tr("کلید من", "Mine"), Ios.Blue)
-                if (m.shadowmere) Tag(OutlineSources.SHADOWMERE, Ios.Pink)
-                if (m.scout) Tag(tr("تأیید Scout", "Scout-proved"), Ios.Green)
-                if (m.active == 2) Tag(tr("متصل", "Connected"), Ios.Green)
+                Tag(countryName(m.country), DuskTheme.secondary)
+                Tag(cipherLabel(m.method), DuskTheme.purple)
+                if (m.mine) Tag(tr("کلید من", "Mine"), DuskTheme.primary)
+                if (m.shadowmere) Tag(OutlineSources.SHADOWMERE, DuskTheme.purple)
+                if (m.scout) Tag(tr("تأیید Scout", "Scout-proved"), DuskTheme.success)
+                if (m.active == 2) Tag(tr("متصل", "Connected"), DuskTheme.success)
             }
             Spacer(Modifier.height(2.dp))
             Text(
@@ -528,23 +532,23 @@ private fun ServerRow(m: RowModel, onClick: () -> Unit, onLongClick: () -> Unit,
                     m.speedBps?.let { speedText(it) },
                     m.testedAt.takeIf { it > 0 }?.let { tr("تست: ${ago(it)}", "tested ${ago(it)}") },
                 ).joinToString(" · "),
-                color = Ios.SecondaryLabel, fontSize = 11.sp, maxLines = 1, overflow = TextOverflow.Ellipsis,
+                color = DuskTheme.muted, fontSize = 11.sp, maxLines = 1, overflow = TextOverflow.Ellipsis,
             )
         }
-        Spacer(Modifier.width(6.dp))
+        Spacer(Modifier.width(DuskTheme.space1_5))
         Box(Modifier.widthIn(min = 60.dp), contentAlignment = Alignment.CenterEnd) {
             when {
-                m.pending -> CircularProgressIndicator(Modifier.size(16.dp), color = Ios.SecondaryLabel, strokeWidth = 2.dp)
+                m.pending -> CircularProgressIndicator(Modifier.size(DuskTheme.space4), color = DuskTheme.muted, strokeWidth = 2.dp)
                 m.status == 1 && m.ms != null -> DelayCapsule(m.ms)
-                m.status == 2 -> Text(tr("قطع", "Dead"), color = Ios.Red, fontSize = 12.sp,
-                    modifier = Modifier.clip(RoundedCornerShape(50)).background(Ios.Red.copy(alpha = 0.14f)).padding(horizontal = 9.dp, vertical = 4.dp))
-                else -> Text("—", color = Ios.SecondaryLabel, fontSize = 14.sp)
+                m.status == 2 -> Text(tr("قطع", "Dead"), color = DuskTheme.error, fontSize = 12.sp,
+                    modifier = Modifier.clip(RoundedCornerShape(50)).background(DuskTheme.error.copy(alpha = 0.14f)).padding(horizontal = 9.dp, vertical = DuskTheme.space1))
+                else -> Text("—", color = DuskTheme.muted, fontSize = 14.sp)
             }
         }
         Icon(
             if (m.fav) Icons.Default.Star else Icons.Default.StarBorder, contentDescription = tr("ستاره", "Star"),
-            tint = if (m.fav) Ios.Yellow else Ios.SecondaryLabel,
-            modifier = Modifier.padding(start = 4.dp).size(30.dp).clip(CircleShape).clickable(onClick = onStar).padding(5.dp),
+            tint = if (m.fav) DuskTheme.accent else DuskTheme.muted,
+            modifier = Modifier.padding(start = DuskTheme.space1).size(30.dp).clip(CircleShape).clickable(onClick = onStar).padding(5.dp),
         )
     }
 }

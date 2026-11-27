@@ -98,7 +98,7 @@ import com.mlmvpn.scanner.ui.amnezia.DelayCapsule
 import com.mlmvpn.scanner.ui.amnezia.fa
 import com.mlmvpn.scanner.ui.amnezia.groupFlag
 import com.mlmvpn.scanner.ui.amnezia.groupName
-import com.mlmvpn.scanner.ui.settings.Ios
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 import com.mlmvpn.scanner.ui.settings.IosScreen
 import com.mlmvpn.scanner.ui.settings.SettingsActionRow
 import com.mlmvpn.scanner.ui.settings.SettingsFooter
@@ -115,8 +115,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeoutOrNull
 import java.net.Proxy
-
-private val ProtonPurple = Color(0xFF6D4AFF)
 
 private enum class Page { MAIN, WEB }
 
@@ -244,55 +242,55 @@ private fun ProtonHome(onBack: () -> Unit, onSignIn: () -> Unit, onSignUp: () ->
     }
 
     IosScreen(onBack = onBack, backLabel = stringResource(R.string.home)) {
-        Spacer(Modifier.height(10.dp))
+        Spacer(Modifier.height(DuskTheme.space2_5))
         Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
             Image(painterResource(R.drawable.ic_app_proton), contentDescription = null, modifier = Modifier.size(84.dp))
         }
-        Spacer(Modifier.height(8.dp))
+        Spacer(Modifier.height(DuskTheme.space2))
         Text(
-            stringResource(R.string.proton_title), color = Ios.Label, fontSize = 32.sp, fontWeight = FontWeight.Bold,
+            stringResource(R.string.proton_title), color = DuskTheme.onSurface, fontSize = 32.sp, fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth(),
         )
         Text(
-            stringResource(R.string.proton_tagline), color = Ios.SecondaryLabel, fontSize = 13.sp,
-            textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp, vertical = 4.dp),
+            stringResource(R.string.proton_tagline), color = DuskTheme.muted, fontSize = 13.sp,
+            textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth().padding(horizontal = DuskTheme.space5, vertical = DuskTheme.space1),
         )
         com.mlmvpn.scanner.ui.RouteChips()
-        Spacer(Modifier.height(14.dp))
+        Spacer(Modifier.height(DuskTheme.space3_5))
 
         if (mine.isEmpty()) {
             PrimaryButton(stringResource(R.string.proton_sign_in), onClick = onSignIn)
             SettingsFooter(stringResource(R.string.proton_sign_in_footer))
             SettingsGroup {
-                SettingsActionRow(label = stringResource(R.string.proton_sign_up), icon = Icons.Default.PersonAdd, tint = ProtonPurple, onClick = onSignUp)
+                SettingsActionRow(label = stringResource(R.string.proton_sign_up), icon = Icons.Default.PersonAdd, tint = DuskTheme.purple, onClick = onSignUp)
             }
         } else {
-            Spacer(Modifier.height(10.dp))
+            Spacer(Modifier.height(DuskTheme.space2_5))
             if (helperOn && !switching) {
                 SettingsGroup {
                     SettingsRow(
                         title = stringResource(R.string.proton_helper_on), subtitle = stringResource(R.string.proton_helper_on_sub),
-                        icon = Icons.Default.Bolt, tint = Ios.Orange, showChevron = false,
+                        icon = Icons.Default.Bolt, tint = DuskTheme.accent, showChevron = false,
                     )
                 }
-                Spacer(Modifier.height(10.dp))
-                PrimaryButton(stringResource(R.string.proton_switch_now), tone = Ios.Orange) { ProtonEngine.switchToProton(context) }
+                Spacer(Modifier.height(DuskTheme.space2_5))
+                PrimaryButton(stringResource(R.string.proton_switch_now), tone = DuskTheme.accent) { ProtonEngine.switchToProton(context) }
                 Spacer(Modifier.height(18.dp))
             } else {
                 PrimaryButton(
                     stringResource(when { busy -> R.string.proton_cancel; connected -> R.string.proton_disconnect; else -> R.string.proton_connect }),
-                    tone = when { connected -> Ios.Green; busy -> Ios.Orange; else -> ProtonPurple },
+                    tone = when { connected -> DuskTheme.success; busy -> DuskTheme.accent; else -> DuskTheme.purple },
                 ) {
                     if (connected || busy) ProtonEngine.disconnect(context) else withVpn { ProtonEngine.connect(context) }
                 }
-                Spacer(Modifier.height(12.dp))
+                Spacer(Modifier.height(DuskTheme.space3))
             }
             val byId = remember(mine) { mine.associateBy { it.id } }
             Text(
                 if (switching) stringResource(R.string.proton_switching) else statusText(conn, ours, activeId?.let { byId[it] }),
-                color = if (ours && conn is AmzConnect.Failed) Ios.Orange else Ios.SecondaryLabel,
+                color = if (ours && conn is AmzConnect.Failed) DuskTheme.accent else DuskTheme.muted,
                 fontSize = 14.sp, textAlign = TextAlign.Center,
-                modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp),
+                modifier = Modifier.fillMaxWidth().padding(horizontal = DuskTheme.space5),
             )
 
             SettingsSectionHeader(stringResource(R.string.proton_servers))
@@ -301,7 +299,7 @@ private fun ProtonHome(onBack: () -> Unit, onSignIn: () -> Unit, onSignUp: () ->
                 // runs it shows how far it is, how many answered, and which way it is trying.
                 if (progress.running && protonPinging) PingProgress(progress) else SettingsActionRow(
                     label = stringResource(R.string.proton_ping_all),
-                    icon = Icons.Default.Speed, tint = Ios.Green,
+                    icon = Icons.Default.Speed, tint = DuskTheme.success,
                 ) { ProtonEngine.pingAll(context) }
                 sorted.forEach { s ->
                     Separator()
@@ -316,19 +314,19 @@ private fun ProtonHome(onBack: () -> Unit, onSignIn: () -> Unit, onSignUp: () ->
                     )
                 }
                 Separator()
-                SettingsActionRow(label = stringResource(R.string.proton_add_more), icon = Icons.Default.AddCircle, tint = ProtonPurple, onClick = onSignIn)
+                SettingsActionRow(label = stringResource(R.string.proton_add_more), icon = Icons.Default.AddCircle, tint = DuskTheme.purple, onClick = onSignIn)
             }
             SettingsFooter(stringResource(R.string.proton_free_footer))
         }
 
         SettingsSectionHeader(stringResource(R.string.proton_fallback_title))
         SettingsGroup {
-            SettingsActionRow(label = stringResource(R.string.proton_open_browser), icon = Icons.Default.OpenInBrowser, tint = Ios.Blue) { openInBrowser(context) }
+            SettingsActionRow(label = stringResource(R.string.proton_open_browser), icon = Icons.Default.OpenInBrowser, tint = DuskTheme.primary) { openInBrowser(context) }
             Separator()
-            SettingsActionRow(label = stringResource(R.string.proton_pick_file), icon = Icons.Default.FileOpen, tint = Ios.Teal, onClick = pickFile)
+            SettingsActionRow(label = stringResource(R.string.proton_pick_file), icon = Icons.Default.FileOpen, tint = DuskTheme.secondary, onClick = pickFile)
             if (mine.isNotEmpty() || signedIn) {
                 Separator()
-                SettingsActionRow(label = stringResource(R.string.proton_sign_out), icon = Icons.Default.Logout, tint = Ios.Red) { askSignOut = true }
+                SettingsActionRow(label = stringResource(R.string.proton_sign_out), icon = Icons.Default.Logout, tint = DuskTheme.error) { askSignOut = true }
             }
         }
         // Signing out takes the account's servers out of the list too, so it is asked first.
@@ -363,24 +361,24 @@ private fun ProtonHome(onBack: () -> Unit, onSignIn: () -> Unit, onSignUp: () ->
 /** «تست ۲۳ از ۱۱۱ · ۸ سالم», a bar, the way being tried, and Stop. */
 @Composable
 private fun PingProgress(progress: com.mlmvpn.scanner.engines.amnezia.AmzTestProgress) {
-    Column(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 12.dp)) {
+    Column(Modifier.fillMaxWidth().padding(horizontal = DuskTheme.space4, vertical = DuskTheme.space3)) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text(
                 stringResource(R.string.amz_testing, fa(progress.done.toString()), fa(progress.total.toString()), fa(progress.alive.toString())),
-                color = Ios.Label, fontSize = 15.sp, modifier = Modifier.weight(1f),
+                color = DuskTheme.onSurface, fontSize = 15.sp, modifier = Modifier.weight(1f),
             )
             Text(
-                stringResource(R.string.amz_stop), color = Ios.Red, fontSize = 15.sp, fontWeight = FontWeight.SemiBold,
-                modifier = Modifier.clip(RoundedCornerShape(8.dp)).clickable { AmzEngine.stopTest() }.padding(horizontal = 8.dp, vertical = 4.dp),
+                stringResource(R.string.amz_stop), color = DuskTheme.error, fontSize = 15.sp, fontWeight = FontWeight.SemiBold,
+                modifier = Modifier.clip(RoundedCornerShape(DuskTheme.space2)).clickable { AmzEngine.stopTest() }.padding(horizontal = DuskTheme.space2, vertical = DuskTheme.space1),
             )
         }
-        Spacer(Modifier.height(10.dp))
+        Spacer(Modifier.height(DuskTheme.space2_5))
         LinearProgressIndicator(
             progress = if (progress.total > 0) progress.done.toFloat() / progress.total else 0f,
-            color = Ios.Green, trackColor = Color.White.copy(alpha = 0.15f),
-            modifier = Modifier.fillMaxWidth().height(4.dp).clip(RoundedCornerShape(2.dp)),
+            color = DuskTheme.success, trackColor = DuskTheme.white.copy(alpha = 0.15f),
+            modifier = Modifier.fillMaxWidth().height(DuskTheme.space1).clip(RoundedCornerShape(2.dp)),
         )
-        Spacer(Modifier.height(8.dp))
+        Spacer(Modifier.height(DuskTheme.space2))
         Text(
             stringResource(when (progress.via) {
                 "u6" -> R.string.proton_ping_via_u6
@@ -391,7 +389,7 @@ private fun PingProgress(progress: com.mlmvpn.scanner.engines.amnezia.AmzTestPro
                 "all" -> R.string.proton_ping_via_all
                 else -> R.string.proton_ping_starting
             }),
-            color = Ios.SecondaryLabel, fontSize = 13.sp,
+            color = DuskTheme.muted, fontSize = 13.sp,
         )
     }
 }
@@ -400,27 +398,27 @@ private fun PingProgress(progress: com.mlmvpn.scanner.engines.amnezia.AmzTestPro
 private fun ServerRow(server: AmzServer, active: Boolean, ms: Long?, testing: Boolean, failed: Boolean, onClick: () -> Unit, onDelete: () -> Unit) {
     val key = AmzBrain.group(server)
     Row(
-        Modifier.fillMaxWidth().clickable(onClick = onClick).heightIn(min = 60.dp).padding(start = 16.dp, end = 6.dp, top = 8.dp, bottom = 8.dp),
+        Modifier.fillMaxWidth().clickable(onClick = onClick).heightIn(min = 60.dp).padding(start = DuskTheme.space4, end = DuskTheme.space1_5, top = DuskTheme.space2, bottom = DuskTheme.space2),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Box(Modifier.size(38.dp).clip(CircleShape).background(Color.White.copy(alpha = 0.12f)), contentAlignment = Alignment.Center) {
+        Box(Modifier.size(38.dp).clip(CircleShape).background(DuskTheme.white.copy(alpha = 0.12f)), contentAlignment = Alignment.Center) {
             Text(groupFlag(key), fontSize = 20.sp)
         }
-        Spacer(Modifier.width(12.dp))
+        Spacer(Modifier.width(DuskTheme.space3))
         Column(Modifier.weight(1f)) {
-            Text(server.name, color = if (active) Ios.Green else Ios.Label, fontSize = 16.sp, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
-            Text(groupName(key), color = Ios.SecondaryLabel, fontSize = 12.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            Text(server.name, color = if (active) DuskTheme.success else DuskTheme.onSurface, fontSize = 16.sp, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            Text(groupName(key), color = DuskTheme.muted, fontSize = 12.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
         }
         when {
-            testing -> Text("…", color = Ios.SecondaryLabel, fontSize = 16.sp)
+            testing -> Text("…", color = DuskTheme.muted, fontSize = 16.sp)
             ms != null -> DelayCapsule(ms)
-            failed -> Text("—", color = Ios.Red, fontSize = 16.sp)
+            failed -> Text("—", color = DuskTheme.error, fontSize = 16.sp)
         }
-        Spacer(Modifier.width(4.dp))
+        Spacer(Modifier.width(DuskTheme.space1))
         Box(
             Modifier.size(40.dp).clip(CircleShape).semantics { contentDescription = "delete" }.clickable(role = Role.Button, onClick = onDelete),
             contentAlignment = Alignment.Center,
-        ) { Icon(Icons.Default.Close, contentDescription = null, tint = Ios.SecondaryLabel, modifier = Modifier.size(18.dp)) }
+        ) { Icon(Icons.Default.Close, contentDescription = null, tint = DuskTheme.muted, modifier = Modifier.size(18.dp)) }
     }
 }
 
@@ -453,15 +451,15 @@ private fun statusText(conn: AmzConnect, ours: Boolean, server: AmzServer?): Str
 }
 
 @Composable
-private fun PrimaryButton(label: String, tone: Color = ProtonPurple, onClick: () -> Unit) {
+private fun PrimaryButton(label: String, tone: Color = DuskTheme.purple, onClick: () -> Unit) {
     Box(
-        Modifier.fillMaxWidth().padding(horizontal = 16.dp).clip(RoundedCornerShape(12.dp))
-            .background(tone)
+        Modifier.fillMaxWidth().padding(horizontal = DuskTheme.space4).clip(RoundedCornerShape(DuskTheme.space3))
+            .background(tone.copy(alpha = 0.22f))
             .clickable(role = Role.Button, onClick = onClick)
             .padding(vertical = 13.dp),
         contentAlignment = Alignment.Center,
     ) {
-        Text(label, color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
+        Text(label, color = DuskTheme.onSurface, fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
     }
 }
 
@@ -695,18 +693,18 @@ private fun ProtonWebPage(url: String, onBack: () -> Unit, onDone: (switch: Bool
                 else -> {
                     Column(Modifier.fillMaxSize()) {
                         Text(
-                            stringResource(R.string.proton_web_hint), color = Ios.SecondaryLabel, fontSize = 13.sp, textAlign = TextAlign.Center,
-                            modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 6.dp),
+                            stringResource(R.string.proton_web_hint), color = DuskTheme.muted, fontSize = 13.sp, textAlign = TextAlign.Center,
+                            modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = DuskTheme.space1_5),
                         )
                         if (lost) {
                             Text(
-                                stringResource(R.string.proton_route_lost), color = Ios.Orange, fontSize = 13.sp, textAlign = TextAlign.Center,
-                                modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 4.dp),
+                                stringResource(R.string.proton_route_lost), color = DuskTheme.accent, fontSize = 13.sp, textAlign = TextAlign.Center,
+                                modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = DuskTheme.space1),
                             )
                         }
                         if (progress in 1..99) {
                             LinearProgressIndicator(
-                                progress = progress / 100f, color = ProtonPurple, trackColor = Color.White.copy(alpha = 0.12f),
+                                progress = progress / 100f, color = DuskTheme.purple, trackColor = DuskTheme.white.copy(alpha = 0.12f),
                                 modifier = Modifier.fillMaxWidth().height(3.dp),
                             )
                         }
@@ -788,26 +786,26 @@ private fun ProtonWebPage(url: String, onBack: () -> Unit, onDone: (switch: Bool
                             )
                             if (failed != null) {
                                 Column(
-                                    Modifier.fillMaxSize().background(Ios.Background).padding(24.dp),
+                                    Modifier.fillMaxSize().background(DuskTheme.background).padding(DuskTheme.space5),
                                     verticalArrangement = androidx.compose.foundation.layout.Arrangement.Center,
                                     horizontalAlignment = Alignment.CenterHorizontally,
                                 ) {
-                                    Text(stringResource(R.string.proton_page_failed), color = Ios.Label, fontSize = 16.sp, fontWeight = FontWeight.SemiBold, textAlign = TextAlign.Center)
-                                    Text(failed.orEmpty(), color = Ios.SecondaryLabel, fontSize = 12.sp, textAlign = TextAlign.Center, modifier = Modifier.padding(top = 4.dp))
-                                    Spacer(Modifier.height(14.dp))
+                                    Text(stringResource(R.string.proton_page_failed), color = DuskTheme.onSurface, fontSize = 16.sp, fontWeight = FontWeight.SemiBold, textAlign = TextAlign.Center)
+                                    Text(failed.orEmpty(), color = DuskTheme.muted, fontSize = 12.sp, textAlign = TextAlign.Center, modifier = Modifier.padding(top = DuskTheme.space1))
+                                    Spacer(Modifier.height(DuskTheme.space3_5))
                                     PrimaryButton(stringResource(R.string.proton_retry)) { failed = null; autoReloads = 0; web[0]?.loadUrl(url) }
                                 }
                             } else if (blank) {
                                 Column(
-                                    Modifier.align(Alignment.BottomCenter).fillMaxWidth().background(Ios.Background.copy(alpha = 0.94f)).padding(12.dp),
+                                    Modifier.align(Alignment.BottomCenter).fillMaxWidth().background(DuskTheme.background.copy(alpha = 0.94f)).padding(DuskTheme.space3),
                                     horizontalAlignment = Alignment.CenterHorizontally,
                                 ) {
-                                    Text(stringResource(R.string.proton_blank), color = Ios.Label, fontSize = 14.sp, fontWeight = FontWeight.SemiBold, textAlign = TextAlign.Center)
-                                    errs.forEach { Text(it, color = Ios.SecondaryLabel, fontSize = 11.sp, textAlign = TextAlign.Center, maxLines = 2, overflow = TextOverflow.Ellipsis, modifier = Modifier.padding(top = 2.dp)) }
-                                    Spacer(Modifier.height(8.dp))
-                                    Row(horizontalArrangement = androidx.compose.foundation.layout.Arrangement.spacedBy(8.dp)) {
+                                    Text(stringResource(R.string.proton_blank), color = DuskTheme.onSurface, fontSize = 14.sp, fontWeight = FontWeight.SemiBold, textAlign = TextAlign.Center)
+                                    errs.forEach { Text(it, color = DuskTheme.muted, fontSize = 11.sp, textAlign = TextAlign.Center, maxLines = 2, overflow = TextOverflow.Ellipsis, modifier = Modifier.padding(top = 2.dp)) }
+                                    Spacer(Modifier.height(DuskTheme.space2))
+                                    Row(horizontalArrangement = androidx.compose.foundation.layout.Arrangement.spacedBy(DuskTheme.space2)) {
                                         Box(Modifier.weight(1f)) { PrimaryButton(stringResource(R.string.proton_reload)) { blank = false; web[0]?.reload() } }
-                                        Box(Modifier.weight(1f)) { PrimaryButton(stringResource(R.string.proton_open_browser), tone = Ios.Blue) { openInBrowser(context) } }
+                                        Box(Modifier.weight(1f)) { PrimaryButton(stringResource(R.string.proton_open_browser), tone = DuskTheme.primary) { openInBrowser(context) } }
                                     }
                                 }
                             }
@@ -817,21 +815,21 @@ private fun ProtonWebPage(url: String, onBack: () -> Unit, onDone: (switch: Bool
             }
         }
         if (check == Check.READY || got > 0) {
-            Column(Modifier.fillMaxWidth().background(Ios.Background).padding(horizontal = 16.dp, vertical = 8.dp)) {
+            Column(Modifier.fillMaxWidth().background(DuskTheme.background).padding(horizontal = DuskTheme.space4, vertical = DuskTheme.space2)) {
                 val outcome = taken
                 when {
                     taking -> Row(
-                        Modifier.fillMaxWidth().padding(bottom = 6.dp),
+                        Modifier.fillMaxWidth().padding(bottom = DuskTheme.space1_5),
                         horizontalArrangement = androidx.compose.foundation.layout.Arrangement.Center,
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
-                        CircularProgressIndicator(color = ProtonPurple, strokeWidth = 2.dp, modifier = Modifier.size(16.dp))
-                        Spacer(Modifier.width(8.dp))
-                        Text(stringResource(R.string.proton_taking), color = Ios.SecondaryLabel, fontSize = 13.sp)
+                        CircularProgressIndicator(color = DuskTheme.purple, strokeWidth = 2.dp, modifier = Modifier.size(DuskTheme.space4))
+                        Spacer(Modifier.width(DuskTheme.space2))
+                        Text(stringResource(R.string.proton_taking), color = DuskTheme.muted, fontSize = 13.sp)
                     }
                     got > 0 -> Text(
-                        stringResource(R.string.proton_got_servers, fa(got)), color = Ios.Green, fontSize = 13.sp,
-                        textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth().padding(bottom = 6.dp),
+                        stringResource(R.string.proton_got_servers, fa(got)), color = DuskTheme.success, fontSize = 13.sp,
+                        textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth().padding(bottom = DuskTheme.space1_5),
                     )
                     outcome != null && outcome !is ProtonApi.Outcome.Got -> Text(
                         when (outcome) {
@@ -841,13 +839,13 @@ private fun ProtonWebPage(url: String, onBack: () -> Unit, onDone: (switch: Bool
                             is ProtonApi.Outcome.Failed -> stringResource(R.string.proton_take_failed, outcome.detail.take(120))
                             is ProtonApi.Outcome.Got -> ""
                         },
-                        color = Ios.Orange, fontSize = 13.sp,
-                        textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth().padding(bottom = 6.dp),
+                        color = DuskTheme.accent, fontSize = 13.sp,
+                        textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth().padding(bottom = DuskTheme.space1_5),
                     )
                 }
                 PrimaryButton(
                     stringResource(if (via != null && got > 0) R.string.proton_done_switch else R.string.proton_done),
-                    tone = if (got > 0) ProtonPurple else Ios.Gray,
+                    tone = if (got > 0) DuskTheme.purple else DuskTheme.muted,
                 ) {
                     when {
                         got > 0 -> onDone(via != null)
@@ -903,8 +901,8 @@ private const val AUTO_RELOADS = 2
 
 @Composable
 private fun Message(text: String) {
-    Box(Modifier.fillMaxSize().padding(24.dp), contentAlignment = Alignment.Center) {
-        Text(text, color = Ios.SecondaryLabel, fontSize = 15.sp, textAlign = TextAlign.Center)
+    Box(Modifier.fillMaxSize().padding(DuskTheme.space5), contentAlignment = Alignment.Center) {
+        Text(text, color = DuskTheme.muted, fontSize = 15.sp, textAlign = TextAlign.Center)
     }
 }
 
@@ -933,17 +931,17 @@ private fun HelperProgress(
         else -> stringResource(R.string.proton_wait_starting)
     }
     Column(
-        Modifier.fillMaxSize().padding(24.dp),
+        Modifier.fillMaxSize().padding(DuskTheme.space5),
         verticalArrangement = androidx.compose.foundation.layout.Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        CircularProgressIndicator(color = ProtonPurple, modifier = Modifier.size(44.dp))
-        Spacer(Modifier.height(16.dp))
-        Text(stringResource(R.string.proton_wait_title, name), color = Ios.Label, fontSize = 17.sp, fontWeight = FontWeight.SemiBold, textAlign = TextAlign.Center)
-        Spacer(Modifier.height(6.dp))
-        Text(line, color = Ios.SecondaryLabel, fontSize = 13.sp, textAlign = TextAlign.Center)
+        CircularProgressIndicator(color = DuskTheme.purple, modifier = Modifier.size(44.dp))
+        Spacer(Modifier.height(DuskTheme.space4))
+        Text(stringResource(R.string.proton_wait_title, name), color = DuskTheme.onSurface, fontSize = 17.sp, fontWeight = FontWeight.SemiBold, textAlign = TextAlign.Center)
+        Spacer(Modifier.height(DuskTheme.space1_5))
+        Text(line, color = DuskTheme.muted, fontSize = 13.sp, textAlign = TextAlign.Center)
         Spacer(Modifier.height(20.dp))
-        Box(Modifier.width(220.dp)) { PrimaryButton(stringResource(R.string.proton_cancel), tone = Ios.Gray, onClick = onCancel) }
+        Box(Modifier.width(220.dp)) { PrimaryButton(stringResource(R.string.proton_cancel), tone = DuskTheme.muted, onClick = onCancel) }
     }
 }
 
@@ -957,10 +955,10 @@ private fun HelperChooser(
     engineFailed: Boolean, afterBlockedRoute: Boolean, proxyUnsupported: Boolean,
 ) {
     val context = LocalContext.current
-    Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(top = 8.dp)) {
+    Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(top = DuskTheme.space2)) {
         Text(
-            stringResource(R.string.proton_blocked_title), color = Ios.Label, fontSize = 17.sp, fontWeight = FontWeight.SemiBold,
-            textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp),
+            stringResource(R.string.proton_blocked_title), color = DuskTheme.onSurface, fontSize = 17.sp, fontWeight = FontWeight.SemiBold,
+            textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth().padding(horizontal = DuskTheme.space5),
         )
         Text(
             stringResource(when {
@@ -969,33 +967,33 @@ private fun HelperChooser(
                 afterBlockedRoute -> R.string.proton_helper_up_failed
                 else -> R.string.proton_blocked_body
             }),
-            color = if (engineFailed) Ios.Orange else Ios.SecondaryLabel, fontSize = 13.sp, textAlign = TextAlign.Center,
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp, vertical = 8.dp),
+            color = if (engineFailed) DuskTheme.accent else DuskTheme.muted, fontSize = 13.sp, textAlign = TextAlign.Center,
+            modifier = Modifier.fillMaxWidth().padding(horizontal = DuskTheme.space5, vertical = DuskTheme.space2),
         )
         if (!proxyUnsupported) {
             SettingsGroup {
                 SettingsRow(
                     title = stringResource(R.string.proton_helper_flux), subtitle = stringResource(R.string.proton_helper_flux_sub),
-                    icon = Icons.Default.Bolt, tint = Ios.Indigo,
+                    icon = Icons.Default.Bolt, tint = DuskTheme.indigo,
                     onClick = { onPick(ProtonAccess.Helper.FLUX) })
                 Separator()
                 SettingsRow(
                     title = stringResource(R.string.proton_helper_tor), subtitle = stringResource(R.string.proton_helper_tor_sub),
-                    icon = Icons.Default.Shield, tint = Ios.Purple,
+                    icon = Icons.Default.Shield, tint = DuskTheme.purple,
                     onClick = { onPick(ProtonAccess.Helper.TOR) })
                 Separator()
                 SettingsRow(
                     title = stringResource(R.string.proton_helper_wg), subtitle = stringResource(R.string.proton_helper_wg_sub),
-                    icon = Icons.Default.VpnKey, tint = Ios.Green,
+                    icon = Icons.Default.VpnKey, tint = DuskTheme.success,
                     onClick = { onPick(ProtonAccess.Helper.WIREGUARD) })
             }
             SettingsFooter(stringResource(R.string.proton_helper_other))
         }
         SettingsGroup {
-            SettingsActionRow(label = stringResource(R.string.proton_retry), icon = Icons.Default.Refresh, tint = ProtonPurple, onClick = onRetry)
+            SettingsActionRow(label = stringResource(R.string.proton_retry), icon = Icons.Default.Refresh, tint = DuskTheme.purple, onClick = onRetry)
             Separator()
-            SettingsActionRow(label = stringResource(R.string.proton_open_browser), icon = Icons.Default.OpenInBrowser, tint = Ios.Blue) { openInBrowser(context) }
+            SettingsActionRow(label = stringResource(R.string.proton_open_browser), icon = Icons.Default.OpenInBrowser, tint = DuskTheme.primary) { openInBrowser(context) }
         }
-        Spacer(Modifier.height(24.dp))
+        Spacer(Modifier.height(DuskTheme.space5))
     }
 }

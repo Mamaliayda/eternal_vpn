@@ -4,7 +4,6 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
-import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.expandVertically
@@ -66,6 +65,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -93,7 +93,8 @@ import com.mlmvpn.scanner.engines.amnezia.AmzServer
 import com.mlmvpn.scanner.engines.amnezia.AmzStat
 import com.mlmvpn.scanner.engines.amnezia.AmzState
 import com.mlmvpn.scanner.engines.amnezia.AmzTestMode
-import com.mlmvpn.scanner.ui.settings.Ios
+import com.mlmvpn.scanner.ui.theme.DuskTheme
+import com.mlmvpn.scanner.ui.theme.LocalDuskSnackbarHostState
 import com.mlmvpn.scanner.ui.settings.IosRefreshIndicator
 import com.mlmvpn.scanner.ui.settings.IosScreen
 import com.mlmvpn.scanner.ui.settings.SettingsActionRow
@@ -101,6 +102,7 @@ import com.mlmvpn.scanner.ui.settings.rememberIosRefreshState
 import com.mlmvpn.scanner.utils.S
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 
 /** Which protocols the list shows. */
 private enum class Seg { ALL, HY2, WG, MINE }
@@ -148,6 +150,8 @@ internal fun AmzServersScreen(
     onPaste: () -> Unit,
 ) {
     val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+    val snackbarHostState = LocalDuskSnackbarHostState.current
     val state by AmzEngine.store.state.collectAsState()
     val net by AmzEngine.net.collectAsState()
     val pending by AmzEngine.pending.collectAsState()
@@ -209,7 +213,7 @@ internal fun AmzServersScreen(
         LazyColumn(
             state = listState,
             modifier = Modifier.fillMaxWidth().weight(1f).nestedScroll(refresh.connection),
-            contentPadding = PaddingValues(bottom = 32.dp),
+            contentPadding = PaddingValues(bottom = DuskTheme.space6),
         ) {
             item(key = "refresh", contentType = "refresh") { IosRefreshIndicator(refresh) }
             item(key = "search", contentType = "search") { SearchBar(query) { query = it } }
@@ -239,8 +243,8 @@ internal fun AmzServersScreen(
                 item(key = "empty", contentType = "empty") {
                     Text(
                         stringResource(if (state.servers.isEmpty()) R.string.amz_empty else R.string.amz_empty_filter),
-                        color = Ios.SecondaryLabel, fontSize = 14.sp, textAlign = TextAlign.Center, lineHeight = 22.sp,
-                        modifier = Modifier.fillMaxWidth().padding(horizontal = 32.dp, vertical = 40.dp),
+                        color = DuskTheme.muted, fontSize = 14.sp, textAlign = TextAlign.Center, lineHeight = 22.sp,
+                        modifier = Modifier.fillMaxWidth().padding(horizontal = DuskTheme.space6, vertical = 40.dp),
                     )
                 }
             }
@@ -277,11 +281,11 @@ internal fun AmzServersScreen(
 
     if (showAdd) {
         ActionSheet(title = stringResource(R.string.amz_add_title), onDismiss = { showAdd = false }) {
-            SettingsActionRow(label = stringResource(R.string.amz_add_file), icon = Icons.Default.FileOpen, tint = Ios.Blue) { showAdd = false; onAddFile() }
+            SettingsActionRow(label = stringResource(R.string.amz_add_file), icon = Icons.Default.FileOpen, tint = DuskTheme.primary) { showAdd = false; onAddFile() }
             Separator()
-            SettingsActionRow(label = stringResource(R.string.amz_paste), icon = Icons.Default.ContentPaste, tint = Ios.Teal) { showAdd = false; onPaste() }
+            SettingsActionRow(label = stringResource(R.string.amz_paste), icon = Icons.Default.ContentPaste, tint = DuskTheme.secondary) { showAdd = false; onPaste() }
             Separator()
-            SettingsActionRow(label = stringResource(R.string.amz_refresh), icon = Icons.Default.Refresh, tint = Ios.Orange, busy = refreshing) {
+            SettingsActionRow(label = stringResource(R.string.amz_refresh), icon = Icons.Default.Refresh, tint = DuskTheme.accent, busy = refreshing) {
                 showAdd = false; AmzEngine.refresh(force = true)
             }
         }
@@ -291,18 +295,18 @@ internal fun AmzServersScreen(
         val sv = byId[id]
         if (sv == null) { menuFor = null } else {
             ActionSheet(title = "${groupFlag(AmzBrain.group(sv))}  ${sv.name}", onDismiss = { menuFor = null }) {
-                SettingsActionRow(label = stringResource(R.string.amz_connect), icon = Icons.Default.PowerSettingsNew, tint = Ios.Green) {
+                SettingsActionRow(label = stringResource(R.string.amz_connect), icon = Icons.Default.PowerSettingsNew, tint = DuskTheme.success) {
                     menuFor = null; onPicked(AmzEngine.Target.Server(id))
                 }
                 Separator()
-                SettingsActionRow(label = stringResource(R.string.amz_menu_test), icon = Icons.Default.Speed, tint = Ios.Indigo) {
+                SettingsActionRow(label = stringResource(R.string.amz_menu_test), icon = Icons.Default.Speed, tint = DuskTheme.indigo) {
                     menuFor = null; AmzEngine.testOne(id)
                 }
                 Separator()
                 SettingsActionRow(label = stringResource(R.string.amz_menu_copy), icon = Icons.Default.ContentCopy) {
                     menuFor = null
                     (context.getSystemService(Context.CLIPBOARD_SERVICE) as? ClipboardManager)?.setPrimaryClip(ClipData.newPlainText("config", sv.raw))
-                    Toast.makeText(context, S(R.string.amz_copied), Toast.LENGTH_SHORT).show()
+                    scope.launch { snackbarHostState.showSnackbar(S(R.string.amz_copied)) }
                 }
                 Separator()
                 SettingsActionRow(label = stringResource(R.string.amz_menu_share), icon = Icons.Default.Share) {
@@ -315,7 +319,7 @@ internal fun AmzServersScreen(
                     }
                 }
                 Separator()
-                SettingsActionRow(label = stringResource(R.string.amz_menu_delete), icon = Icons.Default.Delete, tint = Ios.Red) {
+                SettingsActionRow(label = stringResource(R.string.amz_menu_delete), icon = Icons.Default.Delete, tint = DuskTheme.error) {
                     menuFor = null; AmzEngine.delete(listOf(id))
                 }
             }
@@ -362,22 +366,22 @@ private fun sections(servers: List<AmzServer>, state: AmzState, net: String, chi
 @Composable
 private fun SearchBar(query: String, onChange: (String) -> Unit) {
     Row(
-        Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 6.dp)
-            .clip(RoundedCornerShape(12.dp)).background(Ios.CardOverWallpaper).padding(horizontal = 10.dp, vertical = 9.dp),
+        Modifier.fillMaxWidth().padding(horizontal = DuskTheme.space4, vertical = DuskTheme.space1_5)
+            .clip(RoundedCornerShape(DuskTheme.space3)).background(DuskTheme.raisedSurface).padding(horizontal = DuskTheme.space2_5, vertical = 9.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Icon(Icons.Default.Search, contentDescription = null, tint = Ios.SecondaryLabel, modifier = Modifier.size(18.dp))
-        Spacer(Modifier.width(8.dp))
+        Icon(Icons.Default.Search, contentDescription = null, tint = DuskTheme.muted, modifier = Modifier.size(18.dp))
+        Spacer(Modifier.width(DuskTheme.space2))
         Box(Modifier.weight(1f)) {
-            if (query.isEmpty()) Text(stringResource(R.string.amz_search), color = Ios.SecondaryLabel, fontSize = 16.sp)
+            if (query.isEmpty()) Text(stringResource(R.string.amz_search), color = DuskTheme.muted, fontSize = 16.sp)
             BasicTextField(
                 value = query, onValueChange = onChange, singleLine = true,
-                textStyle = TextStyle(color = Ios.Label, fontSize = 16.sp), cursorBrush = SolidColor(Ios.Blue),
+                textStyle = TextStyle(color = DuskTheme.onSurface, fontSize = 16.sp), cursorBrush = SolidColor(DuskTheme.primary),
                 modifier = Modifier.fillMaxWidth(),
             )
         }
         if (query.isNotEmpty()) {
-            Icon(Icons.Default.Close, contentDescription = null, tint = Ios.SecondaryLabel,
+            Icon(Icons.Default.Close, contentDescription = null, tint = DuskTheme.muted,
                 modifier = Modifier.size(18.dp).clip(CircleShape).clickable { onChange("") })
         }
     }
@@ -392,20 +396,20 @@ private fun Segmented(seg: Seg, onSelect: (Seg) -> Unit) {
         Seg.MINE to stringResource(R.string.amz_seg_mine),
     )
     Row(
-        Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 6.dp)
-            .clip(RoundedCornerShape(11.dp)).background(Ios.CardOverWallpaper).padding(3.dp),
+        Modifier.fillMaxWidth().padding(horizontal = DuskTheme.space4, vertical = DuskTheme.space1_5)
+            .clip(RoundedCornerShape(11.dp)).background(DuskTheme.raisedSurface).padding(3.dp),
         horizontalArrangement = Arrangement.spacedBy(3.dp),
     ) {
         options.forEach { (s, label) ->
             val sel = s == seg
-            val bg by animateColorAsState(if (sel) Color.White.copy(alpha = 0.22f) else Color.Transparent, label = "seg")
+            val bg by animateColorAsState(if (sel) DuskTheme.white.copy(alpha = 0.22f) else Color.Transparent, label = "seg")
             Box(
                 Modifier.weight(1f).clip(RoundedCornerShape(9.dp)).background(bg)
                     .clickable(role = Role.RadioButton) { onSelect(s) }
-                    .padding(vertical = 8.dp),
+                    .padding(vertical = DuskTheme.space2),
                 contentAlignment = Alignment.Center,
             ) {
-                Text(label, color = Ios.Label, fontSize = 13.sp, fontWeight = if (sel) FontWeight.SemiBold else FontWeight.Normal, maxLines = 1)
+                Text(label, color = DuskTheme.onSurface, fontSize = 13.sp, fontWeight = if (sel) FontWeight.SemiBold else FontWeight.Normal, maxLines = 1)
             }
         }
     }
@@ -414,8 +418,8 @@ private fun Segmented(seg: Seg, onSelect: (Seg) -> Unit) {
 @Composable
 private fun GroupChips(groups: List<Pair<String, Int>>, selected: String, onSelect: (String) -> Unit) {
     LazyRow(
-        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 6.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        contentPadding = PaddingValues(horizontal = DuskTheme.space4, vertical = DuskTheme.space1_5),
+        horizontalArrangement = Arrangement.spacedBy(DuskTheme.space2),
     ) {
         item(key = CHIP_FAST) { Chip("⚡ " + stringResource(R.string.amz_chip_fastest), selected == CHIP_FAST) { onSelect(CHIP_FAST) } }
         item(key = CHIP_ALL) { Chip(stringResource(R.string.amz_chip_all_countries), selected == CHIP_ALL) { onSelect(CHIP_ALL) } }
@@ -427,12 +431,12 @@ private fun GroupChips(groups: List<Pair<String, Int>>, selected: String, onSele
 
 @Composable
 private fun Chip(text: String, selected: Boolean, onClick: () -> Unit) {
-    val bg by animateColorAsState(if (selected) Ios.Blue else Ios.CardOverWallpaper, label = "chip")
+    val bg by animateColorAsState(if (selected) DuskTheme.accent else DuskTheme.raisedSurface, label = "chip")
     Box(
         Modifier.clip(RoundedCornerShape(50)).background(bg).clickable(onClick = onClick)
-            .padding(horizontal = 14.dp, vertical = 8.dp),
+            .padding(horizontal = DuskTheme.space3_5, vertical = DuskTheme.space2),
     ) {
-        Text(text, color = Color.White, fontSize = 13.sp, fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Normal, maxLines = 1)
+        Text(text, color = if (selected) DuskTheme.onAccent else DuskTheme.onSurface, fontSize = 13.sp, fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Normal, maxLines = 1)
     }
 }
 
@@ -442,43 +446,43 @@ private fun TestBar(
     onBest: () -> Unit, onAll: () -> Unit, onGroup: (String) -> Unit, onDead: () -> Unit, onStop: () -> Unit,
     cf: Boolean = false,
 ) {
-    Column(Modifier.fillMaxWidth().padding(vertical = 6.dp)) {
+    Column(Modifier.fillMaxWidth().padding(vertical = DuskTheme.space1_5)) {
         AnimatedVisibility(running, enter = expandVertically() + fadeIn(), exit = shrinkVertically() + fadeOut()) {
             Column(
-                Modifier.fillMaxWidth().padding(horizontal = 16.dp).clip(RoundedCornerShape(16.dp)).background(Ios.CardOverWallpaper)
-                    .padding(horizontal = 14.dp, vertical = 10.dp),
+                Modifier.fillMaxWidth().padding(horizontal = DuskTheme.space4).clip(RoundedCornerShape(DuskTheme.space4)).background(DuskTheme.raisedSurface)
+                    .padding(horizontal = DuskTheme.space3_5, vertical = DuskTheme.space2_5),
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Column(Modifier.weight(1f)) {
-                        Text(stringResource(R.string.amz_testing, fa(done), fa(total), fa(alive)), color = Ios.Label, fontSize = 13.sp)
-                        if (cf) Text(stringResource(R.string.amz_testing_cf), color = Ios.SecondaryLabel, fontSize = 12.sp)
+                        Text(stringResource(R.string.amz_testing, fa(done), fa(total), fa(alive)), color = DuskTheme.onSurface, fontSize = 13.sp)
+                        if (cf) Text(stringResource(R.string.amz_testing_cf), color = DuskTheme.muted, fontSize = 12.sp)
                     }
                     Text(
-                        stringResource(R.string.amz_stop), color = Ios.Red, fontSize = 14.sp, fontWeight = FontWeight.SemiBold,
-                        modifier = Modifier.clip(RoundedCornerShape(8.dp)).clickable(onClick = onStop).padding(horizontal = 8.dp, vertical = 4.dp),
+                        stringResource(R.string.amz_stop), color = DuskTheme.error, fontSize = 14.sp, fontWeight = FontWeight.SemiBold,
+                        modifier = Modifier.clip(RoundedCornerShape(DuskTheme.space2)).clickable(onClick = onStop).padding(horizontal = DuskTheme.space2, vertical = DuskTheme.space1),
                     )
                 }
-                Spacer(Modifier.height(8.dp))
+                Spacer(Modifier.height(DuskTheme.space2))
                 LinearProgressIndicator(
                     progress = if (total > 0) done.toFloat() / total else 0f,
-                    color = Ios.Green, trackColor = Color.White.copy(alpha = 0.15f),
-                    modifier = Modifier.fillMaxWidth().height(4.dp).clip(RoundedCornerShape(2.dp)),
+                    color = DuskTheme.success, trackColor = DuskTheme.white.copy(alpha = 0.15f),
+                    modifier = Modifier.fillMaxWidth().height(DuskTheme.space1).clip(RoundedCornerShape(2.dp)),
                 )
             }
         }
         AnimatedVisibility(refreshing && !running, enter = fadeIn(), exit = fadeOut()) {
-            Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(horizontal = 20.dp, vertical = 4.dp)) {
-                CircularProgressIndicator(Modifier.size(14.dp), color = Ios.SecondaryLabel, strokeWidth = 2.dp)
-                Spacer(Modifier.width(8.dp))
-                Text(stringResource(R.string.amz_refreshing), color = Ios.SecondaryLabel, fontSize = 13.sp)
+            Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(horizontal = 20.dp, vertical = DuskTheme.space1)) {
+                CircularProgressIndicator(Modifier.size(DuskTheme.space3_5), color = DuskTheme.muted, strokeWidth = 2.dp)
+                Spacer(Modifier.width(DuskTheme.space2))
+                Text(stringResource(R.string.amz_refreshing), color = DuskTheme.muted, fontSize = 13.sp)
             }
         }
         if (!running) {
-            LazyRow(contentPadding = PaddingValues(horizontal = 16.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                item { Pill(stringResource(R.string.amz_test_best), Icons.Default.Bolt, Ios.Green, onBest) }
-                if (groupChip != null) item { Pill(stringResource(R.string.amz_test_country), Icons.Default.Speed, Ios.Blue) { onGroup(groupChip) } }
-                item { Pill(stringResource(R.string.amz_test_all), Icons.Default.Speed, Ios.Indigo, onAll) }
-                item { Pill(stringResource(R.string.amz_remove_dead), Icons.Default.DeleteSweep, Ios.Red, onDead) }
+            LazyRow(contentPadding = PaddingValues(horizontal = DuskTheme.space4), horizontalArrangement = Arrangement.spacedBy(DuskTheme.space2)) {
+                item { Pill(stringResource(R.string.amz_test_best), Icons.Default.Bolt, DuskTheme.success, onBest) }
+                if (groupChip != null) item { Pill(stringResource(R.string.amz_test_country), Icons.Default.Speed, DuskTheme.primary) { onGroup(groupChip) } }
+                item { Pill(stringResource(R.string.amz_test_all), Icons.Default.Speed, DuskTheme.indigo, onAll) }
+                item { Pill(stringResource(R.string.amz_remove_dead), Icons.Default.DeleteSweep, DuskTheme.error, onDead) }
             }
         }
     }
@@ -487,31 +491,31 @@ private fun TestBar(
 @Composable
 private fun Pill(text: String, icon: androidx.compose.ui.graphics.vector.ImageVector, tint: Color, onClick: () -> Unit) {
     Row(
-        Modifier.clip(RoundedCornerShape(50)).background(Ios.CardOverWallpaper).clickable(onClick = onClick)
-            .padding(horizontal = 12.dp, vertical = 8.dp),
+        Modifier.clip(RoundedCornerShape(50)).background(DuskTheme.raisedSurface).clickable(onClick = onClick)
+            .padding(horizontal = DuskTheme.space3, vertical = DuskTheme.space2),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Icon(icon, contentDescription = null, tint = tint, modifier = Modifier.size(16.dp))
-        Spacer(Modifier.width(6.dp))
-        Text(text, color = Ios.Label, fontSize = 13.sp, maxLines = 1)
+        Icon(icon, contentDescription = null, tint = tint, modifier = Modifier.size(DuskTheme.space4))
+        Spacer(Modifier.width(DuskTheme.space1_5))
+        Text(text, color = DuskTheme.onSurface, fontSize = 13.sp, maxLines = 1)
     }
 }
 
 @Composable
 private fun PickRow(mark: String, title: String, sub: String, onClick: () -> Unit) {
     Row(
-        Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 6.dp)
-            .clip(RoundedCornerShape(16.dp)).background(Ios.Blue.copy(alpha = 0.22f))
-            .clickable(onClick = onClick).padding(horizontal = 14.dp, vertical = 11.dp),
+        Modifier.fillMaxWidth().padding(horizontal = DuskTheme.space4, vertical = DuskTheme.space1_5)
+            .clip(RoundedCornerShape(DuskTheme.space4)).background(DuskTheme.primary.copy(alpha = 0.22f))
+            .clickable(onClick = onClick).padding(horizontal = DuskTheme.space3_5, vertical = 11.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Box(Modifier.size(36.dp).clip(CircleShape).background(Color.White.copy(alpha = 0.14f)), contentAlignment = Alignment.Center) { Text(mark, fontSize = 19.sp) }
-        Spacer(Modifier.width(12.dp))
+        Box(Modifier.size(36.dp).clip(CircleShape).background(DuskTheme.white.copy(alpha = 0.14f)), contentAlignment = Alignment.Center) { Text(mark, fontSize = 19.sp) }
+        Spacer(Modifier.width(DuskTheme.space3))
         Column(Modifier.weight(1f)) {
-            Text(title, color = Ios.Label, fontSize = 15.sp, fontWeight = FontWeight.SemiBold, maxLines = 1)
-            Text(sub, color = Ios.SecondaryLabel, fontSize = 12.sp, maxLines = 1)
+            Text(title, color = DuskTheme.onSurface, fontSize = 15.sp, fontWeight = FontWeight.SemiBold, maxLines = 1)
+            Text(sub, color = DuskTheme.muted, fontSize = 12.sp, maxLines = 1)
         }
-        Icon(Icons.Default.PowerSettingsNew, contentDescription = null, tint = Ios.Label, modifier = Modifier.size(20.dp))
+        Icon(Icons.Default.PowerSettingsNew, contentDescription = null, tint = DuskTheme.onSurface, modifier = Modifier.size(20.dp))
     }
 }
 
@@ -520,12 +524,12 @@ private fun PickRow(mark: String, title: String, sub: String, onClick: () -> Uni
 @Composable
 private fun GroupHeader(key: String, count: Int, alive: Int) {
     Row(
-        Modifier.fillMaxWidth().background(Ios.Background.copy(alpha = 0.78f))
-            .padding(start = 22.dp, end = 22.dp, top = 12.dp, bottom = 6.dp),
+        Modifier.fillMaxWidth().background(DuskTheme.background.copy(alpha = 0.78f))
+            .padding(start = 22.dp, end = 22.dp, top = DuskTheme.space3, bottom = DuskTheme.space1_5),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Text("${groupFlag(key)}  ${groupName(key)}", color = Ios.Label, fontSize = 15.sp, fontWeight = FontWeight.SemiBold, modifier = Modifier.weight(1f))
-        Text(stringResource(R.string.amz_servers_count, fa(count), fa(alive)), color = Ios.SecondaryLabel, fontSize = 12.sp)
+        Text("${groupFlag(key)}  ${groupName(key)}", color = DuskTheme.onSurface, fontSize = 15.sp, fontWeight = FontWeight.SemiBold, modifier = Modifier.weight(1f))
+        Text(stringResource(R.string.amz_servers_count, fa(count), fa(alive)), color = DuskTheme.muted, fontSize = 12.sp)
     }
 }
 
@@ -554,11 +558,11 @@ private fun SwipeRow(model: RowModel, onClick: () -> Unit, onLongClick: () -> Un
             if (moving) {
                 val armed = dismiss.targetValue == DismissValue.DismissedToStart
                 Box(
-                    Modifier.fillMaxSize().padding(horizontal = 16.dp, vertical = 3.dp)
-                        .clip(RoundedCornerShape(16.dp)).background(if (armed) Ios.Red else Ios.Red.copy(alpha = 0.45f))
+                    Modifier.fillMaxSize().padding(horizontal = DuskTheme.space4, vertical = 3.dp)
+                        .clip(RoundedCornerShape(DuskTheme.space4)).background(if (armed) DuskTheme.error else DuskTheme.error.copy(alpha = 0.45f))
                         .padding(horizontal = 22.dp),
                     contentAlignment = Alignment.CenterEnd,
-                ) { Icon(Icons.Default.Delete, contentDescription = null, tint = Color.White) }
+                ) { Icon(Icons.Default.Delete, contentDescription = null, tint = DuskTheme.white) }
             }
         },
         dismissContent = { ServerRow(model, onClick, onLongClick) },
@@ -568,39 +572,39 @@ private fun SwipeRow(model: RowModel, onClick: () -> Unit, onLongClick: () -> Un
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun ServerRow(m: RowModel, onClick: () -> Unit, onLongClick: () -> Unit) {
-    val highlight = when (m.active) { 2 -> Ios.Green.copy(alpha = 0.22f); 1 -> Ios.Orange.copy(alpha = 0.18f); else -> Color.Transparent }
+    val highlight = when (m.active) { 2 -> DuskTheme.success.copy(alpha = 0.22f); 1 -> DuskTheme.accent.copy(alpha = 0.18f); else -> Color.Transparent }
     Row(
-        Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 3.dp)
-            .clip(RoundedCornerShape(16.dp))
-            .background(Ios.CardOverWallpaper)
+        Modifier.fillMaxWidth().padding(horizontal = DuskTheme.space4, vertical = 3.dp)
+            .clip(RoundedCornerShape(DuskTheme.space4))
+            .background(DuskTheme.raisedSurface)
             .background(highlight)
             .combinedClickable(onClick = onClick, onLongClick = onLongClick)
             .heightIn(min = 58.dp)
-            .padding(horizontal = 14.dp, vertical = 9.dp),
+            .padding(horizontal = DuskTheme.space3_5, vertical = 9.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Box(Modifier.size(36.dp).clip(CircleShape).background(Color.White.copy(alpha = 0.10f)), contentAlignment = Alignment.Center) {
+        Box(Modifier.size(36.dp).clip(CircleShape).background(DuskTheme.white.copy(alpha = 0.10f)), contentAlignment = Alignment.Center) {
             Text(groupFlag(m.group), fontSize = 19.sp)
         }
-        Spacer(Modifier.width(12.dp))
+        Spacer(Modifier.width(DuskTheme.space3))
         Column(Modifier.weight(1f)) {
-            Text(m.name, color = Ios.Label, fontSize = 15.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            Text(m.name, color = DuskTheme.onSurface, fontSize = 15.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
             Spacer(Modifier.height(3.dp))
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Tag(kindLabel(m.kind), kindColor(m.kind))
-                if (m.cf) { Spacer(Modifier.width(5.dp)); Tag(stringResource(R.string.amz_via_cf), Ios.Orange) }
-                if (m.mine) { Spacer(Modifier.width(5.dp)); Tag(stringResource(R.string.amz_mine_tag), Ios.Blue) }
-                if (m.active == 2) { Spacer(Modifier.width(5.dp)); Tag(stringResource(R.string.amz_status_connected), Ios.Green) }
+                if (m.cf) { Spacer(Modifier.width(5.dp)); Tag(stringResource(R.string.amz_via_cf), DuskTheme.accent) }
+                if (m.mine) { Spacer(Modifier.width(5.dp)); Tag(stringResource(R.string.amz_mine_tag), DuskTheme.primary) }
+                if (m.active == 2) { Spacer(Modifier.width(5.dp)); Tag(stringResource(R.string.amz_status_connected), DuskTheme.success) }
             }
         }
-        Spacer(Modifier.width(8.dp))
+        Spacer(Modifier.width(DuskTheme.space2))
         Box(Modifier.widthIn(min = 64.dp), contentAlignment = Alignment.CenterEnd) {
             when {
-                m.pending -> CircularProgressIndicator(Modifier.size(16.dp), color = Ios.SecondaryLabel, strokeWidth = 2.dp)
+                m.pending -> CircularProgressIndicator(Modifier.size(DuskTheme.space4), color = DuskTheme.muted, strokeWidth = 2.dp)
                 m.status == 1 && m.ms != null -> DelayCapsule(m.ms)
-                m.status == 2 -> Text(stringResource(R.string.amz_dead), color = Ios.Red, fontSize = 12.sp,
-                    modifier = Modifier.clip(RoundedCornerShape(50)).background(Ios.Red.copy(alpha = 0.14f)).padding(horizontal = 9.dp, vertical = 4.dp))
-                else -> Text("—", color = Ios.SecondaryLabel, fontSize = 14.sp)
+                m.status == 2 -> Text(stringResource(R.string.amz_dead), color = DuskTheme.error, fontSize = 12.sp,
+                    modifier = Modifier.clip(RoundedCornerShape(50)).background(DuskTheme.error.copy(alpha = 0.14f)).padding(horizontal = 9.dp, vertical = DuskTheme.space1))
+                else -> Text("—", color = DuskTheme.muted, fontSize = 14.sp)
             }
         }
     }
