@@ -226,7 +226,7 @@ fun SpiderScreen(account: CloudAccount, onBack: () -> Unit, onAddConfigs: (List<
         SettingsSectionHeader(tr("نصب", "Install"))
         SettingsGroup {
             SettingsRow(tr("آدرس ورکر", "Worker address"), icon = Icons.Default.Link, tint = DuskTheme.indigo,
-                subtitle = i.url.removePrefix("https://"), showChevron = false, onClick = { copy(context, i.url) })
+                subtitle = i.url.removePrefix("https://"), showChevron = false, onClick = { copy(context, i.url, showNotice) })
             Separator()
             SettingsActionRow(tr("نصب دوباره با آخرین نسخهٔ سازنده", "Reinstall with the developer's latest"), Icons.Default.Autorenew, DuskTheme.primary,
                 busy = step != null, onClick = { deploy() })
@@ -249,7 +249,7 @@ fun SpiderScreen(account: CloudAccount, onBack: () -> Unit, onAddConfigs: (List<
                 if (u.expire > 0) daysLeft(u.expire) else null,
             ).joinToString(" · "),
             actions = listOfNotNull(
-                i?.let { IosAlertAction(tr("کپی لینک", "Copy link"), { menuFor = null; copy(context, SpiderPanel.link(it, u)) }) },
+                i?.let { IosAlertAction(tr("کپی لینک", "Copy link"), { menuFor = null; copy(context, SpiderPanel.link(it, u), showNotice) }) },
                 i?.let { IosAlertAction(tr("صفر کردن مصرف", "Reset usage"), {
                     menuFor = null
                     scope.launch { runCatching { SpiderPanel.updateUser(context, it, u.copy(usedBytes = 0)) }.onSuccess { reload() }.onFailure { e -> e.message?.let(showNotice) } }
@@ -344,7 +344,7 @@ private fun daysLeft(expire: Long): String {
     return if (left <= 0) tr("منقضی", "Expired") else tr("${(left + 86_399) / 86_400} روز", "${(left + 86_399) / 86_400} days")
 }
 
-private fun copy(context: Context, text: String) {
+private fun copy(context: Context, text: String, showNotice: (String) -> Unit) {
     (context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager).setPrimaryClip(ClipData.newPlainText("spider", text))
     showNotice(tr("کپی شد", "Copied"))
 }

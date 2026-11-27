@@ -568,6 +568,7 @@ private fun TgCloudGate(cloud: CloudManager, onBack: () -> Unit) {
 
 private fun secretOf(manager: TgProxyManager, s: TgService): String? = manager.secretOf(s.id)
 
+@Composable
 private fun stateOf(s: TgService, clock: Long): Pair<String, Color> = when (s.state) {
     TgState.READY -> tr("آماده", "Ready") to DuskTheme.success
     TgState.BUILDING -> tr("در حال ساخت", "Building") to DuskTheme.primary
