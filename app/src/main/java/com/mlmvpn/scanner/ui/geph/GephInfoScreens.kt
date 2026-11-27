@@ -1,5 +1,7 @@
 package com.mlmvpn.scanner.ui.geph
 
+import com.mlmvpn.scanner.ui.theme.DuskTheme
+
 import android.content.Intent
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Column
@@ -34,7 +36,6 @@ import com.mlmvpn.core.geph.GephAccount
 import com.mlmvpn.core.geph.GephEngine
 import com.mlmvpn.scanner.R
 import com.mlmvpn.scanner.ui.emergency.faDigits
-import com.mlmvpn.scanner.ui.settings.Ios
 import com.mlmvpn.scanner.ui.settings.IosScreen
 import com.mlmvpn.scanner.ui.settings.SettingsActionRow
 import com.mlmvpn.scanner.ui.settings.SettingsFooter
@@ -73,14 +74,14 @@ fun GephNewsScreen(onBack: () -> Unit, backLabel: String) {
                 Column(Modifier.padding(horizontal = 16.dp, vertical = 12.dp)) {
                     Text(
                         (if (n.important) "❗ " else "") + n.title,
-                        color = if (n.important) Ios.Orange else Ios.Label,
+                        color = if (n.important) DuskTheme.accent else DuskTheme.onSurface,
                         fontWeight = FontWeight.SemiBold,
                         fontSize = 15.sp,
                     )
                     Spacer(Modifier.height(6.dp))
                     Text(
                         HtmlCompat.fromHtml(n.contents, HtmlCompat.FROM_HTML_MODE_COMPACT).toString().trim(),
-                        color = Ios.SecondaryLabel,
+                        color = DuskTheme.muted,
                         fontSize = 13.sp,
                         lineHeight = 21.sp,
                     )
@@ -132,7 +133,7 @@ fun GephSessionsScreen(onBack: () -> Unit, backLabel: String) {
                 SettingsRow(
                     title = CountryLabel.withFlag(s.country) + (s.city.takeIf { it.isNotBlank() }?.let { " · $it" } ?: ""),
                     icon = Icons.Default.Hub,
-                    tint = Ios.Teal,
+                    tint = DuskTheme.blueGray,
                     value = s.protocol,
                     subtitle = s.bridge?.let { stringResource(R.string.geph_via_bridge, it) }
                         ?: stringResource(R.string.geph_direct_session),
@@ -169,7 +170,7 @@ fun GephSessionsScreen(onBack: () -> Unit, backLabel: String) {
             val shown = (fullLog ?: logs).takeLast(200)
             Text(
                 shown.joinToString("\n").ifBlank { "—" },
-                color = Ios.SecondaryLabel,
+                color = DuskTheme.muted,
                 fontSize = 11.sp,
                 lineHeight = 15.sp,
                 fontFamily = FontFamily.Monospace,
@@ -179,7 +180,7 @@ fun GephSessionsScreen(onBack: () -> Unit, backLabel: String) {
             SettingsActionRow(
                 label = stringResource(R.string.geph_full_log),
                 icon = Icons.Default.Article,
-                tint = Ios.Indigo,
+                tint = DuskTheme.indigo,
                 enabled = live.running,
                 onClick = {
                     scope.launch {
@@ -193,7 +194,7 @@ fun GephSessionsScreen(onBack: () -> Unit, backLabel: String) {
             SettingsActionRow(
                 label = stringResource(R.string.geph_share_log),
                 icon = Icons.Default.Share,
-                tint = Ios.Blue,
+                tint = DuskTheme.primary,
                 onClick = {
                     val text = (fullLog ?: GephEngine.logs()).joinToString("\n")
                     ctx.startActivity(
@@ -213,7 +214,7 @@ fun GephSessionsScreen(onBack: () -> Unit, backLabel: String) {
 /** The last ten minutes of traffic, one bar per second, as the engine counted it. */
 @Composable
 private fun TrafficBars(series: List<Double>) {
-    val green = Ios.Green
+    val green = DuskTheme.success
     Canvas(
         modifier = Modifier
             .fillMaxWidth()

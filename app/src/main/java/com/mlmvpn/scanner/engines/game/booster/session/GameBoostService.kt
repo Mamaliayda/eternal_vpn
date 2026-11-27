@@ -419,7 +419,7 @@ class GameBoostService : Service() {
             Intent(this, GameBoostService::class.java).setAction(ACTION_STOP),
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
         return NotificationCompat.Builder(this, CHANNEL_ID)
-            .setColor(androidx.core.content.ContextCompat.getColor(this, R.color.gs_primary))
+            .setColor(androidx.core.content.ContextCompat.getColor(this, R.color.dusk_primary))
             .setSmallIcon(R.drawable.ic_notification)
             .setContentTitle(S(R.string.gb_notif_title))
             .setContentText(text)

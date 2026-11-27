@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Share Configuration"
-        android:textColor="@color/gs_on_surface"
+        android:textColor="@color/dusk_on_surface"
         android:textSize="20sp"
         android:fontFamily="@font/iransansx"
         android:layout_marginBottom="24dp" />

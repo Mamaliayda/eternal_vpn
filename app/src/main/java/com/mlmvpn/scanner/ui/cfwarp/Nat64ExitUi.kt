@@ -4,7 +4,6 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
-import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
@@ -48,7 +47,6 @@ import com.mlmvpn.core.warp.Nat64Probe
 import com.mlmvpn.scanner.R
 import com.mlmvpn.scanner.ui.emergency.faDigits
 import com.mlmvpn.scanner.ui.home.frostedGlass
-import com.mlmvpn.scanner.ui.settings.Ios
 import com.mlmvpn.scanner.ui.settings.IosScreen
 import com.mlmvpn.scanner.ui.settings.SettingsActionRow
 import com.mlmvpn.scanner.ui.settings.SettingsFooter
@@ -57,6 +55,7 @@ import com.mlmvpn.scanner.ui.settings.SettingsRow
 import com.mlmvpn.scanner.ui.settings.SettingsSectionHeader
 import com.mlmvpn.scanner.ui.theme.PanelShape
 import com.mlmvpn.scanner.ui.theme.DuskTheme
+import com.mlmvpn.scanner.ui.theme.rememberDuskSnackbarAction
 import com.mlmvpn.scanner.ui.theme.iosFieldColors
 import com.mlmvpn.scanner.ui.tunnel.CountryLabel
 import com.mlmvpn.scanner.ui.tunnel.Transport
@@ -91,6 +90,7 @@ private fun fa(n: Number): String = faDigits(n.toString())
 @Composable
 fun ColumnScope.Nat64ExitRow(transport: Transport? = null, onOpen: () -> Unit) {
     val ctx = LocalContext.current
+    val showNotice = rememberDuskSnackbarAction()
     val selection by Nat64Exits.selectionFlow(ctx).collectAsState()
     val ipv4 by com.mlmvpn.core.warp.Ipv4Exits.stateFlow(ctx).collectAsState()
     val v4 = ipv4?.takeIf { it.enabled && it.country.isNotBlank() }?.country
@@ -101,7 +101,7 @@ fun ColumnScope.Nat64ExitRow(transport: Transport? = null, onOpen: () -> Unit) {
         SettingsRow(
             title = stringResource(R.string.nat64_exit_title),
             icon = Icons.Default.Public,
-            tint = Ios.Indigo,
+            tint = DuskTheme.indigo,
             value = when {
                 v4 != null -> CountryLabel.withFlag(v4) + " · IPv4"
                 sel == Nat64Exits.DIRECT -> stringResource(R.string.nat64_direct)
@@ -248,13 +248,13 @@ fun Nat64ExitScreen(onBack: () -> Unit, backLabel: String, transport: Transport?
                         else -> stringResource(R.string.nat64_untested, fa(list.size))
                     },
                     detailColor = when {
-                        b != null -> Ios.Green
-                        anyTested(cc) && !testing -> Ios.Red
-                        else -> Ios.SecondaryLabel
+                        b != null -> DuskTheme.success
+                        anyTested(cc) && !testing -> DuskTheme.error
+                        else -> DuskTheme.muted
                     },
                     selected = selection.equals(cc, ignoreCase = true),
                     onClick = { choose(cc) },
-                    onLongClick = { copyConfig(ctx, cc) },
+                    onLongClick = { copyConfig(ctx, cc, showNotice) },
                 )
             }
         }
@@ -267,7 +267,7 @@ fun Nat64ExitScreen(onBack: () -> Unit, backLabel: String, transport: Transport?
                 SettingsRow(
                     title = "${IpFormatter.flag(g.country)} ${g.prefix}",
                     icon = Icons.Default.Delete,
-                    tint = Ios.Red,
+                    tint = DuskTheme.error,
                     showChevron = false,
                     onClick = {
                         Nat64Exits.removeCustom(ctx, g.prefix)
@@ -279,7 +279,7 @@ fun Nat64ExitScreen(onBack: () -> Unit, backLabel: String, transport: Transport?
             SettingsActionRow(
                 label = stringResource(R.string.nat64_add_custom),
                 icon = Icons.Default.Add,
-                tint = Ios.Blue,
+                tint = DuskTheme.primary,
                 onClick = { adding = true },
             )
         }
@@ -320,7 +320,7 @@ fun Nat64ExitScreen(onBack: () -> Unit, backLabel: String, transport: Transport?
                         shape = DuskTheme.controlShape,
                     )
                     error?.let {
-                        Text(it, color = Ios.Red, style = MaterialTheme.typography.bodySmall)
+                        Text(it, color = DuskTheme.error, style = MaterialTheme.typography.bodySmall)
                     }
                 }
             },
@@ -353,7 +353,7 @@ private fun ExitRow(
     selected: Boolean,
     onClick: () -> Unit,
     onLongClick: (() -> Unit)? = null,
-    detailColor: androidx.compose.ui.graphics.Color = Ios.SecondaryLabel,
+    detailColor: androidx.compose.ui.graphics.Color = DuskTheme.muted,
 ) {
     Row(
         modifier = Modifier
@@ -368,12 +368,12 @@ private fun ExitRow(
         Text(flag, fontSize = 22.sp)
         Spacer(Modifier.width(12.dp))
         Column(modifier = Modifier.weight(1f)) {
-            Text(name, color = Ios.Label, fontSize = 16.sp, maxLines = 1)
+            Text(name, color = DuskTheme.onSurface, fontSize = 16.sp, maxLines = 1)
             if (detail.isNotBlank()) Text(detail, color = detailColor, fontSize = 11.sp, maxLines = 3)
         }
         if (selected) {
             Spacer(Modifier.width(4.dp))
-            Icon(Icons.Default.Check, contentDescription = null, tint = Ios.Blue, modifier = Modifier.size(20.dp))
+            Icon(Icons.Default.Check, contentDescription = null, tint = DuskTheme.primary, modifier = Modifier.size(20.dp))
         }
     }
 }
@@ -383,13 +383,13 @@ private fun ExitRow(
  * written through the country's best gateway. For any WireGuard app; without the obfuscation the
  * app adds, so on a line that filters plain WireGuard it may not connect where the app does.
  */
-private fun copyConfig(ctx: Context, country: String) {
+private fun copyConfig(ctx: Context, country: String, showNotice: (String) -> Unit) {
     val toml = runCatching { java.io.File(CfWarpEngine.dataDir(ctx), "aether.toml").readText() }.getOrNull()
     fun field(k: String) = toml?.let { Regex("""(?m)^$k\s*=\s*"([^"]*)"""").find(it)?.groupValues?.get(1) }
     val key = field("wg_private_key")
     val v4 = field("ipv4")
     if (key.isNullOrBlank() || v4.isNullOrBlank()) {
-        Toast.makeText(ctx, ctx.getString(R.string.nat64_copy_needs_identity), Toast.LENGTH_LONG).show()
+        showNotice(ctx.getString(R.string.nat64_copy_needs_identity))
         return
     }
     val v6 = field("ipv6").orEmpty()
@@ -411,5 +411,5 @@ private fun copyConfig(ctx: Context, country: String) {
     }
     val cm = ctx.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
     cm.setPrimaryClip(ClipData.newPlainText("WireGuard $country", conf))
-    Toast.makeText(ctx, ctx.getString(R.string.nat64_copied, country), Toast.LENGTH_SHORT).show()
+    showNotice(ctx.getString(R.string.nat64_copied, country))
 }

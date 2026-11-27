@@ -1,5 +1,7 @@
 package com.mlmvpn.scanner.ui.lan
 
+import com.mlmvpn.scanner.ui.theme.DuskTheme
+
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -31,7 +33,6 @@ import androidx.compose.ui.unit.sp
 import com.mlmvpn.scanner.R
 import com.mlmvpn.scanner.lan.LanSetupServer.ClientOs
 import com.mlmvpn.scanner.lan.LanStatus
-import com.mlmvpn.scanner.ui.settings.Ios
 import com.mlmvpn.scanner.ui.settings.IosScreen
 import com.mlmvpn.scanner.ui.settings.SettingsFooter
 import com.mlmvpn.scanner.ui.settings.SettingsGroup
@@ -98,7 +99,7 @@ fun GuideListSection(onOpen: (ClientOs) -> Unit) {
             SettingsRow(
                 title = stringResource(guideNameRes(os)),
                 icon = guideIcon(os),
-                tint = Ios.Blue,
+                tint = DuskTheme.primary,
                 onClick = { onOpen(os) },
             )
         }
@@ -134,12 +135,12 @@ fun LanGuideScreen(os: ClientOs, status: LanStatus, backLabel: String, onBack: (
                         Box(
                             modifier = Modifier
                                 .size(22.dp)
-                                .background(Ios.Blue.copy(alpha = 0.22f), CircleShape),
+                                .background(DuskTheme.primary.copy(alpha = 0.22f), CircleShape),
                             contentAlignment = Alignment.Center,
                         ) {
                             Text(
                                 "${index + 1}",
-                                color = Ios.Blue,
+                                color = DuskTheme.primary,
                                 fontSize = 12.sp,
                                 fontWeight = FontWeight.Bold,
                             )
@@ -147,7 +148,7 @@ fun LanGuideScreen(os: ClientOs, status: LanStatus, backLabel: String, onBack: (
                         Spacer(Modifier.width(13.dp))
                         Text(
                             step,
-                            color = Ios.Label,
+                            color = DuskTheme.onSurface,
                             fontSize = 14.5.sp,
                             lineHeight = 21.sp,
                             modifier = Modifier.weight(1f),
@@ -177,8 +178,8 @@ fun LanGuideScreen(os: ClientOs, status: LanStatus, backLabel: String, onBack: (
 @Composable
 private fun GuideValue(label: String, value: String) {
     Column(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 13.dp)) {
-        Text(label, color = Ios.SecondaryLabel, fontSize = 12.sp)
+        Text(label, color = DuskTheme.muted, fontSize = 12.sp)
         Spacer(Modifier.height(3.dp))
-        Text(value, color = Ios.Label, fontSize = 15.sp, fontFamily = FontFamily.Monospace)
+        Text(value, color = DuskTheme.onSurface, fontSize = 15.sp, fontFamily = FontFamily.Monospace)
     }
 }

@@ -104,7 +104,7 @@ object LanNotification {
         }
 
         val notification = NotificationCompat.Builder(app, CHANNEL_ID)
-            .setColor(androidx.core.content.ContextCompat.getColor(app, R.color.gs_primary))
+            .setColor(androidx.core.content.ContextCompat.getColor(app, R.color.dusk_primary))
             .setSmallIcon(R.drawable.ic_vpn)
             .setContentTitle(S(R.string.lan_notif_title))
             .setContentText(body)

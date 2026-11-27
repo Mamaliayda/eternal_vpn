@@ -1,5 +1,7 @@
 package com.mlmvpn.scanner.ui.lan
 
+import com.mlmvpn.scanner.ui.theme.DuskTheme
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -31,7 +33,6 @@ import androidx.compose.ui.unit.sp
 import com.mlmvpn.scanner.R
 import com.mlmvpn.scanner.lan.EngineShare
 import com.mlmvpn.scanner.lan.LanStatus
-import com.mlmvpn.scanner.ui.settings.Ios
 
 // =================================================================================================
 // The four hops, and which of them is currently working.
@@ -75,7 +76,7 @@ fun LanDiagram(status: LanStatus, modifier: Modifier = Modifier) {
 
 @Composable
 private fun Hop(labelRes: Int, icon: ImageVector, live: Boolean, modifier: Modifier = Modifier) {
-    val tint = if (live) Ios.Green else Ios.Gray
+    val tint = if (live) DuskTheme.success else DuskTheme.disabled
     Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
         Box(
             modifier = Modifier
@@ -86,14 +87,14 @@ private fun Hop(labelRes: Int, icon: ImageVector, live: Boolean, modifier: Modif
             Icon(
                 icon,
                 contentDescription = null,
-                tint = if (live) tint else Ios.Chevron,
+                tint = if (live) tint else DuskTheme.disabled,
                 modifier = Modifier.size(21.dp),
             )
         }
         Spacer(Modifier.height(7.dp))
         Text(
             stringResource(labelRes),
-            color = if (live) Ios.Label else Ios.SecondaryLabel,
+            color = if (live) DuskTheme.onSurface else DuskTheme.muted,
             fontSize = 11.sp,
             lineHeight = 14.sp,
             textAlign = TextAlign.Center,
@@ -110,7 +111,7 @@ private fun Link(live: Boolean) {
             .width(18.dp)
             .height(2.dp)
             .background(
-                if (live) Ios.Green else Color.White.copy(alpha = 0.14f),
+                if (live) DuskTheme.success else Color.White.copy(alpha = 0.14f),
                 RoundedCornerShape(1.dp),
             ),
     )

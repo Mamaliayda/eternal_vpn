@@ -43,7 +43,6 @@ import com.mlmvpn.scanner.data.GroupManager
 import com.mlmvpn.scanner.data.NodeManager
 import com.mlmvpn.scanner.data.ScanGuard
 import com.mlmvpn.scanner.models.VpnNode
-import com.mlmvpn.scanner.ui.settings.Ios
 import com.mlmvpn.scanner.ui.theme.DuskTheme
 import com.mlmvpn.scanner.ui.settings.IosScreen
 import com.mlmvpn.scanner.ui.settings.SettingsActionRow
@@ -216,7 +215,7 @@ fun BaseConfigPickerScreen(
                         option = option,
                         selected = option.uri == current,
                         icon = Icons.Default.Cloud,
-                        tint = Ios.Orange,
+                        tint = DuskTheme.accent,
                         probe = probes[option.uri] ?: Probe.Idle,
                         onPick = { onPick(option); onBack() },
                         onMeasure = { measure(option.uri) },
@@ -238,7 +237,7 @@ fun BaseConfigPickerScreen(
                         option = option,
                         selected = option.uri == current,
                         icon = Icons.Default.Storage,
-                        tint = Ios.Gray,
+                        tint = DuskTheme.disabled,
                         probe = probes[option.uri] ?: Probe.Idle,
                         onPick = { onPick(option); onBack() },
                         onMeasure = { measure(option.uri) },
@@ -281,9 +280,9 @@ fun BaseConfigPickerScreen(
                     },
                     icon = Icons.Default.Speed,
                     tint = when (probes[manualUri]) {
-                        is Probe.Ok -> Ios.Green
-                        is Probe.Failed -> Ios.Red
-                        else -> Ios.Blue
+                        is Probe.Ok -> DuskTheme.success
+                        is Probe.Failed -> DuskTheme.error
+                        else -> DuskTheme.primary
                     },
                     enabled = manualValid,
                 ) {
@@ -293,7 +292,7 @@ fun BaseConfigPickerScreen(
                 SettingsActionRow(
                     label = S(R.string.use_this_config),
                     icon = Icons.Default.Check,
-                    tint = Ios.Green,
+                    tint = DuskTheme.success,
                     enabled = manualValid,
                 ) {
                     onManual(manualUri)
@@ -343,21 +342,21 @@ private fun BaseConfigRow(
             Icon(
                 if (selected) Icons.Default.Check else icon,
                 contentDescription = null,
-                tint = if (selected) Ios.Blue else tint,
+                tint = if (selected) DuskTheme.primary else tint,
                 modifier = Modifier.size(22.dp),
             )
             Spacer(Modifier.width(12.dp))
             Column(verticalArrangement = Arrangement.Center) {
                 Text(
                     option.label,
-                    color = Ios.Label,
+                    color = DuskTheme.onSurface,
                     style = MaterialTheme.typography.bodyLarge,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )
                 Text(
                     option.detail,
-                    color = Ios.SecondaryLabel,
+                    color = DuskTheme.muted,
                     style = MaterialTheme.typography.labelMedium,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
@@ -366,9 +365,9 @@ private fun BaseConfigRow(
         }
 
         val pillColor = when (probe) {
-            is Probe.Ok -> Ios.Green
-            is Probe.Failed -> Ios.Red
-            else -> Ios.Blue
+            is Probe.Ok -> DuskTheme.success
+            is Probe.Failed -> DuskTheme.error
+            else -> DuskTheme.primary
         }
         Box(
             modifier = Modifier

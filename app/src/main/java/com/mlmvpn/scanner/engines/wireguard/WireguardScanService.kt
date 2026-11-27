@@ -179,7 +179,7 @@ class WireguardScanService : Service() {
             PendingIntent.getActivity(this, 0, it, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
         }
         val builder = NotificationCompat.Builder(this, CHANNEL_ID)
-            .setColor(androidx.core.content.ContextCompat.getColor(this, R.color.gs_primary))
+            .setColor(androidx.core.content.ContextCompat.getColor(this, R.color.dusk_primary))
             .setContentTitle(S(R.string.smart_wireguard_scanner))
             .setContentText(text)
             .setSmallIcon(R.drawable.ic_scanner)

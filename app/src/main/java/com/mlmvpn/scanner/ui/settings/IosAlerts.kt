@@ -90,7 +90,7 @@ fun IosAlert(
                     }
                     Text(
                         title,
-                        color = Ios.Label,
+                        color = DuskTheme.onSurface,
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.SemiBold,
                         textAlign = TextAlign.Center,
@@ -99,7 +99,7 @@ fun IosAlert(
                         Spacer(Modifier.height(6.dp))
                         Text(
                             message,
-                            color = Ios.SecondaryLabel,
+                            color = DuskTheme.muted,
                             style = MaterialTheme.typography.bodySmall,
                             textAlign = TextAlign.Center,
                         )
@@ -121,7 +121,7 @@ fun IosAlert(
                             modifier = Modifier
                                 .width(0.5.dp)
                                 .height(44.dp)
-                                .background(Ios.Separator)
+                                .background(DuskTheme.outline)
                         )
                         AlertButton(actions[1], Modifier.weight(1f))
                     }
@@ -138,7 +138,7 @@ fun IosAlert(
 
 @Composable
 private fun AlertSeparator() {
-    Box(modifier = Modifier.fillMaxWidth().height(0.5.dp).background(Ios.Separator))
+    Box(modifier = Modifier.fillMaxWidth().height(0.5.dp).background(DuskTheme.outline))
 }
 
 @Composable
@@ -162,7 +162,7 @@ private fun AlertButton(action: IosAlertAction, modifier: Modifier) {
                 color = when {
                     !action.enabled -> DuskTheme.disabled
                     action.destructive -> DuskTheme.error
-                    else -> Ios.Label
+                    else -> DuskTheme.onSurface
                 },
                 style = MaterialTheme.typography.bodyLarge,
                 fontWeight = if (action.preferred) FontWeight.SemiBold else FontWeight.Normal,
@@ -207,8 +207,8 @@ fun IosPrompt(
                     value = text,
                     onValueChange = { text = it },
                     singleLine = true,
-                    textStyle = MaterialTheme.typography.bodyLarge.copy(color = Ios.Label),
-                    cursorBrush = SolidColor(Ios.Blue),
+                    textStyle = MaterialTheme.typography.bodyLarge.copy(color = DuskTheme.onSurface),
+                    cursorBrush = SolidColor(DuskTheme.primary),
                     keyboardOptions = KeyboardOptions.Default,
                     modifier = Modifier.fillMaxWidth(),
                     decorationBox = { inner ->
@@ -216,7 +216,7 @@ fun IosPrompt(
                             if (text.isEmpty() && placeholder.isNotEmpty()) {
                                 Text(
                                     placeholder,
-                                    color = Ios.SecondaryLabel.copy(alpha = 0.6f),
+                                    color = DuskTheme.muted.copy(alpha = 0.6f),
                                     style = MaterialTheme.typography.bodyLarge,
                                 )
                             }

@@ -1,5 +1,7 @@
 package com.mlmvpn.scanner.ui.tunnel
 
+import com.mlmvpn.scanner.ui.theme.DuskTheme
+
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
@@ -37,7 +39,6 @@ import com.mlmvpn.core.tunnel.SecureStore
 import com.mlmvpn.core.tunnel.SplitTunnelSettings
 import com.mlmvpn.core.tunnel.TunnelPreferences
 import com.mlmvpn.scanner.ui.settings.AppPickerPage
-import com.mlmvpn.scanner.ui.settings.Ios
 import com.mlmvpn.scanner.ui.settings.IosOption
 import com.mlmvpn.scanner.ui.settings.IosPickerScreen
 import com.mlmvpn.scanner.ui.settings.IosScreen
@@ -358,26 +359,26 @@ fun TransportAdvancedScreen(transport: Transport, onBack: () -> Unit) {
                 Transport.MASQUE -> {
                     SettingsSectionHeader(S(R.string.transport_and_gateway_discovery))
                     SettingsGroup {
-                        SettingsRow(S(R.string.transport_2), Icons.Default.Bolt, Ios.Blue,
+                        SettingsRow(S(R.string.transport_2), Icons.Default.Bolt, DuskTheme.primary,
                             value = labelOf(MASQUE_TRANSPORTS, masqueTransport),
                             onClick = { push(P_MASQUE_TRANSPORT) })
                         Separator()
-                        SettingsRow(S(R.string.finding_a_gateway), Icons.Default.Storage, Ios.Teal,
+                        SettingsRow(S(R.string.finding_a_gateway), Icons.Default.Storage, DuskTheme.blueGray,
                             value = labelOf(DISCOVERY_MODES, discovery),
                             onClick = { push(P_DISCOVERY) })
                         Separator()
-                        SettingsRow(S(R.string.scan_effort), Icons.Default.Radar, Ios.Indigo,
+                        SettingsRow(S(R.string.scan_effort), Icons.Default.Radar, DuskTheme.indigo,
                             value = labelOf(SCAN_MODES, scanMode),
                             onClick = { push(P_SCAN) })
                         Separator()
-                        SettingsRow(S(R.string.address_family), Icons.Default.Router, Ios.Gray,
+                        SettingsRow(S(R.string.address_family), Icons.Default.Router, DuskTheme.disabled,
                             value = labelOf(IP_FAMILIES, ipScan),
                             onClick = { push(P_IP) })
                     }
 
                     SettingsSectionHeader(S(R.string.obfuscation))
                     SettingsGroup {
-                        SettingsRow(S(R.string.traffic_shaping), Icons.Default.Tune, Ios.Purple,
+                        SettingsRow(S(R.string.traffic_shaping), Icons.Default.Tune, DuskTheme.purple,
                             value = labelOf(SHAPING_PROFILES, shaping),
                             onClick = { push(P_SHAPING) })
                         Separator()
@@ -386,11 +387,11 @@ fun TransportAdvancedScreen(transport: Transport, onBack: () -> Unit) {
                             checked = retryShaping,
                             onCheckedChange = { retryShaping = it; prefs.retryObfuscationProfiles = it },
                             icon = Icons.Default.Layers,
-                            tint = Ios.Orange,
+                            tint = DuskTheme.accent,
                             subtitle = S(R.string.if_the_connection_fails_try_again_with),
                         )
                         Separator()
-                        SettingsRow(S(R.string.tls_fingerprint), Icons.Default.VerifiedUser, Ios.Green,
+                        SettingsRow(S(R.string.tls_fingerprint), Icons.Default.VerifiedUser, DuskTheme.success,
                             value = labelOf(TLS_PRESETS, tlsPreset),
                             onClick = { push(P_TLS) })
                         Separator()
@@ -399,7 +400,7 @@ fun TransportAdvancedScreen(transport: Transport, onBack: () -> Unit) {
                             checked = h2Fragment,
                             onCheckedChange = { h2Fragment = it; prefs.h2Fragmentation = it },
                             icon = Icons.Default.Speed,
-                            tint = Ios.Pink,
+                            tint = DuskTheme.coral,
                             subtitle = S(R.string.spreads_the_handshake_across_several_packets_http),
                         )
                     }
@@ -415,7 +416,7 @@ fun TransportAdvancedScreen(transport: Transport, onBack: () -> Unit) {
                             checked = wgDataCheck,
                             onCheckedChange = { wgDataCheck = it; prefs.wireguardDataCheck = it },
                             icon = Icons.Default.VerifiedUser,
-                            tint = Ios.Green,
+                            tint = DuskTheme.success,
                             subtitle = S(R.string.wait_for_real_traffic_to_pass_before),
                         )
                     }
@@ -427,18 +428,18 @@ fun TransportAdvancedScreen(transport: Transport, onBack: () -> Unit) {
 
                     SettingsSectionHeader(S(R.string.endpoint_scan))
                     SettingsGroup {
-                        SettingsRow(S(R.string.scan_effort), Icons.Default.Radar, Ios.Indigo,
+                        SettingsRow(S(R.string.scan_effort), Icons.Default.Radar, DuskTheme.indigo,
                             value = labelOf(WG_SCAN_MODES, scanMode),
                             onClick = { push(P_SCAN) })
                         Separator()
-                        SettingsRow(S(R.string.address_family), Icons.Default.Router, Ios.Gray,
+                        SettingsRow(S(R.string.address_family), Icons.Default.Router, DuskTheme.disabled,
                             value = labelOf(IP_FAMILIES, ipScan),
                             onClick = { push(P_IP) })
                     }
 
                     SettingsSectionHeader(S(R.string.obfuscation))
                     SettingsGroup {
-                        SettingsRow(S(R.string.traffic_shaping), Icons.Default.Tune, Ios.Purple,
+                        SettingsRow(S(R.string.traffic_shaping), Icons.Default.Tune, DuskTheme.purple,
                             value = labelOf(SHAPING_PROFILES, shaping),
                             onClick = { push(P_SHAPING) })
                         Separator()
@@ -447,7 +448,7 @@ fun TransportAdvancedScreen(transport: Transport, onBack: () -> Unit) {
                             checked = retryShaping,
                             onCheckedChange = { retryShaping = it; prefs.retryObfuscationProfiles = it },
                             icon = Icons.Default.Layers,
-                            tint = Ios.Orange,
+                            tint = DuskTheme.accent,
                             subtitle = S(R.string.if_the_connection_fails_try_again_with),
                         )
                     }
@@ -458,11 +459,11 @@ fun TransportAdvancedScreen(transport: Transport, onBack: () -> Unit) {
                 Transport.GOOL -> {
                     SettingsSectionHeader(S(R.string.endpoint_scan))
                     SettingsGroup {
-                        SettingsRow(S(R.string.scan_effort), Icons.Default.Radar, Ios.Indigo,
+                        SettingsRow(S(R.string.scan_effort), Icons.Default.Radar, DuskTheme.indigo,
                             value = labelOf(SCAN_MODES, scanMode),
                             onClick = { push(P_SCAN) })
                         Separator()
-                        SettingsRow(S(R.string.address_family), Icons.Default.Router, Ios.Gray,
+                        SettingsRow(S(R.string.address_family), Icons.Default.Router, DuskTheme.disabled,
                             value = labelOf(IP_FAMILIES, ipScan),
                             onClick = { push(P_IP) })
                     }
@@ -476,7 +477,7 @@ fun TransportAdvancedScreen(transport: Transport, onBack: () -> Unit) {
                 Transport.PSIPHON -> {
                     SettingsSectionHeader(S(R.string.when_psiphon_will_not_connect_on_its_2))
                     SettingsGroup {
-                        SettingsRow(S(R.string.outer_layer), Icons.Default.Layers, Ios.Orange,
+                        SettingsRow(S(R.string.outer_layer), Icons.Default.Layers, DuskTheme.accent,
                             value = labelOf(CHAIN_OUTER, chainOuter),
                             onClick = { push(P_CHAIN) })
                     }
@@ -495,11 +496,11 @@ fun TransportAdvancedScreen(transport: Transport, onBack: () -> Unit) {
                             checked = torChainArmed,
                             onCheckedChange = { torChainArmed = it; prefs.torChainArmed = it },
                             icon = Icons.Default.Shield,
-                            tint = Ios.Purple,
+                            tint = DuskTheme.purple,
                             subtitle = S(R.string.if_the_network_blocks_tor_itself_bring),
                         )
                         Separator()
-                        SettingsRow(S(R.string.outer_layer), Icons.Default.Layers, Ios.Orange,
+                        SettingsRow(S(R.string.outer_layer), Icons.Default.Layers, DuskTheme.accent,
                             value = labelOf(CHAIN_OUTER, chainOuterTor),
                             onClick = { push(P_CHAIN_TOR) })
                     }
@@ -512,7 +513,7 @@ fun TransportAdvancedScreen(transport: Transport, onBack: () -> Unit) {
 
                     SettingsSectionHeader(S(R.string.connection_mode_2))
                     SettingsGroup {
-                        SettingsRow(S(R.string.reaching_the_network), Icons.Default.Article, Ios.Teal,
+                        SettingsRow(S(R.string.reaching_the_network), Icons.Default.Article, DuskTheme.blueGray,
                             value = torModeLabel(prefs.torMode),
                             onClick = { push(P_TOR_MODE) })
                     }
@@ -539,19 +540,19 @@ fun TransportAdvancedScreen(transport: Transport, onBack: () -> Unit) {
             ) {
                 SettingsSectionHeader("Cloudflare Zero Trust")
                 SettingsGroup {
-                    SettingsRow(S(R.string.team_name), Icons.Default.Security, Ios.Blue,
+                    SettingsRow(S(R.string.team_name), Icons.Default.Security, DuskTheme.primary,
                         value = ztTeam.ifBlank { S(R.string.not_set) }, onClick = { push(P_ZT_TEAM) })
                     Separator()
-                    SettingsRow("Client ID", Icons.Default.Security, Ios.Gray,
+                    SettingsRow("Client ID", Icons.Default.Security, DuskTheme.disabled,
                         value = masked(ztClientId), onClick = { push(P_ZT_CLIENT_ID) })
                     Separator()
-                    SettingsRow("Client Secret", Icons.Default.Security, Ios.Gray,
+                    SettingsRow("Client Secret", Icons.Default.Security, DuskTheme.disabled,
                         value = masked(ztClientSecret), onClick = { push(P_ZT_CLIENT_SECRET) })
                     Separator()
-                    SettingsRow(S(R.string.access_token), Icons.Default.Security, Ios.Gray,
+                    SettingsRow(S(R.string.access_token), Icons.Default.Security, DuskTheme.disabled,
                         value = masked(ztToken), onClick = { push(P_ZT_TOKEN) })
                     Separator()
-                    SettingsRow(S(R.string.email_2), Icons.Default.Security, Ios.Gray,
+                    SettingsRow(S(R.string.email_2), Icons.Default.Security, DuskTheme.disabled,
                         value = ztEmail.ifBlank { S(R.string.not_set) }, onClick = { push(P_ZT_EMAIL) })
                     Separator()
                     SettingsToggle(
@@ -559,7 +560,7 @@ fun TransportAdvancedScreen(transport: Transport, onBack: () -> Unit) {
                         checked = ztGateway,
                         onCheckedChange = { ztGateway = it; prefs.zeroTrustGateway = it },
                         icon = Icons.Default.Shield,
-                        tint = Ios.Green,
+                        tint = DuskTheme.success,
                     )
                 }
                 Footer(
@@ -584,10 +585,10 @@ fun TransportAdvancedScreen(transport: Transport, onBack: () -> Unit) {
             // and there is no app-wide setting they would be a copy of.
             SettingsSectionHeader(S(R.string.routing))
             SettingsGroup {
-                SettingsRow(S(R.string.outside_the_tunnel), Icons.Default.Link, Ios.Teal,
+                SettingsRow(S(R.string.outside_the_tunnel), Icons.Default.Link, DuskTheme.blueGray,
                     value = countLabel(routeDirect), onClick = { push(P_ROUTE_DIRECT) })
                 Separator()
-                SettingsRow(S(R.string.blocked), Icons.Default.Shield, Ios.Red,
+                SettingsRow(S(R.string.blocked), Icons.Default.Shield, DuskTheme.error,
                     value = countLabel(routeBlock), onClick = { push(P_ROUTE_BLOCK) })
             }
             Footer(S(R.string.transport_shared_settings_moved))
@@ -599,7 +600,7 @@ fun TransportAdvancedScreen(transport: Transport, onBack: () -> Unit) {
                     checked = killSwitch,
                     onCheckedChange = { killSwitch = it; prefs.killSwitch = it },
                     icon = Icons.Default.Shield,
-                    tint = Ios.Red,
+                    tint = DuskTheme.error,
                     subtitle = S(R.string.if_the_tunnel_drops_cut_the_network),
                 )
                 Separator()
@@ -608,7 +609,7 @@ fun TransportAdvancedScreen(transport: Transport, onBack: () -> Unit) {
                     checked = autoReconnect,
                     onCheckedChange = { autoReconnect = it; prefs.autoReconnect = it },
                     icon = Icons.Default.Bolt,
-                    tint = Ios.Green,
+                    tint = DuskTheme.success,
                     subtitle = S(R.string.a_tunnel_that_drops_on_its_own),
                 )
             }
@@ -623,10 +624,10 @@ fun TransportAdvancedScreen(transport: Transport, onBack: () -> Unit) {
             if (transport != Transport.URNETWORK) {
                 SettingsSectionHeader(S(R.string.diagnostics))
                 SettingsGroup {
-                    SettingsRow(S(R.string.log_level), Icons.Default.Visibility, Ios.Yellow,
+                    SettingsRow(S(R.string.log_level), Icons.Default.Visibility, DuskTheme.accent,
                         value = labelOf(LOG_LEVELS, logLevel), onClick = { push(P_LOG_LEVEL) })
                     Separator()
-                    SettingsRow(S(R.string.performance_profile), Icons.Default.Memory, Ios.Orange,
+                    SettingsRow(S(R.string.performance_profile), Icons.Default.Memory, DuskTheme.accent,
                         value = labelOf(PERF_PROFILES, perfProfile), onClick = { push(P_PERF) })
                 }
             }
@@ -642,7 +643,7 @@ fun TransportAdvancedScreen(transport: Transport, onBack: () -> Unit) {
 private fun Footer(text: String) {
     Text(
         text,
-        color = Ios.SecondaryLabel,
+        color = DuskTheme.muted,
         fontSize = 13.sp,
         lineHeight = 21.sp,
         modifier = Modifier.padding(start = 32.dp, end = 32.dp, top = 8.dp),
@@ -684,7 +685,7 @@ private fun ManualShapingGroup(
 private fun ManualEndpointGroup(value: String, onClick: () -> Unit) {
     SettingsSectionHeader(S(R.string.manual_gateway))
     SettingsGroup {
-        SettingsRow(S(R.string.pinned_address), Icons.Default.Link, Ios.Gray,
+        SettingsRow(S(R.string.pinned_address), Icons.Default.Link, DuskTheme.disabled,
             value = value.ifBlank { S(R.string.automatic_scan) }, onClick = onClick)
     }
 }

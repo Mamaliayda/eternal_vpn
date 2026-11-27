@@ -1,5 +1,7 @@
 package com.mlmvpn.scanner.ui.settings
 
+import com.mlmvpn.scanner.ui.theme.DuskTheme
+
 import android.content.Context
 import android.content.res.Configuration
 import android.content.res.Resources
@@ -74,17 +76,17 @@ internal enum class Hue {
 
     val color: Color
         @Composable get() = when (this) {
-            BLUE -> Ios.Blue
-            GREEN -> Ios.Green
-            INDIGO -> Ios.Indigo
-            ORANGE -> Ios.Orange
-            PINK -> Ios.Pink
-            PURPLE -> Ios.Purple
-            RED -> Ios.Red
-            TEAL -> Ios.Teal
-            YELLOW -> Ios.Yellow
-            GRAY -> Ios.Gray
-            CLOUDFLARE -> Ios.CloudflareOrange
+            BLUE -> DuskTheme.primary
+            GREEN -> DuskTheme.success
+            INDIGO -> DuskTheme.indigo
+            ORANGE -> DuskTheme.accent
+            PINK -> DuskTheme.coral
+            PURPLE -> DuskTheme.purple
+            RED -> DuskTheme.error
+            TEAL -> DuskTheme.blueGray
+            YELLOW -> DuskTheme.accent
+            GRAY -> DuskTheme.disabled
+            CLOUDFLARE -> DuskTheme.cloudflareOrange
         }
 }
 

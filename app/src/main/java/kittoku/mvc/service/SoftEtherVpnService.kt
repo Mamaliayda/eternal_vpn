@@ -138,7 +138,7 @@ internal class SoftEtherVpnService : VpnService() {
             PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE
         )
 
-        val builder = NotificationCompat.Builder(this, NOTIFICATION_DISCONNECT_CHANNEL).also { it.setColor(androidx.core.content.ContextCompat.getColor(this, R.color.gs_primary)) }.also {
+        val builder = NotificationCompat.Builder(this, NOTIFICATION_DISCONNECT_CHANNEL).also { it.setColor(androidx.core.content.ContextCompat.getColor(this, R.color.dusk_primary)) }.also {
             it.priority = NotificationCompat.PRIORITY_DEFAULT
             it.setOngoing(true)
             it.setAutoCancel(true)
@@ -149,7 +149,7 @@ internal class SoftEtherVpnService : VpnService() {
         startForeground(NOTIFICATION_DISCONNECT_ID, builder.build())
     }
     internal fun notifyMessage(message: String, id: Int, channel: String) {
-        NotificationCompat.Builder(this, channel).also { it.setColor(androidx.core.content.ContextCompat.getColor(this, R.color.gs_primary)) }.also {
+        NotificationCompat.Builder(this, channel).also { it.setColor(androidx.core.content.ContextCompat.getColor(this, R.color.dusk_primary)) }.also {
             it.setSmallIcon(R.drawable.ic_baseline_vpn_lock_24)
             it.setContentText(message)
             it.priority = NotificationCompat.PRIORITY_DEFAULT

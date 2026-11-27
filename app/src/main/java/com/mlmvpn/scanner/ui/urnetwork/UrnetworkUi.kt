@@ -1,11 +1,13 @@
 package com.mlmvpn.scanner.ui.urnetwork
 
+import com.mlmvpn.scanner.ui.theme.DuskTheme
+import com.mlmvpn.scanner.ui.theme.rememberDuskSnackbarAction
+
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.widget.Toast
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
@@ -85,7 +87,6 @@ import com.mlmvpn.scanner.store.tr
 import com.mlmvpn.scanner.ui.LaunchedWhileVisible
 import com.mlmvpn.scanner.ui.emergency.faDigits
 import com.mlmvpn.scanner.ui.home.frostedGlass
-import com.mlmvpn.scanner.ui.settings.Ios
 import com.mlmvpn.scanner.ui.settings.IosScreen
 import com.mlmvpn.scanner.ui.settings.SettingsActionRow
 import com.mlmvpn.scanner.ui.settings.SettingsFooter
@@ -121,6 +122,7 @@ private const val PRIVACY_URL = "https://ur.io/privacy"
  */
 @Composable
 fun ColumnScope.UrnetworkOnboarding(onCreated: () -> Unit) {
+    val showNotice = rememberDuskSnackbarAction()
     val ctx = LocalContext.current
     val scope = rememberCoroutineScope()
     var accepted by rememberSaveable { mutableStateOf(false) }
@@ -134,11 +136,11 @@ fun ColumnScope.UrnetworkOnboarding(onCreated: () -> Unit) {
         modifier = Modifier.size(84.dp).align(Alignment.CenterHorizontally),
     )
     Spacer(Modifier.height(10.dp))
-    Text("URnetwork", color = Ios.Label, fontSize = 22.sp, fontWeight = FontWeight.SemiBold, modifier = Modifier.align(Alignment.CenterHorizontally))
+    Text("URnetwork", color = DuskTheme.onSurface, fontSize = 22.sp, fontWeight = FontWeight.SemiBold, modifier = Modifier.align(Alignment.CenterHorizontally))
     Spacer(Modifier.height(4.dp))
     Text(
         tr("پذیرش قوانین URnetwork", "URnetwork's terms"),
-        color = Ios.SecondaryLabel, fontSize = 14.sp, modifier = Modifier.align(Alignment.CenterHorizontally),
+        color = DuskTheme.muted, fontSize = 14.sp, modifier = Modifier.align(Alignment.CenterHorizontally),
     )
 
     SettingsSectionHeader(tr("قوانین استفاده از URnetwork", "URnetwork's terms of use"))
@@ -162,22 +164,22 @@ fun ColumnScope.UrnetworkOnboarding(onCreated: () -> Unit) {
         )
         points.forEach { p ->
             Row(verticalAlignment = Alignment.Top) {
-                Text("•", color = Ios.Blue, fontSize = 15.sp, modifier = Modifier.padding(end = 8.dp))
-                Text(p, color = Ios.Label, fontSize = 14.sp, lineHeight = 22.sp)
+                Text("•", color = DuskTheme.primary, fontSize = 15.sp, modifier = Modifier.padding(end = 8.dp))
+                Text(p, color = DuskTheme.onSurface, fontSize = 14.sp, lineHeight = 22.sp)
             }
         }
     }
     SettingsGroup(modifier = Modifier.padding(top = 10.dp)) {
         SettingsActionRow(
             label = tr("متن کامل قوانین استفاده (ur.io/terms)", "The full terms of use (ur.io/terms)"),
-            icon = Icons.Default.Description, tint = Ios.Blue, labelColor = Ios.Label,
-            onClick = { openUrl(ctx, TERMS_URL) },
+            icon = Icons.Default.Description, tint = DuskTheme.primary, labelColor = DuskTheme.onSurface,
+            onClick = { openUrl(ctx, TERMS_URL, showNotice) },
         )
         Separator()
         SettingsActionRow(
             label = tr("سیاست حریم خصوصی (ur.io/privacy)", "Privacy policy (ur.io/privacy)"),
-            icon = Icons.Default.Policy, tint = Ios.Blue, labelColor = Ios.Label,
-            onClick = { openUrl(ctx, PRIVACY_URL) },
+            icon = Icons.Default.Policy, tint = DuskTheme.primary, labelColor = DuskTheme.onSurface,
+            onClick = { openUrl(ctx, PRIVACY_URL, showNotice) },
         )
     }
 
@@ -194,13 +196,13 @@ fun ColumnScope.UrnetworkOnboarding(onCreated: () -> Unit) {
         Icon(
             if (accepted) Icons.Default.CheckBox else Icons.Default.CheckBoxOutlineBlank,
             contentDescription = null,
-            tint = if (accepted) Ios.Blue else Ios.SecondaryLabel,
+            tint = if (accepted) DuskTheme.primary else DuskTheme.muted,
             modifier = Modifier.size(26.dp),
         )
         Spacer(Modifier.width(10.dp))
         Text(
             tr("قوانین استفاده و حریم خصوصی URnetwork را خواندم و می‌پذیرم", "I have read and accept URnetwork's terms of use and privacy policy"),
-            color = Ios.Label, fontSize = 15.sp, lineHeight = 22.sp,
+            color = DuskTheme.onSurface, fontSize = 15.sp, lineHeight = 22.sp,
         )
     }
 
@@ -211,7 +213,7 @@ fun ColumnScope.UrnetworkOnboarding(onCreated: () -> Unit) {
             .padding(horizontal = 16.dp)
             .heightIn(min = 54.dp)
             .clip(RoundedCornerShape(14.dp))
-            .background(if (enabled || busy) Ios.Blue else Ios.Gray.copy(alpha = 0.35f))
+            .background(if (enabled || busy) DuskTheme.primary else DuskTheme.disabled.copy(alpha = 0.35f))
             .clickable(enabled = enabled) {
                 busy = true
                 error = null
@@ -219,7 +221,7 @@ fun ColumnScope.UrnetworkOnboarding(onCreated: () -> Unit) {
                     val err = withContext(Dispatchers.IO) { UrnetworkEngine.createAccount(ctx) }
                     busy = false
                     if (err == null) {
-                        Toast.makeText(ctx, tr("حساب URnetwork ساخته شد", "The URnetwork account is ready"), Toast.LENGTH_SHORT).show()
+                        showNotice(tr("حساب URnetwork ساخته شد", "The URnetwork account is ready"))
                         onCreated()
                     } else error = err
                 }
@@ -237,7 +239,7 @@ fun ColumnScope.UrnetworkOnboarding(onCreated: () -> Unit) {
         }
     }
     error?.let {
-        Text(it, color = Ios.Red, fontSize = 13.sp, lineHeight = 20.sp, modifier = Modifier.padding(start = 24.dp, end = 24.dp, top = 10.dp))
+        Text(it, color = DuskTheme.error, fontSize = 13.sp, lineHeight = 20.sp, modifier = Modifier.padding(start = 24.dp, end = 24.dp, top = 10.dp))
     }
     Spacer(Modifier.height(28.dp))
 }
@@ -272,9 +274,9 @@ fun UrnetworkLiveCard(ownsTunnel: Boolean) {
                 else -> tr("در حال اتصال به URnetwork", "Connecting to URnetwork")
             },
             color = when {
-                failed -> Ios.Red
-                connected -> Ios.Green
-                else -> Ios.Label
+                failed -> DuskTheme.error
+                connected -> DuskTheme.success
+                else -> DuskTheme.onSurface
             },
             fontSize = 15.sp, fontWeight = FontWeight.SemiBold,
         )
@@ -313,7 +315,7 @@ fun UrnetworkLiveCard(ownsTunnel: Boolean) {
                     val flag = if (c.code.length == 2 && IpFormatter.isRealCountry(c.code)) IpFormatter.flag(c.code.uppercase()) else "🌐"
                     "$flag ${faDigits(c.count.toString())}"
                 },
-                color = Ios.Label, fontSize = 14.sp,
+                color = DuskTheme.onSurface, fontSize = 14.sp,
             )
             // The SDK reports no place for a provider it kept from an earlier connection (a restored
             // exit skips the search that carries the place).
@@ -321,13 +323,13 @@ fun UrnetworkLiveCard(ownsTunnel: Boolean) {
                 Text(
                     tr("🌐 یعنی کشور آن ارائه‌دهنده گزارش نشده است (مثلاً ارائه‌دهنده‌ای که از اتصال قبلی نگه داشته شده).",
                         "🌐 means the provider's country was not reported (for example one kept from the previous connection)."),
-                    color = Ios.SecondaryLabel, fontSize = 12.sp, lineHeight = 18.sp,
+                    color = DuskTheme.muted, fontSize = 12.sp, lineHeight = 18.sp,
                 )
             }
             Text(
                 tr("خروج هم‌زمان از چند ارائه‌دهنده است؛ هر اتصال ممکن است از یکی از این کشورها بیرون برود. ارائه‌دهنده‌ها دستگاه کاربران دیگرند و می‌آیند و می‌روند؛ URnetwork خاموش‌ها و کندها را مدام با تازه‌ها عوض می‌کند، پس کم و زیاد شدن این عدد عادی است.",
                     "Traffic leaves through several providers at once; each connection may exit in any of these countries. Providers are other users' devices and come and go; URnetwork keeps replacing the ones that went quiet or slow, so this number rising and falling is normal."),
-                color = Ios.SecondaryLabel, fontSize = 12.sp, lineHeight = 18.sp,
+                color = DuskTheme.muted, fontSize = 12.sp, lineHeight = 18.sp,
             )
         }
         // The SDK's own count, as the official app shows it: packets stopped, not names (a name on
@@ -335,34 +337,34 @@ fun UrnetworkLiveCard(ownsTunnel: Boolean) {
         if (live.blocker && live.blocked > 0) {
             Text(
                 tr("بسته‌های مسدودشدهٔ تبلیغات و ردیاب‌ها: ${faDigits(live.blocked.toString())}", "Ad and tracker packets blocked: ${live.blocked}"),
-                color = Ios.SecondaryLabel, fontSize = 12.sp,
+                color = DuskTheme.muted, fontSize = 12.sp,
             )
         }
         if (busy && connected && live.stalled) {
             Text(
                 tr("مسیر داده لحظه‌ای جواب نداد؛ اتصال به سرور URnetwork دوباره برقرار می‌شود و ارائه‌دهنده‌ها نگه داشته شده‌اند.",
                     "The data path stopped answering for a moment; URnetwork's server connection is being redialed and the providers are held."),
-                color = Ios.Orange, fontSize = 12.sp, lineHeight = 18.sp,
+                color = DuskTheme.accent, fontSize = 12.sp, lineHeight = 18.sp,
             )
         }
         if (busy && live.saving.isNotEmpty()) {
             Text(
                 tr("حالت کم‌مصرف (${live.saving.joinToString("، ")}): در بیکاری، ارائه‌دهنده‌ها سه برابر کمتر بررسی می‌شوند تا رادیوی گوشی کمتر بیدار شود.",
                     "Power saving (${live.saving.joinToString(", ")}): while idle, the providers are checked three times less often so the phone's radio wakes less."),
-                color = Ios.SecondaryLabel, fontSize = 12.sp, lineHeight = 18.sp,
+                color = DuskTheme.muted, fontSize = 12.sp, lineHeight = 18.sp,
             )
         }
-        if (failed) live.error?.let { Text(it, color = Ios.SecondaryLabel, fontSize = 13.sp, lineHeight = 20.sp) }
+        if (failed) live.error?.let { Text(it, color = DuskTheme.muted, fontSize = 13.sp, lineHeight = 20.sp) }
 
         val lines = if (all) live.log else live.log.takeLast(5)
         if (lines.isNotEmpty()) {
             Spacer(Modifier.height(2.dp))
-            lines.forEach { Text("· ${faDigits(it)}", color = Ios.SecondaryLabel, fontSize = 11.sp, lineHeight = 16.sp) }
+            lines.forEach { Text("· ${faDigits(it)}", color = DuskTheme.muted, fontSize = 11.sp, lineHeight = 16.sp) }
         }
         if (live.log.size > 5) {
             Text(
                 if (all) tr("کوتاه‌تر", "Less") else tr("همهٔ گزارش (${faDigits(live.log.size.toString())} خط)", "The whole log (${live.log.size} lines)"),
-                color = Ios.Blue, fontSize = 13.sp, modifier = Modifier.clickable { all = !all }.padding(top = 2.dp),
+                color = DuskTheme.primary, fontSize = 13.sp, modifier = Modifier.clickable { all = !all }.padding(top = 2.dp),
             )
         }
     }
@@ -375,10 +377,10 @@ private fun StepRow(label: String, state: StepState, extra: @Composable () -> Un
     Row(verticalAlignment = Alignment.Top) {
         Box(Modifier.size(22.dp), contentAlignment = Alignment.Center) {
             when (state) {
-                StepState.DONE -> Icon(Icons.Default.Check, contentDescription = null, tint = Ios.Green, modifier = Modifier.size(18.dp))
-                StepState.ACTIVE -> CircularProgressIndicator(color = Ios.Blue, strokeWidth = 2.dp, modifier = Modifier.size(14.dp))
-                StepState.FAILED -> Text("✕", color = Ios.Red, fontSize = 14.sp, fontWeight = FontWeight.Bold)
-                StepState.WAITING -> Box(Modifier.size(7.dp).clip(CircleShape).background(Ios.Gray.copy(alpha = 0.45f)))
+                StepState.DONE -> Icon(Icons.Default.Check, contentDescription = null, tint = DuskTheme.success, modifier = Modifier.size(18.dp))
+                StepState.ACTIVE -> CircularProgressIndicator(color = DuskTheme.primary, strokeWidth = 2.dp, modifier = Modifier.size(14.dp))
+                StepState.FAILED -> Text("✕", color = DuskTheme.error, fontSize = 14.sp, fontWeight = FontWeight.Bold)
+                StepState.WAITING -> Box(Modifier.size(7.dp).clip(CircleShape).background(DuskTheme.disabled.copy(alpha = 0.45f)))
             }
         }
         Spacer(Modifier.width(8.dp))
@@ -386,9 +388,9 @@ private fun StepRow(label: String, state: StepState, extra: @Composable () -> Un
             Text(
                 label,
                 color = when (state) {
-                    StepState.WAITING -> Ios.SecondaryLabel
-                    StepState.FAILED -> Ios.Red
-                    else -> Ios.Label
+                    StepState.WAITING -> DuskTheme.muted
+                    StepState.FAILED -> DuskTheme.error
+                    else -> DuskTheme.onSurface
                 },
                 fontSize = 14.sp, lineHeight = 21.sp,
                 fontWeight = if (state == StepState.ACTIVE) FontWeight.Medium else FontWeight.Normal,
@@ -407,10 +409,10 @@ private fun WindowDetail(w: UrnetworkEngine.Window) {
             (if (w.evalFailed > 0) " · ${faDigits(w.evalFailed.toString())} رد شد" else ""),
         "${w.evaluating} being checked · ${w.added} of ${w.target} connected" + (if (w.evalFailed > 0) " · ${w.evalFailed} failed" else ""),
     )
-    Text(numbers, color = Ios.SecondaryLabel, fontSize = 12.sp, lineHeight = 18.sp)
+    Text(numbers, color = DuskTheme.muted, fontSize = 12.sp, lineHeight = 18.sp)
     // The SDK's diagnosis is for a window still forming: once a provider joined, the providers
     // coming and going are its normal life, not a failure.
-    if (w.added == 0) UrnetworkEngine.stallText(w.stall)?.let { Text(it, color = Ios.Orange, fontSize = 12.sp, lineHeight = 18.sp) }
+    if (w.added == 0) UrnetworkEngine.stallText(w.stall)?.let { Text(it, color = DuskTheme.accent, fontSize = 12.sp, lineHeight = 18.sp) }
     val slots = maxOf(w.target, w.added + w.evaluating).coerceIn(0, 32)
     if (slots == 0) return
     val pulse by rememberInfiniteTransition(label = "urn-dots").animateFloat(
@@ -422,10 +424,10 @@ private fun WindowDetail(w: UrnetworkEngine.Window) {
     val failedShown = w.evalFailed.coerceAtMost((slots - w.added - w.evaluating).coerceAtLeast(0))
     val rtl = LocalConfiguration.current.layoutDirection == android.view.View.LAYOUT_DIRECTION_RTL
     // The theme's colours are read here: the draw scope below is not composable.
-    val joined = Ios.Green
-    val checking = Ios.Orange.copy(alpha = pulse)
-    val refused = Ios.Red.copy(alpha = 0.7f)
-    val free = Ios.Gray.copy(alpha = 0.3f)
+    val joined = DuskTheme.success
+    val checking = DuskTheme.accent.copy(alpha = pulse)
+    val refused = DuskTheme.error.copy(alpha = 0.7f)
+    val free = DuskTheme.disabled.copy(alpha = 0.3f)
     Canvas(Modifier.fillMaxWidth().padding(top = 6.dp).height((rows * 14).dp)) {
         val d = 9.dp.toPx()
         val gap = 5.dp.toPx()
@@ -508,10 +510,10 @@ fun UrnetworkUsageCard(onRestore: () -> Unit) {
                 u.pro -> tr("طرح Pro", "Pro plan")
                 else -> tr("طرح رایگان", "Free plan")
             }
-            Text(plan, color = Ios.Label, fontSize = 15.sp, fontWeight = FontWeight.SemiBold, modifier = Modifier.weight(1f))
-            if (loading) CircularProgressIndicator(color = Ios.Blue, strokeWidth = 2.dp, modifier = Modifier.size(16.dp))
+            Text(plan, color = DuskTheme.onSurface, fontSize = 15.sp, fontWeight = FontWeight.SemiBold, modifier = Modifier.weight(1f))
+            if (loading) CircularProgressIndicator(color = DuskTheme.primary, strokeWidth = 2.dp, modifier = Modifier.size(16.dp))
             else Icon(
-                Icons.Default.Refresh, contentDescription = tr("به‌روزرسانی", "Refresh"), tint = Ios.Blue,
+                Icons.Default.Refresh, contentDescription = tr("به‌روزرسانی", "Refresh"), tint = DuskTheme.primary,
                 modifier = Modifier.size(22.dp).clip(CircleShape).clickable { scope.launch { refresh() } },
             )
         }
@@ -519,7 +521,7 @@ fun UrnetworkUsageCard(onRestore: () -> Unit) {
             Text(
                 if (error != null) tr("هنوز اطلاعات حجم گرفته نشده: ", "No data figures yet: ") + error
                 else tr("در حال گرفتن حجم حساب از URnetwork…", "Getting the account's data from URnetwork…"),
-                color = Ios.SecondaryLabel, fontSize = 13.sp, lineHeight = 20.sp,
+                color = DuskTheme.muted, fontSize = 13.sp, lineHeight = 20.sp,
             )
         } else {
             val exhausted = live.insufficient || (u.total > 0 && u.remaining <= 0L)
@@ -527,12 +529,12 @@ fun UrnetworkUsageCard(onRestore: () -> Unit) {
             Text(
                 if (daily) tr("${bytes(u.used)} از ${bytes(u.total)} سهمیهٔ امروز مصرف شده", "${bytes(u.used)} of today's ${bytes(u.total)} used")
                 else tr("${bytes(u.used)} از ${bytes(u.total)} مصرف شده", "${bytes(u.used)} of ${bytes(u.total)} used"),
-                color = Ios.Label, fontSize = 17.sp, fontWeight = FontWeight.Medium,
+                color = DuskTheme.onSurface, fontSize = 17.sp, fontWeight = FontWeight.Medium,
             )
             UsageBar(u.fraction, exhausted)
             Row(Modifier.fillMaxWidth()) {
                 Metric(tr("مصرف‌شده", "Used"), bytes(u.used), Modifier.weight(1f))
-                Metric(tr("باقی‌مانده", "Left"), bytes(u.remaining), Modifier.weight(1f), if (exhausted) Ios.Red else Ios.Green)
+                Metric(tr("باقی‌مانده", "Left"), bytes(u.remaining), Modifier.weight(1f), if (exhausted) DuskTheme.error else DuskTheme.success)
                 Metric(
                     tr("تا شارژ بعدی", "To the next grant"),
                     when {
@@ -557,14 +559,14 @@ fun UrnetworkUsageCard(onRestore: () -> Unit) {
                         tr("ریست بعدی: ", "Next reset: ") + dateLabel(refreshAt) +
                             (u.daysLeft(now)?.let { d -> if (d > 0) tr(" (${faDigits(d.toString())} روز دیگر)", " (in $d days)") else "" } ?: "")
                     },
-                    color = Ios.SecondaryLabel, fontSize = 12.sp, lineHeight = 18.sp,
+                    color = DuskTheme.muted, fontSize = 12.sp, lineHeight = 18.sp,
                 )
             }
             if (u.pending > 0) {
                 Text(
                     tr("در حال تسویه: ${bytes(u.pending)} — حجمی که اتصال‌های باز گرفته‌اند و پس از بسته شدن آن‌ها حساب می‌شود.",
                         "Settling: ${bytes(u.pending)} -- held by open connections, counted once they close."),
-                    color = Ios.SecondaryLabel, fontSize = 12.sp, lineHeight = 18.sp,
+                    color = DuskTheme.muted, fontSize = 12.sp, lineHeight = 18.sp,
                 )
             }
             if (exhausted) {
@@ -572,20 +574,20 @@ fun UrnetworkUsageCard(onRestore: () -> Unit) {
                     if (daily && refreshAt != null) tr("حجم امروز تمام شده است؛ URnetwork تا ساعت ${faDigits(clockLabel(refreshAt))} داده‌ای رد نمی‌کند.",
                         "Today's data is used up; URnetwork carries nothing until ${clockLabel(refreshAt)}.")
                     else tr("حجم این دوره تمام شده است؛ URnetwork تا ریست بعدی داده‌ای رد نمی‌کند.", "This period's data is used up; URnetwork carries nothing until the next reset."),
-                    color = Ios.Red, fontSize = 13.sp, lineHeight = 20.sp,
+                    color = DuskTheme.error, fontSize = 13.sp, lineHeight = 20.sp,
                 )
             }
             error?.let {
-                Text(tr("آخرین به‌روزرسانی نشد: ", "The last refresh failed: ") + it, color = Ios.Orange, fontSize = 12.sp, lineHeight = 18.sp)
+                Text(tr("آخرین به‌روزرسانی نشد: ", "The last refresh failed: ") + it, color = DuskTheme.accent, fontSize = 12.sp, lineHeight = 18.sp)
             }
-            Text(tr("به‌روز شده ", "Updated ") + ago(u.fetchedAt), color = Ios.SecondaryLabel, fontSize = 11.sp)
+            Text(tr("به‌روز شده ", "Updated ") + ago(u.fetchedAt), color = DuskTheme.muted, fontSize = 11.sp)
         }
         if (signedOut) {
             Text(
                 tr("URnetwork ورود این حساب را دیگر نمی‌پذیرد. با عبارت بازیابی دوباره وارد شوید.", "URnetwork no longer accepts this account's sign-in. Sign in again with the recovery phrase."),
-                color = Ios.Red, fontSize = 13.sp, lineHeight = 20.sp,
+                color = DuskTheme.error, fontSize = 13.sp, lineHeight = 20.sp,
             )
-            Text(tr("ورود با عبارت بازیابی", "Sign in with the recovery phrase"), color = Ios.Blue, fontSize = 14.sp,
+            Text(tr("ورود با عبارت بازیابی", "Sign in with the recovery phrase"), color = DuskTheme.primary, fontSize = 14.sp,
                 modifier = Modifier.clickable { onRestore() })
         }
     }
@@ -594,12 +596,12 @@ fun UrnetworkUsageCard(onRestore: () -> Unit) {
 @Composable
 private fun UsageBar(fraction: Float, exhausted: Boolean) {
     val color = when {
-        exhausted || fraction >= 0.9f -> Ios.Red
-        fraction >= 0.75f -> Ios.Orange
-        else -> Ios.Green
+        exhausted || fraction >= 0.9f -> DuskTheme.error
+        fraction >= 0.75f -> DuskTheme.accent
+        else -> DuskTheme.success
     }
     val rtl = LocalConfiguration.current.layoutDirection == android.view.View.LAYOUT_DIRECTION_RTL
-    val track = Ios.Gray.copy(alpha = 0.25f)
+    val track = DuskTheme.disabled.copy(alpha = 0.25f)
     Canvas(Modifier.fillMaxWidth().height(10.dp)) {
         val r = CornerRadius(size.height / 2, size.height / 2)
         drawRoundRect(track, cornerRadius = r)
@@ -609,10 +611,10 @@ private fun UsageBar(fraction: Float, exhausted: Boolean) {
 }
 
 @Composable
-private fun Metric(label: String, value: String, modifier: Modifier, color: Color = Ios.Label) {
+private fun Metric(label: String, value: String, modifier: Modifier, color: Color = DuskTheme.onSurface) {
     Column(modifier, horizontalAlignment = Alignment.CenterHorizontally) {
         Text(value, color = color, fontSize = 15.sp, fontWeight = FontWeight.SemiBold, maxLines = 1)
-        Text(label, color = Ios.SecondaryLabel, fontSize = 12.sp)
+        Text(label, color = DuskTheme.muted, fontSize = 12.sp)
     }
 }
 
@@ -624,6 +626,7 @@ private fun Metric(label: String, value: String, modifier: Modifier, color: Colo
  */
 @Composable
 fun ColumnScope.UrnetworkPanel(onOpenPage: (String) -> Unit) {
+    val showNotice = rememberDuskSnackbarAction()
     val ctx = LocalContext.current
     val scope = rememberCoroutineScope()
     val live by UrnetworkEngine.live.collectAsState()
@@ -635,7 +638,7 @@ fun ColumnScope.UrnetworkPanel(onOpenPage: (String) -> Unit) {
             SettingsRow(
                 title = tr("روی این گوشی در دسترس نیست", "Not available on this phone"),
                 subtitle = UrnetworkEngine.unavailableReason(ctx),
-                icon = Icons.Default.Info, tint = Ios.Orange, showChevron = false,
+                icon = Icons.Default.Info, tint = DuskTheme.accent, showChevron = false,
             )
         }
         return
@@ -648,7 +651,7 @@ fun ColumnScope.UrnetworkPanel(onOpenPage: (String) -> Unit) {
         val name = UrnetworkSettings.locationName(ctx)
         SettingsRow(
             title = tr("کشور", "Country"),
-            icon = Icons.Default.Language, tint = Ios.Indigo,
+            icon = Icons.Default.Language, tint = DuskTheme.indigo,
             value = if (code == null && name == null) tr("بهترین مکان در دسترس", "Best available")
                 else listOfNotNull(code?.takeIf { IpFormatter.isRealCountry(it) }?.let { IpFormatter.flag(it.uppercase()) }, name ?: code?.uppercase()).joinToString(" "),
             onClick = { onOpenPage(UrnetworkPages.LOCATIONS) },
@@ -671,7 +674,7 @@ fun ColumnScope.UrnetworkPanel(onOpenPage: (String) -> Unit) {
                 UrnetworkSettings.setBlocker(ctx, it)
                 UrnetworkEngine.blockerChanged(it)
             },
-            icon = Icons.Default.Block, tint = Ios.Red,
+            icon = Icons.Default.Block, tint = DuskTheme.error,
             subtitle = if (blocker && ours && live.blocked > 0) tr("${faDigits(live.blocked.toString())} بستهٔ مسدودشده", "${live.blocked} packets blocked") else null,
         )
     }
@@ -692,7 +695,7 @@ fun ColumnScope.UrnetworkPanel(onOpenPage: (String) -> Unit) {
                 UrnetworkSettings.setForMae(ctx, it)
                 com.mlmvpn.scanner.engines.mae.MaeEngine.urnetworkForMaeChanged()
             },
-            icon = Icons.Default.AutoAwesome, tint = Ios.Blue,
+            icon = Icons.Default.AutoAwesome, tint = DuskTheme.primary,
         )
     }
     SettingsFooter(tr(
@@ -707,12 +710,12 @@ fun ColumnScope.UrnetworkPanel(onOpenPage: (String) -> Unit) {
     SettingsSectionHeader(tr("حساب", "Account"))
     SettingsGroup {
         if (name != null) {
-            SettingsRow(title = tr("نام حساب", "Account name"), icon = Icons.Default.Person, tint = Ios.Gray, value = name, showChevron = false)
+            SettingsRow(title = tr("نام حساب", "Account name"), icon = Icons.Default.Person, tint = DuskTheme.disabled, value = name, showChevron = false)
             Separator()
         }
         SettingsActionRow(
             label = if (showSeed) tr("پنهان کردن عبارت بازیابی", "Hide the recovery phrase") else tr("نمایش عبارت بازیابی", "Show the recovery phrase"),
-            icon = Icons.Default.Key, tint = Ios.Orange, labelColor = Ios.Label,
+            icon = Icons.Default.Key, tint = DuskTheme.accent, labelColor = DuskTheme.onSurface,
             onClick = {
                 if (showSeed) showSeed = false
                 else scope.launch {
@@ -735,10 +738,10 @@ fun ColumnScope.UrnetworkPanel(onOpenPage: (String) -> Unit) {
                 Separator()
                 SettingsActionRow(
                     label = tr("کپی عبارت بازیابی", "Copy the recovery phrase"),
-                    icon = Icons.Default.ContentCopy, tint = Ios.Blue, labelColor = Ios.Label,
+                    icon = Icons.Default.ContentCopy, tint = DuskTheme.primary, labelColor = DuskTheme.onSurface,
                     onClick = {
                         ctx.getSystemService(ClipboardManager::class.java)?.setPrimaryClip(ClipData.newPlainText("URnetwork", s))
-                        Toast.makeText(ctx, tr("کپی شد", "Copied"), Toast.LENGTH_SHORT).show()
+                        showNotice(tr("کپی شد", "Copied"))
                     },
                 )
             }
@@ -746,7 +749,7 @@ fun ColumnScope.UrnetworkPanel(onOpenPage: (String) -> Unit) {
         Separator()
         SettingsActionRow(
             label = tr("ورود با عبارت بازیابی حسابی دیگر", "Sign in with another account's recovery phrase"),
-            icon = Icons.Default.Login, tint = Ios.Blue, labelColor = Ios.Label,
+            icon = Icons.Default.Login, tint = DuskTheme.primary, labelColor = DuskTheme.onSurface,
             onClick = { onOpenPage(UrnetworkPages.RESTORE) },
         )
     }
@@ -814,12 +817,12 @@ fun UrnetworkLocationsScreen(onBack: () -> Unit, backLabel: String) {
                     value = query,
                     onValueChange = { query = it },
                     singleLine = true,
-                    textStyle = TextStyle(color = Ios.Label, fontSize = 16.sp),
-                    cursorBrush = SolidColor(Ios.Blue),
+                    textStyle = TextStyle(color = DuskTheme.onSurface, fontSize = 16.sp),
+                    cursorBrush = SolidColor(DuskTheme.primary),
                     modifier = Modifier.fillMaxWidth(),
                     decorationBox = { inner ->
                         Box {
-                            if (query.isEmpty()) Text(tr("جستجوی کشور", "Search countries"), color = Ios.SecondaryLabel.copy(alpha = 0.6f), fontSize = 16.sp)
+                            if (query.isEmpty()) Text(tr("جستجوی کشور", "Search countries"), color = DuskTheme.muted.copy(alpha = 0.6f), fontSize = 16.sp)
                             inner()
                         }
                     },
@@ -839,9 +842,9 @@ fun UrnetworkLocationsScreen(onBack: () -> Unit, backLabel: String) {
         val all = list
         when {
             all == null && loading -> Text(tr("در حال گرفتن فهرست کشورها از URnetwork…", "Getting the country list from URnetwork…"),
-                color = Ios.SecondaryLabel, fontSize = 13.sp, modifier = Modifier.padding(horizontal = 32.dp))
+                color = DuskTheme.muted, fontSize = 13.sp, modifier = Modifier.padding(horizontal = 32.dp))
             all == null -> Text(tr("فهرست کشورها گرفته نشد: ", "The country list did not come: ") + (error ?: ""),
-                color = Ios.Orange, fontSize = 13.sp, lineHeight = 20.sp, modifier = Modifier.padding(horizontal = 32.dp))
+                color = DuskTheme.accent, fontSize = 13.sp, lineHeight = 20.sp, modifier = Modifier.padding(horizontal = 32.dp))
             else -> {
                 val q = query.trim().lowercase()
                 val shown = all.filter { l ->
@@ -860,10 +863,10 @@ fun UrnetworkLocationsScreen(onBack: () -> Unit, backLabel: String) {
                         ) { choose(l) }
                     }
                 }
-                if (shown.isEmpty()) Text(tr("کشوری با این نام نیست.", "No country by that name."), color = Ios.SecondaryLabel, fontSize = 13.sp,
+                if (shown.isEmpty()) Text(tr("کشوری با این نام نیست.", "No country by that name."), color = DuskTheme.muted, fontSize = 13.sp,
                     modifier = Modifier.padding(horizontal = 32.dp, vertical = 8.dp))
                 error?.let { Text(tr("فهرست تازه گرفته نشد؛ فهرست قبلی نشان داده می‌شود: ", "No fresh list; showing the last one: ") + it,
-                    color = Ios.Orange, fontSize = 12.sp, lineHeight = 18.sp, modifier = Modifier.padding(horizontal = 32.dp, vertical = 8.dp)) }
+                    color = DuskTheme.accent, fontSize = 12.sp, lineHeight = 18.sp, modifier = Modifier.padding(horizontal = 32.dp, vertical = 8.dp)) }
             }
         }
         SettingsFooter(tr(
@@ -883,10 +886,10 @@ private fun LocationRow(title: String, detail: String, flag: String, selected: B
         Text(flag, fontSize = 20.sp)
         Spacer(Modifier.width(12.dp))
         Column(Modifier.weight(1f)) {
-            Text(title, color = Ios.Label, fontSize = 16.sp)
-            Text(detail, color = Ios.SecondaryLabel, fontSize = 12.sp)
+            Text(title, color = DuskTheme.onSurface, fontSize = 16.sp)
+            Text(detail, color = DuskTheme.muted, fontSize = 12.sp)
         }
-        if (selected) Icon(Icons.Default.Check, contentDescription = null, tint = Ios.Blue, modifier = Modifier.size(20.dp))
+        if (selected) Icon(Icons.Default.Check, contentDescription = null, tint = DuskTheme.primary, modifier = Modifier.size(20.dp))
     }
 }
 
@@ -910,6 +913,7 @@ private fun parseLocations(json: JSONObject): List<UrLocation> {
 
 @Composable
 fun UrnetworkRestoreScreen(onBack: () -> Unit, backLabel: String) {
+    val showNotice = rememberDuskSnackbarAction()
     val ctx = LocalContext.current
     val scope = rememberCoroutineScope()
     var phrase by rememberSaveable { mutableStateOf("") }
@@ -925,13 +929,13 @@ fun UrnetworkRestoreScreen(onBack: () -> Unit, backLabel: String) {
                 BasicTextField(
                     value = phrase,
                     onValueChange = { phrase = it; error = null },
-                    textStyle = TextStyle(color = Ios.Label, fontSize = 16.sp, lineHeight = 24.sp),
-                    cursorBrush = SolidColor(Ios.Blue),
+                    textStyle = TextStyle(color = DuskTheme.onSurface, fontSize = 16.sp, lineHeight = 24.sp),
+                    cursorBrush = SolidColor(DuskTheme.primary),
                     modifier = Modifier.fillMaxWidth(),
                     decorationBox = { inner ->
                         Box {
                             if (phrase.isEmpty()) Text(tr("عبارت بازیابی حساب URnetwork (کلمه‌های انگلیسی با فاصله)", "The URnetwork account's recovery phrase (English words, space separated)"),
-                                color = Ios.SecondaryLabel.copy(alpha = 0.6f), fontSize = 15.sp)
+                                color = DuskTheme.muted.copy(alpha = 0.6f), fontSize = 15.sp)
                             inner()
                         }
                     },
@@ -946,7 +950,7 @@ fun UrnetworkRestoreScreen(onBack: () -> Unit, backLabel: String) {
         SettingsGroup(modifier = Modifier.padding(top = 14.dp)) {
             SettingsActionRow(
                 label = if (busy) tr("در حال ورود…", "Signing in…") else tr("ورود", "Sign in"),
-                icon = Icons.Default.Login, tint = Ios.Blue, busy = busy,
+                icon = Icons.Default.Login, tint = DuskTheme.primary, busy = busy,
                 enabled = !busy && !ours && phrase.trim().split(Regex("\\s+")).size >= 6,
                 onClick = {
                     busy = true
@@ -954,23 +958,23 @@ fun UrnetworkRestoreScreen(onBack: () -> Unit, backLabel: String) {
                         val err = withContext(Dispatchers.IO) { UrnetworkEngine.restoreAccount(ctx, phrase) }
                         busy = false
                         if (err == null) {
-                            Toast.makeText(ctx, tr("وارد حساب شدید", "Signed in"), Toast.LENGTH_SHORT).show()
+                            showNotice(tr("وارد حساب شدید", "Signed in"))
                             onBack()
                         } else error = err
                     }
                 },
             )
         }
-        error?.let { Text(it, color = Ios.Red, fontSize = 13.sp, lineHeight = 20.sp, modifier = Modifier.padding(start = 32.dp, end = 32.dp, top = 8.dp)) }
+        error?.let { Text(it, color = DuskTheme.error, fontSize = 13.sp, lineHeight = 20.sp, modifier = Modifier.padding(start = 32.dp, end = 32.dp, top = 8.dp)) }
         Spacer(Modifier.height(28.dp))
     }
 }
 
 // ── small pieces ───────────────────────────────────────────────────────────────────────────
 
-private fun openUrl(ctx: Context, url: String) {
+private fun openUrl(ctx: Context, url: String, showNotice: (String) -> Unit) {
     runCatching { ctx.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)) }
-        .onFailure { Toast.makeText(ctx, url, Toast.LENGTH_LONG).show() }
+        .onFailure { showNotice(url) }
 }
 
 /** Bytes as people read them, on 1024: "۲۹٫۸ گیگابایت" / "29.8 GB". */

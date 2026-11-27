@@ -45,7 +45,6 @@ import com.mlmvpn.scanner.engines.subgenerator.SubGenManager
 import com.mlmvpn.scanner.engines.subgenerator.SubLinkConfig
 import com.mlmvpn.scanner.models.CloudAccount
 import com.mlmvpn.scanner.ui.faCount
-import com.mlmvpn.scanner.ui.settings.Ios
 import com.mlmvpn.scanner.ui.settings.IosScreen
 import com.mlmvpn.scanner.ui.settings.SettingsFooter
 import com.mlmvpn.scanner.ui.settings.SettingsGlyph
@@ -155,12 +154,12 @@ fun SubLinkFormScreen(
                 CircularProgressIndicator(
                     modifier = Modifier.size(18.dp),
                     strokeWidth = 2.dp,
-                    color = Ios.SecondaryLabel,
+                    color = DuskTheme.muted,
                 )
             } else {
                 Text(
                     S(R.string.save_2),
-                    color = if (canSave) Ios.Label else Ios.SecondaryLabel.copy(alpha = 0.5f),
+                    color = if (canSave) DuskTheme.onSurface else DuskTheme.muted.copy(alpha = 0.5f),
                     style = MaterialTheme.typography.bodyLarge,
                     fontWeight = FontWeight.SemiBold,
                     modifier = Modifier
@@ -201,7 +200,7 @@ fun SubLinkFormScreen(
             SettingsRow(
                 title = S(R.string.group),
                 icon = Icons.Default.Folder,
-                tint = Ios.Blue,
+                tint = DuskTheme.primary,
                 value = group?.displayName ?: S(R.string.choose_2),
                 subtitle = group?.let {
                     it.source.label + " · " + faCount(it.nodes.size) + S(R.string.configs_3)
@@ -325,7 +324,7 @@ fun SubLinkGroupScreen(
             Icon(
                 Icons.Default.Search,
                 contentDescription = null,
-                tint = Ios.SecondaryLabel,
+                tint = DuskTheme.muted,
                 modifier = Modifier.size(17.dp),
             )
             Spacer(Modifier.width(7.dp))
@@ -333,13 +332,13 @@ fun SubLinkGroupScreen(
                 value = query,
                 onValueChange = { query = it },
                 singleLine = true,
-                textStyle = MaterialTheme.typography.bodyLarge.copy(color = Ios.Label),
-                cursorBrush = SolidColor(Ios.Blue),
+                textStyle = MaterialTheme.typography.bodyLarge.copy(color = DuskTheme.onSurface),
+                cursorBrush = SolidColor(DuskTheme.primary),
                 modifier = Modifier.weight(1f),
                 decorationBox = { inner ->
                     Box {
                         if (query.isEmpty()) {
-                            Text(S(R.string.search_groups), color = Ios.SecondaryLabel, style = MaterialTheme.typography.bodyLarge)
+                            Text(S(R.string.search_groups), color = DuskTheme.muted, style = MaterialTheme.typography.bodyLarge)
                         }
                         inner()
                     }
@@ -349,7 +348,7 @@ fun SubLinkGroupScreen(
                 Icon(
                     Icons.Default.Close,
                     contentDescription = S(R.string.clear_2_r2),
-                    tint = Ios.SecondaryLabel,
+                    tint = DuskTheme.muted,
                     modifier = Modifier
                         .size(26.dp)
                         .clip(DuskTheme.controlShape)
@@ -412,25 +411,25 @@ private fun GroupRow(group: SubGenGroup, selected: Boolean, onClick: () -> Unit)
             .padding(horizontal = 16.dp, vertical = 8.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        SettingsGlyph(Icons.Default.Folder, if (empty) Ios.Gray else Ios.Blue)
+        SettingsGlyph(Icons.Default.Folder, if (empty) DuskTheme.disabled else DuskTheme.primary)
         Spacer(Modifier.width(12.dp))
         Column(modifier = Modifier.weight(1f)) {
             Text(
                 group.displayName,
-                color = if (empty) Ios.SecondaryLabel else Ios.Label,
+                color = if (empty) DuskTheme.muted else DuskTheme.onSurface,
                 style = MaterialTheme.typography.bodyLarge,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
             if (group.subtitle.isNotBlank()) {
                 Spacer(Modifier.height(2.dp))
-                Text(group.subtitle, color = Ios.SecondaryLabel, style = MaterialTheme.typography.labelMedium)
+                Text(group.subtitle, color = DuskTheme.muted, style = MaterialTheme.typography.labelMedium)
             }
         }
         // The count is a state -- an empty group cannot serve a link -- so it keeps its colour.
         Text(
             if (empty) S(R.string.empty) else faCount(group.nodes.size) + S(R.string.configs_3),
-            color = if (empty) Ios.Orange else Ios.SecondaryLabel,
+            color = if (empty) DuskTheme.accent else DuskTheme.muted,
             style = MaterialTheme.typography.bodyMedium,
         )
         if (selected) {
@@ -438,7 +437,7 @@ private fun GroupRow(group: SubGenGroup, selected: Boolean, onClick: () -> Unit)
             Icon(
                 Icons.Default.Check,
                 contentDescription = null,
-                tint = Ios.Blue,
+                tint = DuskTheme.primary,
                 modifier = Modifier.size(20.dp),
             )
         }

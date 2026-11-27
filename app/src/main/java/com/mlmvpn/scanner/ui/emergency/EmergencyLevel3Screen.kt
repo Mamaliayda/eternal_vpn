@@ -1,8 +1,10 @@
 package com.mlmvpn.scanner.ui.emergency
 
+import com.mlmvpn.scanner.ui.theme.DuskTheme
+import com.mlmvpn.scanner.ui.theme.rememberDuskSnackbarAction
+
 import android.app.Activity
 import android.net.VpnService
-import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
@@ -56,7 +58,6 @@ import com.mlmvpn.scanner.engines.rstaspoof.SniSession
 import com.mlmvpn.scanner.engines.rstaspoof.SniEch
 import com.mlmvpn.scanner.models.VpnNode
 import com.mlmvpn.scanner.ui.home.HomeDestinations
-import com.mlmvpn.scanner.ui.settings.Ios
 import com.mlmvpn.scanner.ui.settings.IosScreen
 import com.mlmvpn.scanner.ui.settings.SettingsActionRow
 import com.mlmvpn.scanner.ui.settings.SettingsFooter
@@ -169,6 +170,7 @@ private const val P_BUILD = "build"
 @Composable
 fun EmergencyLevel3Screen(onBack: () -> Unit) {
     val context = LocalContext.current
+    val showNotice = rememberDuskSnackbarAction()
     val scope = rememberCoroutineScope()
     val prefs = remember(context) {
         androidx.preference.PreferenceManager.getDefaultSharedPreferences(context)
@@ -266,7 +268,7 @@ fun EmergencyLevel3Screen(onBack: () -> Unit) {
     fun connect() {
         val node = selectedConfig
         if (node == null) {
-            Toast.makeText(context, noConfigText, Toast.LENGTH_LONG).show()
+            showNotice(noConfigText)
             return
         }
         // Same guard every other connect path goes through: a running IP scan owns the link, and
@@ -615,11 +617,7 @@ fun EmergencyLevel3Screen(onBack: () -> Unit) {
             // Re-reads the list and re-derives the selection from it; see the `remember` keys.
             configsRevision++
             if (gone > 0) {
-                Toast.makeText(
-                    context,
-                    context.getString(R.string.sni_configs_deleted, faDigits(gone.toString())),
-                    Toast.LENGTH_SHORT,
-                ).show()
+                showNotice(context.getString(R.string.sni_configs_deleted, faDigits(gone.toString())))
             }
             if (remaining == 0) page = null
         }
@@ -634,7 +632,7 @@ fun EmergencyLevel3Screen(onBack: () -> Unit) {
     fun deleteDeadConfigs() {
         val dead = sniConfigs.filter { (configDelays[it.id] ?: 1L) <= 0L }.map { it.id }.toSet()
         if (dead.isEmpty()) {
-            Toast.makeText(context, S(R.string.nodes_delete_dead_none), Toast.LENGTH_SHORT).show()
+            showNotice(S(R.string.nodes_delete_dead_none))
             return
         }
         deleteConfigs(dead)
@@ -678,11 +676,7 @@ fun EmergencyLevel3Screen(onBack: () -> Unit) {
                 onBuilt = { added ->
                     configsRevision++
                     page = null
-                    Toast.makeText(
-                        context,
-                        context.getString(R.string.sni_configs_were_built, faDigits(added.toString())),
-                        Toast.LENGTH_SHORT,
-                    ).show()
+                    showNotice(context.getString(R.string.sni_configs_were_built, faDigits(added.toString())))
                 },
                 onBack = { page = null },
             )
@@ -699,14 +693,14 @@ fun EmergencyLevel3Screen(onBack: () -> Unit) {
 
         Text(
             "SNI Fragmentation",
-            color = Ios.SecondaryLabel,
+            color = DuskTheme.muted,
             fontSize = 13.sp,
             modifier = Modifier.align(Alignment.CenterHorizontally),
         )
         Spacer(Modifier.height(4.dp))
         Text(
             stringResource(R.string.emergency_3_tagline),
-            color = Ios.SecondaryLabel,
+            color = DuskTheme.muted,
             fontSize = 13.sp,
             lineHeight = 20.sp,
             textAlign = TextAlign.Center,
@@ -767,7 +761,7 @@ fun EmergencyLevel3Screen(onBack: () -> Unit) {
                     SettingsRow(
                         title = stringResource(R.string.sni_row_config),
                         icon = Icons.Default.Storage,
-                        tint = Ios.Green,
+                        tint = DuskTheme.success,
                         value = selectedConfig?.name?.take(22),
                         showChevron = false,
                     )
@@ -775,7 +769,7 @@ fun EmergencyLevel3Screen(onBack: () -> Unit) {
                     SettingsRow(
                         title = stringResource(R.string.emergency_3_row_sni),
                         icon = Icons.Default.Dns,
-                        tint = Ios.Teal,
+                        tint = DuskTheme.blueGray,
                         value = selectedRoute.fakeSni,
                         showChevron = false,
                     )
@@ -783,7 +777,7 @@ fun EmergencyLevel3Screen(onBack: () -> Unit) {
                     SettingsRow(
                         title = stringResource(R.string.emergency_3_row_edge),
                         icon = Icons.Default.Public,
-                        tint = Ios.Indigo,
+                        tint = DuskTheme.indigo,
                         value = "${selectedRoute.connectIp}:${selectedRoute.connectPort}",
                         showChevron = false,
                     )
@@ -791,7 +785,7 @@ fun EmergencyLevel3Screen(onBack: () -> Unit) {
                     SettingsRow(
                         title = stringResource(R.string.emergency_3_row_local),
                         icon = Icons.Default.Link,
-                        tint = Ios.Gray,
+                        tint = DuskTheme.disabled,
                         value = LOCAL_ENTRY,
                         showChevron = false,
                     )
@@ -806,7 +800,7 @@ fun EmergencyLevel3Screen(onBack: () -> Unit) {
             SettingsRow(
                 title = stringResource(R.string.sni_row_selected_config),
                 icon = Icons.Default.Storage,
-                tint = if (selectedConfig == null) Ios.Gray else Ios.Blue,
+                tint = if (selectedConfig == null) DuskTheme.disabled else DuskTheme.primary,
                 value = selectedConfig?.name?.take(20)
                     ?: stringResource(R.string.not_chosen_yet),
                 onClick = { if (sniConfigs.isNotEmpty()) page = P_CONFIGS },
@@ -828,7 +822,7 @@ fun EmergencyLevel3Screen(onBack: () -> Unit) {
                     else -> stringResource(R.string.sni_measure_configs)
                 },
                 icon = Icons.Default.Speed,
-                tint = Ios.Green,
+                tint = DuskTheme.success,
                 busy = isMeasuring || isScanning,
                 enabled = sniConfigs.isNotEmpty() && !isMeasuring && !isScanning,
                 onClick = { measureConfigs() },
@@ -837,7 +831,7 @@ fun EmergencyLevel3Screen(onBack: () -> Unit) {
             SettingsActionRow(
                 label = stringResource(R.string.sni_build_configs),
                 icon = Icons.Default.Add,
-                tint = Ios.Indigo,
+                tint = DuskTheme.indigo,
                 onClick = { page = P_BUILD },
             )
         }
@@ -907,7 +901,7 @@ private fun RouteRow(
         Column(modifier = Modifier.weight(1f)) {
             Text(
                 route.fakeSni,
-                color = Ios.Label,
+                color = DuskTheme.onSurface,
                 fontSize = 16.sp,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
@@ -915,7 +909,7 @@ private fun RouteRow(
             Text(
                 if (route.method > 0) "${route.connectIp}:${route.connectPort}  ·  روش ${route.method}"
                 else "${route.connectIp}:${route.connectPort}",
-                color = Ios.SecondaryLabel,
+                color = DuskTheme.muted,
                 fontSize = 12.sp,
             )
         }
@@ -935,7 +929,7 @@ private fun RouteRow(
                 Icon(
                     Icons.Default.Check,
                     contentDescription = null,
-                    tint = Ios.Blue,
+                    tint = DuskTheme.primary,
                     modifier = Modifier.size(20.dp),
                 )
             }

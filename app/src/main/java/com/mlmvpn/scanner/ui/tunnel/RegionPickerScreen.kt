@@ -1,5 +1,7 @@
 package com.mlmvpn.scanner.ui.tunnel
 
+import com.mlmvpn.scanner.ui.theme.DuskTheme
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -43,7 +45,6 @@ import androidx.compose.ui.unit.sp
 import com.mlmvpn.core.tunnel.IpFormatter
 import com.mlmvpn.core.tunnel.RegionMemory
 import com.mlmvpn.scanner.ui.home.frostedGlass
-import com.mlmvpn.scanner.ui.settings.Ios
 import com.mlmvpn.scanner.ui.settings.IosScreen
 import com.mlmvpn.scanner.ui.theme.PanelShape
 import java.util.Locale
@@ -171,7 +172,7 @@ fun RegionPickerScreen(
             Icon(
                 Icons.Default.Search,
                 contentDescription = null,
-                tint = Ios.SecondaryLabel,
+                tint = DuskTheme.muted,
                 modifier = Modifier.size(17.dp),
             )
             Spacer(Modifier.width(7.dp))
@@ -179,13 +180,13 @@ fun RegionPickerScreen(
                 value = query,
                 onValueChange = { query = it },
                 singleLine = true,
-                textStyle = TextStyle(color = Ios.Label, fontSize = 16.sp),
-                cursorBrush = SolidColor(Ios.Blue),
+                textStyle = TextStyle(color = DuskTheme.onSurface, fontSize = 16.sp),
+                cursorBrush = SolidColor(DuskTheme.primary),
                 modifier = Modifier.fillMaxWidth(),
                 decorationBox = { inner ->
                     Box {
                         if (query.isEmpty()) {
-                            Text(S(R.string.search_country_2), color = Ios.SecondaryLabel, fontSize = 16.sp)
+                            Text(S(R.string.search_country_2), color = DuskTheme.muted, fontSize = 16.sp)
                         }
                         inner()
                     }
@@ -282,7 +283,7 @@ fun RegionPickerScreen(
                 Spacer(Modifier.size(10.dp))
                 Text(
                     footer,
-                    color = Ios.SecondaryLabel,
+                    color = DuskTheme.muted,
                     fontSize = 13.sp,
                     lineHeight = 21.sp,
                     modifier = Modifier.padding(horizontal = 16.dp),
@@ -314,16 +315,16 @@ private fun RegionRow(
         Text(flag, fontSize = 22.sp)
         Spacer(Modifier.width(12.dp))
         Column(modifier = Modifier.weight(1f)) {
-            Text(name, color = Ios.Label, fontSize = 16.sp, maxLines = 1)
+            Text(name, color = DuskTheme.onSurface, fontSize = 16.sp, maxLines = 1)
             if (detail.isNotBlank()) {
-                Text(detail, color = Ios.SecondaryLabel, fontSize = 11.sp, maxLines = 2)
+                Text(detail, color = DuskTheme.muted, fontSize = 11.sp, maxLines = 2)
             }
         }
         if (onStar != null) {
             Icon(
                 if (starred) Icons.Default.Star else Icons.Default.StarBorder,
                 contentDescription = null,
-                tint = if (starred) Ios.Yellow else Ios.SecondaryLabel.copy(alpha = 0.55f),
+                tint = if (starred) DuskTheme.accent else DuskTheme.muted.copy(alpha = 0.55f),
                 modifier = Modifier
                     .size(30.dp)
                     .clip(RoundedCornerShape(15.dp))
@@ -336,7 +337,7 @@ private fun RegionRow(
             Icon(
                 Icons.Default.Check,
                 contentDescription = null,
-                tint = Ios.Blue,
+                tint = DuskTheme.primary,
                 modifier = Modifier.size(20.dp),
             )
         }

@@ -1,5 +1,7 @@
 package com.mlmvpn.scanner.ui.arena
 
+import com.mlmvpn.scanner.ui.theme.DuskTheme
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size
@@ -11,7 +13,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -38,11 +39,11 @@ fun teamMark(id: String): String = when (id) {
 @Composable
 fun TeamTile(id: String, size: Dp, modifier: Modifier = Modifier, dim: Boolean = false) {
     Box(
-        modifier.size(size).clip(RoundedCornerShape(size * 0.27f))
-            .background(Brush.verticalGradient(listOf(Color(0xFF636366), Color(0xFF48484A))))
+        modifier.size(size).clip(RoundedCornerShape(size * DuskTheme.teamTileCornerFraction))
+            .background(Brush.verticalGradient(listOf(DuskTheme.disabled, DuskTheme.secondary)))
             .alpha(if (dim) 0.45f else 1f),
         contentAlignment = Alignment.Center,
     ) {
-        Text(teamMark(id), color = Color.White, fontSize = (size.value * 0.4f).sp, fontWeight = FontWeight.SemiBold)
+        Text(teamMark(id), color = DuskTheme.onSurface, fontSize = (size.value * DuskTheme.teamMarkScale).sp, fontWeight = FontWeight.SemiBold)
     }
 }

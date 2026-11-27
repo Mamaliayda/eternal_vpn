@@ -1629,6 +1629,7 @@ fun AccountGroupCard(
                     groupManager = groupManager,
                     onOpen = { onShowSpider(account) },
                     onGroupsUpdated = onGroupsUpdated,
+                    showNotice = notify,
                 )
             }
             }

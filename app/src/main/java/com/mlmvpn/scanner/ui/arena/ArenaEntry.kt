@@ -1,5 +1,7 @@
 package com.mlmvpn.scanner.ui.arena
 
+import com.mlmvpn.scanner.ui.theme.DuskTheme
+
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.EmojiEvents
@@ -14,7 +16,6 @@ import com.mlmvpn.scanner.engines.arena.ArenaEngine
 import com.mlmvpn.scanner.engines.arena.ArenaPanels
 import com.mlmvpn.scanner.engines.arena.ArenaStore
 import com.mlmvpn.scanner.store.tr
-import com.mlmvpn.scanner.ui.settings.Ios
 import com.mlmvpn.scanner.ui.settings.SettingsGroup
 import com.mlmvpn.scanner.ui.settings.SettingsRow
 
@@ -29,7 +30,7 @@ fun ArenaEntryCard(onOpen: () -> Unit, modifier: Modifier = Modifier.padding(ver
     SettingsGroup(modifier = modifier) {
         SettingsRow(
             title = tr("میدان کانفیگ", "Config Arena"),
-            icon = Icons.Default.EmojiEvents, tint = Ios.Yellow,
+            icon = Icons.Default.EmojiEvents, tint = DuskTheme.accent,
             subtitle = when {
                 live.running -> tr("مسابقه در جریان است", "A race is running")
                 winner != null -> tr("آخرین برنده: ", "Last winner: ") + (ArenaPanels.byId(winner)?.name ?: "")

@@ -3,21 +3,21 @@
     <style name="Theme.MLMVPNScanner" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Native Views and pre-Compose windows use Soft Dusk's night tokens, matching the app's
              established default; Compose screens resolve the selected light/night palette. -->
-        <item name="colorPrimary">@color/gs_primary</item>
-        <item name="colorPrimaryVariant">@color/gs_primary_dim</item>
-        <item name="colorOnPrimary">@color/gs_bg</item>
-        <item name="colorSecondary">@color/gs_secondary</item>
-        <item name="colorSecondaryVariant">@color/gs_secondary_container</item>
-        <item name="colorOnSecondary">@color/gs_bg</item>
-        <item name="android:windowBackground">@color/gs_bg</item>
-        <item name="colorSurface">@color/gs_surface</item>
-        <item name="colorOnSurface">@color/gs_on_surface</item>
-        <item name="colorError">@color/gs_error</item>
-        <item name="android:statusBarColor">@color/gs_bg</item>
+        <item name="colorPrimary">@color/dusk_primary</item>
+        <item name="colorPrimaryVariant">@color/dusk_primary_dim</item>
+        <item name="colorOnPrimary">@color/dusk_background</item>
+        <item name="colorSecondary">@color/dusk_secondary</item>
+        <item name="colorSecondaryVariant">@color/dusk_secondary_container</item>
+        <item name="colorOnSecondary">@color/dusk_background</item>
+        <item name="android:windowBackground">@color/dusk_background</item>
+        <item name="colorSurface">@color/dusk_surface</item>
+        <item name="colorOnSurface">@color/dusk_on_surface</item>
+        <item name="colorError">@color/dusk_error</item>
+        <item name="android:statusBarColor">@color/dusk_background</item>
         <item name="android:windowLightStatusBar">false</item>
-        <item name="android:navigationBarColor">@color/gs_bg</item>
+        <item name="android:navigationBarColor">@color/dusk_background</item>
         <item name="android:windowLightNavigationBar">false</item>
-        <item name="android:windowSplashScreenBackground">@color/gs_bg</item>
+        <item name="android:windowSplashScreenBackground">@color/dusk_background</item>
         <item name="android:enforceStatusBarContrast">false</item>
         <item name="android:enforceNavigationBarContrast">false</item>
         <item name="android:fontFamily">@font/iransansx</item>
@@ -35,26 +35,26 @@
     </style>
 
     <style name="App.Button.Outlined" parent="Widget.MaterialComponents.Button.OutlinedButton">
-        <item name="strokeColor">@color/gs_primary</item>
-        <item name="android:textColor">@color/gs_primary</item>
+        <item name="strokeColor">@color/dusk_primary</item>
+        <item name="android:textColor">@color/dusk_primary</item>
         <item name="cornerRadius">12dp</item>
     </style>
     <style name="App.Button.Filled" parent="Widget.MaterialComponents.Button">
-        <item name="backgroundTint">@color/gs_primary</item>
-        <item name="android:textColor">@color/gs_bg</item>
+        <item name="backgroundTint">@color/dusk_primary</item>
+        <item name="android:textColor">@color/dusk_background</item>
         <item name="cornerRadius">12dp</item>
     </style>
     <style name="App.TextInput" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-        <item name="boxStrokeColor">@color/gs_outline</item>
-        <item name="hintTextColor">@color/gs_on_surface_variant</item>
-        <item name="android:textColorHint">@color/gs_on_surface_dim</item>
+        <item name="boxStrokeColor">@color/dusk_outline</item>
+        <item name="hintTextColor">@color/dusk_on_surface_variant</item>
+        <item name="android:textColorHint">@color/dusk_on_surface_dim</item>
         <item name="boxCornerRadiusTopStart">12dp</item>
         <item name="boxCornerRadiusTopEnd">12dp</item>
         <item name="boxCornerRadiusBottomStart">12dp</item>
         <item name="boxCornerRadiusBottomEnd">12dp</item>
     </style>
     <style name="App.TextInput.Active" parent="App.TextInput">
-        <item name="boxStrokeColor">@color/gs_primary</item>
-        <item name="hintTextColor">@color/gs_primary</item>
+        <item name="boxStrokeColor">@color/dusk_primary</item>
+        <item name="hintTextColor">@color/dusk_primary</item>
     </style>
 </resources>

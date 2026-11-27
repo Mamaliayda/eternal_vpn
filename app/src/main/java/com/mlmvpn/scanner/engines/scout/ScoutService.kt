@@ -142,7 +142,7 @@ class ScoutService : Service() {
         val stop = PendingIntent.getService(this, 1, Intent(this, ScoutService::class.java).apply { action = ACTION_STOP },
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
         val b = NotificationCompat.Builder(this, CHANNEL_ID)
-            .setColor(androidx.core.content.ContextCompat.getColor(this, R.color.gs_primary))
+            .setColor(androidx.core.content.ContextCompat.getColor(this, R.color.dusk_primary))
             .setContentTitle("MLM Scout")
             .setContentText(text)
             .setSmallIcon(R.drawable.ic_scanner)

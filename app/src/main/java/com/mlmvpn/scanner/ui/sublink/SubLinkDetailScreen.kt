@@ -43,7 +43,6 @@ import com.mlmvpn.scanner.models.CloudAccount
 import com.mlmvpn.scanner.ui.NodeQrCard
 import com.mlmvpn.scanner.ui.faCount
 import com.mlmvpn.scanner.ui.faGrouped
-import com.mlmvpn.scanner.ui.settings.Ios
 import com.mlmvpn.scanner.ui.settings.IosAlert
 import com.mlmvpn.scanner.ui.settings.IosAlertAction
 import com.mlmvpn.scanner.ui.settings.IosScreen
@@ -108,7 +107,7 @@ fun SubLinkDetailScreen(
             Icon(
                 Icons.Default.Edit,
                 contentDescription = S(R.string.edit_2),
-                tint = Ios.Label,
+                tint = DuskTheme.onSurface,
                 modifier = Modifier
                     .size(30.dp)
                     .clip(DuskTheme.controlShape)
@@ -130,7 +129,7 @@ fun SubLinkDetailScreen(
             ) {
                 Text(
                     fullUrl,
-                    color = Ios.Label,
+                    color = DuskTheme.onSurface,
                     style = MaterialTheme.typography.bodySmall,
                 )
             }
@@ -172,7 +171,7 @@ fun SubLinkDetailScreen(
             SettingsRow(
                 title = S(R.string.config_group),
                 icon = Icons.Default.Folder,
-                tint = Ios.Blue,
+                tint = DuskTheme.primary,
                 value = link.mappedGroupName?.let { groupShortName(it) } ?: S(R.string.no_group_2),
                 showChevron = false,
             )
@@ -180,9 +179,9 @@ fun SubLinkDetailScreen(
             SettingsRow(
                 title = S(R.string.expiry),
                 icon = Icons.Default.Schedule,
-                tint = if (expiryTone == Ios.Red) Ios.Red else Ios.Gray,
+                tint = if (expiryTone == DuskTheme.error) DuskTheme.error else DuskTheme.disabled,
                 value = expiry ?: S(R.string.never_expires),
-                titleColor = Ios.Label,
+                titleColor = DuskTheme.onSurface,
                 showChevron = false,
             )
             Separator()
@@ -222,7 +221,7 @@ fun SubLinkDetailScreen(
             SettingsRow(
                 title = S(R.string.views),
                 icon = Icons.Default.BarChart,
-                tint = Ios.Gray,
+                tint = DuskTheme.disabled,
                 value = faGrouped(hits),
                 subtitle = when {
                     statsFetchedAt > 0L -> S(R.string.updated_just_now_2)
@@ -252,7 +251,7 @@ fun SubLinkDetailScreen(
             SettingsActionRow(
                 label = S(R.string.delete_this_link),
                 icon = Icons.Default.Delete,
-                tint = Ios.Red,
+                tint = DuskTheme.error,
             ) { confirmDelete = true }
         }
         SettingsFooter(S(R.string.the_link_is_removed_from_cloudflare_and))
@@ -312,21 +311,21 @@ fun SubLinkHelpScreen(onBack: () -> Unit) {
         SettingsGroup {
             HelpRow(
                 Icons.Default.Folder,
-                Ios.Blue,
+                DuskTheme.primary,
                 S(R.string.you_choose_a_group),
                 S(R.string.any_folder_from_v2ray_any_cloud_or),
             )
             Separator()
             HelpRow(
                 Icons.Default.Share,
-                Ios.Green,
+                DuskTheme.success,
                 S(R.string.you_hand_out_the_address),
                 S(R.string.the_address_runs_on_your_own_cloudflare),
             )
             Separator()
             HelpRow(
                 Icons.Default.Refresh,
-                Ios.Gray,
+                DuskTheme.disabled,
                 S(R.string.it_keeps_itself_up_to_date),
                 S(R.string.a_few_seconds_after_any_change_to),
             )
@@ -336,21 +335,21 @@ fun SubLinkHelpScreen(onBack: () -> Unit) {
         SettingsGroup {
             HelpRow(
                 Icons.Default.Schedule,
-                Ios.Orange,
+                DuskTheme.accent,
                 S(R.string.expiry),
                 S(R.string.you_can_make_a_link_stop_working),
             )
             Separator()
             HelpRow(
                 Icons.Default.BarChart,
-                Ios.Gray,
+                DuskTheme.disabled,
                 S(R.string.views),
                 S(R.string.it_tells_you_how_many_times_the),
             )
             Separator()
             HelpRow(
                 Icons.Default.Delete,
-                Ios.Red,
+                DuskTheme.error,
                 S(R.string.delete_3_r2),
                 S(R.string.removes_the_link_from_cloudflare_it_cannot),
             )

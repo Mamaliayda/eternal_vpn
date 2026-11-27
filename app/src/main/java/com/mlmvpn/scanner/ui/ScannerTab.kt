@@ -1,5 +1,7 @@
 package com.mlmvpn.scanner.ui
 
+import com.mlmvpn.scanner.ui.theme.DuskTheme
+
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
@@ -283,8 +285,8 @@ fun ScannerSettingsCard(
                 else -> S(R.string.could_not_be_read)
             },
             icon = Icons.Default.Storage,
-            tint = if (baseConfig.isBlank()) com.mlmvpn.scanner.ui.settings.Ios.Gray
-            else com.mlmvpn.scanner.ui.settings.Ios.Indigo,
+            tint = if (baseConfig.isBlank()) com.mlmvpn.scanner.ui.settings.DuskTheme.disabled
+            else com.mlmvpn.scanner.ui.settings.DuskTheme.indigo,
             value = if (baseConfig.isBlank()) S(R.string.choose) else picked?.name?.take(18),
             onClick = onPickBaseConfig,
         )
@@ -325,8 +327,8 @@ fun ScannerSettingsCard(
                     com.mlmvpn.scanner.data.ScanStrategy.FAST_CONFIG -> Icons.Default.Speed
                     com.mlmvpn.scanner.data.ScanStrategy.STABLE -> Icons.Default.Shield
                 },
-                tint = if (selected) com.mlmvpn.scanner.ui.settings.Ios.Green
-                else com.mlmvpn.scanner.ui.settings.Ios.Gray,
+                tint = if (selected) com.mlmvpn.scanner.ui.settings.DuskTheme.success
+                else com.mlmvpn.scanner.ui.settings.DuskTheme.disabled,
                 showChevron = false,
                 onClick = { onStrategyChange(s) },
             )
@@ -372,7 +374,7 @@ fun ScannerSettingsCard(
         com.mlmvpn.scanner.ui.settings.SettingsActionRow(
             label = if (busy) S(R.string.preflight_checking) else stringResource(R.string.scanner_start_scan),
             icon = Icons.Default.TravelExplore,
-            tint = com.mlmvpn.scanner.ui.settings.Ios.Green,
+            tint = com.mlmvpn.scanner.ui.settings.DuskTheme.success,
             busy = busy,
             enabled = baseConfig.isNotBlank() && !busy,
             onClick = onStartScan,
@@ -1080,7 +1082,7 @@ fun ScannerTab(onBack: () -> Unit = {}, onOpenNodes: () -> Unit = {}) {
                                     onClick = {
                                         val selected = scannedIPs.filter { it.selected }.joinToString("\n") { it.ip }
                                         if (selected.isNotEmpty()) {
-                                            if (com.mlmvpn.scanner.utils.SafeClip.copy(context, "IPs", selected))
+                                            if (com.mlmvpn.scanner.utils.SafeClip.copy(context, "IPs", selected) { showDuskNotice(snackbarScope, duskSnackbarHost, it) })
                                                 showDuskNotice(snackbarScope, duskSnackbarHost, context.getString(R.string.scanner_ips_copied))
                                         }
                                     },
@@ -1766,7 +1768,7 @@ fun ScannerTab(onBack: () -> Unit = {}, onOpenNodes: () -> Unit = {}) {
                             Button(
                                 onClick = {
                                     val healthyConfigs = healthyNodes.joinToString("\n") { it.uri }
-                                    if (com.mlmvpn.scanner.utils.SafeClip.copy(context, "Healthy Configs", healthyConfigs))
+                                    if (com.mlmvpn.scanner.utils.SafeClip.copy(context, "Healthy Configs", healthyConfigs) { showDuskNotice(snackbarScope, duskSnackbarHost, it) })
                                         showDuskNotice(snackbarScope, duskSnackbarHost, context.getString(R.string.scanner_healthy_configs_copied, healthyNodes.size))
                                 },
                                 modifier = Modifier.fillMaxWidth().height(48.dp),
@@ -1787,7 +1789,7 @@ fun ScannerTab(onBack: () -> Unit = {}, onOpenNodes: () -> Unit = {}) {
                                 }.distinct().joinToString("\n")
 
                                 if (ips.isNotEmpty()) {
-                                    if (com.mlmvpn.scanner.utils.SafeClip.copy(context, "IPs", ips))
+                                    if (com.mlmvpn.scanner.utils.SafeClip.copy(context, "IPs", ips) { showDuskNotice(snackbarScope, duskSnackbarHost, it) })
                                         showDuskNotice(snackbarScope, duskSnackbarHost, context.getString(R.string.scanner_ips_copied_short))
                                 } else {
                                     showDuskNotice(snackbarScope, duskSnackbarHost, context.getString(R.string.scanner_ip_not_found_in_configs))

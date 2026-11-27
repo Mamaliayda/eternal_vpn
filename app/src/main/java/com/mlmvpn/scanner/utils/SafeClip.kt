@@ -3,7 +3,6 @@ package com.mlmvpn.scanner.utils
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
-import android.widget.Toast
 import com.mlmvpn.scanner.R
 
 /**
@@ -16,9 +15,9 @@ object SafeClip {
     const val MAX_CHARS = 300_000
 
     /** Copies [text]; false (and the user is told) when it is too long or the system refused it. */
-    fun copy(context: Context, label: String, text: String): Boolean {
+    fun copy(context: Context, label: String, text: String, showNotice: (String) -> Unit): Boolean {
         if (text.length > MAX_CHARS) {
-            Toast.makeText(context, context.getString(R.string.clip_too_large), Toast.LENGTH_LONG).show()
+            showNotice(context.getString(R.string.clip_too_large))
             return false
         }
         return try {
@@ -26,7 +25,7 @@ object SafeClip {
             cm.setPrimaryClip(ClipData.newPlainText(label, text))
             true
         } catch (e: RuntimeException) {
-            Toast.makeText(context, context.getString(R.string.clip_too_large), Toast.LENGTH_LONG).show()
+            showNotice(context.getString(R.string.clip_too_large))
             false
         }
     }

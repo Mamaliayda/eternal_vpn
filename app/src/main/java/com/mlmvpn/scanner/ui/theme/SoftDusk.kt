@@ -51,8 +51,16 @@ object DuskTheme {
     val white = Color(0xFFFFFFFF)
     /** Dedicated neutral backing keeps generated QR modules scannable in either appearance. */
     val qrSurface = Color.White
-    /** Cloudflare's brand orange, centralized rather than embedded in individual screens. */
+    /** Brand colors used only inside product identity and branded link illustrations. */
     val cloudflareOrange = Color(0xFFF6821F)
+    val cloudflareOrangeLight = Color(0xFFFFA94D)
+    val telegramBlue = Color(0xFF61A8DE)
+    val brandCyan = Color(0xFF18BFFB)
+    val brandBlue = Color(0xFF2072F3)
+    val appIconPalette = listOf(
+        Color(0xFF0A84FF), Color(0xFF30D158), Color(0xFFFF9F0A), Color(0xFFFF375F),
+        Color(0xFFBF5AF2), Color(0xFF64D2FF), Color(0xFFFF6482), Color(0xFF5E5CE6),
+    )
     val lavenderNight = Color(0xFF27263E)
     val navyNight = Color(0xFF191D32)
     val nightCard = Color(0xFF34334D)
@@ -108,6 +116,9 @@ object DuskTheme {
     val actionHeight = 52.dp
     val floatingActionClearance = 96.dp
     val progressStroke = 2.dp
+    val actionBorderStroke = 1.5.dp
+    val neutralBorderStroke = 1.dp
+    val menuInset = 4.dp
 
     val cardShape = RoundedCornerShape(28.dp)
     val controlShape = RoundedCornerShape(50)
@@ -124,6 +135,10 @@ object DuskTheme {
     val badgeElevation = 2.dp
     val indicatorElevation = 3.dp
     val focusCornerRadius = 24
+    /** Proportional geometry for the compact team-mark tile. */
+    const val teamTileCornerFraction = 0.27f
+    const val teamMarkScale = 0.4f
+    const val appIconLetterScale = 0.45f
 }
 
 val LocalDuskSnackbarHostState = staticCompositionLocalOf<SnackbarHostState> {

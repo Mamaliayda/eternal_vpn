@@ -1,5 +1,7 @@
 package com.mlmvpn.scanner.ui
 
+import com.mlmvpn.scanner.ui.theme.DuskTheme
+
 import com.mlmvpn.scanner.ui.home.fadingEdges
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.*
@@ -41,7 +43,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.ui.platform.LocalContext
 import androidx.preference.PreferenceManager
 import androidx.compose.foundation.layout.PaddingValues
-import com.mlmvpn.scanner.ui.settings.Ios
 import com.mlmvpn.scanner.ui.settings.IosAlert
 import com.mlmvpn.scanner.ui.settings.IosAlertAction
 import com.mlmvpn.scanner.ui.settings.IosPrompt
@@ -1524,20 +1525,20 @@ fun NodesTab(onBack: () -> Unit) {
                         Icon(
                             Icons.Default.Layers,
                             contentDescription = null,
-                            tint = Ios.SecondaryLabel.copy(alpha = 0.5f),
+                            tint = DuskTheme.muted.copy(alpha = 0.5f),
                             modifier = Modifier.size(64.dp),
                         )
                         Spacer(Modifier.height(16.dp))
                         Text(
                             stringResource(R.string.nodes_no_config_available),
-                            color = Ios.Label,
+                            color = DuskTheme.onSurface,
                             fontWeight = FontWeight.SemiBold,
                             style = MaterialTheme.typography.bodyLarge,
                         )
                         Spacer(Modifier.height(6.dp))
                         Text(
                             S(R.string.add_one_with_the_add_button_at),
-                            color = Ios.SecondaryLabel,
+                            color = DuskTheme.muted,
                             style = MaterialTheme.typography.bodySmall,
                         )
                     }

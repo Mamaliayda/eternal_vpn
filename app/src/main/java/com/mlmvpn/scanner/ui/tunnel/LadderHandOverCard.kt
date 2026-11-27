@@ -1,5 +1,7 @@
 package com.mlmvpn.scanner.ui.tunnel
 
+import com.mlmvpn.scanner.ui.theme.DuskTheme
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -26,7 +28,6 @@ import androidx.compose.ui.unit.sp
 import com.mlmvpn.core.warp.Ipv4Exits
 import com.mlmvpn.core.warp.Nat64Exits
 import com.mlmvpn.scanner.store.tr
-import com.mlmvpn.scanner.ui.settings.Ios
 
 /**
  * The WARP tile the user tapped did not come up in its budget, and the service connected with
@@ -48,15 +49,15 @@ internal fun LadderHandOverCard(from: Transport, to: Transport, modifier: Modifi
             .fillMaxWidth()
             .padding(horizontal = 20.dp)
             .clip(RoundedCornerShape(20.dp))
-            .background(Ios.Blue.copy(alpha = 0.14f))
+            .background(DuskTheme.primary.copy(alpha = 0.14f))
             .padding(16.dp),
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Icon(Icons.Default.SwapHoriz, null, tint = Ios.Blue, modifier = Modifier.size(20.dp))
+            Icon(Icons.Default.SwapHoriz, null, tint = DuskTheme.primary, modifier = Modifier.size(20.dp))
             Spacer(Modifier.width(8.dp))
             Text(
                 tr("وصل شد با «${to.labelFa}»", "Connected with ${to.label}"),
-                color = Ios.Label, fontSize = 16.sp, fontWeight = FontWeight.Bold,
+                color = DuskTheme.onSurface, fontSize = 16.sp, fontWeight = FontWeight.Bold,
             )
         }
         Spacer(Modifier.height(6.dp))
@@ -68,7 +69,7 @@ internal fun LadderHandOverCard(from: Transport, to: Transport, modifier: Modifi
                 tr("«${from.labelFa}» روی این اینترنت به‌موقع بالا نیامد؛ برنامه خودش با «${to.labelFa}» وصل کرد. هر دو از شبکهٔ وارپ کلادفلرند و دفعهٔ بعد روی همین اینترنت مستقیم «${to.labelFa}» امتحان می‌شود.",
                     "${from.label} did not come up on this internet in time, so the app connected with ${to.label}. Both are Cloudflare WARP, and next time on this internet ${to.label} is tried first.")
             },
-            color = Ios.SecondaryLabel, fontSize = 13.sp, lineHeight = 20.sp,
+            color = DuskTheme.muted, fontSize = 13.sp, lineHeight = 20.sp,
         )
     }
 }

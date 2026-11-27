@@ -1,5 +1,7 @@
 package com.mlmvpn.scanner.ui.emergency
 
+import com.mlmvpn.scanner.ui.theme.DuskTheme
+
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -53,7 +55,6 @@ import com.mlmvpn.scanner.ui.SNI_GROUP_NAME
 import com.mlmvpn.scanner.ui.ToolbarAction
 import com.mlmvpn.scanner.ui.theme.PanelShape
 import com.mlmvpn.scanner.ui.home.frostedGlass
-import com.mlmvpn.scanner.ui.settings.Ios
 import com.mlmvpn.scanner.ui.settings.IosScreen
 import com.mlmvpn.scanner.ui.settings.SettingsActionRow
 import com.mlmvpn.scanner.ui.settings.SettingsFooter
@@ -228,7 +229,7 @@ internal fun SniConfigPickerPage(
                         "Show ${minOf(SNI_PAGE, shown.size - limit)} more (${shown.size - limit} left)",
                     ),
                     icon = Icons.Default.Sort,
-                    tint = Ios.Blue,
+                    tint = DuskTheme.primary,
                     onClick = { limit += SNI_PAGE },
                 )
             }
@@ -298,7 +299,7 @@ private fun SwipeToDeleteRow(
             modifier = Modifier
                 .width(binWidth)
                 .heightIn(min = 44.dp)
-                .background(Ios.Red)
+                .background(DuskTheme.error)
                 .clickable(onClick = onDelete),
             contentAlignment = Alignment.Center,
         ) {
@@ -369,14 +370,14 @@ private fun SniConfigRow(
         Column(modifier = Modifier.weight(1f)) {
             Text(
                 node.name.ifBlank { node.type },
-                color = Ios.Label,
+                color = DuskTheme.onSurface,
                 fontSize = 16.sp,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
             Text(
                 node.groupTitle?.takeIf { it.isNotBlank() } ?: node.type,
-                color = Ios.SecondaryLabel,
+                color = DuskTheme.muted,
                 fontSize = 12.sp,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
@@ -387,7 +388,7 @@ private fun SniConfigRow(
             Text(
                 if (delay > 0) faDigits(delay.toString()) + "ms"
                 else stringResource(R.string.emergency_3_no_ping),
-                color = if (delay > 0) pingTone(delay.toInt()) else Ios.Red,
+                color = if (delay > 0) pingTone(delay.toInt()) else DuskTheme.error,
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Medium,
             )
@@ -399,7 +400,7 @@ private fun SniConfigRow(
                 Icon(
                     Icons.Default.Check,
                     contentDescription = null,
-                    tint = Ios.Blue,
+                    tint = DuskTheme.primary,
                     modifier = Modifier.size(20.dp),
                 )
             }
@@ -481,7 +482,7 @@ internal fun SniBuildPage(onBuilt: (Int) -> Unit, onBack: () -> Unit) {
                 value = faDigits(allNodes.size.toString()),
                 showChevron = false,
                 icon = if (selectedIdx == -1) Icons.Default.Check else null,
-                tint = Ios.Blue,
+                tint = DuskTheme.primary,
                 onClick = { selectedIdx = -1 },
             )
             buckets.forEachIndexed { index, (label, nodes) ->
@@ -491,7 +492,7 @@ internal fun SniBuildPage(onBuilt: (Int) -> Unit, onBack: () -> Unit) {
                     value = faDigits(nodes.size.toString()),
                     showChevron = false,
                     icon = if (selectedIdx == index) Icons.Default.Check else null,
-                    tint = Ios.Blue,
+                    tint = DuskTheme.primary,
                     onClick = { selectedIdx = index },
                 )
             }
@@ -503,7 +504,7 @@ internal fun SniBuildPage(onBuilt: (Int) -> Unit, onBack: () -> Unit) {
             SettingsActionRow(
                 label = S(R.string.build_and_add),
                 icon = Icons.Default.Check,
-                tint = Ios.Green,
+                tint = DuskTheme.success,
             ) {
                 val source = if (selectedIdx == -1) {
                     allNodes

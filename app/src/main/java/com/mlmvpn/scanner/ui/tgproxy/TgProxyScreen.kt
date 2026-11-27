@@ -1,5 +1,8 @@
 package com.mlmvpn.scanner.ui.tgproxy
 
+import com.mlmvpn.scanner.ui.theme.DuskTheme
+import com.mlmvpn.scanner.ui.theme.rememberDuskSnackbarAction
+
 import android.content.ActivityNotFoundException
 import android.content.ClipData
 import android.content.ClipDescription
@@ -9,7 +12,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.PersistableBundle
-import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -84,7 +86,6 @@ import com.mlmvpn.scanner.ui.amnezia.ActionSheet
 import com.mlmvpn.scanner.ui.amnezia.Tag
 import com.mlmvpn.scanner.ui.amnezia.fa
 import com.mlmvpn.scanner.ui.home.frostedGlass
-import com.mlmvpn.scanner.ui.settings.Ios
 import com.mlmvpn.scanner.ui.settings.IosAlert
 import com.mlmvpn.scanner.ui.settings.IosAlertAction
 import com.mlmvpn.scanner.ui.settings.IosScreen
@@ -130,6 +131,7 @@ fun TgProxyScreen(onBack: () -> Unit) {
 
 @Composable
 private fun TgMainPage(manager: TgProxyManager, onBack: () -> Unit, onDomain: (String) -> Unit) {
+    val showNotice = rememberDuskSnackbarAction()
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val services by manager.services.collectAsState()
@@ -162,7 +164,7 @@ private fun TgMainPage(manager: TgProxyManager, onBack: () -> Unit, onDomain: (S
 
     LaunchedEffect(notice) {
         val n = notice ?: return@LaunchedEffect
-        Toast.makeText(context, noticeText(n), Toast.LENGTH_LONG).show()
+        showNotice(noticeText(n))
         manager.consumeNotice()
     }
 
@@ -183,12 +185,12 @@ private fun TgMainPage(manager: TgProxyManager, onBack: () -> Unit, onDomain: (S
                 openWhenOn = null
                 val secret = manager.secretOf(id)
                 if (secret == null || !openLink(context, TgBridgeEngine.telegramLink(bridge.port, secret))) {
-                    Toast.makeText(context, tr("تلگرام پیدا نشد", "Telegram was not found"), Toast.LENGTH_LONG).show()
+                    showNotice(tr("تلگرام پیدا نشد", "Telegram was not found"))
                 }
             }
             TgBridgeEngine.Phase.FAILED -> {
                 openWhenOn = null
-                Toast.makeText(context, bridgeError(bridge), Toast.LENGTH_LONG).show()
+                showNotice(bridgeError(bridge))
             }
             else -> Unit
         }
@@ -219,38 +221,38 @@ private fun TgMainPage(manager: TgProxyManager, onBack: () -> Unit, onDomain: (S
         // What this is, in one breath.
         Column(Modifier.fillMaxWidth().padding(start = 24.dp, end = 24.dp, top = 18.dp), horizontalAlignment = Alignment.CenterHorizontally) {
             Box(
-                Modifier.size(64.dp).clip(RoundedCornerShape(18.dp)).background(Brush.verticalGradient(listOf(Color(0xFF7AB8E6), Color(0xFF61A8DE)))),
+                Modifier.size(64.dp).clip(RoundedCornerShape(18.dp)).background(Brush.verticalGradient(listOf(DuskTheme.telegramBlue, DuskTheme.telegramBlue))),
                 contentAlignment = Alignment.Center,
             ) { Icon(Icons.Default.Bolt, contentDescription = null, tint = Color.White, modifier = Modifier.size(34.dp)) }
             Spacer(Modifier.height(12.dp))
             Text(
                 tr("پروکسی تلگرام روی حساب Cloudflare خودتان", "A Telegram proxy on your own Cloudflare account"),
-                color = Ios.Label, fontSize = 18.sp, fontWeight = FontWeight.Bold, textAlign = TextAlign.Center,
+                color = DuskTheme.onSurface, fontSize = 18.sp, fontWeight = FontWeight.Bold, textAlign = TextAlign.Center,
             )
             Spacer(Modifier.height(6.dp))
             Text(
                 tr("یک دکمه می‌زنید، ساخته و آزمایش می‌شود و با یک دکمهٔ دیگر به تلگرام اضافه می‌شود.",
                     "One tap builds and tests it; one more adds it to Telegram."),
-                color = Ios.SecondaryLabel, fontSize = 14.sp, lineHeight = 21.sp, textAlign = TextAlign.Center,
+                color = DuskTheme.muted, fontSize = 14.sp, lineHeight = 21.sp, textAlign = TextAlign.Center,
             )
         }
 
         if (accounts.size > 1) {
             SettingsSectionHeader(tr("حساب Cloudflare", "Cloudflare account"))
             SettingsGroup {
-                SettingsRow(title = account.name.ifBlank { account.id }, icon = Icons.Default.Cloud, tint = Ios.CloudflareOrange, onClick = { pickAccount = true })
+                SettingsRow(title = account.name.ifBlank { account.id }, icon = Icons.Default.Cloud, tint = DuskTheme.cloudflareOrange, onClick = { pickAccount = true })
             }
         }
 
         SettingsSectionHeader(tr("ساخت پروکسی جدید", "Build a new proxy"))
         SettingsGroup {
             SettingsActionRow(
-                label = tr("ساخت با Workers", "Build with Workers"), icon = Icons.Default.Bolt, tint = Ios.Orange,
+                label = tr("ساخت با Workers", "Build with Workers"), icon = Icons.Default.Bolt, tint = DuskTheme.accent,
                 busy = progress?.let { it.op == TgOp.CREATE && store(manager, it)?.method == TgMethod.WORKERS } == true, enabled = !busy,
             ) { build(TgMethod.WORKERS) }
             Separator()
             SettingsActionRow(
-                label = tr("ساخت با Pages", "Build with Pages"), icon = Icons.Default.Cloud, tint = Ios.Teal,
+                label = tr("ساخت با Pages", "Build with Pages"), icon = Icons.Default.Cloud, tint = DuskTheme.blueGray,
                 busy = progress?.let { it.op == TgOp.CREATE && store(manager, it)?.method == TgMethod.PAGES } == true, enabled = !busy,
             ) { build(TgMethod.PAGES) }
         }
@@ -271,7 +273,7 @@ private fun TgMainPage(manager: TgProxyManager, onBack: () -> Unit, onDomain: (S
                     onAdd = {
                         val secret = secretOf(manager, s)
                         if (secret == null || !openInTelegram(context, s.shownHost, secret)) {
-                            Toast.makeText(context, tr("تلگرام پیدا نشد یا نسخهٔ آن «WEB proxy» را نمی‌شناسد (۱۲.۱۰ به بالا لازم است)", "Telegram was not found, or it is too old for a WEB proxy (12.10 or newer)"), Toast.LENGTH_LONG).show()
+                            showNotice(tr("تلگرام پیدا نشد یا نسخهٔ آن «WEB proxy» را نمی‌شناسد (۱۲.۱۰ به بالا لازم است)", "Telegram was not found, or it is too old for a WEB proxy (12.10 or newer)"))
                         }
                     },
                     onContinue = { manager.resume(s.id) },
@@ -303,7 +305,7 @@ private fun TgMainPage(manager: TgProxyManager, onBack: () -> Unit, onDomain: (S
             SettingsGroup {
                 orphans.forEachIndexed { i, o ->
                     if (i > 0) Separator()
-                    SettingsRow(title = o.resource, subtitle = if (o.method == TgMethod.WORKERS) "Workers" else "Pages", icon = Icons.Default.Delete, tint = Ios.Red, onClick = { orphanFor = o })
+                    SettingsRow(title = o.resource, subtitle = if (o.method == TgMethod.WORKERS) "Workers" else "Pages", icon = Icons.Default.Delete, tint = DuskTheme.error, onClick = { orphanFor = o })
                 }
             }
         }
@@ -312,7 +314,7 @@ private fun TgMainPage(manager: TgProxyManager, onBack: () -> Unit, onDomain: (S
         SettingsGroup {
             SettingsActionRow(
                 label = tr("جست‌وجوی منابع این برنامه در حساب", "Look for this app's resources in the account"),
-                icon = Icons.Default.Search, tint = Ios.Blue, enabled = !busy,
+                icon = Icons.Default.Search, tint = DuskTheme.primary, enabled = !busy,
             ) { manager.scan(account.id) }
         }
         SettingsFooter(
@@ -330,7 +332,7 @@ private fun TgMainPage(manager: TgProxyManager, onBack: () -> Unit, onDomain: (S
         ActionSheet(title = tr("حساب Cloudflare", "Cloudflare account"), onDismiss = { pickAccount = false }) {
             accounts.forEachIndexed { i, a ->
                 if (i > 0) Separator()
-                SettingsActionRow(label = a.name.ifBlank { a.id }, icon = Icons.Default.Cloud, tint = Ios.CloudflareOrange) { accountId = a.id; pickAccount = false }
+                SettingsActionRow(label = a.name.ifBlank { a.id }, icon = Icons.Default.Cloud, tint = DuskTheme.cloudflareOrange) { accountId = a.id; pickAccount = false }
             }
         }
     }
@@ -358,26 +360,26 @@ private fun TgMainPage(manager: TgProxyManager, onBack: () -> Unit, onDomain: (S
         val s = services.firstOrNull { it.id == id }
         if (s == null) menuFor = null else {
             ActionSheet(title = s.shownHost.ifBlank { s.resource }, onDismiss = { menuFor = null }) {
-                SettingsActionRow(label = tr("بررسی دوباره", "Check again"), icon = Icons.Default.Refresh, tint = Ios.Blue, enabled = !busy) { menuFor = null; manager.check(s.id) }
+                SettingsActionRow(label = tr("بررسی دوباره", "Check again"), icon = Icons.Default.Refresh, tint = DuskTheme.primary, enabled = !busy) { menuFor = null; manager.check(s.id) }
                 Separator()
-                SettingsActionRow(label = tr("دامنهٔ اختصاصی", "Custom domain"), icon = Icons.Default.Language, tint = Ios.Indigo, enabled = s.state == TgState.READY) { menuFor = null; onDomain(s.id) }
+                SettingsActionRow(label = tr("دامنهٔ اختصاصی", "Custom domain"), icon = Icons.Default.Language, tint = DuskTheme.indigo, enabled = s.state == TgState.READY) { menuFor = null; onDomain(s.id) }
                 Separator()
                 SettingsActionRow(label = tr("کپی لینک تلگرام", "Copy the Telegram link"), icon = Icons.Default.ContentCopy, enabled = s.host.isNotBlank()) {
                     menuFor = null
-                    secretOf(manager, s)?.let { copySensitive(context, TgLink.appLink(s.shownHost, it)) }
+                    secretOf(manager, s)?.let { copySensitive(context, TgLink.appLink(s.shownHost, it), showNotice) }
                 }
                 Separator()
                 SettingsActionRow(label = tr("کپی آدرس سرور", "Copy the server address"), icon = Icons.Default.ContentCopy, enabled = s.host.isNotBlank()) {
                     menuFor = null
-                    copySensitive(context, s.shownHost)
+                    copySensitive(context, s.shownHost, showNotice)
                 }
                 Separator()
                 SettingsActionRow(label = tr("کپی کلید رمز (secret)", "Copy the secret"), icon = Icons.Default.ContentCopy, enabled = s.host.isNotBlank()) {
                     menuFor = null
-                    secretOf(manager, s)?.let { copySensitive(context, it) }
+                    secretOf(manager, s)?.let { copySensitive(context, it, showNotice) }
                 }
                 Separator()
-                SettingsActionRow(label = tr("حذف", "Delete"), icon = Icons.Default.Delete, tint = Ios.Red, labelColor = Ios.Red, enabled = !busy) { menuFor = null; deleteFor = s.id }
+                SettingsActionRow(label = tr("حذف", "Delete"), icon = Icons.Default.Delete, tint = DuskTheme.error, labelColor = DuskTheme.error, enabled = !busy) { menuFor = null; deleteFor = s.id }
             }
         }
     }
@@ -433,17 +435,17 @@ private fun ProgressCard(p: TgProgress, manager: TgProxyManager, onCancel: () ->
     Column(
         Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 12.dp).frostedGlass(RoundedCornerShape(22.dp)).padding(16.dp),
     ) {
-        Text(words[p.step].orEmpty() + "…", color = Ios.Label, fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
+        Text(words[p.step].orEmpty() + "…", color = DuskTheme.onSurface, fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
         Spacer(Modifier.height(10.dp))
         val index = steps.indexOf(p.step).let { if (it < 0) steps.size - 1 else it }
         LinearProgressIndicator(
             progress = (index + 1f) / steps.size, modifier = Modifier.fillMaxWidth().height(4.dp).clip(RoundedCornerShape(2.dp)),
-            color = Ios.Blue, trackColor = Color.White.copy(alpha = 0.15f),
+            color = DuskTheme.primary, trackColor = Color.White.copy(alpha = 0.15f),
         )
         Spacer(Modifier.height(10.dp))
         Text(
             tr("می‌توانید لغو کنید؛ هر چه ساخته شده باشد در فهرست می‌ماند و بعداً ادامه یا حذف می‌شود.", "You can cancel; whatever was built stays in the list to continue or delete later."),
-            color = Ios.SecondaryLabel, fontSize = 12.sp, lineHeight = 18.sp,
+            color = DuskTheme.muted, fontSize = 12.sp, lineHeight = 18.sp,
         )
         Spacer(Modifier.height(8.dp))
         SmallButton(tr("لغو", "Cancel"), filled = false, onClick = onCancel)
@@ -464,28 +466,28 @@ private fun ServiceCard(
         Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 6.dp).frostedGlass(RoundedCornerShape(22.dp)).padding(16.dp),
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Tag(if (s.method == TgMethod.WORKERS) "Workers" else "Pages", if (s.method == TgMethod.WORKERS) Ios.Orange else Ios.Teal)
+            Tag(if (s.method == TgMethod.WORKERS) "Workers" else "Pages", if (s.method == TgMethod.WORKERS) DuskTheme.accent else DuskTheme.blueGray)
             Spacer(Modifier.width(8.dp))
             Tag(stateWord, stateColor)
             Spacer(Modifier.weight(1f))
             Box(
                 Modifier.size(32.dp).clip(RoundedCornerShape(50)).clickable(onClick = onMenu),
                 contentAlignment = Alignment.Center,
-            ) { Icon(Icons.Default.MoreHoriz, contentDescription = tr("بیشتر", "More"), tint = Ios.SecondaryLabel) }
+            ) { Icon(Icons.Default.MoreHoriz, contentDescription = tr("بیشتر", "More"), tint = DuskTheme.muted) }
         }
         Spacer(Modifier.height(8.dp))
         Text(
-            s.shownHost.ifBlank { s.resource }, color = Ios.Label, fontSize = 14.sp, fontFamily = FontFamily.Monospace,
+            s.shownHost.ifBlank { s.resource }, color = DuskTheme.onSurface, fontSize = 14.sp, fontFamily = FontFamily.Monospace,
             maxLines = 2, overflow = TextOverflow.Ellipsis,
         )
-        accountName?.let { Text(it, color = Ios.SecondaryLabel, fontSize = 12.sp, maxLines = 1, overflow = TextOverflow.Ellipsis) }
+        accountName?.let { Text(it, color = DuskTheme.muted, fontSize = 12.sp, maxLines = 1, overflow = TextOverflow.Ellipsis) }
         reasonText(s, clock)?.let {
             Spacer(Modifier.height(6.dp))
-            Text(it, color = Ios.SecondaryLabel, fontSize = 13.sp, lineHeight = 19.sp)
+            Text(it, color = DuskTheme.muted, fontSize = 13.sp, lineHeight = 19.sp)
         }
         if (s.state == TgState.READY) probeLines(s).forEach { (ok, text) ->
             Spacer(Modifier.height(4.dp))
-            Text((if (ok) "✓  " else "⚠  ") + text, color = if (ok) Ios.Green else Ios.Orange, fontSize = 12.sp, lineHeight = 18.sp)
+            Text((if (ok) "✓  " else "⚠  ") + text, color = if (ok) DuskTheme.success else DuskTheme.accent, fontSize = 12.sp, lineHeight = 18.sp)
         }
         if (s.state == TgState.READY && bridge != null) bridgeLine(bridge)?.let { (color, text) ->
             Spacer(Modifier.height(6.dp))
@@ -511,12 +513,12 @@ private fun ServiceCard(
 
 @Composable
 private fun SmallButton(text: String, filled: Boolean, onClick: () -> Unit, enabled: Boolean = true) {
-    val bg = if (!enabled) Color.White.copy(alpha = 0.10f) else if (filled) Ios.Blue else Color.White.copy(alpha = 0.14f)
+    val bg = if (!enabled) Color.White.copy(alpha = 0.10f) else if (filled) DuskTheme.primary else Color.White.copy(alpha = 0.14f)
     Box(
         Modifier.heightIn(min = 38.dp).clip(RoundedCornerShape(12.dp)).background(bg)
             .then(if (enabled) Modifier.clickable(onClick = onClick) else Modifier).padding(horizontal = 16.dp, vertical = 8.dp),
         contentAlignment = Alignment.Center,
-    ) { Text(text, color = if (enabled) Color.White else Ios.SecondaryLabel, fontSize = 15.sp, fontWeight = FontWeight.SemiBold) }
+    ) { Text(text, color = if (enabled) Color.White else DuskTheme.muted, fontSize = 15.sp, fontWeight = FontWeight.SemiBold) }
 }
 
 /** The no-account gate: the Cloud tab's own add-account form, so an account added here is its account too. */
@@ -534,16 +536,16 @@ private fun TgCloudGate(cloud: CloudManager, onBack: () -> Unit) {
     IosScreen(title = tr("پروکسی تلگرام", "Telegram Proxy"), onBack = onBack, backLabel = stringResource(R.string.home)) {
         Column(Modifier.fillMaxWidth().padding(start = 24.dp, end = 24.dp, top = 28.dp), horizontalAlignment = Alignment.CenterHorizontally) {
             Box(
-                Modifier.size(76.dp).clip(RoundedCornerShape(20.dp)).background(Brush.verticalGradient(listOf(Color(0xFFFFA94D), Ios.CloudflareOrange))),
+                Modifier.size(76.dp).clip(RoundedCornerShape(20.dp)).background(Brush.verticalGradient(listOf(DuskTheme.cloudflareOrangeLight, DuskTheme.cloudflareOrange))),
                 contentAlignment = Alignment.Center,
             ) { Icon(Icons.Default.Cloud, contentDescription = null, tint = Color.White, modifier = Modifier.size(42.dp)) }
             Spacer(Modifier.height(16.dp))
-            Text(tr("اول یک حساب Cloudflare وصل کنید", "Connect a Cloudflare account first"), color = Ios.Label, fontSize = 22.sp, fontWeight = FontWeight.Bold, textAlign = TextAlign.Center)
+            Text(tr("اول یک حساب Cloudflare وصل کنید", "Connect a Cloudflare account first"), color = DuskTheme.onSurface, fontSize = 22.sp, fontWeight = FontWeight.Bold, textAlign = TextAlign.Center)
             Spacer(Modifier.height(8.dp))
             Text(
                 tr("پروکسی روی حساب خودتان ساخته می‌شود. ایمیل و کلید (Global API Key یا توکن API) را وارد کنید؛ فقط به Cloudflare فرستاده می‌شود.",
                     "The proxy is built on your own account. Enter the email and the key (Global API Key or an API token); it is sent only to Cloudflare."),
-                color = Ios.SecondaryLabel, fontSize = 14.sp, lineHeight = 21.sp, textAlign = TextAlign.Center,
+                color = DuskTheme.muted, fontSize = 14.sp, lineHeight = 21.sp, textAlign = TextAlign.Center,
             )
         }
         CloudAddAccountForm(
@@ -567,12 +569,12 @@ private fun TgCloudGate(cloud: CloudManager, onBack: () -> Unit) {
 private fun secretOf(manager: TgProxyManager, s: TgService): String? = manager.secretOf(s.id)
 
 private fun stateOf(s: TgService, clock: Long): Pair<String, Color> = when (s.state) {
-    TgState.READY -> tr("آماده", "Ready") to Color(0xFF34C759)
-    TgState.BUILDING -> tr("در حال ساخت", "Building") to Color(0xFF0A84FF)
-    TgState.PARTIAL -> tr("نیمه‌کاره", "Unfinished") to Color(0xFFFF9500)
-    TgState.FAILED -> tr("ناموفق", "Failed") to Color(0xFFFF453A)
-    TgState.ACTION -> tr("نیازمند اقدام شما", "Needs your action") to Color(0xFFFF9500)
-    TgState.LOST -> tr("در دسترس نیست", "Unavailable") to Color(0xFF8E8E93)
+    TgState.READY -> tr("آماده", "Ready") to DuskTheme.success
+    TgState.BUILDING -> tr("در حال ساخت", "Building") to DuskTheme.primary
+    TgState.PARTIAL -> tr("نیمه‌کاره", "Unfinished") to DuskTheme.accent
+    TgState.FAILED -> tr("ناموفق", "Failed") to DuskTheme.error
+    TgState.ACTION -> tr("نیازمند اقدام شما", "Needs your action") to DuskTheme.accent
+    TgState.LOST -> tr("در دسترس نیست", "Unavailable") to DuskTheme.disabled
 }.also { clock.hashCode() }
 
 private fun clockText(ms: Long): String = fa(SimpleDateFormat("HH:mm", Locale.US).format(Date(ms)))
@@ -627,13 +629,13 @@ private fun probeLines(s: TgService): List<Pair<Boolean, String>> {
 /** The bridge's line on its proxy's card, or null when there is nothing to say. */
 @Composable
 private fun bridgeLine(b: TgBridgeEngine.State): Pair<Color, String>? = when (b.phase) {
-    TgBridgeEngine.Phase.PICKING -> Ios.Blue to (
+    TgBridgeEngine.Phase.PICKING -> DuskTheme.primary to (
         if (b.tried > 0) tr("در حال آزمایش ${fa(b.tried)} آی‌پی کلادفلر برای پل…", "Testing ${b.tried} Cloudflare IPs for the bridge…")
         else tr("در حال پیدا کردن آی‌پی تمیز برای پل…", "Finding a clean IP for the bridge…"))
-    TgBridgeEngine.Phase.ON -> Ios.Green to (
+    TgBridgeEngine.Phase.ON -> DuskTheme.success to (
         tr("✓  پل روشن است: آی‌پی ${b.ip} · ${fa(b.ms.toInt())} میلی‌ثانیه · ${fa(b.streams)} اتصال", "✓  Bridge on: IP ${b.ip} · ${b.ms} ms · ${b.streams} connections") +
             if (b.fromScanner == 0) tr("\nبرای نتیجهٔ بهتر یک بار اسکنر آی‌پی برنامه را اجرا کنید؛ آی‌پی‌های پیدا شده هم امتحان می‌شوند.", "\nRun the app's IP scanner once for a better pick; the IPs it finds are tried too.") else "")
-    TgBridgeEngine.Phase.FAILED -> Ios.Orange to ("⚠  " + bridgeError(b))
+    TgBridgeEngine.Phase.FAILED -> DuskTheme.accent to ("⚠  " + bridgeError(b))
     TgBridgeEngine.Phase.OFF -> null
 }
 
@@ -704,12 +706,12 @@ private fun openLink(context: Context, link: String): Boolean = try {
 }
 
 /** Copies text marked sensitive, so Android 13+ does not show it in the clipboard preview. */
-private fun copySensitive(context: Context, text: String) {
+private fun copySensitive(context: Context, text: String, showNotice: (String) -> Unit) {
     val cm = context.getSystemService(Context.CLIPBOARD_SERVICE) as? ClipboardManager ?: return
     val clip = ClipData.newPlainText("telegram-proxy", text)
     if (Build.VERSION.SDK_INT >= 33) {
         clip.description.extras = PersistableBundle().apply { putBoolean(ClipDescription.EXTRA_IS_SENSITIVE, true) }
     }
     cm.setPrimaryClip(clip)
-    Toast.makeText(context, tr("کپی شد", "Copied"), Toast.LENGTH_SHORT).show()
+    showNotice(tr("کپی شد", "Copied"))
 }

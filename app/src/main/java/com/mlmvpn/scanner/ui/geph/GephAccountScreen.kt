@@ -1,5 +1,8 @@
 package com.mlmvpn.scanner.ui.geph
 
+import com.mlmvpn.scanner.ui.theme.DuskTheme
+import com.mlmvpn.scanner.ui.theme.rememberDuskSnackbarAction
+
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -31,7 +34,6 @@ import com.mlmvpn.core.geph.GephAccount
 import com.mlmvpn.core.geph.GephCredential
 import com.mlmvpn.scanner.R
 import com.mlmvpn.scanner.ui.emergency.faDigits
-import com.mlmvpn.scanner.ui.settings.Ios
 import com.mlmvpn.scanner.ui.settings.IosScreen
 import com.mlmvpn.scanner.ui.settings.SettingsActionRow
 import com.mlmvpn.scanner.ui.settings.SettingsFooter
@@ -51,6 +53,7 @@ import kotlinx.coroutines.withContext
  */
 @Composable
 fun GephAccountScreen(onBack: () -> Unit, backLabel: String) {
+    val showNotice = rememberDuskSnackbarAction()
     val ctx = LocalContext.current
     val scope = rememberCoroutineScope()
     // Read off the main thread: the credential is decrypted through the Keystore, which can take
@@ -81,6 +84,7 @@ fun GephAccountScreen(onBack: () -> Unit, backLabel: String) {
         } else if (cred == null) {
             NoAccount(
                 busy = busy,
+                showNotice = showNotice,
                 setBusy = { busy = it },
                 onMessage = { message = it },
                 onDone = {
@@ -91,6 +95,7 @@ fun GephAccountScreen(onBack: () -> Unit, backLabel: String) {
         } else {
             HasAccount(
                 cred = cred!!,
+                showNotice = showNotice,
                 busy = busy,
                 setBusy = { busy = it },
                 onMessage = { message = it },
@@ -107,6 +112,7 @@ fun GephAccountScreen(onBack: () -> Unit, backLabel: String) {
 @Composable
 private fun NoAccount(
     busy: String?,
+    showNotice: (String) -> Unit,
     setBusy: (String?) -> Unit,
     onMessage: (String?) -> Unit,
     onDone: () -> Unit,
@@ -124,7 +130,7 @@ private fun NoAccount(
         if (progress >= 0) {
             Text(
                 stringResource(R.string.geph_register_progress, faDigits((progress * 100).toInt().toString())),
-                color = Ios.Label,
+                color = DuskTheme.onSurface,
                 modifier = Modifier.padding(horizontal = 16.dp, vertical = 10.dp),
             )
             LinearProgressIndicator(
@@ -135,14 +141,14 @@ private fun NoAccount(
             SettingsActionRow(
                 label = stringResource(R.string.geph_cancel),
                 icon = Icons.Default.Delete,
-                tint = Ios.Red,
+                tint = DuskTheme.error,
                 onClick = { cancel = true },
             )
         } else {
             SettingsActionRow(
                 label = stringResource(R.string.geph_make_free_account),
                 icon = Icons.Default.PersonAdd,
-                tint = Ios.Blue,
+                tint = DuskTheme.primary,
                 enabled = busy == null,
                 onClick = {
                     setBusy("register")
@@ -158,7 +164,7 @@ private fun NoAccount(
                         r.onSuccess {
                             // Said once, loudly, and copied: this code is the account. There is
                             // no e-mail to recover it with.
-                            copyToClipboard(ctx, "Geph", it)
+                            copyToClipboard(ctx, "Geph", it, showNotice)
                             onDone()
                             onMessage(ctx.getString(R.string.geph_new_account_done, GephAccount.formatSecret(it)))
                         }.onFailure {
@@ -178,7 +184,7 @@ private fun NoAccount(
             value = code,
             onValueChange = { code = it },
             icon = Icons.Default.Key,
-            tint = Ios.Indigo,
+            tint = DuskTheme.indigo,
             placeholder = "0000 0000 0000 0000 0000 0000",
             numeric = true,
         )
@@ -186,7 +192,7 @@ private fun NoAccount(
         SettingsActionRow(
             label = stringResource(R.string.geph_login),
             icon = Icons.Default.Login,
-            tint = Ios.Blue,
+            tint = DuskTheme.primary,
             busy = busy == "login",
             enabled = busy == null && code.isNotBlank(),
             onClick = {
@@ -223,7 +229,7 @@ private fun NoAccount(
             value = user,
             onValueChange = { user = it },
             icon = Icons.Default.Person,
-            tint = Ios.Gray,
+            tint = DuskTheme.disabled,
         )
         Separator()
         SettingsTextRow(
@@ -231,13 +237,13 @@ private fun NoAccount(
             value = pass,
             onValueChange = { pass = it },
             icon = Icons.Default.Key,
-            tint = Ios.Gray,
+            tint = DuskTheme.disabled,
         )
         Separator()
         SettingsActionRow(
             label = stringResource(R.string.geph_login),
             icon = Icons.Default.Login,
-            tint = Ios.Blue,
+            tint = DuskTheme.primary,
             busy = busy == "legacy",
             enabled = busy == null && user.isNotBlank() && pass.isNotBlank(),
             onClick = {
@@ -254,6 +260,7 @@ private fun NoAccount(
 @Composable
 private fun HasAccount(
     cred: GephCredential,
+    showNotice: (String) -> Unit,
     busy: String?,
     setBusy: (String?) -> Unit,
     onMessage: (String?) -> Unit,
@@ -272,7 +279,7 @@ private fun HasAccount(
                 SettingsRow(
                     title = stringResource(R.string.geph_code_field),
                     icon = Icons.Default.Key,
-                    tint = Ios.Indigo,
+                    tint = DuskTheme.indigo,
                     value = if (reveal) GephAccount.formatSecret(cred.secret)
                         else "•••• •••• " + cred.secret.takeLast(4),
                     showChevron = false,
@@ -281,22 +288,22 @@ private fun HasAccount(
                 SettingsActionRow(
                     label = stringResource(if (reveal) R.string.geph_hide_code else R.string.geph_show_code),
                     icon = Icons.Default.Visibility,
-                    tint = Ios.Gray,
+                    tint = DuskTheme.disabled,
                     onClick = { reveal = !reveal },
                 )
                 Separator()
                 SettingsActionRow(
                     label = stringResource(R.string.geph_copy_code),
                     icon = Icons.Default.ContentCopy,
-                    tint = Ios.Blue,
-                    onClick = { copyToClipboard(ctx, "Geph", cred.secret) },
+                    tint = DuskTheme.primary,
+                    onClick = { copyToClipboard(ctx, "Geph", cred.secret, showNotice) },
                 )
                 if (GephAccount.canRotate(ctx)) {
                     Separator()
                     SettingsActionRow(
                         label = stringResource(R.string.geph_rotate),
                         icon = Icons.Default.Autorenew,
-                        tint = Ios.Orange,
+                        tint = DuskTheme.accent,
                         busy = busy == "rotate",
                         enabled = busy == null,
                         onClick = { confirmRotate = true },
@@ -330,7 +337,7 @@ private fun HasAccount(
         SettingsActionRow(
             label = stringResource(R.string.geph_remove),
             icon = Icons.Default.Delete,
-            tint = Ios.Red,
+            tint = DuskTheme.error,
             enabled = busy == null,
             onClick = { confirmForget = true },
         )
@@ -357,7 +364,7 @@ private fun HasAccount(
                             setBusy(null)
                             r.onSuccess { fresh ->
                                 onMessage(ctx.getString(R.string.geph_rotated, GephAccount.formatSecret(fresh)))
-                                copyToClipboard(ctx, "Geph", fresh)
+                                copyToClipboard(ctx, "Geph", fresh, showNotice)
                                 onChanged()
                             }.onFailure { onMessage(ctx.getString(R.string.geph_error, it.message ?: "")) }
                         }

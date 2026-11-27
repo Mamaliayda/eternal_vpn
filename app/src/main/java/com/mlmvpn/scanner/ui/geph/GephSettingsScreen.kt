@@ -32,6 +32,7 @@ import com.mlmvpn.core.geph.GephSettings.Coverage
 import com.mlmvpn.scanner.R
 import com.mlmvpn.scanner.ui.settings.IosScreen
 import com.mlmvpn.scanner.ui.theme.DuskTheme
+import com.mlmvpn.scanner.ui.theme.rememberDuskSnackbarAction
 import com.mlmvpn.scanner.ui.settings.SettingsActionRow
 import com.mlmvpn.scanner.ui.settings.SettingsFooter
 import com.mlmvpn.scanner.ui.settings.SettingsGroup
@@ -47,6 +48,7 @@ import com.mlmvpn.scanner.ui.settings.SettingsToggle
  */
 @Composable
 fun GephSettingsScreen(onBack: () -> Unit, backLabel: String) {
+    val showNotice = rememberDuskSnackbarAction()
     val ctx = LocalContext.current
     var coverage by remember { mutableStateOf(GephSettings.coverage(ctx)) }
     var allowDirect by remember { mutableStateOf(GephSettings.allowDirect(ctx)) }
@@ -109,13 +111,13 @@ fun GephSettingsScreen(onBack: () -> Unit, backLabel: String) {
                 SettingsRow(
                     title = "SOCKS5", icon = Icons.Default.ContentCopy, tint = DuskTheme.primary,
                     value = socks, showChevron = false,
-                    onClick = { copyToClipboard(ctx, "SOCKS5", socks) },
+                    onClick = { copyToClipboard(ctx, "SOCKS5", socks, showNotice) },
                 )
                 Separator()
                 SettingsRow(
                     title = "HTTP", icon = Icons.Default.ContentCopy, tint = DuskTheme.primary,
                     value = http, showChevron = false,
-                    onClick = { copyToClipboard(ctx, "HTTP", http) },
+                    onClick = { copyToClipboard(ctx, "HTTP", http, showNotice) },
                 )
                 Separator()
                 SettingsToggle(

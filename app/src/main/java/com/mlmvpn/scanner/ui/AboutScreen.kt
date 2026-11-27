@@ -45,7 +45,6 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.mlmvpn.scanner.R
-import com.mlmvpn.scanner.ui.settings.Ios
 import com.mlmvpn.scanner.ui.settings.IosScreen
 import com.mlmvpn.scanner.ui.settings.SettingsFooter
 import com.mlmvpn.scanner.ui.settings.SettingsGlyph
@@ -150,12 +149,12 @@ fun AboutScreen(
                 Icon(
                     Icons.Default.Info,
                     contentDescription = null,
-                    tint = Ios.SecondaryLabel,
+                    tint = DuskTheme.muted,
                     modifier = Modifier.size(96.dp),
                 )
             }
             Spacer(Modifier.height(16.dp))
-            Text("MLMVPN", color = Ios.Label, style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold)
+            Text("MLMVPN", color = DuskTheme.onSurface, style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold)
             Spacer(Modifier.height(4.dp))
             // The version stays in Latin digits. It is an identifier people read back to us in a
             // bug report, not a measurement.
@@ -176,7 +175,7 @@ fun AboutScreen(
                         versionTaps = 0
                     }
                 },
-                color = Ios.SecondaryLabel,
+                color = DuskTheme.muted,
                 style = MaterialTheme.typography.bodyMedium,
             )
         }
@@ -188,7 +187,7 @@ fun AboutScreen(
             SettingsRow(
                 title = stringResource(R.string.about_changelog),
                 icon = Icons.Default.NewReleases,
-                tint = Ios.Orange,
+                tint = DuskTheme.accent,
                 value = versions.firstOrNull()?.versionTitle,
                 onClick = onOpenChangelog,
             )
@@ -210,7 +209,7 @@ fun AboutScreen(
         ) {
             Text(
                 stringResource(R.string.about_desc),
-                color = Ios.Label,
+                color = DuskTheme.onSurface,
                 style = MaterialTheme.typography.bodyMedium,
                 textAlign = TextAlign.Justify,
             )
@@ -224,7 +223,7 @@ fun AboutScreen(
                 subtitle = "donito.me/ehsan2noven",
                 icon = Icons.Default.Favorite,
                 tint = DuskTheme.coral,
-                onClick = { com.mlmvpn.scanner.utils.Donate.open(context) },
+                onClick = { com.mlmvpn.scanner.utils.Donate.open(context, notify) },
             )
         }
 
@@ -234,7 +233,7 @@ fun AboutScreen(
                 title = stringResource(R.string.about_telegram),
                 subtitle = "t.me/mlmvpn",
                 icon = Icons.Default.Send,
-                tint = Ios.Teal,
+                tint = DuskTheme.blueGray,
                 onClick = { openUrl("https://t.me/mlmvpn") },
             )
             Separator()
@@ -242,7 +241,7 @@ fun AboutScreen(
                 title = stringResource(R.string.about_github),
                 subtitle = "github.com/mlmvpn",
                 icon = Icons.Default.Code,
-                tint = Ios.Gray,
+                tint = DuskTheme.disabled,
                 onClick = { openUrl("https://github.com/mlmvpn") },
             )
             Separator()
@@ -250,7 +249,7 @@ fun AboutScreen(
                 title = stringResource(R.string.about_youtube),
                 subtitle = "youtube.com/@marketmlm",
                 icon = Icons.Default.PlayArrow,
-                tint = Ios.Red,
+                tint = DuskTheme.error,
                 onClick = { openUrl("https://www.youtube.com/@marketmlm") },
             )
         }
@@ -339,23 +338,23 @@ private fun ReleaseHeader(title: String, count: Int, isFa: Boolean, isLatest: Bo
             .padding(start = 20.dp, end = 20.dp, top = 26.dp, bottom = 10.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Text(title, color = Ios.Label, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
+        Text(title, color = DuskTheme.onSurface, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
         if (isLatest) {
             Spacer(Modifier.width(8.dp))
             Text(
                 if (isFa) "تازه" else "NEW",
-                color = Ios.Green,
+                color = DuskTheme.success,
                 style = MaterialTheme.typography.labelSmall,
                 fontWeight = FontWeight.SemiBold,
                 modifier = Modifier
-                    .background(Ios.Green.copy(alpha = 0.16f), DuskTheme.controlShape)
+                    .background(DuskTheme.success.copy(alpha = 0.16f), DuskTheme.controlShape)
                     .padding(horizontal = 7.dp, vertical = 2.dp),
             )
         }
         Spacer(Modifier.weight(1f))
         Text(
             if (isFa) "${faNum(count)} مورد" else "$count items",
-            color = Ios.SecondaryLabel,
+            color = DuskTheme.muted,
             style = MaterialTheme.typography.bodySmall,
         )
     }
@@ -370,19 +369,19 @@ private fun ChangeCard(item: ChangelogItem) {
         contentPadding = PaddingValues(16.dp),
     ) {
         Row(verticalAlignment = Alignment.Top) {
-            SettingsGlyph(item.icon, Ios.Gray)
+            SettingsGlyph(item.icon, DuskTheme.disabled)
             Spacer(Modifier.width(14.dp))
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     item.title,
-                    color = Ios.Label,
+                    color = DuskTheme.onSurface,
                     style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.SemiBold,
                 )
                 Spacer(Modifier.height(6.dp))
                 Text(
                     changelogText(item.description),
-                    color = Ios.SecondaryLabel,
+                    color = DuskTheme.muted,
                     style = MaterialTheme.typography.bodySmall,
                     textAlign = TextAlign.Justify,
                 )

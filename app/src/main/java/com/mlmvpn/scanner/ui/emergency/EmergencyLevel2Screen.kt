@@ -1,5 +1,8 @@
 package com.mlmvpn.scanner.ui.emergency
 
+import com.mlmvpn.scanner.ui.theme.DuskTheme
+import com.mlmvpn.scanner.ui.theme.rememberDuskSnackbarAction
+
 import android.app.Activity
 import android.content.Intent
 import android.net.VpnService
@@ -46,7 +49,6 @@ import com.mlmvpn.scanner.engines.gst.GstDiagnostics
 import com.mlmvpn.scanner.engines.gst.GstLog
 import com.mlmvpn.scanner.engines.gst.GstRelay
 import com.mlmvpn.scanner.ui.home.HomeDestinations
-import com.mlmvpn.scanner.ui.settings.Ios
 import com.mlmvpn.scanner.ui.settings.IosScreen
 import com.mlmvpn.scanner.ui.settings.SettingsActionRow
 import com.mlmvpn.scanner.ui.settings.SettingsFooter
@@ -103,6 +105,7 @@ private sealed class GstPage {
 @Composable
 fun EmergencyLevel2Screen(onBack: () -> Unit) {
     val context = LocalContext.current
+    val showNotice = rememberDuskSnackbarAction()
     val scope = rememberCoroutineScope()
 
     var relays by remember { mutableStateOf(GstConfigManager.getRelays(context)) }
@@ -173,11 +176,11 @@ fun EmergencyLevel2Screen(onBack: () -> Unit) {
 
     fun connect() {
         if (configured.isEmpty()) {
-            shortToast(context, S(R.string.create_a_relay_first))
+            shortToast(context, S(R.string.create_a_relay_first), showNotice)
             return
         }
         if (!certInstalled) {
-            shortToast(context, S(R.string.without_the_certificate_https_sites_will_not))
+            shortToast(context, S(R.string.without_the_certificate_https_sites_will_not), showNotice)
         }
         val consent = runCatching { VpnService.prepare(context) }.getOrNull()
         if (consent != null) vpnPrepare.launch(consent) else startGstService()
@@ -189,7 +192,7 @@ fun EmergencyLevel2Screen(onBack: () -> Unit) {
         // teardown. tun2proxy now runs in the :tun process (Tun2proxyHostService), so that exit
         // takes down only that process and this one carries on.
         com.mlmvpn.scanner.utils.SafeStart.service(context, Intent(context, MyVpnService::class.java).apply { action = "STOP" })
-        shortToast(context, S(R.string.disconnecting_2))
+        shortToast(context, S(R.string.disconnecting_2), showNotice)
     }
 
     fun testRelay(relay: GstRelay) {
@@ -206,7 +209,7 @@ fun EmergencyLevel2Screen(onBack: () -> Unit) {
 
     fun testAll() {
         if (configured.isEmpty()) {
-            shortToast(context, S(R.string.there_is_no_relay_to_measure_yet))
+            shortToast(context, S(R.string.there_is_no_relay_to_measure_yet), showNotice)
             return
         }
         if (testingAll) return
@@ -228,7 +231,7 @@ fun EmergencyLevel2Screen(onBack: () -> Unit) {
             shortToast(
                 context,
                 S(R.string.of_relays_are_healthy, faDigits(ok.toString()), faDigits(configured.size.toString())),
-            )
+             showNotice)
         }
     }
 
@@ -320,7 +323,7 @@ fun EmergencyLevel2Screen(onBack: () -> Unit) {
 
         Text(
             "Google Apps Script",
-            color = Ios.SecondaryLabel,
+            color = DuskTheme.muted,
             fontSize = 13.sp,
             modifier = Modifier.align(Alignment.CenterHorizontally),
         )
@@ -328,7 +331,7 @@ fun EmergencyLevel2Screen(onBack: () -> Unit) {
         Text(
             S(R.string.traffic_goes_through_a_script_on_google) +
                 S(R.string.without_blocking_google_itself),
-            color = Ios.SecondaryLabel,
+            color = DuskTheme.muted,
             fontSize = 13.sp,
             lineHeight = 20.sp,
             textAlign = TextAlign.Center,
@@ -387,7 +390,7 @@ fun EmergencyLevel2Screen(onBack: () -> Unit) {
             SettingsRow(
                 title = if (certInstalled) S(R.string.installed_2) else S(R.string.not_installed),
                 icon = if (certInstalled) Icons.Default.VerifiedUser else Icons.Default.Security,
-                tint = if (certInstalled) Ios.Green else Ios.Orange,
+                tint = if (certInstalled) DuskTheme.success else DuskTheme.accent,
                 subtitle = if (certInstalled) {
                     S(R.string.https_sites_open_correctly)
                 } else {
@@ -409,7 +412,7 @@ fun EmergencyLevel2Screen(onBack: () -> Unit) {
                             if (ok) {
                                 installCaCertificate(context)
                             } else {
-                                shortToast(context, S(R.string.could_not_build_the_certificate_connect_once))
+                                shortToast(context, S(R.string.could_not_build_the_certificate_connect_once), showNotice)
                             }
                         }
                     },
@@ -438,7 +441,7 @@ fun EmergencyLevel2Screen(onBack: () -> Unit) {
             if (relays.isEmpty()) {
                 SettingsRow(
                     title = S(R.string.no_relay_added_yet),
-                    titleColor = Ios.SecondaryLabel,
+                    titleColor = DuskTheme.muted,
                     showChevron = false,
                 )
                 Separator()
@@ -497,7 +500,7 @@ fun EmergencyLevel2Screen(onBack: () -> Unit) {
             SettingsRow(
                 title = S(R.string.network_route_2),
                 icon = Icons.Default.Route,
-                tint = Ios.Indigo,
+                tint = DuskTheme.indigo,
                 value = S(R.string.names, faDigits(GstConfigManager.getSelectedSniList(context).size.toString())) +
                     S(R.string.ips, faDigits(GstConfigManager.getSelectedCleanIpList(context).size.toString())),
                 onClick = { page = GstPage.NetworkPath },
@@ -506,7 +509,7 @@ fun EmergencyLevel2Screen(onBack: () -> Unit) {
             SettingsRow(
                 title = S(R.string.live_report_2),
                 icon = Icons.Default.Article,
-                tint = Ios.Teal,
+                tint = DuskTheme.blueGray,
                 value = logLines.size.takeIf { it > 0 }?.let { faDigits(it.toString()) },
                 onClick = { page = GstPage.Log },
             )
@@ -583,7 +586,7 @@ suspend fun installCaCertificate(context: android.content.Context) {
     try {
         val caFile = java.io.File(context.filesDir, "ca/ca.crt")
         if (!caFile.exists()) {
-            shortToast(context, S(R.string.no_certificate_has_been_built_tap_the))
+            shortToast(context, S(R.string.no_certificate_has_been_built_tap_the), showNotice)
             return
         }
         // Below Android 11 the system's own installer takes the certificate directly -- the same
@@ -624,16 +627,12 @@ suspend fun installCaCertificate(context: android.content.Context) {
             android.media.MediaScannerConnection.scanFile(context, arrayOf(exportedCert.absolutePath), arrayOf("application/x-x509-ca-cert"), null)
         }
         }
-        android.widget.Toast.makeText(
-            context,
-            S(R.string.the_certificate_was_saved_to_downloads_please),
-            android.widget.Toast.LENGTH_LONG,
-        ).show()
+        showNotice(S(R.string.the_certificate_was_saved_to_downloads_please))
         val intent = Intent(android.provider.Settings.ACTION_SECURITY_SETTINGS)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         context.startActivity(intent)
     } catch (e: Exception) {
-        shortToast(context, S(R.string.error, e.message))
+        shortToast(context, S(R.string.error, e.message), showNotice)
     }
 }
 

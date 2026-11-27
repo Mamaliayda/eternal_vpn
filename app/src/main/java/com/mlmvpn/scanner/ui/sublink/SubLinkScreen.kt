@@ -48,7 +48,6 @@ import com.mlmvpn.scanner.engines.subgenerator.SubGenDeployer
 import com.mlmvpn.scanner.engines.subgenerator.SubGenManager
 import com.mlmvpn.scanner.engines.subgenerator.SubLinkConfig
 import com.mlmvpn.scanner.ui.faCount
-import com.mlmvpn.scanner.ui.settings.Ios
 import com.mlmvpn.scanner.ui.settings.IosAlert
 import com.mlmvpn.scanner.ui.settings.IosAlertAction
 import com.mlmvpn.scanner.ui.settings.IosScreen
@@ -275,7 +274,7 @@ fun SubLinkScreen(
                 androidx.compose.material3.Icon(
                     Icons.Default.HelpOutline,
                     contentDescription = S(R.string.guide),
-                    tint = Ios.Label,
+                    tint = DuskTheme.onSurface,
                     modifier = Modifier
                         .size(30.dp)
                         .clip(DuskTheme.circleShape)
@@ -314,7 +313,7 @@ fun SubLinkScreen(
             // ---- 1 · no Cloudflare account -------------------------------------------
             account == null -> {
                 StateBlock(
-                    icon = { SettingsGlyph(Icons.Default.CloudOff, Ios.Gray) },
+                    icon = { SettingsGlyph(Icons.Default.CloudOff, DuskTheme.disabled) },
                     title = S(R.string.no_cloudflare_account_connected),
                     body = S(R.string.sub_link_runs_on_a_cloudflare_worker),
                 )
@@ -322,7 +321,7 @@ fun SubLinkScreen(
                     SettingsActionRow(
                         label = S(R.string.go_to_the_cloud_section),
                         icon = Icons.Default.Cloud,
-                        tint = Ios.CloudflareOrange,
+                        tint = DuskTheme.cloudflareOrange,
                         onClick = onNavigateToCloud,
                     )
                 }
@@ -339,17 +338,17 @@ fun SubLinkScreen(
                     CircularProgressIndicator(
                         modifier = Modifier.size(16.dp),
                         strokeWidth = 2.dp,
-                        color = Ios.SecondaryLabel,
+                        color = DuskTheme.muted,
                     )
                     Spacer(Modifier.width(10.dp))
-                    Text(S(R.string.checking_the_worker_s_status), color = Ios.SecondaryLabel, style = MaterialTheme.typography.bodyMedium)
+                    Text(S(R.string.checking_the_worker_s_status), color = DuskTheme.muted, style = MaterialTheme.typography.bodyMedium)
                 }
             }
 
             // ---- 3 · worker not deployed ---------------------------------------------
             data == null -> {
                 StateBlock(
-                    icon = { SettingsGlyph(Icons.Default.CloudUpload, Ios.Orange) },
+                    icon = { SettingsGlyph(Icons.Default.CloudUpload, DuskTheme.accent) },
                     title = S(R.string.the_sub_link_worker_is_not_deployed),
                     body = S(R.string.it_is_installed_once_on_your_cloudflare),
                 )
@@ -358,13 +357,13 @@ fun SubLinkScreen(
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Text(
                                 deployStatus.ifBlank { S(R.string.deploying) },
-                                color = Ios.SecondaryLabel,
+                                color = DuskTheme.muted,
                                 style = MaterialTheme.typography.labelMedium,
                                 modifier = Modifier.weight(1f),
                             )
                             Text(
                                 faCount(deployProgress) + S(R.string.str_r2),
-                                color = Ios.SecondaryLabel,
+                                color = DuskTheme.muted,
                                 style = MaterialTheme.typography.labelMedium,
                             )
                         }
@@ -372,7 +371,7 @@ fun SubLinkScreen(
                         LinearProgressIndicator(
                             progress = deployProgress / 100f,
                             modifier = Modifier.fillMaxWidth().height(3.dp).clip(DuskTheme.circleShape),
-                            color = Ios.Blue,
+                            color = DuskTheme.primary,
                             trackColor = DuskTheme.onSurface.copy(alpha = 0.14f),
                         )
                     }
@@ -381,7 +380,7 @@ fun SubLinkScreen(
                         SettingsActionRow(
                             label = S(R.string.set_up_the_worker),
                             icon = Icons.Default.CloudUpload,
-                            tint = Ios.Blue,
+                            tint = DuskTheme.primary,
                             onClick = ::deploy,
                         )
                     }
@@ -399,7 +398,7 @@ fun SubLinkScreen(
                         SettingsActionRow(
                             label = S(R.string.create_a_sub_link),
                             icon = Icons.Default.Add,
-                            tint = Ios.Blue,
+                            tint = DuskTheme.primary,
                         ) {
                             draft.reset(freshSlug())
                             page = SubLinkPage.Form
@@ -420,7 +419,7 @@ fun SubLinkScreen(
                         SettingsActionRow(
                             label = S(R.string.new_sub_link),
                             icon = Icons.Default.Add,
-                            tint = Ios.Blue,
+                            tint = DuskTheme.primary,
                         ) {
                             draft.reset(freshSlug())
                             page = SubLinkPage.Form
@@ -475,12 +474,12 @@ private fun SubLinkRow(link: SubLinkConfig, onClick: () -> Unit) {
             .padding(horizontal = 16.dp, vertical = 9.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        SettingsGlyph(Icons.Default.Link, if (expiryTone == Ios.Red) Ios.Gray else Ios.Blue)
+        SettingsGlyph(Icons.Default.Link, if (expiryTone == DuskTheme.error) DuskTheme.disabled else DuskTheme.primary)
         Spacer(Modifier.width(12.dp))
         Column(modifier = Modifier.weight(1f)) {
             Text(
                 link.name,
-                color = Ios.Label,
+                color = DuskTheme.onSurface,
                 style = MaterialTheme.typography.bodyLarge,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
@@ -488,7 +487,7 @@ private fun SubLinkRow(link: SubLinkConfig, onClick: () -> Unit) {
             Spacer(Modifier.height(2.dp))
             Text(
                 link.mappedGroupName?.let { groupShortName(it) } ?: S(R.string.no_group),
-                color = Ios.SecondaryLabel,
+                color = DuskTheme.muted,
                 style = MaterialTheme.typography.labelMedium,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
@@ -510,7 +509,7 @@ private fun SubLinkRow(link: SubLinkConfig, onClick: () -> Unit) {
         androidx.compose.material3.Icon(
             Icons.Default.ChevronRight,
             contentDescription = null,
-            tint = Ios.Chevron,
+            tint = DuskTheme.disabled,
             modifier = Modifier.size(18.dp).scale(
                 scaleX = if (LocalLayoutDirection.current == LayoutDirection.Rtl) -1f else 1f,
                 scaleY = 1f,
@@ -530,7 +529,7 @@ private fun StateBlock(icon: @Composable () -> Unit, title: String, body: String
         Spacer(Modifier.height(14.dp))
         Text(
             title,
-            color = Ios.Label,
+            color = DuskTheme.onSurface,
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.SemiBold,
             textAlign = androidx.compose.ui.text.style.TextAlign.Center,
@@ -538,7 +537,7 @@ private fun StateBlock(icon: @Composable () -> Unit, title: String, body: String
         Spacer(Modifier.height(8.dp))
         Text(
             body,
-            color = Ios.SecondaryLabel,
+            color = DuskTheme.muted,
             style = MaterialTheme.typography.bodySmall,
             textAlign = androidx.compose.ui.text.style.TextAlign.Center,
         )
@@ -560,14 +559,14 @@ fun freshSlug(): String = java.util.UUID.randomUUID().toString().substring(0, 8)
  */
 @Composable
 fun expiryLabel(expiryTimestamp: Long): Pair<String?, Color> {
-    if (expiryTimestamp <= 0L) return null to Ios.SecondaryLabel
+    if (expiryTimestamp <= 0L) return null to DuskTheme.muted
     val remaining = expiryTimestamp - System.currentTimeMillis()
-    if (remaining <= 0L) return S(R.string.expired) to Ios.Red
+    if (remaining <= 0L) return S(R.string.expired) to DuskTheme.error
     val days = remaining / (1000L * 60 * 60 * 24)
     return when {
-        days < 1 -> S(R.string.today) to Ios.Orange
-        days < 7 -> faCount(days.toInt()) + S(R.string.days_r2) to Ios.Orange
-        else -> faCount(days.toInt()) + S(R.string.days_r2) to Ios.SecondaryLabel
+        days < 1 -> S(R.string.today) to DuskTheme.accent
+        days < 7 -> faCount(days.toInt()) + S(R.string.days_r2) to DuskTheme.accent
+        else -> faCount(days.toInt()) + S(R.string.days_r2) to DuskTheme.muted
     }
 }
 

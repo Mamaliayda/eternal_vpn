@@ -1,6 +1,8 @@
 package com.mlmvpn.scanner.ui.tunnel
 
-import android.widget.Toast
+import com.mlmvpn.scanner.ui.theme.DuskTheme
+import com.mlmvpn.scanner.ui.theme.rememberDuskSnackbarAction
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -38,7 +40,6 @@ import androidx.compose.ui.unit.sp
 import com.mlmvpn.core.warp.WarpIdRelay
 import com.mlmvpn.scanner.data.CloudManager
 import com.mlmvpn.scanner.store.tr
-import com.mlmvpn.scanner.ui.settings.Ios
 import com.mlmvpn.scanner.ui.settings.SettingsFooter
 import com.mlmvpn.scanner.ui.settings.SettingsGroup
 import com.mlmvpn.scanner.ui.settings.SettingsRow
@@ -60,6 +61,7 @@ private fun setUpRelay(
     scope: kotlinx.coroutines.CoroutineScope,
     onStep: (String?) -> Unit,
     onReady: () -> Unit,
+    showNotice: (String) -> Unit,
 ) {
     scope.launch {
         val account = withContext(Dispatchers.IO) {
@@ -67,12 +69,8 @@ private fun setUpRelay(
             cloud.accounts.firstOrNull { it.accountId == WarpIdRelay.accountId(context) } ?: cloud.accounts.firstOrNull()
         }
         if (account == null) {
-            Toast.makeText(
-                context,
-                tr("اول در بخش «ابری» یک حساب کلادفلر اضافه کنید؛ هویت از راه همان ساخته می‌شود.",
-                    "Add a Cloudflare account in «Cloud» first; the identity is made through it."),
-                Toast.LENGTH_LONG,
-            ).show()
+            showNotice(tr("اول در بخش «ابری» یک حساب کلادفلر اضافه کنید؛ هویت از راه همان ساخته می‌شود.",
+                "Add a Cloudflare account in «Cloud» first; the identity is made through it."))
             onStep(null)
             return@launch
         }
@@ -81,7 +79,7 @@ private fun setUpRelay(
             WarpIdRelay.deploy(context, account) { step -> scope.launch { onStep(step) } }
         }
         onStep(null)
-        if (ok) onReady() else Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+        if (ok) onReady() else showNotice(message)
     }
 }
 
@@ -92,6 +90,7 @@ private fun setUpRelay(
 @Composable
 internal fun IdentityBlockedCard(onRetry: () -> Unit, modifier: Modifier = Modifier) {
     val context = LocalContext.current
+    val showNotice = rememberDuskSnackbarAction()
     val scope = rememberCoroutineScope()
     var step by remember { mutableStateOf<String?>(null) }
     val ready = remember(step) { WarpIdRelay.isReady(context) }
@@ -101,15 +100,15 @@ internal fun IdentityBlockedCard(onRetry: () -> Unit, modifier: Modifier = Modif
             .fillMaxWidth()
             .padding(horizontal = 20.dp)
             .clip(RoundedCornerShape(20.dp))
-            .background(Color(0xFFFF9F0A).copy(alpha = 0.16f))
+            .background(DuskTheme.cloudflareOrange.copy(alpha = 0.16f))
             .padding(16.dp),
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Icon(Icons.Default.Warning, null, tint = Ios.Orange, modifier = Modifier.size(20.dp))
+            Icon(Icons.Default.Warning, null, tint = DuskTheme.accent, modifier = Modifier.size(20.dp))
             Spacer(Modifier.width(8.dp))
             Text(
                 tr("هویت وارپ ساخته نشد", "No WARP identity could be made"),
-                color = Ios.Label, fontSize = 16.sp, fontWeight = FontWeight.Bold,
+                color = DuskTheme.onSurface, fontSize = 16.sp, fontWeight = FontWeight.Bold,
             )
         }
         Spacer(Modifier.height(6.dp))
@@ -121,15 +120,15 @@ internal fun IdentityBlockedCard(onRetry: () -> Unit, modifier: Modifier = Modif
                 tr("سرور صدور هویت وارپ روی این اینترنت فیلتر است. با یک لمس، هویت از راه یک ورکر روی حساب کلادفلر خودتان ساخته می‌شود — مثل ترفند جمنای — و دوباره وصل می‌شویم.",
                     "The WARP identity server is filtered on this network. One tap makes the identity through a worker on your own Cloudflare account — like the Gemini trick — and connects again.")
             },
-            color = Ios.SecondaryLabel, fontSize = 13.sp, lineHeight = 20.sp,
+            color = DuskTheme.muted, fontSize = 13.sp, lineHeight = 20.sp,
         )
         Spacer(Modifier.height(12.dp))
         Row(
             Modifier
                 .clip(RoundedCornerShape(50))
-                .background(Ios.Blue)
+                .background(DuskTheme.primary)
                 .clickable(enabled = step == null) {
-                    if (ready) onRetry() else setUpRelay(context, scope, { step = it }, onRetry)
+                    if (ready) onRetry() else setUpRelay(context, scope, { step = it }, onRetry, showNotice)
                 }
                 .padding(horizontal = 18.dp, vertical = 9.dp),
             verticalAlignment = Alignment.CenterVertically,
@@ -153,6 +152,7 @@ internal fun IdentityBlockedCard(onRetry: () -> Unit, modifier: Modifier = Modif
 @Composable
 internal fun ColumnScope.WarpIdentitySection(transport: Transport, refresh: Any?) {
     val context = LocalContext.current
+    val showNotice = rememberDuskSnackbarAction()
     val scope = rememberCoroutineScope()
     var step by remember { mutableStateOf<String?>(null) }
     var bump by remember { mutableIntStateOf(0) }
@@ -168,7 +168,7 @@ internal fun ColumnScope.WarpIdentitySection(transport: Transport, refresh: Any?
         SettingsRow(
             title = tr("هویت", "Identity"),
             icon = Icons.Default.Badge,
-            tint = if (id.made) Ios.Green else Ios.Gray,
+            tint = if (id.made) DuskTheme.success else DuskTheme.disabled,
             value = when {
                 !id.made -> tr("هنوز ساخته نشده", "Not made yet")
                 id.via == WarpIdRelay.VIA_WORKER -> tr("ساخته شد · از راه ورکر", "Made · through the worker")
@@ -184,13 +184,13 @@ internal fun ColumnScope.WarpIdentitySection(transport: Transport, refresh: Any?
         com.mlmvpn.scanner.ui.settings.WorkerSetupRow(
             title = tr("ساخت هویت از راه ورکر", "Make identity through a worker"),
             icon = Icons.Default.VpnKey,
-            tint = Ios.Orange,
+            tint = DuskTheme.accent,
             deployed = remember(refresh, bump, step) { WarpIdRelay.deployedVersion(context) },
             latest = WarpIdRelay.VERSION,
             progress = step,
             subtitleOff = tr("خاموش", "Off"),
             subtitleOn = tr("فعال", "On"),
-            onDeploy = { if (step == null) setUpRelay(context, scope, { step = it }) { bump++ } },
+            onDeploy = { if (step == null) setUpRelay(context, scope, { step = it }, { bump++ }, showNotice) },
         )
     }
     SettingsFooter(

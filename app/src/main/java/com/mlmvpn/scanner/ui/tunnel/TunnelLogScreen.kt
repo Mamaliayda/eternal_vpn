@@ -35,7 +35,6 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.mlmvpn.core.tunnel.ConnectionLog
-import com.mlmvpn.scanner.ui.settings.Ios
 import com.mlmvpn.scanner.ui.theme.DuskCard
 import com.mlmvpn.scanner.ui.theme.DuskTheme
 import com.mlmvpn.scanner.ui.settings.IosScreen
@@ -87,7 +86,7 @@ fun TunnelLogScreen(onBack: () -> Unit) {
             LogAction(
                 label = S(R.string.subscription),
                 icon = Icons.Default.Share,
-                tint = Ios.Blue,
+                tint = DuskTheme.primary,
                 modifier = Modifier.weight(1f),
             ) {
                 val text = ConnectionLog.snapshot().joinToString("\n")
@@ -102,7 +101,7 @@ fun TunnelLogScreen(onBack: () -> Unit) {
             LogAction(
                 label = if (confirmClear) S(R.string.are_you_sure_2) else S(R.string.clear_3),
                 icon = Icons.Default.DeleteOutline,
-                tint = Ios.Red,
+                tint = DuskTheme.error,
                 modifier = Modifier.weight(1f),
             ) {
                 if (confirmClear) {
@@ -119,7 +118,7 @@ fun TunnelLogScreen(onBack: () -> Unit) {
             Text(
                 S(R.string.this_is_the_only_record_left_of) +
                     S(R.string.means_throwing_away_the_very_thing_that),
-                color = Ios.SecondaryLabel,
+                color = DuskTheme.muted,
                 style = MaterialTheme.typography.bodySmall,
                 modifier = Modifier.padding(horizontal = 24.dp, vertical = 4.dp),
             )
@@ -132,7 +131,7 @@ fun TunnelLogScreen(onBack: () -> Unit) {
             ) {
                 Text(
                     S(R.string.nothing_recorded_yet_nconnect_once_and_every),
-                    color = Ios.SecondaryLabel,
+                    color = DuskTheme.muted,
                     style = MaterialTheme.typography.bodyMedium,
                     textAlign = TextAlign.Center,
                 )
@@ -153,7 +152,7 @@ fun TunnelLogScreen(onBack: () -> Unit) {
                 items(lines) { line ->
                     Text(
                         line,
-                        color = Ios.Label,
+                        color = DuskTheme.onSurface,
                         style = MaterialTheme.typography.labelSmall.copy(fontFamily = FontFamily.Monospace),
                         modifier = Modifier.padding(vertical = 1.dp),
                     )

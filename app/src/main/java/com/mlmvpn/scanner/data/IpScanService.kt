@@ -211,7 +211,7 @@ class IpScanService : Service() {
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
         )
         val builder = NotificationCompat.Builder(this, CHANNEL_ID)
-            .setColor(androidx.core.content.ContextCompat.getColor(this, R.color.gs_primary))
+            .setColor(androidx.core.content.ContextCompat.getColor(this, R.color.dusk_primary))
             .setContentTitle(S(R.string.scanner_title))
             .setContentText(text)
             .setSmallIcon(R.drawable.ic_scanner)

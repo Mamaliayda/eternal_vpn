@@ -1,5 +1,7 @@
 package com.mlmvpn.scanner.ui.emergency
 
+import com.mlmvpn.scanner.ui.theme.DuskTheme
+
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
@@ -37,7 +39,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.mlmvpn.scanner.ui.settings.Ios
 import com.mlmvpn.scanner.R
 import com.mlmvpn.scanner.utils.S
 
@@ -80,8 +81,8 @@ internal enum class DialState { IDLE, STARTING, RUNNING, FAILED }
  */
 @Composable
 internal fun dialAccent(state: DialState, idleAccent: Color): Color = when (state) {
-    DialState.RUNNING -> Ios.Green
-    DialState.FAILED -> Ios.Orange
+    DialState.RUNNING -> DuskTheme.success
+    DialState.FAILED -> DuskTheme.accent
     else -> idleAccent
 }
 
@@ -196,7 +197,7 @@ internal fun EmergencyStatusLine(
     ) {
         Text(
             headline,
-            color = if (state == DialState.IDLE) Ios.SecondaryLabel else dialAccent(state, idleAccent),
+            color = if (state == DialState.IDLE) DuskTheme.muted else dialAccent(state, idleAccent),
             fontSize = 16.sp,
             fontWeight = FontWeight.SemiBold,
         )
@@ -204,7 +205,7 @@ internal fun EmergencyStatusLine(
             Spacer(Modifier.height(6.dp))
             Text(
                 sub,
-                color = Ios.SecondaryLabel,
+                color = DuskTheme.muted,
                 fontSize = 13.sp,
                 lineHeight = 20.sp,
                 textAlign = TextAlign.Center,
@@ -229,9 +230,9 @@ internal fun EmergencyStatusLine(
  */
 @Composable
 internal fun pingTone(ms: Int): Color = when {
-    ms <= 0 -> Ios.Red
-    ms <= 200 -> Ios.Green
-    else -> Ios.Yellow
+    ms <= 0 -> DuskTheme.error
+    ms <= 200 -> DuskTheme.success
+    else -> DuskTheme.accent
 }
 
 /** Persian digits when the app is in Persian; left alone in English. */
@@ -243,7 +244,7 @@ internal fun faDigits(text: String): String {
     }
 }
 
-internal fun openExternalUrl(context: android.content.Context, url: String) {
+internal fun openExternalUrl(context: android.content.Context, url: String, showNotice: (String) -> Unit) {
     try {
         val intent = android.content.Intent(
             android.content.Intent.ACTION_VIEW,
@@ -251,10 +252,10 @@ internal fun openExternalUrl(context: android.content.Context, url: String) {
         ).apply { flags = android.content.Intent.FLAG_ACTIVITY_NEW_TASK }
         context.startActivity(intent)
     } catch (e: Exception) {
-        shortToast(context, S(R.string.link_url, url))
+        showNotice(S(R.string.link_url, url))
     }
 }
 
-internal fun shortToast(context: android.content.Context, message: String) {
-    android.widget.Toast.makeText(context, message, android.widget.Toast.LENGTH_SHORT).show()
+internal fun shortToast(context: android.content.Context, message: String, showNotice: (String) -> Unit) {
+    showNotice(message)
 }

@@ -58,7 +58,6 @@ import com.mlmvpn.scanner.engines.gst.GstConfigManager
 import com.mlmvpn.scanner.engines.gst.GstDiagnostics
 import com.mlmvpn.scanner.engines.gst.GstLog
 import com.mlmvpn.scanner.engines.gst.GstRelay
-import com.mlmvpn.scanner.ui.settings.Ios
 import com.mlmvpn.scanner.ui.settings.IosScreen
 import com.mlmvpn.scanner.ui.settings.SettingsActionRow
 import com.mlmvpn.scanner.ui.settings.SettingsFooter
@@ -67,6 +66,7 @@ import com.mlmvpn.scanner.ui.settings.SettingsRow
 import com.mlmvpn.scanner.ui.settings.SettingsSectionHeader
 import com.mlmvpn.scanner.ui.theme.DuskCard
 import com.mlmvpn.scanner.ui.theme.DuskTheme
+import com.mlmvpn.scanner.ui.theme.rememberDuskSnackbarAction
 import com.mlmvpn.scanner.ui.tlsPing
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -96,12 +96,12 @@ internal val GST_BACK: String get() = S(R.string.back_r2)
 /** What a relay's last probe means, as one word and one colour. */
 @Composable
 internal fun relayTone(report: GstDiagnostics.Report?): Color = when (report?.result) {
-    null -> Ios.Gray
-    GstDiagnostics.Result.OK -> Ios.Green
+    null -> DuskTheme.disabled
+    GstDiagnostics.Result.OK -> DuskTheme.success
     GstDiagnostics.Result.REDIRECT_BLOCKED,
     GstDiagnostics.Result.FRONT_BLOCKED,
-    GstDiagnostics.Result.KEY_NOT_USED -> Ios.Orange
-    else -> Ios.Red
+    GstDiagnostics.Result.KEY_NOT_USED -> DuskTheme.accent
+    else -> DuskTheme.error
 }
 
 internal fun relayVerdict(report: GstDiagnostics.Report?): String = when (report?.result) {
@@ -144,6 +144,7 @@ fun GstRelayScreen(
     onBack: () -> Unit,
 ) {
     val context = LocalContext.current
+    val showNotice = rememberDuskSnackbarAction()
     val clipboard = LocalClipboardManager.current
     var confirmRemove by remember { mutableStateOf(false) }
 
@@ -171,8 +172,8 @@ fun GstRelayScreen(
                 SettingsActionRow(
                     label = S(R.string.verify_in_the_browser),
                     icon = Icons.Default.OpenInNew,
-                    tint = Ios.Orange,
-                    onClick = { openExternalUrl(context, GstDiagnostics.execUrl(relay.deploymentId)) },
+                    tint = DuskTheme.accent,
+                    onClick = { openExternalUrl(context, GstDiagnostics.execUrl(relay.deploymentId), showNotice) },
                 )
             }
         }
@@ -183,7 +184,7 @@ fun GstRelayScreen(
             SettingsRow(
                 title = "Deployment ID",
                 icon = Icons.Default.Dns,
-                tint = Ios.Indigo,
+                tint = DuskTheme.indigo,
                 value = shortDeploymentId(relay.deploymentId),
                 showChevron = false,
             )
@@ -193,7 +194,7 @@ fun GstRelayScreen(
                 icon = Icons.Default.ContentCopy,
                 onClick = {
                     clipboard.setText(AnnotatedString(relay.deploymentId))
-                    shortToast(context, S(R.string.id_copied))
+                    shortToast(context, S(R.string.id_copied), showNotice)
                 },
             )
         }
@@ -213,7 +214,7 @@ fun GstRelayScreen(
             SettingsActionRow(
                 label = if (confirmRemove) S(R.string.are_you_sure_tap_again_to_delete_r2) else S(R.string.delete_this_relay),
                 icon = Icons.Default.DeleteOutline,
-                tint = Ios.Red,
+                tint = DuskTheme.error,
                 onClick = {
                     if (confirmRemove) {
                         onRemove()
@@ -378,9 +379,9 @@ private fun PathRow(
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Column(modifier = Modifier.weight(1f)) {
-            Text(label, color = Ios.Label, fontSize = 15.sp)
+            Text(label, color = DuskTheme.onSurface, fontSize = 15.sp)
             if (detail != null) {
-                Text(detail, color = Ios.SecondaryLabel, fontSize = 12.sp)
+                Text(detail, color = DuskTheme.muted, fontSize = 12.sp)
             }
         }
         if (ping != null) {
@@ -397,7 +398,7 @@ private fun PathRow(
                 Icon(
                     Icons.Default.Check,
                     contentDescription = null,
-                    tint = Ios.Blue,
+                    tint = DuskTheme.primary,
                     modifier = Modifier.size(20.dp),
                 )
             }
@@ -419,6 +420,7 @@ private fun PathRow(
 @Composable
 fun GstLogScreen(onBack: () -> Unit) {
     val context = LocalContext.current
+    val showNotice = rememberDuskSnackbarAction()
     val clipboard = LocalClipboardManager.current
     val entries by GstLog.lines.collectAsState()
     val listState = rememberLazyListState()
@@ -440,19 +442,19 @@ fun GstLogScreen(onBack: () -> Unit) {
             LogChip(
                 label = S(R.string.copy),
                 icon = Icons.Default.ContentCopy,
-                tint = Ios.Blue,
+                tint = DuskTheme.primary,
                 modifier = Modifier.weight(1f),
             ) {
                 val dump = GstLog.dump()
                 if (dump.isNotBlank()) {
                     clipboard.setText(AnnotatedString(dump))
-                    shortToast(context, S(R.string.report_copied))
+                    shortToast(context, S(R.string.report_copied), showNotice)
                 }
             }
             LogChip(
                 label = S(R.string.share_r2),
                 icon = Icons.Default.Share,
-                tint = Ios.Teal,
+                tint = DuskTheme.blueGray,
                 modifier = Modifier.weight(1f),
             ) {
                 val dump = GstLog.dump()
@@ -467,7 +469,7 @@ fun GstLogScreen(onBack: () -> Unit) {
             LogChip(
                 label = if (confirmClear) S(R.string.are_you_sure) else S(R.string.clear_r2),
                 icon = Icons.Default.DeleteOutline,
-                tint = Ios.Red,
+                tint = DuskTheme.error,
                 modifier = Modifier.weight(1f),
             ) {
                 if (confirmClear) {
@@ -486,7 +488,7 @@ fun GstLogScreen(onBack: () -> Unit) {
             ) {
                 Text(
                     S(R.string.nothing_recorded_yet_nrun_measure_all_relays),
-                    color = Ios.SecondaryLabel,
+                    color = DuskTheme.muted,
                     style = androidx.compose.material3.MaterialTheme.typography.bodyMedium,
                     textAlign = TextAlign.Center,
                 )
@@ -513,10 +515,10 @@ fun GstLogScreen(onBack: () -> Unit) {
                         Text(
                             entry.format(),
                             color = when (entry.level) {
-                                GstLog.Level.E -> Ios.Red
-                                GstLog.Level.W -> Ios.Yellow
-                                GstLog.Level.I -> Ios.Label
-                                else -> Ios.SecondaryLabel
+                                GstLog.Level.E -> DuskTheme.error
+                                GstLog.Level.W -> DuskTheme.accent
+                                GstLog.Level.I -> DuskTheme.onSurface
+                                else -> DuskTheme.muted
                             },
                             style = androidx.compose.material3.MaterialTheme.typography.labelSmall.copy(fontFamily = FontFamily.Monospace),
                             modifier = Modifier.padding(vertical = 1.dp),

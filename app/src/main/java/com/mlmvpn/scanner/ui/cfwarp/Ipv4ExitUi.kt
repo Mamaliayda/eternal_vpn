@@ -1,5 +1,7 @@
 package com.mlmvpn.scanner.ui.cfwarp
 
+import com.mlmvpn.scanner.ui.theme.DuskTheme
+
 import android.content.Context
 import android.os.Handler
 import android.os.Looper
@@ -45,7 +47,6 @@ import com.mlmvpn.core.warp.Ipv4Exits
 import com.mlmvpn.scanner.store.tr
 import com.mlmvpn.scanner.ui.emergency.faDigits
 import com.mlmvpn.scanner.ui.home.frostedGlass
-import com.mlmvpn.scanner.ui.settings.Ios
 import com.mlmvpn.scanner.ui.settings.SettingsFooter
 import com.mlmvpn.scanner.ui.settings.SettingsSectionHeader
 import com.mlmvpn.scanner.ui.theme.PanelShape
@@ -69,13 +70,13 @@ fun ExitWaySwitch(selected: ExitWay, onSelect: (ExitWay) -> Unit) {
             val sel = way == selected
             Box(
                 Modifier.weight(1f).clip(RoundedCornerShape(10.dp))
-                    .background(if (sel) Ios.Blue else Color.Transparent)
+                    .background(if (sel) DuskTheme.primary else Color.Transparent)
                     .clickable { onSelect(way) }
                     .padding(vertical = 9.dp),
                 contentAlignment = Alignment.Center,
             ) {
                 Text(label, fontSize = 13.sp, fontWeight = if (sel) FontWeight.SemiBold else FontWeight.Normal,
-                    color = if (sel) Color.White else Ios.SecondaryLabel)
+                    color = if (sel) Color.White else DuskTheme.muted)
             }
         }
     }
@@ -154,9 +155,9 @@ fun ColumnScope.Ipv4ExitSection(onChanged: () -> Unit) {
                 else -> ""
             },
             detailColor = when {
-                l.fellBack || (want != null && l.loc != null && l.loc != want) -> Ios.Orange
-                l.ok -> Ios.Green
-                else -> Ios.SecondaryLabel
+                l.fellBack || (want != null && l.loc != null && l.loc != want) -> DuskTheme.accent
+                l.ok -> DuskTheme.success
+                else -> DuskTheme.muted
             },
             selected = false,
             onClick = {},
@@ -222,9 +223,9 @@ fun ColumnScope.Ipv4ExitSection(onChanged: () -> Unit) {
                     else -> tr("سنجیده نشده — برای سنجش و انتخاب بزنید", "Not measured -- tap to measure and pick")
                 },
                 detailColor = when {
-                    p?.ok == true -> Ios.Green
-                    p != null && !scanning && !looking -> Ios.Red
-                    else -> Ios.SecondaryLabel
+                    p?.ok == true -> DuskTheme.success
+                    p != null && !scanning && !looking -> DuskTheme.error
+                    else -> DuskTheme.muted
                 },
                 selected = s.enabled && s.country == cc,
                 onClick = { pick(cc) },
@@ -277,7 +278,7 @@ private fun ExitWayRow(
     selected: Boolean,
     onClick: () -> Unit,
     onLongClick: (() -> Unit)? = null,
-    detailColor: Color = Ios.SecondaryLabel,
+    detailColor: Color = DuskTheme.muted,
 ) {
     Row(
         modifier = Modifier
@@ -292,12 +293,12 @@ private fun ExitWayRow(
         Text(flag, fontSize = 22.sp)
         Spacer(Modifier.width(12.dp))
         Column(modifier = Modifier.weight(1f)) {
-            Text(name, color = Ios.Label, fontSize = 16.sp, maxLines = 1)
+            Text(name, color = DuskTheme.onSurface, fontSize = 16.sp, maxLines = 1)
             if (detail.isNotBlank()) Text(detail, color = detailColor, fontSize = 11.sp, maxLines = 4)
         }
         if (selected) {
             Spacer(Modifier.width(4.dp))
-            Icon(Icons.Default.Check, contentDescription = null, tint = Ios.Blue, modifier = Modifier.size(20.dp))
+            Icon(Icons.Default.Check, contentDescription = null, tint = DuskTheme.primary, modifier = Modifier.size(20.dp))
         }
     }
 }

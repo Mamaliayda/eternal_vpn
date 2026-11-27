@@ -73,7 +73,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.remember
 import kotlinx.coroutines.launch
-import com.mlmvpn.scanner.ui.settings.Ios
 import com.mlmvpn.scanner.ui.theme.DuskCard
 import com.mlmvpn.scanner.ui.theme.DuskTheme
 import com.mlmvpn.scanner.utils.Platform
@@ -189,7 +188,7 @@ fun ListJumpButton(
                 if (down == true) Icons.Default.KeyboardDoubleArrowDown
                 else Icons.Default.KeyboardDoubleArrowUp,
                 contentDescription = null,
-                tint = Ios.Label,
+                tint = DuskTheme.onSurface,
                 modifier = Modifier.size(22.dp),
             )
             }
@@ -249,9 +248,9 @@ internal fun ToolbarAction(
     // White, like every other action label in the app. Colour on this screen means state, and the
     // one piece of state a toolbar button has is "sort is on", which the accent says.
     val tint = when {
-        !enabled -> Ios.SecondaryLabel.copy(alpha = 0.45f)
-        active -> Ios.Green
-        else -> Ios.Label
+        !enabled -> DuskTheme.muted.copy(alpha = 0.45f)
+        active -> DuskTheme.success
+        else -> DuskTheme.onSurface
     }
     Column(
         modifier = Modifier
@@ -289,20 +288,20 @@ fun NodeTestProgressRow(
         ) {
             Text(
                 "$label ${faCount(progress)}/${faCount(total)}",
-                color = Ios.SecondaryLabel,
+                color = DuskTheme.muted,
                 style = MaterialTheme.typography.labelSmall,
                 modifier = Modifier.padding(end = 10.dp),
             )
             LinearProgressIndicator(
                 progress = if (total > 0) progress.toFloat() / total else 0f,
                 modifier = Modifier.weight(1f).height(3.dp).clip(DuskTheme.circleShape),
-                color = Ios.Blue,
+                color = DuskTheme.primary,
                 trackColor = DuskTheme.onSurface.copy(alpha = 0.14f),
             )
             Icon(
                 Icons.Default.Close,
                 contentDescription = S(R.string.cancel_2),
-                tint = Ios.SecondaryLabel,
+                tint = DuskTheme.muted,
                 modifier = Modifier
                     .padding(start = 10.dp)
                     .size(16.dp)
@@ -350,7 +349,7 @@ fun <T> NodeScopeChips(
                 Icon(
                     Icons.Default.Add,
                     contentDescription = S(R.string.new_folder),
-                    tint = Ios.Label,
+                    tint = DuskTheme.onSurface,
                     modifier = Modifier.size(18.dp),
                 )
             }
@@ -373,7 +372,7 @@ fun <T> NodeScopeChips(
             ) {
                 Text(
                     label(item),
-                    color = if (isSelected) Ios.Label else Ios.SecondaryLabel,
+                    color = if (isSelected) DuskTheme.onSurface else DuskTheme.muted,
                     style = MaterialTheme.typography.bodySmall,
                     fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal,
                     maxLines = 1,
@@ -410,13 +409,13 @@ fun NodePlatformChips(selected: Platform?, onSelect: (Platform) -> Unit) {
                 Icon(
                     platformIcon(platform),
                     contentDescription = null,
-                    tint = if (isSelected) Ios.Label else Ios.SecondaryLabel,
+                    tint = if (isSelected) DuskTheme.onSurface else DuskTheme.muted,
                     modifier = Modifier.size(15.dp),
                 )
                 Spacer(Modifier.width(5.dp))
                 Text(
                     platform.displayName,
-                    color = if (isSelected) Ios.Label else Ios.SecondaryLabel,
+                    color = if (isSelected) DuskTheme.onSurface else DuskTheme.muted,
                     style = MaterialTheme.typography.labelMedium,
                     fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal,
                 )
@@ -441,7 +440,7 @@ private fun platformIcon(platform: Platform): ImageVector = when (platform) {
 /** An in-list warning or note, in the app's tinted-glass style rather than a bordered slab. */
 @Composable
 fun NodeNotice(wrong: Boolean, title: String, body: String) {
-    val accent = if (wrong) Ios.Red else Ios.Yellow
+    val accent = if (wrong) DuskTheme.error else DuskTheme.accent
     DuskCard(
         modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
         shape = DuskTheme.chartShape,
@@ -459,7 +458,7 @@ fun NodeNotice(wrong: Boolean, title: String, body: String) {
         Column {
             Text(title, color = accent, fontWeight = FontWeight.SemiBold, style = MaterialTheme.typography.bodySmall)
             Spacer(Modifier.height(4.dp))
-            Text(body, color = Ios.SecondaryLabel, style = MaterialTheme.typography.labelMedium)
+            Text(body, color = DuskTheme.muted, style = MaterialTheme.typography.labelMedium)
         }
         }
     }
@@ -492,9 +491,9 @@ fun NodeRow(
     // one the button will use" is a rim, "this is the one carrying traffic right now" is the
     // green tick on the glyph. The old card said both with the same faint blue wash.
     val rim = when {
-        isConnected -> Ios.Green
-        highlight -> Ios.Green.copy(alpha = 0.7f)
-        isActive -> Ios.Blue
+        isConnected -> DuskTheme.success
+        highlight -> DuskTheme.success.copy(alpha = 0.7f)
+        isActive -> DuskTheme.primary
         else -> null
     }
     DuskCard(
@@ -518,7 +517,7 @@ fun NodeRow(
                 .size(30.dp)
                 .clip(DuskTheme.glyphShape)
                 .background(
-                    if (isConnected) Ios.Green.copy(alpha = 0.22f)
+                    if (isConnected) DuskTheme.success.copy(alpha = 0.22f)
                     else badgeTint.copy(alpha = 0.18f)
                 ),
             contentAlignment = Alignment.Center,
@@ -526,7 +525,7 @@ fun NodeRow(
             Icon(
                 if (isConnected) Icons.Default.CheckCircle else Icons.Default.Storage,
                 contentDescription = null,
-                tint = if (isConnected) Ios.Green else badgeTint,
+                tint = if (isConnected) DuskTheme.success else badgeTint,
                 modifier = Modifier.size(17.dp),
             )
         }
@@ -537,7 +536,7 @@ fun NodeRow(
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
                     node.name,
-                    color = if (isActive) Ios.Label else Ios.Label,
+                    color = if (isActive) DuskTheme.onSurface else DuskTheme.onSurface,
                     style = MaterialTheme.typography.bodyMedium,
                     fontWeight = if (isActive) FontWeight.SemiBold else FontWeight.Normal,
                     maxLines = 1,
@@ -550,7 +549,7 @@ fun NodeRow(
                 }
                 if (highlight) {
                     Spacer(Modifier.width(6.dp))
-                    NodePill(S(R.string.fastest), Ios.Green)
+                    NodePill(S(R.string.fastest), DuskTheme.success)
                 }
             }
 
@@ -559,7 +558,7 @@ fun NodeRow(
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(badge, color = badgeTint, style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.SemiBold)
                 MetricDot()
-                Text(node.type.uppercase(), color = Ios.SecondaryLabel, style = MaterialTheme.typography.labelSmall)
+                Text(node.type.uppercase(), color = DuskTheme.muted, style = MaterialTheme.typography.labelSmall)
                 measurementLabel(node.ping)?.let {
                     MetricDot()
                     Text(it, color = measurementTone(node.ping, 150, 500), style = MaterialTheme.typography.labelSmall)
@@ -574,7 +573,7 @@ fun NodeRow(
                 }
                 if (platformDelay != null) {
                     MetricDot()
-                    Text("${faCount(platformDelay.toInt())}ms", color = Ios.Teal, style = MaterialTheme.typography.labelSmall)
+                    Text("${faCount(platformDelay.toInt())}ms", color = DuskTheme.blueGray, style = MaterialTheme.typography.labelSmall)
                 }
             }
         }
@@ -590,7 +589,7 @@ fun NodeRow(
             Icon(
                 Icons.Default.ChevronRight,
                 contentDescription = S(R.string.details_2),
-                tint = Ios.Chevron,
+                tint = DuskTheme.disabled,
                 modifier = Modifier
                     .size(18.dp)
                     .scale(
@@ -608,7 +607,7 @@ fun NodeRow(
 private fun MetricDot() {
     Text(
         " · ",
-        color = Ios.SecondaryLabel.copy(alpha = 0.55f),
+        color = DuskTheme.muted.copy(alpha = 0.55f),
         style = MaterialTheme.typography.labelSmall,
     )
 }
@@ -656,11 +655,11 @@ fun NodeConnectBar(
 ) {
     val accent by animateColorAsState(
         when {
-            isRunning -> Ios.Green
-            isConnecting -> Ios.Blue
-            hasFailed -> Ios.Orange
-            node == null -> Ios.Gray
-            else -> Ios.Blue
+            isRunning -> DuskTheme.success
+            isConnecting -> DuskTheme.primary
+            hasFailed -> DuskTheme.accent
+            node == null -> DuskTheme.disabled
+            else -> DuskTheme.primary
         },
         label = "connectAccent",
     )
@@ -670,7 +669,7 @@ fun NodeConnectBar(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(Ios.Teal.copy(alpha = 0.14f), DuskTheme.controlShape)
+                    .background(DuskTheme.blueGray.copy(alpha = 0.14f), DuskTheme.controlShape)
                     .clickable(enabled = !platformTesting, onClick = onPlatformTest)
                     .padding(vertical = 11.dp),
                 horizontalArrangement = Arrangement.Center,
@@ -679,14 +678,14 @@ fun NodeConnectBar(
                 if (platformTesting) {
                     CircularProgressIndicator(
                         modifier = Modifier.size(15.dp),
-                        color = Ios.Teal,
+                        color = DuskTheme.blueGray,
                         strokeWidth = 2.dp,
                     )
                 } else {
                     Icon(
                         Icons.Default.FlashOn,
                         contentDescription = null,
-                        tint = Ios.Teal,
+                        tint = DuskTheme.blueGray,
                         modifier = Modifier.size(16.dp),
                     )
                 }
@@ -694,7 +693,7 @@ fun NodeConnectBar(
                 Text(
                     if (platformTesting) S(R.string.measuring_3)
                     else S(R.string.measure_servers_for, platformName ?: ""),
-                    color = Ios.Label,
+                    color = DuskTheme.onSurface,
                     style = MaterialTheme.typography.bodyMedium,
                 )
             }
@@ -769,7 +768,7 @@ fun NodeConnectBar(
                     },
                     // Same reasoning as the button: the bar is already the colour of the
                     // state, so a coloured caption on it is a second voice saying one thing.
-                    color = Ios.Label.copy(alpha = 0.85f),
+                    color = DuskTheme.onSurface.copy(alpha = 0.85f),
                     style = MaterialTheme.typography.labelMedium,
                     fontWeight = FontWeight.SemiBold,
                 )
@@ -781,7 +780,7 @@ fun NodeConnectBar(
                     }
                     Text(
                         node?.name ?: S(R.string.tap_one_from_the_list),
-                        color = Ios.Label,
+                        color = DuskTheme.onSurface,
                         style = MaterialTheme.typography.bodyMedium,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
@@ -809,14 +808,14 @@ fun NodeConnectBar(
                 if (isConnecting) {
                     CircularProgressIndicator(
                         modifier = Modifier.size(16.dp),
-                        color = Ios.Label,
+                        color = DuskTheme.onSurface,
                         strokeWidth = 2.dp,
                     )
                 } else {
                     Icon(
                         Icons.Default.PowerSettingsNew,
                         contentDescription = null,
-                        tint = Ios.Label,
+                        tint = DuskTheme.onSurface,
                         modifier = Modifier.size(17.dp),
                     )
                 }
@@ -830,7 +829,7 @@ fun NodeConnectBar(
                         hasFailed -> S(R.string.try_again_2)
                         else -> S(R.string.connect)
                     },
-                    color = Ios.Label,
+                    color = DuskTheme.onSurface,
                     style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.SemiBold,
                 )

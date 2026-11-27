@@ -1,5 +1,7 @@
 package com.mlmvpn.scanner.ui
 
+import com.mlmvpn.scanner.ui.theme.DuskTheme
+
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.DataUsage
 import androidx.compose.material.icons.outlined.Schedule
@@ -12,7 +14,6 @@ import com.mlmvpn.scanner.ui.configstudio.bytesFa
 import com.mlmvpn.scanner.ui.configstudio.faNum
 import com.mlmvpn.scanner.ui.configstudio.timeLeftParts
 import com.mlmvpn.scanner.ui.configstudio.whenText
-import com.mlmvpn.scanner.ui.settings.Ios
 import com.mlmvpn.scanner.ui.settings.SettingsFooter
 import com.mlmvpn.scanner.ui.settings.SettingsGroup
 import com.mlmvpn.scanner.ui.settings.SettingsRow
@@ -37,10 +38,10 @@ fun SubscriptionUsageCard(sub: VpnSubscription, usage: SubscriptionUsage) {
         else -> S(R.string.nodes_sub_of).replace("%1\$s", bytesFa(left ?: 0L)).replace("%2\$s", bytesFa(total))
     }
     val volumeTint = when {
-        total == null -> Ios.Green
-        left == 0L -> Ios.Red
-        (left ?: 0L) * 10 < total -> Ios.Orange
-        else -> Ios.Green
+        total == null -> DuskTheme.success
+        left == 0L -> DuskTheme.error
+        (left ?: 0L) * 10 < total -> DuskTheme.accent
+        else -> DuskTheme.success
     }
 
     val expireAt = usage.expireAt
@@ -57,10 +58,10 @@ fun SubscriptionUsageCard(sub: VpnSubscription, usage: SubscriptionUsage) {
         ).replace("%1\$s", faNum(parts.first))
     }
     val timeTint = when {
-        expireAt == null -> Ios.Green
-        parts == null -> Ios.Red
-        parts.second != TimeLeftUnit.DAYS || parts.first <= 3 -> Ios.Orange
-        else -> Ios.Green
+        expireAt == null -> DuskTheme.success
+        parts == null -> DuskTheme.error
+        parts.second != TimeLeftUnit.DAYS || parts.first <= 3 -> DuskTheme.accent
+        else -> DuskTheme.success
     }
 
     SettingsGroup {

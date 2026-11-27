@@ -1,5 +1,7 @@
 package com.mlmvpn.scanner.ui.mae
 
+import com.mlmvpn.scanner.ui.theme.DuskTheme
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -34,7 +36,6 @@ import com.mlmvpn.scanner.R
 import com.mlmvpn.scanner.data.CloudManager
 import com.mlmvpn.scanner.ui.CloudAddAccountForm
 import com.mlmvpn.scanner.ui.CloudTroubleshootScreen
-import com.mlmvpn.scanner.ui.settings.Ios
 import com.mlmvpn.scanner.ui.settings.IosScreen
 import kotlinx.coroutines.launch
 
@@ -74,7 +75,7 @@ internal fun MaeCloudGate(onBack: () -> Unit) {
             // The glyph iOS would put here: one large symbol on a soft tile.
             Box(
                 Modifier.size(76.dp).clip(RoundedCornerShape(20.dp))
-                    .background(Brush.verticalGradient(listOf(Color(0xFFFFA94D), Ios.CloudflareOrange))),
+                    .background(Brush.verticalGradient(listOf(DuskTheme.cloudflareOrangeLight, DuskTheme.cloudflareOrange))),
                 contentAlignment = Alignment.Center,
             ) {
                 Icon(Icons.Default.Cloud, contentDescription = null, tint = Color.White, modifier = Modifier.size(42.dp))
@@ -82,12 +83,12 @@ internal fun MaeCloudGate(onBack: () -> Unit) {
             Spacer(Modifier.height(16.dp))
             Text(
                 stringResource(R.string.mae_gate_title),
-                color = Ios.Label, fontSize = 22.sp, fontWeight = FontWeight.Bold, textAlign = TextAlign.Center,
+                color = DuskTheme.onSurface, fontSize = 22.sp, fontWeight = FontWeight.Bold, textAlign = TextAlign.Center,
             )
             Spacer(Modifier.height(8.dp))
             Text(
                 stringResource(R.string.mae_gate_body),
-                color = Ios.SecondaryLabel, fontSize = 14.sp, lineHeight = 21.sp, textAlign = TextAlign.Center,
+                color = DuskTheme.muted, fontSize = 14.sp, lineHeight = 21.sp, textAlign = TextAlign.Center,
             )
         }
         CloudAddAccountForm(

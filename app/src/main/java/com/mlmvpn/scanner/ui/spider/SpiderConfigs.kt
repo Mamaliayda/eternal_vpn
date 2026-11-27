@@ -1,7 +1,9 @@
 package com.mlmvpn.scanner.ui.spider
 
+import com.mlmvpn.scanner.ui.theme.DuskTheme
+import com.mlmvpn.scanner.ui.theme.rememberDuskSnackbarAction
+
 import android.content.Context
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -38,7 +40,6 @@ import com.mlmvpn.scanner.data.GroupManager
 import com.mlmvpn.scanner.engines.spider.SpiderPanel
 import com.mlmvpn.scanner.models.CloudAccount
 import com.mlmvpn.scanner.store.tr
-import com.mlmvpn.scanner.ui.settings.Ios
 import kotlinx.coroutines.launch
 
 /**
@@ -71,6 +72,7 @@ fun SpiderCloudRows(
     groupManager: GroupManager,
     onOpen: () -> Unit,
     onGroupsUpdated: () -> Unit,
+    showNotice: (String) -> Unit,
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
@@ -90,16 +92,16 @@ fun SpiderCloudRows(
                     fetching = false
                     result.onSuccess { links ->
                         if (links.isEmpty()) {
-                            toast(context, tr("کاربر فعالی ندارد. اول در پنل یک کاربر بسازید.", "No active user. Create one in the panel first."))
+                            showNotice(tr("کاربر فعالی ندارد. اول در پنل یک کاربر بسازید.", "No active user. Create one in the panel first."))
                         } else {
                             SpiderConfigs.file(context, groupManager, account, links)
                             onGroupsUpdated()
-                            toast(context, context.getString(R.string.cloud_admin_configs_received, links.size))
+                            showNotice(context.getString(R.string.cloud_admin_configs_received, links.size))
                         }
-                    }.onFailure { toast(context, it.message) }
+                    }.onFailure { it.message?.let(showNotice) }
                 }
             }
-            Box(Modifier.fillMaxWidth().padding(start = 52.dp).height(0.5.dp).background(Ios.Separator))
+            Box(Modifier.fillMaxWidth().padding(start = 52.dp).height(0.5.dp).background(DuskTheme.outline))
         }
         SpiderRow(
             icon = Icons.Default.Settings,
@@ -117,13 +119,9 @@ private fun SpiderRow(icon: ImageVector, label: String, busy: Boolean, onClick: 
         Modifier.fillMaxWidth().clickable(enabled = !busy, onClick = onClick).padding(horizontal = 16.dp, vertical = 13.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Icon(icon, contentDescription = null, tint = Ios.Label, modifier = Modifier.size(20.dp))
+        Icon(icon, contentDescription = null, tint = DuskTheme.onSurface, modifier = Modifier.size(20.dp))
         Spacer(Modifier.width(12.dp))
-        Text(label, color = Ios.Label, fontSize = 15.sp, modifier = Modifier.weight(1f))
-        if (busy) CircularProgressIndicator(Modifier.size(16.dp), color = Ios.Blue, strokeWidth = 2.dp)
+        Text(label, color = DuskTheme.onSurface, fontSize = 15.sp, modifier = Modifier.weight(1f))
+        if (busy) CircularProgressIndicator(Modifier.size(16.dp), color = DuskTheme.primary, strokeWidth = 2.dp)
     }
-}
-
-private fun toast(context: Context, text: String?) {
-    if (!text.isNullOrBlank()) Toast.makeText(context, text, Toast.LENGTH_LONG).show()
 }

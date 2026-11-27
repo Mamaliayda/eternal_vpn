@@ -1,9 +1,11 @@
 package com.mlmvpn.scanner.ui.tgproxy
 
+import com.mlmvpn.scanner.ui.theme.DuskTheme
+import com.mlmvpn.scanner.ui.theme.rememberDuskSnackbarAction
+
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -52,7 +54,6 @@ import com.mlmvpn.scanner.engines.tgproxy.TgZone
 import com.mlmvpn.scanner.store.tr
 import com.mlmvpn.scanner.ui.amnezia.ActionSheet
 import com.mlmvpn.scanner.ui.home.frostedGlass
-import com.mlmvpn.scanner.ui.settings.Ios
 import com.mlmvpn.scanner.ui.settings.IosAlert
 import com.mlmvpn.scanner.ui.settings.IosAlertAction
 import com.mlmvpn.scanner.ui.settings.IosScreen
@@ -76,6 +77,7 @@ import com.mlmvpn.scanner.ui.settings.SettingsTextRow
 @Composable
 internal fun TgDomainPage(manager: TgProxyManager, serviceId: String, onBack: () -> Unit) {
     val context = LocalContext.current
+    val showNotice = rememberDuskSnackbarAction()
     val services by manager.services.collectAsState()
     val zones by manager.zones.collectAsState()
     val progress by manager.progress.collectAsState()
@@ -110,7 +112,7 @@ internal fun TgDomainPage(manager: TgProxyManager, serviceId: String, onBack: ()
                     "اگر شبکه‌تان آدرس ${if (service.method == com.mlmvpn.scanner.engines.tgproxy.TgMethod.WORKERS) "workers.dev" else "pages.dev"} را می‌بندد، با دامنهٔ خودتان پروکسی کار می‌کند. این راهنما قدم‌به‌قدم است و خودش پیش می‌رود.",
                     "If your network blocks ${if (service.method == com.mlmvpn.scanner.engines.tgproxy.TgMethod.WORKERS) "workers.dev" else "pages.dev"}, a domain of your own gets the proxy through. This guide goes step by step and ticks each one itself.",
                 ),
-                color = Ios.SecondaryLabel, fontSize = 14.sp, lineHeight = 21.sp,
+                color = DuskTheme.muted, fontSize = 14.sp, lineHeight = 21.sp,
             )
         }
 
@@ -140,10 +142,10 @@ internal fun TgDomainPage(manager: TgProxyManager, serviceId: String, onBack: ()
                 zone.nameServers.forEach { ns ->
                     Spacer(Modifier.height(6.dp))
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text(ns, color = Ios.Label, fontSize = 13.sp, fontFamily = FontFamily.Monospace, modifier = Modifier.weight(1f))
+                        Text(ns, color = DuskTheme.onSurface, fontSize = 13.sp, fontFamily = FontFamily.Monospace, modifier = Modifier.weight(1f))
                         Icon(
-                            Icons.Default.ContentCopy, contentDescription = tr("کپی", "Copy"), tint = Ios.Blue,
-                            modifier = Modifier.size(20.dp).clickable { copyPlain(context, ns) },
+                            Icons.Default.ContentCopy, contentDescription = tr("کپی", "Copy"), tint = DuskTheme.primary,
+                            modifier = Modifier.size(20.dp).clickable { copyPlain(context, ns, showNotice) },
                         )
                     }
                 }
@@ -165,9 +167,9 @@ internal fun TgDomainPage(manager: TgProxyManager, serviceId: String, onBack: ()
                 }
                 Spacer(Modifier.height(6.dp))
                 Text(host ?: tr("نام معتبر نیست (حروف انگلیسی، عدد و خط تیره)", "Not a valid name (letters, digits, hyphens)"),
-                    color = if (host != null) Ios.Label else Ios.Orange, fontSize = 13.sp, fontFamily = FontFamily.Monospace)
+                    color = if (host != null) DuskTheme.onSurface else DuskTheme.accent, fontSize = 13.sp, fontFamily = FontFamily.Monospace)
             } else {
-                Text(domain.host, color = Ios.Label, fontSize = 14.sp, fontFamily = FontFamily.Monospace)
+                Text(domain.host, color = DuskTheme.onSurface, fontSize = 14.sp, fontFamily = FontFamily.Monospace)
             }
         }
         // ---- 4
@@ -198,7 +200,7 @@ internal fun TgDomainPage(manager: TgProxyManager, serviceId: String, onBack: ()
             val running = progress?.takeIf { it.serviceId == serviceId && it.op == TgOp.DOMAIN }
             if (running != null) {
                 Spacer(Modifier.height(8.dp))
-                Text(tr("در حال کار…", "Working…"), color = Ios.Blue, fontSize = 13.sp)
+                Text(tr("در حال کار…", "Working…"), color = DuskTheme.primary, fontSize = 13.sp)
                 Spacer(Modifier.height(6.dp))
                 Pill(tr("لغو", "Cancel")) { manager.cancel() }
             }
@@ -207,9 +209,9 @@ internal fun TgDomainPage(manager: TgProxyManager, serviceId: String, onBack: ()
         if (domain != null) {
             SettingsSectionHeader(tr("مدیریت", "Manage"))
             SettingsGroup {
-                SettingsActionRow(label = tr("بررسی دوباره", "Check again"), icon = Icons.Default.Refresh, tint = Ios.Blue, enabled = !busy) { manager.check(serviceId) }
+                SettingsActionRow(label = tr("بررسی دوباره", "Check again"), icon = Icons.Default.Refresh, tint = DuskTheme.primary, enabled = !busy) { manager.check(serviceId) }
                 Separator()
-                SettingsActionRow(label = tr("جدا کردن دامنه", "Remove the domain"), icon = Icons.Default.Delete, tint = Ios.Red, labelColor = Ios.Red, enabled = !busy) { confirmRemove = true }
+                SettingsActionRow(label = tr("جدا کردن دامنه", "Remove the domain"), icon = Icons.Default.Delete, tint = DuskTheme.error, labelColor = DuskTheme.error, enabled = !busy) { confirmRemove = true }
             }
             SettingsFooter(tr("آدرس اصلی Cloudflare سر جایش می‌ماند. فقط رکوردی که همین برنامه ساخته پاک می‌شود.", "The original Cloudflare address stays. Only the record this app made is deleted."))
         }
@@ -220,7 +222,7 @@ internal fun TgDomainPage(manager: TgProxyManager, serviceId: String, onBack: ()
         ActionSheet(title = tr("سایت", "Site"), onDismiss = { pickZone = false }) {
             zones.forEachIndexed { i, z ->
                 if (i > 0) Separator()
-                SettingsActionRow(label = z.name + if (z.active) "" else tr("  (در انتظار Nameserver)", "  (waiting for nameservers)"), icon = Icons.Default.Check, tint = if (z.active) Ios.Green else Ios.Orange) {
+                SettingsActionRow(label = z.name + if (z.active) "" else tr("  (در انتظار Nameserver)", "  (waiting for nameservers)"), icon = Icons.Default.Check, tint = if (z.active) DuskTheme.success else DuskTheme.accent) {
                     zoneId = z.id
                     pickZone = false
                 }
@@ -246,15 +248,15 @@ internal fun TgDomainPage(manager: TgProxyManager, serviceId: String, onBack: ()
 private fun Step(number: Int, done: Boolean, title: String, content: @Composable ColumnScope.() -> Unit) {
     Row(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 6.dp).frostedGlass(RoundedCornerShape(22.dp)).padding(14.dp), verticalAlignment = Alignment.Top) {
         Box(
-            Modifier.size(28.dp).clip(CircleShape).background(if (done) Ios.Green else Color.White.copy(alpha = 0.18f)),
+            Modifier.size(28.dp).clip(CircleShape).background(if (done) DuskTheme.success else Color.White.copy(alpha = 0.18f)),
             contentAlignment = Alignment.Center,
         ) {
             if (done) Icon(Icons.Default.Check, contentDescription = null, tint = Color.White, modifier = Modifier.size(18.dp))
-            else Text(com.mlmvpn.scanner.ui.amnezia.fa(number), color = Ios.Label, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
+            else Text(com.mlmvpn.scanner.ui.amnezia.fa(number), color = DuskTheme.onSurface, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
         }
         Spacer(Modifier.width(12.dp))
         Column(Modifier.weight(1f)) {
-            Text(title, color = Ios.Label, fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
+            Text(title, color = DuskTheme.onSurface, fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
             Spacer(Modifier.height(6.dp))
             content()
         }
@@ -263,25 +265,25 @@ private fun Step(number: Int, done: Boolean, title: String, content: @Composable
 
 @Composable
 private fun Body(text: String) {
-    Text(text, color = Ios.SecondaryLabel, fontSize = 13.sp, lineHeight = 20.sp)
+    Text(text, color = DuskTheme.muted, fontSize = 13.sp, lineHeight = 20.sp)
 }
 
 @Composable
 private fun Pill(text: String, filled: Boolean = false, enabled: Boolean = true, onClick: () -> Unit) {
-    val bg = if (!enabled) Color.White.copy(alpha = 0.10f) else if (filled) Ios.Blue else Color.White.copy(alpha = 0.14f)
+    val bg = if (!enabled) Color.White.copy(alpha = 0.10f) else if (filled) DuskTheme.primary else Color.White.copy(alpha = 0.14f)
     Box(
         Modifier.clip(RoundedCornerShape(12.dp)).background(bg).then(if (enabled) Modifier.clickable(onClick = onClick) else Modifier)
             .padding(horizontal = 14.dp, vertical = 8.dp),
         contentAlignment = Alignment.Center,
-    ) { Text(text, color = if (enabled) Color.White else Ios.SecondaryLabel, fontSize = 14.sp, fontWeight = FontWeight.SemiBold) }
+    ) { Text(text, color = if (enabled) Color.White else DuskTheme.muted, fontSize = 14.sp, fontWeight = FontWeight.SemiBold) }
 }
 
 private fun openUrl(context: Context, url: String) {
     runCatching { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)) }
 }
 
-private fun copyPlain(context: Context, text: String) {
+private fun copyPlain(context: Context, text: String, showNotice: (String) -> Unit) {
     val cm = context.getSystemService(Context.CLIPBOARD_SERVICE) as? android.content.ClipboardManager ?: return
     cm.setPrimaryClip(android.content.ClipData.newPlainText("nameserver", text))
-    Toast.makeText(context, tr("کپی شد", "Copied"), Toast.LENGTH_SHORT).show()
+    showNotice(tr("کپی شد", "Copied"))
 }

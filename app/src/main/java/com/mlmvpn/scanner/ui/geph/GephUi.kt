@@ -1,10 +1,12 @@
 package com.mlmvpn.scanner.ui.geph
 
+import com.mlmvpn.scanner.ui.theme.DuskTheme
+import com.mlmvpn.scanner.ui.theme.rememberDuskSnackbarAction
+
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
-import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Spacer
@@ -35,7 +37,6 @@ import com.mlmvpn.core.geph.GephSettings
 import com.mlmvpn.core.tunnel.TunnelVpnService
 import com.mlmvpn.scanner.R
 import com.mlmvpn.scanner.ui.emergency.faDigits
-import com.mlmvpn.scanner.ui.settings.Ios
 import com.mlmvpn.scanner.ui.settings.SettingsActionRow
 import com.mlmvpn.scanner.ui.settings.SettingsFooter
 import com.mlmvpn.scanner.ui.settings.SettingsGroup
@@ -82,10 +83,10 @@ internal fun reconnectGephNow(ctx: Context) {
     com.mlmvpn.scanner.utils.SafeStart.service(ctx, Intent(ctx, TunnelVpnService::class.java).setAction(TunnelVpnService.ACTION_RECONNECT))
 }
 
-internal fun copyToClipboard(ctx: Context, label: String, text: String) {
+internal fun copyToClipboard(ctx: Context, label: String, text: String, showNotice: (String) -> Unit) {
     val cm = ctx.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
     cm.setPrimaryClip(ClipData.newPlainText(label, text))
-    Toast.makeText(ctx, ctx.getString(R.string.geph_copied), Toast.LENGTH_SHORT).show()
+    showNotice(ctx.getString(R.string.geph_copied))
 }
 
 /** A date in the app's language: the Persian calendar in Persian, Gregorian in English. */
@@ -129,14 +130,14 @@ fun ColumnScope.GephPanel(onOpenPage: (String) -> Unit) {
             SettingsActionRow(
                 label = stringResource(R.string.geph_make_free_account),
                 icon = Icons.Default.PersonAdd,
-                tint = Ios.Blue,
+                tint = DuskTheme.primary,
                 onClick = { onOpenPage(GephPages.ACCOUNT) },
             )
         } else {
             SettingsRow(
                 title = stringResource(R.string.geph_account_row),
                 icon = Icons.Default.AccountCircle,
-                tint = Ios.Blue,
+                tint = DuskTheme.primary,
                 onClick = { onOpenPage(GephPages.ACCOUNT) },
             )
         }
@@ -148,7 +149,7 @@ fun ColumnScope.GephPanel(onOpenPage: (String) -> Unit) {
         SettingsRow(
             title = stringResource(R.string.geph_exit_row),
             icon = Icons.Default.Language,
-            tint = Ios.Indigo,
+            tint = DuskTheme.indigo,
             value = exitLabel(exit.value),
             onClick = { onOpenPage(GephPages.EXIT) },
         )
@@ -157,7 +158,7 @@ fun ColumnScope.GephPanel(onOpenPage: (String) -> Unit) {
             SettingsRow(
                 title = stringResource(R.string.geph_last_fastest),
                 icon = Icons.Default.Speed,
-                tint = Ios.Green,
+                tint = DuskTheme.success,
                 value = CountryLabel.withFlag(f.optString("country")) + " · " +
                     stringResource(R.string.geph_mbit, mbitText(f.optDouble("mbit"))),
                 onClick = { onOpenPage(GephPages.EXIT) },
@@ -171,14 +172,14 @@ fun ColumnScope.GephPanel(onOpenPage: (String) -> Unit) {
         SettingsRow(
             title = stringResource(R.string.geph_sessions_row),
             icon = Icons.Default.Hub,
-            tint = Ios.Teal,
+            tint = DuskTheme.blueGray,
             onClick = { onOpenPage(GephPages.SESSIONS) },
         )
         Separator()
         SettingsRow(
             title = stringResource(R.string.geph_news_row),
             icon = Icons.Default.Campaign,
-            tint = Ios.Orange,
+            tint = DuskTheme.accent,
             onClick = { onOpenPage(GephPages.NEWS) },
         )
     }
@@ -237,7 +238,7 @@ fun GephLiveCard() {
                 else -> stringResource(R.string.geph_speed_test)
             },
             icon = Icons.Default.Speed,
-            tint = Ios.Green,
+            tint = DuskTheme.success,
             busy = testing,
             onClick = {
                 testing = true

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/gs_bg">
+    android:background="@color/dusk_background">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -20,7 +20,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Edit Configuration"
-                android:textColor="@color/gs_on_surface"
+                android:textColor="@color/dusk_on_surface"
                 android:textSize="22sp"
                 android:fontFamily="@font/iransansx"
                 android:layout_centerVertical="true" />
@@ -35,7 +35,7 @@
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:clickable="true"
                 android:src="@android:drawable/ic_menu_close_clear_cancel"
-                app:tint="@color/gs_on_surface_dim" />
+                app:tint="@color/dusk_on_surface_dim" />
         </RelativeLayout>
 
         <!-- Name -->
@@ -49,7 +49,7 @@
                 android:id="@+id/et_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/gs_on_surface" />
+                android:textColor="@color/dusk_on_surface" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Address -->
@@ -63,7 +63,7 @@
                 android:id="@+id/et_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/gs_on_surface" />
+                android:textColor="@color/dusk_on_surface" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Port -->
@@ -78,7 +78,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="number"
-                android:textColor="@color/gs_on_surface" />
+                android:textColor="@color/dusk_on_surface" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- UUID/Password -->
@@ -92,14 +92,14 @@
                 android:id="@+id/et_uuid"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/gs_primary" />
+                android:textColor="@color/dusk_primary" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Transport Settings"
-            android:textColor="@color/gs_on_surface_dim"
+            android:textColor="@color/dusk_on_surface_dim"
             android:textSize="13sp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="12dp" />
@@ -115,7 +115,7 @@
                 android:id="@+id/et_network"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/gs_on_surface" />
+                android:textColor="@color/dusk_on_surface" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- WS Host -->
@@ -129,7 +129,7 @@
                 android:id="@+id/et_wshost"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/gs_on_surface" />
+                android:textColor="@color/dusk_on_surface" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- WS Path -->
@@ -143,7 +143,7 @@
                 android:id="@+id/et_wspath"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/gs_on_surface" />
+                android:textColor="@color/dusk_on_surface" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- TLS -->
@@ -157,7 +157,7 @@
                 android:id="@+id/et_tls"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/gs_on_surface" />
+                android:textColor="@color/dusk_on_surface" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- SNI -->
@@ -171,7 +171,7 @@
                 android:id="@+id/et_sni"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/gs_on_surface" />
+                android:textColor="@color/dusk_on_surface" />
         </com.google.android.material.textfield.TextInputLayout>
         
         <!-- ALPN -->
@@ -185,7 +185,7 @@
                 android:id="@+id/et_alpn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/gs_on_surface" />
+                android:textColor="@color/dusk_on_surface" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.button.MaterialButton

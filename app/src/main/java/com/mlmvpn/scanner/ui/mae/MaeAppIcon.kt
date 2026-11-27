@@ -4,7 +4,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -12,7 +11,6 @@ import androidx.compose.runtime.produceState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
@@ -22,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.graphics.drawable.toBitmap
 import com.mlmvpn.scanner.engines.mae.model.ServiceDef
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -45,7 +44,7 @@ fun MaeAppIcon(def: ServiceDef, label: String, size: Dp = 36.dp) {
             }
         }?.also { cache[key] = it }
     }
-    val shape = RoundedCornerShape(size * 0.24f)
+    val shape = DuskTheme.squircleShape
     val current = icon
     if (current != null) {
         Image(bitmap = current, contentDescription = null, modifier = Modifier.size(size).clip(shape))
@@ -54,7 +53,7 @@ fun MaeAppIcon(def: ServiceDef, label: String, size: Dp = 36.dp) {
             modifier = Modifier.size(size).clip(shape).background(tint(def.id)),
             contentAlignment = Alignment.Center,
         ) {
-            Text(label.trim().take(1).uppercase(), color = Color.White, fontSize = (size.value * 0.45f).sp, fontWeight = FontWeight.Bold)
+            Text(label.trim().take(1).uppercase(), color = DuskTheme.white, fontSize = (size.value * DuskTheme.appIconLetterScale).sp, fontWeight = FontWeight.Bold)
         }
     }
 }
@@ -69,9 +68,6 @@ private val cache = java.util.concurrent.ConcurrentHashMap<String, ImageBitmap>(
 @OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)
 private val iconLoader = Dispatchers.IO.limitedParallelism(2)
 
-private val PALETTE = listOf(
-    Color(0xFF0A84FF), Color(0xFF30D158), Color(0xFFFF9F0A), Color(0xFFFF375F),
-    Color(0xFFBF5AF2), Color(0xFF64D2FF), Color(0xFFFF6482), Color(0xFF5E5CE6),
-)
+private val PALETTE = DuskTheme.appIconPalette
 
 private fun tint(id: String) = PALETTE[Math.floorMod(id.hashCode(), PALETTE.size)]

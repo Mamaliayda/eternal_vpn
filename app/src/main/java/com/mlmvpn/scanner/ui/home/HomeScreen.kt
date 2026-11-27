@@ -86,6 +86,7 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.mlmvpn.scanner.ui.theme.DuskTheme
+import com.mlmvpn.scanner.ui.theme.rememberDuskSnackbarAction
 import com.mlmvpn.scanner.R
 import com.mlmvpn.scanner.ui.LocalSystemBottomPadding
 import com.mlmvpn.scanner.ui.LocalSystemTopPadding
@@ -207,6 +208,7 @@ fun HomeScreen(
     onOpenSetting: (String) -> Unit = {},
 ) {
     val context = LocalContext.current
+    val showNotice = rememberDuskSnackbarAction()
     val scope = rememberCoroutineScope()
     var order by remember { mutableStateOf(HomeLayoutStore.load(context)) }
     var editMode by remember { mutableStateOf(false) }
@@ -549,7 +551,7 @@ private fun HomeStatusStrip(
                     modifier = Modifier
                         .clip(DuskTheme.glyphShape)
                         .background(DuskTheme.raisedSurface.copy(alpha = 0.18f))
-                        .pointerInput(Unit) { detectTapGestures { com.mlmvpn.scanner.utils.Donate.open(context) } }
+                        .pointerInput(Unit) { detectTapGestures { com.mlmvpn.scanner.utils.Donate.open(context, showNotice) } }
                         .padding(horizontal = 9.dp, vertical = 3.dp),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {

@@ -1,5 +1,7 @@
 package com.mlmvpn.scanner.ui.geph
 
+import com.mlmvpn.scanner.ui.theme.DuskTheme
+
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.material.icons.Icons
@@ -28,7 +30,6 @@ import com.mlmvpn.core.geph.GephExits
 import com.mlmvpn.core.geph.GephSettings
 import com.mlmvpn.scanner.R
 import com.mlmvpn.scanner.ui.emergency.faDigits
-import com.mlmvpn.scanner.ui.settings.Ios
 import com.mlmvpn.scanner.ui.settings.IosScreen
 import com.mlmvpn.scanner.ui.settings.SettingsActionRow
 import com.mlmvpn.scanner.ui.settings.SettingsFooter
@@ -87,7 +88,7 @@ fun GephExitScreen(onBack: () -> Unit, backLabel: String) {
             SettingsRow(
                 title = stringResource(R.string.geph_exit_auto),
                 icon = if (selected.isAuto) Icons.Default.Check else Icons.Default.AutoMode,
-                tint = if (selected.isAuto) Ios.Green else Ios.Gray,
+                tint = if (selected.isAuto) DuskTheme.success else DuskTheme.disabled,
                 subtitle = stringResource(R.string.geph_exit_auto_sub),
                 showChevron = false,
                 onClick = { choose(GephExitChoice.AUTO) },
@@ -103,7 +104,7 @@ fun GephExitScreen(onBack: () -> Unit, backLabel: String) {
                     probingNow?.country?.let { CountryLabel.withFlag(it) } ?: "",
                 ) else stringResource(if (probeResults.isEmpty()) R.string.geph_fastest_run else R.string.geph_fastest_rerun),
                 icon = Icons.Default.Speed,
-                tint = Ios.Green,
+                tint = DuskTheme.success,
                 busy = probing,
                 enabled = !probing && exits.isNotEmpty() && GephAccount.hasAccount(ctx),
                 onClick = {
@@ -148,7 +149,7 @@ fun GephExitScreen(onBack: () -> Unit, backLabel: String) {
                 SettingsActionRow(
                     label = stringResource(R.string.geph_cancel),
                     icon = Icons.Default.Lock,
-                    tint = Ios.Red,
+                    tint = DuskTheme.error,
                     onClick = { cancel = true },
                 )
             }
@@ -157,7 +158,7 @@ fun GephExitScreen(onBack: () -> Unit, backLabel: String) {
                 SettingsRow(
                     title = stringResource(R.string.geph_fastest_age, gephAgo(lastRunAt)),
                     icon = Icons.Default.History,
-                    tint = Ios.Gray,
+                    tint = DuskTheme.disabled,
                     showChevron = false,
                 )
             }
@@ -200,7 +201,7 @@ fun GephExitScreen(onBack: () -> Unit, backLabel: String) {
                 SettingsRow(
                     title = stringResource(R.string.geph_any_city),
                     icon = if (selected.country == country.code && selected.city.isNullOrBlank()) Icons.Default.Check else null,
-                    tint = Ios.Green,
+                    tint = DuskTheme.success,
                     value = null,
                     showChevron = false,
                     onClick = { choose(GephExitChoice(country.code, null)) },
@@ -211,7 +212,7 @@ fun GephExitScreen(onBack: () -> Unit, backLabel: String) {
                     SettingsRow(
                         title = city.name.ifBlank { country.code },
                         icon = if (isSel) Icons.Default.Check else Icons.Default.LocationCity,
-                        tint = if (isSel) Ios.Green else Ios.Gray,
+                        tint = if (isSel) DuskTheme.success else DuskTheme.disabled,
                         value = stringResource(R.string.geph_load, faDigits((city.lightestLoad * 100).toInt().toString())),
                         subtitle = listOfNotNull(
                             stringResource(R.string.geph_servers_count, faDigits(city.exits.size.toString())),

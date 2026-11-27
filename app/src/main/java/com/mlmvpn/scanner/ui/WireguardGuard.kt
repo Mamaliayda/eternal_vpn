@@ -1,12 +1,13 @@
 package com.mlmvpn.scanner.ui
 
+import com.mlmvpn.scanner.ui.theme.DuskTheme
+
 import android.content.Context
 import android.content.Intent
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
-import com.mlmvpn.scanner.ui.settings.Ios
 import com.mlmvpn.scanner.MyVpnService
 import com.mlmvpn.scanner.R
 import com.mlmvpn.scanner.utils.S
@@ -41,7 +42,7 @@ fun WireguardConflictDialog(
     com.mlmvpn.scanner.ui.settings.IosAlert(
         title = S(R.string.wireguard_is_active),
         message = message,
-        icon = { Icon(Icons.Filled.Warning, contentDescription = null, tint = Ios.Orange) },
+        icon = { Icon(Icons.Filled.Warning, contentDescription = null, tint = DuskTheme.accent) },
         onDismiss = onDismiss,
         actions = listOf(
             com.mlmvpn.scanner.ui.settings.IosAlertAction(S(R.string.cancel_3), onDismiss),
@@ -126,7 +127,7 @@ fun EngineConflictDialog(
     com.mlmvpn.scanner.ui.settings.IosAlert(
         title = S(R.string.enginename_is_on, engineName),
         message = S(R.string.to_start_the_test_enginename_has_to, engineName),
-        icon = { Icon(Icons.Filled.Warning, contentDescription = null, tint = Ios.Orange) },
+        icon = { Icon(Icons.Filled.Warning, contentDescription = null, tint = DuskTheme.accent) },
         onDismiss = onDismiss,
         actions = listOf(
             com.mlmvpn.scanner.ui.settings.IosAlertAction(S(R.string.cancel_3), onDismiss),

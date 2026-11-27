@@ -1,5 +1,7 @@
 package com.mlmvpn.scanner.ui.store
 
+import com.mlmvpn.scanner.ui.theme.DuskTheme
+
 import android.content.Intent
 import android.net.Uri
 import androidx.activity.compose.BackHandler
@@ -84,7 +86,6 @@ import com.mlmvpn.scanner.store.subtitle
 import com.mlmvpn.scanner.store.title
 import com.mlmvpn.scanner.store.tr
 import com.mlmvpn.scanner.ui.home.frostedGlass
-import com.mlmvpn.scanner.ui.settings.Ios
 import com.mlmvpn.scanner.ui.settings.IosScreen
 import com.mlmvpn.scanner.ui.settings.SettingsActionRow
 import com.mlmvpn.scanner.ui.settings.SettingsFooter
@@ -171,7 +172,7 @@ private fun TodayPage(
     IosScreen(onBack = onBack, largeTitle = tr("امروز", "Today")) {
         Text(
             todayLine(),
-            color = Ios.SecondaryLabel,
+            color = DuskTheme.muted,
             fontSize = 13.sp,
             fontWeight = FontWeight.SemiBold,
             modifier = Modifier.padding(horizontal = 20.dp).padding(top = 0.dp, bottom = 12.dp),
@@ -246,10 +247,10 @@ private fun UpdatesPage(
                 if (checking) tr("در حال بررسی…", "Checking…")
                 else if (lastCheck > 0) tr("آخرین بررسی: ", "Last checked: ") + ago(lastCheck)
                 else tr("هنوز بررسی نشده", "Not checked yet"),
-                color = Ios.SecondaryLabel, fontSize = 13.sp, modifier = Modifier.weight(1f),
+                color = DuskTheme.muted, fontSize = 13.sp, modifier = Modifier.weight(1f),
             )
             if (checking) {
-                CircularProgressIndicator(Modifier.size(18.dp), color = Ios.SecondaryLabel, strokeWidth = 2.dp)
+                CircularProgressIndicator(Modifier.size(18.dp), color = DuskTheme.muted, strokeWidth = 2.dp)
             } else {
                 Pill(tr("بررسی", "Check"), onClick = { StoreManager.checkAll(context) })
             }
@@ -261,16 +262,16 @@ private fun UpdatesPage(
         if (pending.isEmpty()) {
             SettingsGroup {
                 Row(Modifier.fillMaxWidth().padding(18.dp), verticalAlignment = Alignment.CenterVertically) {
-                    Icon(Icons.Default.CheckCircle, null, tint = Ios.Green, modifier = Modifier.size(22.dp))
+                    Icon(Icons.Default.CheckCircle, null, tint = DuskTheme.success, modifier = Modifier.size(22.dp))
                     Spacer(Modifier.width(10.dp))
-                    Text(tr("همه‌چیز بروز است.", "Everything is up to date."), color = Ios.Label, fontSize = 15.sp)
+                    Text(tr("همه‌چیز بروز است.", "Everything is up to date."), color = DuskTheme.onSurface, fontSize = 15.sp)
                 }
             }
         } else {
             Row(Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 4.dp), verticalAlignment = Alignment.CenterVertically) {
                 Text(
                     all?.let { if (it.running) it.phase else (it.done ?: it.error ?: "") } ?: "",
-                    color = Ios.SecondaryLabel, fontSize = 13.sp, maxLines = 1, overflow = TextOverflow.Ellipsis,
+                    color = DuskTheme.muted, fontSize = 13.sp, maxLines = 1, overflow = TextOverflow.Ellipsis,
                     modifier = Modifier.weight(1f),
                 )
                 Pill(
@@ -334,9 +335,9 @@ private fun ProductPage(row: StoreRow, job: StoreJob?, onBack: () -> Unit) {
             StoreIconTile(item, 108.dp)
             Spacer(Modifier.width(16.dp))
             Column(Modifier.weight(1f)) {
-                Text(item.title(), color = Ios.Label, fontSize = 21.sp, fontWeight = FontWeight.Bold, lineHeight = 26.sp)
+                Text(item.title(), color = DuskTheme.onSurface, fontSize = 21.sp, fontWeight = FontWeight.Bold, lineHeight = 26.sp)
                 Spacer(Modifier.height(2.dp))
-                Text(item.subtitle(), color = Ios.SecondaryLabel, fontSize = 14.sp, maxLines = 2)
+                Text(item.subtitle(), color = DuskTheme.muted, fontSize = 14.sp, maxLines = 2)
                 Spacer(Modifier.height(12.dp))
                 ActionButton(row, job, big = true)
             }
@@ -352,20 +353,20 @@ private fun ProductPage(row: StoreRow, job: StoreJob?, onBack: () -> Unit) {
             SettingsGroup {
                 Column(Modifier.fillMaxWidth().padding(16.dp)) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text(tr("نسخهٔ ", "Version ") + c.version, color = Ios.Label, fontSize = 15.sp, fontWeight = FontWeight.SemiBold, modifier = Modifier.weight(1f))
-                        if (c.released.isNotBlank()) Text(c.released, color = Ios.SecondaryLabel, fontSize = 13.sp)
+                        Text(tr("نسخهٔ ", "Version ") + c.version, color = DuskTheme.onSurface, fontSize = 15.sp, fontWeight = FontWeight.SemiBold, modifier = Modifier.weight(1f))
+                        if (c.released.isNotBlank()) Text(c.released, color = DuskTheme.muted, fontSize = 13.sp)
                     }
                     val notes = c.notes.ifBlank { tr("سازنده توضیحی برای این نسخه ننوشته است.", "The developer wrote no notes for this version.") }
                     Spacer(Modifier.height(8.dp))
                     Text(
                         cleanNotes(notes),
-                        color = Ios.Label.copy(alpha = 0.9f), fontSize = 14.sp, lineHeight = 22.sp,
+                        color = DuskTheme.onSurface.copy(alpha = 0.9f), fontSize = 14.sp, lineHeight = 22.sp,
                         maxLines = if (notesOpen) Int.MAX_VALUE else 5, overflow = TextOverflow.Ellipsis,
                     )
                     if (notes.lines().size > 5 || notes.length > 280) {
                         Text(
                             if (notesOpen) tr("کمتر", "less") else tr("بیشتر", "more"),
-                            color = Ios.Blue, fontSize = 14.sp,
+                            color = DuskTheme.primary, fontSize = 14.sp,
                             modifier = Modifier.padding(top = 6.dp).clickable { notesOpen = !notesOpen },
                         )
                     }
@@ -375,12 +376,12 @@ private fun ProductPage(row: StoreRow, job: StoreJob?, onBack: () -> Unit) {
                     ) {
                         Spacer(Modifier.height(10.dp))
                         Row(verticalAlignment = Alignment.Top) {
-                            Icon(Icons.Default.Warning, null, tint = Ios.Orange, modifier = Modifier.size(16.dp))
+                            Icon(Icons.Default.Warning, null, tint = DuskTheme.accent, modifier = Modifier.size(16.dp))
                             Spacer(Modifier.width(6.dp))
                             Text(
                                 tr("این یک نسخهٔ اصلی تازه است. اگر بعد از بروزرسانی اتصال مشکل داشت، «برگشت به نسخهٔ قبل» را بزنید.",
                                     "This is a new major version. If connecting misbehaves afterwards, use «Go back to the previous version»."),
-                                color = Ios.SecondaryLabel, fontSize = 12.sp, lineHeight = 18.sp,
+                                color = DuskTheme.muted, fontSize = 12.sp, lineHeight = 18.sp,
                             )
                         }
                     }
@@ -396,7 +397,7 @@ private fun ProductPage(row: StoreRow, job: StoreJob?, onBack: () -> Unit) {
                     Text(
                         if (row.checkedAt == 0L) tr("برای دیدن ورکرهای مستقرشده «بررسی» را بزنید.", "Press Check to find deployed workers.")
                         else tr("روی حساب‌های ذخیره‌شده در برنامه، نمونه‌ای از این ورکر پیدا نشد.", "None of this worker was found on the accounts saved in the app."),
-                        color = Ios.SecondaryLabel, fontSize = 14.sp, modifier = Modifier.padding(16.dp),
+                        color = DuskTheme.muted, fontSize = 14.sp, modifier = Modifier.padding(16.dp),
                     )
                 } else {
                     row.deployments.forEachIndexed { i, d ->
@@ -414,7 +415,7 @@ private fun ProductPage(row: StoreRow, job: StoreJob?, onBack: () -> Unit) {
         if (item.about().isNotBlank()) {
             SettingsSectionHeader(tr("درباره", "About"))
             SettingsGroup {
-                Text(item.about(), color = Ios.Label.copy(alpha = 0.9f), fontSize = 14.sp, lineHeight = 22.sp, modifier = Modifier.padding(16.dp))
+                Text(item.about(), color = DuskTheme.onSurface.copy(alpha = 0.9f), fontSize = 14.sp, lineHeight = 22.sp, modifier = Modifier.padding(16.dp))
             }
         }
 
@@ -461,7 +462,7 @@ private fun ProductPage(row: StoreRow, job: StoreJob?, onBack: () -> Unit) {
                 SettingsActionRow(
                     label = tr("برگشت به نسخهٔ قبل", "Go back to the previous version"),
                     icon = Icons.Default.Replay,
-                    tint = Ios.Destructive,
+                    tint = DuskTheme.error,
                     busy = job?.running == true,
                     onClick = { StoreManager.rollback(context, item.id) },
                 )
@@ -485,20 +486,20 @@ private fun DeploymentRow(item: StoreItem, d: StoreRow.Deployment, busy: Boolean
     Row(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 10.dp), verticalAlignment = Alignment.CenterVertically) {
         Box(
             Modifier.size(9.dp).clip(CircleShape)
-                .background(if (d.behind) Ios.Orange else Ios.Green)
+                .background(if (d.behind) DuskTheme.accent else DuskTheme.success)
         )
         Spacer(Modifier.width(10.dp))
         Column(Modifier.weight(1f)) {
-            Text(d.accountName.ifBlank { d.accountId.take(8) }, color = Ios.Label, fontSize = 15.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            Text(d.accountName.ifBlank { d.accountId.take(8) }, color = DuskTheme.onSurface, fontSize = 15.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
             Text(
                 d.script + (d.version?.let { " · $it" } ?: "") + " · " +
                     if (d.behind) tr("قدیمی", "behind") else tr("بروز", "up to date"),
-                color = Ios.SecondaryLabel, fontSize = 12.sp, maxLines = 1, overflow = TextOverflow.Ellipsis,
+                color = DuskTheme.muted, fontSize = 12.sp, maxLines = 1, overflow = TextOverflow.Ellipsis,
             )
         }
         if (canBack && !busy) {
             Text(
-                tr("برگشت", "Undo"), color = Ios.Destructive, fontSize = 14.sp,
+                tr("برگشت", "Undo"), color = DuskTheme.error, fontSize = 14.sp,
                 modifier = Modifier.clip(RoundedCornerShape(10.dp))
                     .clickable { StoreManager.rollbackWorker(context, item.id, d.accountId, d.script) }
                     .padding(horizontal = 10.dp, vertical = 6.dp),
@@ -517,20 +518,20 @@ private fun AppRow(row: StoreRow, job: StoreJob?, onOpen: () -> Unit, showNotes:
             StoreIconTile(row.item, 54.dp)
             Spacer(Modifier.width(12.dp))
             Column(Modifier.weight(1f)) {
-                Text(row.item.title(), color = Ios.Label, fontSize = 15.sp, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
-                Text(row.item.subtitle(), color = Ios.SecondaryLabel, fontSize = 12.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
-                Text(versionLine(row), color = Ios.SecondaryLabel.copy(alpha = 0.8f), fontSize = 11.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                Text(row.item.title(), color = DuskTheme.onSurface, fontSize = 15.sp, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                Text(row.item.subtitle(), color = DuskTheme.muted, fontSize = 12.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                Text(versionLine(row), color = DuskTheme.muted.copy(alpha = 0.8f), fontSize = 11.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
             }
             Spacer(Modifier.width(8.dp))
             ActionButton(row, job)
         }
         if (job != null && !job.running && (job.error != null)) {
-            Text(job.error, color = Ios.Destructive, fontSize = 12.sp, maxLines = 2, overflow = TextOverflow.Ellipsis,
+            Text(job.error, color = DuskTheme.error, fontSize = 12.sp, maxLines = 2, overflow = TextOverflow.Ellipsis,
                 modifier = Modifier.padding(top = 6.dp, start = 66.dp))
         }
         if (showNotes) {
             row.candidate?.notes?.takeIf { it.isNotBlank() }?.let {
-                Text(cleanNotes(it), color = Ios.SecondaryLabel, fontSize = 12.sp, lineHeight = 18.sp, maxLines = 3, overflow = TextOverflow.Ellipsis,
+                Text(cleanNotes(it), color = DuskTheme.muted, fontSize = 12.sp, lineHeight = 18.sp, maxLines = 3, overflow = TextOverflow.Ellipsis,
                     modifier = Modifier.padding(top = 6.dp, start = 66.dp))
             }
         }
@@ -570,11 +571,11 @@ private fun ActionButton(row: StoreRow, job: StoreJob?, big: Boolean = false) {
 private fun Pill(label: String, prominent: Boolean = false, enabled: Boolean = true, big: Boolean = false, onClick: () -> Unit) {
     val bg = when {
         !enabled -> Color.White.copy(alpha = 0.10f)
-        prominent -> Ios.Blue
+        prominent -> DuskTheme.primary
         else -> Color.White.copy(alpha = 0.16f)
     }
     val fg = when {
-        !enabled -> Ios.SecondaryLabel
+        !enabled -> DuskTheme.muted
         else -> Color.White
     }
     Box(
@@ -594,7 +595,7 @@ private fun Pill(label: String, prominent: Boolean = false, enabled: Boolean = t
 /** iOS's download ring: a track, the arc of progress, and a stop square in the middle. */
 @Composable
 private fun ProgressRing(progress: Float?, size: Dp, onStop: () -> Unit) {
-    val blue = Ios.Blue
+    val blue = DuskTheme.primary
     val track = Color.White.copy(alpha = 0.18f)
     Box(
         Modifier.size(size).clip(CircleShape).clickable(onClick = onStop),
@@ -633,9 +634,9 @@ private fun JobLine(job: StoreJob?) {
     Text(
         text,
         color = when {
-            job.error != null -> Ios.Destructive
-            job.running || job.paused -> Ios.SecondaryLabel
-            else -> Ios.Green
+            job.error != null -> DuskTheme.error
+            job.running || job.paused -> DuskTheme.muted
+            else -> DuskTheme.success
         },
         fontSize = 13.sp, lineHeight = 19.sp,
         modifier = Modifier.padding(horizontal = 20.dp).padding(bottom = 4.dp),
@@ -644,7 +645,7 @@ private fun JobLine(job: StoreJob?) {
     if (job.paused || job.running) {
         Text(
             tr("لغو دانلود", "Cancel download"),
-            color = Ios.Destructive, fontSize = 13.sp,
+            color = DuskTheme.error, fontSize = 13.sp,
             modifier = Modifier.padding(horizontal = 20.dp).padding(bottom = 8.dp)
                 .clickable { StoreManager.cancel(job.id) },
         )
@@ -675,8 +676,8 @@ private fun faNum(s: String): String = tr(com.mlmvpn.scanner.ui.emergency.faDigi
 @Composable
 private fun FeatureCard(row: StoreRow, job: StoreJob?, onOpen: () -> Unit) {
     val icon = row.item.icon
-    val top = if (row.item.id == "mlmvpn") Color(0xFF18BFFB) else lerp(icon.tint, Color.White, 0.10f)
-    val bottom = if (row.item.id == "mlmvpn") Color(0xFF2072F3) else lerp(icon.tint2 ?: icon.tint, Color.Black, 0.45f)
+    val top = if (row.item.id == "mlmvpn") DuskTheme.brandCyan else lerp(icon.tint, Color.White, 0.10f)
+    val bottom = if (row.item.id == "mlmvpn") DuskTheme.brandBlue else lerp(icon.tint2 ?: icon.tint, Color.Black, 0.45f)
     Column(
         Modifier
             .fillMaxWidth()
@@ -728,7 +729,7 @@ private fun AllCurrentCard(checking: Boolean, lastCheck: Long) {
             .padding(horizontal = 16.dp)
             .shadow(14.dp, CardShape, clip = false)
             .clip(CardShape)
-            .background(Brush.verticalGradient(listOf(Color(0xFF18BFFB), Color(0xFF2072F3))))
+            .background(Brush.verticalGradient(listOf(DuskTheme.brandCyan, DuskTheme.brandBlue)))
             .padding(22.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
@@ -754,7 +755,7 @@ private fun AllCurrentCard(checking: Boolean, lastCheck: Long) {
                 Modifier.clip(RoundedCornerShape(50)).background(Color.White).clickable { StoreManager.checkAll(context) }
                     .padding(horizontal = 22.dp, vertical = 8.dp),
             ) {
-                Text(tr("بررسی بروزرسانی‌ها", "Check for updates"), color = Color(0xFF2072F3), fontSize = 15.sp, fontWeight = FontWeight.Bold)
+                Text(tr("بررسی بروزرسانی‌ها", "Check for updates"), color = DuskTheme.brandBlue, fontSize = 15.sp, fontWeight = FontWeight.Bold)
             }
             if (lastCheck > 0) {
                 Spacer(Modifier.height(8.dp))
@@ -775,16 +776,16 @@ private fun StatsCard(rows: List<StoreRow>) {
             Stat("${engines.size}", tr("هسته", "engines"))
             Stat("$deployed", tr("ورکر مستقر", "deployed workers"))
             Stat("$fromStore", tr("از استور", "from the store"))
-            Stat("$pending", tr("در انتظار", "pending"), if (pending > 0) Ios.Orange else Ios.Label)
+            Stat("$pending", tr("در انتظار", "pending"), if (pending > 0) DuskTheme.accent else DuskTheme.onSurface)
         }
     }
 }
 
 @Composable
-private fun Stat(value: String, label: String, color: Color = Ios.Label) {
+private fun Stat(value: String, label: String, color: Color = DuskTheme.onSurface) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Text(value, color = color, fontSize = 22.sp, fontWeight = FontWeight.Bold)
-        Text(label, color = Ios.SecondaryLabel, fontSize = 11.sp)
+        Text(label, color = DuskTheme.muted, fontSize = 11.sp)
     }
 }
 
@@ -795,13 +796,13 @@ private fun HistoryRow(h: StoreHistory, onOpen: () -> Unit) {
         if (item != null) StoreIconTile(item, 40.dp) else Spacer(Modifier.size(40.dp))
         Spacer(Modifier.width(12.dp))
         Column(Modifier.weight(1f)) {
-            Text(h.title, color = Ios.Label, fontSize = 14.sp, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            Text(h.title, color = DuskTheme.onSurface, fontSize = 14.sp, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
             Text(
                 (h.from?.let { "$it ← " } ?: "") + h.to,
-                color = Ios.SecondaryLabel, fontSize = 12.sp, maxLines = 1, overflow = TextOverflow.Ellipsis,
+                color = DuskTheme.muted, fontSize = 12.sp, maxLines = 1, overflow = TextOverflow.Ellipsis,
             )
         }
-        Text(ago(h.at), color = Ios.SecondaryLabel, fontSize = 12.sp)
+        Text(ago(h.at), color = DuskTheme.muted, fontSize = 12.sp)
     }
 }
 
@@ -834,17 +835,17 @@ private fun InfoStrip(row: StoreRow) {
 @Composable
 private fun Fact(label: String, value: String) {
     Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.widthIn(max = 96.dp)) {
-        Text(label, color = Ios.SecondaryLabel, fontSize = 10.sp, fontWeight = FontWeight.SemiBold, maxLines = 1)
+        Text(label, color = DuskTheme.muted, fontSize = 10.sp, fontWeight = FontWeight.SemiBold, maxLines = 1)
         Spacer(Modifier.height(4.dp))
-        Text(value, color = Ios.Label, fontSize = 14.sp, fontWeight = FontWeight.Bold, maxLines = 1, overflow = TextOverflow.Ellipsis)
+        Text(value, color = DuskTheme.onSurface, fontSize = 14.sp, fontWeight = FontWeight.Bold, maxLines = 1, overflow = TextOverflow.Ellipsis)
     }
 }
 
 @Composable
 private fun InfoRow(label: String, value: String) {
     Row(Modifier.fillMaxWidth().heightIn(min = 44.dp).padding(horizontal = 16.dp, vertical = 10.dp), verticalAlignment = Alignment.CenterVertically) {
-        Text(label, color = Ios.SecondaryLabel, fontSize = 15.sp, modifier = Modifier.weight(1f))
-        Text(value, color = Ios.Label, fontSize = 15.sp, maxLines = 2, overflow = TextOverflow.Ellipsis, textAlign = TextAlign.End,
+        Text(label, color = DuskTheme.muted, fontSize = 15.sp, modifier = Modifier.weight(1f))
+        Text(value, color = DuskTheme.onSurface, fontSize = 15.sp, maxLines = 2, overflow = TextOverflow.Ellipsis, textAlign = TextAlign.End,
             modifier = Modifier.widthIn(max = 220.dp))
     }
 }
@@ -869,7 +870,7 @@ private fun StoreTabBar(tab: StoreTab, badge: Int, onSelect: (StoreTab) -> Unit,
 
 @Composable
 private fun TabItem(icon: androidx.compose.ui.graphics.vector.ImageVector, label: String, selected: Boolean, badge: Int, onClick: () -> Unit) {
-    val color = if (selected) Ios.Blue else Ios.SecondaryLabel
+    val color = if (selected) DuskTheme.primary else DuskTheme.muted
     Column(
         Modifier.clip(RoundedCornerShape(20.dp))
             .clickable(interactionSource = remember { MutableInteractionSource() }, indication = null, onClick = onClick)
@@ -881,7 +882,7 @@ private fun TabItem(icon: androidx.compose.ui.graphics.vector.ImageVector, label
             if (badge > 0) {
                 Box(
                     Modifier.align(Alignment.TopEnd).graphicsLayer { translationX = 16f; translationY = -10f }
-                        .size(17.dp).clip(CircleShape).background(Ios.Red),
+                        .size(17.dp).clip(CircleShape).background(DuskTheme.error),
                     contentAlignment = Alignment.Center,
                 ) {
                     Text(if (badge > 9) "9+" else "$badge", color = Color.White, fontSize = 10.sp, fontWeight = FontWeight.Bold)

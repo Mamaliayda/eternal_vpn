@@ -1,9 +1,11 @@
 package com.mlmvpn.scanner.ui.spider
 
+import com.mlmvpn.scanner.ui.theme.DuskTheme
+import com.mlmvpn.scanner.ui.theme.rememberDuskSnackbarAction
+
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
-import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
@@ -36,7 +38,6 @@ import androidx.compose.ui.unit.sp
 import com.mlmvpn.scanner.engines.spider.SpiderPanel
 import com.mlmvpn.scanner.models.CloudAccount
 import com.mlmvpn.scanner.store.tr
-import com.mlmvpn.scanner.ui.settings.Ios
 import com.mlmvpn.scanner.ui.settings.IosAlert
 import com.mlmvpn.scanner.ui.settings.IosAlertAction
 import com.mlmvpn.scanner.ui.settings.IosScreen
@@ -58,6 +59,7 @@ import kotlinx.coroutines.launch
  */
 @Composable
 fun SpiderScreen(account: CloudAccount, onBack: () -> Unit, onAddConfigs: (List<Pair<String, String>>) -> Unit) {
+    val showNotice = rememberDuskSnackbarAction()
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     var inst by remember { mutableStateOf(SpiderPanel.install(context, account.accountId)) }
@@ -94,7 +96,7 @@ fun SpiderScreen(account: CloudAccount, onBack: () -> Unit, onAddConfigs: (List<
             scope.launch {
                 runCatching { SpiderPanel.addUser(context, i, remark, gb, days, ips) }
                     .onSuccess { page = ""; reload() }
-                    .onFailure { toast(context, it.message) }
+                    .onFailure { it.message?.let(showNotice) }
             }
         }; return }
         "exit" -> { NewExitPage(onBack = { page = "" }) { proxy, cc ->
@@ -103,7 +105,7 @@ fun SpiderScreen(account: CloudAccount, onBack: () -> Unit, onAddConfigs: (List<
             scope.launch {
                 runCatching { SpiderPanel.pushExits(context, i, list) }
                     .onSuccess { exits = list; SpiderPanel.saveExits(context, account.accountId, list); page = ""; reload(probe = true) }
-                    .onFailure { toast(context, it.message) }
+                    .onFailure { it.message?.let(showNotice) }
             }
         }; return }
     }
@@ -112,7 +114,7 @@ fun SpiderScreen(account: CloudAccount, onBack: () -> Unit, onAddConfigs: (List<
         scope.launch {
             step = tr("آماده‌سازی…", "Preparing…")
             SpiderPanel.deploy(context, account) { s -> step = s }
-                .onSuccess { inst = it; toast(context, tr("پنل اسپایدر روی حساب نصب شد.", "Spider was installed on the account.")) }
+                .onSuccess { inst = it; showNotice(tr("پنل اسپایدر روی حساب نصب شد.", "Spider was installed on the account.")) }
                 .onFailure { error = it.message }
             step = null
         }
@@ -123,7 +125,7 @@ fun SpiderScreen(account: CloudAccount, onBack: () -> Unit, onAddConfigs: (List<
         if (i == null) {
             SettingsSectionHeader(tr("نصب", "Install"))
             SettingsGroup {
-                SettingsActionRow(tr("نصب روی کلادفلر", "Install on Cloudflare"), Icons.Default.CloudUpload, Ios.Blue,
+                SettingsActionRow(tr("نصب روی کلادفلر", "Install on Cloudflare"), Icons.Default.CloudUpload, DuskTheme.primary,
                     busy = step != null, onClick = { deploy() })
             }
             step?.let { SettingsFooter(it) }
@@ -139,13 +141,13 @@ fun SpiderScreen(account: CloudAccount, onBack: () -> Unit, onAddConfigs: (List<
         SettingsSectionHeader(tr("وضعیت", "Status"))
         SettingsGroup {
             val s = status
-            SettingsRow(tr("کاربران فعال", "Active users"), icon = Icons.Default.Person, tint = Ios.Green,
+            SettingsRow(tr("کاربران فعال", "Active users"), icon = Icons.Default.Person, tint = DuskTheme.success,
                 value = s?.let { "${it.online} / ${it.users}" } ?: "—", showChevron = false)
             Separator()
-            SettingsRow(tr("مصرف کل", "Total usage"), icon = Icons.Default.Speed, tint = Ios.Teal,
+            SettingsRow(tr("مصرف کل", "Total usage"), icon = Icons.Default.Speed, tint = DuskTheme.blueGray,
                 value = s?.let { bytes(it.traffic) } ?: "—", showChevron = false)
             Separator()
-            SettingsRow(tr("خروجی‌های سالم", "Healthy exits"), icon = Icons.Default.Hub, tint = if ((s?.healthy ?: 0) > 0) Ios.Green else Ios.Orange,
+            SettingsRow(tr("خروجی‌های سالم", "Healthy exits"), icon = Icons.Default.Hub, tint = if ((s?.healthy ?: 0) > 0) DuskTheme.success else DuskTheme.accent,
                 value = when {
                     exits.isEmpty() -> tr("مستقیم", "Direct")
                     s == null -> "—"
@@ -154,7 +156,7 @@ fun SpiderScreen(account: CloudAccount, onBack: () -> Unit, onAddConfigs: (List<
                 subtitle = s?.edge?.ifBlank { null }?.let { tr("از دید دیتاسنتر ", "Seen from ") + it },
                 showChevron = false)
             Separator()
-            SettingsActionRow(tr("سنجش خروجی‌ها", "Check the exits"), Icons.Default.Radar, Ios.Blue, busy = probing, enabled = exits.isNotEmpty(), onClick = {
+            SettingsActionRow(tr("سنجش خروجی‌ها", "Check the exits"), Icons.Default.Radar, DuskTheme.primary, busy = probing, enabled = exits.isNotEmpty(), onClick = {
                 scope.launch { probing = true; reload(probe = true); probing = false }
             })
         }
@@ -169,7 +171,7 @@ fun SpiderScreen(account: CloudAccount, onBack: () -> Unit, onAddConfigs: (List<
                 SettingsRow(
                     title = (if (x.country.isNotBlank()) com.mlmvpn.scanner.ui.tunnel.CountryLabel.withFlag(x.country) + " · " else "") + host(x.proxy),
                     icon = Icons.Default.Public,
-                    tint = when { m == null -> Ios.Gray; m.cooling -> Ios.Red; else -> Ios.Green },
+                    tint = when { m == null -> DuskTheme.disabled; m.cooling -> DuskTheme.error; else -> DuskTheme.success },
                     subtitle = m?.let {
                         if (it.cooling) tr("فعلاً کنار گذاشته شده", "Benched for now")
                         else tr("${it.latencyMs} میلی‌ثانیه، لرزش ${it.jitterMs}", "${it.latencyMs} ms, jitter ${it.jitterMs}")
@@ -179,13 +181,13 @@ fun SpiderScreen(account: CloudAccount, onBack: () -> Unit, onAddConfigs: (List<
                         scope.launch {
                             runCatching { SpiderPanel.pushExits(context, i, list) }
                                 .onSuccess { exits = list; SpiderPanel.saveExits(context, account.accountId, list); reload() }
-                                .onFailure { toast(context, it.message) }
+                                .onFailure { it.message?.let(showNotice) }
                         }
                     },
                 )
             }
             if (exits.isNotEmpty()) Separator()
-            SettingsActionRow(tr("افزودن خروجی", "Add an exit"), Icons.Default.Add, Ios.Green, onClick = { page = "exit" })
+            SettingsActionRow(tr("افزودن خروجی", "Add an exit"), Icons.Default.Add, DuskTheme.success, onClick = { page = "exit" })
         }
         SettingsFooter(tr(
             "پراکسی‌های SOCKS5 یا HTTP خودتان (مثلاً سروری که با دستور صفحهٔ لوکیشن‌های کانفیگ استدیو روی VPS ساخته‌اید). ورکر برای هر اتصال دو تا را هم‌زمان امتحان می‌کند، سریع‌ترین برای کشور و دیتاسنتر کاربر را نگه می‌دارد و خراب‌ها را موقتاً کنار می‌گذارد. بدون خروجی، اتصال مستقیم از کلادفلر می‌رود و سایت‌هایی که خودشان پشت کلادفلرند باز نمی‌شوند: ورکر نمی‌تواند به نشانی‌های خود کلادفلر وصل شود (روی گوشی سنجیده شد؛ بقیهٔ سایت‌ها با ۸٫۶ مگابیت باز شدند). برای حذف روی هر خروجی بزنید.",
@@ -198,7 +200,7 @@ fun SpiderScreen(account: CloudAccount, onBack: () -> Unit, onAddConfigs: (List<
                 if (idx > 0) Separator()
                 SettingsRow(
                     title = u.remark, icon = Icons.Default.Person,
-                    tint = if (u.expired || u.overQuota) Ios.Red else Ios.Blue,
+                    tint = if (u.expired || u.overQuota) DuskTheme.error else DuskTheme.primary,
                     subtitle = listOfNotNull(
                         bytes(u.usedBytes) + (if (u.limitBytes > 0) " / " + bytes(u.limitBytes) else ""),
                         if (u.expire > 0) daysLeft(u.expire) else null,
@@ -208,10 +210,10 @@ fun SpiderScreen(account: CloudAccount, onBack: () -> Unit, onAddConfigs: (List<
                 )
             }
             if (users.isNotEmpty()) Separator()
-            SettingsActionRow(tr("کاربر تازه", "New user"), Icons.Default.Add, Ios.Green, onClick = { page = "user" })
+            SettingsActionRow(tr("کاربر تازه", "New user"), Icons.Default.Add, DuskTheme.success, onClick = { page = "user" })
             if (users.isNotEmpty()) {
                 Separator()
-                SettingsActionRow(tr("افزودن کانفیگ‌ها به برنامه", "Add the configs to the app"), Icons.Default.PlaylistAdd, Ios.Blue, onClick = {
+                SettingsActionRow(tr("افزودن کانفیگ‌ها به برنامه", "Add the configs to the app"), Icons.Default.PlaylistAdd, DuskTheme.primary, onClick = {
                     onAddConfigs(users.filter { !it.expired && !it.overQuota }.map { it.remark to SpiderPanel.link(i, it) })
                 })
             }
@@ -223,13 +225,13 @@ fun SpiderScreen(account: CloudAccount, onBack: () -> Unit, onAddConfigs: (List<
         // ── the install ─────────────────────────────────────────────────────────────────────
         SettingsSectionHeader(tr("نصب", "Install"))
         SettingsGroup {
-            SettingsRow(tr("آدرس ورکر", "Worker address"), icon = Icons.Default.Link, tint = Ios.Indigo,
+            SettingsRow(tr("آدرس ورکر", "Worker address"), icon = Icons.Default.Link, tint = DuskTheme.indigo,
                 subtitle = i.url.removePrefix("https://"), showChevron = false, onClick = { copy(context, i.url) })
             Separator()
-            SettingsActionRow(tr("نصب دوباره با آخرین نسخهٔ سازنده", "Reinstall with the developer's latest"), Icons.Default.Autorenew, Ios.Blue,
+            SettingsActionRow(tr("نصب دوباره با آخرین نسخهٔ سازنده", "Reinstall with the developer's latest"), Icons.Default.Autorenew, DuskTheme.primary,
                 busy = step != null, onClick = { deploy() })
             Separator()
-            SettingsActionRow(tr("حذف از کلادفلر", "Remove from Cloudflare"), Icons.Default.DeleteForever, Ios.Red, labelColor = Ios.Red,
+            SettingsActionRow(tr("حذف از کلادفلر", "Remove from Cloudflare"), Icons.Default.DeleteForever, DuskTheme.error, labelColor = DuskTheme.error,
                 onClick = { confirmRemove = true })
         }
         step?.let { SettingsFooter(it) }
@@ -250,11 +252,11 @@ fun SpiderScreen(account: CloudAccount, onBack: () -> Unit, onAddConfigs: (List<
                 i?.let { IosAlertAction(tr("کپی لینک", "Copy link"), { menuFor = null; copy(context, SpiderPanel.link(it, u)) }) },
                 i?.let { IosAlertAction(tr("صفر کردن مصرف", "Reset usage"), {
                     menuFor = null
-                    scope.launch { runCatching { SpiderPanel.updateUser(context, it, u.copy(usedBytes = 0)) }.onSuccess { reload() }.onFailure { e -> toast(context, e.message) } }
+                    scope.launch { runCatching { SpiderPanel.updateUser(context, it, u.copy(usedBytes = 0)) }.onSuccess { reload() }.onFailure { e -> e.message?.let(showNotice) } }
                 }) },
                 i?.let { IosAlertAction(tr("حذف", "Delete"), {
                     menuFor = null
-                    scope.launch { runCatching { SpiderPanel.deleteUser(context, it, u.uuid) }.onSuccess { reload() }.onFailure { e -> toast(context, e.message) } }
+                    scope.launch { runCatching { SpiderPanel.deleteUser(context, it, u.uuid) }.onSuccess { reload() }.onFailure { e -> e.message?.let(showNotice) } }
                 }, destructive = true) },
                 IosAlertAction(tr("انصراف", "Cancel"), { menuFor = null }, preferred = true),
             ),
@@ -270,7 +272,7 @@ fun SpiderScreen(account: CloudAccount, onBack: () -> Unit, onAddConfigs: (List<
                 confirmRemove = false
                 scope.launch {
                     SpiderPanel.remove(context, account).onSuccess { inst = null; users = emptyList(); status = null; exits = emptyList() }
-                        .onFailure { toast(context, it.message) }
+                        .onFailure { it.message?.let(showNotice) }
                 }
             }, destructive = true),
         ),
@@ -296,7 +298,7 @@ private fun NewUserPage(onBack: () -> Unit, onSave: (String, Double, Int, Int) -
         }
         SettingsFooter(tr("خالی یا صفر یعنی بی‌حد.", "Empty or zero means unlimited."))
         SettingsGroup(modifier = Modifier.padding(top = 16.dp)) {
-            SettingsActionRow(tr("ساخت", "Create"), Icons.Default.Add, Ios.Blue, onClick = {
+            SettingsActionRow(tr("ساخت", "Create"), Icons.Default.Add, DuskTheme.primary, onClick = {
                 onSave(remark.trim(), num(gb).toDouble(), num(days).toInt(), num(ips).toInt())
             })
         }
@@ -319,7 +321,7 @@ private fun NewExitPage(onBack: () -> Unit, onSave: (String, String) -> Unit) {
             "HTTP باید CONNECT را بپذیرد. فهرست روزانهٔ «ProxyIP» به کار نمی‌آید: آن نشانی‌ها رلهٔ کلادفلرند و به CONNECT جواب نمی‌دهند (سنجیده شد).",
             "HTTP proxies must accept CONNECT. The daily «ProxyIP» lists do not work here: those addresses are Cloudflare relays and do not answer CONNECT (measured)."))
         SettingsGroup(modifier = Modifier.padding(top = 16.dp)) {
-            SettingsActionRow(tr("افزودن", "Add"), Icons.Default.Add, Ios.Blue, enabled = ok, onClick = { onSave(proxy.trim(), cc.trim()) })
+            SettingsActionRow(tr("افزودن", "Add"), Icons.Default.Add, DuskTheme.primary, enabled = ok, onClick = { onSave(proxy.trim(), cc.trim()) })
         }
     }
 }
@@ -344,9 +346,5 @@ private fun daysLeft(expire: Long): String {
 
 private fun copy(context: Context, text: String) {
     (context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager).setPrimaryClip(ClipData.newPlainText("spider", text))
-    toast(context, tr("کپی شد", "Copied"))
-}
-
-private fun toast(context: Context, text: String?) {
-    if (!text.isNullOrBlank()) Toast.makeText(context, text, Toast.LENGTH_LONG).show()
+    showNotice(tr("کپی شد", "Copied"))
 }

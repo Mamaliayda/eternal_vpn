@@ -1,8 +1,10 @@
 package com.mlmvpn.scanner.ui.tunnel
 
+import com.mlmvpn.scanner.ui.theme.DuskTheme
+import com.mlmvpn.scanner.ui.theme.rememberDuskSnackbarAction
+
 import android.app.Activity
 import android.net.VpnService
-import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
@@ -84,7 +86,6 @@ import com.mlmvpn.scanner.ui.cfwarp.hasNat64Exit
 import com.mlmvpn.scanner.ui.cfwarp.hasExitCountry
 import com.mlmvpn.scanner.ui.geph.GephPanel
 import com.mlmvpn.scanner.ui.home.frostedGlass
-import com.mlmvpn.scanner.ui.settings.Ios
 import com.mlmvpn.scanner.ui.settings.IosScreen
 import com.mlmvpn.scanner.ui.settings.SettingsActionRow
 import com.mlmvpn.scanner.ui.settings.SettingsGroup
@@ -131,6 +132,7 @@ fun TransportScreen(
     detail: (@Composable () -> Unit)? = null,
 ) {
     val context = LocalContext.current
+    val showNotice = rememberDuskSnackbarAction()
 
     // «URnetwork»: until there is an account, the screen is URnetwork's terms and one button --
     // nothing else; the connect screen comes once the account is made.
@@ -165,27 +167,26 @@ fun TransportScreen(
             TunnelController.connect(context, transport)
         } else {
             TunnelController.onPermissionDenied()
-            Toast.makeText(context, S(R.string.without_vpn_permission_there_can_be_no), Toast.LENGTH_LONG)
-                .show()
+            showNotice(S(R.string.without_vpn_permission_there_can_be_no))
         }
         pendingStart = false
     }
 
     fun start() {
         if (!transport.supportedHere) {
-            Toast.makeText(context, S(R.string.this_route_was_not_built_for_this), Toast.LENGTH_LONG).show()
+            showNotice(S(R.string.this_route_was_not_built_for_this))
             return
         }
         if (transport.needsTunnelCore && !state.engineAvailable) {
-            Toast.makeText(context, S(R.string.the_tunnel_core_for_this_device_was), Toast.LENGTH_LONG).show()
+            showNotice(S(R.string.the_tunnel_core_for_this_device_was))
             return
         }
         transport.unavailableReason(context)?.let { reason ->
-            Toast.makeText(context, reason, Toast.LENGTH_LONG).show()
+            showNotice(reason)
             return
         }
         if (!TunnelController.hasNetwork(context)) {
-            Toast.makeText(context, S(R.string.the_device_is_not_on_any_network), Toast.LENGTH_LONG).show()
+            showNotice(S(R.string.the_device_is_not_on_any_network))
             return
         }
         // A tunnel takes the default route, which kills every socket a running IP scan has open
@@ -209,14 +210,10 @@ fun TransportScreen(
     // staring at the page.
     LaunchedEffect(stage) {
         when (stage) {
-            TunnelStage.RUNNING -> Toast
-                .makeText(context, S(R.string.connected_2, transport.labelFa), Toast.LENGTH_SHORT).show()
-            TunnelStage.FAILED -> Toast
-                .makeText(
-                    context,
-                    com.mlmvpn.core.warp.WarpIdRelay.readable(state.message) ?: S(R.string.could_not_connect),
-                    Toast.LENGTH_LONG,
-                ).show()
+            TunnelStage.RUNNING -> showNotice(S(R.string.connected_2, transport.labelFa))
+            TunnelStage.FAILED -> showNotice(
+                com.mlmvpn.core.warp.WarpIdRelay.readable(state.message) ?: S(R.string.could_not_connect),
+            )
             else -> Unit
         }
     }
@@ -234,14 +231,14 @@ fun TransportScreen(
 
         Text(
             transport.label,
-            color = Ios.SecondaryLabel,
+            color = DuskTheme.muted,
             fontSize = 13.sp,
             modifier = Modifier.align(Alignment.CenterHorizontally),
         )
         Spacer(Modifier.height(4.dp))
         Text(
             transport.taglineFa,
-            color = Ios.SecondaryLabel,
+            color = DuskTheme.muted,
             fontSize = 13.sp,
             lineHeight = 20.sp,
             textAlign = TextAlign.Center,
@@ -336,7 +333,7 @@ fun TransportScreen(
                     SettingsRow(
                         title = S(R.string.country),
                         icon = Icons.Default.Language,
-                        tint = Ios.Indigo,
+                        tint = DuskTheme.indigo,
                         value = regionLabel(prefs.egressRegion) { CountryLabel.withFlag(it) },
                         onClick = onOpenPsiphonRegion,
                     )
@@ -355,7 +352,7 @@ fun TransportScreen(
                     SettingsRow(
                         title = S(R.string.connection_mode),
                         icon = Icons.Default.Route,
-                        tint = Ios.Purple,
+                        tint = DuskTheme.purple,
                         value = torModeLabel(prefs.torMode),
                         onClick = onOpenTorMode,
                     )
@@ -365,7 +362,7 @@ fun TransportScreen(
                     SettingsRow(
                         title = S(R.string.tor_br_row),
                         icon = Icons.Default.Hub,
-                        tint = Ios.Teal,
+                        tint = DuskTheme.blueGray,
                         value = torBridgesValue(),
                         onClick = { onOpenPage(TOR_BRIDGES_PAGE) },
                     )
@@ -373,7 +370,7 @@ fun TransportScreen(
                     SettingsRow(
                         title = S(R.string.exit_country),
                         icon = Icons.Default.Language,
-                        tint = Ios.Indigo,
+                        tint = DuskTheme.indigo,
                         value = regionLabel(prefs.torExitRegion) { CountryLabel.withFlag(it) },
                         onClick = onOpenTorRegion,
                     )
@@ -399,7 +396,7 @@ fun TransportScreen(
                         S(R.string.a_wireguard_tunnel_carried_inside_a_masque) +
                             S(R.string.one_it_is_slower_and_the_reason) +
                             S(R.string.layer_on_its_own),
-                        color = Ios.Label,
+                        color = DuskTheme.onSurface,
                         fontSize = 14.sp,
                         lineHeight = 24.sp,
                     )
@@ -410,7 +407,7 @@ fun TransportScreen(
                             S(R.string.up_the_check_that_decides_whether_a) +
                             S(R.string.reused_and_what_gets_written_to_storage) +
                             S(R.string.here_would_only_have_changed_one_of),
-                        color = Ios.SecondaryLabel,
+                        color = DuskTheme.muted,
                         fontSize = 13.sp,
                         lineHeight = 22.sp,
                     )
@@ -433,14 +430,14 @@ fun TransportScreen(
             SettingsRow(
                 title = S(R.string.advanced_settings),
                 icon = Icons.Default.Tune,
-                tint = Ios.Gray,
+                tint = DuskTheme.disabled,
                 onClick = onOpenAdvanced,
             )
             Separator()
             SettingsRow(
                 title = S(R.string.connection_report),
                 icon = Icons.Default.Article,
-                tint = Ios.Teal,
+                tint = DuskTheme.blueGray,
                 value = ConnectionLog.snapshot().size.takeIf { it > 0 }?.toString(),
                 onClick = onOpenLog,
             )
@@ -535,7 +532,7 @@ private fun ExitCountryCard(code: String, fallbackName: String) {
             .padding(horizontal = 16.dp, vertical = 14.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Text(S(R.string.exit_from), color = Ios.SecondaryLabel, fontSize = 13.sp)
+        Text(S(R.string.exit_from), color = DuskTheme.muted, fontSize = 13.sp)
         Spacer(Modifier.weight(1f))
         if (known != null) {
             Text(IpFormatter.flag(known), fontSize = 20.sp)
@@ -543,7 +540,7 @@ private fun ExitCountryCard(code: String, fallbackName: String) {
         }
         Text(
             name.ifBlank { S(R.string.detecting) },
-            color = if (name.isBlank()) Ios.SecondaryLabel else Ios.Label,
+            color = if (name.isBlank()) DuskTheme.muted else DuskTheme.onSurface,
             fontSize = 16.sp,
             fontWeight = if (name.isBlank()) FontWeight.Normal else FontWeight.Medium,
             maxLines = 1,
@@ -556,7 +553,7 @@ private fun ExitCountryCard(code: String, fallbackName: String) {
 private fun Footer(text: String) {
     Text(
         text,
-        color = Ios.SecondaryLabel,
+        color = DuskTheme.muted,
         fontSize = 13.sp,
         lineHeight = 21.sp,
         modifier = Modifier.padding(start = 32.dp, end = 32.dp, top = 8.dp),
@@ -590,8 +587,8 @@ private fun ConnectDial(
     modifier: Modifier = Modifier,
 ) {
     val accent = when (stage) {
-        TunnelStage.RUNNING -> Ios.Green
-        TunnelStage.FAILED -> Ios.Red
+        TunnelStage.RUNNING -> DuskTheme.success
+        TunnelStage.FAILED -> DuskTheme.error
         else -> transport.tint
     }
     DialCore(
@@ -757,11 +754,11 @@ private fun StatusLine(
         else -> S(R.string.ready)
     }
     val tone = when {
-        takenBy != null -> Ios.Orange
-        stage == TunnelStage.RUNNING -> Ios.Green
-        stage == TunnelStage.FAILED -> Ios.Red
+        takenBy != null -> DuskTheme.accent
+        stage == TunnelStage.RUNNING -> DuskTheme.success
+        stage == TunnelStage.FAILED -> DuskTheme.error
         stage == TunnelStage.STARTING -> transport.tint
-        else -> Ios.SecondaryLabel
+        else -> DuskTheme.muted
     }
 
     Column(
@@ -779,7 +776,7 @@ private fun StatusLine(
             Spacer(Modifier.height(6.dp))
             Text(
                 sub,
-                color = Ios.SecondaryLabel,
+                color = DuskTheme.muted,
                 fontSize = 13.sp,
                 lineHeight = 20.sp,
                 textAlign = TextAlign.Center,
@@ -853,7 +850,7 @@ private fun LiveStats(state: TunnelUiState, transport: Transport) {
                 S(R.string.warp_picks_an_exit_address_that_geolocates) +
                     S(R.string.usually_stays_in_your_own_country_this) +
                     S(R.string.the_tunnel_to_change_the_apparent_country),
-                color = Ios.SecondaryLabel,
+                color = DuskTheme.muted,
                 fontSize = 12.sp,
                 lineHeight = 20.sp,
                 modifier = Modifier.padding(horizontal = 6.dp),
@@ -863,7 +860,7 @@ private fun LiveStats(state: TunnelUiState, transport: Transport) {
         Spacer(Modifier.height(10.dp))
         Text(
             S(R.string.this_session_s_total_down_up, bytes(state.rxBytes), bytes(state.txBytes)),
-            color = Ios.SecondaryLabel,
+            color = DuskTheme.muted,
             fontSize = 12.sp,
             modifier = Modifier.padding(start = 6.dp),
         )
@@ -873,9 +870,9 @@ private fun LiveStats(state: TunnelUiState, transport: Transport) {
 @Composable
 private fun Metric(label: String, value: String) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Text(value, color = Ios.Label, fontSize = 17.sp, fontWeight = FontWeight.SemiBold)
+        Text(value, color = DuskTheme.onSurface, fontSize = 17.sp, fontWeight = FontWeight.SemiBold)
         Spacer(Modifier.height(3.dp))
-        Text(label, color = Ios.SecondaryLabel, fontSize = 11.sp)
+        Text(label, color = DuskTheme.muted, fontSize = 11.sp)
     }
 }
 
@@ -885,7 +882,7 @@ private fun Divider() {
         modifier = Modifier
             .height(28.dp)
             .size(width = 0.5.dp, height = 28.dp)
-            .background(Ios.Separator)
+            .background(DuskTheme.outline)
     )
 }
 

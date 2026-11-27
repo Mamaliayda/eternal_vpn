@@ -4,24 +4,24 @@
          light/night variants through DuskTheme; these resources cover pre-Compose windows and Views. -->
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
-    <color name="gs_bg">#191D32</color>
-    <color name="gs_surface">#34334D</color>
-    <color name="gs_surface2">#27263E</color>
-    <color name="gs_panel">#34334D</color>
-    <color name="gs_card">#34334D</color>
-    <color name="gs_outline">#77758E</color>
-    <color name="gs_outline_variant">#4A4962</color>
-    <color name="gs_primary">#9BB6E3</color>
-    <color name="gs_primary_dim">#728EBB</color>
-    <color name="gs_primary_container">#27263E</color>
-    <color name="gs_secondary">#C1BED0</color>
-    <color name="gs_secondary_container">#34334D</color>
-    <color name="gs_error">#FFB4AB</color>
-    <color name="gs_error_container">#690005</color>
-    <color name="gs_warning">#E9BACB</color>
-    <color name="gs_on_surface">#F8F2FA</color>
-    <color name="gs_on_surface_variant">#D0CDE0</color>
-    <color name="gs_on_surface_dim">#C1BED0</color>
+    <color name="dusk_background">#191D32</color>
+    <color name="dusk_surface">#34334D</color>
+    <color name="dusk_surface_raised">#27263E</color>
+    <color name="dusk_panel">#34334D</color>
+    <color name="dusk_card">#34334D</color>
+    <color name="dusk_outline">#77758E</color>
+    <color name="dusk_outline_variant">#4A4962</color>
+    <color name="dusk_primary">#9BB6E3</color>
+    <color name="dusk_primary_dim">#728EBB</color>
+    <color name="dusk_primary_container">#27263E</color>
+    <color name="dusk_secondary">#C1BED0</color>
+    <color name="dusk_secondary_container">#34334D</color>
+    <color name="dusk_error">#FFB4AB</color>
+    <color name="dusk_error_container">#690005</color>
+    <color name="dusk_warning">#E9BACB</color>
+    <color name="dusk_on_surface">#F8F2FA</color>
+    <color name="dusk_on_surface_variant">#D0CDE0</color>
+    <color name="dusk_on_surface_dim">#C1BED0</color>
     <!-- Generated QR modules require a stable neutral backing for reliable scanning. -->
     <color name="dusk_qr_surface">#FFFFFF</color>
 </resources>

@@ -1,7 +1,9 @@
 package com.mlmvpn.scanner.ui.lantern
 
+import com.mlmvpn.scanner.ui.theme.DuskTheme
+import com.mlmvpn.scanner.ui.theme.rememberDuskSnackbarAction
+
 import android.content.Context
-import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -41,7 +43,6 @@ import com.mlmvpn.core.lantern.LanternEngine
 import com.mlmvpn.scanner.store.tr
 import com.mlmvpn.scanner.ui.emergency.faDigits
 import com.mlmvpn.scanner.ui.home.frostedGlass
-import com.mlmvpn.scanner.ui.settings.Ios
 import com.mlmvpn.scanner.ui.settings.SettingsActionRow
 import com.mlmvpn.scanner.ui.settings.SettingsFooter
 import com.mlmvpn.scanner.ui.settings.SettingsGroup
@@ -77,6 +78,7 @@ object LanternSettings {
  */
 @Composable
 fun ColumnScope.LanternPanel() {
+    val showNotice = rememberDuskSnackbarAction()
     val ctx = LocalContext.current
     val live by LanternEngine.live.collectAsState()
     val tunnel by TunnelController.state.collectAsState()
@@ -136,23 +138,23 @@ fun ColumnScope.LanternPanel() {
             title = if (kept > 0) tr("${faDigits(kept.toString())} سرور ذخیره‌شده", "$kept servers kept") else tr("هنوز فهرستی ذخیره نشده", "No list kept yet"),
             subtitle = if (keptAt > 0) tr("به‌روز شده ", "Updated ") + ago(keptAt) else tr("با اولین اتصال گرفته و ذخیره می‌شود.", "Fetched and kept on the first connect."),
             icon = Icons.Default.FormatListBulleted,
-            tint = Ios.Teal,
+            tint = DuskTheme.blueGray,
             showChevron = false,
         )
         Separator()
         SettingsActionRow(
             label = tr("فهرست سرور تازه", "Fresh server list"),
             icon = Icons.Default.Refresh,
-            tint = Ios.Orange,
+            tint = DuskTheme.accent,
             enabled = kept > 0,
             onClick = {
                 val n = LanternEngine.rotate(ctx)
                 kept = LanternEngine.cachedServerCount(ctx)
                 keptAt = LanternEngine.keptAt(ctx)
-                Toast.makeText(ctx, if (n > 0) {
+                showNotice(if (n > 0) {
                     if (ours) tr("فهرست قبلی پاک شد — یک بار قطع و وصل کنید تا فهرست تازه گرفته شود.", "The old list is gone -- disconnect and connect once to get a fresh one.")
                     else tr("فهرست قبلی پاک شد — با «اتصال» فهرست تازه گرفته می‌شود.", "The old list is gone -- «Connect» gets a fresh one.")
-                } else tr("فهرستی برای پاک کردن نبود.", "There was no list to clear."), Toast.LENGTH_LONG).show()
+                } else tr("فهرستی برای پاک کردن نبود.", "There was no list to clear."))
             },
         )
     }
@@ -174,7 +176,7 @@ fun ColumnScope.LanternPanel() {
                 com.mlmvpn.scanner.engines.mae.MaeEngine.lanternForMaeChanged()
             },
             icon = Icons.Default.AutoAwesome,
-            tint = Ios.Blue,
+            tint = DuskTheme.primary,
         )
     }
     SettingsFooter(
@@ -203,22 +205,22 @@ private fun LanternLiveCard(live: LanternEngine.Live) {
             else -> tr("خاموش", "Off")
         }
         Text(head, color = when {
-            live.connected -> Ios.Green
-            live.running && live.exhausted -> Ios.Red
-            live.running -> Ios.Label
-            live.error != null -> Ios.Red
-            else -> Ios.SecondaryLabel
+            live.connected -> DuskTheme.success
+            live.running && live.exhausted -> DuskTheme.error
+            live.running -> DuskTheme.onSurface
+            live.error != null -> DuskTheme.error
+            else -> DuskTheme.muted
         }, fontSize = 15.sp, fontWeight = FontWeight.SemiBold, lineHeight = 21.sp)
-        if (!live.running && live.error != null) Text(live.error, color = Ios.SecondaryLabel, fontSize = 12.sp, lineHeight = 18.sp)
-        if (live.running && live.exhausted) LanternEngine.blockedMessage()?.let { Text(it, color = Ios.SecondaryLabel, fontSize = 12.sp, lineHeight = 18.sp) }
+        if (!live.running && live.error != null) Text(live.error, color = DuskTheme.muted, fontSize = 12.sp, lineHeight = 18.sp)
+        if (live.running && live.exhausted) LanternEngine.blockedMessage()?.let { Text(it, color = DuskTheme.muted, fontSize = 12.sp, lineHeight = 18.sp) }
         val lines = if (all) live.log else live.log.takeLast(6)
         if (lines.isNotEmpty()) {
             Spacer(Modifier.heightIn(min = 4.dp))
-            lines.forEach { Text("· $it", color = Ios.SecondaryLabel, fontSize = 12.sp, lineHeight = 17.sp) }
+            lines.forEach { Text("· $it", color = DuskTheme.muted, fontSize = 12.sp, lineHeight = 17.sp) }
         }
         if (live.log.size > 6) {
             Text(if (all) tr("کوتاه‌تر", "Less") else tr("همهٔ گزارش (${faDigits(live.log.size.toString())} خط)", "The whole log (${live.log.size} lines)"),
-                color = Ios.Blue, fontSize = 13.sp, modifier = Modifier.clickable { all = !all }.padding(top = 4.dp))
+                color = DuskTheme.primary, fontSize = 13.sp, modifier = Modifier.clickable { all = !all }.padding(top = 4.dp))
         }
     }
 }
@@ -230,12 +232,12 @@ private fun ModeRow(title: String, detail: String, selected: Boolean, onClick: (
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Column(Modifier.weight(1f)) {
-            Text(title, color = Ios.Label, fontSize = 16.sp)
-            Text(detail, color = Ios.SecondaryLabel, fontSize = 12.sp, lineHeight = 18.sp)
+            Text(title, color = DuskTheme.onSurface, fontSize = 16.sp)
+            Text(detail, color = DuskTheme.muted, fontSize = 12.sp, lineHeight = 18.sp)
         }
         if (selected) {
             Spacer(Modifier.width(8.dp))
-            Icon(Icons.Default.Check, contentDescription = null, tint = Ios.Blue, modifier = Modifier.size(20.dp))
+            Icon(Icons.Default.Check, contentDescription = null, tint = DuskTheme.primary, modifier = Modifier.size(20.dp))
         }
     }
 }

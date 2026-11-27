@@ -495,7 +495,7 @@ fun SettingsScreen(
                     title = stringResource(R.string.cf_resources_row),
                     subtitle = stringResource(R.string.cf_resources_subtitle),
                     icon = Icons.Default.Dns,
-                    tint = Ios.CloudflareOrange,
+                    tint = DuskTheme.cloudflareOrange,
                     onClick = { push(P_CF_RESOURCES) },
                 )
             }
@@ -505,7 +505,7 @@ fun SettingsScreen(
                 SettingsRow(
                     title = stringResource(R.string.settings_local_port),
                     icon = Icons.Default.SettingsEthernet,
-                    tint = Ios.Blue,
+                    tint = DuskTheme.primary,
                     value = localPort,
                     onClick = { push(P_PORT) },
                 )
@@ -513,7 +513,7 @@ fun SettingsScreen(
                 SettingsRow(
                     title = stringResource(R.string.settings_backend_dns),
                     icon = Icons.Default.Dns,
-                    tint = Ios.Indigo,
+                    tint = DuskTheme.indigo,
                     value = dnsServer,
                     onClick = { push(P_DNS) },
                 )
@@ -532,7 +532,7 @@ fun SettingsScreen(
                         NetworkSettings.setTlsUnfilter(context, it)
                     },
                     icon = Icons.Default.Https,
-                    tint = Ios.Purple,
+                    tint = DuskTheme.purple,
                 )
                 Separator()
                 // A switch rather than a page: it changes how Google is reached and how QUIC is
@@ -547,7 +547,7 @@ fun SettingsScreen(
                         NetworkSettings.setGoogleFix(context, it)
                     },
                     icon = Icons.Default.AutoAwesome,
-                    tint = Ios.Blue,
+                    tint = DuskTheme.primary,
                 )
                 // The half of the fix that needs somewhere to run: only meaningful with it on.
                 if (googleFix) {
@@ -561,7 +561,7 @@ fun SettingsScreen(
                     title = com.mlmvpn.scanner.store.tr("مسیریابی هوشمند ایران", "Smart Iran Routing"),
                     subtitle = com.mlmvpn.scanner.store.tr("سایت‌ها و برنامه‌های ایرانی مستقیم، بدون VPN", "Iranian sites and apps direct, without the VPN"),
                     icon = Icons.Default.AltRoute,
-                    tint = Ios.Green,
+                    tint = DuskTheme.success,
                     value = stringResource(if (smartIran) R.string.on_2 else R.string.off_2),
                     onClick = { push(P_SMART_IRAN) },
                 )
@@ -572,7 +572,7 @@ fun SettingsScreen(
                     title = stringResource(R.string.settings_proxy_mode),
                     subtitle = stringResource(R.string.settings_proxy_mode_desc),
                     icon = Icons.Default.SwapHoriz,
-                    tint = Ios.Purple,
+                    tint = DuskTheme.purple,
                     value = stringResource(if (proxyMode) R.string.on_2 else R.string.off_2),
                     onClick = { push(P_PROXY_MODE) },
                 )
@@ -581,7 +581,7 @@ fun SettingsScreen(
                     title = stringResource(R.string.settings_allow_lan),
                     subtitle = stringResource(R.string.settings_allow_lan_desc),
                     icon = Icons.Default.Wifi,
-                    tint = Ios.Teal,
+                    tint = DuskTheme.blueGray,
                     value = stringResource(if (allowLan) R.string.on_2 else R.string.off_2),
                     onClick = { push(P_ALLOW_LAN) },
                 )
@@ -589,7 +589,7 @@ fun SettingsScreen(
                 SettingsRow(
                     title = stringResource(R.string.settings_advanced_vpn),
                     icon = Icons.Default.VpnKey,
-                    tint = Ios.Green,
+                    tint = DuskTheme.success,
                     onClick = if (twoPane) ({ push(P_VPN_ADVANCED) }) else onOpenVpnSettings,
                 )
             }
@@ -599,7 +599,7 @@ fun SettingsScreen(
                 SettingsRow(
                     title = stringResource(R.string.settings_display),
                     icon = Icons.Default.Palette,
-                    tint = Ios.Pink,
+                    tint = DuskTheme.coral,
                     onClick = { push(P_DISPLAY) },
                 )
                 Separator()
@@ -610,13 +610,13 @@ fun SettingsScreen(
                         showRealtimeTraffic = it; putBool("show_realtime_traffic", it)
                     },
                     icon = Icons.Default.Insights,
-                    tint = Ios.Orange,
+                    tint = DuskTheme.accent,
                 )
                 Separator()
                 SettingsRow(
                     title = stringResource(R.string.settings_language),
                     icon = Icons.Default.Language,
-                    tint = Ios.Blue,
+                    tint = DuskTheme.primary,
                     value = languageOptions.firstOrNull { it.key == appLanguage }?.label,
                     onClick = { push(P_LANGUAGE) },
                 )
@@ -632,13 +632,13 @@ fun SettingsScreen(
                         enableUsageTracking = it; putBool("enable_usage_tracking", it)
                     },
                     icon = Icons.Default.Timeline,
-                    tint = Ios.Yellow,
+                    tint = DuskTheme.accent,
                 )
                 Separator()
                 SettingsRow(
                     title = stringResource(R.string.settings_total_usage),
                     icon = Icons.Default.BarChart,
-                    tint = Ios.Green,
+                    tint = DuskTheme.success,
                     onClick = if (twoPane) ({ push(P_USAGE) }) else onOpenUsage,
                 )
             }
@@ -648,7 +648,7 @@ fun SettingsScreen(
                 SettingsRow(
                     title = stringResource(R.string.settings_screen_off_timeout),
                     icon = Icons.Default.Timer,
-                    tint = Ios.Gray,
+                    tint = DuskTheme.disabled,
                     // No trailing value on this one. Its title is the longest in Settings, and a
                     // value beside it leaves so little room that the title wraps to two lines --
                     // which costs more than knowing the setting at a glance is worth. The value
@@ -660,15 +660,15 @@ fun SettingsScreen(
                     title = com.mlmvpn.scanner.store.tr("پشتیبان‌گیری و بازگردانی", "Backup & restore"),
                     subtitle = com.mlmvpn.scanner.ui.backup.backupRowSubtitle(),
                     icon = com.mlmvpn.scanner.ui.backup.backupRowIcon,
-                    tint = Ios.Blue,
+                    tint = DuskTheme.primary,
                     onClick = { push(SettingsRoutes.BACKUP) },
                 )
                 Separator()
                 SettingsRow(
                     title = stringResource(R.string.settings_reset_home),
                     icon = Icons.Default.Apps,
-                    tint = Ios.Red,
-                    titleColor = Ios.Destructive,
+                    tint = DuskTheme.error,
+                    titleColor = DuskTheme.error,
                     showChevron = false,
                     onClick = {
                         HomeLayoutStore.reset(context)
@@ -684,7 +684,7 @@ fun SettingsScreen(
                 SettingsRow(
                     title = stringResource(R.string.settings_version),
                     icon = Icons.Default.Info,
-                    tint = Ios.Gray,
+                    tint = DuskTheme.disabled,
                     value = versionName,
                     showChevron = false,
                 )
@@ -700,7 +700,7 @@ fun SettingsScreen(
                         stringResource(R.string.settings_crash_report_none)
                     },
                     icon = Icons.Default.Warning,
-                    tint = if (reportCount > 0) Ios.Orange else Ios.Gray,
+                    tint = if (reportCount > 0) DuskTheme.accent else DuskTheme.disabled,
                     showChevron = reportCount > 0,
                     onClick = {
                         if (reportCount > 0) com.mlmvpn.scanner.CrashReporter.share(context)
@@ -718,7 +718,7 @@ fun SettingsScreen(
                     // it is already an Info glyph, and two identical marks in one card is the one
                     // place a user cannot tell the rows apart at a glance.
                     icon = Icons.Default.Groups,
-                    tint = Ios.Blue,
+                    tint = DuskTheme.primary,
                     onClick = { push(P_ABOUT) },
                 )
             }
@@ -754,7 +754,7 @@ fun SettingsScreen(
                 modifier = Modifier
                     .width(1.dp)
                     .fillMaxHeight()
-                    .background(Ios.Separator),
+                    .background(DuskTheme.outline),
             )
             Box(modifier = Modifier.weight(1f).fillMaxHeight()) {
                 if (routeKey == null) SettingsDetailPlaceholder() else pane(routeKey)
@@ -825,7 +825,7 @@ private fun DisplayPage(
             SettingsRow(
                 title = stringResource(R.string.settings_wallpaper),
                 icon = Icons.Default.Palette,
-                tint = Ios.Pink,
+                tint = DuskTheme.coral,
                 value = name,
                 onClick = onOpenWallpaper,
             )
@@ -833,7 +833,7 @@ private fun DisplayPage(
             SettingsRow(
                 title = stringResource(R.string.settings_theme),
                 icon = Icons.Default.Contrast,
-                tint = Ios.Indigo,
+                tint = DuskTheme.indigo,
                 value = themeLabel,
                 onClick = onOpenTheme,
             )
@@ -849,7 +849,7 @@ private fun DisplayPage(
                 checked = Appearance.homeWidget,
                 onCheckedChange = { Appearance.setHomeWidget(context, it) },
                 icon = Icons.Default.ViewQuilt,
-                tint = Ios.Blue,
+                tint = DuskTheme.primary,
             )
         }
 
@@ -886,7 +886,7 @@ private fun DisplayPage(
         )
         Text(
             stringResource(R.string.settings_icon_size_desc),
-            color = Ios.SecondaryLabel,
+            color = DuskTheme.muted,
             style = MaterialTheme.typography.bodySmall,
             modifier = Modifier.padding(start = 32.dp, end = 32.dp, top = 8.dp),
         )
@@ -899,7 +899,7 @@ private fun DisplayPage(
                 checked = Appearance.textScaleAuto,
                 onCheckedChange = { Appearance.setTextScaleAuto(context, it) },
                 icon = Icons.Default.TextFields,
-                tint = Ios.Blue,
+                tint = DuskTheme.primary,
             )
         }
 
@@ -918,7 +918,7 @@ private fun DisplayPage(
         )
         Text(
             stringResource(R.string.settings_text_size_desc),
-            color = Ios.SecondaryLabel,
+            color = DuskTheme.muted,
             style = MaterialTheme.typography.bodySmall,
             modifier = Modifier.padding(start = 32.dp, end = 32.dp, top = 8.dp),
         )
@@ -936,7 +936,7 @@ private fun DisplayPage(
         )
         Text(
             stringResource(R.string.settings_label_size_desc),
-            color = Ios.SecondaryLabel,
+            color = DuskTheme.muted,
             style = MaterialTheme.typography.bodySmall,
             modifier = Modifier.padding(start = 32.dp, end = 32.dp, top = 8.dp),
         )
@@ -949,7 +949,7 @@ private fun DisplayPage(
                 checked = Appearance.dockLabels,
                 onCheckedChange = { Appearance.setDockLabels(context, it) },
                 icon = Icons.Default.Label,
-                tint = Ios.Purple,
+                tint = DuskTheme.purple,
             )
             Separator()
             SettingsToggle(
@@ -958,7 +958,7 @@ private fun DisplayPage(
                 checked = Appearance.wallpaperEverywhere,
                 onCheckedChange = { Appearance.setWallpaperEverywhere(context, it) },
                 icon = Icons.Default.Layers,
-                tint = Ios.Teal,
+                tint = DuskTheme.blueGray,
             )
         }
 
@@ -1018,7 +1018,7 @@ private fun WallpaperPage(
             SettingsRow(
                 title = stringResource(R.string.wallpaper_choose_image),
                 icon = Icons.Default.Image,
-                tint = Ios.Indigo,
+                tint = DuskTheme.indigo,
                 value = if (current == Wallpapers.CUSTOM_ID) null else presetName(Wallpapers.byId(current)),
                 onClick = onChooseImage,
             )
@@ -1026,7 +1026,7 @@ private fun WallpaperPage(
             SettingsRow(
                 title = stringResource(R.string.wallpaper_from_gallery),
                 icon = Icons.Default.PhotoLibrary,
-                tint = Ios.Green,
+                tint = DuskTheme.success,
                 value = if (current == Wallpapers.CUSTOM_ID) stringResource(R.string.wallpaper_current) else null,
                 onClick = onPickFromGallery,
             )
@@ -1045,7 +1045,7 @@ private fun WallpaperPage(
         )
         Text(
             stringResource(R.string.wallpaper_blur_desc),
-            color = Ios.SecondaryLabel,
+            color = DuskTheme.muted,
             style = MaterialTheme.typography.bodySmall,
             modifier = Modifier.padding(start = 32.dp, end = 32.dp, top = 8.dp),
         )
@@ -1092,7 +1092,7 @@ private fun PresetPickerPage(backLabel: String, onBack: () -> Unit) {
                                 .clip(DuskTheme.chartShape)
                                 .border(
                                     width = if (preset.id == current) 2.5.dp else 1.dp,
-                                    color = if (preset.id == current) Ios.Blue
+                                    color = if (preset.id == current) DuskTheme.primary
                                     else DuskTheme.outline.copy(alpha = 0.45f),
                                     shape = DuskTheme.chartShape,
                                 )
@@ -1106,7 +1106,7 @@ private fun PresetPickerPage(backLabel: String, onBack: () -> Unit) {
                                         .padding(8.dp)
                                         .size(22.dp)
                                         .clip(DuskTheme.circleShape)
-                                        .background(Ios.Blue),
+                                        .background(DuskTheme.primary),
                                     contentAlignment = Alignment.Center,
                                 ) {
                                     Icon(
@@ -1119,7 +1119,7 @@ private fun PresetPickerPage(backLabel: String, onBack: () -> Unit) {
                             }
                         }
                         Spacer(Modifier.height(6.dp))
-                        Text(presetName(preset), color = Ios.Label, style = MaterialTheme.typography.labelMedium)
+                        Text(presetName(preset), color = DuskTheme.onSurface, style = MaterialTheme.typography.labelMedium)
                     }
                 }
                 // Keeps a lone last preset the same width as the others instead of stretching it.

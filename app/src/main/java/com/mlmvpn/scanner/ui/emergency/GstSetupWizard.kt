@@ -1,5 +1,8 @@
 package com.mlmvpn.scanner.ui.emergency
 
+import com.mlmvpn.scanner.ui.theme.DuskTheme
+import com.mlmvpn.scanner.ui.theme.rememberDuskSnackbarAction
+
 import android.content.Intent
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
@@ -55,7 +58,6 @@ import com.mlmvpn.scanner.engines.gst.GstConfigManager
 import com.mlmvpn.scanner.engines.gst.GstDiagnostics
 import com.mlmvpn.scanner.engines.gst.GstRelay
 import com.mlmvpn.scanner.ui.home.frostedGlass
-import com.mlmvpn.scanner.ui.settings.Ios
 import com.mlmvpn.scanner.ui.settings.IosScreen
 import com.mlmvpn.scanner.ui.settings.SettingsActionRow
 import com.mlmvpn.scanner.ui.settings.SettingsFooter
@@ -99,6 +101,7 @@ fun GstSetupWizard(
     onClose: () -> Unit,
 ) {
     val context = LocalContext.current
+    val showNotice = rememberDuskSnackbarAction()
     val clipboard = LocalClipboardManager.current
     val saveScope = rememberCoroutineScope()
 
@@ -146,7 +149,7 @@ fun GstSetupWizard(
                 scriptCode = scriptCode,
                 onCopyCode = {
                     clipboard.setText(AnnotatedString(scriptCode))
-                    shortToast(context, S(R.string.the_whole_code_was_copied_characters, faDigits(scriptCode.length.toString())))
+                    shortToast(context, S(R.string.the_whole_code_was_copied_characters, faDigits(scriptCode.length.toString())), showNotice)
                 },
                 onSaveFile = {
                     // Off the main thread: MediaStore is a provider in another process, and its
@@ -157,11 +160,11 @@ fun GstSetupWizard(
                             context,
                             if (ok) S(R.string.saved_to_your_downloads_folder_mlmvpn_relay)
                             else S(R.string.could_not_save_the_file),
-                        )
+                         showNotice)
                     }
                 },
                 onOpenScriptSite = {
-                    openExternalUrl(context, "https://script.google.com/home/projects/create")
+                    openExternalUrl(context, "https://script.google.com/home/projects/create", showNotice)
                 },
             )
             4 -> StepDeploymentId(
@@ -183,7 +186,7 @@ fun GstSetupWizard(
                 when (step) {
                     1 -> {
                         if (authKey.isBlank()) {
-                            shortToast(context, S(R.string.enter_or_generate_a_password))
+                            shortToast(context, S(R.string.enter_or_generate_a_password), showNotice)
                         } else {
                             step = 2
                         }
@@ -192,7 +195,7 @@ fun GstSetupWizard(
                     3 -> step = 4
                     4 -> {
                         if (GstConfigManager.normalizeDeploymentId(deploymentId).isBlank()) {
-                            shortToast(context, S(R.string.enter_the_deployment_id))
+                            shortToast(context, S(R.string.enter_the_deployment_id), showNotice)
                         } else {
                             step = 5
                         }
@@ -237,8 +240,8 @@ private fun StepDots(current: Int, total: Int) {
                     .width(if (i == current) 20.dp else 6.dp)
                     .background(
                         when {
-                            i == current -> Ios.Blue
-                            i < current -> Ios.Blue.copy(alpha = 0.45f)
+                            i == current -> DuskTheme.primary
+                            i < current -> DuskTheme.primary.copy(alpha = 0.45f)
                             else -> Color.White.copy(alpha = 0.18f)
                         },
                         RoundedCornerShape(3.dp),
@@ -254,7 +257,7 @@ private fun StepHeader(title: String, subtitle: String) {
     Spacer(Modifier.height(18.dp))
     Text(
         title,
-        color = Ios.Label,
+        color = DuskTheme.onSurface,
         fontSize = 22.sp,
         fontWeight = FontWeight.Bold,
         modifier = Modifier.padding(horizontal = 20.dp),
@@ -262,7 +265,7 @@ private fun StepHeader(title: String, subtitle: String) {
     Spacer(Modifier.height(8.dp))
     Text(
         subtitle,
-        color = Ios.SecondaryLabel,
+        color = DuskTheme.muted,
         fontSize = 14.sp,
         lineHeight = 23.sp,
         modifier = Modifier.padding(horizontal = 20.dp),
@@ -299,18 +302,18 @@ private fun WizardField(
                     onValueChange = onValueChange,
                     singleLine = true,
                     textStyle = TextStyle(
-                        color = Ios.Label,
+                        color = DuskTheme.onSurface,
                         fontSize = 17.sp,
                         fontFamily = if (monospace) FontFamily.Monospace else FontFamily.Default,
                     ),
-                    cursorBrush = SolidColor(Ios.Blue),
+                    cursorBrush = SolidColor(DuskTheme.primary),
                     modifier = Modifier.fillMaxWidth(),
                     decorationBox = { inner ->
                         Box {
                             if (value.isEmpty()) {
                                 Text(
                                     placeholder,
-                                    color = Ios.SecondaryLabel.copy(alpha = 0.6f),
+                                    color = DuskTheme.muted.copy(alpha = 0.6f),
                                     fontSize = 17.sp,
                                 )
                             }
@@ -330,7 +333,7 @@ private fun WizardPrimary(label: String, onClick: () -> Unit) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp)
-            .background(Ios.Blue, ControlShape)
+            .background(DuskTheme.primary, ControlShape)
             .clickable(onClick = onClick)
             .heightIn(min = 50.dp)
             .padding(vertical = 14.dp),
@@ -351,7 +354,7 @@ private fun InfoCard(text: String) {
             .frostedGlass(CardShape)
             .padding(16.dp),
     ) {
-        Text(text, color = Ios.SecondaryLabel, fontSize = 13.sp, lineHeight = 22.sp)
+        Text(text, color = DuskTheme.muted, fontSize = 13.sp, lineHeight = 22.sp)
     }
 }
 
@@ -446,7 +449,7 @@ private fun StepScript(
         ) {
             Text(
                 scriptCode,
-                color = Ios.Green,
+                color = DuskTheme.success,
                 fontSize = 11.sp,
                 lineHeight = 16.sp,
                 fontFamily = FontFamily.Monospace,
@@ -478,6 +481,7 @@ private fun StepScript(
 @Composable
 private fun StepDeploymentId(deploymentId: String, authKey: String, onChange: (String) -> Unit) {
     val context = LocalContext.current
+    val showNotice = rememberDuskSnackbarAction()
     val scope = rememberCoroutineScope()
     var testing by remember { mutableStateOf(false) }
     var report by remember { mutableStateOf<GstDiagnostics.Report?>(null) }
@@ -496,7 +500,7 @@ private fun StepDeploymentId(deploymentId: String, authKey: String, onChange: (S
             busy = testing,
             onClick = {
                 if (deploymentId.isBlank()) {
-                    shortToast(context, S(R.string.enter_the_deployment_id_first))
+                    shortToast(context, S(R.string.enter_the_deployment_id_first), showNotice)
                 } else {
                     testing = true
                     report = null
@@ -535,7 +539,7 @@ private fun StepDeploymentId(deploymentId: String, authKey: String, onChange: (S
                         fontWeight = FontWeight.SemiBold,
                     )
                     Spacer(Modifier.height(4.dp))
-                    Text(r.message, color = Ios.SecondaryLabel, fontSize = 13.sp, lineHeight = 21.sp)
+                    Text(r.message, color = DuskTheme.muted, fontSize = 13.sp, lineHeight = 21.sp)
                 }
             }
             if (needsAuth) {
@@ -543,8 +547,8 @@ private fun StepDeploymentId(deploymentId: String, authKey: String, onChange: (S
                 SettingsActionRow(
                     S(R.string.verify_in_the_browser),
                     Icons.Default.OpenInNew,
-                    tint = Ios.Orange,
-                    onClick = { openExternalUrl(context, GstDiagnostics.execUrl(deploymentId)) },
+                    tint = DuskTheme.accent,
+                    onClick = { openExternalUrl(context, GstDiagnostics.execUrl(deploymentId), showNotice) },
                 )
             }
         }
@@ -566,24 +570,24 @@ private fun StepDone() {
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Box(
-            modifier = Modifier.size(84.dp).background(Ios.Green.copy(alpha = 0.16f), CircleShape),
+            modifier = Modifier.size(84.dp).background(DuskTheme.success.copy(alpha = 0.16f), CircleShape),
             contentAlignment = Alignment.Center,
         ) {
             Icon(
                 Icons.Default.Check,
                 contentDescription = null,
-                tint = Ios.Green,
+                tint = DuskTheme.success,
                 modifier = Modifier.size(46.dp),
             )
         }
         Spacer(Modifier.height(20.dp))
-        Text(S(R.string.the_relay_is_ready), color = Ios.Label, fontSize = 22.sp, fontWeight = FontWeight.Bold)
+        Text(S(R.string.the_relay_is_ready), color = DuskTheme.onSurface, fontSize = 22.sp, fontWeight = FontWeight.Bold)
         Spacer(Modifier.height(10.dp))
         Text(
             S(R.string.your_relay_is_saved_to_get_around) +
                 S(R.string.as_well_the_tunnel_spreads_the_load) +
                 S(R.string.automatically_when_one_runs_out),
-            color = Ios.SecondaryLabel,
+            color = DuskTheme.muted,
             fontSize = 14.sp,
             lineHeight = 23.sp,
             textAlign = TextAlign.Center,
