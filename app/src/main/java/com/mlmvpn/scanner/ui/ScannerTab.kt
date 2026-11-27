@@ -285,8 +285,8 @@ fun ScannerSettingsCard(
                 else -> S(R.string.could_not_be_read)
             },
             icon = Icons.Default.Storage,
-            tint = if (baseConfig.isBlank()) com.mlmvpn.scanner.ui.settings.DuskTheme.disabled
-            else com.mlmvpn.scanner.ui.settings.DuskTheme.indigo,
+            tint = if (baseConfig.isBlank()) DuskTheme.disabled
+            else DuskTheme.indigo,
             value = if (baseConfig.isBlank()) S(R.string.choose) else picked?.name?.take(18),
             onClick = onPickBaseConfig,
         )
@@ -327,8 +327,8 @@ fun ScannerSettingsCard(
                     com.mlmvpn.scanner.data.ScanStrategy.FAST_CONFIG -> Icons.Default.Speed
                     com.mlmvpn.scanner.data.ScanStrategy.STABLE -> Icons.Default.Shield
                 },
-                tint = if (selected) com.mlmvpn.scanner.ui.settings.DuskTheme.success
-                else com.mlmvpn.scanner.ui.settings.DuskTheme.disabled,
+                tint = if (selected) DuskTheme.success
+                else DuskTheme.disabled,
                 showChevron = false,
                 onClick = { onStrategyChange(s) },
             )
@@ -374,7 +374,7 @@ fun ScannerSettingsCard(
         com.mlmvpn.scanner.ui.settings.SettingsActionRow(
             label = if (busy) S(R.string.preflight_checking) else stringResource(R.string.scanner_start_scan),
             icon = Icons.Default.TravelExplore,
-            tint = com.mlmvpn.scanner.ui.settings.DuskTheme.success,
+            tint = DuskTheme.success,
             busy = busy,
             enabled = baseConfig.isNotBlank() && !busy,
             onClick = onStartScan,

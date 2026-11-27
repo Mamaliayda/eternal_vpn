@@ -133,6 +133,7 @@ fun ColumnScope.Nat64ExitRow(transport: Transport? = null, onOpen: () -> Unit) {
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun Nat64ExitScreen(onBack: () -> Unit, backLabel: String, transport: Transport? = null) {
+    val showNotice = rememberDuskSnackbarAction()
     val ctx = LocalContext.current
     val selection by Nat64Exits.selectionFlow(ctx).collectAsState()
     val probes by Nat64Exits.probes.collectAsState()

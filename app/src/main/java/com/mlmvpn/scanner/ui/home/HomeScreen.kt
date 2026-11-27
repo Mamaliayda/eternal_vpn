@@ -525,6 +525,7 @@ private fun HomeStatusStrip(
     editMode: Boolean,
     onDone: () -> Unit,
 ) {
+    val showNotice = rememberDuskSnackbarAction()
     val green = DuskTheme.success
     val muted = DuskTheme.muted
 
