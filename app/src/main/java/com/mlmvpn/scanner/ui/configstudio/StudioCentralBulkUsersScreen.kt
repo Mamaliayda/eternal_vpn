@@ -13,7 +13,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.unit.dp
 import com.mlmvpn.scanner.R
 import com.mlmvpn.scanner.data.studio.StudioState
 import com.mlmvpn.scanner.data.studio.StudioStore
@@ -33,7 +32,7 @@ import com.mlmvpn.scanner.ui.configstudio.parts.StudioShare
 import com.mlmvpn.scanner.ui.configstudio.parts.WizardBusy
 import com.mlmvpn.scanner.ui.configstudio.parts.WizardField
 import com.mlmvpn.scanner.ui.configstudio.parts.WizardPrimary
-import com.mlmvpn.scanner.ui.settings.Ios
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 import com.mlmvpn.scanner.ui.settings.IosScreen
 import com.mlmvpn.scanner.ui.settings.SettingsActionRow
 import com.mlmvpn.scanner.ui.settings.SettingsGroup
@@ -129,28 +128,28 @@ fun StudioCentralBulkUsersScreen(
     ) {
         val done = made
         if (done != null) {
-            Spacer(Modifier.height(10.dp))
+            Spacer(Modifier.height(DuskTheme.space2))
             FactsCard(S(R.string.studio_bulk_new_done).replace("%1\$s", faNum(done.size)))
             if (failed.isNotEmpty()) {
-                Spacer(Modifier.height(10.dp))
+                Spacer(Modifier.height(DuskTheme.space2))
                 ProblemCard(S(R.string.studio_bulk_new_failed).replace("%1\$s", faNum(failed.size)))
-                Spacer(Modifier.height(8.dp))
+                Spacer(Modifier.height(DuskTheme.space2))
                 FactsCard(failed.joinToString("\n") { (name, code) -> name + " — " + CentralKit.errorText(context, StudioError(code)) })
             }
-            note?.let { Spacer(Modifier.height(10.dp)); InfoCard(it) }
+            note?.let { Spacer(Modifier.height(DuskTheme.space2)); InfoCard(it) }
 
             SettingsSectionHeader(S(R.string.studio_bulk_links))
             SettingsGroup {
-                SettingsActionRow(label = S(R.string.studio_bulk_copy_all), icon = StudioIcons.Copy, tint = Ios.Blue) {
+                SettingsActionRow(label = S(R.string.studio_bulk_copy_all), icon = StudioIcons.Copy, tint = DuskTheme.primary) {
                     clipboard.setText(AnnotatedString(asText(done)))
                     note = context.getString(R.string.studio_copied)
                 }
                 Separator()
-                SettingsActionRow(label = S(R.string.studio_share), icon = StudioIcons.Share, tint = Ios.Blue) {
+                SettingsActionRow(label = S(R.string.studio_share), icon = StudioIcons.Share, tint = DuskTheme.primary) {
                     StudioShare.shareText(context, asText(done), context.getString(R.string.studio_bulk_links))
                 }
                 Separator()
-                SettingsActionRow(label = S(R.string.studio_export_file), icon = StudioIcons.Export, tint = Ios.Green) {
+                SettingsActionRow(label = S(R.string.studio_export_file), icon = StudioIcons.Export, tint = DuskTheme.success) {
                     val saved = StudioShare.shareFile(
                         context,
                         fileName = (prefix.trim().ifBlank { "configs" }) + ".txt",
@@ -169,7 +168,7 @@ fun StudioCentralBulkUsersScreen(
                         title = name,
                         value = if (qrOf == name) S(R.string.studio_qr_hide) else S(R.string.studio_qr),
                         icon = StudioIcons.Qr,
-                        tint = Ios.Blue,
+                        tint = DuskTheme.primary,
                         showChevron = false,
                         onClick = { qrOf = if (qrOf == name) null else name },
                     )
@@ -177,20 +176,20 @@ fun StudioCentralBulkUsersScreen(
             }
             qrOf?.let { name ->
                 done.firstOrNull { it.first == name }?.second?.firstOrNull()?.let { link ->
-                    Spacer(Modifier.height(10.dp))
+                    Spacer(Modifier.height(DuskTheme.space2))
                     StudioQrCard(link, S(R.string.studio_qr_too_long))
                 }
             }
-            Spacer(Modifier.height(18.dp))
+            Spacer(Modifier.height(DuskTheme.space4))
             WizardPrimary(S(R.string.studio_done), onClick = onDone)
-            Spacer(Modifier.height(28.dp))
+            Spacer(Modifier.height(DuskTheme.space5))
             return@IosScreen
         }
 
         if (fleet.isEmpty()) {
             PageIntro(tr("کاربرها روی ورکر مرکزی یک حساب کلادفلر ساخته می‌شوند. اول یک حساب اضافه کنید.",
                 "People are made on a Cloudflare account's central Worker. Add an account first."))
-            Spacer(Modifier.height(10.dp))
+            Spacer(Modifier.height(DuskTheme.space2))
             WizardPrimary(S(R.string.studio_add_account), onClick = onAddAccount)
             return@IosScreen
         }
@@ -212,7 +211,7 @@ fun StudioCentralBulkUsersScreen(
                         title = placement?.let { it.name.ifEmpty { it.email } } ?: S(R.string.studio_placement_none),
                         subtitle = tr("${faNum(roomLeft)} جای خالی", "$roomLeft places free"),
                         icon = StudioIcons.Accounts,
-                        tint = Ios.Gray,
+                        tint = DuskTheme.disabled,
                         onClick = { pickingShard = true },
                     )
                 } else {
@@ -251,24 +250,24 @@ fun StudioCentralBulkUsersScreen(
         WizardField(days, { days = it }, S(R.string.studio_field_days_hint))
 
         if (names.isNotEmpty()) {
-            Spacer(Modifier.height(10.dp))
+            Spacer(Modifier.height(DuskTheme.space2))
             FactsCard(names.first() + (if (names.size > 1) " … " + names.last() else "") + "  (" + faNum(names.size) + ")")
             if (names.size > roomLeft) {
-                Spacer(Modifier.height(8.dp))
+                Spacer(Modifier.height(DuskTheme.space2))
                 ProblemCard(tr("روی این حساب فقط ${faNum(roomLeft)} جای خالی هست؛ بقیه ساخته نمی‌شوند.",
                     "This account has only $roomLeft places free; the rest are not made."))
             }
             if (clashes.isNotEmpty()) {
-                Spacer(Modifier.height(8.dp))
+                Spacer(Modifier.height(DuskTheme.space2))
                 ProblemCard(S(R.string.studio_bulk_new_clash) + "\n" + clashes.take(10).joinToString("، "))
             }
         }
 
-        Spacer(Modifier.height(14.dp))
-        error?.let { ProblemCard(it); Spacer(Modifier.height(12.dp)) }
+        Spacer(Modifier.height(DuskTheme.space3))
+        error?.let { ProblemCard(it); Spacer(Modifier.height(DuskTheme.space3)) }
         if (busy) WizardBusy(S(R.string.studio_creating))
         else WizardPrimary(S(R.string.studio_create), enabled = names.isNotEmpty() && clashes.isEmpty() && placement != null) { create() }
-        Spacer(Modifier.height(28.dp))
+        Spacer(Modifier.height(DuskTheme.space5))
     }
 }
 

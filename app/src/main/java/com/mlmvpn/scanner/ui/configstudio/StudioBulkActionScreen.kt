@@ -16,7 +16,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.unit.dp
 import com.mlmvpn.scanner.R
 import com.mlmvpn.scanner.data.studio.BulkLink
 import com.mlmvpn.scanner.data.studio.BulkResult
@@ -37,7 +36,7 @@ import com.mlmvpn.scanner.ui.configstudio.parts.StudioShare
 import com.mlmvpn.scanner.ui.configstudio.parts.WizardBusy
 import com.mlmvpn.scanner.ui.configstudio.parts.WizardField
 import com.mlmvpn.scanner.ui.configstudio.parts.WizardPrimary
-import com.mlmvpn.scanner.ui.settings.Ios
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 import com.mlmvpn.scanner.ui.settings.IosAlert
 import com.mlmvpn.scanner.ui.settings.IosAlertAction
 import com.mlmvpn.scanner.ui.settings.IosScreen
@@ -125,7 +124,7 @@ fun StudioBulkActionScreen(
         onBack = if (busy) null else onBack,
         backLabel = S(R.string.studio_users),
     ) {
-        Spacer(Modifier.height(10.dp))
+        Spacer(Modifier.height(DuskTheme.space2))
         PageIntro(S(R.string.studio_bulk_intro).replace("%1\$s", faNum(targets.size)))
 
         // Who, by name, before anything is done to them. A count alone is a number the operator has
@@ -137,7 +136,7 @@ fun StudioBulkActionScreen(
                 else ""
         )
 
-        note?.let { Spacer(Modifier.height(10.dp)); InfoCard(it) }
+        note?.let { Spacer(Modifier.height(DuskTheme.space2)); InfoCard(it) }
 
         if (busy) {
             WizardBusy(
@@ -149,7 +148,7 @@ fun StudioBulkActionScreen(
 
         // ---- what happened, per person -------------------------------------------------
         result?.let { r ->
-            Spacer(Modifier.height(10.dp))
+            Spacer(Modifier.height(DuskTheme.space2))
             if (r.allSucceeded) {
                 FactsCard(S(R.string.studio_bulk_all_ok).replace("%1\$s", faNum(r.ok)))
             } else {
@@ -158,7 +157,7 @@ fun StudioBulkActionScreen(
                         .replace("%1\$s", faNum(r.ok))
                         .replace("%2\$s", faNum(r.total))
                 )
-                Spacer(Modifier.height(8.dp))
+                Spacer(Modifier.height(DuskTheme.space2))
                 // Named, not counted. "One failed" sends the operator back through twenty people to
                 // find which; the name sends them to that person.
                 FactsCard(
@@ -175,14 +174,14 @@ fun StudioBulkActionScreen(
             SettingsActionRow(
                 label = S(R.string.studio_bulk_enable),
                 icon = StudioIcons.Power,
-                tint = Ios.Green,
+                tint = DuskTheme.success,
                 enabled = !busy,
             ) { runBulk({ p -> store.bulkSetEnabled(targets, true, p) }) }
             Separator()
             SettingsActionRow(
                 label = S(R.string.studio_bulk_disable),
                 icon = StudioIcons.Power,
-                tint = Ios.Orange,
+                tint = DuskTheme.accent,
                 enabled = !busy,
             ) { confirmDisable = true }
         }
@@ -191,13 +190,13 @@ fun StudioBulkActionScreen(
         SettingsSectionHeader(S(R.string.studio_renew_title))
         if (canAdjust) {
             Row(
-                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                modifier = Modifier.fillMaxWidth().padding(horizontal = DuskTheme.space4),
+                horizontalArrangement = Arrangement.spacedBy(DuskTheme.space2),
             ) {
                 StudioChip(S(R.string.studio_renew_dir_add), !reducing, Modifier.weight(1f)) { reducing = false }
                 StudioChip(S(R.string.studio_renew_dir_sub), reducing, Modifier.weight(1f)) { reducing = true }
             }
-            Spacer(Modifier.height(8.dp))
+            Spacer(Modifier.height(DuskTheme.space2))
         }
         SettingsSectionHeader(
             if (reducing) S(R.string.studio_renew_sub_days) else S(R.string.studio_renew_add_days)
@@ -207,12 +206,12 @@ fun StudioBulkActionScreen(
             if (reducing) S(R.string.studio_renew_sub_gb) else S(R.string.studio_renew_add_gb)
         )
         WizardField(addGb, { addGb = it }, "30")
-        Spacer(Modifier.height(12.dp))
+        Spacer(Modifier.height(DuskTheme.space3))
         SettingsGroup {
             SettingsActionRow(
                 label = if (reducing) S(R.string.studio_renew_reduce) else S(R.string.studio_renew_extend),
                 icon = StudioIcons.Renew,
-                tint = if (reducing) Ios.Orange else Ios.Green,
+                tint = if (reducing) DuskTheme.accent else DuskTheme.success,
                 enabled = !busy,
             ) {
                 val sign = if (reducing) -1 else 1
@@ -242,10 +241,10 @@ fun StudioBulkActionScreen(
         // connections, so counting them cut people off for browsing.
         SettingsSectionHeader(S(R.string.studio_new_devices_title))
         WizardField(deviceLimit, { deviceLimit = it }, S(R.string.studio_plan_device_hint))
-        Spacer(Modifier.height(8.dp))
+        Spacer(Modifier.height(DuskTheme.space2))
         WizardField(ipLimit, { ipLimit = it }, S(R.string.studio_plan_ip_hint))
         InfoCard(S(R.string.studio_bulk_limits_note))
-        Spacer(Modifier.height(10.dp))
+        Spacer(Modifier.height(DuskTheme.space2))
         val anyLimit = listOf(deviceLimit, ipLimit).any { it.isNotBlank() }
         WizardPrimary(S(R.string.studio_save), enabled = anyLimit && !busy) {
             runBulk({ p ->
@@ -277,7 +276,7 @@ fun StudioBulkActionScreen(
                         title = template.name.ifBlank { template.id },
                         value = shapeOf(template),
                         icon = StudioIcons.Template,
-                        tint = Ios.Indigo,
+                        tint = DuskTheme.indigo,
                         onClick = { if (!busy) confirmTemplate = template },
                     )
                 }
@@ -294,13 +293,13 @@ fun StudioBulkActionScreen(
                     if (missing > 0) "\n" + S(R.string.studio_bulk_links_missing).replace("%1\$s", faNum(missing))
                     else ""
             )
-            Spacer(Modifier.height(10.dp))
+            Spacer(Modifier.height(DuskTheme.space2))
         }
         SettingsGroup {
             SettingsActionRow(
                 label = S(R.string.studio_bulk_collect),
                 icon = StudioIcons.Config,
-                tint = Ios.Blue,
+                tint = DuskTheme.primary,
                 enabled = !busy,
             ) {
                 if (busy) return@SettingsActionRow
@@ -315,7 +314,7 @@ fun StudioBulkActionScreen(
                 SettingsActionRow(
                     label = S(R.string.studio_bulk_copy_all),
                     icon = StudioIcons.Copy,
-                    tint = Ios.Blue,
+                    tint = DuskTheme.primary,
                 ) {
                     clipboard.setText(AnnotatedString(linksAsText(links.orEmpty(), context)))
                     note = context.getString(R.string.studio_copied)
@@ -324,7 +323,7 @@ fun StudioBulkActionScreen(
                 SettingsActionRow(
                     label = S(R.string.studio_share),
                     icon = StudioIcons.Share,
-                    tint = Ios.Blue,
+                    tint = DuskTheme.primary,
                 ) {
                     StudioShare.shareText(
                         context,
@@ -336,7 +335,7 @@ fun StudioBulkActionScreen(
                 SettingsActionRow(
                     label = S(R.string.studio_export_file),
                     icon = StudioIcons.Export,
-                    tint = Ios.Green,
+                    tint = DuskTheme.success,
                 ) {
                     val ok = StudioShare.shareFile(
                         context,
@@ -358,12 +357,12 @@ fun StudioBulkActionScreen(
             SettingsActionRow(
                 label = S(R.string.studio_bulk_delete),
                 icon = StudioIcons.Delete,
-                tint = Ios.Red,
+                tint = DuskTheme.error,
                 enabled = !busy,
             ) { confirmDelete = true }
         }
 
-        Spacer(Modifier.height(28.dp))
+        Spacer(Modifier.height(DuskTheme.space5))
     }
 
     // Disabling is asked about because it stops working links for people who are using them right

@@ -13,7 +13,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.unit.dp
 import com.mlmvpn.scanner.R
 import com.mlmvpn.scanner.data.studio.StudioState
 import com.mlmvpn.scanner.data.studio.StudioStore
@@ -38,7 +37,7 @@ import com.mlmvpn.scanner.ui.configstudio.parts.StudioShare
 import com.mlmvpn.scanner.ui.configstudio.parts.WizardBusy
 import com.mlmvpn.scanner.ui.configstudio.parts.WizardField
 import com.mlmvpn.scanner.ui.configstudio.parts.WizardPrimary
-import com.mlmvpn.scanner.ui.settings.Ios
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 import com.mlmvpn.scanner.ui.settings.IosScreen
 import com.mlmvpn.scanner.ui.settings.SettingsActionRow
 import com.mlmvpn.scanner.ui.settings.SettingsGroup
@@ -117,10 +116,10 @@ fun StudioCentralNewUserScreen(
         val done = made
         if (done != null) {
             val (user, links) = done
-            Spacer(Modifier.height(6.dp))
+            Spacer(Modifier.height(DuskTheme.space2))
             NoticeCard(
                 icon = StudioIcons.Ok,
-                tint = Ios.Green,
+                tint = DuskTheme.success,
                 title = S(R.string.studio_new_ready_title).replace("%1\$s", user.username),
                 body = tr("روی ورکر مرکزی ساخته شد. این کانفیگ‌ها را برایش بفرستید.", "Made on the central Worker. Send them these configs."),
             )
@@ -129,43 +128,43 @@ fun StudioCentralNewUserScreen(
             } else {
                 SettingsSectionHeader(tr("کانفیگ‌ها", "Configs"))
                 PayloadCard(links.first())
-                Spacer(Modifier.height(10.dp))
+                Spacer(Modifier.height(DuskTheme.space2))
                 SettingsGroup {
                     SettingsActionRow(
                         label = if (copied) S(R.string.studio_copied) else tr("کپی همهٔ کانفیگ‌ها (${faNum(links.size)})", "Copy all configs (${links.size})"),
-                        icon = StudioIcons.Copy, tint = Ios.Blue,
+                        icon = StudioIcons.Copy, tint = DuskTheme.primary,
                     ) { clipboard.setText(AnnotatedString(links.joinToString("\n"))); copied = true }
                     Separator()
-                    SettingsActionRow(label = S(R.string.studio_share), icon = StudioIcons.Share, tint = Ios.Blue) {
+                    SettingsActionRow(label = S(R.string.studio_share), icon = StudioIcons.Share, tint = DuskTheme.primary) {
                         StudioShare.shareText(context, links.joinToString("\n"), user.username)
                     }
                     Separator()
-                    SettingsActionRow(label = S(R.string.studio_qr), icon = StudioIcons.Qr, tint = Ios.Indigo) { showQr = !showQr }
+                    SettingsActionRow(label = S(R.string.studio_qr), icon = StudioIcons.Qr, tint = DuskTheme.indigo) { showQr = !showQr }
                     Separator()
-                    SettingsActionRow(label = tr("فرستادن پیام وضعیت", "Send the status message"), icon = StudioIcons.Share, tint = Ios.Green) {
+                    SettingsActionRow(label = tr("فرستادن پیام وضعیت", "Send the status message"), icon = StudioIcons.Share, tint = DuskTheme.success) {
                         val doc = com.mlmvpn.scanner.data.studio.central.CentralFleet.doc(context, user.installationId)
                         StudioShare.shareText(context, CentralKit.statusMessage(user, doc?.contact), user.username)
                     }
                 }
                 if (showQr) {
-                    Spacer(Modifier.height(10.dp))
+                    Spacer(Modifier.height(DuskTheme.space2))
                     StudioQrCard(links.first(), S(R.string.studio_qr_too_long))
                 }
             }
-            Spacer(Modifier.height(18.dp))
+            Spacer(Modifier.height(DuskTheme.space4))
             WizardPrimary(S(R.string.studio_new_open_page)) { onOpenUser(user.installationId, user.id) }
-            Spacer(Modifier.height(10.dp))
+            Spacer(Modifier.height(DuskTheme.space2))
             SettingsGroup {
-                SettingsActionRow(label = S(R.string.studio_done), icon = StudioIcons.Ok, tint = Ios.Gray, onClick = onBack)
+                SettingsActionRow(label = S(R.string.studio_done), icon = StudioIcons.Ok, tint = DuskTheme.disabled, onClick = onBack)
             }
-            Spacer(Modifier.height(28.dp))
+            Spacer(Modifier.height(DuskTheme.space5))
             return@IosScreen
         }
 
         if (fleet.isEmpty()) {
             PageIntro(tr("کاربر تازه روی ورکر مرکزی یک حساب کلادفلر ساخته می‌شود. اول یک حساب اضافه کنید.",
                 "A new person is made on a Cloudflare account's central Worker. Add an account first."))
-            Spacer(Modifier.height(10.dp))
+            Spacer(Modifier.height(DuskTheme.space2))
             WizardPrimary(S(R.string.studio_add_account), onClick = onAddAccount)
             return@IosScreen
         }
@@ -184,7 +183,7 @@ fun StudioCentralNewUserScreen(
                         title = placement?.let { it.name.ifEmpty { it.email } } ?: S(R.string.studio_placement_none),
                         subtitle = placement?.let { roomLine(store, it) } ?: S(R.string.studio_placement_auto),
                         icon = StudioIcons.Accounts,
-                        tint = Ios.Gray,
+                        tint = DuskTheme.disabled,
                         onClick = { pickingShard = true },
                     )
                 } else {
@@ -223,11 +222,11 @@ fun StudioCentralNewUserScreen(
         InfoCard(tr("خالی یعنی بدون تاریخ پایان. حجم و تعداد دستگاه روی ورکر مرکزی شمرده نمی‌شود.",
             "Empty means no end date. Volume and the number of devices are not counted on the central Worker."))
 
-        Spacer(Modifier.height(14.dp))
-        error?.let { ProblemCard(it); Spacer(Modifier.height(12.dp)) }
+        Spacer(Modifier.height(DuskTheme.space3))
+        error?.let { ProblemCard(it); Spacer(Modifier.height(DuskTheme.space3)) }
         if (busy) WizardBusy(S(R.string.studio_creating))
         else WizardPrimary(S(R.string.studio_create), enabled = username.isNotBlank() && placement != null) { create() }
-        Spacer(Modifier.height(28.dp))
+        Spacer(Modifier.height(DuskTheme.space5))
     }
 }
 

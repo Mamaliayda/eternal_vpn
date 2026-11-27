@@ -13,7 +13,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.unit.dp
 import com.mlmvpn.scanner.R
 import com.mlmvpn.scanner.data.studio.BulkLink
 import com.mlmvpn.scanner.data.studio.StudioState
@@ -49,7 +48,7 @@ import com.mlmvpn.scanner.data.studio.config.LocationConfigs
 import com.mlmvpn.scanner.ui.configstudio.parts.VolumeUnit
 import com.mlmvpn.scanner.ui.configstudio.parts.parseVolumeBytes
 import com.mlmvpn.scanner.ui.configstudio.parts.volumeToField
-import com.mlmvpn.scanner.ui.settings.Ios
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 import com.mlmvpn.scanner.ui.settings.IosScreen
 import com.mlmvpn.scanner.ui.settings.SettingsActionRow
 import com.mlmvpn.scanner.ui.settings.SettingsGroup
@@ -251,22 +250,22 @@ fun StudioBulkUsersScreen(
             val ok = done.filter { it.url != null }
             val failed = done.filter { it.url == null }
 
-            Spacer(Modifier.height(10.dp))
+            Spacer(Modifier.height(DuskTheme.space2))
             FactsCard(S(R.string.studio_bulk_new_done).replace("%1\$s", faNum(ok.size)))
             if (failed.isNotEmpty()) {
-                Spacer(Modifier.height(10.dp))
+                Spacer(Modifier.height(DuskTheme.space2))
                 ProblemCard(S(R.string.studio_bulk_new_failed).replace("%1\$s", faNum(failed.size)))
-                Spacer(Modifier.height(8.dp))
+                Spacer(Modifier.height(DuskTheme.space2))
                 FactsCard(failed.joinToString("\n") { it.username })
             }
-            note?.let { Spacer(Modifier.height(10.dp)); InfoCard(it) }
+            note?.let { Spacer(Modifier.height(DuskTheme.space2)); InfoCard(it) }
 
             SettingsSectionHeader(S(R.string.studio_bulk_links))
             SettingsGroup {
                 SettingsActionRow(
                     label = S(R.string.studio_bulk_copy_all),
                     icon = StudioIcons.Copy,
-                    tint = Ios.Blue,
+                    tint = DuskTheme.primary,
                 ) {
                     clipboard.setText(AnnotatedString(asText(done, context)))
                     note = context.getString(R.string.studio_copied)
@@ -275,7 +274,7 @@ fun StudioBulkUsersScreen(
                 SettingsActionRow(
                     label = S(R.string.studio_share),
                     icon = StudioIcons.Share,
-                    tint = Ios.Blue,
+                    tint = DuskTheme.primary,
                 ) {
                     StudioShare.shareText(
                         context, asText(done, context), context.getString(R.string.studio_bulk_links)
@@ -285,7 +284,7 @@ fun StudioBulkUsersScreen(
                 SettingsActionRow(
                     label = S(R.string.studio_export_file),
                     icon = StudioIcons.Export,
-                    tint = Ios.Green,
+                    tint = DuskTheme.success,
                 ) {
                     val saved = StudioShare.shareFile(
                         context,
@@ -311,7 +310,7 @@ fun StudioBulkUsersScreen(
                         title = link.username,
                         value = if (qrOf == link.username) S(R.string.studio_qr_hide) else S(R.string.studio_qr),
                         icon = StudioIcons.Qr,
-                        tint = Ios.Blue,
+                        tint = DuskTheme.primary,
                         showChevron = false,
                         onClick = { qrOf = if (qrOf == link.username) null else link.username },
                     )
@@ -319,18 +318,18 @@ fun StudioBulkUsersScreen(
             }
             qrOf?.let { name ->
                 ok.firstOrNull { it.username == name }?.url?.let { url ->
-                    Spacer(Modifier.height(10.dp))
+                    Spacer(Modifier.height(DuskTheme.space2))
                     StudioQrCard(url, S(R.string.studio_qr_too_long))
                 }
             }
 
-            Spacer(Modifier.height(18.dp))
+            Spacer(Modifier.height(DuskTheme.space4))
             WizardPrimary(S(R.string.studio_done), onClick = onDone)
-            Spacer(Modifier.height(28.dp))
+            Spacer(Modifier.height(DuskTheme.space5))
             return@IosScreen
         }
 
-        Spacer(Modifier.height(10.dp))
+        Spacer(Modifier.height(DuskTheme.space2))
         PageIntro(S(R.string.studio_bulk_new_sub))
 
         SettingsSectionHeader(S(R.string.studio_bulk_new_prefix))
@@ -345,7 +344,7 @@ fun StudioBulkUsersScreen(
         // What the run will actually make, before it makes it. The first, the last, and how many —
         // which is what catches a prefix with a typo in it and a count with an extra zero.
         if (names.isNotEmpty()) {
-            Spacer(Modifier.height(10.dp))
+            Spacer(Modifier.height(DuskTheme.space2))
             FactsCard(
                 S(R.string.studio_bulk_new_preview)
                     .replace("%1\$s", names.first())
@@ -357,7 +356,7 @@ fun StudioBulkUsersScreen(
             // Answered from the local index, so it costs nothing and appears while typing. The
             // target account's UNIQUE(username) is still the authority — this only means the
             // operator finds out now rather than nineteen creations in.
-            Spacer(Modifier.height(10.dp))
+            Spacer(Modifier.height(DuskTheme.space2))
             ProblemCard(
                 S(R.string.studio_bulk_new_taken)
                     .replace("%1\$s", faNum(clashes.size))
@@ -374,7 +373,7 @@ fun StudioBulkUsersScreen(
                             ?: S(R.string.studio_placement_none),
                         subtitle = S(R.string.studio_bulk_new_placement_note),
                         icon = StudioIcons.Accounts,
-                        tint = Ios.Gray,
+                        tint = DuskTheme.disabled,
                         onClick = { pickingShard = true },
                     )
                 } else {
@@ -433,7 +432,7 @@ fun StudioBulkUsersScreen(
         } else {
             NoticeCard(
                 icon = StudioIcons.Devices,
-                tint = Ios.Orange,
+                tint = DuskTheme.accent,
                 title = S(R.string.studio_new_devices_off_title),
                 body = S(R.string.studio_new_devices_off_body),
             )
@@ -460,12 +459,12 @@ fun StudioBulkUsersScreen(
             )
         }
 
-        Spacer(Modifier.height(14.dp))
+        Spacer(Modifier.height(DuskTheme.space3))
         LinkCountLine(protocols.size, pickedCountries.size, includeDirect || pickedCountries.isEmpty(), 1)
         InfoCard(S(R.string.studio_bulk_new_note))
 
-        Spacer(Modifier.height(14.dp))
-        error?.let { ProblemCard(it); Spacer(Modifier.height(12.dp)) }
+        Spacer(Modifier.height(DuskTheme.space3))
+        error?.let { ProblemCard(it); Spacer(Modifier.height(DuskTheme.space3)) }
 
         if (busy) {
             WizardBusy(
@@ -479,7 +478,7 @@ fun StudioBulkUsersScreen(
                 enabled = names.isNotEmpty() && clashes.isEmpty() && placement != null,
             ) { create() }
         }
-        Spacer(Modifier.height(28.dp))
+        Spacer(Modifier.height(DuskTheme.space5))
     }
 }
 

@@ -1,6 +1,6 @@
 # Eternal VPN — screen redesign checklist
 
-> **Progress: 334 / 1203 complete** — each checked row is fully migrated; unverified routes and states remain unchecked.
+> **Progress: 338 / 1203 complete** — each checked row is fully migrated; unverified routes and states remain unchecked.
 
 > Inventory generated from Kotlin source on 2026-11-26. A row is considered migrated only after its visible composition, nested states, and overlays are reviewed against the Soft Dusk tokens. Shared theme inheritance alone does **not** count as a completed visual redesign.
 
@@ -212,12 +212,12 @@ Found 230 screen-like public/internal composables across 133 Kotlin files (the f
 - [x] `StudioAccountsScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioAccountsScreen.kt`
 - [ ] `StudioAnalyticsScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioAnalyticsScreen.kt`
 - [ ] `StudioAuditScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioAuditScreen.kt`
-- [ ] `StudioBulkActionScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioBulkActionScreen.kt`
+- [x] `StudioBulkActionScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioBulkActionScreen.kt`
 - [x] `StudioBulkAddScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioBulkAddScreen.kt`
-- [ ] `StudioBulkUsersScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioBulkUsersScreen.kt`
+- [x] `StudioBulkUsersScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioBulkUsersScreen.kt`
 - [x] `StudioCentralAccountScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioCentralAccountScreen.kt`
-- [ ] `StudioCentralBulkUsersScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioCentralBulkUsersScreen.kt`
-- [ ] `StudioCentralNewUserScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioCentralNewUserScreen.kt`
+- [x] `StudioCentralBulkUsersScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioCentralBulkUsersScreen.kt`
+- [x] `StudioCentralNewUserScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioCentralNewUserScreen.kt`
 - [x] `StudioCentralUserScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioCentralUserScreen.kt`
 - [x] `StudioConfigBuilderScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioConfigBuilderScreen.kt`
 - [x] `StudioConfigsScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioConfigsScreen.kt`
