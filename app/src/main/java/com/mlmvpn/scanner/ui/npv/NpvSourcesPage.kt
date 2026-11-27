@@ -252,7 +252,7 @@ internal fun NpvSourcesPage(
                     SettingsGroup(Modifier.padding(top = if (ci == 0) 0.dp else 8.dp)) {
                         fileChunks[ci].forEachIndexed { i, e ->
                             if (i > 0) Separator()
-                            FileRow(e)
+                            FileRow(e, showNotice)
                         }
                     }
                 }
@@ -524,7 +524,7 @@ private fun ago(t: Long): String {
 
 /** A file seen in a channel: a tap opens its post in Telegram, where the file itself is. */
 @Composable
-private fun FileRow(e: NpvLibrary.Entry) {
+private fun FileRow(e: NpvLibrary.Entry, showNotice: (String) -> Unit) {
     val ctx = LocalContext.current
     val n = e.name.lowercase()
     val npv = n.contains(".npvt") || n.contains(".npvs")

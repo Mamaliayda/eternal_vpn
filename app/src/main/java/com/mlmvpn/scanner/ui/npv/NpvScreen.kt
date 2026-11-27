@@ -173,6 +173,7 @@ fun NpvScreen(onBack: () -> Unit) {
         Page.MAIN -> MainPage(
             onBack = onBack, entries = entries, live = live, phase = phase, ours = ours, activeId = activeId,
             failed = phase == MyVpnService.Phase.FAILED && failedId != null, onConnect = connect, onSources = { page = Page.SOURCES },
+            showNotice = showNotice,
         )
     }
     RefreshQuestions(entries)
@@ -229,6 +230,7 @@ private fun MainPage(
     failed: Boolean,
     onConnect: (NpvLibrary.Entry) -> Unit,
     onSources: () -> Unit,
+    showNotice: (String) -> Unit,
 ) {
     val ctx = LocalContext.current
     val scope = rememberCoroutineScope()
