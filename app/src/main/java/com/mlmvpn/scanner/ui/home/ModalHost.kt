@@ -7,10 +7,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.mlmvpn.scanner.ui.LocalContentTopInset
 import com.mlmvpn.scanner.ui.LocalSystemTopPadding
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 
 /**
  * The backdrop for a full-screen modal.
@@ -50,10 +50,9 @@ fun IosModalHost(
                 // obviously different one.
                 .background(
                     when {
-                        !Appearance.wallpaperEverywhere ->
-                            if (dark) Color(0xFF000000) else Color(0xFF1C1C1E)
-                        dark -> Color.Black.copy(alpha = 0.45f)
-                        else -> Color.Black.copy(alpha = 0.20f)
+                        !Appearance.wallpaperEverywhere -> DuskTheme.background
+                        dark -> DuskTheme.navyNight.copy(alpha = 0.45f)
+                        else -> DuskTheme.navy.copy(alpha = 0.20f)
                     }
                 )
         ) {

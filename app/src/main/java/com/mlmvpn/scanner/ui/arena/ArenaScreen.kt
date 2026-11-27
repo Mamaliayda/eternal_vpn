@@ -41,7 +41,6 @@ import androidx.compose.material.icons.filled.Language
 import androidx.compose.material.icons.filled.EmojiEvents
 import androidx.compose.material.icons.filled.Flag
 import androidx.compose.material.icons.filled.GraphicEq
-import androidx.compose.material.icons.filled.Language
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.SaveAlt
 import androidx.compose.material.icons.filled.Share
@@ -90,7 +89,6 @@ import com.mlmvpn.scanner.engines.arena.Category
 import com.mlmvpn.scanner.engines.arena.Entry
 import com.mlmvpn.scanner.models.CloudAccount
 import com.mlmvpn.scanner.store.tr
-import com.mlmvpn.scanner.ui.settings.Ios
 import com.mlmvpn.scanner.ui.settings.IosScreen
 import com.mlmvpn.scanner.ui.settings.SettingsActionRow
 import com.mlmvpn.scanner.ui.settings.SettingsFooter
@@ -99,6 +97,8 @@ import com.mlmvpn.scanner.ui.settings.SettingsGroup
 import com.mlmvpn.scanner.ui.settings.SettingsRow
 import com.mlmvpn.scanner.ui.settings.SettingsSectionHeader
 import com.mlmvpn.scanner.ui.settings.SettingsToggle
+import com.mlmvpn.scanner.ui.theme.DuskTheme
+import com.mlmvpn.scanner.ui.theme.rememberDuskSnackbarAction
 import kotlinx.coroutines.delay
 
 private enum class Stage { LOBBY, CONFIRM, LIVE, RESULT }
@@ -117,6 +117,7 @@ fun ArenaScreen(
     onGroupsUpdated: () -> Unit,
 ) {
     val context = LocalContext.current
+    val notify = rememberDuskSnackbarAction()
     LaunchedEffect(Unit) { ArenaStore.load(context) }
     val st by ArenaEngine.state.collectAsState()
     val history by ArenaStore.history.collectAsState()
@@ -153,7 +154,7 @@ fun ArenaScreen(
         Stage.RESULT -> {
             val session = shown ?: st.session
             if (session == null) Failure(st.error, onBack = { ArenaEngine.reset(); stage = Stage.LOBBY })
-            else Result(session, account, groupManager, onGroupsUpdated, celebrate = shown == null,
+            else Result(session, account, groupManager, onGroupsUpdated, notify = notify, celebrate = shown == null,
                 onBack = { shown = null; ArenaEngine.reset(); stage = Stage.LOBBY },
                 onRematch = { ids ->
                     val p = ArenaEngine.plan(context, account, ArenaPanels.ALL.filter { it.id in ids })
@@ -182,8 +183,8 @@ private fun TeamRow(
         TeamTile(id, 30.dp, dim = dim)
         Spacer(Modifier.width(12.dp))
         Column(Modifier.weight(1f)) {
-            Text(title, color = if (dim) Ios.SecondaryLabel else Ios.Label, fontSize = 16.sp)
-            subtitle?.let { Text(it, color = Ios.SecondaryLabel, fontSize = 12.sp, lineHeight = 16.sp, maxLines = 2) }
+            Text(title, color = if (dim) DuskTheme.muted else DuskTheme.onSurface, fontSize = 16.sp)
+            subtitle?.let { Text(it, color = DuskTheme.muted, fontSize = 12.sp, lineHeight = 16.sp, maxLines = 2) }
         }
         trailing()
     }
@@ -193,17 +194,17 @@ private fun TeamRow(
 private fun PrimaryButton(label: String, enabled: Boolean = true, onClick: () -> Unit) {
     Box(
         Modifier.fillMaxWidth().padding(horizontal = 16.dp).clip(RoundedCornerShape(14.dp))
-            .background(if (enabled) Ios.Blue else Ios.Gray.copy(alpha = 0.4f))
+            .background(if (enabled) DuskTheme.primary else DuskTheme.disabled.copy(alpha = 0.4f))
             .clickable(enabled = enabled, onClick = onClick).padding(vertical = 15.dp),
         contentAlignment = Alignment.Center,
-    ) { Text(label, color = Color.White, fontSize = 17.sp, fontWeight = FontWeight.SemiBold) }
+    ) { Text(label, color = DuskTheme.onAccent, fontSize = 17.sp, fontWeight = FontWeight.SemiBold) }
 }
 
 /** A thin value bar, the way Settings draws storage: grey track, one colour. */
 @Composable
 private fun ThinBar(fraction: Float, color: Color, modifier: Modifier = Modifier) {
     val w by animateFloatAsState(fraction.coerceIn(0f, 1f), tween(600), label = "bar")
-    Box(modifier.height(4.dp).clip(CircleShape).background(Ios.Gray.copy(alpha = 0.25f))) {
+    Box(modifier.height(4.dp).clip(CircleShape).background(DuskTheme.disabled.copy(alpha = 0.25f))) {
         Box(Modifier.fillMaxWidth(w).height(4.dp).clip(CircleShape).background(color))
     }
 }
@@ -223,7 +224,7 @@ private fun metrics(e: Entry): String = "⁦" + listOfNotNull(
 @Composable
 private fun SoundToggle(sound: Boolean, setSound: (Boolean) -> Unit) {
     Icon(if (sound) Icons.Default.VolumeUp else Icons.Default.VolumeOff,
-        contentDescription = tr("صدا", "Sound"), tint = Ios.Blue,
+        contentDescription = tr("صدا", "Sound"), tint = DuskTheme.primary,
         modifier = Modifier.size(24.dp).clickable { setSound(!sound) })
 }
 
@@ -249,7 +250,7 @@ private fun Lobby(
                             modifier = Modifier.graphicsLayer { alpha = t; translationY = (1 - t) * 16f }) {
                             TeamTile(p.id, 48.dp)
                             Spacer(Modifier.height(5.dp))
-                            Text(p.name, color = Ios.Label, fontSize = 12.sp)
+                            Text(p.name, color = DuskTheme.onSurface, fontSize = 12.sp)
                         }
                     }
                 }
@@ -258,23 +259,23 @@ private fun Lobby(
             val last = history.firstOrNull()?.board?.winner
             Text(
                 if (last != null) tr("آخرین برنده: ", "Last winner: ") + nameOf(last) else tr("پنل‌های ابری شما، با اندازه‌گیری واقعی", "Your cloud panels, measured for real"),
-                color = Ios.SecondaryLabel, fontSize = 13.sp,
+                color = DuskTheme.muted, fontSize = 13.sp,
             )
         }
 
         SettingsSectionHeader(tr("شروع مسابقه", "Start a race"))
         SettingsGroup {
-            SettingsRow(modeName(ArenaMode.QUICK), icon = Icons.Default.Bolt, tint = Ios.Orange,
+            SettingsRow(modeName(ArenaMode.QUICK), icon = Icons.Default.Bolt, tint = DuskTheme.accent,
                 subtitle = tr("تعیین صلاحیت، تأخیر و دسترسی — حدود یک و نیم دقیقه", "Qualifying, latency and reach — about a minute and a half"),
                 onClick = { onStart(ArenaMode.QUICK) })
             Separator()
-            SettingsRow(modeName(ArenaMode.FULL), icon = Icons.Default.Flag, tint = Ios.Green,
+            SettingsRow(modeName(ArenaMode.FULL), icon = Icons.Default.Flag, tint = DuskTheme.success,
                 subtitle = tr("به‌علاوهٔ سرعت و پایداری — حدود سه و نیم دقیقه، ۱ مگابایت برای هر پنل", "Plus speed and stability — about three and a half minutes, 1 MB per panel"),
                 onClick = { onStart(ArenaMode.FULL) })
         }
         SettingsGroup(modifier = Modifier.padding(top = 12.dp)) {
             SettingsToggle(tr("افکت‌های صوتی", "Sound effects"), checked = sound, onCheckedChange = setSound,
-                icon = Icons.Default.VolumeUp, tint = Ios.Pink)
+                icon = Icons.Default.VolumeUp, tint = DuskTheme.coral)
         }
         SettingsFooter(tr(
             "همهٔ پنل‌ها با یک روش و به نوبت سنجیده می‌شوند تا نوسان شبکه به همه یکسان برسد. عددها واقعی‌اند و هیچ پنلی امتیاز ویژه ندارد.",
@@ -287,7 +288,7 @@ private fun Lobby(
                 val installed = p.installed(context, account)
                 TeamRow(p.id, p.name) {
                     Text(if (installed) tr("نصب‌شده", "Installed") else tr("در مسابقه نصب می‌شود", "Installed at race time"),
-                        color = if (installed) Ios.SecondaryLabel else Ios.Orange, fontSize = 14.sp)
+                        color = if (installed) DuskTheme.muted else DuskTheme.accent, fontSize = 14.sp)
                 }
             }
         }
@@ -306,7 +307,7 @@ private fun Lobby(
                         TeamRow(w ?: "-", if (w != null) nameOf(w) else tr("بدون برنده", "No winner"),
                             subtitle = listOf(timeOf(s.startedAt).takeLast(5), s.network.label, modeName(s.mode)).filter { it.isNotBlank() }.joinToString(" · "),
                             onClick = { onOpen(s) }) {
-                            if (w != null) Icon(Icons.Default.EmojiEvents, null, tint = Ios.Yellow, modifier = Modifier.size(18.dp))
+                            if (w != null) Icon(Icons.Default.EmojiEvents, null, tint = DuskTheme.accent, modifier = Modifier.size(18.dp))
                         }
                     }
                 }
@@ -327,9 +328,9 @@ private fun Confirm(account: CloudAccount, preps: List<ArenaEngine.Prep>, onCanc
                 if (i > 0) Separator()
                 TeamRow(p.panel.id, p.panel.name) {
                     val (text, tint) = when (p.action) {
-                        ArenaEngine.Action.INSTALL -> tr("نصب", "Install") to Ios.Orange
-                        ArenaEngine.Action.UPDATE -> tr("به‌روزرسانی", "Update") to Ios.Blue
-                        ArenaEngine.Action.NONE -> tr("آماده", "Ready") to Ios.Green
+                        ArenaEngine.Action.INSTALL -> tr("نصب", "Install") to DuskTheme.accent
+                        ArenaEngine.Action.UPDATE -> tr("به‌روزرسانی", "Update") to DuskTheme.primary
+                        ArenaEngine.Action.NONE -> tr("آماده", "Ready") to DuskTheme.success
                     }
                     Text(text, color = tint, fontSize = 15.sp)
                 }
@@ -387,9 +388,9 @@ private fun PrepList(st: ArenaEngine.State, sound: Boolean, setSound: (Boolean) 
                 val ready = l.lane == ArenaEngine.Lane.READY || l.lane == ArenaEngine.Lane.RACING
                 TeamRow(l.panelId, l.name, subtitle = l.note, dim = out) {
                     when {
-                        out -> Text(tr("کنار رفت", "Out"), color = Ios.Red, fontSize = 14.sp)
-                        ready && l.note?.contains("…") != true -> Icon(Icons.Default.CheckCircle, null, tint = Ios.Green, modifier = Modifier.size(20.dp))
-                        else -> CircularProgressIndicator(Modifier.size(18.dp), color = Ios.SecondaryLabel, strokeWidth = 2.dp)
+                        out -> Text(tr("کنار رفت", "Out"), color = DuskTheme.error, fontSize = 14.sp)
+                        ready && l.note?.contains("…") != true -> Icon(Icons.Default.CheckCircle, null, tint = DuskTheme.success, modifier = Modifier.size(20.dp))
+                        else -> CircularProgressIndicator(Modifier.size(18.dp), color = DuskTheme.muted, strokeWidth = 2.dp)
                     }
                 }
             }
@@ -410,19 +411,19 @@ private fun CleanIpGroup(st: ArenaEngine.State) {
     SettingsGroup {
         val pick = st.cleanIp
         Row(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 11.dp), verticalAlignment = Alignment.CenterVertically) {
-            com.mlmvpn.scanner.ui.settings.SettingsGlyph(Icons.Default.Language, Ios.Teal)
+            com.mlmvpn.scanner.ui.settings.SettingsGlyph(Icons.Default.Language, DuskTheme.secondary)
             Spacer(Modifier.width(12.dp))
             Column(Modifier.weight(1f)) {
-                Text(pick?.let { "⁦${it.ip}⁩" } ?: tr("آی‌پی تمیز", "Clean IP"), color = Ios.Label, fontSize = 16.sp)
+                Text(pick?.let { "⁦${it.ip}⁩" } ?: tr("آی‌پی تمیز", "Clean IP"), color = DuskTheme.onSurface, fontSize = 16.sp)
                 val sub = pick?.let {
                     tr("تأخیر واقعی ", "real delay ") + "⁦${it.tlsMedianMs} ms" + (it.mbps?.let { m -> String.format(java.util.Locale.US, " · %.1f Mbps", m) } ?: "") + "⁩" +
                         tr(" · از ${it.tried} آی‌پی", " · of ${it.tried} IPs")
                 } ?: st.cleanNote
-                if (sub != null) Text(sub, color = Ios.SecondaryLabel, fontSize = 13.sp)
+                if (sub != null) Text(sub, color = DuskTheme.muted, fontSize = 13.sp)
             }
             when {
-                pick != null -> Icon(Icons.Default.CheckCircle, null, tint = Ios.Green, modifier = Modifier.size(20.dp))
-                active -> CircularProgressIndicator(Modifier.size(18.dp), color = Ios.SecondaryLabel, strokeWidth = 2.dp)
+                pick != null -> Icon(Icons.Default.CheckCircle, null, tint = DuskTheme.success, modifier = Modifier.size(20.dp))
+                active -> CircularProgressIndicator(Modifier.size(18.dp), color = DuskTheme.muted, strokeWidth = 2.dp)
             }
         }
     }
@@ -439,7 +440,7 @@ private fun ScoreRing(score: Int, color: Color) {
     val sweep = remember { Animatable(0f) }
     LaunchedEffect(score) { sweep.animateTo(score / 100f, tween(1100, easing = FastOutSlowInEasing)) }
     val shown by animateIntAsState(score, tween(1100), label = "score")
-    val track = Ios.Gray.copy(alpha = 0.25f)
+    val track = DuskTheme.disabled.copy(alpha = 0.25f)
     Box(Modifier.size(132.dp), contentAlignment = Alignment.Center) {
         Canvas(Modifier.size(132.dp)) {
             val w = 12.dp.toPx()
@@ -448,8 +449,8 @@ private fun ScoreRing(score: Int, color: Color) {
             drawArc(color, -90f, 360f * sweep.value, false, Offset(inset, inset), Size(size.width - w, size.height - w), style = Stroke(w, cap = StrokeCap.Round))
         }
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            Text("$shown", color = Ios.Label, fontSize = 38.sp, fontWeight = FontWeight.Bold)
-            Text(tr("از ۱۰۰", "of 100"), color = Ios.SecondaryLabel, fontSize = 12.sp)
+            Text("$shown", color = DuskTheme.onSurface, fontSize = 38.sp, fontWeight = FontWeight.Bold)
+            Text(tr("از ۱۰۰", "of 100"), color = DuskTheme.muted, fontSize = 12.sp)
         }
     }
 }
@@ -464,7 +465,7 @@ private fun categoryGlyph(c: Category): Pair<ImageVector, String> = when (c) {
 
 @Composable
 private fun tintOf(name: String): Color = when (name) {
-    "yellow" -> Ios.Yellow; "blue" -> Ios.Blue; "orange" -> Ios.Orange; "green" -> Ios.Green; else -> Ios.Teal
+    "yellow" -> DuskTheme.accent; "blue" -> DuskTheme.primary; "orange" -> DuskTheme.accent; "green" -> DuskTheme.success; else -> DuskTheme.secondary
 }
 
 private fun roundName(r: String) = when (r) {
@@ -478,6 +479,7 @@ private fun roundName(r: String) = when (r) {
 @Composable
 private fun Result(
     session: ArenaSession, account: CloudAccount, groupManager: GroupManager, onGroupsUpdated: () -> Unit,
+    notify: (String) -> Unit,
     celebrate: Boolean, onBack: () -> Unit, onRematch: (Set<String>) -> Unit,
 ) {
     val context = LocalContext.current
@@ -514,11 +516,11 @@ private fun Result(
             if (winner != null) {
                 ResultPodium(board, animate = false, modifier = Modifier.padding(horizontal = 16.dp))
             } else {
-                Text(tr("هیچ پنلی به خط پایان نرسید", "No panel reached the finish"), color = Ios.Label, fontSize = 20.sp, fontWeight = FontWeight.SemiBold)
+                Text(tr("هیچ پنلی به خط پایان نرسید", "No panel reached the finish"), color = DuskTheme.onSurface, fontSize = 20.sp, fontWeight = FontWeight.SemiBold)
             }
             Spacer(Modifier.height(10.dp))
             Text(listOf(timeOf(session.startedAt), session.network.label, modeName(session.mode), session.cleanIp?.let { tr("آی‌پی ", "IP ") + "⁦$it⁩" }.orEmpty()).filter { it.isNotBlank() }.joinToString(" · "),
-                color = Ios.SecondaryLabel, fontSize = 12.sp)
+                color = DuskTheme.muted, fontSize = 12.sp)
         }
 
         if (winner != null) {
@@ -534,7 +536,7 @@ private fun Result(
             SettingsFooter(why(winner, board.categories))
             SettingsGroup(modifier = Modifier.padding(top = 12.dp)) {
                 SettingsActionRow(tr("ذخیره در برنامه", "Save to the app"), Icons.Default.SaveAlt, onClick = {
-                    if (saveWinner() != null) android.widget.Toast.makeText(context, tr("کانفیگ برنده ذخیره شد.", "The winner's config was saved."), android.widget.Toast.LENGTH_SHORT).show()
+                    if (saveWinner() != null) notify(tr("کانفیگ برنده ذخیره شد.", "The winner's config was saved."))
                 })
                 if (board.standings.size >= 2) {
                     Separator()
@@ -564,8 +566,8 @@ private fun Result(
                     Row(Modifier.fillMaxWidth().heightIn(min = 48.dp).padding(horizontal = 16.dp, vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
                         SettingsGlyph(icon, tintOf(tint))
                         Spacer(Modifier.width(12.dp))
-                        Text(tr(cat.fa, cat.en), color = Ios.Label, fontSize = 16.sp, modifier = Modifier.weight(1f))
-                        Text(nameOf(id), color = Ios.SecondaryLabel, fontSize = 15.sp)
+                        Text(tr(cat.fa, cat.en), color = DuskTheme.onSurface, fontSize = 16.sp, modifier = Modifier.weight(1f))
+                        Text(nameOf(id), color = DuskTheme.muted, fontSize = 15.sp)
                     }
                 }
             }
@@ -577,20 +579,20 @@ private fun Result(
                 if (i > 0) Separator()
                 val e = session.entries.first { it.panelId == s.panelId }
                 TeamRow(s.panelId, e.name, subtitle = metrics(e),
-                    leading = { Text("${i + 1}", color = if (i == 0) Ios.Yellow else Ios.SecondaryLabel, fontSize = 15.sp, fontWeight = FontWeight.SemiBold, modifier = Modifier.width(22.dp)) },
+                    leading = { Text("${i + 1}", color = if (i == 0) DuskTheme.accent else DuskTheme.muted, fontSize = 15.sp, fontWeight = FontWeight.SemiBold, modifier = Modifier.width(22.dp)) },
                     onClick = { open = if (open == s.panelId) null else s.panelId }) {
-                    Text("${s.total.toInt()}", color = Ios.Label, fontSize = 17.sp, fontWeight = FontWeight.SemiBold)
+                    Text("${s.total.toInt()}", color = DuskTheme.onSurface, fontSize = 17.sp, fontWeight = FontWeight.SemiBold)
                 }
                 if (open == s.panelId) {
                     Column(Modifier.fillMaxWidth().padding(start = 96.dp, end = 16.dp, bottom = 12.dp)) {
                         board.weights.keys.forEach { r ->
                             Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(vertical = 3.dp)) {
-                                Text(roundName(r), color = Ios.SecondaryLabel, fontSize = 12.sp, modifier = Modifier.width(64.dp))
-                                ThinBar(((s.parts[r] ?: 0.0) / 100).toFloat(), Ios.Blue, Modifier.weight(1f))
-                                Text("${(s.parts[r] ?: 0.0).toInt()}", color = Ios.SecondaryLabel, fontSize = 12.sp, modifier = Modifier.width(32.dp), textAlign = TextAlign.End)
+                                Text(roundName(r), color = DuskTheme.muted, fontSize = 12.sp, modifier = Modifier.width(64.dp))
+                                ThinBar(((s.parts[r] ?: 0.0) / 100).toFloat(), DuskTheme.primary, Modifier.weight(1f))
+                                Text("${(s.parts[r] ?: 0.0).toInt()}", color = DuskTheme.muted, fontSize = 12.sp, modifier = Modifier.width(32.dp), textAlign = TextAlign.End)
                             }
                         }
-                        Text(detailLine(e), color = Ios.SecondaryLabel, fontSize = 11.sp, lineHeight = 16.sp, modifier = Modifier.padding(top = 4.dp))
+                        Text(detailLine(e), color = DuskTheme.muted, fontSize = 11.sp, lineHeight = 16.sp, modifier = Modifier.padding(top = 4.dp))
                     }
                 }
             }

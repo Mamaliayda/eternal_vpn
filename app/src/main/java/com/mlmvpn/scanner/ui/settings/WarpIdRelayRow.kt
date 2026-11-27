@@ -1,6 +1,5 @@
 package com.mlmvpn.scanner.ui.settings
 
-import android.widget.Toast
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.VpnKey
 import androidx.compose.runtime.Composable
@@ -15,6 +14,8 @@ import androidx.compose.ui.res.stringResource
 import com.mlmvpn.core.warp.WarpIdRelay
 import com.mlmvpn.scanner.R
 import com.mlmvpn.scanner.data.CloudManager
+import com.mlmvpn.scanner.ui.theme.DuskTheme
+import com.mlmvpn.scanner.ui.theme.rememberDuskSnackbarAction
 import com.mlmvpn.scanner.utils.S
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -28,6 +29,7 @@ import kotlinx.coroutines.withContext
 @Composable
 internal fun WarpIdRelayRow() {
     val context = LocalContext.current
+    val notify = rememberDuskSnackbarAction()
     val scope = rememberCoroutineScope()
     val cloud = remember { CloudManager(context) }
     val accounts by cloud.accountsFlow.collectAsState()
@@ -38,7 +40,7 @@ internal fun WarpIdRelayRow() {
     WorkerSetupRow(
         title = stringResource(R.string.settings_warp_id),
         icon = Icons.Default.VpnKey,
-        tint = Ios.Orange,
+        tint = DuskTheme.accent,
         deployed = deployed,
         latest = WarpIdRelay.VERSION,
         progress = progress,
@@ -47,7 +49,7 @@ internal fun WarpIdRelayRow() {
         onDeploy = deploy@{
             val account = accounts.firstOrNull { it.accountId == WarpIdRelay.accountId(context) } ?: accounts.firstOrNull()
             if (account == null) {
-                Toast.makeText(context, S(R.string.warp_id_no_account), Toast.LENGTH_LONG).show()
+                notify(S(R.string.warp_id_no_account))
                 return@deploy
             }
             progress = "…"
@@ -56,7 +58,7 @@ internal fun WarpIdRelayRow() {
                     WarpIdRelay.deploy(context, account) { step -> scope.launch { progress = step } }
                 }
                 progress = null
-                Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+                notify(message)
             }
         },
     )

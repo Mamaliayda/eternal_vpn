@@ -1,6 +1,5 @@
 package com.mlmvpn.scanner.ui.settings
 
-import android.widget.Toast
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Public
 import androidx.compose.runtime.Composable
@@ -14,6 +13,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import com.mlmvpn.scanner.R
 import com.mlmvpn.scanner.data.CloudManager
+import com.mlmvpn.scanner.ui.theme.DuskTheme
+import com.mlmvpn.scanner.ui.theme.rememberDuskSnackbarAction
 import com.mlmvpn.scanner.utils.S
 import com.mlmvpn.scanner.utils.XrayJsonGenerator
 import kotlinx.coroutines.launch
@@ -28,6 +29,7 @@ import kotlinx.coroutines.launch
 @Composable
 internal fun GeminiExitRow() {
     val context = LocalContext.current
+    val notify = rememberDuskSnackbarAction()
     val scope = rememberCoroutineScope()
     val cloud = remember { CloudManager(context) }
     val accounts by cloud.accountsFlow.collectAsState()
@@ -40,7 +42,7 @@ internal fun GeminiExitRow() {
     WorkerSetupRow(
         title = stringResource(R.string.settings_gemini_exit),
         icon = Icons.Default.Public,
-        tint = Ios.Indigo,
+        tint = DuskTheme.indigo,
         deployed = deployed,
         latest = CloudManager.GEMINI_EXIT_VERSION,
         progress = progress,
@@ -50,14 +52,14 @@ internal fun GeminiExitRow() {
             // The account that already carries it, so a second deploy updates rather than duplicates.
             val account = carrier ?: accounts.firstOrNull()
             if (account == null) {
-                Toast.makeText(context, S(R.string.gemini_exit_no_account), Toast.LENGTH_LONG).show()
+                notify(S(R.string.gemini_exit_no_account))
                 return@deploy
             }
             progress = S(R.string.gemini_exit_uploading)
             scope.launch {
                 val (_, message) = cloud.deployGeminiExit(account) { _, step -> scope.launch { progress = step } }
                 progress = null
-                Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+                notify(message)
             }
         },
     )

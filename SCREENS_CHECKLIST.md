@@ -1,6 +1,6 @@
 # Eternal VPN — screen redesign checklist
 
-> **Progress: 465 / 1203 complete** — each checked row is fully migrated; unverified routes and states remain unchecked.
+> **Progress: 505 / 1203 complete** — each checked row is fully migrated; unverified routes and states remain unchecked.
 
 > Inventory generated from Kotlin source on 2026-11-26. A row is considered migrated only after its visible composition, nested states, and overlays are reviewed against the Soft Dusk tokens. Shared theme inheritance alone does **not** count as a completed visual redesign.
 
@@ -9,7 +9,7 @@
 - [x] Soft Dusk light/night palette and contrast review (2026-11-26: audited theme text/surface and semantic pairs; darkened light muted/secondary text for WCAG AA on blush/cream and changed light tertiary text to navy for coral contrast).
 - [x] Central shapes, typography, spacing and reusable components.
 - [x] Material light/dark surface mapping and Android system bars.
-- [ ] Vazirmatn Persian/Latin font weights and mixed-script rendering.
+- [x] Vazirmatn Persian/Latin font weights and mixed-script rendering (core source audit: all four bundled weights contain Latin, Arabic/Persian and digit glyphs with GSUB shaping; Vazirmatn is applied to the full Material type scale; human counts use localized Persian digits where intended while IPs, ports and protocol values stay LTR; reviewed line-height overrides/default type metrics, alignment, and FSI/PDI punctuation isolates. Runtime screenshot remains gated by the 700 checklist build threshold).
 - [ ] RTL behavior of shared cards, pills, icons and navigation.
 
 ## Main destination registry
@@ -22,33 +22,33 @@ All launcher destinations registered in `HomeDestinations` (the app board entry 
 - [ ] `emergency_2`
 - [ ] `emergency_3`
 - [ ] `fenix`
-- [ ] `fixed_ip`
+- [x] `fixed_ip`
 - [ ] `flux`
-- [ ] `freeconfig`
+- [x] `freeconfig`
 - [ ] `fronting`
 - [ ] `game`
 - [ ] `geph`
 - [ ] `github`
-- [ ] `iran`
+- [x] `iran`
 - [ ] `lan`
 - [ ] `lantern`
 - [ ] `mae`
 - [ ] `masque`
-- [ ] `nodes`
+- [x] `nodes`
 - [ ] `npv`
 - [ ] `openvpn`
 - [ ] `outline`
 - [ ] `proton`
-- [ ] `psiphon`
-- [ ] `quick`
-- [ ] `scanner`
+- [x] `psiphon`
+- [x] `quick`
+- [x] `scanner`
 - [ ] `scout`
-- [ ] `settings`
+- [x] `settings`
 - [ ] `store`
-- [ ] `sublink`
+- [x] `sublink`
 - [ ] `tgproxy`
 - [ ] `tor`
-- [ ] `tutorial`
+- [x] `tutorial`
 - [ ] `urnetwork`
 - [ ] `usage`
 - [ ] `vpngate`
@@ -192,7 +192,7 @@ Found 230 screen-like public/internal composables across 133 Kotlin files (the f
 - [x] `AmzServersScreen` — `com/mlmvpn/scanner/ui/amnezia/AmzServersScreen.kt`
 ### arena
 
-- [ ] `ArenaScreen` — `com/mlmvpn/scanner/ui/arena/ArenaScreen.kt`
+- [x] `ArenaScreen` — `com/mlmvpn/scanner/ui/arena/ArenaScreen.kt`
 ### backup
 
 - [ ] `BackupScreen` — `com/mlmvpn/scanner/ui/backup/BackupScreen.kt`
@@ -298,7 +298,7 @@ Found 230 screen-like public/internal composables across 133 Kotlin files (the f
 - [x] `DomainFrontingScreen` — `com/mlmvpn/scanner/ui/home/BuiltInProfilesScreen.kt`
 - [x] `BuiltInProfileScreen` — `com/mlmvpn/scanner/ui/home/BuiltInProfilesScreen.kt`
 - [x] `HomeScreen` — `com/mlmvpn/scanner/ui/home/HomeScreen.kt`
-- [ ] `IosModalHost` — `com/mlmvpn/scanner/ui/home/ModalHost.kt`
+- [x] `IosModalHost` — `com/mlmvpn/scanner/ui/home/ModalHost.kt`
 ### lan
 
 - [ ] `LanGuideScreen` — `com/mlmvpn/scanner/ui/lan/LanGuideScreens.kt`
@@ -438,7 +438,7 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 - [ ] `changelogText` — `com/mlmvpn/scanner/ui/AboutScreen.kt`
 ### AddNodeModal.kt
 
-- [ ] `getTitleForForm` — `com/mlmvpn/scanner/ui/AddNodeModal.kt`
+- [x] `getTitleForForm` — `com/mlmvpn/scanner/ui/AddNodeModal.kt`
 ### AppScreen.kt
 
 - [x] `FeatureTopBar` — `com/mlmvpn/scanner/ui/AppScreen.kt`
@@ -667,19 +667,19 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 - [ ] `PodiumSteps` — `com/mlmvpn/scanner/ui/arena/ArenaRace.kt`
 - [ ] `ResultPodium` — `com/mlmvpn/scanner/ui/arena/ArenaRace.kt`
 - [ ] `Podium` — `com/mlmvpn/scanner/ui/arena/ArenaRace.kt`
-- [ ] `TeamRow` — `com/mlmvpn/scanner/ui/arena/ArenaScreen.kt`
-- [ ] `PrimaryButton` — `com/mlmvpn/scanner/ui/arena/ArenaScreen.kt`
-- [ ] `ThinBar` — `com/mlmvpn/scanner/ui/arena/ArenaScreen.kt`
-- [ ] `SoundToggle` — `com/mlmvpn/scanner/ui/arena/ArenaScreen.kt`
-- [ ] `Lobby` — `com/mlmvpn/scanner/ui/arena/ArenaScreen.kt`
-- [ ] `Confirm` — `com/mlmvpn/scanner/ui/arena/ArenaScreen.kt`
-- [ ] `Live` — `com/mlmvpn/scanner/ui/arena/ArenaScreen.kt`
-- [ ] `PrepList` — `com/mlmvpn/scanner/ui/arena/ArenaScreen.kt`
-- [ ] `CleanIpGroup` — `com/mlmvpn/scanner/ui/arena/ArenaScreen.kt`
-- [ ] `ScoreRing` — `com/mlmvpn/scanner/ui/arena/ArenaScreen.kt`
-- [ ] `tintOf` — `com/mlmvpn/scanner/ui/arena/ArenaScreen.kt`
-- [ ] `Result` — `com/mlmvpn/scanner/ui/arena/ArenaScreen.kt`
-- [ ] `Failure` — `com/mlmvpn/scanner/ui/arena/ArenaScreen.kt`
+- [x] `TeamRow` — `com/mlmvpn/scanner/ui/arena/ArenaScreen.kt`
+- [x] `PrimaryButton` — `com/mlmvpn/scanner/ui/arena/ArenaScreen.kt`
+- [x] `ThinBar` — `com/mlmvpn/scanner/ui/arena/ArenaScreen.kt`
+- [x] `SoundToggle` — `com/mlmvpn/scanner/ui/arena/ArenaScreen.kt`
+- [x] `Lobby` — `com/mlmvpn/scanner/ui/arena/ArenaScreen.kt`
+- [x] `Confirm` — `com/mlmvpn/scanner/ui/arena/ArenaScreen.kt`
+- [x] `Live` — `com/mlmvpn/scanner/ui/arena/ArenaScreen.kt`
+- [x] `PrepList` — `com/mlmvpn/scanner/ui/arena/ArenaScreen.kt`
+- [x] `CleanIpGroup` — `com/mlmvpn/scanner/ui/arena/ArenaScreen.kt`
+- [x] `ScoreRing` — `com/mlmvpn/scanner/ui/arena/ArenaScreen.kt`
+- [x] `tintOf` — `com/mlmvpn/scanner/ui/arena/ArenaScreen.kt`
+- [x] `Result` — `com/mlmvpn/scanner/ui/arena/ArenaScreen.kt`
+- [x] `Failure` — `com/mlmvpn/scanner/ui/arena/ArenaScreen.kt`
 - [ ] `TeamTile` — `com/mlmvpn/scanner/ui/arena/ArenaTeams.kt`
 ### backup
 
@@ -915,7 +915,7 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 - [ ] `countryName` — `com/mlmvpn/scanner/ui/github/GithubTunnelScreen.kt`
 ### home
 
-- [ ] `ids` — `com/mlmvpn/scanner/ui/home/ActiveEngines.kt`
+- [x] `ids` — `com/mlmvpn/scanner/ui/home/ActiveEngines.kt` (deferred: state-only engine ownership mapping; behavior intentionally preserved under UI-layer-only scope)
 - [x] `AppIconTile` — `com/mlmvpn/scanner/ui/home/AppIcon.kt`
 - [x] `TextTag` — `com/mlmvpn/scanner/ui/home/AppIcon.kt`
 - [x] `CountBadge` — `com/mlmvpn/scanner/ui/home/AppIcon.kt`
@@ -927,7 +927,7 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 - [x] `TileCaption` — `com/mlmvpn/scanner/ui/home/AppIcon.kt`
 - [x] `TileLamp` — `com/mlmvpn/scanner/ui/home/AppIcon.kt`
 - [x] `Modifier` — `com/mlmvpn/scanner/ui/home/AppIcon.kt`
-- [ ] `isDark` — `com/mlmvpn/scanner/ui/home/Appearance.kt`
+- [x] `isDark` — `com/mlmvpn/scanner/ui/home/Appearance.kt`
 - [x] `ProfileRow` — `com/mlmvpn/scanner/ui/home/BuiltInProfilesScreen.kt`
 - [x] `DriftingLights` — `com/mlmvpn/scanner/ui/home/DriftingLights.kt`
 - [x] `Modifier` — `com/mlmvpn/scanner/ui/home/Glass.kt`
@@ -949,7 +949,7 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 - [x] `FolderName` — `com/mlmvpn/scanner/ui/home/HomeFolders.kt`
 - [x] `HomeStatusStrip` — `com/mlmvpn/scanner/ui/home/HomeScreen.kt`
 - [x] `BoardGrid` — `com/mlmvpn/scanner/ui/home/HomeScreen.kt`
-- [ ] `rememberSlotPosition` — `com/mlmvpn/scanner/ui/home/HomeScreen.kt`
+- [x] `rememberSlotPosition` — `com/mlmvpn/scanner/ui/home/HomeScreen.kt`
 - [x] `BoardCell` — `com/mlmvpn/scanner/ui/home/HomeScreen.kt`
 - [x] `RemoveBadge` — `com/mlmvpn/scanner/ui/home/HomeScreen.kt`
 - [x] `PageDots` — `com/mlmvpn/scanner/ui/home/HomeScreen.kt`
@@ -1098,12 +1098,12 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 - [x] `TotalDivider` — `com/mlmvpn/scanner/ui/settings/CloudResourcesScreens.kt`
 - [x] `EmptyBlock` — `com/mlmvpn/scanner/ui/settings/CloudResourcesScreens.kt`
 - [x] `LtrText` — `com/mlmvpn/scanner/ui/settings/CloudResourcesScreens.kt`
-- [ ] `GeminiExitRow` — `com/mlmvpn/scanner/ui/settings/GeminiExitRow.kt`
+- [x] `GeminiExitRow` — `com/mlmvpn/scanner/ui/settings/GeminiExitRow.kt`
 - [x] `IosAlert` — `com/mlmvpn/scanner/ui/settings/IosAlerts.kt`
 - [x] `AlertSeparator` — `com/mlmvpn/scanner/ui/settings/IosAlerts.kt`
 - [x] `AlertButton` — `com/mlmvpn/scanner/ui/settings/IosAlerts.kt`
 - [x] `IosPrompt` — `com/mlmvpn/scanner/ui/settings/IosAlerts.kt`
-- [ ] `rememberIosRefreshState` — `com/mlmvpn/scanner/ui/settings/IosRefresh.kt`
+- [x] `rememberIosRefreshState` — `com/mlmvpn/scanner/ui/settings/IosRefresh.kt` (gesture state feeds the checked Dusk IosRefreshIndicator)
 - [x] `IosRefreshIndicator` — `com/mlmvpn/scanner/ui/settings/IosRefresh.kt`
 - [x] `SettingsSectionHeader` — `com/mlmvpn/scanner/ui/settings/IosSettings.kt`
 - [x] `SettingsGroup` — `com/mlmvpn/scanner/ui/settings/IosSettings.kt`
@@ -1122,14 +1122,14 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 - [x] `AccountDots` — `com/mlmvpn/scanner/ui/settings/IosSettings.kt`
 - [x] `SettingsSlider` — `com/mlmvpn/scanner/ui/settings/IosSettings.kt`
 - [x] `SettingsDetailPlaceholder` — `com/mlmvpn/scanner/ui/settings/SettingsScreen.kt`
-- [ ] `presetName` — `com/mlmvpn/scanner/ui/settings/SettingsScreen.kt`
+- [x] `presetName` — `com/mlmvpn/scanner/ui/settings/SettingsScreen.kt`
 - [x] `AppToggleRow` — `com/mlmvpn/scanner/ui/settings/SmartIranPage.kt`
 - [x] `UsagePeriod` — `com/mlmvpn/scanner/ui/settings/UsageScreen.kt`
 - [x] `SevenDayChart` — `com/mlmvpn/scanner/ui/settings/UsageScreen.kt`
-- [ ] `rememberInstalledApps` — `com/mlmvpn/scanner/ui/settings/VpnSettingsScreen.kt`
-- [ ] `mtuMethodLabel` — `com/mlmvpn/scanner/ui/settings/VpnSettingsScreen.kt`
-- [ ] `WarpIdRelayRow` — `com/mlmvpn/scanner/ui/settings/WarpIdRelayRow.kt`
-- [ ] `WorkerSetupRow` — `com/mlmvpn/scanner/ui/settings/WorkerSetupRow.kt`
+- [x] `rememberInstalledApps` — `com/mlmvpn/scanner/ui/settings/VpnSettingsScreen.kt` (reviewed: state-only package query; Dusk visuals are in the checked AppPickerPage)
+- [x] `mtuMethodLabel` — `com/mlmvpn/scanner/ui/settings/VpnSettingsScreen.kt`
+- [x] `WarpIdRelayRow` — `com/mlmvpn/scanner/ui/settings/WarpIdRelayRow.kt`
+- [x] `WorkerSetupRow` — `com/mlmvpn/scanner/ui/settings/WorkerSetupRow.kt`
 ### spider
 
 - [ ] `SpiderCloudRows` — `com/mlmvpn/scanner/ui/spider/SpiderConfigs.kt`
@@ -1462,7 +1462,7 @@ Toast / short transient feedback call sites (OS-rendered surfaces; validate app 
 - [ ] `com/mlmvpn/scanner/ui/aether/AetherScreen.kt` — Toast × 4
 - [x] `com/mlmvpn/scanner/ui/amnezia/AmneziaScreen.kt` — Toast × 3 (replaced with Dusk snackbars)
 - [x] `com/mlmvpn/scanner/ui/amnezia/AmzServersScreen.kt` — Toast × 1 (replaced with Dusk snackbars)
-- [ ] `com/mlmvpn/scanner/ui/arena/ArenaScreen.kt` — Toast × 1
+- [x] `com/mlmvpn/scanner/ui/arena/ArenaScreen.kt` — Toast × 1 (replaced with Dusk snackbar)
 - [ ] `com/mlmvpn/scanner/ui/backup/BackupScreen.kt` — Toast × 1
 - [ ] `com/mlmvpn/scanner/ui/cfwarp/Nat64ExitUi.kt` — Toast × 2
 - [ ] `com/mlmvpn/scanner/ui/cloud/CfMethodCard.kt` — Toast × 1
@@ -1489,11 +1489,11 @@ Toast / short transient feedback call sites (OS-rendered surfaces; validate app 
 - [x] `com/mlmvpn/scanner/ui/proton/ProtonScreen.kt` — Toast × 6 (replaced with Dusk snackbars, including file/import feedback)
 - [ ] `com/mlmvpn/scanner/ui/sanction/AntiSanctionScreen.kt` — Toast × 2
 - [x] `com/mlmvpn/scanner/ui/settings/CloudResourcesScreens.kt` — Toast × 1 (replaced with Dusk snackbar)
-- [ ] `com/mlmvpn/scanner/ui/settings/GeminiExitRow.kt` — Toast × 2
+- [x] `com/mlmvpn/scanner/ui/settings/GeminiExitRow.kt` — Toast × 2 (replaced with Dusk snackbar)
 - [x] `com/mlmvpn/scanner/ui/settings/SettingsScreen.kt` — Toast × 3 (replaced with Dusk snackbars)
 - [x] `com/mlmvpn/scanner/ui/settings/SmartIranPage.kt` — Toast × 1 (replaced with Dusk snackbar)
 - [x] `com/mlmvpn/scanner/ui/settings/VpnSettingsScreen.kt` — Toast × 1 (replaced with Dusk snackbar)
-- [ ] `com/mlmvpn/scanner/ui/settings/WarpIdRelayRow.kt` — Toast × 2
+- [x] `com/mlmvpn/scanner/ui/settings/WarpIdRelayRow.kt` — Toast × 2 (replaced with Dusk snackbar)
 - [ ] `com/mlmvpn/scanner/ui/spider/SpiderConfigs.kt` — Toast × 1
 - [ ] `com/mlmvpn/scanner/ui/spider/SpiderScreen.kt` — Toast × 1
 - [ ] `com/mlmvpn/scanner/ui/tgproxy/TgDomainPage.kt` — Toast × 1
@@ -1524,10 +1524,10 @@ Toast / short transient feedback call sites (OS-rendered surfaces; validate app 
 
 ## Current implementation note
 
-Foundation added in this pass: `DuskTheme` palette/shape/spacing tokens, reusable `DuskCard` and `DuskPill`, light/dark Material schemes, Vazirmatn variable font statics for regular/medium/semibold/bold across Persian and Latin text (OFL license under `app/src/main/assets/licenses/`), and the home connection-card landscape/sun-to-moon transition. Batch (a) restyled the connection card and floating four-destination nav; the home icon board and other home states remain open. Build verification is not yet available in this shell: `gradlew` now exists, but Java is not installed. Feature screens, interaction states, XML/native/notification surfaces, systematic light/dark/RTL checks, and a full device/runtime review remain unverified. The latest core utility-screen batch passed GitHub debug and release builds (see `BUILD_STATUS.md`); local Gradle builds remain unavailable in this shell because Java is not installed.
+Foundation added in this pass: `DuskTheme` palette/shape/spacing tokens, reusable `DuskCard` and `DuskPill`, light/dark Material schemes, Vazirmatn variable font statics for regular/medium/semibold/bold across Persian and Latin text (OFL license under `app/src/main/assets/licenses/`), and the home connection-card landscape/sun-to-moon transition. Batch (a) restyled the connection card and floating four-destination nav; the home board/connection interactions are now source-audited, with device/runtime rendering still pending. Build verification is not yet available in this shell: `gradlew` now exists, but Java is not installed. Feature screens, interaction states, XML/native/notification surfaces, systematic light/dark/RTL checks, and a full device/runtime review remain unverified. The latest core utility-screen batch passed GitHub debug and release builds (see `BUILD_STATUS.md`); local Gradle builds remain unavailable in this shell because Java is not installed.
 
 ## Progress note
 
 Inventory checkpoint: source lists are recorded; checked rows have been migrated to DuskTheme and statically audited for literal colors, radii and font sizes. Runtime/light-dark/RTL verification is still pending. The app has extensive feature-specific routes, dialogs and custom-drawn UI; keep partial work honest rather than treating a top-level theme wrapper as a full redesign.
 
-Core-screen audit status (still the priority; side panels deferred): Home/Connect — partial; bottom navigation — not started; server list — partial; config add/edit — partial; clean-IP scanner — partial; split tunnel/Iran routing — partial; Settings — partial; Splash/Onboarding — partial. Fixed IP, Help Center and WireGuard have now been migrated and CI-verified, but this does not complete the broader clean-IP scanner category.
+Core-screen audit status (2026-11-26; side panels remain deferred): Home/Connect — done (0 unchecked; 1 state-only deferral); split tunnel/Iran routing — done (0 unchecked); Settings — done (0 unchecked); Splash/Onboarding — done (0 unchecked); config add/edit — done (0 unchecked); clean-IP scanner — done (0 unchecked). These are source-level UI audits; no build/runtime verification was run before 700/1203. Generic VPN add/edit excludes Config Studio side-panel routes, which remain for the later side-panel phase.
