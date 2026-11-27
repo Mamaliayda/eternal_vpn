@@ -314,7 +314,7 @@ private fun MainPage(
             SettingsGroup {
                 myFiles.forEachIndexed { i, e ->
                     if (i > 0) Separator()
-                    NativeRow(e, onRemove = { scope.io { NpvEngine.remove(ctx, listOf(e.id)) } })
+                    NativeRow(e, showNotice, onRemove = { scope.io { NpvEngine.remove(ctx, listOf(e.id)) } })
                 }
             }
         }
@@ -643,7 +643,7 @@ internal fun ConfigRow(
 
 /** One of the user's own NPV Tunnel files: opens in NPV Tunnel, or goes. */
 @Composable
-private fun NativeRow(e: NpvLibrary.Entry, onRemove: () -> Unit) {
+private fun NativeRow(e: NpvLibrary.Entry, showNotice: (String) -> Unit, onRemove: () -> Unit) {
     val ctx = LocalContext.current
     var ask by remember { mutableStateOf(false) }
     Row(
