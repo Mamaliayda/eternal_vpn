@@ -4,6 +4,8 @@
 
 | Commit | Run | Result | Errors fixed / notes |
 |---|---:|---|---|
+| `9cf43852a9e11cfc6ae95d227f80730a5c348b00` | [45861386968](https://github.com/Mamaliayda/eternal_vpn/actions/runs/45861386968) | Red | `assembleDebug` failed at `FreeConfigWizard.kt:505, 580, 634`: unresolved `frostedGlass` after its import was removed while usages remained. Restored the import locally; rerun pending. |
+| `9cf43852a9e11cfc6ae95d227f80730a5c348b00` | [45861386988](https://github.com/Mamaliayda/eternal_vpn/actions/runs/45861386988) | Red | Release `compileReleaseKotlin` failed with the same three unresolved `frostedGlass` references. Restored the import locally; rerun pending. |
 | `4323f976f4956a85e5cea4d14f4a63828a1c49a3` | [45855479414](https://github.com/Mamaliayda/eternal_vpn/actions/runs/45855479414) | Green | `assembleDebug` passed in 29m28s; debug APK and build-log artifacts uploaded. Non-blocking Node.js 20 deprecation and missing `go.mod` cache warnings only. |
 | `4323f976f4956a85e5cea4d14f4a63828a1c49a3` | [45855479550](https://github.com/Mamaliayda/eternal_vpn/actions/runs/45855479550) | Green | Release APK build passed in 32m9s; APK/checksum artifacts uploaded. Non-blocking Node.js 20 deprecation and missing `go.mod` cache warnings only. |
 | `f77feb54ae05abb11c7085203d8e9576952e1a5a` | [45846471963](https://github.com/Mamaliayda/eternal_vpn/actions/runs/45846471963) | Green | `assembleDebug` passed in 32m21s; debug APK and build-log artifacts uploaded. All build steps succeeded. |
@@ -34,4 +36,4 @@
 
 ## Current state
 
-The required wrapper files are present. `.github/workflows/build.yml` runs `assembleDebug` on pushes and uploads the Gradle log even when the build fails. Latest screen batch at `4323f97` passed both the debug and release APK workflows; artifacts were uploaded. The only workflow notices were non-blocking Node.js 20 deprecation and missing `go.mod` cache warnings. Local Gradle compilation is unavailable because Java is not installed in this sandbox.
+The required wrapper files are present. `.github/workflows/build.yml` runs `assembleDebug` on pushes and uploads the Gradle log even when the build fails. Screen batch `9cf4385` failed both debug and release Kotlin compilation because the `frostedGlass` extension import was removed from `FreeConfigWizard.kt` while call sites remained. The import has been restored locally; the repair is queued for commit and CI rerun. The only other workflow notices were non-blocking Node.js 20 deprecation and missing `go.mod` cache warnings. Local Gradle compilation is unavailable because Java is not installed in this sandbox.

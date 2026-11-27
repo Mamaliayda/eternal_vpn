@@ -50,6 +50,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mlmvpn.scanner.engines.freeconfig.FreeConfigEngine
+import com.mlmvpn.scanner.ui.home.frostedGlass
 import com.mlmvpn.scanner.models.VpnNode
 import com.mlmvpn.scanner.ui.settings.IosScreen
 import com.mlmvpn.scanner.ui.settings.SettingsActionRow
