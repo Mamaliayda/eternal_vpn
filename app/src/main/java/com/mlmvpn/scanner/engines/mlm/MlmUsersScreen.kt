@@ -1,7 +1,6 @@
 package com.mlmvpn.scanner.engines.mlm
 
 import com.mlmvpn.scanner.ui.home.frostedGlass
-import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -44,6 +43,7 @@ fun MlmUsersScreen(
     onGroupsUpdated: () -> Unit = {}
 ) {
     val context = LocalContext.current
+    val notify = rememberDuskSnackbarAction()
     val scope = rememberCoroutineScope()
     val apiManager = remember { MlmApiManager(context) }
     
@@ -72,7 +72,7 @@ fun MlmUsersScreen(
             if (fetchedUsers != null) {
                 users = fetchedUsers
             } else {
-                Toast.makeText(context, S(R.string.error_fetching_users, apiManager.lastGetUsersError), Toast.LENGTH_LONG).show()
+                notify(S(R.string.error_fetching_users, apiManager.lastGetUsersError))
             }
             isLoading = false
         }
@@ -187,6 +187,7 @@ fun MlmUserCard(
     onEditUser: () -> Unit
 ) {
     val context = LocalContext.current
+    val notify = rememberDuskSnackbarAction()
     val scope = rememberCoroutineScope()
     var isExpanded by remember { mutableStateOf(false) }
     var isBusy by remember { mutableStateOf(false) }
@@ -246,7 +247,7 @@ fun MlmUserCard(
                         if (success) {
                             onRefresh()
                         } else {
-                            Toast.makeText(context, S(R.string.could_not_change_the_user_s_state), Toast.LENGTH_SHORT).show()
+                            notify(S(R.string.could_not_change_the_user_s_state))
                         }
                     }
                 }) {
@@ -293,9 +294,9 @@ fun MlmUserCard(
                                 groupManager.cloudGroups.add(0, newGroup)
                                 groupManager.saveCloudGroups()
                                 onGroupsUpdated()
-                                Toast.makeText(context, S(R.string.the_configs_were_added_to_the_cloud), Toast.LENGTH_SHORT).show()
+                                notify(S(R.string.the_configs_were_added_to_the_cloud))
                             } else {
-                                Toast.makeText(context, S(R.string.no_config_found), Toast.LENGTH_SHORT).show()
+                                notify(S(R.string.no_config_found))
                             }
                             isBusy = false
                         }
@@ -305,7 +306,7 @@ fun MlmUserCard(
                         val clipboard = context.getSystemService(android.content.Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
                         val clip = android.content.ClipData.newPlainText("status", statusLink)
                         clipboard.setPrimaryClip(clip)
-                        Toast.makeText(context, S(R.string.status_page_link_copied), Toast.LENGTH_SHORT).show()
+                        notify(S(R.string.status_page_link_copied))
                     }
                     ActionBtn(Icons.Default.Speed, S(R.string.ip_scan)) {
                         isBusy = true
@@ -314,7 +315,7 @@ fun MlmUserCard(
                             if (configs.isNotEmpty()) {
                                 onScanUser(configs.first())
                             } else {
-                                Toast.makeText(context, S(R.string.no_config_found), Toast.LENGTH_SHORT).show()
+                                notify(S(R.string.no_config_found))
                             }
                             isBusy = false
                         }
@@ -350,7 +351,7 @@ fun MlmUserCard(
                             if (success) {
                                 onRefresh()
                             } else {
-                                Toast.makeText(context, S(R.string.could_not_delete_the_user), Toast.LENGTH_SHORT).show()
+                                notify(S(R.string.could_not_delete_the_user))
                             }
                         }
                     },
@@ -409,6 +410,7 @@ fun AddMlmUserDialog(
     
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
+    val notify = rememberDuskSnackbarAction()
 
     com.mlmvpn.scanner.ui.settings.IosAlert(
         title = if (isEditMode) S(R.string.edit_user) else S(R.string.new_user),
@@ -565,7 +567,7 @@ fun AddMlmUserDialog(
                 if (isEditMode) S(R.string.save) else S(R.string.create),
                 onClick = {
                     if (username.isBlank()) {
-                        Toast.makeText(context, S(R.string.a_username_is_required), Toast.LENGTH_SHORT).show()
+                        notify(S(R.string.a_username_is_required))
                     } else {
                         isBusy = true
                         scope.launch {
@@ -596,10 +598,10 @@ fun AddMlmUserDialog(
                             }
                             isBusy = false
                             if (success) {
-                                Toast.makeText(context, if (isEditMode) S(R.string.user_edited_successfully) else S(R.string.user_created_successfully), Toast.LENGTH_SHORT).show()
+                                notify(if (isEditMode) S(R.string.user_edited_successfully) else S(R.string.user_created_successfully))
                                 onUserAdded()
                             } else {
-                                Toast.makeText(context, if (isEditMode) S(R.string.could_not_edit_the_user) else S(R.string.could_not_create_the_user), Toast.LENGTH_SHORT).show()
+                                notify(if (isEditMode) S(R.string.could_not_edit_the_user) else S(R.string.could_not_create_the_user))
                             }
                         }
                     }

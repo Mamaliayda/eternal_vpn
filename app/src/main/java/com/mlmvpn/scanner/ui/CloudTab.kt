@@ -56,6 +56,7 @@ fun CloudTab(
     onOpenConfigStudio: () -> Unit = {},
 ) {
     val context = LocalContext.current
+    val notify = rememberDuskSnackbarAction()
     val doctorPrefs = remember { context.getSharedPreferences("cfnet_ui", android.content.Context.MODE_PRIVATE) }
     // Cloudflare Doctor runs as a setup the first time Cloud opens after an install or an update
     // (or a new engine version): every stage is diagnosed on this network, then Cloud opens.
@@ -531,7 +532,7 @@ fun CloudTab(
                     onAddConfigs = { links ->
                         if (com.mlmvpn.scanner.ui.spider.SpiderConfigs.file(context, groupManager, acc, links) != null) {
                             cloudGroups = groupManager.cloudGroups.toList()
-                            android.widget.Toast.makeText(context, context.getString(R.string.cloud_admin_configs_received, links.size), android.widget.Toast.LENGTH_SHORT).show()
+                            notify(context.getString(R.string.cloud_admin_configs_received, links.size))
                             // Back to the Cloud tab, where the combine offer shows under the new group.
                             showSpiderFor = null
                         }
@@ -577,11 +578,11 @@ fun CloudTab(
                         val acc = showBpbSettingsFor!!
                         showBpbSettingsFor = null
                         scope.launch {
-                            android.widget.Toast.makeText(context, context.getString(R.string.cloud_updating_settings_and_fetching), android.widget.Toast.LENGTH_SHORT).show()
+                            notify(context.getString(R.string.cloud_updating_settings_and_fetching))
                         
                             val updateResult = cloudManager.updateWorkerSettings(acc, settingsJson)
                             if (!updateResult.first) {
-                                android.widget.Toast.makeText(context, updateResult.second, android.widget.Toast.LENGTH_LONG).show()
+                                notify(updateResult.second)
                                 return@launch
                             }
 
@@ -604,9 +605,9 @@ fun CloudTab(
                                 groupManager.cloudGroups.add(0, newGroup)
                                     com.mlmvpn.scanner.ui.CombineCoach.offer(context, newGroup.id, newGroup.nodes.firstOrNull()?.uri ?: "")
                                 groupManager.saveCloudGroups()
-                                android.widget.Toast.makeText(context, context.getString(R.string.cloud_new_group_received), android.widget.Toast.LENGTH_SHORT).show()
+                                notify(context.getString(R.string.cloud_new_group_received))
                             } else {
-                                android.widget.Toast.makeText(context, context.getString(R.string.cloud_error_fetching_nodes), android.widget.Toast.LENGTH_LONG).show()
+                                notify(context.getString(R.string.cloud_error_fetching_nodes))
                             }
                         }
                     }
@@ -766,6 +767,7 @@ fun AccountGroupCard(
     var showEmailModal by remember { mutableStateOf(false) }
     
     val context = LocalContext.current
+    val notify = rememberDuskSnackbarAction()
     // Which panels are installed as FULL panels on this account. A full panel keeps its own row below; a panel that is not
     // installed gets a row of the account's ONE central Worker instead of a «Deploy» button of its own (ui/cloud/GatewayRows.kt).
     var thirdPartyTick by remember { mutableStateOf(0) }
@@ -807,27 +809,27 @@ fun AccountGroupCard(
                     // A failed REdeploy leaves the panel exactly as it was -- the old script is
                     // still up there serving -- so the row goes back to "deployed", not to "idle".
                     deployState = "done"
-                    if (!r.first) android.widget.Toast.makeText(context, r.second, android.widget.Toast.LENGTH_LONG).show()
+                    if (!r.first) notify(r.second)
                 }
                 "EDG" -> {
                     edgDeployState = "deploying"; edgProgress = 0f
                     val r = cloudManager.deployEdgWorker(account) { p, _ -> edgProgress = p.toFloat() }
                     edgDeployState = "done"
-                    if (!r.first) android.widget.Toast.makeText(context, r.second, android.widget.Toast.LENGTH_LONG).show()
+                    if (!r.first) notify(r.second)
                 }
                 "NHN" -> {
                     nahanDeployState = "deploying"; nahanProgress = 0f
                     val d = com.mlmvpn.scanner.engines.nahan.NahanDeployer(context)
                     val r = d.deployNahan(account) { p, _ -> nahanProgress = p.toFloat() }
                     nahanDeployState = "done"
-                    if (!r.first) android.widget.Toast.makeText(context, r.second, android.widget.Toast.LENGTH_LONG).show()
+                    if (!r.first) notify(r.second)
                 }
                 "MLM" -> {
                     mlmDeployState = "deploying"; mlmProgress = 0f
                     val d = com.mlmvpn.scanner.engines.mlm.MlmDeployer(context)
                     val r = d.deployMlm(account) { p, _ -> mlmProgress = p.toFloat() }
                     mlmDeployState = "done"
-                    if (!r.first) android.widget.Toast.makeText(context, r.second, android.widget.Toast.LENGTH_LONG).show()
+                    if (!r.first) notify(r.second)
                 }
             }
             cloudManager.saveAccounts()
@@ -853,7 +855,7 @@ fun AccountGroupCard(
                 }
                 openPanel = null
             }
-            android.widget.Toast.makeText(context, message, android.widget.Toast.LENGTH_LONG).show()
+            notify(message)
         }
     }
 
@@ -886,7 +888,7 @@ fun AccountGroupCard(
                             )
                         )
                     } else {
-                        android.widget.Toast.makeText(context, raw, android.widget.Toast.LENGTH_LONG).show()
+                        notify(raw)
                     }
                 }
             }
@@ -902,7 +904,7 @@ fun AccountGroupCard(
                 if (coached) {
                     CloudCoach.setWork(S(R.string.fetching_configs_from_the_panel), 0f)
                 } else {
-                    android.widget.Toast.makeText(context, context.getString(R.string.cloud_fetching_edg_configs), android.widget.Toast.LENGTH_SHORT).show()
+                    notify(context.getString(R.string.cloud_fetching_edg_configs))
                 }
                 val newGroup: com.mlmvpn.scanner.data.CloudGroup? = if (viaGateway) {
                     com.mlmvpn.scanner.ui.cloud.GatewayConfigs.fetch(context, groupManager, account, "EDG", offer = false).getOrNull()?.let {
@@ -948,7 +950,7 @@ fun AccountGroupCard(
                         onCoachHandOff(newGroup.id, newGroup.nodes.firstOrNull()?.uri ?: "")
                     } else {
                         com.mlmvpn.scanner.ui.CombineCoach.offer(context, newGroup.id, newGroup.nodes.firstOrNull()?.uri ?: "")
-                        android.widget.Toast.makeText(context, context.getString(R.string.cloud_configs_added_successfully, newGroup.nodes.size), android.widget.Toast.LENGTH_SHORT).show()
+                        notify(context.getString(R.string.cloud_configs_added_successfully, newGroup.nodes.size))
                     }
                 } else {
                     if (coached) {
@@ -961,7 +963,7 @@ fun AccountGroupCard(
                             )
                         )
                     } else {
-                        android.widget.Toast.makeText(context, context.getString(R.string.cloud_error_fetching_configs), android.widget.Toast.LENGTH_SHORT).show()
+                        notify(context.getString(R.string.cloud_error_fetching_configs))
                     }
                 }
                 isEdgFetching = false
@@ -1175,7 +1177,7 @@ fun AccountGroupCard(
                                     if (result.second == "ERR_ACCOUNT_HAS_SUBDOMAIN") {
                                         showSubdomainError = true
                                     } else {
-                                        android.widget.Toast.makeText(context, result.second, android.widget.Toast.LENGTH_LONG).show()
+                                        notify(result.second)
                                     }
                                 }
                             }
@@ -1222,7 +1224,7 @@ fun AccountGroupCard(
                                 if (deployState == "done" && !isFetching) {
                                     scope.launch {
                                         isFetching = true
-                                        android.widget.Toast.makeText(context, context.getString(R.string.cloud_fetching_current_settings), android.widget.Toast.LENGTH_SHORT).show()
+                                        notify(context.getString(R.string.cloud_fetching_current_settings))
                                         val currentSettings = cloudManager.fetchWorkerSettings(account)
                                         if (currentSettings != null) {
                                             onShowBpbSettings(currentSettings, account)
@@ -1434,7 +1436,7 @@ fun AccountGroupCard(
                                     if (result.second == "ERR_ACCOUNT_HAS_SUBDOMAIN") {
                                         showSubdomainError = true
                                     } else {
-                                        android.widget.Toast.makeText(context, result.second, android.widget.Toast.LENGTH_LONG).show()
+                                        notify(result.second)
                                     }
                                 }
                             }
@@ -1479,12 +1481,12 @@ fun AccountGroupCard(
                             if (nahanDeployState == "done" && !isNahanFetching) {
                                 scope.launch {
                                     isNahanFetching = true
-                                    android.widget.Toast.makeText(context, context.getString(R.string.cloud_fetching_admin_configs), android.widget.Toast.LENGTH_SHORT).show()
+                                    notify(context.getString(R.string.cloud_fetching_admin_configs))
                                     val nahanDeployer = com.mlmvpn.scanner.engines.nahan.NahanDeployer(context)
                                     try {
                                         if (account.nahanWorkerUrl.isNullOrEmpty() || !account.nahanWorkerUrl!!.startsWith("http")) {
                                             kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.Main) {
-                                                android.widget.Toast.makeText(context, context.getString(R.string.cloud_invalid_worker_address), android.widget.Toast.LENGTH_SHORT).show()
+                                                notify(context.getString(R.string.cloud_invalid_worker_address))
                                             }
                                             isNahanFetching = false
                                             return@launch
@@ -1508,7 +1510,7 @@ fun AccountGroupCard(
                                         }
                                         
                                         if (!isSuccess && errorMessage.isNotEmpty()) {
-                                            android.widget.Toast.makeText(context, errorMessage, android.widget.Toast.LENGTH_LONG).show()
+                                            notify(errorMessage)
                                         }
                                         
                                         if (configs.isNotEmpty()) {
@@ -1531,13 +1533,13 @@ fun AccountGroupCard(
                                             groupManager.cloudGroups.add(0, newGroup)
                                     com.mlmvpn.scanner.ui.CombineCoach.offer(context, newGroup.id, newGroup.nodes.firstOrNull()?.uri ?: "")
                                             groupManager.saveCloudGroups()
-                                            android.widget.Toast.makeText(context, context.getString(R.string.cloud_admin_configs_received, engineNodes.size), android.widget.Toast.LENGTH_SHORT).show()
+                                            notify(context.getString(R.string.cloud_admin_configs_received, engineNodes.size))
                                             onGroupsUpdated()
                                         }
                                     } catch (e: Exception) {
                                         e.printStackTrace()
                                         kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.Main) {
-                                            android.widget.Toast.makeText(context, context.getString(R.string.cloud_error, e.toString()), android.widget.Toast.LENGTH_SHORT).show()
+                                            notify(context.getString(R.string.cloud_error, e.toString()))
                                         }
                                     }
                                     isNahanFetching = false
@@ -1762,7 +1764,7 @@ fun AccountGroupCard(
                                     cloudManager.saveAccounts()
                                 } else {
                                     mlmDeployState = "idle"
-                                    android.widget.Toast.makeText(context, result.second, android.widget.Toast.LENGTH_LONG).show()
+                                    notify(result.second)
                                 }
                             }
                         }
@@ -1832,7 +1834,7 @@ fun AccountGroupCard(
                                         com.mlmvpn.scanner.engines.mlm.MlmXhttp.Reason.PANEL_ERROR -> S(R.string.mlm_xhttp_failed)
                                     }
                                 }
-                                android.widget.Toast.makeText(context, message, android.widget.Toast.LENGTH_LONG).show()
+                                notify(message)
                             }
                         },
                 ) {
@@ -1988,7 +1990,7 @@ fun AccountGroupCard(
                                             isEmailVerified = false
                                             account.isEmailVerified = false
                                             cloudManager.saveAccounts()
-                                            android.widget.Toast.makeText(context, context.getString(R.string.cloud_error_email_not_verified), android.widget.Toast.LENGTH_LONG).show()
+                                            notify(context.getString(R.string.cloud_error_email_not_verified))
                                         } else {
                                             subdomainCreationError = res.errors.ifBlank { res.message }
                                         }
@@ -2022,7 +2024,7 @@ fun AccountGroupCard(
                                                 cloudManager.saveAccounts()
                                                 subdomainTimer = 0
                                             } else {
-                                                android.widget.Toast.makeText(context, context.getString(R.string.cloud_subdomain_not_issued_yet), android.widget.Toast.LENGTH_SHORT).show()
+                                                notify(context.getString(R.string.cloud_subdomain_not_issued_yet))
                                             }
                                         }
                                     },
@@ -2105,7 +2107,7 @@ fun AccountGroupCard(
                 if (result.first) {
                     usageData = result.second.toFloatOrNull() ?: 0f
                 } else {
-                    android.widget.Toast.makeText(context, result.second, android.widget.Toast.LENGTH_LONG).show()
+                    notify(result.second)
                 }
             }
         }
@@ -2367,9 +2369,9 @@ fun AccountGroupCard(
                                 isEmailVerified = true
                                 cloudManager.saveAccounts()
                                 showEmailModal = false
-                                android.widget.Toast.makeText(context, context.getString(R.string.cloud_email_verified), android.widget.Toast.LENGTH_SHORT).show()
+                                notify(context.getString(R.string.cloud_email_verified))
                             } else {
-                                android.widget.Toast.makeText(context, context.getString(R.string.cloud_not_verified_try_again), android.widget.Toast.LENGTH_SHORT).show()
+                                notify(context.getString(R.string.cloud_not_verified_try_again))
                             }
                         }
                     },

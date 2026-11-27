@@ -1,7 +1,6 @@
 package com.mlmvpn.scanner.engines.mlm
 
 import androidx.compose.ui.graphics.Color
-import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -25,6 +24,7 @@ fun MlmSettingsScreen(
     onDismiss: () -> Unit
 ) {
     val context = LocalContext.current
+    val notify = rememberDuskSnackbarAction()
     val scope = rememberCoroutineScope()
     val apiManager = remember { MlmApiManager(context) }
     
@@ -43,7 +43,7 @@ fun MlmSettingsScreen(
             fragLen = settings.fragLen
             fragInt = settings.fragInt
         } else {
-            Toast.makeText(context, S(R.string.could_not_fetch_the_settings), Toast.LENGTH_SHORT).show()
+            notify(S(R.string.could_not_fetch_the_settings))
             onDismiss()
         }
         isLoading = false
@@ -138,10 +138,10 @@ fun MlmSettingsScreen(
                             val success = apiManager.updateProxySettings(account, req)
                             isSaving = false
                             if (success) {
-                                Toast.makeText(context, S(R.string.settings_saved_2), Toast.LENGTH_SHORT).show()
+                                notify(S(R.string.settings_saved_2))
                                 onDismiss()
                             } else {
-                                Toast.makeText(context, S(R.string.could_not_save_the_settings), Toast.LENGTH_SHORT).show()
+                                notify(S(R.string.could_not_save_the_settings))
                             }
                         }
                     },

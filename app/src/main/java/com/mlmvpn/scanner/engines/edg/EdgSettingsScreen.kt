@@ -41,6 +41,7 @@ fun EdgSettingsScreen(
     onDismiss: () -> Unit
 ) {
     val context = LocalContext.current
+    val notify = rememberDuskSnackbarAction()
     val coroutineScope = rememberCoroutineScope()
 
     var isLoading by remember { mutableStateOf(true) }
@@ -242,13 +243,13 @@ fun EdgSettingsScreen(
 
                                         withContext(Dispatchers.Main) {
                                             isSaving = false
-                                            android.widget.Toast.makeText(context, context.getString(com.mlmvpn.scanner.R.string.edg_settings_saved), android.widget.Toast.LENGTH_SHORT).show()
+                                            notify(context.getString(com.mlmvpn.scanner.R.string.edg_settings_saved))
                                             onDismiss()
                                         }
                                     } catch (e: Exception) {
                                         withContext(Dispatchers.Main) {
                                             isSaving = false
-                                            android.widget.Toast.makeText(context, context.getString(com.mlmvpn.scanner.R.string.edg_save_error, e.message), android.widget.Toast.LENGTH_SHORT).show()
+                                            notify(context.getString(com.mlmvpn.scanner.R.string.edg_save_error, e.message))
                                         }
                                     }
                                 }

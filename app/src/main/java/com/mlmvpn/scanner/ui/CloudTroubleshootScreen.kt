@@ -30,6 +30,7 @@ import com.mlmvpn.scanner.data.credentialAdvice
 import com.mlmvpn.scanner.models.CloudAccount
 import com.mlmvpn.scanner.ui.settings.Ios
 import com.mlmvpn.scanner.ui.settings.IosScreen
+import com.mlmvpn.scanner.ui.theme.rememberDuskSnackbarAction
 import com.mlmvpn.scanner.ui.settings.SettingsActionRow
 import com.mlmvpn.scanner.ui.settings.SettingsFooter
 import com.mlmvpn.scanner.ui.settings.SettingsGroup
@@ -91,6 +92,7 @@ fun CloudTroubleshootScreen(
         return
     }
     val context = LocalContext.current
+    val notify = rememberDuskSnackbarAction()
     val scope = rememberCoroutineScope()
 
     var probe by remember { mutableStateOf<CloudVerifyProbe?>(null) }
@@ -136,11 +138,7 @@ fun CloudTroubleshootScreen(
         scheme = next
         cloudManager.saveAccounts()
         onAccountChanged()
-        android.widget.Toast.makeText(
-            context,
-            context.getString(R.string.cf_fix_scheme_changed, context.getString(schemeLabel(next))),
-            android.widget.Toast.LENGTH_SHORT,
-        ).show()
+        notify(context.getString(R.string.cf_fix_scheme_changed, context.getString(schemeLabel(next))))
         reprobe()
     }
 

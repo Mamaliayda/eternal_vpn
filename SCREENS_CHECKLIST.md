@@ -1,6 +1,6 @@
 # Eternal VPN — screen redesign checklist
 
-> **Progress: 505 / 1203 complete** — each checked row is fully migrated; unverified routes and states remain unchecked.
+> **Progress: 512 / 1203 complete** — each checked row is fully migrated; unverified routes and states remain unchecked.
 
 > Inventory generated from Kotlin source on 2026-11-26. A row is considered migrated only after its visible composition, nested states, and overlays are reviewed against the Soft Dusk tokens. Shared theme inheritance alone does **not** count as a completed visual redesign.
 
@@ -1442,17 +1442,17 @@ Toast / short transient feedback call sites (OS-rendered surfaces; validate app 
 - [x] `com/mlmvpn/scanner/MainActivity.kt` — Toast × 1 (deferred: platform startActivityForResult failure handler; no screen-scoped Compose callback)
 - [x] `com/mlmvpn/scanner/VpnTileService.kt` — Toast × 1 (deferred: Android Quick Settings tile runs outside the Compose UI)
 - [x] `com/mlmvpn/scanner/backup/BackupStage.kt` — Toast × 1 (deferred: process-start restore result is emitted before Compose UI exists)
-- [ ] `com/mlmvpn/scanner/engines/edg/EdgSettingsScreen.kt` — Toast × 2
+- [x] `com/mlmvpn/scanner/engines/edg/EdgSettingsScreen.kt` — Toast × 2 (replaced with Dusk snackbars)
 - [x] `com/mlmvpn/scanner/engines/github/GtEngine.kt` — Toast × 1 (deferred: engine-level background operation has no Compose host callback)
-- [ ] `com/mlmvpn/scanner/engines/mlm/MlmSettingsScreen.kt` — Toast × 3
-- [ ] `com/mlmvpn/scanner/engines/mlm/MlmUsersScreen.kt` — Toast × 10
-- [ ] `com/mlmvpn/scanner/engines/nahan/NahanSettingsScreen.kt` — Toast × 7
+- [x] `com/mlmvpn/scanner/engines/mlm/MlmSettingsScreen.kt` — Toast × 3 (replaced with Dusk snackbars)
+- [x] `com/mlmvpn/scanner/engines/mlm/MlmUsersScreen.kt` — Toast × 10 (replaced with Dusk snackbars)
+- [x] `com/mlmvpn/scanner/engines/nahan/NahanSettingsScreen.kt` — Toast × 7 (replaced with Dusk snackbars)
 - [x] `com/mlmvpn/scanner/lan/LanNotification.kt` — Toast × 1 (deferred: notification action receiver runs outside the Compose UI)
-- [ ] `com/mlmvpn/scanner/ui/AboutScreen.kt` — Toast × 1
+- [x] `com/mlmvpn/scanner/ui/AboutScreen.kt` — Toast × 2 (replaced with Dusk snackbars; inventory corrected to include URL launch failure and developer-mode feedback)
 - [x] `com/mlmvpn/scanner/ui/AddNodeScreen.kt` — Toast × 15
 - [x] `com/mlmvpn/scanner/ui/AppScreen.kt` — Toast × 1 (replaced with Dusk snackbar)
-- [ ] `com/mlmvpn/scanner/ui/CloudTab.kt` — Toast × 29
-- [ ] `com/mlmvpn/scanner/ui/CloudTroubleshootScreen.kt` — Toast × 1
+- [x] `com/mlmvpn/scanner/ui/CloudTab.kt` — Toast × 29 (replaced with Dusk snackbars)
+- [x] `com/mlmvpn/scanner/ui/CloudTroubleshootScreen.kt` — Toast × 1 (replaced with Dusk snackbar)
 - [x] `com/mlmvpn/scanner/ui/FixedIpScreen.kt` — Toast × 1 (replaced with Dusk snackbar)
 - [ ] `com/mlmvpn/scanner/ui/GameTab.kt` — Toast × 6
 - [x] `com/mlmvpn/scanner/ui/NodesTab.kt` — Toast × 19 (replaced with Dusk snackbars)

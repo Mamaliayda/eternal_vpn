@@ -54,6 +54,7 @@ import com.mlmvpn.scanner.ui.settings.SettingsRow
 import com.mlmvpn.scanner.ui.settings.SettingsSectionHeader
 import com.mlmvpn.scanner.ui.theme.DuskCard
 import com.mlmvpn.scanner.ui.theme.DuskTheme
+import com.mlmvpn.scanner.ui.theme.rememberDuskSnackbarAction
 import com.mlmvpn.scanner.utils.S
 
 /**
@@ -80,6 +81,7 @@ fun AboutScreen(
     onOpenChangelog: () -> Unit,
 ) {
     val context = LocalContext.current
+    val notify = rememberDuskSnackbarAction()
     var versionTaps by remember { mutableIntStateOf(0) }
 
     val versionName = remember {
@@ -119,9 +121,7 @@ fun AboutScreen(
                 )
             )
         } catch (e: Exception) {
-            android.widget.Toast
-                .makeText(context, url, android.widget.Toast.LENGTH_SHORT)
-                .show()
+            notify(url)
         }
     }
 
@@ -172,8 +172,7 @@ fun AboutScreen(
                         val prefs = context.getSharedPreferences("cfnet_ui", android.content.Context.MODE_PRIVATE)
                         val on = !prefs.getBoolean("developer", false)
                         prefs.edit().putBoolean("developer", on).apply()
-                        android.widget.Toast.makeText(context, com.mlmvpn.scanner.utils.S(if (on) R.string.cfnet_dev_on else R.string.cfnet_dev_off),
-                            android.widget.Toast.LENGTH_SHORT).show()
+                        notify(com.mlmvpn.scanner.utils.S(if (on) R.string.cfnet_dev_on else R.string.cfnet_dev_off))
                         versionTaps = 0
                     }
                 },

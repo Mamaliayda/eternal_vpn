@@ -45,6 +45,7 @@ fun NahanSettingsScreen(
     onDismiss: () -> Unit
 ) {
     val context = LocalContext.current
+    val notify = rememberDuskSnackbarAction()
     val scope = rememberCoroutineScope()
     val deployer = remember { NahanDeployer(context) }
 
@@ -452,7 +453,7 @@ fun NahanSettingsScreen(
                                         },
                                         onFetchNodes = {
                                             scope.launch {
-                                                android.widget.Toast.makeText(context, context.getString(com.mlmvpn.scanner.R.string.nhn_fetching_config, user.name), android.widget.Toast.LENGTH_SHORT).show()
+                                                notify(context.getString(com.mlmvpn.scanner.R.string.nhn_fetching_config, user.name))
                                                 try {
                                                     val userNodes = deployer.fetchUserNodes(account, user.name)
                                                     if (userNodes.isNotEmpty()) {
@@ -475,17 +476,17 @@ fun NahanSettingsScreen(
                                                         groupManager.saveCloudGroups()
                                                         withContext(kotlinx.coroutines.Dispatchers.Main) {
                                                             onGroupsUpdated()
-                                                            android.widget.Toast.makeText(context, context.getString(com.mlmvpn.scanner.R.string.nhn_configs_received, userNodes.size, user.name), android.widget.Toast.LENGTH_SHORT).show()
+                                                            notify(context.getString(com.mlmvpn.scanner.R.string.nhn_configs_received, userNodes.size, user.name))
                                                         }
                                                     } else {
                                                         withContext(kotlinx.coroutines.Dispatchers.Main) {
-                                                            android.widget.Toast.makeText(context, context.getString(com.mlmvpn.scanner.R.string.nhn_no_config_found, user.name), android.widget.Toast.LENGTH_SHORT).show()
+                                                            notify(context.getString(com.mlmvpn.scanner.R.string.nhn_no_config_found, user.name))
                                                         }
                                                     }
                                                 } catch (e: Exception) {
                                                     e.printStackTrace()
                                                     withContext(kotlinx.coroutines.Dispatchers.Main) {
-                                                        android.widget.Toast.makeText(context, context.getString(com.mlmvpn.scanner.R.string.cloud_error, e.message), android.widget.Toast.LENGTH_SHORT).show()
+                                                        notify(context.getString(com.mlmvpn.scanner.R.string.cloud_error, e.message))
                                                     }
                                                 }
                                             }
@@ -532,29 +533,17 @@ fun NahanSettingsScreen(
                                             account.nahanMasterKey = masterKey
 
                                             withContext(Dispatchers.Main) {
-                                                android.widget.Toast.makeText(
-                                                    context,
-                                                    context.getString(com.mlmvpn.scanner.R.string.nhn_settings_saved),
-                                                    android.widget.Toast.LENGTH_SHORT
-                                                ).show()
+                                                notify(context.getString(com.mlmvpn.scanner.R.string.nhn_settings_saved))
                                                 onDismiss()
                                             }
                                         } else {
                                             withContext(Dispatchers.Main) {
-                                                android.widget.Toast.makeText(
-                                                    context,
-                                                    context.getString(com.mlmvpn.scanner.R.string.nhn_save_error),
-                                                    android.widget.Toast.LENGTH_SHORT
-                                                ).show()
+                                                notify(context.getString(com.mlmvpn.scanner.R.string.nhn_save_error))
                                             }
                                         }
                                     } catch (e: Exception) {
                                         withContext(Dispatchers.Main) {
-                                            android.widget.Toast.makeText(
-                                                context,
-                                                context.getString(com.mlmvpn.scanner.R.string.cloud_error, e.message),
-                                                android.widget.Toast.LENGTH_SHORT
-                                            ).show()
+                                            notify(context.getString(com.mlmvpn.scanner.R.string.cloud_error, e.message))
                                         }
                                     } finally {
                                         isSaving = false
