@@ -1,6 +1,6 @@
 # Eternal VPN — screen redesign checklist
 
-> **Progress: 351 / 1203 complete** — each checked row is fully migrated; unverified routes and states remain unchecked.
+> **Progress: 359 / 1203 complete** — each checked row is fully migrated; unverified routes and states remain unchecked.
 
 > Inventory generated from Kotlin source on 2026-11-26. A row is considered migrated only after its visible composition, nested states, and overlays are reviewed against the Soft Dusk tokens. Shared theme inheritance alone does **not** count as a completed visual redesign.
 
@@ -93,8 +93,8 @@ Found 230 screen-like public/internal composables across 133 Kotlin files (the f
 - [x] `CloudOfferDialog` — `com/mlmvpn/scanner/ui/CloudCoach.kt`
 ### CloudScreens.kt
 
-- [ ] `CloudAddAccountScreen` — `com/mlmvpn/scanner/ui/CloudScreens.kt`
-- [ ] `CloudGroupScreen` — `com/mlmvpn/scanner/ui/CloudScreens.kt`
+- [x] `CloudAddAccountScreen` — `com/mlmvpn/scanner/ui/CloudScreens.kt`
+- [x] `CloudGroupScreen` — `com/mlmvpn/scanner/ui/CloudScreens.kt`
 ### CloudTab.kt
 
 - [ ] `CloudTab` — `com/mlmvpn/scanner/ui/CloudTab.kt`
@@ -454,13 +454,13 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 - [ ] `CloudCoachBar` — `com/mlmvpn/scanner/ui/CloudCoach.kt`
 ### CloudScreens.kt
 
-- [ ] `CloudPanelRow` — `com/mlmvpn/scanner/ui/CloudScreens.kt`
+- [x] `CloudPanelRow` — `com/mlmvpn/scanner/ui/CloudScreens.kt`
 - [ ] `ColumnScope` — `com/mlmvpn/scanner/ui/CloudScreens.kt`
-- [ ] `CloudPanelHeaderRow` — `com/mlmvpn/scanner/ui/CloudScreens.kt`
-- [ ] `PanelStatePill` — `com/mlmvpn/scanner/ui/CloudScreens.kt`
-- [ ] `PanelBadge` — `com/mlmvpn/scanner/ui/CloudScreens.kt`
-- [ ] `PanelLamps` — `com/mlmvpn/scanner/ui/CloudScreens.kt`
-- [ ] `CloudPanelManageRows` — `com/mlmvpn/scanner/ui/CloudScreens.kt`
+- [x] `CloudPanelHeaderRow` — `com/mlmvpn/scanner/ui/CloudScreens.kt`
+- [x] `PanelStatePill` — `com/mlmvpn/scanner/ui/CloudScreens.kt`
+- [x] `PanelBadge` — `com/mlmvpn/scanner/ui/CloudScreens.kt`
+- [x] `PanelLamps` — `com/mlmvpn/scanner/ui/CloudScreens.kt`
+- [x] `CloudPanelManageRows` — `com/mlmvpn/scanner/ui/CloudScreens.kt`
 ### CloudTab.kt
 
 - [ ] `CloudDetailPlaceholder` — `com/mlmvpn/scanner/ui/CloudTab.kt`

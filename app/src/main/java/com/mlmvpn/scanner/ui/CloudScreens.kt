@@ -31,6 +31,7 @@ import androidx.compose.material.icons.filled.Speed
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -47,11 +48,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.mlmvpn.scanner.data.CloudGroup
 import com.mlmvpn.scanner.data.NodeManager
 import com.mlmvpn.scanner.ui.home.frostedGlass
-import com.mlmvpn.scanner.ui.settings.Ios
 import com.mlmvpn.scanner.ui.settings.IosScreen
 import com.mlmvpn.scanner.ui.settings.SettingsActionRow
 import com.mlmvpn.scanner.ui.settings.SettingsFooter
@@ -60,8 +59,7 @@ import com.mlmvpn.scanner.ui.settings.SettingsGroup
 import com.mlmvpn.scanner.ui.settings.SettingsRow
 import com.mlmvpn.scanner.ui.settings.SettingsSectionHeader
 import com.mlmvpn.scanner.ui.settings.SettingsTextRow
-import com.mlmvpn.scanner.ui.theme.CardShape
-import com.mlmvpn.scanner.ui.theme.PanelShape
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 import com.mlmvpn.scanner.R
 import com.mlmvpn.scanner.utils.S
 
@@ -104,28 +102,28 @@ fun CloudPanelRow(
                 .fillMaxWidth()
                 .clickable(enabled = enabled && !busy, onClick = onClick)
                 .heightIn(min = 44.dp)
-                .padding(horizontal = 16.dp, vertical = 7.dp),
+                .padding(horizontal = DuskTheme.space4, vertical = DuskTheme.space2),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            SettingsGlyph(icon, if (enabled) tint else Ios.Gray)
-            Spacer(Modifier.width(12.dp))
+            SettingsGlyph(icon, if (enabled) tint else DuskTheme.disabled)
+            Spacer(Modifier.width(DuskTheme.space3))
             Text(
                 label,
-                color = if (enabled) Ios.Label else Ios.SecondaryLabel.copy(alpha = 0.55f),
-                fontSize = 16.sp,
+                color = if (enabled) DuskTheme.onSurface else DuskTheme.muted.copy(alpha = 0.55f),
+                style = MaterialTheme.typography.titleMedium,
                 modifier = Modifier.weight(1f),
             )
             if (busy) {
                 CircularProgressIndicator(
-                    modifier = Modifier.size(15.dp),
-                    color = Ios.SecondaryLabel,
+                    modifier = Modifier.size(DuskTheme.space4),
+                    color = DuskTheme.muted,
                     strokeWidth = 2.dp,
                 )
             } else if (value != null) {
                 Text(
                     value,
-                    color = valueTone ?: Ios.SecondaryLabel,
-                    fontSize = 15.sp,
+                    color = valueTone ?: DuskTheme.muted,
+                    style = MaterialTheme.typography.titleSmall,
                     fontWeight = if (valueTone != null) FontWeight.Medium else FontWeight.Normal,
                 )
             }
@@ -137,11 +135,11 @@ fun CloudPanelRow(
                 progress = progress,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(start = 57.dp, end = 16.dp, bottom = 6.dp)
+                    .padding(start = 57.dp, end = DuskTheme.space4, bottom = DuskTheme.space2)
                     .height(2.dp)
                     .clip(CircleShape),
-                color = Ios.Blue,
-                trackColor = Color.White.copy(alpha = 0.12f),
+                color = DuskTheme.primary,
+                trackColor = DuskTheme.outline.copy(alpha = 0.12f),
             )
         }
     }
@@ -214,7 +212,7 @@ fun ColumnScope.CloudAddAccountForm(
     var email by remember { mutableStateOf("") }
     var apiKey by remember { mutableStateOf("") }
 
-    Spacer(Modifier.height(14.dp))
+    Spacer(Modifier.height(DuskTheme.space3))
 
     if (showHeader) SettingsSectionHeader(S(R.string.account))
         SettingsGroup {
@@ -240,24 +238,24 @@ fun ColumnScope.CloudAddAccountForm(
         )
 
         if (error != null) {
-            Spacer(Modifier.height(10.dp))
+            Spacer(Modifier.height(DuskTheme.space2))
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp)
-                    .clip(PanelShape)
-                    .background(Ios.Red.copy(alpha = 0.12f))
-                    .padding(14.dp),
+                    .padding(horizontal = DuskTheme.space4)
+                    .clip(DuskTheme.tileShape)
+                    .background(DuskTheme.error.copy(alpha = 0.12f))
+                    .padding(DuskTheme.space3),
                 verticalAlignment = Alignment.Top,
             ) {
-                Text(error, color = Ios.Label, fontSize = 12.sp, lineHeight = 19.sp)
+                Text(error, color = DuskTheme.onSurface, style = MaterialTheme.typography.bodySmall, lineHeight = MaterialTheme.typography.bodySmall.lineHeight)
             }
-            Spacer(Modifier.height(10.dp))
+            Spacer(Modifier.height(DuskTheme.space2))
             SettingsGroup {
                 SettingsActionRow(
                     label = S(R.string.cf_fix_open_from_add),
                     icon = Icons.Default.Build,
-                    tint = Ios.Orange,
+                    tint = DuskTheme.accent,
                     enabled = !isAdding,
                 ) {
                     onTroubleshoot(email.trim(), apiKey.trim())
@@ -265,12 +263,12 @@ fun ColumnScope.CloudAddAccountForm(
             }
         }
 
-        Spacer(Modifier.height(14.dp))
+        Spacer(Modifier.height(DuskTheme.space3))
         SettingsGroup {
             SettingsActionRow(
                 label = if (isAdding) S(R.string.checking_the_account) else S(R.string.save_and_connect),
                 icon = Icons.Default.CheckCircle,
-                tint = Ios.Green,
+                tint = DuskTheme.success,
                 busy = isAdding,
                 enabled = apiKey.isNotBlank(),
             ) {
@@ -278,7 +276,7 @@ fun ColumnScope.CloudAddAccountForm(
             }
         }
 
-    Spacer(Modifier.height(28.dp))
+    Spacer(Modifier.height(DuskTheme.space5))
 }
 
 /**
@@ -313,33 +311,33 @@ fun CloudGroupScreen(
     val engine = group.nodes.firstOrNull()?.engineType ?: "BPB"
 
     IosScreen(title = group.title, onBack = onBack, backLabel = S(R.string.cloud)) {
-        Spacer(Modifier.height(14.dp))
+        Spacer(Modifier.height(DuskTheme.space3))
 
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp)
-                .frostedGlass(CardShape)
-                .padding(18.dp),
+                .padding(horizontal = DuskTheme.space4)
+                .frostedGlass(DuskTheme.cardShape)
+                .padding(DuskTheme.space4),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text(
                 faCount(group.nodes.size),
-                color = Ios.Label,
-                fontSize = 34.sp,
+                color = DuskTheme.onSurface,
+                style = MaterialTheme.typography.headlineMedium,
                 fontWeight = FontWeight.Bold,
             )
-            Text(S(R.string.configs), color = Ios.SecondaryLabel, fontSize = 13.sp)
-            Spacer(Modifier.height(10.dp))
+            Text(S(R.string.configs), color = DuskTheme.muted, style = MaterialTheme.typography.bodySmall)
+            Spacer(Modifier.height(DuskTheme.space2))
             Row(verticalAlignment = Alignment.CenterVertically) {
                 NodePill(panelName(engine), panelTint(engine))
-                Spacer(Modifier.width(6.dp))
+                Spacer(Modifier.width(DuskTheme.space2))
                 // Same two-Latin-runs problem as the list row: the clock jumps in front of the date.
                 androidx.compose.runtime.CompositionLocalProvider(
                     androidx.compose.ui.platform.LocalLayoutDirection provides
                         androidx.compose.ui.unit.LayoutDirection.Ltr
                 ) {
-                    NodePill(group.date, Ios.Gray)
+                    NodePill(group.date, DuskTheme.disabled)
                 }
             }
         }
@@ -351,7 +349,7 @@ fun CloudGroupScreen(
                 title = S(R.string.combine_with_a_fixed_ip),
                 subtitle = S(R.string.find_a_clean_ip_and_ride_these),
                 icon = Icons.Default.Speed,
-                tint = Ios.Green,
+                tint = DuskTheme.success,
                 onClick = onCombine,
             )
         }
@@ -376,7 +374,7 @@ fun CloudGroupScreen(
                 SettingsRow(
                     title = S(R.string.all_of_them_are_on_the_connection),
                     icon = Icons.Default.CheckCircle,
-                    tint = Ios.Green,
+                    tint = DuskTheme.success,
                     showChevron = false,
                 )
             }
@@ -391,7 +389,7 @@ fun CloudGroupScreen(
                 SettingsRow(
                     title = node.name,
                     icon = Icons.Default.Layers,
-                    tint = Ios.Gray,
+                    tint = DuskTheme.disabled,
                     value = node.type.uppercase(),
                     showChevron = false,
                 )
@@ -406,7 +404,7 @@ fun CloudGroupScreen(
             SettingsActionRow(
                 label = if (confirmDelete) S(R.string.are_you_sure_tap_again_to_delete) else S(R.string.delete_this_group),
                 icon = Icons.Default.DeleteOutline,
-                tint = Ios.Red,
+                tint = DuskTheme.error,
             ) {
                 if (confirmDelete) {
                     onDelete()
@@ -423,7 +421,7 @@ fun CloudGroupScreen(
             )
         }
 
-        Spacer(Modifier.height(28.dp))
+        Spacer(Modifier.height(DuskTheme.space5))
     }
 }
 
@@ -458,7 +456,7 @@ fun CloudPanelHeaderRow(
             .fillMaxWidth()
             .clickable(onClick = onClick)
             .heightIn(min = 52.dp)
-            .padding(horizontal = 16.dp, vertical = 10.dp),
+            .padding(horizontal = DuskTheme.space4, vertical = DuskTheme.space2),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         // The panel's own mark, the way Settings shows an app: a squircle in its colour with its
@@ -466,19 +464,19 @@ fun CloudPanelHeaderRow(
         val tint = panelTint(engine)
         Box(
             modifier = Modifier
-                .size(30.dp)
-                .clip(androidx.compose.foundation.shape.RoundedCornerShape(8.dp))
+                .size(DuskTheme.space6)
+                .clip(androidx.compose.foundation.shape.RoundedCornerShape(DuskTheme.space2))
                 .background(androidx.compose.ui.graphics.Brush.verticalGradient(listOf(tint, tint.copy(alpha = 0.78f))))
                 .then(if (deployed || busy) Modifier else Modifier.alpha(0.55f)),
             contentAlignment = Alignment.Center,
         ) {
-            Text(panelMonogram(engine), color = Color.White, fontSize = 13.sp, fontWeight = FontWeight.Bold)
+            Text(panelMonogram(engine), color = DuskTheme.onSurface, style = MaterialTheme.typography.bodySmall, fontWeight = FontWeight.Bold)
         }
 
-        Spacer(Modifier.width(12.dp))
+        Spacer(Modifier.width(DuskTheme.space3))
 
         Column(modifier = Modifier.weight(1f)) {
-            Text(title, color = Ios.Label, fontSize = 15.sp, fontWeight = FontWeight.SemiBold)
+            Text(title, color = DuskTheme.onSurface, style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.SemiBold)
             Spacer(Modifier.height(2.dp))
             Text(
                 when {
@@ -488,26 +486,26 @@ fun CloudPanelHeaderRow(
                     deployed -> com.mlmvpn.scanner.store.tr("هنوز کانفیگی نگرفته‌اید", "No configs received yet")
                     else -> subtitle
                 },
-                color = if (deployed) Ios.SecondaryLabel else Ios.SecondaryLabel.copy(alpha = 0.75f),
-                fontSize = 11.sp,
+                color = if (deployed) DuskTheme.muted else DuskTheme.muted.copy(alpha = 0.75f),
+                style = MaterialTheme.typography.labelSmall,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
         }
 
-        Spacer(Modifier.width(8.dp))
+        Spacer(Modifier.width(DuskTheme.space2))
         when {
-            busy -> CircularProgressIndicator(modifier = Modifier.size(15.dp), color = Ios.Blue, strokeWidth = 2.dp)
-            stale -> PanelStatePill(com.mlmvpn.scanner.store.tr("به‌روزرسانی", "Update"), Ios.Orange)
-            deployed -> PanelStatePill(onLabel ?: com.mlmvpn.scanner.store.tr("نصب شده", "Installed"), Ios.Green)
-            else -> PanelStatePill(offLabel ?: com.mlmvpn.scanner.store.tr("نصب نشده", "Not installed"), Ios.SecondaryLabel)
+            busy -> CircularProgressIndicator(modifier = Modifier.size(DuskTheme.space4), color = DuskTheme.primary, strokeWidth = 2.dp)
+            stale -> PanelStatePill(com.mlmvpn.scanner.store.tr("به‌روزرسانی", "Update"), DuskTheme.accent)
+            deployed -> PanelStatePill(onLabel ?: com.mlmvpn.scanner.store.tr("نصب شده", "Installed"), DuskTheme.success)
+            else -> PanelStatePill(offLabel ?: com.mlmvpn.scanner.store.tr("نصب نشده", "Not installed"), DuskTheme.muted)
         }
-        Spacer(Modifier.width(6.dp))
+        Spacer(Modifier.width(DuskTheme.space2))
         Icon(
             if (expanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
             contentDescription = null,
-            tint = Ios.Chevron,
-            modifier = Modifier.size(20.dp),
+            tint = DuskTheme.muted,
+            modifier = Modifier.size(DuskTheme.iconSize),
         )
     }
 }
@@ -517,12 +515,12 @@ private fun PanelStatePill(text: String, tint: Color) {
     Text(
         text,
         color = tint,
-        fontSize = 11.sp,
+        style = MaterialTheme.typography.labelSmall,
         fontWeight = FontWeight.SemiBold,
         modifier = Modifier
-            .clip(androidx.compose.foundation.shape.RoundedCornerShape(6.dp))
+            .clip(androidx.compose.foundation.shape.RoundedCornerShape(DuskTheme.space2))
             .background(tint.copy(alpha = 0.14f))
-            .padding(horizontal = 7.dp, vertical = 2.dp),
+            .padding(horizontal = DuskTheme.space2, vertical = 2.dp),
     )
 }
 
@@ -553,16 +551,17 @@ fun engineOfTitle(title: String): String = when (title.trim().lowercase()) {
 }
 
 /** The four panels' colours, fixed so a badge and a header agree wherever they appear. */
+@Composable
 fun panelTint(engine: String): Color = when (engine) {
-    "EDG" -> Color(0xFF30D158)
-    "ZEU" -> Color(0xFFFFB340)
-    "NHN" -> Color(0xFFBF5AF2)
-    "MLM" -> Color(0xFFFF9F0A)
-    "SPD" -> Color(0xFFFF375F)
-    "NTR" -> Color(0xFF9B59F6)
-    "GZG" -> Color(0xFF40C8E0)
-    "NVA" -> Color(0xFF5E5CE6)
-    else -> Color(0xFF0A84FF)
+    "EDG" -> DuskTheme.success
+    "ZEU" -> DuskTheme.accent
+    "NHN" -> DuskTheme.purple
+    "MLM" -> DuskTheme.primary
+    "SPD" -> DuskTheme.error
+    "NTR" -> DuskTheme.indigo
+    "GZG" -> DuskTheme.secondary
+    "NVA" -> DuskTheme.disabled
+    else -> DuskTheme.primary
 }
 
 fun panelName(engine: String): String = when (engine) {
@@ -591,12 +590,12 @@ fun PanelBadge(engine: String) {
     Text(
         panelName(engine),
         color = tint,
-        fontSize = 10.sp,
+        style = MaterialTheme.typography.labelSmall,
         fontWeight = FontWeight.SemiBold,
         modifier = Modifier
-            .clip(androidx.compose.foundation.shape.RoundedCornerShape(5.dp))
+            .clip(androidx.compose.foundation.shape.RoundedCornerShape(DuskTheme.space2))
             .background(tint.copy(alpha = 0.16f))
-            .padding(horizontal = 5.dp, vertical = 1.dp),
+            .padding(horizontal = DuskTheme.space2, vertical = 1.dp),
     )
 }
 
@@ -625,11 +624,11 @@ fun PanelLamps(
 ) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         lamps.forEachIndexed { index, (key, lamp) ->
-            if (index > 0) Spacer(Modifier.width(5.dp))
+            if (index > 0) Spacer(Modifier.width(DuskTheme.space2))
             val color = when (lamp) {
-                PanelLamp.HAS_CONFIGS -> Color(0xFF30D158)
-                PanelLamp.DEPLOYED -> Color(0xFFFFD60A)
-                PanelLamp.NOT_DEPLOYED -> Color.White.copy(alpha = 0.22f)
+                PanelLamp.HAS_CONFIGS -> DuskTheme.success
+                PanelLamp.DEPLOYED -> DuskTheme.accent
+                PanelLamp.NOT_DEPLOYED -> DuskTheme.outline.copy(alpha = 0.22f)
             }
             Box(
                 modifier = Modifier
@@ -637,18 +636,18 @@ fun PanelLamps(
                     .clickable { onSelect(key) }
                     // The dot is 7dp; the target around it is 22dp, which is the smallest thing
                     // on this card and must not also be the hardest to hit.
-                    .size(22.dp),
+                    .size(DuskTheme.iconSize),
                 contentAlignment = Alignment.Center,
             ) {
                 Box(
                     modifier = Modifier
-                        .size(7.dp)
+                        .size(DuskTheme.space2)
                         .clip(CircleShape)
                         .background(color),
                 )
             }
         }
-        Spacer(Modifier.width(4.dp))
+        Spacer(Modifier.width(DuskTheme.space1))
         Text(
             when {
                 lamps.all { it.second == PanelLamp.NOT_DEPLOYED } -> S(R.string.no_panel_installed)
@@ -656,8 +655,8 @@ fun PanelLamps(
                     S(R.string.panels_have_configs, faCount(lamps.count { it.second == PanelLamp.HAS_CONFIGS }))
                 else -> S(R.string.installed_you_have_not_taken_any_configs_2)
             },
-            color = Ios.SecondaryLabel,
-            fontSize = 12.sp,
+            color = DuskTheme.muted,
+            style = MaterialTheme.typography.bodySmall,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
         )
@@ -684,14 +683,14 @@ fun CloudPanelManageRows(
             .fillMaxWidth()
             .padding(start = 52.dp)
             .height(0.5.dp)
-            .background(Ios.Separator)
+            .background(DuskTheme.outline)
     )
     CloudPanelRow(
         label = if (stale) S(R.string.update_to_the_latest_version) else S(R.string.redeploy),
         icon = Icons.Default.Refresh,
-        tint = if (stale) Ios.Orange else Ios.Gray,
+        tint = if (stale) DuskTheme.accent else DuskTheme.disabled,
         value = if (stale) S(R.string.recommended) else null,
-        valueTone = if (stale) Ios.Orange else null,
+        valueTone = if (stale) DuskTheme.accent else null,
         busy = busy,
         enabled = !removing,
         onClick = onRedeploy,
@@ -701,12 +700,12 @@ fun CloudPanelManageRows(
             .fillMaxWidth()
             .padding(start = 52.dp)
             .height(0.5.dp)
-            .background(Ios.Separator)
+            .background(DuskTheme.outline)
     )
     CloudPanelRow(
         label = S(R.string.remove_this_panel_from_cloudflare),
         icon = Icons.Default.DeleteOutline,
-        tint = Ios.Red,
+        tint = DuskTheme.error,
         busy = removing,
         enabled = !busy,
         onClick = onRemove,
