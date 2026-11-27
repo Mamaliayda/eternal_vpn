@@ -110,7 +110,7 @@ fun PanelRows(
                 scope.launch {
                     install { s -> step = s }
                         .onSuccess { notify(tr("$label روی حساب نصب شد.", "$label was installed on the account.")); onChanged() }
-                        .onFailure { notify(it.message) }
+.onFailure { notify(it.message ?: tr("خطای نامشخص", "Unknown error")) }
                     step = null
                 }
             }
@@ -128,7 +128,7 @@ fun PanelRows(
                     } else notify(tr("کانفیگی نیامد.", "No configs came back."))
                 }.onFailure {
                     android.util.Log.w("PanelRows", "$engine configs", it)
-                    notify(it.message)
+                    notify(it.message ?: tr("خطای نامشخص", "Unknown error"))
                 }
             }
         }
@@ -145,7 +145,7 @@ fun PanelRows(
             IosAlertAction(tr("انصراف", "Cancel"), { confirmRemove = false }),
             IosAlertAction(tr("حذف", "Remove"), {
                 confirmRemove = false
-                scope.launch { remove().onSuccess { onChanged() }.onFailure { notify(it.message) } }
+                scope.launch { remove().onSuccess { onChanged() }.onFailure { notify(it.message ?: tr("خطای نامشخص", "Unknown error")) } }
             }, destructive = true),
         ),
         onDismiss = { confirmRemove = false },

@@ -1,4 +1,4 @@
-Build verification paused at 368/1203, resume at 700.
+Build verification has reached 700/1203; the first threshold-triggered debug and release runs are recorded below, with compile fixes in progress.
 
 # Build status
 
@@ -6,6 +6,8 @@ Build verification paused at 368/1203, resume at 700.
 
 | Commit | Run | Result | Errors fixed / notes |
 |---|---:|---|---|
+| `ed4103021d92cc3118fed4c5d4a3f39c7cb3c770` | [46016688496](https://github.com/Mamaliayda/eternal_vpn/actions/runs/46016688496) | Red | Debug build failed with 10 compiler diagnostics: four missing `DuskTheme` references in `PsiphonPages.kt`, two callback return-type mismatches in `OutlineScreen.kt`, three nullable snackbar-message arguments in `PanelRows.kt`, and one delegated-property smart-cast in `CfMethodCard.kt`. Corrected in the current repair commit; rerun required. |
+| `ed4103021d92cc3118fed4c5d4a3f39c7cb3c770` | [46016688243](https://github.com/Mamaliayda/eternal_vpn/actions/runs/46016688243) | Red | Release APK build reported the same 10 compiler diagnostics as the debug run. Corrected in the current repair commit; rerun required. |
 | `eb4844991963906ab8584e7c4ad8bf5d944957fb` | [45979125455](https://github.com/Mamaliayda/eternal_vpn/actions/runs/45979125455) | Green | `assembleDebug` passed in 22m12s after the Fixed IP, Help Center, WireGuard and shared Dusk-token migration. Debug APK and build log uploaded. Node.js 20 deprecation and missing `go.mod` cache notices only. |
 | `eb4844991963906ab8584e7c4ad8bf5d944957fb` | [45979125424](https://github.com/Mamaliayda/eternal_vpn/actions/runs/45979125424) | Green | Release APK build passed in 23m9s. APK/checksum artifacts uploaded. Node.js 20 deprecation and missing `go.mod` cache notices only. |
 | `b885b3144164b784b92833ea2a325434b5f88613` | [45972217421](https://github.com/Mamaliayda/eternal_vpn/actions/runs/45972217421) | Green | `assembleDebug` passed in 25m45s; debug APK and build-log artifacts uploaded. APK workflow trigger widened from this one branch to `arena/**`. Node.js 20 deprecation and missing `go.mod` cache notices only. |
@@ -48,4 +50,4 @@ Build verification paused at 368/1203, resume at 700.
 
 ## Current state
 
-The required wrapper files are present. `.github/workflows/build.yml` runs `assembleDebug` on pushes and uploads the Gradle log even when the build fails. Latest core utility-screen batch `eb48449` passed both workflows: debug run `45979125455` and release run `45979125424`; debug/release APK artifacts and build logs/checksums were uploaded. Config Studio batch `536e901` passed both workflows: debug run `45961363628` and release run `45961363612`. The earlier `9cf4385` batch had failed due to a removed `frostedGlass` import; the import was restored in `2c19197`, and both repair runs (`45956774887`, `45956774863`) passed. The latest runs report only non-blocking Node.js 20 deprecation and missing `go.mod` cache warnings. Local Gradle compilation is unavailable because Java is not installed in this sandbox; the GitHub debug and release workflows verified this batch.
+The required wrapper files are present. `.github/workflows/build.yml` runs `assembleDebug` on pushes and uploads the Gradle log even when the build fails. Migration reached exactly 700/1203 in `ed41030`, which intentionally triggered the first threshold builds without `[skip ci]`. Debug run `46016688496` and release APK run `46016688243` both failed on the same 10 Kotlin compiler diagnostics; the repair changes are in progress and both workflows must be rerun green before any migration resumes. Debug and release build logs were uploaded; no APK artifact was produced by the failed runs. Earlier successful verification rows remain historical. Local Gradle compilation is unavailable because Java is not installed in this sandbox.

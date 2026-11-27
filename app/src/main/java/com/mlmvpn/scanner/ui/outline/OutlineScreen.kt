@@ -157,7 +157,7 @@ fun OutlineScreen(onBack: () -> Unit) {
             if (prep != null) { afterPermission = action; vpnLauncher.launch(prep) } else action()
         }
     }
-    val paste = {
+    val paste: () -> Unit = {
         val cm = context.getSystemService(Context.CLIPBOARD_SERVICE) as? ClipboardManager
         val text = cm?.primaryClip?.takeIf { it.itemCount > 0 }?.getItemAt(0)?.coerceToText(context)?.toString().orEmpty()
         if (text.isBlank()) {

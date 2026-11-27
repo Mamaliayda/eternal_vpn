@@ -120,7 +120,7 @@ fun CfMethodCard(accounts: List<CloudAccount>) {
             val tried = faCount(scan.tried.size + connect.tried.size)
             val bothWarp = warp?.wireguard == true && warp?.masque == true
             val skip = warp?.skipped
-            message = when {
+            val resultMessage = when {
                 noConfig ->
                     tr("کانفیگ کلادفلری برای سنجش نیست: ورکر مرکزی را نصب کنید و «دریافت کانفیگ» بزنید.", "There is no Cloudflare config to measure with: install the central Worker and press «Get configs».")
                 scan.ok || connect.ok -> {
@@ -141,7 +141,8 @@ fun CfMethodCard(accounts: List<CloudAccount>) {
                 else -> tr("هیچ‌کدام از روش‌های کلادفلر روی این شبکه جواب نداد ($tried روش آزمایش شد)، و امتحان WARP و MASQUE انجام نشد. کمی بعد دوباره امتحان کنید.",
                     "None of the Cloudflare ways worked here (${scan.tried.size + connect.tried.size} tried), and WARP and MASQUE could not be tried. Try again in a moment.")
             }
-            notify(message)
+            message = resultMessage
+            notify(resultMessage)
         }
     }
 
