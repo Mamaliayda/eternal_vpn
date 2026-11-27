@@ -29,8 +29,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.mlmvpn.scanner.ui.settings.Ios
-import com.mlmvpn.scanner.ui.theme.PanelShape
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -435,13 +434,13 @@ fun CoachBar(
     onAction: (() -> Unit)? = null,
 ) {
     val n = index
-    val accent = if (failed) Ios.Orange else Ios.Green
+    val accent = if (failed) DuskTheme.accent else DuskTheme.success
 
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp)
-            .clip(PanelShape)
+            .clip(DuskTheme.tileShape)
             .background(accent.copy(alpha = 0.14f))
             .padding(14.dp),
     ) {
@@ -468,7 +467,7 @@ fun CoachBar(
             Icon(
                 Icons.Default.Close,
                 contentDescription = S(R.string.skip_the_guide),
-                tint = Ios.SecondaryLabel,
+                tint = DuskTheme.muted,
                 modifier = Modifier
                     .size(18.dp)
                     .clip(CircleShape)
@@ -477,7 +476,7 @@ fun CoachBar(
         }
 
         Spacer(Modifier.height(8.dp))
-        Text(body, color = Ios.Label, fontSize = 13.sp, lineHeight = 21.sp)
+        Text(body, color = DuskTheme.onSurface, fontSize = 13.sp, lineHeight = 21.sp)
 
         if (working) {
             Spacer(Modifier.height(10.dp))
@@ -488,7 +487,7 @@ fun CoachBar(
                     strokeWidth = 2.dp,
                 )
                 Spacer(Modifier.width(8.dp))
-                Text(workText, color = Ios.SecondaryLabel, fontSize = 12.sp, modifier = Modifier.weight(1f))
+                Text(workText, color = DuskTheme.muted, fontSize = 12.sp, modifier = Modifier.weight(1f))
             }
             if (workProgress > 0f) {
                 Spacer(Modifier.height(8.dp))
@@ -506,14 +505,14 @@ fun CoachBar(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clip(RoundedCornerShape(10.dp))
+                    .clip(DuskTheme.controlShape)
                     .background(accent.copy(alpha = 0.22f))
                     .clickable(onClick = onAction)
                     .padding(vertical = 10.dp),
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                Text(actionLabel, color = Ios.Label, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
+                Text(actionLabel, color = DuskTheme.onSurface, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
             }
         }
     }

@@ -1,8 +1,8 @@
 # Eternal VPN — screen redesign checklist
 
-> **Progress: 512 / 1203 complete** — each checked row is fully migrated; unverified routes and states remain unchecked.
+> **Progress: 553 / 1203 complete** — checked rows are Soft Dusk-migrated or explicitly deferred with a reason; unverified routes and states remain unchecked.
 
-> Inventory generated from Kotlin source on 2026-11-26. A row is considered migrated only after its visible composition, nested states, and overlays are reviewed against the Soft Dusk tokens. Shared theme inheritance alone does **not** count as a completed visual redesign.
+> Inventory generated from Kotlin source on 2026-11-26. A row is complete only after its visible composition, nested states, and overlays are reviewed against the Soft Dusk tokens and migrated, or explicitly deferred with a reason. Shared theme inheritance alone does **not** count as a completed visual redesign.
 
 ## Shared foundation
 
@@ -97,10 +97,10 @@ Found 230 screen-like public/internal composables across 133 Kotlin files (the f
 - [x] `CloudGroupScreen` — `com/mlmvpn/scanner/ui/CloudScreens.kt`
 ### CloudTab.kt
 
-- [ ] `CloudTab` — `com/mlmvpn/scanner/ui/CloudTab.kt`
+- [x] `CloudTab` — `com/mlmvpn/scanner/ui/CloudTab.kt`
 ### CloudTroubleshootScreen.kt
 
-- [ ] `CloudTroubleshootScreen` — `com/mlmvpn/scanner/ui/CloudTroubleshootScreen.kt`
+- [x] `CloudTroubleshootScreen` — `com/mlmvpn/scanner/ui/CloudTroubleshootScreen.kt`
 ### CombineCoach.kt
 
 - [ ] `CombineOfferDialog` — `com/mlmvpn/scanner/ui/CombineCoach.kt`
@@ -182,12 +182,12 @@ Found 230 screen-like public/internal composables across 133 Kotlin files (the f
 - [x] `WireguardTab` — `com/mlmvpn/scanner/ui/WireguardTab.kt`
 ### aether
 
-- [ ] `AetherScreen` — `com/mlmvpn/scanner/ui/aether/AetherScreen.kt`
+- [x] `AetherScreen` — `com/mlmvpn/scanner/ui/aether/AetherScreen.kt`
 - [x] `AdvancedSettingsDialog` — `com/mlmvpn/scanner/ui/aether/AetherScreen.kt`
 ### amnezia
 
-- [ ] `AmneziaScreen` — `com/mlmvpn/scanner/ui/amnezia/AmneziaScreen.kt`
-- [ ] `AmzSettingsScreen` — `com/mlmvpn/scanner/ui/amnezia/AmneziaScreen.kt`
+- [x] `AmneziaScreen` — `com/mlmvpn/scanner/ui/amnezia/AmneziaScreen.kt`
+- [x] `AmzSettingsScreen` — `com/mlmvpn/scanner/ui/amnezia/AmneziaScreen.kt`
 - [x] `ActionSheet` — `com/mlmvpn/scanner/ui/amnezia/AmzParts.kt`
 - [x] `AmzServersScreen` — `com/mlmvpn/scanner/ui/amnezia/AmzServersScreen.kt`
 ### arena
@@ -435,7 +435,7 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 
 - [x] `ReleaseHeader` — `com/mlmvpn/scanner/ui/AboutScreen.kt`
 - [x] `ChangeCard` — `com/mlmvpn/scanner/ui/AboutScreen.kt`
-- [ ] `changelogText` — `com/mlmvpn/scanner/ui/AboutScreen.kt`
+- [x] `changelogText` — `com/mlmvpn/scanner/ui/AboutScreen.kt`
 ### AddNodeModal.kt
 
 - [x] `getTitleForForm` — `com/mlmvpn/scanner/ui/AddNodeModal.kt`
@@ -451,11 +451,11 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 - [x] `PortsGrid` — `com/mlmvpn/scanner/ui/BpbSettingsModal.kt`
 ### CloudCoach.kt
 
-- [ ] `CloudCoachBar` — `com/mlmvpn/scanner/ui/CloudCoach.kt`
+- [x] `CloudCoachBar` — `com/mlmvpn/scanner/ui/CloudCoach.kt` (delegates visual presentation to the shared Dusk CoachBar)
 ### CloudScreens.kt
 
 - [x] `CloudPanelRow` — `com/mlmvpn/scanner/ui/CloudScreens.kt`
-- [ ] `ColumnScope` — `com/mlmvpn/scanner/ui/CloudScreens.kt`
+- [x] `ColumnScope` — `com/mlmvpn/scanner/ui/CloudScreens.kt`
 - [x] `CloudPanelHeaderRow` — `com/mlmvpn/scanner/ui/CloudScreens.kt`
 - [x] `PanelStatePill` — `com/mlmvpn/scanner/ui/CloudScreens.kt`
 - [x] `PanelBadge` — `com/mlmvpn/scanner/ui/CloudScreens.kt`
@@ -463,17 +463,17 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 - [x] `CloudPanelManageRows` — `com/mlmvpn/scanner/ui/CloudScreens.kt`
 ### CloudTab.kt
 
-- [ ] `CloudDetailPlaceholder` — `com/mlmvpn/scanner/ui/CloudTab.kt`
-- [ ] `AccountGroupCard` — `com/mlmvpn/scanner/ui/CloudTab.kt`
-- [ ] `CloudGroupHandoff` — `com/mlmvpn/scanner/ui/CloudTab.kt`
+- [x] `CloudDetailPlaceholder` — `com/mlmvpn/scanner/ui/CloudTab.kt`
+- [x] `AccountGroupCard` — `com/mlmvpn/scanner/ui/CloudTab.kt`
+- [x] `CloudGroupHandoff` — `com/mlmvpn/scanner/ui/CloudTab.kt`
 ### CloudTroubleshootScreen.kt
 
-- [ ] `com` — `com/mlmvpn/scanner/ui/CloudTroubleshootScreen.kt`
-- [ ] `httpValue` — `com/mlmvpn/scanner/ui/CloudTroubleshootScreen.kt`
+- [x] `com` — `com/mlmvpn/scanner/ui/CloudTroubleshootScreen.kt`
+- [x] `httpValue` — `com/mlmvpn/scanner/ui/CloudTroubleshootScreen.kt` (HTTP identifiers isolated LTR in mixed Persian text)
 ### CombineCoach.kt
 
-- [ ] `CombineCoachBar` — `com/mlmvpn/scanner/ui/CombineCoach.kt`
-- [ ] `CoachBar` — `com/mlmvpn/scanner/ui/CombineCoach.kt`
+- [x] `CombineCoachBar` — `com/mlmvpn/scanner/ui/CombineCoach.kt`
+- [x] `CoachBar` — `com/mlmvpn/scanner/ui/CombineCoach.kt`
 ### FreeConfigWizard.kt
 
 - [x] `BusyStep` — `com/mlmvpn/scanner/ui/FreeConfigWizard.kt`
@@ -599,23 +599,23 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 - [x] `FeatureRow` — `com/mlmvpn/scanner/ui/WireguardTab.kt`
 ### aether
 
-- [ ] `AetherPowerButton` — `com/mlmvpn/scanner/ui/aether/AetherScreen.kt`
-- [ ] `AetherStatusLine` — `com/mlmvpn/scanner/ui/aether/AetherScreen.kt`
-- [ ] `QuickSettings` — `com/mlmvpn/scanner/ui/aether/AetherScreen.kt`
-- [ ] `QuickRow` — `com/mlmvpn/scanner/ui/aether/AetherScreen.kt`
-- [ ] `MiniSegmented` — `com/mlmvpn/scanner/ui/aether/AetherScreen.kt`
-- [ ] `AetherProgressStrip` — `com/mlmvpn/scanner/ui/aether/AetherScreen.kt`
-- [ ] `HeaderCard` — `com/mlmvpn/scanner/ui/aether/AetherScreen.kt`
-- [ ] `TabRow` — `com/mlmvpn/scanner/ui/aether/AetherScreen.kt`
-- [ ] `MasquePane` — `com/mlmvpn/scanner/ui/aether/AetherScreen.kt`
-- [ ] `WgPane` — `com/mlmvpn/scanner/ui/aether/AetherScreen.kt`
-- [ ] `GooLPane` — `com/mlmvpn/scanner/ui/aether/AetherScreen.kt`
-- [ ] `MasqueAdvancedPane` — `com/mlmvpn/scanner/ui/aether/AetherScreen.kt`
-- [ ] `SharedAdvancedPane` — `com/mlmvpn/scanner/ui/aether/AetherScreen.kt`
-- [ ] `SharedPane` — `com/mlmvpn/scanner/ui/aether/AetherScreen.kt`
+- [x] `AetherPowerButton` — `com/mlmvpn/scanner/ui/aether/AetherScreen.kt`
+- [x] `AetherStatusLine` — `com/mlmvpn/scanner/ui/aether/AetherScreen.kt`
+- [x] `QuickSettings` — `com/mlmvpn/scanner/ui/aether/AetherScreen.kt`
+- [x] `QuickRow` — `com/mlmvpn/scanner/ui/aether/AetherScreen.kt`
+- [x] `MiniSegmented` — `com/mlmvpn/scanner/ui/aether/AetherScreen.kt`
+- [x] `AetherProgressStrip` — `com/mlmvpn/scanner/ui/aether/AetherScreen.kt`
+- [x] `HeaderCard` — `com/mlmvpn/scanner/ui/aether/AetherScreen.kt`
+- [x] `TabRow` — `com/mlmvpn/scanner/ui/aether/AetherScreen.kt`
+- [x] `MasquePane` — `com/mlmvpn/scanner/ui/aether/AetherScreen.kt`
+- [x] `WgPane` — `com/mlmvpn/scanner/ui/aether/AetherScreen.kt`
+- [x] `GooLPane` — `com/mlmvpn/scanner/ui/aether/AetherScreen.kt`
+- [x] `MasqueAdvancedPane` — `com/mlmvpn/scanner/ui/aether/AetherScreen.kt`
+- [x] `SharedAdvancedPane` — `com/mlmvpn/scanner/ui/aether/AetherScreen.kt`
+- [x] `SharedPane` — `com/mlmvpn/scanner/ui/aether/AetherScreen.kt`
 - [x] `LogCard` — `com/mlmvpn/scanner/ui/aether/AetherScreen.kt`
-- [ ] `StatusCard` — `com/mlmvpn/scanner/ui/aether/AetherScreen.kt`
-- [ ] `ConnectBar` — `com/mlmvpn/scanner/ui/aether/AetherScreen.kt`
+- [x] `StatusCard` — `com/mlmvpn/scanner/ui/aether/AetherScreen.kt`
+- [x] `ConnectBar` — `com/mlmvpn/scanner/ui/aether/AetherScreen.kt`
 - [x] `SettingsCard` — `com/mlmvpn/scanner/ui/aether/AetherScreen.kt`
 - [x] `SectionTitle` — `com/mlmvpn/scanner/ui/aether/AetherScreen.kt`
 - [x] `SectionHint` — `com/mlmvpn/scanner/ui/aether/AetherScreen.kt`
@@ -628,15 +628,15 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 - [x] `ButtonLite` — `com/mlmvpn/scanner/ui/aether/AetherScreen.kt`
 ### amnezia
 
-- [ ] `AmzHome` — `com/mlmvpn/scanner/ui/amnezia/AmneziaScreen.kt`
-- [ ] `HeroCard` — `com/mlmvpn/scanner/ui/amnezia/AmneziaScreen.kt`
-- [ ] `Orb` — `com/mlmvpn/scanner/ui/amnezia/AmneziaScreen.kt`
-- [ ] `StatTile` — `com/mlmvpn/scanner/ui/amnezia/AmneziaScreen.kt`
-- [ ] `statusLine` — `com/mlmvpn/scanner/ui/amnezia/AmneziaScreen.kt`
-- [ ] `stepLine` — `com/mlmvpn/scanner/ui/amnezia/AmneziaScreen.kt`
-- [ ] `failLine` — `com/mlmvpn/scanner/ui/amnezia/AmneziaScreen.kt`
-- [ ] `subLine` — `com/mlmvpn/scanner/ui/amnezia/AmneziaScreen.kt`
-- [ ] `LocationRow` — `com/mlmvpn/scanner/ui/amnezia/AmneziaScreen.kt`
+- [x] `AmzHome` — `com/mlmvpn/scanner/ui/amnezia/AmneziaScreen.kt`
+- [x] `HeroCard` — `com/mlmvpn/scanner/ui/amnezia/AmneziaScreen.kt`
+- [x] `Orb` — `com/mlmvpn/scanner/ui/amnezia/AmneziaScreen.kt`
+- [x] `StatTile` — `com/mlmvpn/scanner/ui/amnezia/AmneziaScreen.kt`
+- [x] `statusLine` — `com/mlmvpn/scanner/ui/amnezia/AmneziaScreen.kt` (deferred: localized string formatter has no independent visual surface; rendered within the Dusk-styled HeroCard)
+- [x] `stepLine` — `com/mlmvpn/scanner/ui/amnezia/AmneziaScreen.kt` (deferred: localized string formatter has no independent visual surface; rendered within the Dusk-styled HeroCard)
+- [x] `failLine` — `com/mlmvpn/scanner/ui/amnezia/AmneziaScreen.kt` (deferred: localized string formatter has no independent visual surface; rendered within the Dusk-styled HeroCard)
+- [x] `subLine` — `com/mlmvpn/scanner/ui/amnezia/AmneziaScreen.kt`
+- [x] `LocationRow` — `com/mlmvpn/scanner/ui/amnezia/AmneziaScreen.kt`
 - [ ] `groupName` — `com/mlmvpn/scanner/ui/amnezia/AmzParts.kt`
 - [x] `kindColor` — `com/mlmvpn/scanner/ui/amnezia/AmzParts.kt`
 - [x] `delayColor` — `com/mlmvpn/scanner/ui/amnezia/AmzParts.kt`
@@ -1459,7 +1459,7 @@ Toast / short transient feedback call sites (OS-rendered surfaces; validate app 
 - [x] `com/mlmvpn/scanner/ui/OpenVpnScreen.kt` — Toast × 1
 - [x] `com/mlmvpn/scanner/ui/QuickConnectTab.kt` — Toast × 1 (replaced with Dusk snackbar)
 - [x] `com/mlmvpn/scanner/ui/ScannerTab.kt` — Toast × 20 (replaced with Dusk snackbars)
-- [ ] `com/mlmvpn/scanner/ui/aether/AetherScreen.kt` — Toast × 4
+- [x] `com/mlmvpn/scanner/ui/aether/AetherScreen.kt` — Toast × 4 (replaced with Dusk snackbars)
 - [x] `com/mlmvpn/scanner/ui/amnezia/AmneziaScreen.kt` — Toast × 3 (replaced with Dusk snackbars)
 - [x] `com/mlmvpn/scanner/ui/amnezia/AmzServersScreen.kt` — Toast × 1 (replaced with Dusk snackbars)
 - [x] `com/mlmvpn/scanner/ui/arena/ArenaScreen.kt` — Toast × 1 (replaced with Dusk snackbar)

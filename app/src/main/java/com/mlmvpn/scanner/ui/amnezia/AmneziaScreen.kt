@@ -37,7 +37,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Bolt
 import androidx.compose.material.icons.filled.ChevronRight
@@ -91,7 +90,7 @@ import com.mlmvpn.scanner.engines.amnezia.AmzServer
 import com.mlmvpn.scanner.engines.amnezia.AmzTestMode
 import com.mlmvpn.scanner.ui.LocalTabVisible
 import com.mlmvpn.scanner.ui.home.frostedGlass
-import com.mlmvpn.scanner.ui.settings.Ios
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 import com.mlmvpn.scanner.ui.theme.rememberDuskSnackbarAction
 import com.mlmvpn.scanner.ui.settings.IosScreen
 import com.mlmvpn.scanner.ui.settings.SettingsActionRow
@@ -250,39 +249,39 @@ private fun AmzHome(
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Column(Modifier.weight(1f)) {
                             Text(stringResource(R.string.amz_testing, fa(progress.done), fa(progress.total), fa(progress.alive)),
-                                color = Ios.Label, fontSize = 15.sp)
+                                color = DuskTheme.onSurface, fontSize = 15.sp)
                             if (progress.via == com.mlmvpn.scanner.engines.amnezia.AmzStat.VIA_CF) {
-                                Text(stringResource(R.string.amz_testing_cf), color = Ios.SecondaryLabel, fontSize = 13.sp)
+                                Text(stringResource(R.string.amz_testing_cf), color = DuskTheme.muted, fontSize = 13.sp)
                             }
                         }
-                        Text(stringResource(R.string.amz_stop), color = Ios.Red, fontSize = 15.sp, fontWeight = FontWeight.SemiBold,
-                            modifier = Modifier.clip(RoundedCornerShape(8.dp)).clickable { AmzEngine.stopTest() }.padding(horizontal = 8.dp, vertical = 4.dp))
+                        Text(stringResource(R.string.amz_stop), color = DuskTheme.error, fontSize = 15.sp, fontWeight = FontWeight.SemiBold,
+                            modifier = Modifier.clip(DuskTheme.glyphShape).clickable { AmzEngine.stopTest() }.padding(horizontal = 8.dp, vertical = 4.dp))
                     }
                     Spacer(Modifier.height(10.dp))
                     LinearProgressIndicator(
                         progress = if (progress.total > 0) progress.done.toFloat() / progress.total else 0f,
-                        color = Ios.Green, trackColor = Color.White.copy(alpha = 0.15f),
-                        modifier = Modifier.fillMaxWidth().height(4.dp).clip(RoundedCornerShape(2.dp)),
+                        color = DuskTheme.success, trackColor = Color.White.copy(alpha = 0.15f),
+                        modifier = Modifier.fillMaxWidth().height(4.dp).clip(CircleShape),
                     )
                 }
             }
             if (!progress.running) {
-                SettingsActionRow(label = stringResource(R.string.amz_test_best), icon = Icons.Default.Bolt, tint = Ios.Green) { AmzEngine.test(AmzTestMode.BEST) }
+                SettingsActionRow(label = stringResource(R.string.amz_test_best), icon = Icons.Default.Bolt, tint = DuskTheme.success) { AmzEngine.test(AmzTestMode.BEST) }
                 Separator()
-                SettingsActionRow(label = stringResource(R.string.amz_test_all), icon = Icons.Default.Speed, tint = Ios.Indigo) { AmzEngine.test(AmzTestMode.ALL) }
+                SettingsActionRow(label = stringResource(R.string.amz_test_all), icon = Icons.Default.Speed, tint = DuskTheme.indigo) { AmzEngine.test(AmzTestMode.ALL) }
                 Separator()
-                SettingsActionRow(label = stringResource(R.string.amz_remove_dead), icon = Icons.Default.DeleteSweep, tint = Ios.Red) { AmzEngine.removeDead() }
+                SettingsActionRow(label = stringResource(R.string.amz_remove_dead), icon = Icons.Default.DeleteSweep, tint = DuskTheme.error) { AmzEngine.removeDead() }
             }
         }
 
         SettingsSectionHeader(stringResource(R.string.amz_section_sources))
         SettingsGroup {
-            SettingsActionRow(label = stringResource(R.string.amz_add_file), icon = Icons.Default.FileOpen, tint = Ios.Blue, onClick = onAddFile)
+            SettingsActionRow(label = stringResource(R.string.amz_add_file), icon = Icons.Default.FileOpen, tint = DuskTheme.primary, onClick = onAddFile)
             Separator()
-            SettingsActionRow(label = stringResource(R.string.amz_paste), icon = Icons.Default.ContentPaste, tint = Ios.Teal, onClick = onPaste)
+            SettingsActionRow(label = stringResource(R.string.amz_paste), icon = Icons.Default.ContentPaste, tint = DuskTheme.secondary, onClick = onPaste)
             Separator()
             SettingsActionRow(label = stringResource(if (refreshing) R.string.amz_refreshing else R.string.amz_refresh),
-                icon = Icons.Default.Refresh, tint = Ios.Orange, busy = refreshing) { AmzEngine.refresh(force = true) }
+                icon = Icons.Default.Refresh, tint = DuskTheme.accent, busy = refreshing) { AmzEngine.refresh(force = true) }
         }
         SettingsFooter(stringResource(R.string.amz_servers_count, fa(state.servers.size), fa(alive)))
         Spacer(Modifier.height(36.dp))
@@ -296,23 +295,23 @@ private fun HeroCard(conn: AmzConnect, server: AmzServer?, onButton: () -> Unit)
     val connecting = conn is AmzConnect.Connecting
     val connected = conn is AmzConnect.Connected
     val tone by animateColorAsState(
-        when { connected -> Ios.Green; connecting -> Ios.Orange; conn is AmzConnect.Failed -> Ios.Red; else -> Ios.Blue },
+        when { connected -> DuskTheme.success; connecting -> DuskTheme.accent; conn is AmzConnect.Failed -> DuskTheme.error; else -> DuskTheme.primary },
         animationSpec = tween(450), label = "tone",
     )
     Column(
         Modifier.fillMaxWidth().padding(horizontal = 16.dp)
-            .frostedGlass(RoundedCornerShape(30.dp)).padding(horizontal = 20.dp, vertical = 18.dp),
+            .frostedGlass(DuskTheme.cardShape).padding(horizontal = 20.dp, vertical = 18.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         // Status capsule and the section's mark, like the header of an iOS widget.
         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
             Row(
-                Modifier.clip(RoundedCornerShape(50)).background(tone.copy(alpha = 0.16f)).padding(horizontal = 10.dp, vertical = 5.dp),
+                Modifier.clip(DuskTheme.controlShape).background(tone.copy(alpha = 0.16f)).padding(horizontal = 10.dp, vertical = 5.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Box(Modifier.size(7.dp).clip(CircleShape).background(tone))
                 Spacer(Modifier.width(6.dp))
-                Text(statusLine(conn), color = Ios.Label, fontSize = 12.sp, fontWeight = FontWeight.SemiBold, maxLines = 1)
+                Text(statusLine(conn), color = DuskTheme.onSurface, fontSize = 12.sp, fontWeight = FontWeight.SemiBold, maxLines = 1)
             }
             Spacer(Modifier.weight(1f))
             Image(painterResource(R.drawable.ic_app_amnezia), contentDescription = null, contentScale = ContentScale.Fit, modifier = Modifier.size(30.dp))
@@ -328,11 +327,11 @@ private fun HeroCard(conn: AmzConnect, server: AmzServer?, onButton: () -> Unit)
                 is AmzConnect.Connecting -> stepLine(conn.step)
                 else -> stringResource(R.string.amz_status_idle)
             },
-            color = Ios.Label, fontSize = 20.sp, fontWeight = FontWeight.Bold, textAlign = TextAlign.Center,
+            color = DuskTheme.onSurface, fontSize = 20.sp, fontWeight = FontWeight.Bold, textAlign = TextAlign.Center,
         )
         Spacer(Modifier.height(4.dp))
         Text(
-            subLine(conn, server), color = if (conn is AmzConnect.Failed) Ios.Orange else Ios.SecondaryLabel,
+            subLine(conn, server), color = if (conn is AmzConnect.Failed) DuskTheme.accent else DuskTheme.muted,
             fontSize = 13.sp, textAlign = TextAlign.Center, maxLines = 2, overflow = TextOverflow.Ellipsis,
         )
 
@@ -340,11 +339,11 @@ private fun HeroCard(conn: AmzConnect, server: AmzServer?, onButton: () -> Unit)
         // The explicit action, in words: the orb is the big target, this says what it will do.
         val label = stringResource(when { connecting -> R.string.amz_cancel; connected -> R.string.amz_disconnect; else -> R.string.amz_connect })
         Box(
-            Modifier.fillMaxWidth().heightIn(min = 48.dp).clip(RoundedCornerShape(14.dp))
-                .background(if (connected || connecting) Color.White.copy(alpha = 0.14f) else Ios.Blue)
+            Modifier.fillMaxWidth().heightIn(min = 48.dp).clip(DuskTheme.controlShape)
+                .background(if (connected || connecting) Color.White.copy(alpha = 0.14f) else DuskTheme.primary)
                 .clickable(role = Role.Button, onClick = onButton),
             contentAlignment = Alignment.Center,
-        ) { Text(label, color = if (connecting) Ios.Orange else if (connected) Ios.Red else Color.White, fontSize = 17.sp, fontWeight = FontWeight.SemiBold) }
+        ) { Text(label, color = if (connecting) DuskTheme.accent else if (connected) DuskTheme.error else Color.White, fontSize = 17.sp, fontWeight = FontWeight.SemiBold) }
 
         AnimatedVisibility(connected, enter = expandVertically() + fadeIn(), exit = shrinkVertically() + fadeOut()) {
             val c = conn as? AmzConnect.Connected
@@ -400,12 +399,12 @@ private fun Orb(tone: Color, connecting: Boolean, connected: Boolean, onClick: (
 @Composable
 private fun StatTile(label: String, value: String, modifier: Modifier = Modifier) {
     Column(
-        modifier.clip(RoundedCornerShape(16.dp)).background(Color.White.copy(alpha = 0.08f)).padding(vertical = 10.dp, horizontal = 8.dp),
+        modifier.clip(DuskTheme.chartShape).background(Color.White.copy(alpha = 0.08f)).padding(vertical = 10.dp, horizontal = 8.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Text(label, color = Ios.SecondaryLabel, fontSize = 11.sp)
+        Text(label, color = DuskTheme.muted, fontSize = 11.sp)
         Spacer(Modifier.height(3.dp))
-        Text(value, color = Ios.Label, fontSize = 14.sp, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
+        Text(value, color = DuskTheme.onSurface, fontSize = 14.sp, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
     }
 }
 
@@ -436,7 +435,7 @@ private fun failLine(reason: AmzConnect.Reason): String = stringResource(when (r
 
 @Composable
 private fun subLine(conn: AmzConnect, server: AmzServer?): String {
-    val where = server?.let { "${groupFlag(AmzBrain.group(it))} ${groupName(AmzBrain.group(it))} · ${it.name}" }.orEmpty()
+    val where = server?.let { "${groupFlag(AmzBrain.group(it))} ${groupName(AmzBrain.group(it))} · ⁨${it.name}⁩" }.orEmpty()
     return when (conn) {
         AmzConnect.Idle -> stringResource(R.string.amz_connect_best)
         is AmzConnect.Failed -> failLine(conn.reason)
@@ -476,12 +475,12 @@ private fun LocationRow(
         }
         Spacer(Modifier.width(12.dp))
         Column(Modifier.weight(1f)) {
-            Text(title, color = Ios.Label, fontSize = 16.sp, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
-            Text(sub, color = Ios.SecondaryLabel, fontSize = 12.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            Text(title, color = DuskTheme.onSurface, fontSize = 16.sp, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            Text(sub, color = DuskTheme.muted, fontSize = 12.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
         }
         if (ms != null) { DelayCapsule(ms); Spacer(Modifier.width(6.dp)) }
         Icon(
-            Icons.Default.ChevronRight, contentDescription = null, tint = Ios.Chevron,
+            Icons.Default.ChevronRight, contentDescription = null, tint = DuskTheme.muted,
             modifier = Modifier.size(18.dp).scale(scaleX = if (LocalLayoutDirection.current == LayoutDirection.Rtl) -1f else 1f, scaleY = 1f),
         )
     }
@@ -499,19 +498,19 @@ private fun AmzSettingsScreen(onBack: () -> Unit) {
             SettingsToggle(
                 title = stringResource(R.string.amz_obfuscate), subtitle = stringResource(R.string.amz_obfuscate_sub),
                 checked = p.obfuscate, onCheckedChange = { v -> AmzEngine.setPrefs { it.copy(obfuscate = v) } },
-                icon = Icons.Default.Bolt, tint = Ios.Orange,
+                icon = Icons.Default.Bolt, tint = DuskTheme.accent,
             )
             Separator()
             SettingsToggle(
                 title = stringResource(R.string.amz_auto_remove), subtitle = stringResource(R.string.amz_auto_remove_sub),
                 checked = p.autoRemoveDead, onCheckedChange = { v -> AmzEngine.setPrefs { it.copy(autoRemoveDead = v) } },
-                icon = Icons.Default.DeleteSweep, tint = Ios.Red,
+                icon = Icons.Default.DeleteSweep, tint = DuskTheme.error,
             )
             Separator()
             SettingsToggle(
                 title = stringResource(R.string.amz_auto_fallback),
                 checked = p.autoFallback, onCheckedChange = { v -> AmzEngine.setPrefs { it.copy(autoFallback = v) } },
-                icon = Icons.Default.Refresh, tint = Ios.Blue,
+                icon = Icons.Default.Refresh, tint = DuskTheme.primary,
             )
         }
         SettingsFooter(stringResource(R.string.amz_settings_footer))

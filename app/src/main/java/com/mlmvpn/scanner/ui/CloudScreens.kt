@@ -212,7 +212,7 @@ fun ColumnScope.CloudAddAccountForm(
     var email by remember { mutableStateOf("") }
     var apiKey by remember { mutableStateOf("") }
 
-    Spacer(Modifier.height(DuskTheme.space3))
+    Spacer(Modifier.height(DuskTheme.space2))
 
     if (showHeader) SettingsSectionHeader(S(R.string.account))
         SettingsGroup {
@@ -263,7 +263,7 @@ fun ColumnScope.CloudAddAccountForm(
             }
         }
 
-        Spacer(Modifier.height(DuskTheme.space3))
+        Spacer(Modifier.height(DuskTheme.space2))
         SettingsGroup {
             SettingsActionRow(
                 label = if (isAdding) S(R.string.checking_the_account) else S(R.string.save_and_connect),

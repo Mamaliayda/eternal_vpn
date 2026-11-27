@@ -293,7 +293,7 @@ fun CloudTab(
                             title = stringResource(R.string.cf_doctor_title),
                             subtitle = stringResource(R.string.cfnet_cloud_row_sub),
                             icon = Icons.Default.HealthAndSafety,
-                            tint = com.mlmvpn.scanner.ui.settings.Ios.Blue,
+                            tint = DuskTheme.primary,
                             onClick = { doctorSetup = false; doctorOpen = true })
                     }
                 }
@@ -429,11 +429,11 @@ fun CloudTab(
                             horizontalAlignment = Alignment.CenterHorizontally,
                             verticalArrangement = Arrangement.Center
                         ) {
-                            Icon(Icons.Default.Cloud, contentDescription = null, tint = TextDim, modifier = Modifier.size(96.dp))
+                            Icon(Icons.Default.Cloud, contentDescription = null, tint = DuskTheme.muted.copy(alpha = 0.72f), modifier = Modifier.size(96.dp))
                             Spacer(modifier = Modifier.height(24.dp))
-                            Text(stringResource(R.string.cloud_no_account_connected), color = TextPrimary, fontWeight = FontWeight.Bold, fontSize = 18.sp)
+                            Text(stringResource(R.string.cloud_no_account_connected), color = DuskTheme.onSurface, fontWeight = FontWeight.Bold, fontSize = 18.sp)
                             Spacer(modifier = Modifier.height(8.dp))
-                            Text(stringResource(R.string.cloud_press_add_button), color = TextMuted, fontSize = 14.sp)
+                            Text(stringResource(R.string.cloud_press_add_button), color = DuskTheme.muted, fontSize = 14.sp)
                         }
                     }
                 }
@@ -666,7 +666,7 @@ fun CloudTab(
             modifier = Modifier
                 .width(1.dp)
                 .fillMaxHeight()
-                .background(com.mlmvpn.scanner.ui.settings.Ios.Separator),
+                .background(DuskTheme.outline.copy(alpha = 0.22f)),
         )
         Box(modifier = Modifier.weight(1f).fillMaxHeight()) {
             if (detail != null) detail() else CloudDetailPlaceholder()
@@ -682,13 +682,13 @@ private fun CloudDetailPlaceholder() {
             Icon(
                 Icons.Default.Cloud,
                 contentDescription = null,
-                tint = com.mlmvpn.scanner.ui.settings.Ios.SecondaryLabel.copy(alpha = 0.5f),
+                tint = DuskTheme.muted.copy(alpha = 0.5f),
                 modifier = Modifier.size(56.dp),
             )
             Spacer(Modifier.height(14.dp))
             Text(
                 S(R.string.cloud_pick_a_row),
-                color = com.mlmvpn.scanner.ui.settings.Ios.SecondaryLabel,
+                color = DuskTheme.muted,
                 fontSize = 15.sp,
             )
         }
@@ -1032,7 +1032,7 @@ fun AccountGroupCard(
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     account.email,
-                    color = TextPrimary,
+                    color = DuskTheme.onSurface,
                     fontSize = 15.sp,
                     fontWeight = FontWeight.SemiBold,
                     maxLines = 1,
@@ -1043,11 +1043,11 @@ fun AccountGroupCard(
                     // These block every panel at once, so they are still one sentence.
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Spacer(modifier = Modifier.height(22.dp))
-                        Box(modifier = Modifier.size(6.dp).clip(CircleShape).background(YellowWarn))
+                        Box(modifier = Modifier.size(6.dp).clip(CircleShape).background(DuskTheme.accent))
                         Spacer(modifier = Modifier.width(6.dp))
                         Text(
                             if (!isEmailVerified) S(R.string.email_not_verified) else S(R.string.subdomain_not_created),
-                            color = TextMuted,
+                            color = DuskTheme.muted,
                             fontSize = 12.sp,
                         )
                     }
@@ -1083,7 +1083,7 @@ fun AccountGroupCard(
                 Icon(
                     Icons.Default.Build,
                     contentDescription = S(R.string.cf_fix_open),
-                    tint = if (!isBusy) TextMuted else BorderDark,
+                    tint = if (!isBusy) DuskTheme.muted else DuskTheme.outline.copy(alpha = 0.2f),
                     modifier = Modifier.size(18.dp),
                 )
             }
@@ -1091,14 +1091,14 @@ fun AccountGroupCard(
                 onClick = onDelete,
                 enabled = !isBusy
             ) {
-                Icon(Icons.Default.Delete, contentDescription = "Delete", tint = if (!isBusy) TextMuted else BorderDark)
+                Icon(Icons.Default.Delete, contentDescription = "Delete", tint = if (!isBusy) DuskTheme.muted else DuskTheme.outline.copy(alpha = 0.2f))
             }
             if (onToggleCollapsed != null) {
                 val turn by animateFloatAsState(if (collapsed) 0f else 180f, label = "fold")
                 Icon(
                     Icons.Default.KeyboardArrowDown,
                     contentDescription = if (collapsed) com.mlmvpn.scanner.store.tr("باز کردن", "Expand") else com.mlmvpn.scanner.store.tr("بستن", "Collapse"),
-                    tint = com.mlmvpn.scanner.ui.settings.Ios.Chevron,
+                    tint = DuskTheme.muted,
                     modifier = Modifier.size(22.dp).graphicsLayer { rotationZ = turn },
                 )
             }
@@ -1110,7 +1110,7 @@ fun AccountGroupCard(
                 .fillMaxWidth()
                 .padding(start = 70.dp)
                 .height(0.5.dp)
-                .background(com.mlmvpn.scanner.ui.settings.Ios.Separator)
+                .background(DuskTheme.outline.copy(alpha = 0.22f))
         )
 
         // Action Buttons Column
@@ -1140,7 +1140,7 @@ fun AccountGroupCard(
             )
             // ── full panels, only the ones that are installed ──
             if (deployState != "idle" || legacyPanels.isNotEmpty()) {
-            Box(modifier = Modifier.fillMaxWidth().padding(start = 52.dp).height(0.5.dp).background(com.mlmvpn.scanner.ui.settings.Ios.Separator))
+            Box(modifier = Modifier.fillMaxWidth().padding(start = 52.dp).height(0.5.dp).background(DuskTheme.outline.copy(alpha = 0.22f)))
             }
             if (deployState != "idle") {
             CloudPanelHeaderRow(
@@ -1192,7 +1192,7 @@ fun AccountGroupCard(
                             .padding(horizontal = 16.dp, vertical = 13.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        val color = if (deployState == "done") GreenOk else TextPrimary
+                        val color = if (deployState == "done") DuskTheme.success else DuskTheme.onSurface
                         Icon(if (deployState == "done") Icons.Default.CheckCircle else Icons.Default.PlayArrow, contentDescription = null, tint = color, modifier = Modifier.size(20.dp))
                         Spacer(modifier = Modifier.width(12.dp))
                         Text(if (deployState == "deploying") stringResource(R.string.cloud_deploying) else if (deployState == "done") stringResource(R.string.cloud_deployed) else stringResource(R.string.cloud_deploy_bpb), color = color, fontSize = 15.sp, modifier = Modifier.weight(1f))
@@ -1208,11 +1208,11 @@ fun AccountGroupCard(
                             .padding(start = 48.dp, end = 16.dp, bottom = 10.dp)
                             .height(3.dp)
                             .clip(CircleShape),
-                        color = com.mlmvpn.scanner.ui.settings.Ios.Blue,
+                        color = DuskTheme.primary,
                         trackColor = Color.White.copy(alpha = 0.12f),
                     )
                 }
-                Box(modifier = Modifier.fillMaxWidth().padding(start = 52.dp).height(0.5.dp).background(com.mlmvpn.scanner.ui.settings.Ios.Separator))
+                Box(modifier = Modifier.fillMaxWidth().padding(start = 52.dp).height(0.5.dp).background(DuskTheme.outline.copy(alpha = 0.22f)))
                 
                 // Get Nodes Button
                 Box(
@@ -1244,9 +1244,9 @@ fun AccountGroupCard(
                             animationSpec = infiniteRepeatable(animation = tween(800, easing = LinearEasing), repeatMode = RepeatMode.Reverse),
                             label = "fetchAlpha"
                         )
-                        Box(modifier = Modifier.fillMaxSize().background(Primary.copy(alpha = alpha)))
+                        Box(modifier = Modifier.fillMaxSize().background(DuskTheme.primary.copy(alpha = alpha)))
                     }
-                    val color = if (deployState == "done") TextPrimary else TextDim
+                    val color = if (deployState == "done") DuskTheme.onSurface else DuskTheme.muted.copy(alpha = 0.72f)
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -1275,7 +1275,7 @@ fun AccountGroupCard(
             }
             }
 
-            Box(modifier = Modifier.fillMaxWidth().padding(start = 52.dp).height(0.5.dp).background(com.mlmvpn.scanner.ui.settings.Ios.Separator))
+            Box(modifier = Modifier.fillMaxWidth().padding(start = 52.dp).height(0.5.dp).background(DuskTheme.outline.copy(alpha = 0.22f)))
             }
 
             if (edgDeployState != "idle") {
@@ -1306,7 +1306,7 @@ fun AccountGroupCard(
                             .padding(horizontal = 16.dp, vertical = 13.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        val color = if (edgDeployState == "done") GreenOk else TextPrimary
+                        val color = if (edgDeployState == "done") DuskTheme.success else DuskTheme.onSurface
                         Icon(if (edgDeployState == "done") Icons.Default.CheckCircle else Icons.Default.PlayArrow, contentDescription = null, tint = color, modifier = Modifier.size(20.dp))
                         Spacer(modifier = Modifier.width(12.dp))
                         Text(if (edgDeployState == "deploying") stringResource(R.string.cloud_deploying) else if (edgDeployState == "done") stringResource(R.string.cloud_deployed) else stringResource(R.string.cloud_deploy_edg), color = color, fontSize = 15.sp, modifier = Modifier.weight(1f))
@@ -1322,12 +1322,12 @@ fun AccountGroupCard(
                             .padding(start = 48.dp, end = 16.dp, bottom = 10.dp)
                             .height(3.dp)
                             .clip(CircleShape),
-                        color = com.mlmvpn.scanner.ui.settings.Ios.Blue,
+                        color = DuskTheme.primary,
                         trackColor = Color.White.copy(alpha = 0.12f),
                     )
                 }
                 
-                Box(modifier = Modifier.fillMaxWidth().padding(start = 52.dp).height(0.5.dp).background(com.mlmvpn.scanner.ui.settings.Ios.Separator))
+                Box(modifier = Modifier.fillMaxWidth().padding(start = 52.dp).height(0.5.dp).background(DuskTheme.outline.copy(alpha = 0.22f)))
                 
                 // EDG Get Nodes Button
                 Box(
@@ -1342,9 +1342,9 @@ fun AccountGroupCard(
                             animationSpec = infiniteRepeatable(animation = tween(800, easing = LinearEasing), repeatMode = RepeatMode.Reverse),
                             label = "fetchAlphaEDG"
                         )
-                        Box(modifier = Modifier.fillMaxSize().background(Primary.copy(alpha = alpha)))
+                        Box(modifier = Modifier.fillMaxSize().background(DuskTheme.primary.copy(alpha = alpha)))
                     }
-                    val color = if (edgDeployState == "done") TextPrimary else TextDim
+                    val color = if (edgDeployState == "done") DuskTheme.onSurface else DuskTheme.muted.copy(alpha = 0.72f)
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -1361,7 +1361,7 @@ fun AccountGroupCard(
                     }
                 }
                 
-                Box(modifier = Modifier.fillMaxWidth().padding(start = 52.dp).height(0.5.dp).background(com.mlmvpn.scanner.ui.settings.Ios.Separator))
+                Box(modifier = Modifier.fillMaxWidth().padding(start = 52.dp).height(0.5.dp).background(DuskTheme.outline.copy(alpha = 0.22f)))
                 
                 // EDG Settings Button
                 Box(
@@ -1373,7 +1373,7 @@ fun AccountGroupCard(
                             }
                         },
                 ) {
-                    val color = if (edgDeployState == "done") TextPrimary else TextDim
+                    val color = if (edgDeployState == "done") DuskTheme.onSurface else DuskTheme.muted.copy(alpha = 0.72f)
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -1398,7 +1398,7 @@ fun AccountGroupCard(
             }
             }
             
-            Box(modifier = Modifier.fillMaxWidth().padding(start = 52.dp).height(0.5.dp).background(com.mlmvpn.scanner.ui.settings.Ios.Separator))
+            Box(modifier = Modifier.fillMaxWidth().padding(start = 52.dp).height(0.5.dp).background(DuskTheme.outline.copy(alpha = 0.22f)))
             }
 
             if (nahanDeployState != "idle") {
@@ -1450,7 +1450,7 @@ fun AccountGroupCard(
                             .padding(horizontal = 16.dp, vertical = 13.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        val color = if (nahanDeployState == "done") GreenOk else TextPrimary
+                        val color = if (nahanDeployState == "done") DuskTheme.success else DuskTheme.onSurface
                         Icon(if (nahanDeployState == "done") Icons.Default.CheckCircle else Icons.Default.PlayArrow, contentDescription = null, tint = color, modifier = Modifier.size(20.dp))
                         Spacer(modifier = Modifier.width(12.dp))
                         Text(if (nahanDeployState == "deploying") stringResource(R.string.cloud_deploying_short) else if (nahanDeployState == "done") stringResource(R.string.cloud_deployed) else stringResource(R.string.cloud_deploy_nhn), color = color, fontSize = 15.sp, modifier = Modifier.weight(1f))
@@ -1466,12 +1466,12 @@ fun AccountGroupCard(
                             .padding(start = 48.dp, end = 16.dp, bottom = 10.dp)
                             .height(3.dp)
                             .clip(CircleShape),
-                        color = com.mlmvpn.scanner.ui.settings.Ios.Blue,
+                        color = DuskTheme.primary,
                         trackColor = Color.White.copy(alpha = 0.12f),
                     )
                 }
                 
-                Box(modifier = Modifier.fillMaxWidth().padding(start = 52.dp).height(0.5.dp).background(com.mlmvpn.scanner.ui.settings.Ios.Separator))
+                Box(modifier = Modifier.fillMaxWidth().padding(start = 52.dp).height(0.5.dp).background(DuskTheme.outline.copy(alpha = 0.22f)))
                 
                 // Nahan Get Nodes Button
                 Box(
@@ -1554,9 +1554,9 @@ fun AccountGroupCard(
                             animationSpec = infiniteRepeatable(animation = tween(800, easing = LinearEasing), repeatMode = RepeatMode.Reverse),
                             label = "fetchAlphaNHN"
                         )
-                        Box(modifier = Modifier.fillMaxSize().background(Primary.copy(alpha = alpha)))
+                        Box(modifier = Modifier.fillMaxSize().background(DuskTheme.primary.copy(alpha = alpha)))
                     }
-                    val color = if (nahanDeployState == "done") TextPrimary else TextDim
+                    val color = if (nahanDeployState == "done") DuskTheme.onSurface else DuskTheme.muted.copy(alpha = 0.72f)
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -1573,7 +1573,7 @@ fun AccountGroupCard(
                     }
                 }
 
-                Box(modifier = Modifier.fillMaxWidth().padding(start = 52.dp).height(0.5.dp).background(com.mlmvpn.scanner.ui.settings.Ios.Separator))
+                Box(modifier = Modifier.fillMaxWidth().padding(start = 52.dp).height(0.5.dp).background(DuskTheme.outline.copy(alpha = 0.22f)))
                 
                 // Nahan Settings Button
                 Box(
@@ -1585,7 +1585,7 @@ fun AccountGroupCard(
                             }
                         },
                 ) {
-                    val color = if (nahanDeployState == "done") TextPrimary else TextDim
+                    val color = if (nahanDeployState == "done") DuskTheme.onSurface else DuskTheme.muted.copy(alpha = 0.72f)
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -1610,7 +1610,7 @@ fun AccountGroupCard(
             } // end Nahan Engine
             }
 
-            Box(modifier = Modifier.fillMaxWidth().padding(start = 52.dp).height(0.5.dp).background(com.mlmvpn.scanner.ui.settings.Ios.Separator))
+            Box(modifier = Modifier.fillMaxWidth().padding(start = 52.dp).height(0.5.dp).background(DuskTheme.outline.copy(alpha = 0.22f)))
             }
 
             if (spiderInstall != null) {
@@ -1635,7 +1635,7 @@ fun AccountGroupCard(
 
             // --- Netra and Gozargah: third-party panels, deployed from their developers' releases ---
             if (netra != null) {
-            Box(modifier = Modifier.fillMaxWidth().padding(start = 52.dp).height(0.5.dp).background(com.mlmvpn.scanner.ui.settings.Ios.Separator))
+            Box(modifier = Modifier.fillMaxWidth().padding(start = 52.dp).height(0.5.dp).background(DuskTheme.outline.copy(alpha = 0.22f)))
             CloudPanelHeaderRow(
                 title = "Netra",
                 subtitle = com.mlmvpn.scanner.store.tr("پنل ساده، بر پایهٔ BPB", "A simple panel built on BPB"),
@@ -1662,7 +1662,7 @@ fun AccountGroupCard(
             }
 
             if (gozargah != null) {
-            Box(modifier = Modifier.fillMaxWidth().padding(start = 52.dp).height(0.5.dp).background(com.mlmvpn.scanner.ui.settings.Ios.Separator))
+            Box(modifier = Modifier.fillMaxWidth().padding(start = 52.dp).height(0.5.dp).background(DuskTheme.outline.copy(alpha = 0.22f)))
             CloudPanelHeaderRow(
                 title = "Gozargah",
                 subtitle = com.mlmvpn.scanner.store.tr("چندکاربره با دیتابیس D1", "Multi-user, on a D1 database"),
@@ -1696,7 +1696,7 @@ fun AccountGroupCard(
 
             // --- Nova: fetched from the developer's repository at install, checked against its SHA-256 ---
             if (nova != null) {
-            Box(modifier = Modifier.fillMaxWidth().padding(start = 52.dp).height(0.5.dp).background(com.mlmvpn.scanner.ui.settings.Ios.Separator))
+            Box(modifier = Modifier.fillMaxWidth().padding(start = 52.dp).height(0.5.dp).background(DuskTheme.outline.copy(alpha = 0.22f)))
             CloudPanelHeaderRow(
                 title = "Nova",
                 subtitle = com.mlmvpn.scanner.store.tr("پنل کامل با آی‌پی تمیز و ربات تلگرام", "A full panel with clean IPs and a Telegram bot"),
@@ -1728,7 +1728,7 @@ fun AccountGroupCard(
             }
 
             if (mlmDeployState != "idle") {
-            Box(modifier = Modifier.fillMaxWidth().padding(start = 52.dp).height(0.5.dp).background(com.mlmvpn.scanner.ui.settings.Ios.Separator))
+            Box(modifier = Modifier.fillMaxWidth().padding(start = 52.dp).height(0.5.dp).background(DuskTheme.outline.copy(alpha = 0.22f)))
             
             // --- ROW 5: MLM Engine ---
             CloudPanelHeaderRow(
@@ -1777,7 +1777,7 @@ fun AccountGroupCard(
                             .padding(horizontal = 16.dp, vertical = 13.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        val color = if (mlmDeployState == "done") GreenOk else TextPrimary
+                        val color = if (mlmDeployState == "done") DuskTheme.success else DuskTheme.onSurface
                         Icon(if (mlmDeployState == "done") Icons.Default.CheckCircle else Icons.Default.PlayArrow, contentDescription = null, tint = color, modifier = Modifier.size(20.dp))
                         Spacer(modifier = Modifier.width(12.dp))
                         Text(if (mlmDeployState == "deploying") S(R.string.installing_2) else if (mlmDeployState == "done") S(R.string.installed) else S(R.string.install_on_account), color = color, fontSize = 15.sp, modifier = Modifier.weight(1f))
@@ -1793,12 +1793,12 @@ fun AccountGroupCard(
                             .padding(start = 48.dp, end = 16.dp, bottom = 10.dp)
                             .height(3.dp)
                             .clip(CircleShape),
-                        color = com.mlmvpn.scanner.ui.settings.Ios.Blue,
+                        color = DuskTheme.primary,
                         trackColor = Color.White.copy(alpha = 0.12f),
                     )
                 }
                 
-                Box(modifier = Modifier.fillMaxWidth().padding(start = 52.dp).height(0.5.dp).background(com.mlmvpn.scanner.ui.settings.Ios.Separator))
+                Box(modifier = Modifier.fillMaxWidth().padding(start = 52.dp).height(0.5.dp).background(DuskTheme.outline.copy(alpha = 0.22f)))
 
                 // «دریافت کانفیگ xhttp»: the panel's own XHTTP config (packet-up over HTTP/2), saved only
                 // after it has carried real data on this network. Needs the panel at build 23, where a
@@ -1838,7 +1838,7 @@ fun AccountGroupCard(
                             }
                         },
                 ) {
-                    val color = if (mlmDeployState == "done") TextPrimary else TextDim
+                    val color = if (mlmDeployState == "done") DuskTheme.onSurface else DuskTheme.muted.copy(alpha = 0.72f)
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -1849,13 +1849,13 @@ fun AccountGroupCard(
                         Spacer(modifier = Modifier.width(12.dp))
                         Column(modifier = Modifier.weight(1f)) {
                             Text(S(R.string.mlm_get_xhttp), color = color, fontSize = 15.sp)
-                            if (mlmXhttpBusy) Text(S(R.string.mlm_xhttp_checking), color = TextDim, fontSize = 12.sp)
+                            if (mlmXhttpBusy) Text(S(R.string.mlm_xhttp_checking), color = DuskTheme.muted.copy(alpha = 0.72f), fontSize = 12.sp)
                         }
-                        if (mlmXhttpBusy) CircularProgressIndicator(modifier = Modifier.size(16.dp), color = com.mlmvpn.scanner.ui.settings.Ios.Blue, strokeWidth = 2.dp)
+                        if (mlmXhttpBusy) CircularProgressIndicator(modifier = Modifier.size(16.dp), color = DuskTheme.primary, strokeWidth = 2.dp)
                     }
                 }
 
-                Box(modifier = Modifier.fillMaxWidth().padding(start = 52.dp).height(0.5.dp).background(com.mlmvpn.scanner.ui.settings.Ios.Separator))
+                Box(modifier = Modifier.fillMaxWidth().padding(start = 52.dp).height(0.5.dp).background(DuskTheme.outline.copy(alpha = 0.22f)))
                 
                 // MLM Users Button
                 Box(
@@ -1875,7 +1875,7 @@ fun AccountGroupCard(
                             }
                         },
                 ) {
-                    val color = if (mlmDeployState == "done") TextPrimary else TextDim
+                    val color = if (mlmDeployState == "done") DuskTheme.onSurface else DuskTheme.muted.copy(alpha = 0.72f)
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -1891,7 +1891,7 @@ fun AccountGroupCard(
                     }
                 }
 
-                Box(modifier = Modifier.fillMaxWidth().padding(start = 52.dp).height(0.5.dp).background(com.mlmvpn.scanner.ui.settings.Ios.Separator))
+                Box(modifier = Modifier.fillMaxWidth().padding(start = 52.dp).height(0.5.dp).background(DuskTheme.outline.copy(alpha = 0.22f)))
                 
                 // MLM Settings Button
                 Box(
@@ -1903,7 +1903,7 @@ fun AccountGroupCard(
                             }
                         },
                 ) {
-                    val color = if (mlmDeployState == "done") TextPrimary else TextDim
+                    val color = if (mlmDeployState == "done") DuskTheme.onSurface else DuskTheme.muted.copy(alpha = 0.72f)
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -1960,8 +1960,8 @@ fun AccountGroupCard(
                         if (!isEmailVerified) {
                             Button(
                                 onClick = { showEmailModal = true },
-                                colors = iosButtonColors(Color(0xFFF59E0B)),
-                                border = iosButtonBorder(Color(0xFFF59E0B))) {
+                                colors = iosButtonColors(DuskTheme.accent),
+                                border = iosButtonBorder(DuskTheme.accent)) {
                                 Icon(Icons.Default.Warning, contentDescription = null, modifier = Modifier.size(16.dp))
                                 Spacer(modifier = Modifier.width(8.dp))
                                 Text(stringResource(R.string.cloud_verify_email_required),)
@@ -1996,8 +1996,8 @@ fun AccountGroupCard(
                                         }
                                     }
                                 },
-                                colors = iosButtonColors(Color(0xFF3B82F6)),
-                                border = iosButtonBorder(Color(0xFF3B82F6), enabled = !isCreatingSubdomain && subdomainTimer == 0),
+                                colors = iosButtonColors(DuskTheme.primary),
+                                border = iosButtonBorder(DuskTheme.primary, enabled = !isCreatingSubdomain && subdomainTimer == 0),
                                 enabled = !isCreatingSubdomain && subdomainTimer == 0
                             ) {
                                 if (isCreatingSubdomain) {
@@ -2028,8 +2028,8 @@ fun AccountGroupCard(
                                             }
                                         }
                                     },
-                                    colors = iosButtonColors(Primary),
-                                    border = iosButtonBorder(Primary, enabled = !isCheckingStatus),
+                                    colors = iosButtonColors(DuskTheme.primary),
+                                    border = iosButtonBorder(DuskTheme.primary, enabled = !isCheckingStatus),
                                     enabled = !isCheckingStatus
                                 ) {
                                     if (isCheckingStatus) {
@@ -2047,7 +2047,7 @@ fun AccountGroupCard(
                             if (subdomainCreationError.isNotBlank()) {
                                 Text(
                                     stringResource(R.string.cloud_subdomain_failed_reason, subdomainCreationError),
-                                    color = TextMuted,
+                                    color = DuskTheme.muted,
                                     fontSize = 12.sp,
                                     textAlign = androidx.compose.ui.text.style.TextAlign.Center,
                                     modifier = Modifier.widthIn(max = 300.dp),
@@ -2063,7 +2063,7 @@ fun AccountGroupCard(
                         TextButton(onClick = onTroubleshoot) {
                             Text(
                                 stringResource(R.string.cf_fix_open),
-                                color = TextMuted,
+                                color = DuskTheme.muted,
                                 fontSize = 12.sp,
                             )
                         }
@@ -2077,7 +2077,7 @@ fun AccountGroupCard(
                 .fillMaxWidth()
                 .padding(start = 70.dp)
                 .height(0.5.dp)
-                .background(com.mlmvpn.scanner.ui.settings.Ios.Separator)
+                .background(DuskTheme.outline.copy(alpha = 0.22f))
         )
         // --- Daily quota -------------------------------------------------------------------
         //
@@ -2091,13 +2091,13 @@ fun AccountGroupCard(
                 .fillMaxWidth()
                 .padding(start = 70.dp)
                 .height(0.5.dp)
-                .background(com.mlmvpn.scanner.ui.settings.Ios.Separator)
+                .background(DuskTheme.outline.copy(alpha = 0.22f))
         )
         val quotaFraction = (usageData / 100_000f).coerceIn(0f, 1f)
         val quotaTone = when {
-            quotaFraction >= 0.9f -> com.mlmvpn.scanner.ui.settings.Ios.Red
-            quotaFraction >= 0.7f -> YellowWarn
-            else -> GreenOk
+            quotaFraction >= 0.9f -> DuskTheme.error
+            quotaFraction >= 0.7f -> DuskTheme.accent
+            else -> DuskTheme.success
         }
         val loadUsage: () -> Unit = {
             isLoadingUsage = true
@@ -2131,7 +2131,7 @@ fun AccountGroupCard(
                 Icon(
                     Icons.Default.DataUsage,
                     contentDescription = null,
-                    tint = TextMuted,
+                    tint = DuskTheme.muted,
                     modifier = Modifier.size(16.dp),
                 )
             }
@@ -2139,20 +2139,20 @@ fun AccountGroupCard(
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     stringResource(R.string.cloud_daily_usage),
-                    color = TextPrimary,
+                    color = DuskTheme.onSurface,
                     fontSize = 15.sp,
                 )
                 Spacer(modifier = Modifier.height(2.dp))
                 Text(
                     S(R.string.cloudflare_s_free_allowance_for_this_whole),
-                    color = TextMuted,
+                    color = DuskTheme.muted,
                     fontSize = 11.sp,
                 )
             }
             when {
                 isLoadingUsage -> CircularProgressIndicator(
                     modifier = Modifier.size(15.dp),
-                    color = TextMuted,
+                    color = DuskTheme.muted,
                     strokeWidth = 2.dp,
                 )
                 usageData > 0f -> Text(
@@ -2161,13 +2161,13 @@ fun AccountGroupCard(
                     fontSize = 15.sp,
                     fontWeight = FontWeight.Medium,
                 )
-                else -> Text(S(R.string.show), color = TextMuted, fontSize = 15.sp)
+                else -> Text(S(R.string.show), color = DuskTheme.muted, fontSize = 15.sp)
             }
             Spacer(modifier = Modifier.width(8.dp))
             Icon(
                 if (showUsage) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
                 contentDescription = null,
-                tint = com.mlmvpn.scanner.ui.settings.Ios.Chevron,
+                tint = DuskTheme.muted,
                 modifier = Modifier.size(20.dp),
             )
         }
@@ -2191,13 +2191,13 @@ fun AccountGroupCard(
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                     Text(
                         faGrouped(usageData.toInt()) + S(R.string.of) + faGrouped(100_000),
-                        color = TextPrimary,
+                        color = DuskTheme.onSurface,
                         fontSize = 12.sp,
                         fontWeight = FontWeight.Medium,
                     )
                     Text(
                         faGrouped((100_000 - usageData.toInt()).coerceAtLeast(0)) + S(R.string.left),
-                        color = TextMuted,
+                        color = DuskTheme.muted,
                         fontSize = 12.sp,
                     )
                 }
@@ -2207,7 +2207,7 @@ fun AccountGroupCard(
                         S(R.string.cloudflare_today_each_time_you_connect_to) +
                         S(R.string.request_and_nothing_is_added_while_you) +
                         S(R.string.every_disconnect_and_reconnect_and_every_switch),
-                    color = TextMuted,
+                    color = DuskTheme.muted,
                     fontSize = 11.sp,
                     lineHeight = 18.sp,
                 )
@@ -2217,7 +2217,7 @@ fun AccountGroupCard(
                         S(R.string.together_not_each_on_its_own_it) +
                         S(R.string.this_account_s_configs_will_not_connect) +
                         S(R.string.cloudflare_account_and_spread_the_load_across),
-                    color = TextMuted,
+                    color = DuskTheme.muted,
                     fontSize = 11.sp,
                     lineHeight = 18.sp,
                 )
@@ -2232,11 +2232,11 @@ fun AccountGroupCard(
                     Icon(
                         Icons.Default.Refresh,
                         contentDescription = null,
-                        tint = TextPrimary,
+                        tint = DuskTheme.onSurface,
                         modifier = Modifier.size(15.dp),
                     )
                     Spacer(modifier = Modifier.width(6.dp))
-                    Text(S(R.string.refresh), color = TextPrimary, fontSize = 13.sp)
+                    Text(S(R.string.refresh), color = DuskTheme.onSurface, fontSize = 13.sp)
                 }
             }
         }
@@ -2422,12 +2422,12 @@ private fun CloudGroupHandoff(
             Icon(
                 Icons.Default.CheckCircle,
                 contentDescription = null,
-                tint = GreenOk,
+                tint = DuskTheme.success,
                 modifier = Modifier.size(16.dp),
             )
             Text(
                 stringResource(R.string.cloud_group_in_v2ray),
-                color = TextMuted,
+                color = DuskTheme.muted,
                 fontSize = 12.sp,
                 modifier = Modifier.weight(1f),
             )
@@ -2452,9 +2452,9 @@ private fun CloudGroupHandoff(
                     onAdded(nodeManager.nodes.map { it.uri }.toSet())
                 },
                 modifier = Modifier.weight(1f).height(40.dp),
-                colors = iosButtonColors(Primary),
-                border = iosButtonBorder(Primary),
-                shape = ControlShape,
+                colors = iosButtonColors(DuskTheme.primary),
+                border = iosButtonBorder(DuskTheme.primary),
+                shape = DuskTheme.controlShape,
                 contentPadding = PaddingValues(horizontal = 12.dp),
             ) {
                 Icon(Icons.Default.Download, contentDescription = null, modifier = Modifier.size(16.dp))
@@ -2472,7 +2472,7 @@ private fun CloudGroupHandoff(
         // into the list these configs live in.
         TextButton(
             onClick = onOpenV2Ray,
-            colors = androidx.compose.material3.ButtonDefaults.textButtonColors(contentColor = Primary),
+            colors = androidx.compose.material3.ButtonDefaults.textButtonColors(contentColor = DuskTheme.primary),
             contentPadding = PaddingValues(horizontal = 10.dp),
         ) {
             Text(stringResource(R.string.cloud_open_v2ray), fontSize = 12.sp, fontWeight = FontWeight.Bold)

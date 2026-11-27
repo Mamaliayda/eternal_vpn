@@ -4,7 +4,6 @@ import com.mlmvpn.scanner.ui.home.frostedGlass
 import com.mlmvpn.scanner.ui.theme.*
 import android.app.Activity
 import android.content.Context
-import android.widget.Toast
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
@@ -94,6 +93,7 @@ import com.mlmvpn.scanner.utils.S
 @Composable
 fun AetherScreen() {
     val context = LocalContext.current
+    val notify = rememberDuskSnackbarAction()
     val engine = remember { AetherEngine.get(context) }
     val state by engine.state.collectAsStateWithLifecycle()
 
@@ -103,18 +103,10 @@ fun AetherScreen() {
     // not on every state copy (server/RTT/bytes all mutate the same object constantly).
     LaunchedEffect(state.stage) {
         when (state.stage) {
-            AetherStage.CONNECTED -> Toast.makeText(
-                context,
-                S(R.string.connected_server_suffix, state.server?.let { " • $it" } ?: ""),
-                Toast.LENGTH_SHORT,
-            ).show()
+            AetherStage.CONNECTED -> notify(S(R.string.connected_server_suffix, state.server?.let { " • $it" } ?: ""))
             // `stageFa` carries the headline (AetherState.failed puts the message there);
             // `error` is the supporting detail, which is often empty.
-            AetherStage.FAILED, AetherStage.CRASHED -> Toast.makeText(
-                context,
-                state.stageFa + (state.error?.takeIf { it.isNotBlank() }?.let { "\n$it" } ?: ""),
-                Toast.LENGTH_LONG,
-            ).show()
+            AetherStage.FAILED, AetherStage.CRASHED -> notify(state.stageFa + (state.error?.takeIf { it.isNotBlank() }?.let { "\n$it" } ?: ""))
             else -> Unit
         }
     }
@@ -186,7 +178,7 @@ fun AetherScreen() {
         if (res.resultCode == Activity.RESULT_OK) {
             pendingConfig?.let { startTunnel(it) }
         } else {
-            Toast.makeText(context, S(R.string.without_vpn_permission_there_can_be_no_2), Toast.LENGTH_LONG).show()
+            notify(S(R.string.without_vpn_permission_there_can_be_no_2))
         }
         pendingConfig = null
     }
@@ -391,7 +383,7 @@ fun AetherScreen() {
                 val r = engine.resetIdentityDetailed()
                 val msg = if (r.total == 0) S(R.string.there_was_nothing_to_clear)
                           else S(R.string.identities_and_server_caches_were_cleared, r.identities, r.caches)
-                Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+                notify(msg)
             },
         )
 
@@ -433,10 +425,10 @@ private fun AetherPowerButton(
     modifier: Modifier = Modifier,
 ) {
     val accent = when (state.stage) {
-        AetherStage.CONNECTED -> GreenOk
-        AetherStage.FAILED, AetherStage.CRASHED -> Color(0xFFff6b6b)
+        AetherStage.CONNECTED -> DuskTheme.success
+        AetherStage.FAILED, AetherStage.CRASHED -> DuskTheme.error
         AetherStage.STOPPED, AetherStage.IDLE -> MaterialTheme.colorScheme.primary
-        else -> Color(0xFFFDE293)
+        else -> DuskTheme.accent
     }
     val working = state.running && state.stage != AetherStage.CONNECTED
     val active = state.running
@@ -490,7 +482,7 @@ private fun AetherPowerButton(
             Icon(
                 imageVector = Icons.Default.PowerSettingsNew,
                 contentDescription = if (state.running) S(R.string.disconnect_4) else S(R.string.connect_3),
-                tint = BgDark,
+                tint = DuskTheme.onAccent,
                 modifier = Modifier.size(52.dp),
             )
         }
@@ -500,17 +492,17 @@ private fun AetherPowerButton(
 @Composable
 private fun AetherStatusLine(state: AetherState, modifier: Modifier = Modifier) {
     val color = when (state.stage) {
-        AetherStage.CONNECTED -> GreenOk
-        AetherStage.FAILED, AetherStage.CRASHED -> Color(0xFFff6b6b)
-        AetherStage.STOPPED, AetherStage.IDLE -> TextMuted
-        else -> Color(0xFFFDE293)
+        AetherStage.CONNECTED -> DuskTheme.success
+        AetherStage.FAILED, AetherStage.CRASHED -> DuskTheme.error
+        AetherStage.STOPPED, AetherStage.IDLE -> DuskTheme.muted
+        else -> DuskTheme.accent
     }
     Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
         Text(state.stageFa, color = color, fontSize = 15.sp, fontWeight = FontWeight.SemiBold)
         state.error?.takeIf { it.isNotBlank() }?.also {
             Text(
                 text = it,
-                color = Color(0xFFff9090),
+                color = DuskTheme.error,
                 fontSize = 11.sp,
                 lineHeight = 16.sp,
                 modifier = Modifier.padding(top = 6.dp, start = 16.dp, end = 16.dp),
@@ -589,7 +581,7 @@ private fun QuickSettings(
 @Composable
 private fun QuickRow(label: String, content: @Composable () -> Unit) {
     Column(modifier = Modifier.fillMaxWidth()) {
-        Text(label, fontSize = 11.sp, color = TextMuted)
+        Text(label, fontSize = 11.sp, color = DuskTheme.muted)
         Spacer(modifier = Modifier.height(6.dp))
         content()
     }
@@ -616,7 +608,7 @@ private fun MiniSegmented(
             Box(
                 modifier = Modifier
                     .weight(1f)
-                    .clip(RoundedCornerShape(8.dp))
+                    .clip(DuskTheme.glyphShape)
                     .background(if (on) MaterialTheme.colorScheme.primary else Color.Transparent)
                     .clickable(enabled = enabled) { onSelected(value) }
                     .padding(vertical = 9.dp),
@@ -628,8 +620,8 @@ private fun MiniSegmented(
                     fontWeight = if (on) FontWeight.Bold else FontWeight.Normal,
                     color = when {
                         on -> Color.White
-                        !enabled -> Color(0xFF5F6368)
-                        else -> TextMuted
+                        !enabled -> DuskTheme.muted
+                        else -> DuskTheme.muted
                     },
                 )
             }
@@ -658,12 +650,12 @@ private fun AetherProgressStrip(state: AetherState, protocol: AetherProtocol) {
                     modifier = Modifier
                         .weight(1f)
                         .height(3.dp)
-                        .clip(RoundedCornerShape(8.dp))
+                        .clip(DuskTheme.glyphShape)
                         .background(
                             when {
-                                activeIdx > idx -> GreenOk
+                                activeIdx > idx -> DuskTheme.success
                                 activeIdx == idx -> MaterialTheme.colorScheme.primary
-                                else -> SurfaceDark
+                                else -> DuskTheme.surface
                             }
                         )
                 )
@@ -673,7 +665,7 @@ private fun AetherProgressStrip(state: AetherState, protocol: AetherProtocol) {
         Text(
             text = steps.getOrNull(activeIdx)?.second ?: S(R.string.ready_4),
             fontSize = 10.sp,
-            color = Color(0xFF5F6368),
+            color = DuskTheme.muted,
             modifier = Modifier.align(Alignment.CenterHorizontally),
         )
     }
@@ -784,8 +776,8 @@ private fun AdvancedSettingsDialog(
 @Composable
 private fun HeaderCard() {
     Card(
-        shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = SurfaceDark)
+        shape = DuskTheme.chartShape,
+        colors = CardDefaults.cardColors(containerColor = DuskTheme.surface)
     ) {
         Column(modifier = Modifier.padding(14.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -798,7 +790,7 @@ private fun HeaderCard() {
                 S(R.string.a_censorship_circumvention_engine_built_on_cloudflare) +
                     S(R.string.like_the_windows_build_it_finds_a) +
                     S(R.string.exposes_a_socks5_proxy_on_127_0, AetherEngine.AETHER_SOCKS_PORT),
-                fontSize = 12.sp, lineHeight = 18.sp, color = Color(0xFFc9c5d0)
+                fontSize = 12.sp, lineHeight = 18.sp, color = DuskTheme.muted
             )
         }
     }
@@ -820,8 +812,8 @@ private fun TabRow(active: AetherProtocol, onSelect: (AetherProtocol) -> Unit) {
                 onClick = { onSelect(proto) },
                 label = { Text(proto.displayFa, fontSize = 12.sp) },
                 colors = AssistChipDefaults.assistChipColors(
-                    containerColor = if (selected) MaterialTheme.colorScheme.primary else Color(0xFF1e1f22),
-                    labelColor = if (selected) Color.White else TextMuted
+                    containerColor = if (selected) MaterialTheme.colorScheme.primary else DuskTheme.navyNight,
+                    labelColor = if (selected) Color.White else DuskTheme.muted
                 ),
                 modifier = Modifier.weight(1f)
             )
@@ -1183,15 +1175,15 @@ private fun StatusCard(state: AetherState, @Suppress("UNUSED_PARAMETER") protoco
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text(state.stageFa, fontWeight = FontWeight.Bold, fontSize = 14.sp,
                 color = when (state.stage) {
-                    AetherStage.CONNECTED -> GreenOk
-                    AetherStage.FAILED, AetherStage.CRASHED -> Color(0xFFff6b6b)
+                    AetherStage.CONNECTED -> DuskTheme.success
+                    AetherStage.FAILED, AetherStage.CRASHED -> DuskTheme.error
                     else -> MaterialTheme.colorScheme.onSurface
                 })
             Spacer(modifier = Modifier.weight(1f))
             val badgeColor = when (state.stage) {
-                AetherStage.CONNECTED -> Color(0xFF1b3a22)
-                AetherStage.FAILED, AetherStage.CRASHED -> Color(0xFF3b1b1b)
-                else -> SurfaceDark
+                AetherStage.CONNECTED -> DuskTheme.success.copy(alpha = 0.24f)
+                AetherStage.FAILED, AetherStage.CRASHED -> DuskTheme.error.copy(alpha = 0.24f)
+                else -> DuskTheme.surface
             }
             val badgeText = when (state.stage) {
                 AetherStage.CONNECTED -> S(R.string.connected_5)
@@ -1206,9 +1198,9 @@ private fun StatusCard(state: AetherState, @Suppress("UNUSED_PARAMETER") protoco
                 .padding(horizontal = 10.dp, vertical = 3.dp)) {
                 Text(badgeText, fontSize = 11.sp,
                     color = when {
-                        state.stage == AetherStage.CONNECTED -> Color(0xFF7ee787)
-                        state.stage == AetherStage.FAILED || state.stage == AetherStage.CRASHED -> Color(0xFFff9090)
-                        else -> TextMuted
+                        state.stage == AetherStage.CONNECTED -> DuskTheme.success
+                        state.stage == AetherStage.FAILED || state.stage == AetherStage.CRASHED -> DuskTheme.error
+                        else -> DuskTheme.muted
                     })
             }
         }
@@ -1242,11 +1234,11 @@ private fun StatusCard(state: AetherState, @Suppress("UNUSED_PARAMETER") protoco
                 StepDot(done = done, active = active)
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(fa, fontSize = 12.sp,
-                    color = if (done) GreenOk
-                    else if (active) MaterialTheme.colorScheme.primary.copy(alpha = 0.7f) else Color(0xFF6a6773))
+                    color = if (done) DuskTheme.success
+                    else if (active) MaterialTheme.colorScheme.primary.copy(alpha = 0.7f) else DuskTheme.muted)
                 if (key == "scan" && active && scanElapsedSec > 0) {
                     Spacer(modifier = Modifier.width(6.dp))
-                    Text("${scanElapsedSec}s", fontSize = 11.sp, color = Color(0xFF6a6773))
+                    Text("${scanElapsedSec}s", fontSize = 11.sp, color = DuskTheme.muted)
                 }
             }
         }
@@ -1255,7 +1247,7 @@ private fun StatusCard(state: AetherState, @Suppress("UNUSED_PARAMETER") protoco
             Text(
                 S(R.string.this_step_can_take_a_few_minutes),
                 fontSize = 11.sp,
-                color = TextMuted,
+                color = DuskTheme.muted,
                 lineHeight = 16.sp,
             )
         }
@@ -1280,8 +1272,8 @@ private fun ConnectBar(
 ) {
     val running = state.running
     Card(
-        shape = CardShape,
-        colors = CardDefaults.cardColors(containerColor = SurfaceDark)
+        shape = DuskTheme.cardShape,
+        colors = CardDefaults.cardColors(containerColor = DuskTheme.surface)
     ) {
         Row(modifier = Modifier.padding(10.dp).fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(8.dp),

@@ -28,8 +28,8 @@ import com.mlmvpn.scanner.data.CloudVerifyProbe
 import com.mlmvpn.scanner.data.advice
 import com.mlmvpn.scanner.data.credentialAdvice
 import com.mlmvpn.scanner.models.CloudAccount
-import com.mlmvpn.scanner.ui.settings.Ios
 import com.mlmvpn.scanner.ui.settings.IosScreen
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 import com.mlmvpn.scanner.ui.theme.rememberDuskSnackbarAction
 import com.mlmvpn.scanner.ui.settings.SettingsActionRow
 import com.mlmvpn.scanner.ui.settings.SettingsFooter
@@ -182,7 +182,7 @@ fun CloudTroubleshootScreen(
             SettingsRow(
                 title = stringResource(R.string.cf_doctor_title),
                 icon = Icons.Default.CloudOff,
-                tint = Ios.Blue,
+                tint = DuskTheme.primary,
                 onClick = { doctorOpen = true },
             )
         }
@@ -194,7 +194,7 @@ fun CloudTroubleshootScreen(
             SettingsRow(
                 title = stringResource(R.string.cf_fix_scheme_row),
                 icon = Icons.Default.Key,
-                tint = Ios.Indigo,
+                tint = DuskTheme.indigo,
                 value = if (p == null) stringResource(R.string.update_checking)
                         else stringResource(schemeLabel(p.scheme)),
                 showChevron = false,
@@ -204,7 +204,7 @@ fun CloudTroubleshootScreen(
                 title = if (account != null) stringResource(R.string.cf_fix_subprobe)
                         else stringResource(R.string.cf_fix_accounts_probe),
                 icon = Icons.Default.Language,
-                tint = Ios.Blue,
+                tint = DuskTheme.primary,
                 value = if (p == null) stringResource(R.string.update_checking)
                         else httpValue(p.subdomainHttp),
                 subtitle = p?.subdomainErrors?.takeIf { it.isNotBlank() },
@@ -214,7 +214,7 @@ fun CloudTroubleshootScreen(
             SettingsRow(
                 title = stringResource(R.string.cf_fix_tokencheck),
                 icon = Icons.Default.Shield,
-                tint = Ios.Teal,
+                tint = DuskTheme.secondary,
                 value = when {
                     p == null -> stringResource(R.string.update_checking)
                     p.tokenVerifyHttp == 0 -> stringResource(R.string.cf_fix_not_checked)
@@ -231,9 +231,9 @@ fun CloudTroubleshootScreen(
             SettingsSectionHeader(stringResource(R.string.cf_fix_advice))
             findings.forEach { item ->
                 val tone = when (item.severity) {
-                    2 -> Ios.Red
-                    1 -> Ios.Orange
-                    else -> Ios.Green
+                    2 -> DuskTheme.error
+                    1 -> DuskTheme.accent
+                    else -> DuskTheme.success
                 }
                 SettingsGroup {
                     SettingsRow(
@@ -293,7 +293,7 @@ fun CloudTroubleshootScreen(
                     subtitle = stringResource(R.string.cf_fix_unlock_email_desc),
                     checked = unlockEmail,
                     icon = Icons.Default.LockOpen,
-                    tint = Ios.Orange,
+                    tint = DuskTheme.accent,
                     onCheckedChange = {
                         unlockEmail = it
                         account.isEmailVerified = it
@@ -307,7 +307,7 @@ fun CloudTroubleshootScreen(
                     subtitle = stringResource(R.string.cf_fix_mark_subdomain_desc),
                     checked = markSubdomain,
                     icon = Icons.Default.Language,
-                    tint = Ios.Purple,
+                    tint = DuskTheme.purple,
                     onCheckedChange = {
                         markSubdomain = it
                         account.hasSubdomain = it
@@ -324,7 +324,7 @@ fun CloudTroubleshootScreen(
             SettingsActionRow(
                 label = stringResource(R.string.cf_fix_recheck),
                 icon = Icons.Default.Refresh,
-                tint = Ios.Blue,
+                tint = DuskTheme.primary,
                 busy = busy,
                 enabled = !busy,
                 onClick = { reprobe() },
@@ -346,8 +346,8 @@ private fun com.mlmvpn.scanner.ui.settings.SettingsGroupScope.SchemeChoice(
     SettingsRow(
         title = label,
         icon = if (selected) Icons.Default.CheckCircle else Icons.Default.RadioButtonUnchecked,
-        tint = if (!enabled) Ios.Gray else if (selected) Ios.Blue else Ios.Gray,
-        titleColor = if (enabled) Ios.Label else Ios.SecondaryLabel,
+        tint = if (!enabled) DuskTheme.disabled else if (selected) DuskTheme.primary else DuskTheme.disabled,
+        titleColor = if (enabled) DuskTheme.onSurface else DuskTheme.muted,
         showChevron = false,
         onClick = if (enabled) onClick else null,
     )
@@ -370,4 +370,4 @@ private fun actionIcon(action: CloudFixAction) = when (action) {
 /** `HTTP 403`, or the word for a request that never got there. */
 @Composable
 private fun httpValue(http: Int): String =
-    if (http < 0) stringResource(R.string.cf_fix_no_answer) else "HTTP $http"
+    if (http < 0) stringResource(R.string.cf_fix_no_answer) else "⁦HTTP $http⁩"

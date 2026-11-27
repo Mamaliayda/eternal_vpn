@@ -412,7 +412,7 @@ private val EMPHASIS = Regex("""\*\*([^*]+)\*\*|`([^`]+)`""")
 
 @Composable
 private fun changelogText(raw: String): AnnotatedString {
-    val strong = Ios.Label
+    val strong = DuskTheme.onSurface
     return remember(raw, strong) {
         buildAnnotatedString {
             var cursor = 0
