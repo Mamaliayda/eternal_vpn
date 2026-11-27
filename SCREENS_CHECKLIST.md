@@ -1,6 +1,6 @@
 # Eternal VPN — screen redesign checklist
 
-> **Progress: 359 / 1203 complete** — each checked row is fully migrated; unverified routes and states remain unchecked.
+> **Progress: 368 / 1203 complete** — each checked row is fully migrated; unverified routes and states remain unchecked.
 
 > Inventory generated from Kotlin source on 2026-11-26. A row is considered migrated only after its visible composition, nested states, and overlays are reviewed against the Soft Dusk tokens. Shared theme inheritance alone does **not** count as a completed visual redesign.
 
@@ -107,7 +107,7 @@ Found 230 screen-like public/internal composables across 133 Kotlin files (the f
 - [ ] `CombineDoneDialog` — `com/mlmvpn/scanner/ui/CombineCoach.kt`
 ### FixedIpScreen.kt
 
-- [ ] `FixedIpScreen` — `com/mlmvpn/scanner/ui/FixedIpScreen.kt`
+- [x] `FixedIpScreen` — `com/mlmvpn/scanner/ui/FixedIpScreen.kt`
 ### FreeConfigTab.kt
 
 - [x] `FreeConfigTab` — `com/mlmvpn/scanner/ui/FreeConfigTab.kt`
@@ -121,9 +121,9 @@ Found 230 screen-like public/internal composables across 133 Kotlin files (the f
 - [ ] `RegionPickerPage` — `com/mlmvpn/scanner/ui/GameTab.kt`
 ### HelpCenterScreen.kt
 
-- [ ] `HelpCenterScreen` — `com/mlmvpn/scanner/ui/HelpCenterScreen.kt`
-- [ ] `HelpArticleScreen` — `com/mlmvpn/scanner/ui/HelpCenterScreen.kt`
-- [ ] `HelpFaqScreen` — `com/mlmvpn/scanner/ui/HelpCenterScreen.kt`
+- [x] `HelpCenterScreen` — `com/mlmvpn/scanner/ui/HelpCenterScreen.kt`
+- [x] `HelpArticleScreen` — `com/mlmvpn/scanner/ui/HelpCenterScreen.kt`
+- [x] `HelpFaqScreen` — `com/mlmvpn/scanner/ui/HelpCenterScreen.kt`
 ### NodesScreens.kt
 
 - [x] `NodeDetailScreen` — `com/mlmvpn/scanner/ui/NodesScreens.kt`
@@ -179,7 +179,7 @@ Found 230 screen-like public/internal composables across 133 Kotlin files (the f
 - [x] `EngineConflictDialog` — `com/mlmvpn/scanner/ui/WireguardGuard.kt`
 ### WireguardTab.kt
 
-- [ ] `WireguardTab` — `com/mlmvpn/scanner/ui/WireguardTab.kt`
+- [x] `WireguardTab` — `com/mlmvpn/scanner/ui/WireguardTab.kt`
 ### aether
 
 - [ ] `AetherScreen` — `com/mlmvpn/scanner/ui/aether/AetherScreen.kt`
@@ -495,8 +495,8 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 - [ ] `DedicatedDnsCard` — `com/mlmvpn/scanner/ui/GameTab.kt`
 ### HelpCenterScreen.kt
 
-- [ ] `HelpSearchField` — `com/mlmvpn/scanner/ui/HelpCenterScreen.kt`
-- [ ] `HelpBody` — `com/mlmvpn/scanner/ui/HelpCenterScreen.kt`
+- [x] `HelpSearchField` — `com/mlmvpn/scanner/ui/HelpCenterScreen.kt`
+- [x] `HelpBody` — `com/mlmvpn/scanner/ui/HelpCenterScreen.kt`
 ### NodesScreens.kt
 
 - [x] `nodeBadge` — `com/mlmvpn/scanner/ui/NodesScreens.kt`
@@ -596,7 +596,7 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 - [x] `GatewayEmptyState` — `com/mlmvpn/scanner/ui/VpnGateWidgets.kt`
 ### WireguardTab.kt
 
-- [ ] `FeatureRow` — `com/mlmvpn/scanner/ui/WireguardTab.kt`
+- [x] `FeatureRow` — `com/mlmvpn/scanner/ui/WireguardTab.kt`
 ### aether
 
 - [ ] `AetherPowerButton` — `com/mlmvpn/scanner/ui/aether/AetherScreen.kt`
@@ -1453,7 +1453,7 @@ Toast / short transient feedback call sites (OS-rendered surfaces; validate app 
 - [x] `com/mlmvpn/scanner/ui/AppScreen.kt` — Toast × 1 (replaced with Dusk snackbar)
 - [ ] `com/mlmvpn/scanner/ui/CloudTab.kt` — Toast × 29
 - [ ] `com/mlmvpn/scanner/ui/CloudTroubleshootScreen.kt` — Toast × 1
-- [ ] `com/mlmvpn/scanner/ui/FixedIpScreen.kt` — Toast × 1
+- [x] `com/mlmvpn/scanner/ui/FixedIpScreen.kt` — Toast × 1 (replaced with Dusk snackbar)
 - [ ] `com/mlmvpn/scanner/ui/GameTab.kt` — Toast × 6
 - [x] `com/mlmvpn/scanner/ui/NodesTab.kt` — Toast × 19 (replaced with Dusk snackbars)
 - [x] `com/mlmvpn/scanner/ui/OpenVpnScreen.kt` — Toast × 1
