@@ -1,3 +1,5 @@
+Build verification paused at 368/1203, resume at 700.
+
 # Build status
 
 ## Verification history
