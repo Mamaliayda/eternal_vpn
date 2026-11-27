@@ -1,6 +1,6 @@
 # Eternal VPN — screen redesign checklist
 
-> **Progress: 344 / 1203 complete** — each checked row is fully migrated; unverified routes and states remain unchecked.
+> **Progress: 351 / 1203 complete** — each checked row is fully migrated; unverified routes and states remain unchecked.
 
 > Inventory generated from Kotlin source on 2026-11-26. A row is considered migrated only after its visible composition, nested states, and overlays are reviewed against the Soft Dusk tokens. Shared theme inheritance alone does **not** count as a completed visual redesign.
 
@@ -68,7 +68,7 @@ Found 230 screen-like public/internal composables across 133 Kotlin files (the f
 - [x] `MlmSettingsScreen` — `com/mlmvpn/scanner/engines/mlm/MlmSettingsScreen.kt`
 - [x] `MlmUsersScreen` — `com/mlmvpn/scanner/engines/mlm/MlmUsersScreen.kt`
 - [x] `AddMlmUserDialog` — `com/mlmvpn/scanner/engines/mlm/MlmUsersScreen.kt`
-- [ ] `NahanSettingsScreen` — `com/mlmvpn/scanner/engines/nahan/NahanSettingsScreen.kt`
+- [x] `NahanSettingsScreen` — `com/mlmvpn/scanner/engines/nahan/NahanSettingsScreen.kt`
 - [x] `AddNahanUserDialog` — `com/mlmvpn/scanner/engines/nahan/NahanSettingsScreen.kt`
 ### AboutScreen.kt
 
@@ -87,7 +87,7 @@ Found 230 screen-like public/internal composables across 133 Kotlin files (the f
 - [x] `BaseConfigPickerScreen` — `com/mlmvpn/scanner/ui/BaseConfigPicker.kt`
 ### BpbSettingsModal.kt
 
-- [ ] `BpbSettingsModal` — `com/mlmvpn/scanner/ui/BpbSettingsModal.kt`
+- [x] `BpbSettingsModal` — `com/mlmvpn/scanner/ui/BpbSettingsModal.kt`
 ### CloudCoach.kt
 
 - [x] `CloudOfferDialog` — `com/mlmvpn/scanner/ui/CloudCoach.kt`
@@ -428,9 +428,9 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 - [x] `MlmUserCard` — `com/mlmvpn/scanner/engines/mlm/MlmUsersScreen.kt`
 - [x] `InfoItem` — `com/mlmvpn/scanner/engines/mlm/MlmUsersScreen.kt`
 - [x] `ActionBtn` — `com/mlmvpn/scanner/engines/mlm/MlmUsersScreen.kt`
-- [ ] `NahanSectionHeader` — `com/mlmvpn/scanner/engines/nahan/NahanSettingsScreen.kt`
-- [ ] `NahanTextField` — `com/mlmvpn/scanner/engines/nahan/NahanSettingsScreen.kt`
-- [ ] `NahanUserCard` — `com/mlmvpn/scanner/engines/nahan/NahanSettingsScreen.kt`
+- [x] `NahanSectionHeader` — `com/mlmvpn/scanner/engines/nahan/NahanSettingsScreen.kt`
+- [x] `NahanTextField` — `com/mlmvpn/scanner/engines/nahan/NahanSettingsScreen.kt`
+- [x] `NahanUserCard` — `com/mlmvpn/scanner/engines/nahan/NahanSettingsScreen.kt`
 ### AboutScreen.kt
 
 - [x] `ReleaseHeader` — `com/mlmvpn/scanner/ui/AboutScreen.kt`
@@ -447,8 +447,8 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 - [x] `BaseConfigRow` — `com/mlmvpn/scanner/ui/BaseConfigPicker.kt`
 ### BpbSettingsModal.kt
 
-- [ ] `SectionTitle` — `com/mlmvpn/scanner/ui/BpbSettingsModal.kt`
-- [ ] `PortsGrid` — `com/mlmvpn/scanner/ui/BpbSettingsModal.kt`
+- [x] `SectionTitle` — `com/mlmvpn/scanner/ui/BpbSettingsModal.kt`
+- [x] `PortsGrid` — `com/mlmvpn/scanner/ui/BpbSettingsModal.kt`
 ### CloudCoach.kt
 
 - [ ] `CloudCoachBar` — `com/mlmvpn/scanner/ui/CloudCoach.kt`

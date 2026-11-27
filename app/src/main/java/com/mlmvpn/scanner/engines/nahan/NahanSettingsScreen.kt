@@ -22,7 +22,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 
 import com.mlmvpn.scanner.models.CloudAccount
 import com.mlmvpn.scanner.ui.theme.*
@@ -117,36 +116,36 @@ fun NahanSettingsScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .frostedGlass(androidx.compose.ui.graphics.RectangleShape)
-                        .padding(16.dp),
+                        .padding(DuskTheme.space4),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Box(
                             modifier = Modifier
-                                .size(36.dp)
-                                .background(Primary.copy(alpha = 0.15f), ControlShape),
+                                .size(DuskTheme.navIconSize)
+                                .background(DuskTheme.primary.copy(alpha = 0.15f), DuskTheme.controlShape),
                             contentAlignment = Alignment.Center
                         ) {
                             Icon(
                                 Icons.Default.Tune,
                                 contentDescription = null,
-                                tint = TextMuted,
-                                modifier = Modifier.size(20.dp)
+                                tint = DuskTheme.muted,
+                                modifier = Modifier.size(DuskTheme.iconSize)
                             )
                         }
-                        Spacer(modifier = Modifier.width(12.dp))
+                        Spacer(modifier = Modifier.width(DuskTheme.space3))
                         Column {
                             Text(
                                 androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.nhn_settings_title),
-                                color = TextPrimary,
-                                fontSize = 17.sp,
+                                color = DuskTheme.onSurface,
+                                style = MaterialTheme.typography.titleMedium,
                                 fontWeight = FontWeight.Bold
                             )
                             Text(
                                 account.nahanWorkerUrl ?: androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.nhn_unknown),
-                                color = TextMuted,
-                                fontSize = 11.sp,
+                                color = DuskTheme.muted,
+                                style = MaterialTheme.typography.labelSmall,
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis,
                                 modifier = Modifier.widthIn(max = 200.dp)
@@ -154,11 +153,11 @@ fun NahanSettingsScreen(
                         }
                     }
                     IconButton(onClick = onDismiss, enabled = !isSaving) {
-                        Icon(Icons.Default.Close, contentDescription = androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.common_close), tint = TextMuted)
+                        Icon(Icons.Default.Close, contentDescription = androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.common_close), tint = DuskTheme.muted)
                     }
                 }
 
-                Divider(color = BorderDark)
+                Divider(color = DuskTheme.outline)
 
                 // ── Content ──
                 if (isLoading) {
@@ -167,9 +166,9 @@ fun NahanSettingsScreen(
                         contentAlignment = Alignment.Center
                     ) {
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            CircularProgressIndicator(color = Primary, modifier = Modifier.size(40.dp))
-                            Spacer(modifier = Modifier.height(16.dp))
-                            Text(androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.nhn_fetching_settings), color = TextMuted, fontSize = 14.sp)
+                            CircularProgressIndicator(color = DuskTheme.primary, modifier = Modifier.size(DuskTheme.navIconSize))
+                            Spacer(modifier = Modifier.height(DuskTheme.space4))
+                            Text(androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.nhn_fetching_settings), color = DuskTheme.muted, style = MaterialTheme.typography.bodyMedium)
                         }
                     }
                 } else if (loadError != null) {
@@ -179,24 +178,24 @@ fun NahanSettingsScreen(
                     ) {
                         Column(
                             horizontalAlignment = Alignment.CenterHorizontally,
-                            modifier = Modifier.padding(32.dp)
+                            modifier = Modifier.padding(DuskTheme.space6)
                         ) {
                             Icon(
                                 Icons.Default.ErrorOutline,
                                 contentDescription = null,
-                                tint = RedError,
-                                modifier = Modifier.size(48.dp)
+                                tint = DuskTheme.error,
+                                modifier = Modifier.size(DuskTheme.navIconSize)
                             )
-                            Spacer(modifier = Modifier.height(16.dp))
-                            Text(loadError!!, color = TextMuted, fontSize = 14.sp)
-                            Spacer(modifier = Modifier.height(24.dp))
+                            Spacer(modifier = Modifier.height(DuskTheme.space4))
+                            Text(loadError!!, color = DuskTheme.muted, style = MaterialTheme.typography.bodyMedium)
+                            Spacer(modifier = Modifier.height(DuskTheme.space5))
                             Button(
                                 onClick = onDismiss,
                                 colors = ButtonDefaults.buttonColors(
-                                    containerColor = SurfaceDark,
-                                    contentColor = TextPrimary
+                                    containerColor = DuskTheme.surface,
+                                    contentColor = DuskTheme.onSurface
                                 ),
-                                border = androidx.compose.foundation.BorderStroke(1.dp, BorderDark)
+                                border = androidx.compose.foundation.BorderStroke(1.dp, DuskTheme.outline)
                             ) {
                                 Text(androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.nhn_go_back))
                             }
@@ -207,17 +206,17 @@ fun NahanSettingsScreen(
                         modifier = Modifier
                             .weight(1f)
                             .verticalScroll(rememberScrollState())
-                            .padding(16.dp),
-                        verticalArrangement = Arrangement.spacedBy(20.dp)
+                            .padding(DuskTheme.space4),
+                        verticalArrangement = Arrangement.spacedBy(DuskTheme.space5)
                     ) {
                         // ── Section 1: Basic Settings ──
-                        Column(modifier = Modifier.fillMaxWidth().frostedGlass(ControlShape).border(1.dp, BorderDark, ControlShape).padding(16.dp)) {
+                        Column(modifier = Modifier.fillMaxWidth().frostedGlass(DuskTheme.controlShape).border(1.dp, DuskTheme.outline, DuskTheme.controlShape).padding(DuskTheme.space4)) {
                             Row(verticalAlignment = Alignment.CenterVertically) {
-                                Icon(Icons.Default.Settings, contentDescription = null, tint = TextMuted, modifier = Modifier.size(20.dp))
-                                Spacer(modifier = Modifier.width(8.dp))
-                                Text(androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.nhn_basic_settings), color = TextPrimary, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                                Icon(Icons.Default.Settings, contentDescription = null, tint = DuskTheme.muted, modifier = Modifier.size(DuskTheme.iconSize))
+                                Spacer(modifier = Modifier.width(DuskTheme.space2))
+                                Text(androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.nhn_basic_settings), color = DuskTheme.onSurface, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
                             }
-                            Spacer(modifier = Modifier.height(16.dp))
+                            Spacer(modifier = Modifier.height(DuskTheme.space4))
                             
                             // Protocol Dropdown
                             ExposedDropdownMenuBox(
@@ -228,7 +227,7 @@ fun NahanSettingsScreen(
                                     value = protocol,
                                     onValueChange = {},
                                     readOnly = true,
-                                    label = { Text(androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.nhn_output_protocol), color = TextMuted) },
+                                    label = { Text(androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.nhn_output_protocol), color = DuskTheme.muted) },
                                     trailingIcon = {
                                         ExposedDropdownMenuDefaults.TrailingIcon(expanded = protocolExpanded)
                                     },
@@ -237,7 +236,7 @@ fun NahanSettingsScreen(
                                         .fillMaxWidth()
                                         .menuAnchor()
                                 ,
-        shape = ControlShape,)
+        shape = DuskTheme.controlShape,)
                                 ExposedDropdownMenu(
                                     expanded = protocolExpanded,
                                     onDismissRequest = { protocolExpanded = false },
@@ -254,53 +253,53 @@ fun NahanSettingsScreen(
                                     }
                                 }
                             }
-                            Spacer(modifier = Modifier.height(12.dp))
+                            Spacer(modifier = Modifier.height(DuskTheme.space3))
                             OutlinedTextField(
                                 value = apiRoute,
                                 onValueChange = { apiRoute = it },
-                                label = { Text(androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.nhn_api_route), color = TextMuted) },
+                                label = { Text(androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.nhn_api_route), color = DuskTheme.muted) },
                                 modifier = Modifier.fillMaxWidth(),
                                 singleLine = true,
                                 colors = iosFieldColors()
                             ,
-        shape = ControlShape,)
-                            Spacer(modifier = Modifier.height(12.dp))
+        shape = DuskTheme.controlShape,)
+                            Spacer(modifier = Modifier.height(DuskTheme.space3))
                             OutlinedTextField(
                                 value = masterKey,
                                 onValueChange = { masterKey = it },
-                                label = { Text(androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.nhn_master_key), color = TextMuted) },
+                                label = { Text(androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.nhn_master_key), color = DuskTheme.muted) },
                                 modifier = Modifier.fillMaxWidth(),
                                 singleLine = true,
                                 colors = iosFieldColors()
                             ,
-        shape = ControlShape,)
+        shape = DuskTheme.controlShape,)
                         }
 
-                        Divider(color = BorderDark)
+                        Divider(color = DuskTheme.outline)
 
                         // ── Section 2: Network & Camouflage ──
                         NahanSectionHeader(androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.nhn_network_camouflage), Icons.Default.Security)
 
                         // TLS Ports
-                        Text(androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.nhn_tls_ports), color = TextMuted, fontSize = 12.sp)
+                        Text(androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.nhn_tls_ports), color = DuskTheme.muted, style = MaterialTheme.typography.bodySmall)
                         FlowRow(
                             modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.spacedBy(8.dp),
-                            verticalArrangement = Arrangement.spacedBy(8.dp)
+                            horizontalArrangement = Arrangement.spacedBy(DuskTheme.space2),
+                            verticalArrangement = Arrangement.spacedBy(DuskTheme.space2)
                         ) {
                             allTlsPorts.forEach { port ->
                                 val isSelected = selectedTlsPorts.contains(port)
                                 Box(
                                     modifier = Modifier
-                                        .clip(RoundedCornerShape(8.dp))
+                                        .clip(RoundedCornerShape(DuskTheme.space2))
                                         .background(
-                                            if (isSelected) Primary.copy(alpha = 0.2f)
-                                            else BorderDark
+                                            if (isSelected) DuskTheme.primary.copy(alpha = 0.2f)
+                                            else DuskTheme.outline
                                         )
                                         .border(
                                             1.dp,
-                                            if (isSelected) Primary.copy(alpha = 0.5f) else Color.Transparent,
-                                            RoundedCornerShape(8.dp)
+                                            if (isSelected) DuskTheme.primary.copy(alpha = 0.5f) else Color.Transparent,
+                                            RoundedCornerShape(DuskTheme.space2)
                                         )
                                         .clickable {
                                             selectedTlsPorts = if (isSelected) {
@@ -309,12 +308,12 @@ fun NahanSettingsScreen(
                                                 selectedTlsPorts + port
                                             }
                                         }
-                                        .padding(horizontal = 14.dp, vertical = 8.dp)
+                                        .padding(horizontal = DuskTheme.space3, vertical = DuskTheme.space2)
                                 ) {
                                     Text(
                                         port.toString(),
-                                        color = if (isSelected) Primary else TextPrimary,
-                                        fontSize = 13.sp,
+                                        color = if (isSelected) DuskTheme.primary else DuskTheme.onSurface,
+                                        style = MaterialTheme.typography.bodySmall,
                                         fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal
                                     )
                                 }
@@ -339,44 +338,44 @@ fun NahanSettingsScreen(
                         OutlinedTextField(
                             value = customDns,
                             onValueChange = { customDns = it },
-                            label = { Text(androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.nhn_custom_dns), color = TextMuted) },
+                            label = { Text(androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.nhn_custom_dns), color = DuskTheme.muted) },
                             modifier = Modifier.fillMaxWidth(),
                             singleLine = true,
                             colors = iosFieldColors()
                         ,
-        shape = ControlShape,)
-                        Spacer(modifier = Modifier.height(12.dp))
+        shape = DuskTheme.controlShape,)
+                        Spacer(modifier = Modifier.height(DuskTheme.space3))
                         OutlinedTextField(
                             value = customRelay,
                             onValueChange = { customRelay = it },
-                            label = { Text(androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.nhn_custom_relay), color = TextMuted) },
+                            label = { Text(androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.nhn_custom_relay), color = DuskTheme.muted) },
                             modifier = Modifier.fillMaxWidth(),
                             singleLine = true,
                             colors = iosFieldColors()
                         ,
-        shape = ControlShape,)
-                        Spacer(modifier = Modifier.height(12.dp))
+        shape = DuskTheme.controlShape,)
+                        Spacer(modifier = Modifier.height(DuskTheme.space3))
                         OutlinedTextField(
                             value = backupRelay,
                             onValueChange = { backupRelay = it },
-                            label = { Text(androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.nhn_backup_relay), color = TextMuted) },
+                            label = { Text(androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.nhn_backup_relay), color = DuskTheme.muted) },
                             modifier = Modifier.fillMaxWidth(),
                             singleLine = true,
                             colors = iosFieldColors()
                         ,
-        shape = ControlShape,)
-                        Spacer(modifier = Modifier.height(12.dp))
+        shape = DuskTheme.controlShape,)
+                        Spacer(modifier = Modifier.height(DuskTheme.space3))
                         OutlinedTextField(
                             value = cleanIps,
                             onValueChange = { cleanIps = it },
-                            label = { Text(androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.nhn_clean_ips), color = TextMuted) },
+                            label = { Text(androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.nhn_clean_ips), color = DuskTheme.muted) },
                             modifier = Modifier.fillMaxWidth(),
                             singleLine = false,
                             colors = iosFieldColors()
                         ,
-        shape = ControlShape,)
+        shape = DuskTheme.controlShape,)
 
-                        Divider(color = BorderDark)
+                        Divider(color = DuskTheme.outline)
 
                         // ── Section 3: Multi-User Management ──
                         NahanSectionHeader(androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.nhn_user_management), Icons.Default.People)
@@ -388,25 +387,25 @@ fun NahanSettingsScreen(
                         ) {
                             Text(
                                 androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.nhn_active_users, users.size),
-                                color = TextMuted,
-                                fontSize = 12.sp
+                                color = DuskTheme.muted,
+                                style = MaterialTheme.typography.bodySmall
                             )
                             Button(
                                 onClick = { showAddUserDialog = true },
                                 colors = ButtonDefaults.buttonColors(
-                                    containerColor = Primary.copy(alpha = 0.15f),
-                                    contentColor = Primary
+                                    containerColor = DuskTheme.primary.copy(alpha = 0.15f),
+                                    contentColor = DuskTheme.primary
                                 ),
-                                shape = ControlShape,
-                                contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp)
+                                shape = DuskTheme.controlShape,
+                                contentPadding = PaddingValues(horizontal = DuskTheme.space3, vertical = DuskTheme.space2)
                             ) {
                                 Icon(
                                     Icons.Default.PersonAdd,
                                     contentDescription = null,
-                                    modifier = Modifier.size(16.dp)
+                                    modifier = Modifier.size(DuskTheme.space4)
                                 )
-                                Spacer(modifier = Modifier.width(6.dp))
-                                Text(androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.nhn_add_user), fontSize = 12.sp)
+                                Spacer(modifier = Modifier.width(DuskTheme.space2))
+                                Text(androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.nhn_add_user), style = MaterialTheme.typography.bodySmall)
                             }
                         }
 
@@ -414,29 +413,29 @@ fun NahanSettingsScreen(
                             Box(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .background(BgDark, ControlShape)
-                                    .border(1.dp, BorderDark, ControlShape)
-                                    .padding(24.dp),
+                                    .background(DuskTheme.background, DuskTheme.controlShape)
+                                    .border(1.dp, DuskTheme.outline, DuskTheme.controlShape)
+                                    .padding(DuskTheme.space5),
                                 contentAlignment = Alignment.Center
                             ) {
                                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                                     Icon(
                                         Icons.Default.PersonOff,
                                         contentDescription = null,
-                                        tint = TextDim,
-                                        modifier = Modifier.size(32.dp)
+                                        tint = DuskTheme.disabled,
+                                        modifier = Modifier.size(DuskTheme.space6)
                                     )
-                                    Spacer(modifier = Modifier.height(8.dp))
+                                    Spacer(modifier = Modifier.height(DuskTheme.space2))
                                     Text(
                                         androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.nhn_no_users),
-                                        color = TextMuted,
-                                        fontSize = 13.sp
+                                        color = DuskTheme.muted,
+                                        style = MaterialTheme.typography.bodySmall
                                     )
                                 }
                             }
                         } else {
                             Column(
-                                verticalArrangement = Arrangement.spacedBy(8.dp)
+                                verticalArrangement = Arrangement.spacedBy(DuskTheme.space2)
                             ) {
                                 users.forEachIndexed { index, user ->
                                     NahanUserCard(
@@ -497,7 +496,7 @@ fun NahanSettingsScreen(
                         }
 
                         // Extra spacing for floating nav bar
-                        Spacer(modifier = Modifier.height(24.dp))
+                        Spacer(modifier = Modifier.height(DuskTheme.space5))
                     }
 
                     // ── Save Button ──
@@ -505,7 +504,7 @@ fun NahanSettingsScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .frostedGlass(androidx.compose.ui.graphics.RectangleShape)
-                            .padding(16.dp)
+                            .padding(DuskTheme.space4)
                     ) {
                         Button(
                             onClick = {
@@ -567,40 +566,40 @@ fun NahanSettingsScreen(
                                 .height(52.dp),
                             enabled = !isSaving,
                             colors = ButtonDefaults.buttonColors(
-                                containerColor = Primary,
-                                contentColor = BgDark
+                                containerColor = DuskTheme.primary,
+                                contentColor = DuskTheme.background
                             ),
-                            shape = RoundedCornerShape(16.dp)
+                            shape = RoundedCornerShape(DuskTheme.space4)
                         ) {
                             if (isSaving) {
                                 CircularProgressIndicator(
-                                    modifier = Modifier.size(20.dp),
-                                    color = BgDark,
+                                    modifier = Modifier.size(DuskTheme.iconSize),
+                                    color = DuskTheme.background,
                                     strokeWidth = 2.dp
                                 )
-                                Spacer(modifier = Modifier.width(8.dp))
+                                Spacer(modifier = Modifier.width(DuskTheme.space2))
                                 Text(
                                     androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.nhn_saving),
                                     fontWeight = FontWeight.Bold,
-                                    fontSize = 15.sp
+                                    style = MaterialTheme.typography.titleSmall
                                 )
                             } else {
                                 Icon(
                                     Icons.Default.CloudUpload,
                                     contentDescription = null,
-                                    modifier = Modifier.size(20.dp)
+                                    modifier = Modifier.size(DuskTheme.iconSize)
                                 )
-                                Spacer(modifier = Modifier.width(8.dp))
+                                Spacer(modifier = Modifier.width(DuskTheme.space2))
                                 Text(
                                     androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.nhn_save_sync),
                                     fontWeight = FontWeight.Bold,
-                                    fontSize = 15.sp
+                                    style = MaterialTheme.typography.titleSmall
                                 )
                             }
                         }
                     }
                 }
-                Spacer(modifier = Modifier.height(24.dp))
+                Spacer(modifier = Modifier.height(DuskTheme.space5))
             }
         }
 
@@ -623,9 +622,9 @@ fun NahanSettingsScreen(
 @Composable
 private fun NahanSectionHeader(title: String, icon: androidx.compose.ui.graphics.vector.ImageVector) {
     Row(verticalAlignment = Alignment.CenterVertically) {
-        Icon(icon, contentDescription = null, tint = TextMuted, modifier = Modifier.size(18.dp))
-        Spacer(modifier = Modifier.width(8.dp))
-        Text(title, color = TextPrimary, fontSize = 15.sp, fontWeight = FontWeight.Bold)
+        Icon(icon, contentDescription = null, tint = DuskTheme.muted, modifier = Modifier.size(DuskTheme.space4))
+        Spacer(modifier = Modifier.width(DuskTheme.space2))
+        Text(title, color = DuskTheme.onSurface, style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold)
     }
 }
 
@@ -639,11 +638,11 @@ private fun NahanTextField(
     OutlinedTextField(
         value = value,
         onValueChange = onValueChange,
-        label = { Text(label, color = TextMuted, fontSize = 12.sp) },
+        label = { Text(label, color = DuskTheme.muted, style = MaterialTheme.typography.bodySmall) },
         modifier = Modifier.fillMaxWidth(),
         singleLine = singleLine,
         colors = iosFieldColors(),
-        shape = ControlShape
+        shape = DuskTheme.controlShape
     )
 }
 
@@ -673,52 +672,52 @@ private fun NahanUserCard(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .background(BgDark, ControlShape)
-            .border(1.dp, BorderDark, ControlShape)
+            .background(DuskTheme.background, DuskTheme.controlShape)
+            .border(1.dp, DuskTheme.outline, DuskTheme.controlShape)
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(12.dp),
+                .padding(DuskTheme.space3),
             verticalAlignment = Alignment.CenterVertically
         ) {
             // Avatar
             Box(
                 modifier = Modifier
-                    .size(36.dp)
-                    .background(Primary.copy(alpha = 0.15f), CircleShape),
+                    .size(DuskTheme.navIconSize)
+                    .background(DuskTheme.primary.copy(alpha = 0.15f), CircleShape),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
                     user.name.firstOrNull()?.uppercase() ?: "?",
-                    color = TextPrimary,
+                    color = DuskTheme.onSurface,
                     fontWeight = FontWeight.Bold,
-                    fontSize = 14.sp
+                    style = MaterialTheme.typography.bodyMedium
                 )
             }
 
-            Spacer(modifier = Modifier.width(12.dp))
+            Spacer(modifier = Modifier.width(DuskTheme.space3))
 
             // Info
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     user.name.ifEmpty { androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.nhn_no_name) },
-                    color = TextPrimary,
-                    fontSize = 14.sp,
+                    color = DuskTheme.onSurface,
+                    style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.Medium
                 )
                 Text(
                     user.uuid,
-                    color = TextDim,
-                    fontSize = 10.sp,
+                    color = DuskTheme.disabled,
+                    style = MaterialTheme.typography.labelSmall,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
                 if (user.isPaused) {
                     Text(
                         androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.nhn_paused),
-                        color = RedError,
-                        fontSize = 11.sp,
+                        color = DuskTheme.error,
+                        style = MaterialTheme.typography.labelSmall,
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier.padding(top = 2.dp)
                     )
@@ -728,9 +727,9 @@ private fun NahanUserCard(
                     val remaining = user.expiryMs - System.currentTimeMillis()
                     val days = remaining / (1000 * 60 * 60 * 24)
                     if (days > 0) {
-                        Text(androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.nhn_expiry_days, days), color = TextDim, fontSize = 11.sp, modifier = Modifier.padding(top = 2.dp))
+                        Text(androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.nhn_expiry_days, days), color = DuskTheme.disabled, style = MaterialTheme.typography.labelSmall, modifier = Modifier.padding(top = 2.dp))
                     } else {
-                        Text(androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.nhn_expired), color = RedError, fontSize = 11.sp, modifier = Modifier.padding(top = 2.dp))
+                        Text(androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.nhn_expired), color = DuskTheme.error, style = MaterialTheme.typography.labelSmall, modifier = Modifier.padding(top = 2.dp))
                     }
                 }
                 
@@ -742,15 +741,15 @@ private fun NahanUserCard(
                     
                     Text(
                         androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.nhn_usage_format, "%.1f / $limitStr$dailyStr".format(usedGB)),
-                        color = if (user.limit > 0 && usedGB > limitGB * 0.9f) RedError else GreenOk,
-                        fontSize = 11.sp,
+                        color = if (user.limit > 0 && usedGB > limitGB * 0.9f) DuskTheme.error else DuskTheme.success,
+                        style = MaterialTheme.typography.labelSmall,
                         modifier = Modifier.padding(top = 2.dp)
                     )
                 } else {
                     Text(
                         androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.nhn_unlimited_traffic),
-                        color = GreenOk,
-                        fontSize = 11.sp,
+                        color = DuskTheme.success,
+                        style = MaterialTheme.typography.labelSmall,
                         modifier = Modifier.padding(top = 2.dp)
                     )
                 }
@@ -759,35 +758,35 @@ private fun NahanUserCard(
             // Actions
             IconButton(
                 onClick = onFetchNodes,
-                modifier = Modifier.size(32.dp)
+                modifier = Modifier.size(DuskTheme.space6)
             ) {
                 Icon(
                     Icons.Default.Download,
                     contentDescription = androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.nhn_fetch_config_button),
-                    tint = GreenOk,
-                    modifier = Modifier.size(16.dp)
+                    tint = DuskTheme.success,
+                    modifier = Modifier.size(DuskTheme.space4)
                 )
             }
             IconButton(
                 onClick = { isEditing = !isEditing },
-                modifier = Modifier.size(32.dp)
+                modifier = Modifier.size(DuskTheme.space6)
             ) {
                 Icon(
                     Icons.Default.Edit,
                     contentDescription = androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.node_edit),
-                    tint = TextMuted,
-                    modifier = Modifier.size(16.dp)
+                    tint = DuskTheme.muted,
+                    modifier = Modifier.size(DuskTheme.space4)
                 )
             }
             IconButton(
                 onClick = onDelete,
-                modifier = Modifier.size(32.dp)
+                modifier = Modifier.size(DuskTheme.space6)
             ) {
                 Icon(
                     Icons.Default.Delete,
                     contentDescription = androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.node_delete),
-                    tint = RedError.copy(alpha = 0.7f),
-                    modifier = Modifier.size(16.dp)
+                    tint = DuskTheme.error.copy(alpha = 0.7f),
+                    modifier = Modifier.size(DuskTheme.space4)
                 )
             }
         }
@@ -798,74 +797,74 @@ private fun NahanUserCard(
                 modifier = Modifier
                     .fillMaxWidth()
                     .frostedGlass(androidx.compose.ui.graphics.RectangleShape)
-                    .padding(12.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
+                    .padding(DuskTheme.space3),
+                verticalArrangement = Arrangement.spacedBy(DuskTheme.space2)
             ) {
                 OutlinedTextField(
                     value = editName,
                     onValueChange = { editName = it },
-                    label = { Text(androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.nhn_user_name), fontSize = 11.sp) },
+                    label = { Text(androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.nhn_user_name), style = MaterialTheme.typography.labelSmall) },
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true,
                     colors = iosFieldColors(),
-                    shape = RoundedCornerShape(8.dp)
+                    shape = RoundedCornerShape(DuskTheme.space2)
                 )
                 OutlinedTextField(
                     value = editLimit,
                     onValueChange = { editLimit = it },
-                    label = { Text(androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.nhn_limit_gb), fontSize = 11.sp) },
+                    label = { Text(androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.nhn_limit_gb), style = MaterialTheme.typography.labelSmall) },
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true,
                     colors = iosFieldColors(),
                     keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(
                         keyboardType = androidx.compose.ui.text.input.KeyboardType.Number
                     ),
-                    shape = RoundedCornerShape(8.dp)
+                    shape = RoundedCornerShape(DuskTheme.space2)
                 )
                 OutlinedTextField(
                     value = editDailyLimit,
                     onValueChange = { editDailyLimit = it },
-                    label = { Text(androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.nhn_daily_limit_gb), fontSize = 11.sp) },
+                    label = { Text(androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.nhn_daily_limit_gb), style = MaterialTheme.typography.labelSmall) },
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true,
                     colors = iosFieldColors(),
                     keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(
                         keyboardType = androidx.compose.ui.text.input.KeyboardType.Number
                     ),
-                    shape = RoundedCornerShape(8.dp)
+                    shape = RoundedCornerShape(DuskTheme.space2)
                 )
                 OutlinedTextField(
                     value = editExpiryDays,
                     onValueChange = { editExpiryDays = it },
-                    label = { Text(androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.nhn_expiry_days_input), fontSize = 11.sp) },
+                    label = { Text(androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.nhn_expiry_days_input), style = MaterialTheme.typography.labelSmall) },
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true,
                     colors = iosFieldColors(),
                     keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(
                         keyboardType = androidx.compose.ui.text.input.KeyboardType.Number
                     ),
-                    shape = RoundedCornerShape(8.dp)
+                    shape = RoundedCornerShape(DuskTheme.space2)
                 )
                 OutlinedTextField(
                     value = editProxyIp,
                     onValueChange = { editProxyIp = it },
-                    label = { Text(androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.nhn_user_proxy_ip), fontSize = 11.sp) },
+                    label = { Text(androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.nhn_user_proxy_ip), style = MaterialTheme.typography.labelSmall) },
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true,
                     colors = iosFieldColors(),
-                    shape = RoundedCornerShape(8.dp)
+                    shape = RoundedCornerShape(DuskTheme.space2)
                 )
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     androidx.compose.material3.Switch(
                         checked = editIsPaused,
                         onCheckedChange = { editIsPaused = it },
                         colors = androidx.compose.material3.SwitchDefaults.colors(
-                            checkedThumbColor = BgDark,
-                            checkedTrackColor = RedError
+                            checkedThumbColor = DuskTheme.background,
+                            checkedTrackColor = DuskTheme.error
                         )
                     )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.nhn_pause_user), color = if (editIsPaused) RedError else TextPrimary, fontSize = 12.sp)
+                    Spacer(modifier = Modifier.width(DuskTheme.space2))
+                    Text(androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.nhn_pause_user), color = if (editIsPaused) DuskTheme.error else DuskTheme.onSurface, style = MaterialTheme.typography.bodySmall)
                 }
                 Button(
                     onClick = {
@@ -888,12 +887,12 @@ private fun NahanUserCard(
                     },
                     modifier = Modifier.fillMaxWidth(),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = GreenOk,
-                        contentColor = BgDark
+                        containerColor = DuskTheme.success,
+                        contentColor = DuskTheme.background
                     ),
-                    shape = RoundedCornerShape(8.dp)
+                    shape = RoundedCornerShape(DuskTheme.space2)
                 ) {
-                    Text(androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.nhn_apply_changes), fontWeight = FontWeight.Bold, fontSize = 13.sp)
+                    Text(androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.nhn_apply_changes), fontWeight = FontWeight.Bold, style = MaterialTheme.typography.bodySmall)
                 }
             }
         }
@@ -918,7 +917,7 @@ private fun AddNahanUserDialog(
             Icon(
                 Icons.Default.PersonAdd,
                 contentDescription = null,
-                tint = TextMuted,
+                tint = DuskTheme.muted,
                 modifier = Modifier.size(22.dp),
             )
         },
@@ -926,71 +925,71 @@ private fun AddNahanUserDialog(
         content = {
             Column(
                 modifier = Modifier.verticalScroll(rememberScrollState()),
-                verticalArrangement = Arrangement.spacedBy(12.dp),
+                verticalArrangement = Arrangement.spacedBy(DuskTheme.space3),
             ) {
                 OutlinedTextField(
                     value = name,
                     onValueChange = { name = it },
-                    label = { Text(androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.nhn_user_name), color = TextMuted, style = MaterialTheme.typography.labelSmall) },
+                    label = { Text(androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.nhn_user_name), color = DuskTheme.muted, style = MaterialTheme.typography.labelSmall) },
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true,
                     colors = iosFieldColors(),
-                    shape = ControlShape,
+                    shape = DuskTheme.controlShape,
                 )
                 OutlinedTextField(
                     value = generatedUuid,
                     onValueChange = {},
                     readOnly = true,
-                    label = { Text(androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.nhn_uuid_auto), color = TextMuted, style = MaterialTheme.typography.labelSmall) },
+                    label = { Text(androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.nhn_uuid_auto), color = DuskTheme.muted, style = MaterialTheme.typography.labelSmall) },
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true,
                     colors = iosFieldColors(),
-                    shape = ControlShape,
+                    shape = DuskTheme.controlShape,
                 )
                 OutlinedTextField(
                     value = limitGB,
                     onValueChange = { limitGB = it },
-                    label = { Text(androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.nhn_total_limit_gb), color = TextMuted, style = MaterialTheme.typography.labelSmall) },
+                    label = { Text(androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.nhn_total_limit_gb), color = DuskTheme.muted, style = MaterialTheme.typography.labelSmall) },
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true,
                     colors = iosFieldColors(),
                     keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(
                         keyboardType = androidx.compose.ui.text.input.KeyboardType.Number,
                     ),
-                    shape = ControlShape,
+                    shape = DuskTheme.controlShape,
                 )
                 OutlinedTextField(
                     value = dailyLimitGB,
                     onValueChange = { dailyLimitGB = it },
-                    label = { Text(androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.nhn_daily_traffic_limit), color = TextMuted, style = MaterialTheme.typography.labelSmall) },
+                    label = { Text(androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.nhn_daily_traffic_limit), color = DuskTheme.muted, style = MaterialTheme.typography.labelSmall) },
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true,
                     colors = iosFieldColors(),
                     keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(
                         keyboardType = androidx.compose.ui.text.input.KeyboardType.Number,
                     ),
-                    shape = ControlShape,
+                    shape = DuskTheme.controlShape,
                 )
                 OutlinedTextField(
                     value = expiryDays,
                     onValueChange = { expiryDays = it },
-                    label = { Text(androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.nhn_expiry_days_input), color = TextMuted, style = MaterialTheme.typography.labelSmall) },
+                    label = { Text(androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.nhn_expiry_days_input), color = DuskTheme.muted, style = MaterialTheme.typography.labelSmall) },
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true,
                     colors = iosFieldColors(),
                     keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(
                         keyboardType = androidx.compose.ui.text.input.KeyboardType.Number,
                     ),
-                    shape = ControlShape,
+                    shape = DuskTheme.controlShape,
                 )
                 OutlinedTextField(
                     value = userProxyIp,
                     onValueChange = { userProxyIp = it },
-                    label = { Text(androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.nhn_user_proxy_ip), color = TextMuted, style = MaterialTheme.typography.labelSmall) },
+                    label = { Text(androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.nhn_user_proxy_ip), color = DuskTheme.muted, style = MaterialTheme.typography.labelSmall) },
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true,
                     colors = iosFieldColors(),
-                    shape = ControlShape,
+                    shape = DuskTheme.controlShape,
                 )
             }
         },

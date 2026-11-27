@@ -19,7 +19,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.res.stringResource
 
 import com.mlmvpn.scanner.R
@@ -59,12 +58,12 @@ fun BpbSettingsModal(
 
     var cleanIp by remember { mutableStateOf(initialSettings?.optJSONArray("cleanIPs")?.let { if (it.length() > 0) it.optString(0) else "" } ?: "") }
 
-    val primaryColor = Primary
+    val primaryColor = DuskTheme.primary
     val switchColors = SwitchDefaults.colors(
         checkedThumbColor = primaryColor,
         checkedTrackColor = primaryColor.copy(alpha = 0.5f),
-        uncheckedThumbColor = Color.Gray,
-        uncheckedTrackColor = Color.DarkGray
+        uncheckedThumbColor = DuskTheme.disabled,
+        uncheckedTrackColor = DuskTheme.surface
     )
 
     // Transparent over the wallpaper, like every other surface. The inset is applied here
@@ -80,53 +79,53 @@ fun BpbSettingsModal(
             )) {
                 // Header
                 Row(
-                    modifier = Modifier.fillMaxWidth().padding(16.dp),
+                    modifier = Modifier.fillMaxWidth().padding(DuskTheme.space4),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(stringResource(R.string.bpb_settings_title), color = Color.White, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                    Text(stringResource(R.string.bpb_settings_title), color = DuskTheme.onSurface, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
                     IconButton(onClick = onDismiss) {
-                        Icon(Icons.Default.Close, contentDescription = "Close", tint = Color.Gray)
+                        Icon(Icons.Default.Close, contentDescription = "Close", tint = DuskTheme.disabled)
                     }
                 }
 
-                Divider(color = Color.DarkGray)
+                Divider(color = DuskTheme.surface)
 
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
                         .weight(1f)
                         .verticalScroll(rememberScrollState())
-                        .padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 24.dp),
-                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                        .padding(start = DuskTheme.space4, end = DuskTheme.space4, top = DuskTheme.space4, bottom = DuskTheme.space5),
+                    verticalArrangement = Arrangement.spacedBy(DuskTheme.space4)
                 ) {
                     // Common
                     SectionTitle(stringResource(R.string.bpb_common))
                     Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
-                        Text(stringResource(R.string.bpb_allow_lan), color = Color.White, modifier = Modifier.weight(1f), fontSize = 14.sp)
+                        Text(stringResource(R.string.bpb_allow_lan), color = DuskTheme.onSurface, modifier = Modifier.weight(1f), style = MaterialTheme.typography.bodyMedium)
                         Switch(checked = allowLANConnection, onCheckedChange = { allowLANConnection = it }, colors = switchColors)
                     }
                     Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
-                        Text(stringResource(R.string.bpb_enable_ipv6), color = Color.White, modifier = Modifier.weight(1f), fontSize = 14.sp)
+                        Text(stringResource(R.string.bpb_enable_ipv6), color = DuskTheme.onSurface, modifier = Modifier.weight(1f), style = MaterialTheme.typography.bodyMedium)
                         Switch(checked = enableIPv6, onCheckedChange = { enableIPv6 = it }, colors = switchColors)
                     }
 
-                    Divider(color = Color.DarkGray)
+                    Divider(color = DuskTheme.surface)
 
                     // Protocols
                     SectionTitle(stringResource(R.string.bpb_protocols))
-                    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+                    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(DuskTheme.space4)) {
                         Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.clickable { vlConfigs = !vlConfigs }) {
-                            Checkbox(checked = vlConfigs, onCheckedChange = { vlConfigs = it }, colors = CheckboxDefaults.colors(checkedColor = primaryColor, uncheckedColor = Color.Gray))
-                            Text("VLESS", color = Color.White, fontSize = 14.sp)
+                            Checkbox(checked = vlConfigs, onCheckedChange = { vlConfigs = it }, colors = CheckboxDefaults.colors(checkedColor = primaryColor, uncheckedColor = DuskTheme.disabled))
+                            Text("VLESS", color = DuskTheme.onSurface, style = MaterialTheme.typography.bodyMedium)
                         }
                         Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.clickable { trConfigs = !trConfigs }) {
-                            Checkbox(checked = trConfigs, onCheckedChange = { trConfigs = it }, colors = CheckboxDefaults.colors(checkedColor = primaryColor, uncheckedColor = Color.Gray))
-                            Text("Trojan", color = Color.White, fontSize = 14.sp)
+                            Checkbox(checked = trConfigs, onCheckedChange = { trConfigs = it }, colors = CheckboxDefaults.colors(checkedColor = primaryColor, uncheckedColor = DuskTheme.disabled))
+                            Text("Trojan", color = DuskTheme.onSurface, style = MaterialTheme.typography.bodyMedium)
                         }
                     }
 
-                    Divider(color = Color.DarkGray)
+                    Divider(color = DuskTheme.surface)
 
                     // TLS Ports
                     SectionTitle(stringResource(R.string.bpb_tls_ports))
@@ -149,9 +148,9 @@ fun BpbSettingsModal(
                         colors = iosFieldColors(),
                         modifier = Modifier.fillMaxWidth()
                     ,
-        shape = ControlShape,)
+        shape = DuskTheme.controlShape,)
 
-                    Divider(color = Color.DarkGray)
+                    Divider(color = DuskTheme.surface)
 
                     // Proxy IP / NAT64 prefix are no longer part of the editable per-request
                     // KvSettings in BPB v5 -- they live in EMBEDED_SETTINGS, baked into the worker
@@ -192,10 +191,10 @@ fun BpbSettingsModal(
 
                         onConfirm(json)
                     },
-                    modifier = Modifier.fillMaxWidth().padding(16.dp).padding(bottom = 80.dp).height(48.dp),
-                    colors = iosButtonColors(Primary),
-                    border = iosButtonBorder(Primary)) {
-                    Text(stringResource(R.string.bpb_save_and_get_node), fontWeight = FontWeight.Bold, fontSize = 16.sp)
+                    modifier = Modifier.fillMaxWidth().padding(DuskTheme.space4).padding(bottom = 80.dp).height(48.dp),
+                    colors = iosButtonColors(DuskTheme.primary),
+                    border = iosButtonBorder(DuskTheme.primary)) {
+                    Text(stringResource(R.string.bpb_save_and_get_node), fontWeight = FontWeight.Bold, style = MaterialTheme.typography.titleMedium)
                 }
             }
         }
@@ -203,7 +202,7 @@ fun BpbSettingsModal(
 
 @Composable
 fun SectionTitle(title: String) {
-    Text(title, color = TextPrimary, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+    Text(title, color = DuskTheme.onSurface, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
 }
 
 @OptIn(ExperimentalLayoutApi::class)
@@ -211,19 +210,19 @@ fun SectionTitle(title: String) {
 fun PortsGrid(ports: List<String>, selected: Set<String>, onSelectionChange: (String, Boolean) -> Unit) {
     FlowRow(
         modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+        horizontalArrangement = Arrangement.spacedBy(DuskTheme.space2),
+        verticalArrangement = Arrangement.spacedBy(DuskTheme.space2)
     ) {
         ports.forEach { port ->
             val isSelected = selected.contains(port)
             Box(
                 modifier = Modifier
-                    .clip(RoundedCornerShape(8.dp))
-                    .background(if (isSelected) Primary.copy(alpha = 0.2f) else Color.DarkGray)
+                    .clip(RoundedCornerShape(DuskTheme.space2))
+                    .background(if (isSelected) DuskTheme.primary.copy(alpha = 0.2f) else DuskTheme.surface)
                     .clickable { onSelectionChange(port, !isSelected) }
-                    .padding(horizontal = 12.dp, vertical = 6.dp)
+                    .padding(horizontal = DuskTheme.space3, vertical = DuskTheme.space2)
             ) {
-                Text(port, color = if (isSelected) Primary else Color.White, fontSize = 12.sp)
+                Text(port, color = if (isSelected) DuskTheme.primary else DuskTheme.onSurface, style = MaterialTheme.typography.bodySmall)
             }
         }
     }
