@@ -24,6 +24,7 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -37,6 +38,7 @@ import androidx.compose.ui.unit.dp
 import com.mlmvpn.scanner.R
 import com.mlmvpn.scanner.ui.home.Appearance
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 /** Soft Dusk is the shared visual language for every migrated screen and control. */
 object DuskTheme {
@@ -129,6 +131,16 @@ val LocalDuskSnackbarHostState = staticCompositionLocalOf<SnackbarHostState> {
 /** Activity-theme scope keeps a queued notice alive when the screen that emitted it navigates away. */
 val LocalDuskSnackbarScope = staticCompositionLocalOf<CoroutineScope> {
     error("DuskSnackbarScope is only available inside MlmVpnTheme")
+}
+
+/** A lifecycle-safe callback for click handlers, effects, and asynchronous UI work. */
+@Composable
+fun rememberDuskSnackbarAction(): (String) -> Unit {
+    val hostState = LocalDuskSnackbarHostState.current
+    val scope = LocalDuskSnackbarScope.current
+    return remember(hostState, scope) {
+        { message -> scope.launch { hostState.showSnackbar(message) } }
+    }
 }
 
 /** Vazirmatn is used as a single bilingual family so mixed Persian, Latin and IP text remains consistent. */

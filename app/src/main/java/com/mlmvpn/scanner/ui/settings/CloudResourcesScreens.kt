@@ -69,9 +69,9 @@ import com.mlmvpn.scanner.R
 import com.mlmvpn.scanner.data.CloudManager
 import com.mlmvpn.scanner.models.CloudAccount
 import com.mlmvpn.scanner.ui.LocalSystemBottomPadding
-import com.mlmvpn.scanner.ui.theme.TextPrimary
 import com.mlmvpn.scanner.ui.theme.DuskCard
 import com.mlmvpn.scanner.ui.theme.DuskTheme
+import com.mlmvpn.scanner.ui.theme.rememberDuskSnackbarAction
 import kotlinx.coroutines.launch
 import com.mlmvpn.scanner.utils.S
 
@@ -167,7 +167,7 @@ fun CloudResourcesHub(
                         accounts[0].name.takeIf { it.isNotBlank() } ?: accounts[0].email
                     else -> stringResource(R.string.settings_cf_accounts, accounts.size)
                 },
-                color = Ios.Label,
+                color = DuskTheme.onSurface,
                 fontSize = 22.sp,
                 fontWeight = FontWeight.Bold,
                 maxLines = 1,
@@ -185,7 +185,7 @@ fun CloudResourcesHub(
                         accounts[0].email != accounts[0].name -> accounts[0].email
                     else -> stringResource(R.string.cf_resources_subtitle)
                 },
-                color = Ios.SecondaryLabel,
+                color = DuskTheme.muted,
                 fontSize = 14.sp,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
@@ -218,7 +218,7 @@ fun CloudResourcesHub(
                     title = account.email.ifEmpty { account.name },
                     subtitle = stringResource(R.string.cf_resources_manage_in_cloud),
                     icon = Icons.Default.Cloud,
-                    tint = Ios.CloudflareOrange,
+                    tint = DuskTheme.cloudflareOrange,
                     onClick = onOpenAccount,
                 )
             }
@@ -228,7 +228,7 @@ fun CloudResourcesHub(
         ResourceSection(
             header = stringResource(R.string.cf_resources_workers),
             icon = Icons.Default.Dns,
-            tint = Ios.CloudflareOrange,
+            tint = DuskTheme.cloudflareOrange,
             accounts = accounts,
             labelFor = { stringResource(R.string.cf_resources_workers_of, it) },
             countFor = { counts[it.id]?.workers },
@@ -237,7 +237,7 @@ fun CloudResourcesHub(
         ResourceSection(
             header = stringResource(R.string.cf_resources_d1),
             icon = Icons.Default.Storage,
-            tint = Ios.Blue,
+            tint = DuskTheme.primary,
             accounts = accounts,
             labelFor = { stringResource(R.string.cf_resources_d1_of, it) },
             countFor = { counts[it.id]?.d1 },
@@ -246,7 +246,7 @@ fun CloudResourcesHub(
         ResourceSection(
             header = stringResource(R.string.cf_resources_kv),
             icon = Icons.Default.VpnKey,
-            tint = Ios.Purple,
+            tint = DuskTheme.purple,
             accounts = accounts,
             labelFor = { stringResource(R.string.cf_resources_kv_of, it) },
             countFor = { counts[it.id]?.kv },
@@ -310,7 +310,7 @@ private fun HubRow(
         Spacer(Modifier.width(12.dp))
         Text(
             title,
-            color = Ios.Label,
+            color = DuskTheme.onSurface,
             fontSize = 16.sp,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
@@ -319,11 +319,11 @@ private fun HubRow(
         when {
             count == null -> CircularProgressIndicator(
                 modifier = Modifier.size(14.dp),
-                color = Ios.SecondaryLabel,
+                color = DuskTheme.muted,
                 strokeWidth = 1.5.dp,
             )
-            count < 0 -> Text("—", color = Ios.SecondaryLabel, fontSize = 16.sp)
-            else -> Text(count.toString(), color = Ios.SecondaryLabel, fontSize = 16.sp)
+            count < 0 -> Text("—", color = DuskTheme.muted, fontSize = 16.sp)
+            else -> Text(count.toString(), color = DuskTheme.muted, fontSize = 16.sp)
         }
         Spacer(Modifier.width(6.dp))
         HubChevron()
@@ -336,7 +336,7 @@ private fun HubChevron() {
     Icon(
         Icons.Default.ChevronRight,
         contentDescription = null,
-        tint = Ios.Chevron,
+        tint = DuskTheme.primary,
         modifier = Modifier
             .size(18.dp)
             .scale(
@@ -381,6 +381,7 @@ private fun formatDay(iso: String): String = iso.take(10).takeIf { it.length == 
  */
 @Composable
 fun WorkersListPage(account: CloudAccount, backLabel: String, onBack: () -> Unit) {
+    val notify = rememberDuskSnackbarAction()
     val context = LocalContext.current
     val cloudManager = remember { CloudManager(context) }
     val clipboard = LocalClipboardManager.current
@@ -445,7 +446,7 @@ fun WorkersListPage(account: CloudAccount, backLabel: String, onBack: () -> Unit
             }
             ItemRow(
                 icon = Icons.Default.Dns,
-                tint = Ios.CloudflareOrange,
+                tint = DuskTheme.cloudflareOrange,
                 name = worker.name,
                 secondary = url,
                 stats = buildList {
@@ -455,7 +456,7 @@ fun WorkersListPage(account: CloudAccount, backLabel: String, onBack: () -> Unit
                                 Icons.Default.TrendingUp,
                                 formatCount(worker.requests),
                                 stringResource(R.string.cf_resources_request),
-                                Ios.SecondaryLabel,
+                                DuskTheme.muted,
                             )
                         )
                         add(
@@ -463,7 +464,7 @@ fun WorkersListPage(account: CloudAccount, backLabel: String, onBack: () -> Unit
                                 Icons.Default.ErrorOutline,
                                 formatCount(worker.errors),
                                 stringResource(R.string.cf_resources_error),
-                                if (worker.errors > 0) Ios.Destructive else Ios.SecondaryLabel,
+                                if (worker.errors > 0) DuskTheme.error else DuskTheme.muted,
                             )
                         )
                         add(
@@ -471,12 +472,12 @@ fun WorkersListPage(account: CloudAccount, backLabel: String, onBack: () -> Unit
                                 Icons.Default.Memory,
                                 String.format(java.util.Locale.US, "%.1f", worker.cpu),
                                 stringResource(R.string.cf_resources_ms),
-                                Ios.SecondaryLabel,
+                                DuskTheme.muted,
                             )
                         )
                     }
                     formatDay(worker.modifiedOn).takeIf { it.isNotEmpty() }?.let {
-                        add(StatSpec(Icons.Default.Schedule, it, "", Ios.SecondaryLabel))
+                        add(StatSpec(Icons.Default.Schedule, it, "", DuskTheme.muted))
                     }
                 },
                 selectionMode = selectionMode,
@@ -485,7 +486,7 @@ fun WorkersListPage(account: CloudAccount, backLabel: String, onBack: () -> Unit
                 copyText = url.takeIf { it.isNotEmpty() },
                 onCopy = {
                     clipboard.setText(AnnotatedString(url))
-                    toast(context, context.getString(R.string.cf_resources_copied))
+                    notify(context.getString(R.string.cf_resources_copied))
                 },
                 onDelete = requestDelete,
             )
@@ -496,6 +497,7 @@ fun WorkersListPage(account: CloudAccount, backLabel: String, onBack: () -> Unit
 /** One account's D1 databases: name, uuid, table count, size on disk and creation date. */
 @Composable
 fun D1ListPage(account: CloudAccount, backLabel: String, onBack: () -> Unit) {
+    val notify = rememberDuskSnackbarAction()
     val context = LocalContext.current
     val cloudManager = remember { CloudManager(context) }
     val clipboard = LocalClipboardManager.current
@@ -540,7 +542,7 @@ fun D1ListPage(account: CloudAccount, backLabel: String, onBack: () -> Unit) {
             val db = items[index]
             ItemRow(
                 icon = Icons.Default.Storage,
-                tint = Ios.Blue,
+                tint = DuskTheme.primary,
                 name = db.name,
                 // The uuid is what a wrangler binding names, so it is the identifying line rather
                 // than a decorative one -- and the thing worth copying.
@@ -551,12 +553,12 @@ fun D1ListPage(account: CloudAccount, backLabel: String, onBack: () -> Unit) {
                             Icons.Default.TableChart,
                             db.tables.toString(),
                             stringResource(R.string.cf_resources_d1_tables),
-                            Ios.SecondaryLabel,
+                            DuskTheme.muted,
                         )
                     )
-                    add(StatSpec(Icons.Default.Memory, formatBytes(db.sizeBytes), "", Ios.SecondaryLabel))
+                    add(StatSpec(Icons.Default.Memory, formatBytes(db.sizeBytes), "", DuskTheme.muted))
                     formatDay(db.createdAt).takeIf { it.isNotEmpty() }?.let {
-                        add(StatSpec(Icons.Default.Schedule, it, "", Ios.SecondaryLabel))
+                        add(StatSpec(Icons.Default.Schedule, it, "", DuskTheme.muted))
                     }
                 },
                 selectionMode = selectionMode,
@@ -565,7 +567,7 @@ fun D1ListPage(account: CloudAccount, backLabel: String, onBack: () -> Unit) {
                 copyText = db.uuid,
                 onCopy = {
                     clipboard.setText(AnnotatedString(db.uuid))
-                    toast(context, context.getString(R.string.cf_resources_copied))
+                    notify(context.getString(R.string.cf_resources_copied))
                 },
                 onDelete = requestDelete,
             )
@@ -583,6 +585,7 @@ fun D1ListPage(account: CloudAccount, backLabel: String, onBack: () -> Unit) {
  */
 @Composable
 fun KvListPage(account: CloudAccount, backLabel: String, onBack: () -> Unit) {
+    val notify = rememberDuskSnackbarAction()
     val context = LocalContext.current
     val cloudManager = remember { CloudManager(context) }
     val clipboard = LocalClipboardManager.current
@@ -634,7 +637,7 @@ fun KvListPage(account: CloudAccount, backLabel: String, onBack: () -> Unit) {
             val count = keyCounts[ns.id]
             ItemRow(
                 icon = Icons.Default.VpnKey,
-                tint = Ios.Purple,
+                tint = DuskTheme.purple,
                 name = ns.title,
                 secondary = ns.id,
                 stats = buildList {
@@ -648,7 +651,7 @@ fun KvListPage(account: CloudAccount, backLabel: String, onBack: () -> Unit) {
                                     else -> count.first.toString()
                                 },
                                 stringResource(R.string.cf_resources_kv_keys),
-                                Ios.SecondaryLabel,
+                                DuskTheme.muted,
                             )
                         )
                     }
@@ -659,7 +662,7 @@ fun KvListPage(account: CloudAccount, backLabel: String, onBack: () -> Unit) {
                 copyText = ns.id,
                 onCopy = {
                     clipboard.setText(AnnotatedString(ns.id))
-                    toast(context, context.getString(R.string.cf_resources_copied))
+                    notify(context.getString(R.string.cf_resources_copied))
                 },
                 onDelete = requestDelete,
             )
@@ -712,6 +715,7 @@ private fun SelectableResourcePage(
     ) -> Unit,
 ) {
     val context = LocalContext.current
+    val notify = rememberDuskSnackbarAction()
     val scope = rememberCoroutineScope()
 
     var selectionMode by remember { mutableStateOf(false) }
@@ -737,7 +741,7 @@ private fun SelectableResourcePage(
             Text(
                 if (selectionMode) stringResource(R.string.common_cancel)
                 else stringResource(R.string.cf_resources_select),
-                color = Ios.Label,
+                color = DuskTheme.onSurface,
                 fontSize = 16.sp,
                 fontWeight = if (selectionMode) FontWeight.SemiBold else FontWeight.Normal,
                 modifier = Modifier
@@ -756,7 +760,7 @@ private fun SelectableResourcePage(
                 contentAlignment = Alignment.Center,
             ) {
                 CircularProgressIndicator(
-                    color = Ios.Blue,
+                    color = DuskTheme.primary,
                     strokeWidth = 2.dp,
                     modifier = Modifier.size(26.dp),
                 )
@@ -766,7 +770,7 @@ private fun SelectableResourcePage(
                 icon = Icons.Default.ErrorOutline,
                 title = failureText,
                 body = stringResource(R.string.cf_resources_failed_body),
-                tint = Ios.Destructive,
+                tint = DuskTheme.error,
             )
 
             ids.isEmpty() -> EmptyBlock(icon = emptyIcon, title = emptyTitle, body = emptyBody)
@@ -810,7 +814,7 @@ private fun SelectableResourcePage(
                         SettingsActionRow(
                             label = stringResource(R.string.cf_resources_delete_all),
                             icon = Icons.Default.Delete,
-                            tint = Ios.Destructive,
+                            tint = DuskTheme.error,
                             busy = busy,
                             onClick = { pendingDelete = ids },
                         )
@@ -829,7 +833,7 @@ private fun SelectableResourcePage(
                                     selectedIds.size,
                                 ),
                                 icon = Icons.Default.Delete,
-                                tint = Ios.Destructive,
+                                tint = DuskTheme.error,
                                 busy = busy,
                                 enabled = selectedIds.isNotEmpty(),
                                 onClick = { pendingDelete = selectedIds },
@@ -871,8 +875,7 @@ private fun SelectableResourcePage(
                             busy = false
                             selectionMode = false
                             selected.clear()
-                            toast(
-                                context,
+                            notify(
                                 when {
                                     failures == 0 ->
                                         context.getString(R.string.workers_delete_success)
@@ -941,9 +944,9 @@ private fun ItemRow(
         }
         Spacer(Modifier.width(12.dp))
         Column(modifier = Modifier.weight(1f)) {
-            LtrText(name, color = TextPrimary, fontSize = 15.sp, weight = FontWeight.SemiBold)
+            LtrText(name, color = DuskTheme.onSurface, fontSize = 15.sp, weight = FontWeight.SemiBold)
             if (secondary.isNotEmpty()) {
-                LtrText(secondary, color = Ios.SecondaryLabel, fontSize = 11.sp)
+                LtrText(secondary, color = DuskTheme.muted, fontSize = 11.sp)
             }
             if (stats.isNotEmpty()) {
                 Spacer(Modifier.height(5.dp))
@@ -961,7 +964,7 @@ private fun ItemRow(
                     Icon(
                         Icons.Default.ContentCopy,
                         contentDescription = stringResource(R.string.cf_resources_copy),
-                        tint = Ios.SecondaryLabel,
+                        tint = DuskTheme.muted,
                         modifier = Modifier.size(17.dp),
                     )
                 }
@@ -970,7 +973,7 @@ private fun ItemRow(
                 Icon(
                     Icons.Default.Delete,
                     contentDescription = stringResource(R.string.node_delete),
-                    tint = Ios.SecondaryLabel,
+                    tint = DuskTheme.muted,
                     modifier = Modifier.size(19.dp),
                 )
             }
@@ -986,8 +989,8 @@ private fun SelectionTick(selected: Boolean) {
             .size(24.dp)
             .clip(CircleShape)
             .then(
-                if (selected) Modifier.background(Ios.Blue)
-                else Modifier.border(1.5.dp, Ios.Chevron, CircleShape)
+                if (selected) Modifier.background(DuskTheme.primary)
+                else Modifier.border(1.5.dp, DuskTheme.primary, CircleShape)
             ),
         contentAlignment = Alignment.Center,
     ) {
@@ -995,7 +998,7 @@ private fun SelectionTick(selected: Boolean) {
             Icon(
                 Icons.Default.Check,
                 contentDescription = null,
-                tint = Color.White,
+                tint = DuskTheme.onAccent,
                 modifier = Modifier.size(15.dp),
             )
         }
@@ -1010,7 +1013,7 @@ private fun StatChip(spec: StatSpec) {
         LtrText(spec.value, color = spec.tint, fontSize = 11.sp)
         if (spec.unit.isNotEmpty()) {
             Spacer(Modifier.width(3.dp))
-            Text(spec.unit, color = Ios.SecondaryLabel, fontSize = 11.sp, maxLines = 1)
+            Text(spec.unit, color = DuskTheme.muted, fontSize = 11.sp, maxLines = 1)
         }
     }
 }
@@ -1038,14 +1041,14 @@ private fun AccountTotals(
             TotalCell(
                 stringResource(R.string.cf_resources_workers),
                 workerCount.toString(),
-                Ios.Label,
+                DuskTheme.onSurface,
                 Modifier.weight(1f),
             )
             TotalDivider()
             TotalCell(
                 stringResource(R.string.cf_resources_requests),
                 if (statsAvailable) formatCount(requests) else "—",
-                if (statsAvailable) Ios.Green else Ios.SecondaryLabel,
+                if (statsAvailable) DuskTheme.success else DuskTheme.muted,
                 Modifier.weight(1f),
             )
             TotalDivider()
@@ -1053,28 +1056,28 @@ private fun AccountTotals(
                 stringResource(R.string.cf_resources_errors),
                 if (statsAvailable) formatCount(errors) else "—",
                 when {
-                    !statsAvailable -> Ios.SecondaryLabel
-                    errors > 0 -> Ios.Destructive
-                    else -> Ios.Label
+                    !statsAvailable -> DuskTheme.muted
+                    errors > 0 -> DuskTheme.error
+                    else -> DuskTheme.onSurface
                 },
                 Modifier.weight(1f),
             )
         }
         if (subdomain.isNotEmpty()) {
-            Box(modifier = Modifier.fillMaxWidth().height(0.5.dp).background(Ios.Separator))
+            Box(modifier = Modifier.fillMaxWidth().height(0.5.dp).background(DuskTheme.outline.copy(alpha = 0.32f)))
             Row(
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 11.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
                     stringResource(R.string.cf_resources_subdomain),
-                    color = Ios.Label,
+                    color = DuskTheme.onSurface,
                     fontSize = 15.sp,
                     modifier = Modifier.weight(1f),
                 )
                 LtrText(
                     "$subdomain.workers.dev",
-                    color = Ios.SecondaryLabel,
+                    color = DuskTheme.muted,
                     fontSize = 14.sp,
                 )
             }
@@ -1087,7 +1090,7 @@ private fun TotalCell(label: String, value: String, valueColor: Color, modifier:
     Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
         LtrText(value, color = valueColor, fontSize = 17.sp, weight = FontWeight.SemiBold)
         Spacer(Modifier.height(1.dp))
-        Text(label, color = Ios.SecondaryLabel, fontSize = 11.sp, maxLines = 1)
+        Text(label, color = DuskTheme.muted, fontSize = 11.sp, maxLines = 1)
     }
 }
 
@@ -1098,7 +1101,7 @@ private fun TotalDivider() {
             .padding(horizontal = 4.dp)
             .width(0.5.dp)
             .height(28.dp)
-            .background(Ios.Separator)
+            .background(DuskTheme.outline.copy(alpha = 0.32f))
     )
 }
 
@@ -1111,7 +1114,7 @@ private fun EmptyBlock(
     icon: ImageVector,
     title: String,
     body: String,
-    tint: Color = Ios.SecondaryLabel,
+    tint: Color = DuskTheme.muted,
 ) {
     DuskCard(
         modifier = Modifier.fillMaxWidth().padding(top = DuskTheme.space6, start = DuskTheme.space5, end = DuskTheme.space5),
@@ -1170,8 +1173,4 @@ private fun LtrText(
             overflow = TextOverflow.Ellipsis,
         )
     }
-}
-
-private fun toast(context: android.content.Context, message: String) {
-    android.widget.Toast.makeText(context, message, android.widget.Toast.LENGTH_SHORT).show()
 }

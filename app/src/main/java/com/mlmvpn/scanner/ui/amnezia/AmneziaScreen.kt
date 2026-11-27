@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.ClipboardManager
 import android.content.Context
 import android.net.VpnService
-import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -93,6 +92,7 @@ import com.mlmvpn.scanner.engines.amnezia.AmzTestMode
 import com.mlmvpn.scanner.ui.LocalTabVisible
 import com.mlmvpn.scanner.ui.home.frostedGlass
 import com.mlmvpn.scanner.ui.settings.Ios
+import com.mlmvpn.scanner.ui.theme.rememberDuskSnackbarAction
 import com.mlmvpn.scanner.ui.settings.IosScreen
 import com.mlmvpn.scanner.ui.settings.SettingsActionRow
 import com.mlmvpn.scanner.ui.settings.SettingsFooter
@@ -115,6 +115,7 @@ private enum class Page { MAIN, SERVERS, SETTINGS }
 @Composable
 fun AmneziaScreen(onBack: () -> Unit) {
     val context = LocalContext.current
+    val notify = rememberDuskSnackbarAction()
     var ready by remember { mutableStateOf(AmzEngine.isInitialized()) }
     val visible = LocalTabVisible.current
     LaunchedEffect(Unit) {
@@ -147,12 +148,12 @@ fun AmneziaScreen(onBack: () -> Unit) {
     // Some TVs and stripped ROMs have no file picker at all; say so instead of crashing.
     val pickFile = {
         try { fileLauncher.launch(arrayOf("*/*")) }
-        catch (_: android.content.ActivityNotFoundException) { Toast.makeText(context, S(R.string.amz_no_file_picker), Toast.LENGTH_LONG).show() }
+        catch (_: android.content.ActivityNotFoundException) { notify(S(R.string.amz_no_file_picker)) }
     }
     val paste = {
         val cm = context.getSystemService(Context.CLIPBOARD_SERVICE) as? ClipboardManager
         val text = cm?.primaryClip?.takeIf { it.itemCount > 0 }?.getItemAt(0)?.coerceToText(context)?.toString().orEmpty()
-        if (text.isBlank()) Toast.makeText(context, S(R.string.amz_import_failed), Toast.LENGTH_SHORT).show()
+        if (text.isBlank()) notify(S(R.string.amz_import_failed))
         else AmzEngine.importText(context, text)
     }
     val notice by AmzEngine.notice.collectAsState()
@@ -174,7 +175,7 @@ fun AmneziaScreen(onBack: () -> Unit) {
             AmzEngine.Notice.Offline -> S(R.string.amz_offline_notice)
             is AmzEngine.Notice.Removed -> S(R.string.amz_removed, fa(n.count))
         }
-        Toast.makeText(context, text, Toast.LENGTH_SHORT).show()
+        notify(text)
         AmzEngine.consumeNotice()
     }
 

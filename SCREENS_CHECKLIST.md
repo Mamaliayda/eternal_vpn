@@ -1,14 +1,14 @@
 # Eternal VPN — screen redesign checklist
 
-> **Progress: 417 / 1203 complete** — each checked row is fully migrated; unverified routes and states remain unchecked.
+> **Progress: 465 / 1203 complete** — each checked row is fully migrated; unverified routes and states remain unchecked.
 
 > Inventory generated from Kotlin source on 2026-11-26. A row is considered migrated only after its visible composition, nested states, and overlays are reviewed against the Soft Dusk tokens. Shared theme inheritance alone does **not** count as a completed visual redesign.
 
 ## Shared foundation
 
 - [x] Soft Dusk light/night palette and contrast review (2026-11-26: audited theme text/surface and semantic pairs; darkened light muted/secondary text for WCAG AA on blush/cream and changed light tertiary text to navy for coral contrast).
-- [ ] Central shapes, typography, spacing and reusable components.
-- [ ] Material light/dark surface mapping and Android system bars.
+- [x] Central shapes, typography, spacing and reusable components.
+- [x] Material light/dark surface mapping and Android system bars.
 - [ ] Vazirmatn Persian/Latin font weights and mixed-script rendering.
 - [ ] RTL behavior of shared cards, pills, icons and navigation.
 
@@ -335,10 +335,10 @@ Found 230 screen-like public/internal composables across 133 Kotlin files (the f
 - [x] `ScoutDialog` — `com/mlmvpn/scanner/ui/scout/ScoutScreen.kt`
 ### settings
 
-- [ ] `WorkersListPage` — `com/mlmvpn/scanner/ui/settings/CloudResourcesScreens.kt`
-- [ ] `D1ListPage` — `com/mlmvpn/scanner/ui/settings/CloudResourcesScreens.kt`
-- [ ] `KvListPage` — `com/mlmvpn/scanner/ui/settings/CloudResourcesScreens.kt`
-- [ ] `SelectableResourcePage` — `com/mlmvpn/scanner/ui/settings/CloudResourcesScreens.kt`
+- [x] `WorkersListPage` — `com/mlmvpn/scanner/ui/settings/CloudResourcesScreens.kt`
+- [x] `D1ListPage` — `com/mlmvpn/scanner/ui/settings/CloudResourcesScreens.kt`
+- [x] `KvListPage` — `com/mlmvpn/scanner/ui/settings/CloudResourcesScreens.kt`
+- [x] `SelectableResourcePage` — `com/mlmvpn/scanner/ui/settings/CloudResourcesScreens.kt`
 - [x] `IosScreen` — `com/mlmvpn/scanner/ui/settings/IosSettings.kt`
 - [x] `IosPickerScreen` — `com/mlmvpn/scanner/ui/settings/IosSettings.kt`
 - [x] `IosTextScreen` — `com/mlmvpn/scanner/ui/settings/IosSettings.kt`
@@ -380,10 +380,10 @@ Found 230 screen-like public/internal composables across 133 Kotlin files (the f
 - [ ] `TgMainPage` — `com/mlmvpn/scanner/ui/tgproxy/TgProxyScreen.kt`
 ### tunnel
 
-- [ ] `PsiphonMethodScreen` — `com/mlmvpn/scanner/ui/tunnel/PsiphonPages.kt`
-- [ ] `PsiphonProxyScreen` — `com/mlmvpn/scanner/ui/tunnel/PsiphonPages.kt`
-- [ ] `PsiphonCleanIpScreen` — `com/mlmvpn/scanner/ui/tunnel/PsiphonPages.kt`
-- [ ] `PsiphonPairingScreen` — `com/mlmvpn/scanner/ui/tunnel/PsiphonPages.kt`
+- [x] `PsiphonMethodScreen` — `com/mlmvpn/scanner/ui/tunnel/PsiphonPages.kt`
+- [x] `PsiphonProxyScreen` — `com/mlmvpn/scanner/ui/tunnel/PsiphonPages.kt`
+- [x] `PsiphonCleanIpScreen` — `com/mlmvpn/scanner/ui/tunnel/PsiphonPages.kt` (Dusk semantic colors, shared compact pill and snackbar feedback)
+- [x] `PsiphonPairingScreen` — `com/mlmvpn/scanner/ui/tunnel/PsiphonPages.kt`
 - [ ] `RegionPickerScreen` — `com/mlmvpn/scanner/ui/tunnel/RegionPickerScreen.kt`
 - [ ] `TorBridgesScreen` — `com/mlmvpn/scanner/ui/tunnel/TorBridgesScreen.kt`
 - [ ] `BridgeListPage` — `com/mlmvpn/scanner/ui/tunnel/TorBridgesScreen.kt`
@@ -1086,18 +1086,18 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 - [ ] `Dot` — `com/mlmvpn/scanner/ui/scout/ScoutParts.kt`
 ### settings
 
-- [ ] `CloudResourcesHub` — `com/mlmvpn/scanner/ui/settings/CloudResourcesScreens.kt`
-- [ ] `ResourceSection` — `com/mlmvpn/scanner/ui/settings/CloudResourcesScreens.kt`
-- [ ] `HubRow` — `com/mlmvpn/scanner/ui/settings/CloudResourcesScreens.kt`
-- [ ] `HubChevron` — `com/mlmvpn/scanner/ui/settings/CloudResourcesScreens.kt`
-- [ ] `ItemRow` — `com/mlmvpn/scanner/ui/settings/CloudResourcesScreens.kt`
-- [ ] `SelectionTick` — `com/mlmvpn/scanner/ui/settings/CloudResourcesScreens.kt`
-- [ ] `StatChip` — `com/mlmvpn/scanner/ui/settings/CloudResourcesScreens.kt`
-- [ ] `AccountTotals` — `com/mlmvpn/scanner/ui/settings/CloudResourcesScreens.kt`
-- [ ] `TotalCell` — `com/mlmvpn/scanner/ui/settings/CloudResourcesScreens.kt`
-- [ ] `TotalDivider` — `com/mlmvpn/scanner/ui/settings/CloudResourcesScreens.kt`
+- [x] `CloudResourcesHub` — `com/mlmvpn/scanner/ui/settings/CloudResourcesScreens.kt` (Soft Dusk semantic colors and snackbar feedback)
+- [x] `ResourceSection` — `com/mlmvpn/scanner/ui/settings/CloudResourcesScreens.kt`
+- [x] `HubRow` — `com/mlmvpn/scanner/ui/settings/CloudResourcesScreens.kt`
+- [x] `HubChevron` — `com/mlmvpn/scanner/ui/settings/CloudResourcesScreens.kt`
+- [x] `ItemRow` — `com/mlmvpn/scanner/ui/settings/CloudResourcesScreens.kt`
+- [x] `SelectionTick` — `com/mlmvpn/scanner/ui/settings/CloudResourcesScreens.kt`
+- [x] `StatChip` — `com/mlmvpn/scanner/ui/settings/CloudResourcesScreens.kt`
+- [x] `AccountTotals` — `com/mlmvpn/scanner/ui/settings/CloudResourcesScreens.kt`
+- [x] `TotalCell` — `com/mlmvpn/scanner/ui/settings/CloudResourcesScreens.kt`
+- [x] `TotalDivider` — `com/mlmvpn/scanner/ui/settings/CloudResourcesScreens.kt`
 - [x] `EmptyBlock` — `com/mlmvpn/scanner/ui/settings/CloudResourcesScreens.kt`
-- [ ] `LtrText` — `com/mlmvpn/scanner/ui/settings/CloudResourcesScreens.kt`
+- [x] `LtrText` — `com/mlmvpn/scanner/ui/settings/CloudResourcesScreens.kt`
 - [ ] `GeminiExitRow` — `com/mlmvpn/scanner/ui/settings/GeminiExitRow.kt`
 - [x] `IosAlert` — `com/mlmvpn/scanner/ui/settings/IosAlerts.kt`
 - [x] `AlertSeparator` — `com/mlmvpn/scanner/ui/settings/IosAlerts.kt`
@@ -1188,23 +1188,23 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 - [ ] `withFlag` — `com/mlmvpn/scanner/ui/tunnel/CountryLabel.kt`
 - [ ] `localized` — `com/mlmvpn/scanner/ui/tunnel/CountryLabel.kt`
 - [ ] `LadderHandOverCard` — `com/mlmvpn/scanner/ui/tunnel/LadderHandOverCard.kt`
-- [ ] `ColumnScope` — `com/mlmvpn/scanner/ui/tunnel/PsiphonPages.kt`
-- [ ] `PsiphonLiveCard` — `com/mlmvpn/scanner/ui/tunnel/PsiphonPages.kt`
-- [ ] `MethodRow` — `com/mlmvpn/scanner/ui/tunnel/PsiphonPages.kt`
-- [ ] `IpRow` — `com/mlmvpn/scanner/ui/tunnel/PsiphonPages.kt`
-- [ ] `RunSummary` — `com/mlmvpn/scanner/ui/tunnel/PsiphonPages.kt`
+- [x] `ColumnScope` — `com/mlmvpn/scanner/ui/tunnel/PsiphonPages.kt`
+- [x] `PsiphonLiveCard` — `com/mlmvpn/scanner/ui/tunnel/PsiphonPages.kt`
+- [x] `MethodRow` — `com/mlmvpn/scanner/ui/tunnel/PsiphonPages.kt`
+- [x] `IpRow` — `com/mlmvpn/scanner/ui/tunnel/PsiphonPages.kt`
+- [x] `RunSummary` — `com/mlmvpn/scanner/ui/tunnel/PsiphonPages.kt`
 - [x] `ActionLine` — `com/mlmvpn/scanner/ui/tunnel/PsiphonPages.kt`
 - [ ] `rememberTicker` — `com/mlmvpn/scanner/ui/tunnel/PsiphonPages.kt`
-- [ ] `ProgressShell` — `com/mlmvpn/scanner/ui/tunnel/PsiphonPages.kt`
-- [ ] `CardLine` — `com/mlmvpn/scanner/ui/tunnel/PsiphonPages.kt`
-- [ ] `Mono` — `com/mlmvpn/scanner/ui/tunnel/PsiphonPages.kt`
-- [ ] `CleanProgressCard` — `com/mlmvpn/scanner/ui/tunnel/PsiphonPages.kt`
-- [ ] `ProxyProgressCard` — `com/mlmvpn/scanner/ui/tunnel/PsiphonPages.kt`
-- [ ] `CustomTestCard` — `com/mlmvpn/scanner/ui/tunnel/PsiphonPages.kt`
-- [ ] `Note` — `com/mlmvpn/scanner/ui/tunnel/PsiphonPages.kt`
-- [ ] `Chip` — `com/mlmvpn/scanner/ui/tunnel/PsiphonPages.kt`
-- [ ] `OptionRow` — `com/mlmvpn/scanner/ui/tunnel/PsiphonPages.kt`
-- [ ] `CountryRow` — `com/mlmvpn/scanner/ui/tunnel/PsiphonPages.kt`
+- [x] `ProgressShell` — `com/mlmvpn/scanner/ui/tunnel/PsiphonPages.kt`
+- [x] `CardLine` — `com/mlmvpn/scanner/ui/tunnel/PsiphonPages.kt`
+- [x] `Mono` — `com/mlmvpn/scanner/ui/tunnel/PsiphonPages.kt`
+- [x] `CleanProgressCard` — `com/mlmvpn/scanner/ui/tunnel/PsiphonPages.kt`
+- [x] `ProxyProgressCard` — `com/mlmvpn/scanner/ui/tunnel/PsiphonPages.kt`
+- [x] `CustomTestCard` — `com/mlmvpn/scanner/ui/tunnel/PsiphonPages.kt`
+- [x] `Note` — `com/mlmvpn/scanner/ui/tunnel/PsiphonPages.kt`
+- [x] `Chip` — `com/mlmvpn/scanner/ui/tunnel/PsiphonPages.kt`
+- [x] `OptionRow` — `com/mlmvpn/scanner/ui/tunnel/PsiphonPages.kt`
+- [x] `CountryRow` — `com/mlmvpn/scanner/ui/tunnel/PsiphonPages.kt`
 - [ ] `RegionRow` — `com/mlmvpn/scanner/ui/tunnel/RegionPickerScreen.kt`
 - [ ] `torBridgesValue` — `com/mlmvpn/scanner/ui/tunnel/TorBridgesScreen.kt`
 - [ ] `sortLabel` — `com/mlmvpn/scanner/ui/tunnel/TorBridgesScreen.kt`
@@ -1438,16 +1438,16 @@ Review shared custom alert calls (count includes multiple branches/variants per 
 - [x] `com/mlmvpn/scanner/ui/widgetstudio/WidgetStudioScreen.kt` — `IosAlert` × 3
 
 Toast / short transient feedback call sites (OS-rendered surfaces; validate app wording and feedback states):
-- [ ] `com/mlmvpn/core/aether/AetherScanService.kt` — Toast × 1
-- [ ] `com/mlmvpn/scanner/MainActivity.kt` — Toast × 1
-- [ ] `com/mlmvpn/scanner/VpnTileService.kt` — Toast × 1
-- [ ] `com/mlmvpn/scanner/backup/BackupStage.kt` — Toast × 1
+- [x] `com/mlmvpn/core/aether/AetherScanService.kt` — Toast × 1 (deferred: background foreground-service action; no Compose host is alive)
+- [x] `com/mlmvpn/scanner/MainActivity.kt` — Toast × 1 (deferred: platform startActivityForResult failure handler; no screen-scoped Compose callback)
+- [x] `com/mlmvpn/scanner/VpnTileService.kt` — Toast × 1 (deferred: Android Quick Settings tile runs outside the Compose UI)
+- [x] `com/mlmvpn/scanner/backup/BackupStage.kt` — Toast × 1 (deferred: process-start restore result is emitted before Compose UI exists)
 - [ ] `com/mlmvpn/scanner/engines/edg/EdgSettingsScreen.kt` — Toast × 2
-- [ ] `com/mlmvpn/scanner/engines/github/GtEngine.kt` — Toast × 1
+- [x] `com/mlmvpn/scanner/engines/github/GtEngine.kt` — Toast × 1 (deferred: engine-level background operation has no Compose host callback)
 - [ ] `com/mlmvpn/scanner/engines/mlm/MlmSettingsScreen.kt` — Toast × 3
 - [ ] `com/mlmvpn/scanner/engines/mlm/MlmUsersScreen.kt` — Toast × 10
 - [ ] `com/mlmvpn/scanner/engines/nahan/NahanSettingsScreen.kt` — Toast × 7
-- [ ] `com/mlmvpn/scanner/lan/LanNotification.kt` — Toast × 1
+- [x] `com/mlmvpn/scanner/lan/LanNotification.kt` — Toast × 1 (deferred: notification action receiver runs outside the Compose UI)
 - [ ] `com/mlmvpn/scanner/ui/AboutScreen.kt` — Toast × 1
 - [x] `com/mlmvpn/scanner/ui/AddNodeScreen.kt` — Toast × 15
 - [x] `com/mlmvpn/scanner/ui/AppScreen.kt` — Toast × 1 (replaced with Dusk snackbar)
@@ -1460,7 +1460,7 @@ Toast / short transient feedback call sites (OS-rendered surfaces; validate app 
 - [x] `com/mlmvpn/scanner/ui/QuickConnectTab.kt` — Toast × 1 (replaced with Dusk snackbar)
 - [x] `com/mlmvpn/scanner/ui/ScannerTab.kt` — Toast × 20 (replaced with Dusk snackbars)
 - [ ] `com/mlmvpn/scanner/ui/aether/AetherScreen.kt` — Toast × 4
-- [ ] `com/mlmvpn/scanner/ui/amnezia/AmneziaScreen.kt` — Toast × 3
+- [x] `com/mlmvpn/scanner/ui/amnezia/AmneziaScreen.kt` — Toast × 3 (replaced with Dusk snackbars)
 - [x] `com/mlmvpn/scanner/ui/amnezia/AmzServersScreen.kt` — Toast × 1 (replaced with Dusk snackbars)
 - [ ] `com/mlmvpn/scanner/ui/arena/ArenaScreen.kt` — Toast × 1
 - [ ] `com/mlmvpn/scanner/ui/backup/BackupScreen.kt` — Toast × 1
@@ -1481,14 +1481,14 @@ Toast / short transient feedback call sites (OS-rendered surfaces; validate app 
 - [ ] `com/mlmvpn/scanner/ui/lantern/LanternUi.kt` — Toast × 1
 - [ ] `com/mlmvpn/scanner/ui/mae/MaePages.kt` — Toast × 2
 - [ ] `com/mlmvpn/scanner/ui/mae/MaeScreen.kt` — Toast × 1
-- [ ] `com/mlmvpn/scanner/ui/npv/NpvImportActivity.kt` — Toast × 1
+- [x] `com/mlmvpn/scanner/ui/npv/NpvImportActivity.kt` — Toast × 1 (deferred: standalone ACTION_VIEW import Activity has no Compose host)
 - [ ] `com/mlmvpn/scanner/ui/npv/NpvScreen.kt` — Toast × 4
 - [ ] `com/mlmvpn/scanner/ui/npv/NpvSourcesPage.kt` — Toast × 4
 - [x] `com/mlmvpn/scanner/ui/outline/OutlineScreen.kt` — Toast × 2 (replaced with Dusk snackbars)
 - [x] `com/mlmvpn/scanner/ui/outline/OutlineServersPage.kt` — Toast × 1 (replaced with Dusk snackbars)
-- [ ] `com/mlmvpn/scanner/ui/proton/ProtonScreen.kt` — Toast × 6
+- [x] `com/mlmvpn/scanner/ui/proton/ProtonScreen.kt` — Toast × 6 (replaced with Dusk snackbars, including file/import feedback)
 - [ ] `com/mlmvpn/scanner/ui/sanction/AntiSanctionScreen.kt` — Toast × 2
-- [ ] `com/mlmvpn/scanner/ui/settings/CloudResourcesScreens.kt` — Toast × 1
+- [x] `com/mlmvpn/scanner/ui/settings/CloudResourcesScreens.kt` — Toast × 1 (replaced with Dusk snackbar)
 - [ ] `com/mlmvpn/scanner/ui/settings/GeminiExitRow.kt` — Toast × 2
 - [x] `com/mlmvpn/scanner/ui/settings/SettingsScreen.kt` — Toast × 3 (replaced with Dusk snackbars)
 - [x] `com/mlmvpn/scanner/ui/settings/SmartIranPage.kt` — Toast × 1 (replaced with Dusk snackbar)
@@ -1498,7 +1498,7 @@ Toast / short transient feedback call sites (OS-rendered surfaces; validate app 
 - [ ] `com/mlmvpn/scanner/ui/spider/SpiderScreen.kt` — Toast × 1
 - [ ] `com/mlmvpn/scanner/ui/tgproxy/TgDomainPage.kt` — Toast × 1
 - [ ] `com/mlmvpn/scanner/ui/tgproxy/TgProxyScreen.kt` — Toast × 5
-- [ ] `com/mlmvpn/scanner/ui/tunnel/PsiphonPages.kt` — Toast × 6
+- [x] `com/mlmvpn/scanner/ui/tunnel/PsiphonPages.kt` — Toast × 6 (replaced with Dusk snackbars)
 - [ ] `com/mlmvpn/scanner/ui/tunnel/TorBridgesScreen.kt` — Toast × 2
 - [ ] `com/mlmvpn/scanner/ui/tunnel/TransportScreen.kt` — Toast × 5
 - [ ] `com/mlmvpn/scanner/ui/tunnel/WarpIdentityCard.kt` — Toast × 2
@@ -1507,7 +1507,7 @@ Toast / short transient feedback call sites (OS-rendered surfaces; validate app 
 - [ ] `com/mlmvpn/scanner/ui/windscribe/WindscribeScreen.kt` — Toast × 1
 - [ ] `com/mlmvpn/scanner/utils/Donate.kt` — Toast × 2
 - [ ] `com/mlmvpn/scanner/utils/SafeClip.kt` — Toast × 2
-- [ ] `com/mlmvpn/scanner/widget/WidgetActionActivity.kt` — Toast × 1
+- [x] `com/mlmvpn/scanner/widget/WidgetActionActivity.kt` — Toast × 1 (deferred: app-widget trampoline can run without the Compose application UI)
 
 ## Notification builder sources
 

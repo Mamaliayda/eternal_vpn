@@ -19,7 +19,6 @@ import android.webkit.WebResourceError
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -99,6 +98,7 @@ import com.mlmvpn.scanner.ui.amnezia.fa
 import com.mlmvpn.scanner.ui.amnezia.groupFlag
 import com.mlmvpn.scanner.ui.amnezia.groupName
 import com.mlmvpn.scanner.ui.theme.DuskTheme
+import com.mlmvpn.scanner.ui.theme.rememberDuskSnackbarAction
 import com.mlmvpn.scanner.ui.settings.IosScreen
 import com.mlmvpn.scanner.ui.settings.SettingsActionRow
 import com.mlmvpn.scanner.ui.settings.SettingsFooter
@@ -128,6 +128,7 @@ private enum class Page { MAIN, WEB }
 @Composable
 fun ProtonScreen(onBack: () -> Unit) {
     val context = LocalContext.current
+    val notify = rememberDuskSnackbarAction()
     var ready by remember { mutableStateOf(ProtonEngine.isInitialized()) }
     LaunchedEffect(Unit) {
         if (!ready) { withContext(Dispatchers.IO) { ProtonEngine.init(context) }; ready = true }
@@ -152,7 +153,7 @@ fun ProtonScreen(onBack: () -> Unit) {
             else -> null
         }
         if (text != null) {
-            Toast.makeText(context, text, Toast.LENGTH_SHORT).show()
+            notify(text)
             AmzEngine.consumeNotice()
         }
     }
@@ -160,10 +161,12 @@ fun ProtonScreen(onBack: () -> Unit) {
     when (page) {
         Page.WEB -> ProtonWebPage(
             url = url,
+            notify = notify,
             onBack = { page = Page.MAIN },
             onDone = { switch -> page = Page.MAIN; if (switch) ProtonEngine.switchToProton(context) },
         )
         Page.MAIN -> ProtonHome(
+            notify = notify,
             onBack = onBack,
             onSignIn = { url = ProtonEngine.SIGN_IN_URL; page = Page.WEB },
             onSignUp = { url = ProtonEngine.SIGN_UP_URL; page = Page.WEB },
@@ -191,7 +194,7 @@ private fun rememberVpnGate(onDenied: () -> Unit = {}): (() -> Unit) -> Unit {
 // ── the main page ───────────────────────────────────────────────────────────────────────────────
 
 @Composable
-private fun ProtonHome(onBack: () -> Unit, onSignIn: () -> Unit, onSignUp: () -> Unit) {
+private fun ProtonHome(notify: (String) -> Unit, onBack: () -> Unit, onSignIn: () -> Unit, onSignUp: () -> Unit) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val ids by ProtonEngine.ids.collectAsState()
@@ -234,11 +237,11 @@ private fun ProtonHome(onBack: () -> Unit, onSignIn: () -> Unit, onSignUp: () ->
     var signedIn by remember(mine) { mutableStateOf(false) }
     LaunchedEffect(mine) { signedIn = withContext(Dispatchers.IO) { ProtonApi.signedIn() } }
     val picker = rememberLauncherForActivityResult(ActivityResultContracts.OpenMultipleDocuments()) { uris ->
-        scope.launch(Dispatchers.IO) { uris.forEach { importUri(context, it) } }
+        scope.launch(Dispatchers.IO) { uris.forEach { importUri(context, it, notify) } }
     }
     val pickFile = {
         try { picker.launch(arrayOf("*/*")) }
-        catch (_: android.content.ActivityNotFoundException) { Toast.makeText(context, context.getString(R.string.amz_no_file_picker), Toast.LENGTH_LONG).show() }
+        catch (_: android.content.ActivityNotFoundException) { notify(context.getString(R.string.amz_no_file_picker)) }
     }
 
     IosScreen(onBack = onBack, backLabel = stringResource(R.string.home)) {
@@ -321,7 +324,7 @@ private fun ProtonHome(onBack: () -> Unit, onSignIn: () -> Unit, onSignUp: () ->
 
         SettingsSectionHeader(stringResource(R.string.proton_fallback_title))
         SettingsGroup {
-            SettingsActionRow(label = stringResource(R.string.proton_open_browser), icon = Icons.Default.OpenInBrowser, tint = DuskTheme.primary) { openInBrowser(context) }
+            SettingsActionRow(label = stringResource(R.string.proton_open_browser), icon = Icons.Default.OpenInBrowser, tint = DuskTheme.primary) { openInBrowser(context, notify) }
             Separator()
             SettingsActionRow(label = stringResource(R.string.proton_pick_file), icon = Icons.Default.FileOpen, tint = DuskTheme.secondary, onClick = pickFile)
             if (mine.isNotEmpty() || signedIn) {
@@ -345,7 +348,7 @@ private fun ProtonHome(onBack: () -> Unit, onSignIn: () -> Unit, onSignUp: () ->
                             askSignOut = false
                             ProtonEngine.signOut(context)
                             signedIn = false
-                            Toast.makeText(context, context.getString(R.string.proton_signed_out), Toast.LENGTH_SHORT).show()
+                            notify(context.getString(R.string.proton_signed_out))
                         },
                         destructive = true,
                         preferred = true,
@@ -469,16 +472,16 @@ private fun PrimaryButton(label: String, tone: Color = DuskTheme.purple, onClick
  * Proton's page in the phone's own browser. The browser is not the app, so it rides whatever engine
  * is on; the `.conf` it downloads is then picked with «انتخاب فایل».
  */
-private fun openInBrowser(context: android.content.Context) {
+private fun openInBrowser(context: android.content.Context, notify: (String) -> Unit) {
     try {
         context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(ProtonEngine.SIGN_IN_URL)).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
     } catch (_: Exception) {
-        Toast.makeText(context, context.getString(R.string.amz_no_file_picker), Toast.LENGTH_SHORT).show()
+        notify(context.getString(R.string.amz_no_file_picker))
     }
 }
 
 /** A `.conf` the user picked: read (a config is a few hundred bytes) and kept like any other. */
-private fun importUri(context: android.content.Context, uri: Uri) {
+private fun importUri(context: android.content.Context, uri: Uri, notify: (String) -> Unit) {
     val name = runCatching {
         context.contentResolver.query(uri, arrayOf(OpenableColumns.DISPLAY_NAME), null, null, null)?.use { c ->
             if (c.moveToFirst()) c.getString(0) else null
@@ -487,12 +490,8 @@ private fun importUri(context: android.content.Context, uri: Uri) {
     val text = runCatching {
         context.contentResolver.openInputStream(uri)?.use { it.readBytes().take(MAX_FILE).toByteArray().toString(Charsets.UTF_8) }
     }.getOrNull()
-    if (text.isNullOrBlank()) { toastBadFile(context); return }
+    if (text.isNullOrBlank()) { notify(context.getString(R.string.proton_file_bad)); return }
     ProtonEngine.onConf(context, text, name)
-}
-
-private fun toastBadFile(context: android.content.Context) {
-    Handler(Looper.getMainLooper()).post { Toast.makeText(context, context.getString(R.string.proton_file_bad), Toast.LENGTH_SHORT).show() }
 }
 
 private const val MAX_FILE = 64 * 1024
@@ -526,7 +525,7 @@ private enum class Check { TESTING, READY, BLOCKED }
  */
 @SuppressLint("SetJavaScriptEnabled", "AddJavascriptInterface")
 @Composable
-private fun ProtonWebPage(url: String, onBack: () -> Unit, onDone: (switch: Boolean) -> Unit) {
+private fun ProtonWebPage(url: String, notify: (String) -> Unit, onBack: () -> Unit, onDone: (switch: Boolean) -> Unit) {
     val context = LocalContext.current
     val running by MyVpnService.isRunningFlow.collectAsState()
     val phase by MyVpnService.connectionPhaseFlow.collectAsState()
@@ -684,6 +683,7 @@ private fun ProtonWebPage(url: String, onBack: () -> Unit, onDone: (switch: Bool
                 !opened && starting -> Message(stringResource(R.string.proton_helper_starting))
                 !opened && check == Check.TESTING -> Message(stringResource(if (route != null) R.string.proton_checking_via else R.string.proton_checking))
                 !opened && check == Check.BLOCKED -> HelperChooser(
+                    notify = notify,
                     onPick = pick,
                     onRetry = { pending = null; attempt++ },
                     engineFailed = engineFailed,
@@ -805,7 +805,7 @@ private fun ProtonWebPage(url: String, onBack: () -> Unit, onDone: (switch: Bool
                                     Spacer(Modifier.height(DuskTheme.space2))
                                     Row(horizontalArrangement = androidx.compose.foundation.layout.Arrangement.spacedBy(DuskTheme.space2)) {
                                         Box(Modifier.weight(1f)) { PrimaryButton(stringResource(R.string.proton_reload)) { blank = false; web[0]?.reload() } }
-                                        Box(Modifier.weight(1f)) { PrimaryButton(stringResource(R.string.proton_open_browser), tone = DuskTheme.primary) { openInBrowser(context) } }
+                                        Box(Modifier.weight(1f)) { PrimaryButton(stringResource(R.string.proton_open_browser), tone = DuskTheme.primary) { openInBrowser(context, notify) } }
                                     }
                                 }
                             }
@@ -852,7 +852,7 @@ private fun ProtonWebPage(url: String, onBack: () -> Unit, onDone: (switch: Bool
                         taking -> Unit
                         // Signed in but nothing taken yet: «تمام» takes them, then finishes.
                         ProtonApi.signedIn() -> take { onDone(via != null) }
-                        else -> Toast.makeText(context, context.getString(R.string.proton_sign_in_first), Toast.LENGTH_SHORT).show()
+                        else -> notify(context.getString(R.string.proton_sign_in_first))
                     }
                 }
             }
@@ -951,6 +951,7 @@ private fun HelperProgress(
  */
 @Composable
 private fun HelperChooser(
+    notify: (String) -> Unit,
     onPick: (ProtonAccess.Helper) -> Unit, onRetry: () -> Unit,
     engineFailed: Boolean, afterBlockedRoute: Boolean, proxyUnsupported: Boolean,
 ) {
@@ -992,7 +993,7 @@ private fun HelperChooser(
         SettingsGroup {
             SettingsActionRow(label = stringResource(R.string.proton_retry), icon = Icons.Default.Refresh, tint = DuskTheme.purple, onClick = onRetry)
             Separator()
-            SettingsActionRow(label = stringResource(R.string.proton_open_browser), icon = Icons.Default.OpenInBrowser, tint = DuskTheme.primary) { openInBrowser(context) }
+            SettingsActionRow(label = stringResource(R.string.proton_open_browser), icon = Icons.Default.OpenInBrowser, tint = DuskTheme.primary) { openInBrowser(context, notify) }
         }
         Spacer(Modifier.height(DuskTheme.space5))
     }

@@ -1,6 +1,5 @@
 package com.mlmvpn.scanner.ui.tunnel
 
-import android.widget.Toast
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -79,7 +78,6 @@ import com.mlmvpn.scanner.store.tr
 import com.mlmvpn.scanner.ui.LocalSystemBottomPadding
 import com.mlmvpn.scanner.ui.emergency.faDigits
 import com.mlmvpn.scanner.ui.home.frostedGlass
-import com.mlmvpn.scanner.ui.settings.Ios
 import com.mlmvpn.scanner.ui.settings.IosScreen
 import com.mlmvpn.scanner.ui.settings.SettingsActionRow
 import com.mlmvpn.scanner.ui.settings.SettingsFooter
@@ -137,7 +135,7 @@ fun ColumnScope.PsiphonMethodRows(onOpenPage: (String) -> Unit) {
         SettingsRow(
             title = tr("روش اتصال", "Connection method"),
             icon = Icons.Default.Route,
-            tint = Ios.Blue,
+            tint = DuskTheme.primary,
             value = PsiphonMethods.label(method),
             onClick = { onOpenPage(PsiphonPages.METHOD) },
         )
@@ -145,7 +143,7 @@ fun ColumnScope.PsiphonMethodRows(onOpenPage: (String) -> Unit) {
         SettingsRow(
             title = tr("پروکسی سرور", "Proxy server"),
             icon = Icons.Default.SwapHoriz,
-            tint = Ios.Indigo,
+            tint = DuskTheme.indigo,
             value = when (up.choice?.mode) {
                 "custom" -> up.custom?.let { "${it.host}:${it.port}" } ?: tr("خاموش", "Off")
                 "country" -> up.choice?.country?.let { CountryLabel.localized(it) } ?: tr("خاموش", "Off")
@@ -157,7 +155,7 @@ fun ColumnScope.PsiphonMethodRows(onOpenPage: (String) -> Unit) {
         SettingsRow(
             title = tr("آی‌پی تمیز", "Clean IP"),
             icon = Icons.Default.CleaningServices,
-            tint = Ios.Green,
+            tint = DuskTheme.success,
             value = if (usable > 0) tr("${fa(usable)} آماده", "$usable ready") else tr("هنوز نیست", "None yet"),
             onClick = { onOpenPage(PsiphonPages.CLEAN) },
         )
@@ -165,7 +163,7 @@ fun ColumnScope.PsiphonMethodRows(onOpenPage: (String) -> Unit) {
         SettingsRow(
             title = tr("کاندوئیت", "Conduit"),
             icon = Icons.Default.Link,
-            tint = Ios.Purple,
+            tint = DuskTheme.purple,
             value = pairing?.let { it.name.ifBlank { tr("جفت شده", "Paired") } } ?: tr("جفت نشده", "Not paired"),
             onClick = { onOpenPage(PsiphonPages.PAIRING) },
         )
@@ -195,23 +193,23 @@ fun PsiphonLiveCard() {
         if (!l.connected) {
             val el = ((now - l.startedAt) / 1000).coerceAtLeast(0)
             add(tr("روش ${fa(l.index)} از ${fa(l.count)}: ${l.label} — ${fa(el)} از ${fa(l.seconds)} ثانیه",
-                "Method ${l.index} of ${l.count}: ${l.label} -- $el of ${l.seconds} s") to Ios.Label)
+                "Method ${l.index} of ${l.count}: ${l.label} -- $el of ${l.seconds} s") to DuskTheme.onSurface)
         } else {
-            add((l.label + (if (l.protocol.isNotBlank()) " · ${l.protocol}" else "")) to Ios.Label)
+            add((l.label + (if (l.protocol.isNotBlank()) " · ${l.protocol}" else "")) to DuskTheme.onSurface)
         }
-        if (l.measuring) add(tr("سنجش ظرفیت این سرور…", "Measuring this server's capacity…") to Ios.SecondaryLabel)
+        if (l.measuring) add(tr("سنجش ظرفیت این سرور…", "Measuring this server's capacity…") to DuskTheme.muted)
         if (l.mbit > 0) add(tr("ظرفیت این سرور: ${fa(l.mbit)} مگابیت (با ۶ اتصال هم‌زمان)", "This server: ${l.mbit} Mbit/s (six connections at once)") to
-            (if (l.mbit < 0.9) Ios.Orange else Ios.Green))
+            (if (l.mbit < 0.9) DuskTheme.accent else DuskTheme.success))
         if (l.upstream.isNotBlank()) add(tr("از راه پروکسی سرور ${l.upstream}", "Through the proxy server ${l.upstream}") +
-            (l.upstreamCountry.takeIf { it.isNotBlank() }?.let { " (" + CountryLabel.localized(it) + ")" } ?: "") to Ios.SecondaryLabel)
-        if (l.cleanIp.isNotBlank()) add(tr("آی‌پی تمیز ${l.cleanIp} اتصال را برقرار کرد", "Clean IP ${l.cleanIp} carried it") to Ios.Green)
-        if (l.serverRegion.isNotBlank() && l.connected) add(tr("سرور: ", "Server: ") + CountryLabel.localized(l.serverRegion) to Ios.SecondaryLabel)
+            (l.upstreamCountry.takeIf { it.isNotBlank() }?.let { " (" + CountryLabel.localized(it) + ")" } ?: "") to DuskTheme.muted)
+        if (l.cleanIp.isNotBlank()) add(tr("آی‌پی تمیز ${l.cleanIp} اتصال را برقرار کرد", "Clean IP ${l.cleanIp} carried it") to DuskTheme.success)
+        if (l.serverRegion.isNotBlank() && l.connected) add(tr("سرور: ", "Server: ") + CountryLabel.localized(l.serverRegion) to DuskTheme.muted)
         if (l.drops > 0) add(tr("قطع و وصل در این اتصال: ${fa(l.drops)} بار", "Drops this session: ${l.drops}") +
-            (if (l.lastGapSeconds > 0) tr(" · آخرین بار بعد از ${fa(l.lastGapSeconds)} ثانیه برگشت", " · back after ${l.lastGapSeconds} s last time") else "") to Ios.Orange)
+            (if (l.lastGapSeconds > 0) tr(" · آخرین بار بعد از ${fa(l.lastGapSeconds)} ثانیه برگشت", " · back after ${l.lastGapSeconds} s last time") else "") to DuskTheme.accent)
         // Destinations the server refused stay in the connection report, as on the desktop: a
         // count on this card a second after connecting read as «something is wrong» when it is
         // the server's own policy on a port or two.
-        if (l.note.isNotBlank()) add(l.note to Ios.SecondaryLabel)
+        if (l.note.isNotBlank()) add(l.note to DuskTheme.muted)
     }
     Column(
         Modifier.fillMaxWidth().padding(horizontal = 16.dp).frostedGlass(RoundedCornerShape(16.dp)).padding(14.dp),
@@ -293,13 +291,13 @@ private fun MethodRow(title: String, detail: String, warn: String?, selected: Bo
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Column(Modifier.weight(1f)) {
-            Text(title, color = Ios.Label, fontSize = 16.sp)
-            Text(detail, color = Ios.SecondaryLabel, fontSize = 12.sp, lineHeight = 18.sp)
-            if (warn != null) Text(warn, color = Ios.Orange, fontSize = 12.sp, lineHeight = 18.sp)
+            Text(title, color = DuskTheme.onSurface, fontSize = 16.sp)
+            Text(detail, color = DuskTheme.muted, fontSize = 12.sp, lineHeight = 18.sp)
+            if (warn != null) Text(warn, color = DuskTheme.accent, fontSize = 12.sp, lineHeight = 18.sp)
         }
         if (selected) {
             Spacer(Modifier.width(8.dp))
-            Icon(Icons.Default.Check, contentDescription = null, tint = Ios.Blue, modifier = Modifier.size(20.dp))
+            Icon(Icons.Default.Check, contentDescription = null, tint = DuskTheme.primary, modifier = Modifier.size(20.dp))
         }
     }
 }
@@ -313,6 +311,7 @@ private fun MethodRow(title: String, detail: String, warn: String?, selected: Bo
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun PsiphonProxyScreen(onBack: () -> Unit, backLabel: String) {
+    val notify = rememberDuskSnackbarAction()
     val ctx = LocalContext.current
     val scope = rememberCoroutineScope()
     val st by PsiphonUpstream.state.collectAsState()
@@ -341,8 +340,8 @@ fun PsiphonProxyScreen(onBack: () -> Unit, backLabel: String) {
         try {
             PsiphonUpstream.choose(ctx, choice)
             PsiphonMethods.setPinned(ctx, if (choice == null) PsiphonMethods.AUTO else "X")
-            Toast.makeText(ctx, if (choice == null) tr("پروکسی سرور خاموش شد — روش اتصال: خودکار", "Proxy server off -- method: automatic")
-                else tr("روش اتصال سایفون: پروکسی سرور", "Psiphon's method: proxy server"), Toast.LENGTH_SHORT).show()
+            notify(if (choice == null) tr("پروکسی سرور خاموش شد — روش اتصال: خودکار", "Proxy server off -- method: automatic")
+                else tr("روش اتصال سایفون: پروکسی سرور", "Psiphon's method: proxy server"))
         } catch (e: PsiphonUpstream.UpstreamError) { error = e.message }
     }
 
@@ -380,8 +379,8 @@ fun PsiphonProxyScreen(onBack: () -> Unit, backLabel: String) {
                 item(key = "top", contentType = "top") {
                     Column {
                         Spacer(Modifier.height(12.dp))
-                        error?.let { Note(it, Ios.Red) }
-                        note?.let { Note(it, Ios.Blue) }
+                        error?.let { Note(it, DuskTheme.error) }
+                        note?.let { Note(it, DuskTheme.primary) }
                         // ── what is on ──
                         val ch = st.choice
                         SettingsGroup {
@@ -404,14 +403,14 @@ fun PsiphonProxyScreen(onBack: () -> Unit, backLabel: String) {
                                             "${p.realOk} proxies of this country really connected with Psiphon -- the best (ping ${ms(p.bestPing)}) is used, then the next.")
                                     } ?: tr("هنوز پروکسی وصل‌شده‌ای از این کشور نیست — بسنجید.", "No proxy of this country has connected yet -- measure it.")
                                 },
-                                icon = Icons.Default.SwapHoriz, tint = if (ch != null) Ios.Indigo else Ios.Gray, showChevron = false,
+                                icon = Icons.Default.SwapHoriz, tint = if (ch != null) DuskTheme.indigo else DuskTheme.disabled, showChevron = false,
                             )
                             if (ch != null) {
                                 Separator()
-                                SettingsActionRow(label = tr("روش اتصال سایفون: پروکسی سرور", "Make it Psiphon's method"), icon = Icons.Default.Check, tint = Ios.Blue,
+                                SettingsActionRow(label = tr("روش اتصال سایفون: پروکسی سرور", "Make it Psiphon's method"), icon = Icons.Default.Check, tint = DuskTheme.primary,
                                     onClick = { use(ch) })
                                 Separator()
-                                SettingsActionRow(label = tr("خاموش", "Turn off"), icon = Icons.Default.PowerSettingsNew, tint = Ios.Red, onClick = { use(null) })
+                                SettingsActionRow(label = tr("خاموش", "Turn off"), icon = Icons.Default.PowerSettingsNew, tint = DuskTheme.error, onClick = { use(null) })
                             }
                         }
                     }
@@ -443,7 +442,7 @@ fun PsiphonProxyScreen(onBack: () -> Unit, backLabel: String) {
                             SettingsActionRow(
                                 label = if (testing) tr("در حال سنجش — جزئیات در کارت پایین صفحه", "Testing -- details in the card below")
                                     else tr("ذخیره و سنجش", "Save and test"),
-                                icon = Icons.Default.Save, tint = Ios.Blue, busy = testing, enabled = !testing && host.isNotBlank() && port.isNotBlank(),
+                                icon = Icons.Default.Save, tint = DuskTheme.primary, busy = testing, enabled = !testing && host.isNotBlank() && port.isNotBlank(),
                                 onClick = {
                                     error = null; note = null
                                     try {
@@ -460,13 +459,13 @@ fun PsiphonProxyScreen(onBack: () -> Unit, backLabel: String) {
                             )
                             if (c != null) {
                                 Separator()
-                                SettingsActionRow(label = tr("استفاده از همین", "Use this one"), icon = Icons.Default.Check, tint = Ios.Green,
+                                SettingsActionRow(label = tr("استفاده از همین", "Use this one"), icon = Icons.Default.Check, tint = DuskTheme.success,
                                     onClick = { use(PsiphonUpstream.Choice("custom")) })
                             }
                         }
                         c?.real?.let { r ->
                             Note(if (r.ok) tr("✓ وصل شد · پینگ ${ms(r.pingMs)}", "✓ connected · ping ${ms(r.pingMs)}") else r.error,
-                                if (r.ok) Ios.Green else Ios.Red)
+                                if (r.ok) DuskTheme.success else DuskTheme.error)
                         }
                     }
                 }
@@ -479,7 +478,7 @@ fun PsiphonProxyScreen(onBack: () -> Unit, backLabel: String) {
                             SettingsActionRow(
                                 label = if (job.running) tr("توقف — ${fa(job.done)} از ${fa(job.countries)} کشور", "Stop -- ${job.done} of ${job.countries} countries")
                                     else tr("سنجش همه", "Measure all"),
-                                icon = if (job.running) Icons.Default.Stop else Icons.Default.Speed, tint = if (job.running) Ios.Red else Ios.Green,
+                                icon = if (job.running) Icons.Default.Stop else Icons.Default.Speed, tint = if (job.running) DuskTheme.error else DuskTheme.success,
                                 onClick = {
                                     if (job.running) { PsiphonUpstream.cancel(); want = null }
                                     else PsiphonUpstream.scanMany(ctx, countries.take(25))
@@ -508,7 +507,7 @@ fun PsiphonProxyScreen(onBack: () -> Unit, backLabel: String) {
                                 p.quickOk > 0 -> tr("${fa(p.quickOk)} پروکسی از اینترنت شما جواب داد، ولی سایفون از هیچ‌کدام وصل نشد", "${p.quickOk} answered from your internet, but Psiphon connected through none") + ago
                                 else -> tr("از ${fa(p.tested)} پروکسی هیچ‌کدام از اینترنت شما جواب نداد", "None of ${p.tested} answered from your internet") + ago
                             },
-                            detailColor = when { p == null || testingHere -> Ios.SecondaryLabel; p.realOk > 0 -> Ios.Green; else -> Ios.Red },
+                            detailColor = when { p == null || testingHere -> DuskTheme.muted; p.realOk > 0 -> DuskTheme.success; else -> DuskTheme.error },
                             trailing = if (p != null && p.realOk > 0) ms(p.bestPing) else "",
                             selected = st.choice?.mode == "country" && st.choice?.country == cc,
                             onClick = {
@@ -527,7 +526,7 @@ fun PsiphonProxyScreen(onBack: () -> Unit, backLabel: String) {
                 }
                 if (!showAll && rows.size > shown.size) {
                     item(key = "more", contentType = "more") {
-                        Text(tr("نمایش همهٔ ${fa(rows.size)} کشور", "Show all ${rows.size} countries"), color = Ios.Blue, fontSize = 15.sp,
+                        Text(tr("نمایش همهٔ ${fa(rows.size)} کشور", "Show all ${rows.size} countries"), color = DuskTheme.primary, fontSize = 15.sp,
                             modifier = Modifier.fillMaxWidth().clickable { showAll = true }.padding(horizontal = 20.dp, vertical = 12.dp))
                     }
                 }
@@ -581,6 +580,7 @@ fun PsiphonProxyScreen(onBack: () -> Unit, backLabel: String) {
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun PsiphonCleanIpScreen(onBack: () -> Unit, backLabel: String) {
+    val notify = rememberDuskSnackbarAction()
     val ctx = LocalContext.current
     val st by PsiphonCleanIps.state.collectAsState()
     LaunchedEffect(Unit) { withContext(Dispatchers.IO) { PsiphonCleanIps.init(ctx) } }
@@ -608,7 +608,7 @@ fun PsiphonCleanIpScreen(onBack: () -> Unit, backLabel: String) {
     fun pick(ip: String) {
         PsiphonCleanIps.setPinned(ctx, ip, true)
         PsiphonMethods.setPinned(ctx, "E")
-        Toast.makeText(ctx, tr("انتخاب شد — روش اتصال سایفون: آی‌پی تمیز", "Chosen -- Psiphon's method: clean IP"), Toast.LENGTH_SHORT).show()
+        notify(tr("انتخاب شد — روش اتصال سایفون: آی‌پی تمیز", "Chosen -- Psiphon's method: clean IP"))
     }
 
     Box(Modifier.fillMaxSize()) {
@@ -620,18 +620,18 @@ fun PsiphonCleanIpScreen(onBack: () -> Unit, backLabel: String) {
                 item(key = "top", contentType = "top") {
                     Column {
                         Spacer(Modifier.height(12.dp))
-                        note?.let { Note(it, Ios.Blue) }
+                        note?.let { Note(it, DuskTheme.primary) }
                         SettingsGroup {
                             SettingsRow(
                                 title = if (pinned > 0) tr("${fa(pinned)} آی‌پی انتخاب‌شده", "$pinned chosen IPs") else tr("خودکار: ${fa(usable)} آی‌پی برتر", "Automatic: the best $usable IPs"),
                                 subtitle = tr("${fa(st.list.size)} در فهرست. همان دامین‌فرانتینگ سایفون، ولی به‌جای آدرسی که DNS می‌دهد، به آی‌پی‌های تمیزی وصل می‌شود که روی اینترنت خود شما پیدا و آزموده شده‌اند — معمولاً اتصال سریع‌تر و پایدارتر.",
                                     "${st.list.size} on the list. Psiphon's same domain fronting, but to clean IPs found and tested on your own internet instead of what DNS gives -- usually a faster, steadier connect."),
-                                icon = Icons.Default.CleaningServices, tint = Ios.Green, showChevron = false,
+                                icon = Icons.Default.CleaningServices, tint = DuskTheme.success, showChevron = false,
                             )
                             Separator()
                             SettingsActionRow(
                                 label = if (job.running) tr("توقف", "Stop") else tr("اسکن آی‌پی تمیز", "Scan for clean IPs"),
-                                icon = if (job.running) Icons.Default.Stop else Icons.Default.Search, tint = if (job.running) Ios.Red else Ios.Blue,
+                                icon = if (job.running) Icons.Default.Stop else Icons.Default.Search, tint = if (job.running) DuskTheme.error else DuskTheme.primary,
                                 onClick = {
                                     note = null
                                     if (job.running) PsiphonCleanIps.cancel()
@@ -640,14 +640,14 @@ fun PsiphonCleanIpScreen(onBack: () -> Unit, backLabel: String) {
                                 },
                             )
                             Separator()
-                            SettingsActionRow(label = tr("روش اتصال سایفون: آی‌پی تمیز", "Make it Psiphon's method"), icon = Icons.Default.Check, tint = Ios.Green, enabled = usable > 0,
+                            SettingsActionRow(label = tr("روش اتصال سایفون: آی‌پی تمیز", "Make it Psiphon's method"), icon = Icons.Default.Check, tint = DuskTheme.success, enabled = usable > 0,
                                 onClick = {
                                     PsiphonMethods.setPinned(ctx, "E")
-                                    Toast.makeText(ctx, tr("روش اتصال سایفون: آی‌پی تمیز", "Psiphon's method: clean IP"), Toast.LENGTH_SHORT).show()
+                                    notify(tr("روش اتصال سایفون: آی‌پی تمیز", "Psiphon's method: clean IP"))
                                 })
                             if (pinned > 0) {
                                 Separator()
-                                SettingsActionRow(label = tr("برگشت به خودکار", "Back to automatic"), icon = Icons.Default.AutoMode, tint = Ios.Blue,
+                                SettingsActionRow(label = tr("برگشت به خودکار", "Back to automatic"), icon = Icons.Default.AutoMode, tint = DuskTheme.primary,
                                     onClick = { PsiphonCleanIps.clearPinned(ctx) })
                             }
                         }
@@ -695,12 +695,12 @@ fun PsiphonCleanIpScreen(onBack: () -> Unit, backLabel: String) {
                         ) {
                             BasicTextField(
                                 value = text, onValueChange = { text = it },
-                                textStyle = TextStyle(color = Ios.Label, fontSize = 13.sp, fontFamily = FontFamily.Monospace),
-                                cursorBrush = SolidColor(Ios.Blue),
+                                textStyle = TextStyle(color = DuskTheme.onSurface, fontSize = 13.sp, fontFamily = FontFamily.Monospace),
+                                cursorBrush = SolidColor(DuskTheme.primary),
                                 modifier = Modifier.fillMaxWidth(),
                                 decorationBox = { inner ->
                                     Box {
-                                        if (text.isEmpty()) Text("2a02:26f0:3500:4::b818:4db5\n2.16.10.69\n2.16.10.0/24", color = Ios.SecondaryLabel, fontSize = 13.sp, fontFamily = FontFamily.Monospace)
+                                        if (text.isEmpty()) Text("2a02:26f0:3500:4::b818:4db5\n2.16.10.69\n2.16.10.0/24", color = DuskTheme.muted, fontSize = 13.sp, fontFamily = FontFamily.Monospace)
                                         inner()
                                     }
                                 },
@@ -731,7 +731,7 @@ fun PsiphonCleanIpScreen(onBack: () -> Unit, backLabel: String) {
                             SettingsActionRow(
                                 label = if (job.running && job.stage == "real") tr("توقف سنجش", "Stop testing") else tr("سنجش واقعی همه", "Real-test all"),
                                 icon = if (job.running && job.stage == "real") Icons.Default.Stop else Icons.Default.Speed,
-                                tint = if (job.running && job.stage == "real") Ios.Red else Ios.Green,
+                                tint = if (job.running && job.stage == "real") DuskTheme.error else DuskTheme.success,
                                 enabled = st.list.isNotEmpty() && (!job.running || job.stage == "real"),
                                 onClick = {
                                     if (job.running) PsiphonCleanIps.cancel()
@@ -742,15 +742,15 @@ fun PsiphonCleanIpScreen(onBack: () -> Unit, backLabel: String) {
                                 },
                             )
                             Separator()
-                            SettingsActionRow(label = tr("حذف خراب‌ها", "Remove the dead"), icon = Icons.Default.DeleteSweep, tint = Ios.Red, enabled = !job.running,
+                            SettingsActionRow(label = tr("حذف خراب‌ها", "Remove the dead"), icon = Icons.Default.DeleteSweep, tint = DuskTheme.error, enabled = !job.running,
                                 onClick = {
                                     val n = PsiphonCleanIps.removeDead(ctx)
-                                    Toast.makeText(ctx, tr("${fa(n)} آی‌پی خراب حذف شد", "$n dead IPs removed"), Toast.LENGTH_SHORT).show()
+                                    notify(tr("${fa(n)} آی‌پی خراب حذف شد", "$n dead IPs removed"))
                                 })
                         }
                         Spacer(Modifier.height(8.dp))
                         if (st.list.isEmpty()) {
-                            Note(tr("هنوز آی‌پی‌ای نیست — «اسکن آی‌پی تمیز» را بزنید یا آی‌پی‌های خودتان را وارد کنید.", "No IP yet -- scan, or add your own."), Ios.SecondaryLabel)
+                            Note(tr("هنوز آی‌پی‌ای نیست — «اسکن آی‌پی تمیز» را بزنید یا آی‌پی‌های خودتان را وارد کنید.", "No IP yet -- scan, or add your own."), DuskTheme.muted)
                         }
                     }
                 }
@@ -763,7 +763,7 @@ fun PsiphonCleanIpScreen(onBack: () -> Unit, backLabel: String) {
                 // ── the guide ──
                 item(key = "guide", contentType = "guide") {
                     Column {
-                        Text(if (guide) tr("بستن راهنمای اسکن", "Hide the scan guide") else tr("راهنمای اسکن", "Scan guide"), color = Ios.Blue, fontSize = 15.sp,
+                        Text(if (guide) tr("بستن راهنمای اسکن", "Hide the scan guide") else tr("راهنمای اسکن", "Scan guide"), color = DuskTheme.primary, fontSize = 15.sp,
                             modifier = Modifier.fillMaxWidth().clickable { guide = !guide }.padding(horizontal = 20.dp, vertical = 14.dp))
                         if (guide) {
                             SettingsFooter(tr(
@@ -809,10 +809,10 @@ fun PsiphonCleanIpScreen(onBack: () -> Unit, backLabel: String) {
                         PsiphonCleanIps.setPinned(ctx, e.ip, !e.pinned)
                         if (!e.pinned) {
                             PsiphonMethods.setPinned(ctx, "E")
-                            Toast.makeText(ctx, tr("روش اتصال سایفون: آی‌پی تمیز — فقط آی‌پی‌های انتخاب‌شده", "Psiphon's method: clean IP -- the chosen ones only"), Toast.LENGTH_SHORT).show()
+                            notify(tr("روش اتصال سایفون: آی‌پی تمیز — فقط آی‌پی‌های انتخاب‌شده", "Psiphon's method: clean IP -- the chosen ones only"))
                         }
                     }
-                    ActionLine(tr("حذف", "Remove"), color = Ios.Red) {
+                    ActionLine(tr("حذف", "Remove"), color = DuskTheme.error) {
                         acting = null
                         PsiphonCleanIps.remove(ctx, listOf(e.ip))
                     }
@@ -854,10 +854,10 @@ private fun IpRow(e: PsiphonCleanIps.Entry, testing: PsiphonCleanIps.Testing?, n
         name = e.ip,
         detail = sub,
         detailColor = when {
-            testing != null -> Ios.SecondaryLabel
-            e.confirmedAt > 0 || r?.ok == true -> Ios.Green
-            r != null -> Ios.Red
-            else -> Ios.SecondaryLabel
+            testing != null -> DuskTheme.muted
+            e.confirmedAt > 0 || r?.ok == true -> DuskTheme.success
+            r != null -> DuskTheme.error
+            else -> DuskTheme.muted
         },
         trailing = if (r?.ok == true && testing == null) ms(r.pingMs) else "",
         selected = e.pinned,
@@ -883,21 +883,21 @@ private fun RunSummary(job: PsiphonCleanIps.Job) {
         val head = if (stopped) tr("سنجش متوقف شد؛ نتیجه‌های تا اینجا ماند: ", "Stopped; the results so far are kept: ")
             else tr("سنجش واقعی ${fa(job.ips)} آی‌پی تمام شد: ", "Real test of ${job.ips} IPs done: ")
         Note(head + parts.joinToString("، ") + (if (took.isNotEmpty()) tr(" — در $took", " -- in $took") else "") +
-            tr(". سریع‌ترین بالای فهرست است.", ". The fastest is at the top of the list."), if (job.realOk > 0) Ios.Green else Ios.SecondaryLabel)
+            tr(". سریع‌ترین بالای فهرست است.", ". The fastest is at the top of the list."), if (job.realOk > 0) DuskTheme.success else DuskTheme.muted)
         if (job.fast && !stopped && job.edgeSilent > 0 && job.edgeOk == 0 && job.realOk == 0) {
             Note(tr("در پیش‌سنجش از هیچ آی‌پی‌ای داده برنگشت. اگر فکر می‌کنید سایفون روی اینترنت شما با آی‌پی تمیز وصل می‌شود، «روش سنجش واقعی: کامل» را بزنید و دوباره بسنجید — کندتر است ولی هر آی‌پی را با سایفون موقت می‌آزماید.",
-                "No IP sent anything back in the pre-check. If you think Psiphon connects through clean IPs on your internet, pick «Real-test method: Full» and test again -- slower, but every IP gets a throwaway Psiphon."), Ios.Orange)
+                "No IP sent anything back in the pre-check. If you think Psiphon connects through clean IPs on your internet, pick «Real-test method: Full» and test again -- slower, but every IP gets a throwaway Psiphon."), DuskTheme.accent)
         }
     } else if (job.total > 0) {
-        Note(tr("${fa(job.ok)} آی‌پی از ${fa(job.total)} جواب TLS داد.", "${job.ok} of ${job.total} answered TLS."), Ios.Green)
+        Note(tr("${fa(job.ok)} آی‌پی از ${fa(job.total)} جواب TLS داد.", "${job.ok} of ${job.total} answered TLS."), DuskTheme.success)
     }
-    if (job.note.isNotBlank()) Note(job.note, Ios.Orange)
-    if (job.error.isNotBlank()) Note(job.error, Ios.Red)
+    if (job.note.isNotBlank()) Note(job.note, DuskTheme.accent)
+    if (job.error.isNotBlank()) Note(job.error, DuskTheme.error)
 }
 
 @Composable
-private fun ActionLine(text: String, enabled: Boolean = true, color: Color = Ios.Blue, onClick: () -> Unit) {
-    Text(text, color = if (enabled) color else Ios.SecondaryLabel, style = androidx.compose.material3.MaterialTheme.typography.bodyMedium,
+private fun ActionLine(text: String, enabled: Boolean = true, color: Color = DuskTheme.primary, onClick: () -> Unit) {
+    Text(text, color = if (enabled) color else DuskTheme.muted, style = androidx.compose.material3.MaterialTheme.typography.bodyMedium,
         modifier = Modifier.fillMaxWidth().then(if (enabled) Modifier.clickable(onClick = onClick) else Modifier).padding(vertical = 12.dp))
 }
 
@@ -979,20 +979,20 @@ private fun ProgressShell(
             .padding(horizontal = 14.dp, vertical = 12.dp),
     ) {
         Row(Modifier.fillMaxWidth().clickable { open = !open }, verticalAlignment = Alignment.CenterVertically) {
-            Text(title, color = Ios.Label, fontSize = 14.sp, fontWeight = FontWeight.SemiBold, lineHeight = 19.sp, maxLines = 2,
+            Text(title, color = DuskTheme.onSurface, fontSize = 14.sp, fontWeight = FontWeight.SemiBold, lineHeight = 19.sp, maxLines = 2,
                 overflow = TextOverflow.Ellipsis, modifier = Modifier.weight(1f))
-            Text(clockText, color = Ios.SecondaryLabel, fontSize = 12.sp, modifier = Modifier.padding(horizontal = 8.dp))
-            Text(tr("توقف", "Stop"), color = Color.White, fontSize = 14.sp, fontWeight = FontWeight.SemiBold,
-                modifier = Modifier.clip(RoundedCornerShape(50)).background(Ios.Red).clickable(onClick = onStop)
+            Text(clockText, color = DuskTheme.muted, fontSize = 12.sp, modifier = Modifier.padding(horizontal = 8.dp))
+            Text(tr("توقف", "Stop"), color = DuskTheme.onError, fontSize = 14.sp, fontWeight = FontWeight.SemiBold,
+                modifier = Modifier.clip(RoundedCornerShape(50)).background(DuskTheme.error).clickable(onClick = onStop)
                     .padding(horizontal = 16.dp, vertical = 7.dp))
         }
         Spacer(Modifier.height(10.dp))
         val bar = Modifier.fillMaxWidth().height(5.dp).clip(RoundedCornerShape(3.dp))
         if (progress == null) {
-            LinearProgressIndicator(color = Ios.Green, trackColor = Color.White.copy(alpha = 0.15f), modifier = bar)
+            LinearProgressIndicator(color = DuskTheme.success, trackColor = Color.White.copy(alpha = 0.15f), modifier = bar)
         } else {
             val shown by animateFloatAsState(progress.coerceIn(0f, 1f), label = "progress")
-            LinearProgressIndicator(progress = shown, color = Ios.Green, trackColor = Color.White.copy(alpha = 0.15f), modifier = bar)
+            LinearProgressIndicator(progress = shown, color = DuskTheme.success, trackColor = Color.White.copy(alpha = 0.15f), modifier = bar)
         }
         if (open) {
             Spacer(Modifier.height(8.dp))
@@ -1002,13 +1002,13 @@ private fun ProgressShell(
 }
 
 @Composable
-private fun CardLine(text: String, color: Color = Ios.SecondaryLabel) {
+private fun CardLine(text: String, color: Color = DuskTheme.muted) {
     Text(text, color = color, fontSize = 12.sp, lineHeight = 17.sp, maxLines = 2, overflow = TextOverflow.Ellipsis)
 }
 
 /** An address or a proxy on the card: its own left-to-right run, so the sentence around it cannot reorder it. */
 @Composable
-private fun Mono(text: String, color: Color = Ios.Label) {
+private fun Mono(text: String, color: Color = DuskTheme.onSurface) {
     Text(text, color = color, fontSize = 12.sp, fontFamily = FontFamily.Monospace, maxLines = 1,
         style = TextStyle(textDirection = TextDirection.Ltr))
 }
@@ -1036,7 +1036,7 @@ private fun CleanProgressCard(
             "harvest" -> CardLine(tr("نام‌های فرانتینگ سایفون روی همین گوشی حل می‌شوند تا لبه‌های نزدیک شما پیدا شوند.",
                 "Psiphon's fronting names are resolved on this phone to find the edges near you."))
             "tls" -> CardLine(tr("${fa(job.ok)} آی‌پی با گواهی درست جواب داد · ${fa((job.total - job.done).coerceAtLeast(0))} مانده",
-                "${job.ok} answered with the right certificate · ${(job.total - job.done).coerceAtLeast(0)} left"), Ios.Label)
+                "${job.ok} answered with the right certificate · ${(job.total - job.done).coerceAtLeast(0)} left"), DuskTheme.onSurface)
             else -> {
                 val failed = job.real - job.realOk
                 val left = (job.ips - job.settled).coerceAtLeast(0)
@@ -1046,7 +1046,7 @@ private fun CleanProgressCard(
                     if (job.edgeSilent > 0) add(tr("${fa(job.edgeSilent)} بی‌جواب در پیش‌سنجش", "${job.edgeSilent} silent in the pre-check"))
                     if (job.broken > 0) add(tr("${fa(job.broken)} انجام نشد", "${job.broken} could not run"))
                     add(tr("${fa(left)} مانده", "$left left"))
-                }.joinToString(" · "), Ios.Label)
+                }.joinToString(" · "), DuskTheme.onSurface)
                 if (job.fast && job.edgeDone < job.ips) {
                     CardLine(tr("پیش‌سنجش داده از لبه: ${fa(job.edgeDone)} از ${fa(job.ips)} · ${fa(job.edgeOk)} جواب سرور سایفون را برگرداند",
                         "Data pre-check: ${job.edgeDone} of ${job.ips} · ${job.edgeOk} got Psiphon's server to answer"))
@@ -1058,25 +1058,25 @@ private fun CleanProgressCard(
                 job.current.entries.sortedBy { it.value.since }.take(3).forEach { (ip, test) ->
                     val s = ((t - test.since) / 1000).coerceAtLeast(0)
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text(if (test.connected) "✓" else "⏳", fontSize = 12.sp, color = if (test.connected) Ios.Green else Ios.SecondaryLabel)
+                        Text(if (test.connected) "✓" else "⏳", fontSize = 12.sp, color = if (test.connected) DuskTheme.success else DuskTheme.muted)
                         Spacer(Modifier.width(6.dp))
                         Mono(shortIp(ip))
                         Spacer(Modifier.weight(1f))
                         Text(if (test.connected) tr("وصل شد، سنجش پینگ…", "connected, measuring the ping…")
                             else tr("${fa(s)} از ${fa(job.budgetMs / 1000)} ثانیه", "$s of ${job.budgetMs / 1000} s"),
-                            color = Ios.SecondaryLabel, fontSize = 12.sp)
+                            color = DuskTheme.muted, fontSize = 12.sp)
                     }
                 }
                 if (job.current.size > 3) CardLine(tr("و ${fa(job.current.size - 3)} سنجش دیگر", "and ${job.current.size - 3} more"))
                 if (job.recent.isNotEmpty()) {
                     Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                        Text(tr("آخرین‌ها:", "Latest:"), color = Ios.SecondaryLabel, fontSize = 12.sp)
+                        Text(tr("آخرین‌ها:", "Latest:"), color = DuskTheme.muted, fontSize = 12.sp)
                         job.recent.forEach { rc ->
                             Row(verticalAlignment = Alignment.CenterVertically) {
-                                Text(if (rc.ok) "✓" else "✗", fontSize = 12.sp, color = if (rc.ok) Ios.Green else Ios.Red)
+                                Text(if (rc.ok) "✓" else "✗", fontSize = 12.sp, color = if (rc.ok) DuskTheme.success else DuskTheme.error)
                                 Spacer(Modifier.width(3.dp))
-                                Mono(shortIp(rc.ip), Ios.SecondaryLabel)
-                                if (rc.ok && rc.pingMs != null) Text(" " + fa(rc.pingMs), color = Ios.Green, fontSize = 12.sp)
+                                Mono(shortIp(rc.ip), DuskTheme.muted)
+                                if (rc.ok && rc.pingMs != null) Text(" " + fa(rc.pingMs), color = DuskTheme.success, fontSize = 12.sp)
                             }
                         }
                     }
@@ -1086,17 +1086,17 @@ private fun CleanProgressCard(
         if (fastest != null) {
             Spacer(Modifier.height(4.dp))
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(tr("⚡ سریع‌ترین تا اینجا:", "⚡ Fastest so far:"), color = Ios.Label, fontSize = 12.sp)
+                Text(tr("⚡ سریع‌ترین تا اینجا:", "⚡ Fastest so far:"), color = DuskTheme.onSurface, fontSize = 12.sp)
                 Spacer(Modifier.width(6.dp))
                 Mono(shortIp(fastest.ip))
-                Text(" · " + ms(fastest.real?.pingMs), color = Ios.Green, fontSize = 12.sp)
+                Text(" · " + ms(fastest.real?.pingMs), color = DuskTheme.success, fontSize = 12.sp)
                 Spacer(Modifier.weight(1f))
                 if (!fastest.pinned) {
-                    Text(tr("انتخاب", "Choose"), color = Color.White, fontSize = 12.sp, fontWeight = FontWeight.SemiBold,
-                        modifier = Modifier.clip(RoundedCornerShape(50)).background(Ios.Blue).clickable { onPick(fastest.ip) }
+                    Text(tr("انتخاب", "Choose"), color = DuskTheme.onAccent, fontSize = 12.sp, fontWeight = FontWeight.SemiBold,
+                        modifier = Modifier.clip(RoundedCornerShape(50)).background(DuskTheme.primary).clickable { onPick(fastest.ip) }
                             .padding(horizontal = 12.dp, vertical = 5.dp))
                 } else {
-                    Text(tr("انتخاب شد", "Chosen"), color = Ios.Blue, fontSize = 12.sp)
+                    Text(tr("انتخاب شد", "Chosen"), color = DuskTheme.primary, fontSize = 12.sp)
                 }
             }
         }
@@ -1116,8 +1116,8 @@ private fun ProxyProgressCard(job: PsiphonUpstream.Job, now: State<Long>, cname:
         else job.steps[job.scope]?.takeIf { it.stage == "quick" && it.quickTotal > 0 }?.let { it.quickDone.toFloat() / it.quickTotal }
     ProgressShell(title, clock(elapsed), progress, onStop, modifier) {
         CardLine(tr("سنجش سریع از اینترنت شما: ${fa(quickDone)} پراکسی · ${fa(quickOk)} جواب داد · سایفون موقت: ${fa(job.realDone)} · ✓ ${fa(job.realOk)} وصل شد",
-            "Quick test from your internet: $quickDone proxies · $quickOk answered · throwaway Psiphon: ${job.realDone} · ✓ ${job.realOk} connected"), Ios.Label)
-        if (!single && job.withProxy > 0) CardLine(tr("${fa(job.withProxy)} کشور پراکسی‌ای دارد که سایفون از راهش وصل می‌شود", "${job.withProxy} countries have a proxy Psiphon connects through"), Ios.Green)
+            "Quick test from your internet: $quickDone proxies · $quickOk answered · throwaway Psiphon: ${job.realDone} · ✓ ${job.realOk} connected"), DuskTheme.onSurface)
+        if (!single && job.withProxy > 0) CardLine(tr("${fa(job.withProxy)} کشور پراکسی‌ای دارد که سایفون از راهش وصل می‌شود", "${job.withProxy} countries have a proxy Psiphon connects through"), DuskTheme.success)
         if (job.current.isNotEmpty()) {
             CardLine(tr("در حال سنجش: ", "Measuring: ") + job.current.joinToString("، ") { cc ->
                 val s = job.steps[cc]
@@ -1131,14 +1131,14 @@ private fun ProxyProgressCard(job: PsiphonUpstream.Job, now: State<Long>, cname:
         job.testing.entries.sortedBy { it.value.since }.take(3).forEach { (key, test) ->
             val s = ((t - test.since) / 1000).coerceAtLeast(0)
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(if (test.connected) "✓" else "⏳", fontSize = 12.sp, color = if (test.connected) Ios.Green else Ios.SecondaryLabel)
+                Text(if (test.connected) "✓" else "⏳", fontSize = 12.sp, color = if (test.connected) DuskTheme.success else DuskTheme.muted)
                 Spacer(Modifier.width(6.dp))
                 Mono(key)
-                Text(" · " + cname(test.country), color = Ios.SecondaryLabel, fontSize = 12.sp, maxLines = 1)
+                Text(" · " + cname(test.country), color = DuskTheme.muted, fontSize = 12.sp, maxLines = 1)
                 Spacer(Modifier.weight(1f))
                 Text(if (test.connected) tr("وصل شد، سنجش پینگ…", "connected, measuring the ping…")
                     else tr("${fa(s)} از ${fa(PsiphonProbes.UPSTREAM_MS / 1000)} ثانیه", "$s of ${PsiphonProbes.UPSTREAM_MS / 1000} s"),
-                    color = Ios.SecondaryLabel, fontSize = 12.sp)
+                    color = DuskTheme.muted, fontSize = 12.sp)
             }
         }
         if (job.testing.size > 3) CardLine(tr("و ${fa(job.testing.size - 3)} سنجش دیگر", "and ${job.testing.size - 3} more"))
@@ -1169,7 +1169,7 @@ private fun CustomTestCard(test: PsiphonUpstream.CustomTest, now: State<Long>, o
             test.connected -> tr("۲ از ۲ — سایفون از راه این پروکسی وصل شد؛ سنجش پینگ…", "2 of 2 -- Psiphon connected through this proxy; measuring the ping…")
             else -> tr("۲ از ۲ — یک سایفون موقت از راه این پروکسی بالا می‌آید — ${fa(s)} از ${fa(budget)} ثانیه",
                 "2 of 2 -- a throwaway Psiphon comes up through this proxy -- $s of $budget s")
-        }, Ios.Label)
+        }, DuskTheme.onSurface)
     }
 }
 
@@ -1177,6 +1177,7 @@ private fun CustomTestCard(test: PsiphonUpstream.CustomTest, now: State<Long>, o
 
 @Composable
 fun PsiphonPairingScreen(onBack: () -> Unit, backLabel: String) {
+    val notify = rememberDuskSnackbarAction()
     val ctx = LocalContext.current
     var pairing by remember { mutableStateOf<PsiphonPairing.Pairing?>(null) }
     LaunchedEffect(Unit) { pairing = withContext(Dispatchers.IO) { PsiphonPairing.read(ctx) } }
@@ -1185,8 +1186,8 @@ fun PsiphonPairingScreen(onBack: () -> Unit, backLabel: String) {
     var note by remember { mutableStateOf<String?>(null) }
     IosScreen(title = tr("کاندوئیت", "Conduit"), onBack = onBack, backLabel = backLabel) {
         Spacer(Modifier.height(12.dp))
-        error?.let { Note(it, Ios.Red) }
-        note?.let { Note(it, Ios.Green) }
+        error?.let { Note(it, DuskTheme.error) }
+        note?.let { Note(it, DuskTheme.success) }
         val p = pairing
         SettingsGroup {
             SettingsRow(
@@ -1194,17 +1195,17 @@ fun PsiphonPairingScreen(onBack: () -> Unit, backLabel: String) {
                 subtitle = if (p != null) tr("روش «کاندوئیت شخصی» فقط از ایستگاه(های) همین لینک وصل می‌شود — نه از سرورهای عمومی سایفون.",
                     "«Personal Conduit» connects only through this link's station(s) -- not Psiphon's public servers.")
                     else tr("لینکی که دوست یا خانواده‌تان از برنامهٔ Conduit برایتان فرستاده را پایین بگذارید.", "Paste the link a friend or relative sent you from the Conduit app below."),
-                icon = Icons.Default.Link, tint = if (p != null) Ios.Purple else Ios.Gray, showChevron = false,
+                icon = Icons.Default.Link, tint = if (p != null) DuskTheme.purple else DuskTheme.disabled, showChevron = false,
             )
             if (p != null) {
                 Separator()
-                SettingsActionRow(label = tr("روش اتصال سایفون: کاندوئیت شخصی", "Make it Psiphon's method"), icon = Icons.Default.Check, tint = Ios.Blue,
+                SettingsActionRow(label = tr("روش اتصال سایفون: کاندوئیت شخصی", "Make it Psiphon's method"), icon = Icons.Default.Check, tint = DuskTheme.primary,
                     onClick = {
                         PsiphonMethods.setPinned(ctx, "P")
-                        Toast.makeText(ctx, tr("روش اتصال سایفون: کاندوئیت شخصی", "Psiphon's method: personal Conduit"), Toast.LENGTH_SHORT).show()
+                        notify(tr("روش اتصال سایفون: کاندوئیت شخصی", "Psiphon's method: personal Conduit"))
                     })
                 Separator()
-                SettingsActionRow(label = tr("حذف جفت‌سازی", "Remove the pairing"), icon = Icons.Default.LinkOff, tint = Ios.Red,
+                SettingsActionRow(label = tr("حذف جفت‌سازی", "Remove the pairing"), icon = Icons.Default.LinkOff, tint = DuskTheme.error,
                     onClick = {
                         PsiphonPairing.clear(ctx)
                         pairing = null
@@ -1218,12 +1219,12 @@ fun PsiphonPairingScreen(onBack: () -> Unit, backLabel: String) {
         ) {
             BasicTextField(
                 value = link, onValueChange = { link = it; error = null },
-                textStyle = TextStyle(color = Ios.Label, fontSize = 12.sp, fontFamily = FontFamily.Monospace),
-                cursorBrush = SolidColor(Ios.Blue),
+                textStyle = TextStyle(color = DuskTheme.onSurface, fontSize = 12.sp, fontFamily = FontFamily.Monospace),
+                cursorBrush = SolidColor(DuskTheme.primary),
                 modifier = Modifier.fillMaxWidth(),
                 decorationBox = { inner ->
                     Box {
-                        if (link.isEmpty()) Text("psiphon://pair/eyJ2IjoiMSIsImRhdGEiOnsi...", color = Ios.SecondaryLabel, fontSize = 12.sp, fontFamily = FontFamily.Monospace)
+                        if (link.isEmpty()) Text("psiphon://pair/eyJ2IjoiMSIsImRhdGEiOnsi...", color = DuskTheme.muted, fontSize = 12.sp, fontFamily = FontFamily.Monospace)
                         inner()
                     }
                 },
@@ -1231,7 +1232,7 @@ fun PsiphonPairingScreen(onBack: () -> Unit, backLabel: String) {
         }
         Spacer(Modifier.height(8.dp))
         SettingsGroup {
-            SettingsActionRow(label = tr("ذخیره", "Save"), icon = Icons.Default.Save, tint = Ios.Blue, enabled = link.isNotBlank(),
+            SettingsActionRow(label = tr("ذخیره", "Save"), icon = Icons.Default.Save, tint = DuskTheme.primary, enabled = link.isNotBlank(),
                 onClick = {
                     try {
                         val saved = PsiphonPairing.save(ctx, link)
@@ -1268,17 +1269,14 @@ private fun Note(text: String, color: Color) {
 
 @Composable
 private fun Chip(label: String, selected: Boolean, onClick: () -> Unit) {
-    Box(
-        Modifier.clip(RoundedCornerShape(50)).background(if (selected) Ios.Blue else Color.White.copy(alpha = 0.10f))
-            .clickable(onClick = onClick).padding(horizontal = 12.dp, vertical = 6.dp),
-    ) { Text(label, color = if (selected) Color.White else Ios.Label, fontSize = 13.sp) }
+    DuskPill(text = label, selected = selected, onClick = onClick, compact = true)
 }
 
 /** A label and its chips on one scrolling line -- segmented choices, never a drop-down. */
 @Composable
 private fun OptionRow(label: String, chips: @Composable () -> Unit) {
     Column(Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 4.dp)) {
-        Text(label, color = Ios.SecondaryLabel, fontSize = 12.sp)
+        Text(label, color = DuskTheme.muted, fontSize = 12.sp)
         Spacer(Modifier.height(4.dp))
         Row(Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) { chips() }
     }
@@ -1297,23 +1295,23 @@ private fun CountryRow(
     onClick: () -> Unit,
 ) {
     Row(
-        Modifier.fillMaxWidth().clip(RoundedCornerShape(14.dp)).background(Ios.CardOverWallpaper).clickable(onClick = onClick)
+        Modifier.fillMaxWidth().clip(RoundedCornerShape(14.dp)).background(DuskTheme.surface).clickable(onClick = onClick)
             .heightIn(min = 54.dp).padding(horizontal = 14.dp, vertical = 9.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Text(flag, fontSize = if (flag.length <= 1) 15.sp else 22.sp, color = Ios.SecondaryLabel, fontWeight = FontWeight.SemiBold)
+        Text(flag, fontSize = if (flag.length <= 1) 15.sp else 22.sp, color = DuskTheme.muted, fontWeight = FontWeight.SemiBold)
         Spacer(Modifier.width(12.dp))
         Column(Modifier.weight(1f)) {
-            Text(name, color = Ios.Label, fontSize = if (mono) 13.sp else 15.sp, maxLines = 1, fontFamily = if (mono) FontFamily.Monospace else null)
+            Text(name, color = DuskTheme.onSurface, fontSize = if (mono) 13.sp else 15.sp, maxLines = 1, fontFamily = if (mono) FontFamily.Monospace else null)
             Text(detail, color = detailColor, fontSize = 11.sp, lineHeight = 16.sp, maxLines = 3)
         }
         if (trailing.isNotBlank()) {
             Spacer(Modifier.width(8.dp))
-            Text(trailing, color = Ios.Green, fontSize = 12.sp)
+            Text(trailing, color = DuskTheme.success, fontSize = 12.sp)
         }
         if (selected) {
             Spacer(Modifier.width(6.dp))
-            Icon(Icons.Default.Check, contentDescription = null, tint = Ios.Blue, modifier = Modifier.size(20.dp))
+            Icon(Icons.Default.Check, contentDescription = null, tint = DuskTheme.primary, modifier = Modifier.size(20.dp))
         }
     }
 }
