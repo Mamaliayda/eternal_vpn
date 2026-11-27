@@ -13,7 +13,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.unit.dp
 import com.mlmvpn.scanner.R
 import com.mlmvpn.scanner.data.studio.StudioStore
 import com.mlmvpn.scanner.data.studio.api.StudioError
@@ -52,7 +51,7 @@ import com.mlmvpn.scanner.ui.configstudio.parts.WizardPrimary
 import com.mlmvpn.scanner.ui.configstudio.parts.parseVolumeBytes
 import com.mlmvpn.scanner.ui.configstudio.parts.rememberCountryChoices
 import com.mlmvpn.scanner.ui.configstudio.parts.volumeToField
-import com.mlmvpn.scanner.ui.settings.Ios
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 import com.mlmvpn.scanner.ui.settings.IosScreen
 import com.mlmvpn.scanner.ui.settings.SettingsActionRow
 import com.mlmvpn.scanner.ui.settings.SettingsFooter
@@ -217,7 +216,7 @@ fun StudioNewUserScreen(
                         title = placement?.let { it.name.ifEmpty { it.email } } ?: S(R.string.studio_placement_none),
                         subtitle = S(R.string.studio_placement_auto),
                         icon = StudioIcons.Accounts,
-                        tint = Ios.Gray,
+                        tint = DuskTheme.disabled,
                         onClick = { pickingShard = true },
                     )
                 } else {
@@ -276,7 +275,7 @@ fun StudioNewUserScreen(
         } else {
             NoticeCard(
                 icon = StudioIcons.Devices,
-                tint = Ios.Orange,
+                tint = DuskTheme.accent,
                 title = S(R.string.studio_new_devices_off_title),
                 body = S(R.string.studio_new_devices_off_body),
             )
@@ -296,17 +295,17 @@ fun StudioNewUserScreen(
         )
         if (withCountries) {
             if (!canExit) {
-                NoticeCard(icon = StudioIcons.EngineUpdate, tint = Ios.Blue, title = S(R.string.studio_home_update_title),
+                NoticeCard(icon = StudioIcons.EngineUpdate, tint = DuskTheme.primary, title = S(R.string.studio_home_update_title),
                     body = S(R.string.studio_new_where_old_engine))
             } else if (choices.countries.isEmpty()) {
                 NoticeCard(
                     icon = StudioIcons.Locations,
-                    tint = Ios.Orange,
+                    tint = DuskTheme.accent,
                     title = S(R.string.studio_new_no_countries_title),
                     body = S(R.string.studio_new_no_countries_body),
                 )
             } else {
-                Spacer(Modifier.height(6.dp))
+                Spacer(Modifier.height(DuskTheme.space2))
                 LocationPicker(
                     countries = choices.countries,
                     picked = pickedCountries,
@@ -325,7 +324,7 @@ fun StudioNewUserScreen(
             }
         }
 
-        Spacer(Modifier.height(14.dp))
+        Spacer(Modifier.height(DuskTheme.space3))
         LinkCountLine(
             shapes = protocols.size,
             countries = if (withCountries) pickedCountries.size else 0,
@@ -333,8 +332,8 @@ fun StudioNewUserScreen(
             ports = if (withCountries) ports.size else 1,
         )
 
-        Spacer(Modifier.height(14.dp))
-        error?.let { ProblemCard(it); Spacer(Modifier.height(12.dp)) }
+        Spacer(Modifier.height(DuskTheme.space3))
+        error?.let { ProblemCard(it); Spacer(Modifier.height(DuskTheme.space3)) }
         if (busy) {
             WizardBusy(S(R.string.studio_creating))
         } else {
@@ -343,7 +342,7 @@ fun StudioNewUserScreen(
                 enabled = username.isNotBlank() && (!withCountries || pickedCountries.isNotEmpty()),
             ) { create() }
         }
-        Spacer(Modifier.height(28.dp))
+        Spacer(Modifier.height(DuskTheme.space5))
     }
 }
 
@@ -366,10 +365,10 @@ private fun ResultView(
     onOpenUser: () -> Unit,
     onDone: () -> Unit,
 ) {
-    Spacer(Modifier.height(6.dp))
+    Spacer(Modifier.height(DuskTheme.space2))
     NoticeCard(
         icon = StudioIcons.Ok,
-        tint = Ios.Green,
+        tint = DuskTheme.success,
         title = S(R.string.studio_new_ready_title).replace("%1\$s", done.user.username),
         body = S(R.string.studio_new_ready_body).replace("%1\$s", faNum(done.outcome.made.size)),
     )
@@ -377,7 +376,7 @@ private fun ResultView(
     if (failed.isNotEmpty()) {
         NoticeCard(
             icon = StudioIcons.Warning,
-            tint = Ios.Orange,
+            tint = DuskTheme.accent,
             title = S(R.string.studio_new_ready_partial),
             body = S(R.string.studio_new_ready_partial_body)
                 .replace("%1\$s", failed.distinct().joinToString("، ") { ExitCountries.name(it) }),
@@ -390,32 +389,32 @@ private fun ResultView(
     done.subscription?.let { sub ->
         SettingsSectionHeader(S(R.string.studio_sub_link))
         PayloadCard(sub.url)
-        Spacer(Modifier.height(10.dp))
+        Spacer(Modifier.height(DuskTheme.space2))
         SettingsGroup {
             SettingsActionRow(
                 label = if (copied) S(R.string.studio_copied) else S(R.string.studio_copy_link),
                 icon = StudioIcons.Copy,
-                tint = Ios.Blue,
+                tint = DuskTheme.primary,
                 onClick = onCopy,
             )
             Separator()
-            SettingsActionRow(label = S(R.string.studio_share), icon = StudioIcons.Share, tint = Ios.Blue, onClick = onShare)
+            SettingsActionRow(label = S(R.string.studio_share), icon = StudioIcons.Share, tint = DuskTheme.primary, onClick = onShare)
             Separator()
-            SettingsActionRow(label = S(R.string.studio_qr), icon = StudioIcons.Qr, tint = Ios.Blue, onClick = onToggleQr)
+            SettingsActionRow(label = S(R.string.studio_qr), icon = StudioIcons.Qr, tint = DuskTheme.primary, onClick = onToggleQr)
         }
         if (showQr) {
-            Spacer(Modifier.height(10.dp))
+            Spacer(Modifier.height(DuskTheme.space2))
             StudioQrCard(sub.url, S(R.string.studio_qr_too_long))
         }
     }
 
-    Spacer(Modifier.height(18.dp))
+    Spacer(Modifier.height(DuskTheme.space4))
     WizardPrimary(S(R.string.studio_new_open_page), onClick = onOpenUser)
-    Spacer(Modifier.height(10.dp))
+    Spacer(Modifier.height(DuskTheme.space2))
     SettingsGroup {
-        SettingsActionRow(label = S(R.string.studio_done), icon = StudioIcons.Ok, tint = Ios.Gray, onClick = onDone)
+        SettingsActionRow(label = S(R.string.studio_done), icon = StudioIcons.Ok, tint = DuskTheme.disabled, onClick = onDone)
     }
-    Spacer(Modifier.height(28.dp))
+    Spacer(Modifier.height(DuskTheme.space5))
 }
 
 /** A failure, in the app's own words -- from the engine's stable code, never its message. */

@@ -1,6 +1,5 @@
 package com.mlmvpn.scanner.ui.configstudio
 
-import android.widget.Toast
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
@@ -12,7 +11,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.unit.dp
 import com.mlmvpn.scanner.R
 import com.mlmvpn.scanner.data.studio.StudioStore
 import com.mlmvpn.scanner.data.studio.api.StudioError
@@ -30,7 +28,9 @@ import com.mlmvpn.scanner.ui.configstudio.parts.ProblemCard
 import com.mlmvpn.scanner.ui.configstudio.parts.WizardBusy
 import com.mlmvpn.scanner.ui.configstudio.parts.WizardPrimary
 import com.mlmvpn.scanner.ui.configstudio.parts.rememberCountryChoices
-import com.mlmvpn.scanner.ui.settings.Ios
+import com.mlmvpn.scanner.ui.theme.DuskTheme
+import com.mlmvpn.scanner.ui.theme.LocalDuskSnackbarHostState
+import com.mlmvpn.scanner.ui.theme.LocalDuskSnackbarScope
 import com.mlmvpn.scanner.ui.settings.IosScreen
 import com.mlmvpn.scanner.ui.settings.SettingsFooter
 import com.mlmvpn.scanner.ui.settings.SettingsSectionHeader
@@ -55,6 +55,8 @@ fun StudioLocationsEditScreen(
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
+    val snackbarScope = LocalDuskSnackbarScope.current
+    val duskSnackbarHost = LocalDuskSnackbarHostState.current
     val account = remember { store.installedAccounts().firstOrNull { it.id == installationId } }
     val api = remember(account) { account?.let { StudioHttpApi(context, it) } }
     val inst = store.state.value.installations.firstOrNull { it.installationId == installationId }
@@ -121,13 +123,15 @@ fun StudioLocationsEditScreen(
             if (pr is StudioResult.Err) { busy = false; error = messageFor(context, pr.error); return@launch }
             runCatching { store.syncAll() }
             busy = false
-            Toast.makeText(context, context.getString(R.string.studio_locations_saved), Toast.LENGTH_SHORT).show()
+            snackbarScope.launch {
+                duskSnackbarHost.showSnackbar(context.getString(R.string.studio_locations_saved))
+            }
             onDone()
         }
     }
 
     IosScreen(title = S(R.string.studio_locations_edit_title), onBack = if (busy) null else onBack, backLabel = username) {
-        Spacer(Modifier.height(10.dp))
+        Spacer(Modifier.height(DuskTheme.space2))
         if (loading) { WizardBusy(S(R.string.studio_loading)); return@IosScreen }
         error?.let { ProblemCard(it) }
 
@@ -136,7 +140,7 @@ fun StudioLocationsEditScreen(
         if (countries.isEmpty()) {
             NoticeCard(
                 icon = StudioIcons.Locations,
-                tint = Ios.Orange,
+                tint = DuskTheme.accent,
                 title = S(R.string.studio_new_no_countries_title),
                 body = S(R.string.studio_new_no_countries_body),
             )
@@ -164,10 +168,10 @@ fun StudioLocationsEditScreen(
         SettingsSectionHeader(S(R.string.studio_new_ports))
         PortPicker(picked = ports, onToggle = { p -> ports = if (p in ports) (ports - p).ifEmpty { setOf(443) } else ports + p })
 
-        Spacer(Modifier.height(20.dp))
+        Spacer(Modifier.height(DuskTheme.space4))
         if (busy) WizardBusy(S(R.string.studio_saving))
         else WizardPrimary(S(R.string.studio_save)) { save() }
-        Spacer(Modifier.height(28.dp))
+        Spacer(Modifier.height(DuskTheme.space5))
     }
 }
 

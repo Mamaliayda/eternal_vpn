@@ -9,7 +9,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import com.mlmvpn.scanner.R
 import com.mlmvpn.scanner.store.tr
 import com.mlmvpn.scanner.data.PanelBuild
@@ -17,7 +16,7 @@ import com.mlmvpn.scanner.data.studio.StudioState
 import com.mlmvpn.scanner.data.studio.StudioStore
 import com.mlmvpn.scanner.ui.configstudio.design.NoticeCard
 import com.mlmvpn.scanner.ui.configstudio.design.StudioIcons
-import com.mlmvpn.scanner.ui.settings.Ios
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 import com.mlmvpn.scanner.ui.settings.IosScreen
 import com.mlmvpn.scanner.ui.settings.SettingsActionRow
 import com.mlmvpn.scanner.ui.settings.SettingsFooter
@@ -70,7 +69,7 @@ fun StudioSettingsScreen(
         if (stale > 0) {
             NoticeCard(
                 icon = StudioIcons.EngineUpdate,
-                tint = Ios.Blue,
+                tint = DuskTheme.primary,
                 title = S(R.string.studio_home_update_title),
                 body = S(R.string.studio_home_update_body).replace("%1\$s", faNum(stale)),
                 actionLabel = S(R.string.studio_home_update_action),
@@ -83,7 +82,7 @@ fun StudioSettingsScreen(
             SettingsRow(
                 title = S(R.string.studio_more_accounts),
                 icon = StudioIcons.Accounts,
-                tint = Ios.Blue,
+                tint = DuskTheme.primary,
                 value = if (loading) null else faNum(all.size),
                 subtitle = when {
                     unreachable > 0 -> S(R.string.studio_accounts_unreachable_n).replace("%1\$s", faNum(unreachable))
@@ -96,7 +95,7 @@ fun StudioSettingsScreen(
             SettingsActionRow(
                 label = S(R.string.studio_account_bulk_add),
                 icon = StudioIcons.Add,
-                tint = Ios.Indigo,
+                tint = DuskTheme.indigo,
                 onClick = onBulkAdd,
             )
         }
@@ -108,14 +107,14 @@ fun StudioSettingsScreen(
                 title = S(R.string.studio_more_locations),
                 subtitle = S(R.string.studio_more_locations_sub),
                 icon = StudioIcons.Locations,
-                tint = Ios.Indigo,
+                tint = DuskTheme.indigo,
                 onClick = onOpenLocations,
             )
             Separator()
             SettingsRow(
                 title = S(R.string.studio_nodes),
                 icon = StudioIcons.Endpoints,
-                tint = Ios.Teal,
+                tint = DuskTheme.secondary,
                 value = if (state.nodes.isEmpty()) null else faNum(state.nodes.size),
                 subtitle = state.nodes.count { it.isDown }.takeIf { it > 0 }?.let { S(R.string.studio_node_down) },
                 onClick = onOpenNodes,
@@ -138,7 +137,7 @@ fun StudioSettingsScreen(
                     )
                 },
                 icon = StudioIcons.Volume,
-                tint = Ios.Green,
+                tint = DuskTheme.success,
                 showChevron = false,
             )
             Separator()
@@ -154,9 +153,9 @@ fun StudioSettingsScreen(
                 },
                 icon = StudioIcons.Devices,
                 tint = when {
-                    engines.isEmpty() -> Ios.Gray
-                    enforcing == engines.size -> Ios.Green
-                    else -> Ios.Orange
+                    engines.isEmpty() -> DuskTheme.disabled
+                    enforcing == engines.size -> DuskTheme.success
+                    else -> DuskTheme.accent
                 },
                 onClick = if (enforcing < engines.size) onOpenAccounts else null,
                 showChevron = enforcing < engines.size,
@@ -169,12 +168,12 @@ fun StudioSettingsScreen(
                 title = S(R.string.studio_more_history),
                 subtitle = S(R.string.studio_more_history_sub),
                 icon = StudioIcons.Audit,
-                tint = Ios.Teal,
+                tint = DuskTheme.secondary,
                 onClick = onOpenAudit,
             )
         }
         SettingsFooter(S(R.string.studio_audit_scope))
 
-        Spacer(Modifier.height(28.dp))
+        Spacer(Modifier.height(DuskTheme.space5))
     }
 }

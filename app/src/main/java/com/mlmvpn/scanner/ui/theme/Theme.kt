@@ -9,6 +9,7 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -80,7 +81,10 @@ fun MlmVpnTheme(content: @Composable () -> Unit) {
         colorScheme = duskColorScheme(dark),
         typography = iranSansTypography(MaterialTheme.typography),
     ) {
-        CompositionLocalProvider(LocalDuskSnackbarHostState provides snackbarHostState) {
+        CompositionLocalProvider(
+            LocalDuskSnackbarHostState provides snackbarHostState,
+            LocalDuskSnackbarScope provides rememberCoroutineScope(),
+        ) {
             Box(Modifier.fillMaxSize()) {
                 content()
                 DuskSnackbarHost(

@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -35,14 +36,13 @@ import com.mlmvpn.scanner.ui.configstudio.design.EmptyState
 import com.mlmvpn.scanner.ui.configstudio.design.StatusLine
 import com.mlmvpn.scanner.ui.configstudio.design.StudioIcons
 import com.mlmvpn.scanner.ui.configstudio.design.StudioSeparator
-import com.mlmvpn.scanner.ui.configstudio.design.StudioType
 import com.mlmvpn.scanner.ui.configstudio.parts.InfoCard
 import com.mlmvpn.scanner.ui.configstudio.parts.PageIntro
 import com.mlmvpn.scanner.ui.configstudio.parts.ProblemCard
 import com.mlmvpn.scanner.ui.configstudio.parts.WizardBusy
 import com.mlmvpn.scanner.ui.configstudio.parts.WizardField
 import com.mlmvpn.scanner.ui.configstudio.parts.WizardPrimary
-import com.mlmvpn.scanner.ui.settings.Ios
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 import com.mlmvpn.scanner.ui.settings.IosAlert
 import com.mlmvpn.scanner.ui.settings.IosAlertAction
 import com.mlmvpn.scanner.ui.settings.IosScreen
@@ -131,12 +131,12 @@ fun StudioExitsScreen(
         backLabel = S(R.string.studio_more_locations),
         onRefresh = { reload() },
     ) {
-        Spacer(Modifier.height(10.dp))
+        Spacer(Modifier.height(DuskTheme.space2))
         PageIntro(S(R.string.studio_exits_intro))
 
         if (fleet.isEmpty()) {
             InfoCard(S(R.string.studio_exits_needs_update))
-            Spacer(Modifier.height(28.dp))
+            Spacer(Modifier.height(DuskTheme.space5))
             return@IosScreen
         }
 
@@ -158,13 +158,13 @@ fun StudioExitsScreen(
         // ---- add
         SettingsSectionHeader(S(R.string.studio_exits_add))
         WizardField(paste, { paste = it; note = null }, S(R.string.studio_exits_paste_hint), monospace = true, lines = 4)
-        Spacer(Modifier.height(8.dp))
+        Spacer(Modifier.height(DuskTheme.space2))
         SettingsGroup {
             SettingsRow(
                 title = S(R.string.studio_exits_country),
                 value = pasteCc?.let { ExitCountries.label(it) } ?: S(R.string.studio_exits_country_auto),
                 icon = StudioIcons.Locations,
-                tint = Ios.Indigo,
+                tint = DuskTheme.indigo,
                 onClick = {
                     // Cycles through "detect" and the common countries: a sheet would be one more
                     // screen for a choice that is usually "detect".
@@ -173,7 +173,7 @@ fun StudioExitsScreen(
                 },
             )
         }
-        Spacer(Modifier.height(10.dp))
+        Spacer(Modifier.height(DuskTheme.space2))
         if (busy) WizardBusy(S(R.string.studio_exits_working))
         else WizardPrimary(S(R.string.studio_exits_add_button), enabled = paste.isNotBlank()) {
             val lines = paste.lines().map { it.trim() }.filter { it.isNotEmpty() && !it.startsWith("#") }
@@ -198,7 +198,7 @@ fun StudioExitsScreen(
         }
 
         note?.let { InfoCard(it) }
-        error?.let { Spacer(Modifier.height(8.dp)); ProblemCard(it) }
+        error?.let { Spacer(Modifier.height(DuskTheme.space2)); ProblemCard(it) }
 
         // ---- list
         if (loading) {
@@ -210,12 +210,12 @@ fun StudioExitsScreen(
                 body = S(R.string.studio_exits_empty),
             )
         } else {
-            Spacer(Modifier.height(10.dp))
+            Spacer(Modifier.height(DuskTheme.space2))
             SettingsGroup {
                 SettingsActionRow(
                     label = S(R.string.studio_exits_test_all),
                     icon = StudioIcons.Test,
-                    tint = Ios.Blue,
+                    tint = DuskTheme.primary,
                     busy = busy,
                     enabled = !busy,
                 ) {
@@ -238,7 +238,7 @@ fun StudioExitsScreen(
             }
         }
         SettingsFooter(S(R.string.studio_exits_noleak))
-        Spacer(Modifier.height(28.dp))
+        Spacer(Modifier.height(DuskTheme.space5))
     }
 
     acting?.let { e ->
@@ -280,23 +280,23 @@ private fun ExitRow(e: StudioExit, onClick: () -> Unit) {
             .fillMaxWidth()
             .heightIn(min = 54.dp)
             .clickable(onClick = onClick)
-            .padding(horizontal = 16.dp, vertical = 10.dp),
+            .padding(horizontal = DuskTheme.space4, vertical = DuskTheme.space3),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Column(modifier = Modifier.weight(1f)) {
             Text(
                 e.display.ifBlank { e.id },
-                color = if (e.enabled) Ios.Label else Ios.SecondaryLabel,
-                fontSize = StudioType.Callout,
+                color = if (e.enabled) DuskTheme.onSurface else DuskTheme.muted,
+                style = MaterialTheme.typography.bodyMedium,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
-            Spacer(Modifier.height(4.dp))
+            Spacer(Modifier.height(DuskTheme.space1))
             when {
-                !e.enabled -> StatusLine(S(R.string.studio_exits_off), Ios.Gray)
+                !e.enabled -> StatusLine(S(R.string.studio_exits_off), DuskTheme.disabled)
                 e.isMisfiled -> StatusLine(
                     S(R.string.studio_exits_misfiled).replace("%1\$s", ExitCountries.label(e.exitCc!!)),
-                    Ios.Red,
+                    DuskTheme.error,
                 )
                 e.isUp -> StatusLine(
                     listOfNotNull(
@@ -304,15 +304,15 @@ private fun ExitRow(e: StudioExit, onClick: () -> Unit) {
                         e.latencyMs?.let { S(R.string.studio_exit_ms).replace("%1\$s", faNum(it)) },
                         e.exitIp,
                     ).joinToString(" · "),
-                    Ios.Green,
+                    DuskTheme.success,
                 )
-                e.isDown -> StatusLine(S(R.string.studio_exit_down), Ios.Red)
-                else -> StatusLine(S(R.string.studio_exit_untested), Ios.Gray)
+                e.isDown -> StatusLine(S(R.string.studio_exit_down), DuskTheme.error)
+                else -> StatusLine(S(R.string.studio_exit_untested), DuskTheme.disabled)
             }
         }
         val measured = e.exitCc
         if (measured != null && measured != "ZZ") {
-            Spacer(Modifier.width(10.dp))
+            Spacer(Modifier.width(DuskTheme.space2))
             CountryBadge(measured)
         }
     }

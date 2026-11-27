@@ -1,6 +1,6 @@
 # Eternal VPN — screen redesign checklist
 
-> **Progress: 319 / 1203 complete** — each checked row is fully migrated; unverified routes and states remain unchecked.
+> **Progress: 330 / 1203 complete** — each checked row is fully migrated; unverified routes and states remain unchecked.
 
 > Inventory generated from Kotlin source on 2026-11-26. A row is considered migrated only after its visible composition, nested states, and overlays are reviewed against the Soft Dusk tokens. Shared theme inheritance alone does **not** count as a completed visual redesign.
 
@@ -209,7 +209,7 @@ Found 230 screen-like public/internal composables across 133 Kotlin files (the f
 
 - [ ] `ConfigStudioHost` — `com/mlmvpn/scanner/ui/configstudio/ConfigStudioHost.kt`
 - [ ] `StudioAccountDetailScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioAccountDetailScreen.kt`
-- [ ] `StudioAccountsScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioAccountsScreen.kt`
+- [x] `StudioAccountsScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioAccountsScreen.kt`
 - [ ] `StudioAnalyticsScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioAnalyticsScreen.kt`
 - [ ] `StudioAuditScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioAuditScreen.kt`
 - [ ] `StudioBulkActionScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioBulkActionScreen.kt`
@@ -221,19 +221,19 @@ Found 230 screen-like public/internal composables across 133 Kotlin files (the f
 - [ ] `StudioCentralUserScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioCentralUserScreen.kt`
 - [x] `StudioConfigBuilderScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioConfigBuilderScreen.kt`
 - [x] `StudioConfigsScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioConfigsScreen.kt`
-- [ ] `StudioDashboardScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioDashboardScreen.kt`
-- [ ] `StudioExitsScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioExitsScreen.kt`
-- [ ] `StudioLocationsEditScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioLocationsEditScreen.kt`
+- [x] `StudioDashboardScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioDashboardScreen.kt`
+- [x] `StudioExitsScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioExitsScreen.kt`
+- [x] `StudioLocationsEditScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioLocationsEditScreen.kt`
 - [ ] `StudioMoreScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioMoreScreen.kt`
 - [ ] `StudioMultiLocationScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioMultiLocationScreen.kt`
-- [ ] `StudioNewUserScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioNewUserScreen.kt`
+- [x] `StudioNewUserScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioNewUserScreen.kt`
 - [x] `StudioNodeEditScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioNodeEditScreen.kt`
 - [x] `StudioNodeGroupEditScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioNodeGroupEditScreen.kt`
 - [x] `StudioNodeGroupsScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioNodeGroupsScreen.kt`
 - [x] `StudioNodesScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioNodesScreen.kt`
 - [ ] `StudioPlanEditScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioPlanEditScreen.kt`
 - [ ] `StudioPlansScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioPlansScreen.kt`
-- [ ] `StudioSettingsScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioSettingsScreen.kt`
+- [x] `StudioSettingsScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioSettingsScreen.kt`
 - [ ] `StudioTemplateEditScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioTemplateEditScreen.kt`
 - [ ] `StudioTemplatesScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioTemplatesScreen.kt`
 - [ ] `StudioUserDetailScreen` — `com/mlmvpn/scanner/ui/configstudio/StudioUserDetailScreen.kt`
@@ -710,8 +710,8 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 - [ ] `ActionRow` — `com/mlmvpn/scanner/ui/cloud/PanelRows.kt`
 ### configstudio
 
-- [ ] `FleetSummary` — `com/mlmvpn/scanner/ui/configstudio/StudioAccountsScreen.kt`
-- [ ] `ShardRow` — `com/mlmvpn/scanner/ui/configstudio/StudioAccountsScreen.kt`
+- [x] `FleetSummary` — `com/mlmvpn/scanner/ui/configstudio/StudioAccountsScreen.kt`
+- [x] `ShardRow` — `com/mlmvpn/scanner/ui/configstudio/StudioAccountsScreen.kt`
 - [ ] `shardSubtitle` — `com/mlmvpn/scanner/ui/configstudio/StudioAccountsScreen.kt`
 - [ ] `androidx` — `com/mlmvpn/scanner/ui/configstudio/StudioAnalyticsScreen.kt`
 - [ ] `androidx` — `com/mlmvpn/scanner/ui/configstudio/StudioAnalyticsScreen.kt`
@@ -731,9 +731,9 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 - [ ] `whenText` — `com/mlmvpn/scanner/ui/configstudio/StudioDashboardScreen.kt`
 - [ ] `bytesFa` — `com/mlmvpn/scanner/ui/configstudio/StudioDashboardScreen.kt`
 - [ ] `freshnessText` — `com/mlmvpn/scanner/ui/configstudio/StudioDashboardScreen.kt`
-- [ ] `ExitRow` — `com/mlmvpn/scanner/ui/configstudio/StudioExitsScreen.kt`
+- [x] `ExitRow` — `com/mlmvpn/scanner/ui/configstudio/StudioExitsScreen.kt`
 - [ ] `CountryTitle` — `com/mlmvpn/scanner/ui/configstudio/StudioMultiLocationScreen.kt`
-- [ ] `ResultView` — `com/mlmvpn/scanner/ui/configstudio/StudioNewUserScreen.kt`
+- [x] `ResultView` — `com/mlmvpn/scanner/ui/configstudio/StudioNewUserScreen.kt`
 - [ ] `shardPlacementNote` — `com/mlmvpn/scanner/ui/configstudio/StudioNewUserScreen.kt`
 - [ ] `probeAge` — `com/mlmvpn/scanner/ui/configstudio/StudioNodeEditScreen.kt`
 - [ ] `strategyLabel` — `com/mlmvpn/scanner/ui/configstudio/StudioNodeGroupsScreen.kt`
@@ -1469,7 +1469,7 @@ Toast / short transient feedback call sites (OS-rendered surfaces; validate app 
 - [ ] `com/mlmvpn/scanner/ui/cloud/GatewayRows.kt` — Toast × 1
 - [ ] `com/mlmvpn/scanner/ui/cloud/GatewaySettingsScreen.kt` — Toast × 1
 - [ ] `com/mlmvpn/scanner/ui/cloud/PanelRows.kt` — Toast × 1
-- [ ] `com/mlmvpn/scanner/ui/configstudio/StudioLocationsEditScreen.kt` — Toast × 1
+- [x] `com/mlmvpn/scanner/ui/configstudio/StudioLocationsEditScreen.kt` — Toast × 1 (replaced with Dusk snackbar)
 - [ ] `com/mlmvpn/scanner/ui/doctor/CfDoctorScreen.kt` — Toast × 3
 - [ ] `com/mlmvpn/scanner/ui/emergency/EmergencyKit.kt` — Toast × 1
 - [ ] `com/mlmvpn/scanner/ui/emergency/EmergencyLevel2Screen.kt` — Toast × 1

@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -22,8 +23,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.mlmvpn.scanner.R
 import com.mlmvpn.scanner.ui.configstudio.parts.CentralKit
 import com.mlmvpn.scanner.store.tr
@@ -40,7 +39,7 @@ import com.mlmvpn.scanner.ui.configstudio.parts.ProblemCard
 import com.mlmvpn.scanner.ui.configstudio.parts.StatusDot
 import com.mlmvpn.scanner.ui.configstudio.parts.StudioListRow
 import com.mlmvpn.scanner.ui.configstudio.parts.WizardField
-import com.mlmvpn.scanner.ui.settings.Ios
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 import com.mlmvpn.scanner.ui.settings.IosRefreshIndicator
 import com.mlmvpn.scanner.ui.settings.IosScreen
 import com.mlmvpn.scanner.ui.settings.SettingsActionRow
@@ -116,30 +115,30 @@ fun StudioAccountsScreen(
         trailing = {
             Text(
                 S(R.string.studio_account_add),
-                color = Ios.Blue,
-                fontSize = 16.sp,
+                color = DuskTheme.primary,
+                style = MaterialTheme.typography.bodyLarge,
                 modifier = Modifier
                     .clickable(enabled = !busy, onClick = onAddAccount)
-                    .padding(horizontal = 4.dp, vertical = 6.dp),
+                    .padding(horizontal = DuskTheme.space1, vertical = DuskTheme.space1),
             )
         },
     ) {
-        Spacer(Modifier.height(10.dp))
+        Spacer(Modifier.height(DuskTheme.space2))
 
         // Only once the list is long enough for a search box to be the faster way to a row.
         if (all.size > 6) {
             WizardField(query, { query = it }, S(R.string.studio_account_search), ltr = false)
-            Spacer(Modifier.height(6.dp))
+            Spacer(Modifier.height(DuskTheme.space1))
         }
 
-        note?.let { InfoCard(it); Spacer(Modifier.height(10.dp)) }
-        error?.let { ProblemCard(it); Spacer(Modifier.height(10.dp)) }
+        note?.let { InfoCard(it); Spacer(Modifier.height(DuskTheme.space2)) }
+        error?.let { ProblemCard(it); Spacer(Modifier.height(DuskTheme.space2)) }
 
         LazyColumn(modifier = Modifier.fillMaxWidth().weight(1f).nestedScroll(refresh.connection)) {
             item { IosRefreshIndicator(refresh) }
             item {
                 FleetSummary(all)
-                Spacer(Modifier.height(10.dp))
+                Spacer(Modifier.height(DuskTheme.space2))
             }
 
             items(rows, key = { it.installationId }) { inst ->
@@ -147,12 +146,12 @@ fun StudioAccountsScreen(
             }
 
             item {
-                Spacer(Modifier.height(14.dp))
+                Spacer(Modifier.height(DuskTheme.space3))
                 SettingsGroup {
                     SettingsActionRow(
                         label = S(R.string.studio_account_add),
                         icon = StudioIcons.Add,
-                        tint = Ios.Blue,
+                        tint = DuskTheme.primary,
                         enabled = !busy,
                         onClick = onAddAccount,
                     )
@@ -160,7 +159,7 @@ fun StudioAccountsScreen(
                     SettingsActionRow(
                         label = S(R.string.studio_account_bulk_add),
                         icon = StudioIcons.BulkAdd,
-                        tint = Ios.Indigo,
+                        tint = DuskTheme.indigo,
                         enabled = !busy,
                         onClick = onBulkAdd,
                     )
@@ -172,7 +171,7 @@ fun StudioAccountsScreen(
                             label = S(R.string.studio_account_update_all)
                                 .replace("%1\$s", faNum(stale.size)),
                             icon = StudioIcons.EngineUpdate,
-                            tint = Ios.Orange,
+                            tint = DuskTheme.accent,
                             enabled = !busy,
                         ) {
                             busy = true; error = null; note = null
@@ -212,7 +211,7 @@ fun StudioAccountsScreen(
                     "جای ورکر مرکزی دقیق است: هر حساب تعداد مشخصی شناسه می‌پذیرد؛ یکی برای خود ورکر، یکی برای هر پنل وصل‌شده و بقیه برای کاربرانی که الان فعال‌اند. کاربر خاموش یا تمام‌شده جایی نمی‌گیرد.",
                     "A central Worker's room is exact: each account takes a set number of ids — one for the Worker, one per connected panel, the rest for the people active right now. Someone switched off or ended takes no place.",
                 ))
-                Spacer(Modifier.height(28.dp))
+                Spacer(Modifier.height(DuskTheme.space5))
             }
         }
     }
@@ -233,36 +232,36 @@ private fun FleetSummary(all: List<StudioInstallation>) {
     val room = known.sumOf { if (it.isCentral) it.centralRoom.coerceAtLeast(0) else ShardCapacity.FULL_AT_USERS }
     val unreachable = all.count { !it.reachable }
 
-    Column(modifier = Modifier.padding(horizontal = 16.dp)) {
+    Column(modifier = Modifier.padding(horizontal = DuskTheme.space4)) {
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
             Text(
                 S(R.string.studio_accounts_count).replace("%1\$s", faNum(all.size)),
-                color = Ios.Label, fontSize = 15.sp, fontWeight = FontWeight.SemiBold,
+                color = DuskTheme.onSurface, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.SemiBold,
             )
             if (room > 0) {
                 Text(
                     S(R.string.studio_capacity_of)
                         .replace("%1\$s", faNum(users))
                         .replace("%2\$s", faNum(room)),
-                    color = Ios.SecondaryLabel, fontSize = 13.sp,
+                    color = DuskTheme.muted, style = MaterialTheme.typography.bodySmall,
                 )
             }
         }
         if (room > 0) {
-            Spacer(Modifier.height(8.dp))
+            Spacer(Modifier.height(DuskTheme.space2))
             MeterBar(
                 fraction = users.toFloat() / room,
-                tint = if (users.toFloat() / room >= ShardCapacity.CROWDED_FRACTION) Ios.Orange else Ios.Blue,
+                tint = if (users.toFloat() / room >= ShardCapacity.CROWDED_FRACTION) DuskTheme.accent else DuskTheme.primary,
             )
         }
         if (unreachable > 0) {
-            Spacer(Modifier.height(8.dp))
+            Spacer(Modifier.height(DuskTheme.space2))
             Text(
                 S(R.string.studio_accounts_unreachable_n).replace("%1\$s", faNum(unreachable)),
-                color = Ios.Orange, fontSize = 12.sp,
+                color = DuskTheme.accent, style = MaterialTheme.typography.labelSmall,
             )
         }
     }
@@ -275,23 +274,23 @@ private fun ShardRow(inst: StudioInstallation, onClick: () -> Unit) {
     StudioListRow(onClick = onClick) {
         StatusDot(
             when {
-                !inst.reachable -> Ios.SecondaryLabel
-                !inst.isHealthy || stale -> Ios.Orange
-                inst.isCrowded -> Ios.Orange
-                else -> Ios.Green
+                !inst.reachable -> DuskTheme.muted
+                !inst.isHealthy || stale -> DuskTheme.accent
+                inst.isCrowded -> DuskTheme.accent
+                else -> DuskTheme.success
             }
         )
         Column(modifier = Modifier.weight(1f)) {
             Text(
                 inst.accountLabel.ifBlank { inst.workerUrl },
-                color = Ios.Label, fontSize = 16.sp, fontWeight = FontWeight.Medium,
+                color = DuskTheme.onSurface, style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.Medium,
             )
-            Spacer(Modifier.height(3.dp))
-            Text(shardSubtitle(inst, stale), color = Ios.SecondaryLabel, fontSize = 12.sp)
-            Spacer(Modifier.height(6.dp))
+            Spacer(Modifier.height(DuskTheme.space1))
+            Text(shardSubtitle(inst, stale), color = DuskTheme.muted, style = MaterialTheme.typography.labelSmall)
+            Spacer(Modifier.height(DuskTheme.space1))
             MeterBar(
                 fraction = inst.loadFraction,
-                tint = if (inst.isCrowded) Ios.Orange else Ios.Blue,
+                tint = if (inst.isCrowded) DuskTheme.accent else DuskTheme.primary,
             )
         }
     }

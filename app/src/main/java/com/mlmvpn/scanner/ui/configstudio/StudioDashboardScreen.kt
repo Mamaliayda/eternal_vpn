@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -24,8 +25,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.mlmvpn.scanner.R
 import com.mlmvpn.scanner.data.PanelBuild
 import com.mlmvpn.scanner.data.studio.StudioState
@@ -38,13 +37,12 @@ import com.mlmvpn.scanner.ui.configstudio.design.NoticeCard
 import com.mlmvpn.scanner.ui.configstudio.design.StudioIcons
 import com.mlmvpn.scanner.ui.configstudio.design.StudioStatTile
 import com.mlmvpn.scanner.ui.configstudio.design.StudioTilePair
-import com.mlmvpn.scanner.ui.configstudio.design.StudioType
 import com.mlmvpn.scanner.ui.configstudio.parts.MeterBar
 import com.mlmvpn.scanner.ui.configstudio.parts.StatusDot
 import com.mlmvpn.scanner.ui.configstudio.parts.StudioChip
 import com.mlmvpn.scanner.ui.configstudio.parts.StudioTile
 import com.mlmvpn.scanner.ui.configstudio.parts.StudioTileRow
-import com.mlmvpn.scanner.ui.settings.Ios
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 import com.mlmvpn.scanner.ui.settings.IosScreen
 import com.mlmvpn.scanner.ui.settings.SettingsActionRow
 import com.mlmvpn.scanner.ui.settings.SettingsFooter
@@ -110,12 +108,12 @@ fun StudioDashboardScreen(
             Icon(
                 StudioIcons.Settings,
                 contentDescription = S(R.string.studio_settings_title),
-                tint = Ios.Label,
+                tint = DuskTheme.onSurface,
                 modifier = Modifier
                     .clip(androidx.compose.foundation.shape.CircleShape)
                     .clickable(onClick = onOpenSettings)
-                    .padding(8.dp)
-                    .size(22.dp),
+                    .padding(DuskTheme.space2)
+                    .size(DuskTheme.iconSize),
             )
         },
         onRefresh = onRefresh,
@@ -124,7 +122,7 @@ fun StudioDashboardScreen(
         if (state.unreachable.isNotEmpty()) {
             NoticeCard(
                 icon = StudioIcons.Error,
-                tint = Ios.Red,
+                tint = DuskTheme.error,
                 title = S(R.string.studio_home_unreachable_title),
                 body = S(R.string.studio_account_unreachable).replace("%1\$s", state.unreachable.joinToString("، ")),
             )
@@ -132,7 +130,7 @@ fun StudioDashboardScreen(
         if (stale.isNotEmpty()) {
             NoticeCard(
                 icon = StudioIcons.EngineUpdate,
-                tint = Ios.Blue,
+                tint = DuskTheme.primary,
                 title = S(R.string.studio_home_update_title),
                 body = S(R.string.studio_home_update_body).replace("%1\$s", faNum(stale.size)),
                 actionLabel = S(R.string.studio_home_update_action),
@@ -142,7 +140,7 @@ fun StudioDashboardScreen(
         if (noLimits.isNotEmpty() && stale.isEmpty()) {
             NoticeCard(
                 icon = StudioIcons.Devices,
-                tint = Ios.Orange,
+                tint = DuskTheme.accent,
                 title = S(R.string.studio_limits_off_title).replace("%1\$s", faNum(noLimits.size)),
                 body = S(R.string.studio_limits_off_body),
                 actionLabel = S(R.string.studio_limits_off_action),
@@ -151,19 +149,19 @@ fun StudioDashboardScreen(
         }
         state.oldestSyncAgeMs?.let { age ->
             if (age > StudioStore_STALE) {
-                NoticeCard(icon = StudioIcons.Time, tint = Ios.Orange, title = freshnessText(age),
+                NoticeCard(icon = StudioIcons.Time, tint = DuskTheme.accent, title = freshnessText(age),
                     body = S(R.string.studio_home_pull_hint))
             }
         }
 
         // ---- how things stand -------------------------------------------------------------
-        Spacer(Modifier.height(4.dp))
+        Spacer(Modifier.height(DuskTheme.space1))
         StudioTilePair {
             StudioStatTile(
                 label = S(R.string.studio_tile_online),
                 value = countOrDash(d?.online),
                 icon = StudioIcons.Users,
-                tint = Ios.Green,
+                tint = DuskTheme.success,
                 modifier = Modifier.weight(1f),
                 onClick = { onOpenUsers(UserFilter.ACTIVE) },
             )
@@ -171,7 +169,7 @@ fun StudioDashboardScreen(
                 label = S(R.string.studio_home_users),
                 value = faNum(d?.total ?: state.indexedUsers),
                 icon = StudioIcons.Users,
-                tint = Ios.Blue,
+                tint = DuskTheme.primary,
                 detail = S(R.string.studio_home_users_active).replace("%1\$s", faNum(d?.active ?: state.indexedActive)),
                 modifier = Modifier.weight(1f),
                 onClick = { onOpenUsers(UserFilter.ALL) },
@@ -182,7 +180,7 @@ fun StudioDashboardScreen(
                 label = S(R.string.studio_tile_expiring),
                 value = faNum(d?.expiringSoon ?: 0),
                 icon = StudioIcons.Time,
-                tint = Ios.Orange,
+                tint = DuskTheme.accent,
                 modifier = Modifier.weight(1f),
                 onClick = { onOpenUsers(UserFilter.EXPIRING) },
             )
@@ -190,7 +188,7 @@ fun StudioDashboardScreen(
                 label = S(R.string.studio_home_stopped),
                 value = faNum((d?.overQuota ?: 0) + (d?.expired ?: 0)),
                 icon = StudioIcons.Block,
-                tint = Ios.Red,
+                tint = DuskTheme.error,
                 detail = S(R.string.studio_home_stopped_detail),
                 modifier = Modifier.weight(1f),
                 onClick = { onOpenUsers(UserFilter.OUT_OF_VOLUME) },
@@ -201,14 +199,14 @@ fun StudioDashboardScreen(
                 label = S(R.string.studio_traffic_24h),
                 value = d?.takeIf { trafficKnown }?.let { bytesFa(it.trafficDownBytes24h + it.trafficUpBytes24h) } ?: S(R.string.studio_unknown_dash),
                 icon = StudioIcons.Traffic,
-                tint = Ios.Purple,
+                tint = DuskTheme.purple,
                 modifier = Modifier.weight(1f),
             )
             StudioStatTile(
                 label = S(R.string.studio_traffic_30d),
                 value = d?.takeIf { trafficKnown }?.let { bytesFa(it.trafficDownBytes30d + it.trafficUpBytes30d) } ?: S(R.string.studio_unknown_dash),
                 icon = StudioIcons.Calendar,
-                tint = Ios.Indigo,
+                tint = DuskTheme.indigo,
                 modifier = Modifier.weight(1f),
             )
         }
@@ -216,13 +214,13 @@ fun StudioDashboardScreen(
         // ---- the usual next step ----------------------------------------------------------
         SettingsSectionHeader(S(R.string.studio_shortcuts))
         StudioTileRow {
-            StudioTile(S(R.string.studio_new_user), StudioIcons.NewUser, Ios.Green, Modifier.weight(1f), onNewUser)
-            StudioTile(S(R.string.studio_bulk_new_title), StudioIcons.BulkUsers, Ios.Teal, Modifier.weight(1f), onBulkUsers)
+            StudioTile(S(R.string.studio_new_user), StudioIcons.NewUser, DuskTheme.success, Modifier.weight(1f), onNewUser)
+            StudioTile(S(R.string.studio_bulk_new_title), StudioIcons.BulkUsers, DuskTheme.secondary, Modifier.weight(1f), onBulkUsers)
         }
-        Spacer(Modifier.height(10.dp))
+        Spacer(Modifier.height(DuskTheme.space2))
         StudioTileRow {
-            StudioTile(S(R.string.studio_config_for), StudioIcons.Config, Ios.Indigo, Modifier.weight(1f), onNewConfig)
-            StudioTile(S(R.string.studio_combine), StudioIcons.Combine, Ios.Purple, Modifier.weight(1f), onCombine)
+            StudioTile(S(R.string.studio_config_for), StudioIcons.Config, DuskTheme.indigo, Modifier.weight(1f), onNewConfig)
+            StudioTile(S(R.string.studio_combine), StudioIcons.Combine, DuskTheme.purple, Modifier.weight(1f), onCombine)
         }
 
         // ---- who needs attention ----------------------------------------------------------
@@ -234,7 +232,7 @@ fun StudioDashboardScreen(
                 SettingsRow(
                     title = S(R.string.studio_home_attention_none),
                     icon = StudioIcons.Ok,
-                    tint = Ios.Green,
+                    tint = DuskTheme.success,
                     showChevron = false,
                 )
             }
@@ -247,7 +245,7 @@ fun StudioDashboardScreen(
                         subtitle = if (outOfQuota) S(R.string.studio_home_attention_out)
                         else user.policy.expiresAt?.let { expiresInText(it) },
                         icon = if (outOfQuota) StudioIcons.Volume else StudioIcons.Time,
-                        tint = if (outOfQuota) Ios.Red else Ios.Orange,
+                        tint = if (outOfQuota) DuskTheme.error else DuskTheme.accent,
                         onClick = { onOpenUser(user.installationId, user.id) },
                     )
                 }
@@ -261,19 +259,19 @@ fun StudioDashboardScreen(
                 state.installations.forEachIndexed { index, inst ->
                     if (index > 0) Separator()
                     Column(
-                        modifier = Modifier.fillMaxWidth().heightIn(min = 44.dp)
-                            .padding(horizontal = 16.dp, vertical = 9.dp),
+                        modifier = Modifier.fillMaxWidth().heightIn(min = DuskTheme.navIconSize)
+                            .padding(horizontal = DuskTheme.space4, vertical = DuskTheme.space2),
                     ) {
                         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                            Text(inst.accountLabel, color = Ios.Label, fontSize = StudioType.Subhead)
+                            Text(inst.accountLabel, color = DuskTheme.onSurface, style = MaterialTheme.typography.titleSmall)
                             Text(
                                 if (inst.users < 0) "—" else faNum(inst.users),
-                                color = if (inst.isCrowded) Ios.Orange else Ios.SecondaryLabel,
-                                fontSize = StudioType.Footnote,
+                                color = if (inst.isCrowded) DuskTheme.accent else DuskTheme.muted,
+                                style = MaterialTheme.typography.labelSmall,
                             )
                         }
-                        Spacer(Modifier.height(6.dp))
-                        MeterBar(fraction = inst.loadFraction, tint = if (inst.isCrowded) Ios.Orange else Ios.Blue)
+                        Spacer(Modifier.height(DuskTheme.space1))
+                        MeterBar(fraction = inst.loadFraction, tint = if (inst.isCrowded) DuskTheme.accent else DuskTheme.primary)
                     }
                 }
             }
@@ -285,20 +283,20 @@ fun StudioDashboardScreen(
         SettingsSectionHeader(S(R.string.studio_activity))
         if (canSeeActivity && state.activity.isNotEmpty()) {
             Row(
-                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 2.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                modifier = Modifier.fillMaxWidth().padding(horizontal = DuskTheme.space4, vertical = DuskTheme.space1),
+                horizontalArrangement = Arrangement.spacedBy(DuskTheme.space2),
             ) {
                 StudioChip(S(R.string.studio_activity_all_kinds), !errorsOnly, Modifier.weight(1f)) { errorsOnly = false }
                 StudioChip(S(R.string.studio_activity_only_problems), errorsOnly, Modifier.weight(1f)) { errorsOnly = true }
             }
-            Spacer(Modifier.height(6.dp))
+            Spacer(Modifier.height(DuskTheme.space1))
         }
         when {
             !canSeeActivity -> SettingsGroup {
-                SettingsRow(title = S(R.string.studio_activity_engine_old), icon = StudioIcons.Info, tint = Ios.Gray, showChevron = false)
+                SettingsRow(title = S(R.string.studio_activity_engine_old), icon = StudioIcons.Info, tint = DuskTheme.disabled, showChevron = false)
             }
             state.activity.isEmpty() -> SettingsGroup {
-                SettingsRow(title = S(R.string.studio_activity_none), icon = StudioIcons.Ok, tint = Ios.Green, showChevron = false)
+                SettingsRow(title = S(R.string.studio_activity_none), icon = StudioIcons.Ok, tint = DuskTheme.success, showChevron = false)
             }
             else -> {
                 SettingsGroup {
@@ -307,26 +305,26 @@ fun StudioDashboardScreen(
                         SettingsRow(
                             title = activityLabel(entry.kind),
                             icon = if (entry.severity == ActivitySeverity.ERROR) StudioIcons.Error else StudioIcons.Warning,
-                            tint = if (entry.severity == ActivitySeverity.ERROR) Ios.Red else Ios.Orange,
+                            tint = if (entry.severity == ActivitySeverity.ERROR) DuskTheme.error else DuskTheme.accent,
                             subtitle = entry.username ?: entry.detail,
                             value = whenText(entry.ts),
                             showChevron = false,
                         )
                     }
                 }
-                Spacer(Modifier.height(10.dp))
+                Spacer(Modifier.height(DuskTheme.space2))
                 SettingsGroup {
                     SettingsActionRow(
                         label = S(R.string.studio_activity_all),
                         icon = StudioIcons.Activity,
-                        tint = Ios.Teal,
+                        tint = DuskTheme.secondary,
                         onClick = onOpenActivity,
                     )
                 }
             }
         }
 
-        Spacer(Modifier.height(28.dp))
+        Spacer(Modifier.height(DuskTheme.space5))
     }
 }
 

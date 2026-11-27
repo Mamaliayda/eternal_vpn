@@ -36,6 +36,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.mlmvpn.scanner.R
 import com.mlmvpn.scanner.ui.home.Appearance
+import kotlinx.coroutines.CoroutineScope
 
 /** Soft Dusk is the shared visual language for every migrated screen and control. */
 object DuskTheme {
@@ -113,6 +114,11 @@ object DuskTheme {
 
 val LocalDuskSnackbarHostState = staticCompositionLocalOf<SnackbarHostState> {
     error("DuskSnackbarHostState is only available inside MlmVpnTheme")
+}
+
+/** Activity-theme scope keeps a queued notice alive when the screen that emitted it navigates away. */
+val LocalDuskSnackbarScope = staticCompositionLocalOf<CoroutineScope> {
+    error("DuskSnackbarScope is only available inside MlmVpnTheme")
 }
 
 /** Vazirmatn is used as a single bilingual family so mixed Persian, Latin and IP text remains consistent. */
