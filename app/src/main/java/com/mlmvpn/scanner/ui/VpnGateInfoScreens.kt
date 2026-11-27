@@ -19,7 +19,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.unit.dp
 import com.mlmvpn.scanner.engines.vpngate.SoftEtherProbe
 import com.mlmvpn.scanner.engines.vpngate.VpnGateServer
 import com.mlmvpn.scanner.ui.settings.IosScreen
@@ -67,7 +66,7 @@ fun GatewayServerDetailScreen(
         onBack = onBack,
         backLabel = S(R.string.servers_r2),
     ) {
-        Spacer(Modifier.height(14.dp))
+        Spacer(Modifier.height(DuskTheme.space3_5))
 
         SettingsSectionHeader(S(R.string.your_measurements))
         SettingsGroup {
@@ -150,7 +149,7 @@ fun GatewayServerDetailScreen(
                     server.message,
                     color = DuskTheme.muted,
                     style = MaterialTheme.typography.bodySmall,
-                    modifier = Modifier.padding(16.dp),
+                    modifier = Modifier.padding(DuskTheme.space4),
                 )
             }
         }
@@ -179,7 +178,7 @@ fun GatewayServerDetailScreen(
                 S(R.string.stays_even_after_vpn_gate_drops_it)
         )
 
-        Spacer(Modifier.height(32.dp))
+        Spacer(Modifier.height(DuskTheme.space6))
     }
 }
 
@@ -224,7 +223,7 @@ private fun logPolicy(raw: String): String = when (raw.trim().lowercase()) {
 @Composable
 fun GatewayHelpScreen(onBack: () -> Unit) {
     IosScreen(title = S(R.string.server_guide), onBack = onBack, backLabel = S(R.string.servers_r2)) {
-        Spacer(Modifier.height(14.dp))
+        Spacer(Modifier.height(DuskTheme.space3_5))
 
         SettingsFooter(
             S(R.string.these_servers_are_shared_by_volunteers_around) +
@@ -317,7 +316,7 @@ fun GatewayHelpScreen(onBack: () -> Unit) {
                 S(R.string.and_run_the_same_test_there)
         )
 
-        Spacer(Modifier.height(32.dp))
+        Spacer(Modifier.height(DuskTheme.space6))
     }
 }
 

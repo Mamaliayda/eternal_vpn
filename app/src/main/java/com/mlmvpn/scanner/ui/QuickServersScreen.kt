@@ -189,7 +189,7 @@ fun QuickServersScreen(
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
             contentPadding = PaddingValues(
-                bottom = LocalSystemBottomPadding.current + 16.dp,
+                bottom = LocalSystemBottomPadding.current + DuskTheme.space4,
             ),
         ) {
             item {
@@ -225,14 +225,14 @@ fun QuickServersScreen(
                         animationSpec = tween(durationMillis = 450, easing = FastOutSlowInEasing),
                         label = "refreshProgress",
                     )
-                    Column(modifier = Modifier.fillMaxWidth().padding(16.dp)) {
+                    Column(modifier = Modifier.fillMaxWidth().padding(DuskTheme.space4)) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             CircularProgressIndicator(
                                 modifier = Modifier.size(15.dp),
                                 color = DuskTheme.muted,
                                 strokeWidth = 2.dp,
                             )
-                            Spacer(Modifier.width(10.dp))
+                            Spacer(Modifier.width(DuskTheme.space2_5))
                             Text(
                                 refreshTitle.ifBlank { S(R.string.fetching) },
                                 color = DuskTheme.onSurface,
@@ -247,7 +247,7 @@ fun QuickServersScreen(
                                 style = MaterialTheme.typography.bodySmall,
                             )
                         }
-                        Spacer(Modifier.height(10.dp))
+                        Spacer(Modifier.height(DuskTheme.space2_5))
                         LinearProgressIndicator(
                             progress = fraction,
                             color = DuskTheme.primary,
@@ -271,10 +271,10 @@ fun QuickServersScreen(
             }
 
             // ---- the two sweeps -----------------------------------------------------------
-            Spacer(Modifier.height(14.dp))
+            Spacer(Modifier.height(DuskTheme.space3_5))
             Row(
-                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                modifier = Modifier.fillMaxWidth().padding(horizontal = DuskTheme.space4),
+                horizontalArrangement = Arrangement.spacedBy(DuskTheme.space2),
             ) {
                 QuickButton(
                     label = if (scanning) S(R.string.stop) else S(R.string.quick_scan),
@@ -318,8 +318,8 @@ fun QuickServersScreen(
                     onChange = { wantCountries = it },
                 )
             }
-            Spacer(Modifier.height(10.dp))
-            Box(modifier = Modifier.padding(horizontal = 16.dp)) {
+            Spacer(Modifier.height(DuskTheme.space2_5))
+            Box(modifier = Modifier.padding(horizontal = DuskTheme.space4)) {
                 QuickButton(
                     label = if (scanning) S(R.string.stop)
                             else S(R.string.find) + faCount(wantCount) + S(R.string.servers_from) + faCount(wantCountries) + S(R.string.countries_2),
@@ -344,7 +344,7 @@ fun QuickServersScreen(
                     it,
                     color = DuskTheme.accent,
                     style = MaterialTheme.typography.bodySmall,
-                    modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp),
+                    modifier = Modifier.padding(horizontal = 20.dp, vertical = DuskTheme.space2),
                 )
             }
             catalog?.takeIf { it.stale }?.let {
@@ -352,17 +352,17 @@ fun QuickServersScreen(
                     S(R.string.showing_the_saved_list_the_fresh_download),
                     color = DuskTheme.accent,
                     style = MaterialTheme.typography.bodySmall,
-                    modifier = Modifier.padding(horizontal = 20.dp, vertical = 6.dp),
+                    modifier = Modifier.padding(horizontal = 20.dp, vertical = DuskTheme.space1_5),
                 )
             }
 
             // ---- the results --------------------------------------------------------------
             if (results.isNotEmpty()) {
                 SettingsSectionHeader(faCount(results.size) + S(R.string.working_servers))
-                Spacer(Modifier.height(2.dp))
+                Spacer(Modifier.height(DuskTheme.microSpace))
                 Row(
-                    modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    modifier = Modifier.fillMaxWidth().padding(horizontal = DuskTheme.space4),
+                    horizontalArrangement = Arrangement.spacedBy(DuskTheme.space2),
                 ) {
                     QuickButton(
                         label = S(R.string.add_to_the_connection_page),
@@ -375,7 +375,7 @@ fun QuickServersScreen(
                         modifier = Modifier.width(110.dp),
                     ) { confirmDelete = true }
                 }
-                Spacer(Modifier.height(10.dp))
+                Spacer(Modifier.height(DuskTheme.space2_5))
             }
             }
 
@@ -414,7 +414,7 @@ fun QuickServersScreen(
                         }
                         val blocked = QuickBlocklist.count(context)
                         if (blocked > 0) {
-                            Spacer(Modifier.height(10.dp))
+                            Spacer(Modifier.height(DuskTheme.space2_5))
                             SettingsGroup {
                                 com.mlmvpn.scanner.ui.settings.SettingsActionRow(
                                     label = S(R.string.restore) + faCount(blocked) + S(R.string.deleted_servers),
@@ -491,15 +491,15 @@ private fun QuickCountryScreen(
 
     IosScreen(title = S(R.string.country), onBack = onBack, backLabel = S(R.string.servers_4), scrollable = false) {
         Column(modifier = Modifier.fillMaxSize()) {
-            Spacer(Modifier.height(10.dp))
+            Spacer(Modifier.height(DuskTheme.space2_5))
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp)
+                    .padding(horizontal = DuskTheme.space4)
                     .clip(DuskTheme.controlShape)
                     .background(DuskTheme.white.copy(alpha = 0.07f))
                     .heightIn(min = 40.dp)
-                    .padding(horizontal = 12.dp),
+                    .padding(horizontal = DuskTheme.space3),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Icon(
@@ -508,7 +508,7 @@ private fun QuickCountryScreen(
                     tint = DuskTheme.muted,
                     modifier = Modifier.size(16.dp),
                 )
-                Spacer(Modifier.width(8.dp))
+                Spacer(Modifier.width(DuskTheme.space2))
                 BasicTextField(
                     value = query,
                     onValueChange = { query = it },
@@ -529,7 +529,7 @@ private fun QuickCountryScreen(
                 )
             }
 
-            Spacer(Modifier.height(14.dp))
+            Spacer(Modifier.height(DuskTheme.space3_5))
 
             LazyColumn(
                 modifier = Modifier.weight(1f),
@@ -545,7 +545,7 @@ private fun QuickCountryScreen(
                             onClick = { onPick(null) },
                         )
                     }
-                    Spacer(Modifier.height(14.dp))
+                    Spacer(Modifier.height(DuskTheme.space3_5))
                 }
                 item {
                     SettingsGroup {
@@ -597,11 +597,11 @@ private fun QuickCountryRow(
             .fillMaxWidth()
             .clickable(enabled = enabled, onClick = onClick)
             .heightIn(min = 52.dp)
-            .padding(horizontal = 16.dp, vertical = 8.dp),
+            .padding(horizontal = DuskTheme.space4, vertical = DuskTheme.space2),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(flag, style = MaterialTheme.typography.titleLarge)
-        Spacer(Modifier.width(10.dp))
+        Spacer(Modifier.width(DuskTheme.space2_5))
         Column(modifier = Modifier.weight(1f)) {
             Text(
                 name,
@@ -651,7 +651,7 @@ private fun NumberRow(
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.fillMaxWidth().heightIn(min = 52.dp).padding(horizontal = 16.dp, vertical = 8.dp),
+        modifier = Modifier.fillMaxWidth().heightIn(min = 52.dp).padding(horizontal = DuskTheme.space4, vertical = DuskTheme.space2),
     ) {
         Column(modifier = Modifier.weight(1f)) {
             Text(label, color = DuskTheme.onSurface, style = MaterialTheme.typography.bodyLarge)
@@ -669,7 +669,7 @@ private fun NumberRow(
                 .width(76.dp)
                 .clip(DuskTheme.controlShape)
                 .background(DuskTheme.white.copy(alpha = 0.08f))
-                .padding(horizontal = 8.dp, vertical = 7.dp),
+                .padding(horizontal = DuskTheme.space2, vertical = 7.dp),
             contentAlignment = Alignment.Center,
         ) {
             BasicTextField(
@@ -735,11 +735,11 @@ private fun ResultRow(node: QuickNode, alreadySaved: Boolean, onDelete: () -> Un
         modifier = Modifier
             .fillMaxWidth()
             .heightIn(min = 54.dp)
-            .padding(start = 16.dp, end = 8.dp, top = 8.dp, bottom = 8.dp),
+            .padding(start = DuskTheme.space4, end = DuskTheme.space2, top = DuskTheme.space2, bottom = DuskTheme.space2),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(node.flag ?: "🏳️", style = MaterialTheme.typography.titleLarge)
-        Spacer(Modifier.width(10.dp))
+        Spacer(Modifier.width(DuskTheme.space2_5))
         Column(modifier = Modifier.weight(1f)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
@@ -750,7 +750,7 @@ private fun ResultRow(node: QuickNode, alreadySaved: Boolean, onDelete: () -> Un
                     overflow = TextOverflow.Ellipsis,
                     modifier = Modifier.weight(1f, fill = false),
                 )
-                Spacer(Modifier.width(6.dp))
+                Spacer(Modifier.width(DuskTheme.space1_5))
                 // "Already here" vs "new to you" -- so a second sweep of the same country
                 // shows at a glance what it actually added.
                 if (alreadySaved) DuskPill(S(R.string.tested), indicator = DuskTheme.muted, compact = true) else DuskPill(S(R.string.new_str), selected = true, indicator = DuskTheme.success, compact = true)
@@ -772,7 +772,7 @@ private fun ResultRow(node: QuickNode, alreadySaved: Boolean, onDelete: () -> Un
                 overflow = TextOverflow.Ellipsis,
             )
         }
-        Spacer(Modifier.width(8.dp))
+        Spacer(Modifier.width(DuskTheme.space2))
         Text(
             if (node.delay > 0) faCount(node.delay) + " ms" else "—",
             color = when {
@@ -810,7 +810,7 @@ private fun ResultRow(node: QuickNode, alreadySaved: Boolean, onDelete: () -> Un
 private fun ScanStrip(p: QuickScanner.Progress, label: String, running: Boolean) {
     val done = p.stage == QuickScanner.Stage.DONE
 
-    Column(modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 12.dp)) {
+    Column(modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = DuskTheme.space3)) {
         if (label.isNotBlank()) {
             Text(
                 if (running) label else S(R.string.label_finished, label),
@@ -818,7 +818,7 @@ private fun ScanStrip(p: QuickScanner.Progress, label: String, running: Boolean)
                 style = MaterialTheme.typography.bodySmall,
                 fontWeight = FontWeight.SemiBold,
             )
-            Spacer(Modifier.height(8.dp))
+            Spacer(Modifier.height(DuskTheme.space2))
         }
         if (done) {
             Text(
@@ -837,7 +837,7 @@ private fun ScanStrip(p: QuickScanner.Progress, label: String, running: Boolean)
                 fraction = if (p.total > 0) (p.probed.toFloat() / p.total).coerceIn(0f, 1f) else 0f,
                 color = DuskTheme.primary,
             )
-            Spacer(Modifier.height(10.dp))
+            Spacer(Modifier.height(DuskTheme.space2_5))
             StageBar(
                 title = S(R.string.s_2_real_connection),
                 detail = faCount(p.realTested) + S(R.string.of) + faCount(p.reachable) + " · " + faCount(p.found) + S(R.string.working),
@@ -899,7 +899,7 @@ private fun QuickButton(
             )
             .clickable(enabled = enabled, onClick = onClick)
             .heightIn(min = 46.dp)
-            .padding(horizontal = 12.dp),
+            .padding(horizontal = DuskTheme.space3),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically,
     ) {

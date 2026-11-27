@@ -1,6 +1,6 @@
 # Eternal VPN — screen redesign checklist
 
-> **Progress: 368 / 1203 complete** — each checked row is fully migrated; unverified routes and states remain unchecked.
+> **Progress: 371 / 1203 complete** — each checked row is fully migrated; unverified routes and states remain unchecked.
 
 > Inventory generated from Kotlin source on 2026-11-26. A row is considered migrated only after its visible composition, nested states, and overlays are reviewed against the Soft Dusk tokens. Shared theme inheritance alone does **not** count as a completed visual redesign.
 
@@ -165,8 +165,8 @@ Found 230 screen-like public/internal composables across 133 Kotlin files (the f
 - [x] `VpnGateCountryScreen` — `com/mlmvpn/scanner/ui/VpnGateCountryScreen.kt`
 ### VpnGateInfoScreens.kt
 
-- [ ] `GatewayServerDetailScreen` — `com/mlmvpn/scanner/ui/VpnGateInfoScreens.kt`
-- [ ] `GatewayHelpScreen` — `com/mlmvpn/scanner/ui/VpnGateInfoScreens.kt`
+- [x] `GatewayServerDetailScreen` — `com/mlmvpn/scanner/ui/VpnGateInfoScreens.kt`
+- [x] `GatewayHelpScreen` — `com/mlmvpn/scanner/ui/VpnGateInfoScreens.kt`
 ### VpnGateServersScreen.kt
 
 - [x] `VpnGateServersScreen` — `com/mlmvpn/scanner/ui/VpnGateServersScreen.kt`
@@ -568,7 +568,7 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 - [x] `CountryRow` — `com/mlmvpn/scanner/ui/VpnGateCountryScreen.kt`
 ### VpnGateInfoScreens.kt
 
-- [ ] `HelpRow` — `com/mlmvpn/scanner/ui/VpnGateInfoScreens.kt`
+- [x] `HelpRow` — `com/mlmvpn/scanner/ui/VpnGateInfoScreens.kt`
 ### VpnGateServersScreen.kt
 
 - [x] `SearchField` — `com/mlmvpn/scanner/ui/VpnGateServersScreen.kt`

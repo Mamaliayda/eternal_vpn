@@ -94,8 +94,12 @@ object DuskTheme {
     val space4 = 16.dp
     val space5 = 24.dp
     val space6 = 32.dp
+    val space1_5 = 6.dp
+    val space2_5 = 10.dp
+    val space3_5 = 14.dp
     val microSpace = 2.dp
     val hairlineSpace = 1.dp
+    val separatorWidth = 0.5.dp
     val inlineIconSize = 18.dp
     val actionHeight = 52.dp
     val floatingActionClearance = 96.dp

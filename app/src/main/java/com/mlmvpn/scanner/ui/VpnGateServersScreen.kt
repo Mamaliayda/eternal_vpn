@@ -214,7 +214,7 @@ fun VpnGateServersScreen(
                     .clickable {
                         if (state.selecting) state.clearSelection() else state.selecting = true
                     }
-                    .padding(horizontal = 6.dp, vertical = 4.dp),
+                    .padding(horizontal = DuskTheme.space1_5, vertical = DuskTheme.space1),
             )
         },
     ) {
@@ -233,7 +233,7 @@ fun VpnGateServersScreen(
                     onSelect = { state.scope = it; state.clearSelection() },
                 )
 
-                Spacer(Modifier.height(8.dp))
+                Spacer(Modifier.height(DuskTheme.space2))
 
                 GatewayToolbar(
                     busy = sweepRunning,
@@ -248,9 +248,9 @@ fun VpnGateServersScreen(
                     onHelp = onOpenHelp,
                 )
 
-                Spacer(Modifier.height(6.dp))
+                Spacer(Modifier.height(DuskTheme.space1_5))
 
-                VpnGateSweepStrip(modifier = Modifier.padding(horizontal = 16.dp, vertical = 2.dp))
+                VpnGateSweepStrip(modifier = Modifier.padding(horizontal = DuskTheme.space4, vertical = DuskTheme.microSpace))
 
                 ListSummary(
                     loading = loading,
@@ -276,7 +276,7 @@ fun VpnGateServersScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .weight(1f)
-                            .padding(horizontal = 16.dp)
+                            .padding(horizontal = DuskTheme.space4)
                             .frostedGlass(DuskTheme.cardShape),
                         // Room for the floating bar, so the last row is never stuck under it.
                         contentPadding = PaddingValues(bottom = 88.dp),
@@ -375,11 +375,11 @@ private fun SearchField(query: String, onChange: (String) -> Unit, placeholder: 
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp)
+            .padding(horizontal = DuskTheme.space4, vertical = DuskTheme.space2)
             .clip(DuskTheme.controlShape)
             .background(DuskTheme.white.copy(alpha = 0.10f))
             .heightIn(min = 36.dp)
-            .padding(horizontal = 10.dp),
+            .padding(horizontal = DuskTheme.space2_5),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Icon(
@@ -436,9 +436,9 @@ private fun ScopeChips(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp)
+            .padding(horizontal = DuskTheme.space4)
             .horizontalScroll(rememberScrollState()),
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        horizontalArrangement = Arrangement.spacedBy(DuskTheme.space2),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         ScopeChip(S(R.string.my_list), mineCount, scope == GatewayScope.MINE) { onSelect(GatewayScope.MINE) }
@@ -467,7 +467,7 @@ private fun ListSummary(
     onClearCountries: () -> Unit,
 ) {
     Row(
-        modifier = Modifier.fillMaxWidth().padding(horizontal = 22.dp, vertical = 8.dp),
+        modifier = Modifier.fillMaxWidth().padding(horizontal = 22.dp, vertical = DuskTheme.space2),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
@@ -486,7 +486,7 @@ private fun ListSummary(
                     .clip(DuskTheme.controlShape)
                     .background(DuskTheme.success.copy(alpha = 0.16f))
                     .clickable(onClick = onClearCountries)
-                    .padding(horizontal = 8.dp, vertical = 4.dp),
+                    .padding(horizontal = DuskTheme.space2, vertical = DuskTheme.space1),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
@@ -495,7 +495,7 @@ private fun ListSummary(
                     color = DuskTheme.onSurface,
                     style = MaterialTheme.typography.labelSmall,
                 )
-                Spacer(Modifier.width(4.dp))
+                Spacer(Modifier.width(DuskTheme.space1))
                 Icon(
                     Icons.Default.Close,
                     contentDescription = S(R.string.clear_the_country_filter),
@@ -530,16 +530,16 @@ private fun BottomBar(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(
-                    start = 16.dp,
-                    end = 16.dp,
-                    bottom = LocalSystemBottomPadding.current + 12.dp,
+                    start = DuskTheme.space4,
+                    end = DuskTheme.space4,
+                    bottom = LocalSystemBottomPadding.current + DuskTheme.space3,
                 ),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
+            verticalArrangement = Arrangement.spacedBy(DuskTheme.space2),
         ) {
             if (snack != null) GatewaySnack(snack)
 
             if (selecting) {
-                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                Row(horizontalArrangement = Arrangement.spacedBy(DuskTheme.space2)) {
                     GatewayBarButton(
                         onClick = onCheckHealthy,
                         modifier = Modifier.weight(1f),

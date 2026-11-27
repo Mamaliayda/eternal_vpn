@@ -108,7 +108,7 @@ fun GatewayServerRow(
                 .fillMaxWidth()
                 .combinedClickable(onClick = onClick, onLongClick = onLongClick)
                 .heightIn(min = 48.dp)
-                .padding(horizontal = 14.dp, vertical = 8.dp),
+                .padding(horizontal = DuskTheme.space3_5, vertical = DuskTheme.space2),
         ) {
             // The checkbox LEADS the row, the way a list being edited does everywhere else in the
             // app; the tick TRAILS it, because that is a result rather than a control.
@@ -126,11 +126,11 @@ fun GatewayServerRow(
                     tint = lead.second,
                     modifier = Modifier.size(20.dp),
                 )
-                Spacer(Modifier.width(10.dp))
+                Spacer(Modifier.width(DuskTheme.space2_5))
             }
 
             Text(getNodeFlagEmoji(server.countryShort), style = MaterialTheme.typography.titleLarge)
-            Spacer(Modifier.width(12.dp))
+            Spacer(Modifier.width(DuskTheme.space3))
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = server.countryLong.ifBlank { server.countryShort },
@@ -145,19 +145,19 @@ fun GatewayServerRow(
                     else -> null
                 }
                 if (note != null) {
-                    Spacer(Modifier.height(2.dp))
+                    Spacer(Modifier.height(DuskTheme.microSpace))
                     Text(note, color = DuskTheme.muted, style = MaterialTheme.typography.labelSmall)
                 }
             }
 
             if (handshake != null) {
                 HandshakeBadge(handshake)
-                Spacer(Modifier.width(6.dp))
+                Spacer(Modifier.width(DuskTheme.space1_5))
             }
             PingBadge(ping)
 
             if (mark is RowMark.Selected) {
-                Spacer(Modifier.width(8.dp))
+                Spacer(Modifier.width(DuskTheme.space2))
                 Icon(
                     Icons.Default.Check,
                     contentDescription = null,
@@ -171,7 +171,7 @@ fun GatewayServerRow(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(start = 46.dp)
-                    .height(0.5.dp)
+                    .height(DuskTheme.separatorWidth)
                     .background(DuskTheme.outline)
             )
         }
@@ -273,9 +273,9 @@ fun GatewayToolbar(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp)
+            .padding(horizontal = DuskTheme.space4)
             .frostedGlass(DuskTheme.cardShape)
-            .padding(vertical = 6.dp),
+            .padding(vertical = DuskTheme.space1_5),
         horizontalArrangement = Arrangement.SpaceEvenly,
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -311,7 +311,7 @@ private fun GateToolbarAction(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Icon(icon, contentDescription = label, tint = tint, modifier = Modifier.size(20.dp))
-        Spacer(Modifier.height(4.dp))
+        Spacer(Modifier.height(DuskTheme.space1))
         Text(label, color = tint, style = MaterialTheme.typography.labelSmall, maxLines = 1)
     }
 }
@@ -346,7 +346,7 @@ fun GatewayBarButton(
             )
             .clickable(enabled = enabled, onClick = onClick)
             .heightIn(min = 48.dp)
-            .padding(horizontal = 12.dp, vertical = 8.dp),
+            .padding(horizontal = DuskTheme.space3, vertical = DuskTheme.space2),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -357,7 +357,7 @@ fun GatewayBarButton(
                 tint = if (enabled) DuskTheme.onSurface else DuskTheme.muted.copy(alpha = 0.5f),
                 modifier = Modifier.size(16.dp),
             )
-            Spacer(Modifier.width(6.dp))
+            Spacer(Modifier.width(DuskTheme.space1_5))
         }
         Text(
             label,
