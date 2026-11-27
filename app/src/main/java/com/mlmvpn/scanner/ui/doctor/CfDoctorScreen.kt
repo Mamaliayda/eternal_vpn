@@ -2,7 +2,6 @@ package com.mlmvpn.scanner.ui.doctor
 
 import android.content.Intent
 import android.net.Uri
-import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -31,7 +30,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.icons.Icons
@@ -90,7 +88,8 @@ import com.mlmvpn.scanner.engines.cfdoctor.StageVerdict
 import com.mlmvpn.scanner.engines.cfdoctor.Verdict
 import com.mlmvpn.scanner.models.CloudAccount
 import com.mlmvpn.scanner.ui.home.frostedGlass
-import com.mlmvpn.scanner.ui.settings.Ios
+import com.mlmvpn.scanner.ui.theme.DuskTheme
+import com.mlmvpn.scanner.ui.theme.rememberDuskSnackbarAction
 import com.mlmvpn.scanner.ui.settings.IosScreen
 import com.mlmvpn.scanner.ui.settings.SettingsActionRow
 import com.mlmvpn.scanner.ui.settings.SettingsFooter
@@ -156,6 +155,7 @@ private fun DoctorMain(
     onAccount: () -> Unit, onReport: () -> Unit, onStart: (Boolean, String, Set<String>) -> Unit,
 ) {
     val context = LocalContext.current
+    val notify = rememberDuskSnackbarAction()
     val scope = rememberCoroutineScope()
     val state by DoctorEngine.state.collectAsState()
     var label by rememberSaveable { mutableStateOf(AndroidNetEnv.operator(context).let { if (it in setOf("OTHER", "UNKNOWN")) "" else it }) }
@@ -172,7 +172,7 @@ private fun DoctorMain(
             val ok = withContext(Dispatchers.IO) {
                 runCatching { context.contentResolver.openOutputStream(uri)?.use { it.write(pendingSave.toByteArray()) } ?: error("no output") }.isSuccess
             }
-            Toast.makeText(context, S(if (ok) R.string.doc_saved else R.string.doc_save_failed), Toast.LENGTH_SHORT).show()
+            notify(S(if (ok) R.string.doc_saved else R.string.doc_save_failed))
             pendingSave = ""
         }
     }
@@ -181,7 +181,7 @@ private fun DoctorMain(
         Hero(state, onStart = { onStart(full, label, complaint.toSet()) }, onStop = { DoctorEngine.stop() },
             onShare = if (report.isNotBlank()) ({
                 if (!DoctorShare.share(context, DoctorEngine.fileName(context), report))
-                    Toast.makeText(context, S(R.string.doc_share_failed), Toast.LENGTH_SHORT).show()
+                    notify(S(R.string.doc_share_failed))
             }) else null)
 
         // ---- the four results, live while running.
@@ -189,13 +189,13 @@ private fun DoctorMain(
             SettingsSectionHeader(stringResource(R.string.doc_stages))
             SettingsGroup {
                 val stages = liveStages(state)
-                StageRow(Icons.Default.Cloud, Ios.Blue, stringResource(R.string.doc_st1), stages[0])
+                StageRow(Icons.Default.Cloud, DuskTheme.primary, stringResource(R.string.doc_st1), stages[0])
                 Separator()
-                StageRow(Icons.Default.CloudDownload, Ios.Teal, stringResource(R.string.doc_st2), stages[1])
+                StageRow(Icons.Default.CloudDownload, DuskTheme.secondary, stringResource(R.string.doc_st2), stages[1])
                 Separator()
-                StageRow(Icons.Default.Link, Ios.Green, stringResource(R.string.doc_st3), stages[2])
+                StageRow(Icons.Default.Link, DuskTheme.success, stringResource(R.string.doc_st3), stages[2])
                 Separator()
-                StageRow(Icons.Default.Radar, Ios.Purple, stringResource(R.string.doc_st4), stages[3])
+                StageRow(Icons.Default.Radar, DuskTheme.purple, stringResource(R.string.doc_st4), stages[3])
             }
         }
 
@@ -206,7 +206,7 @@ private fun DoctorMain(
                 SettingsGroup {
                     advice.findings.forEachIndexed { i, f ->
                         if (i > 0) Separator()
-                        TextRow(Icons.Default.Warning, Ios.Orange, findingText(f))
+                        TextRow(Icons.Default.Warning, DuskTheme.accent, findingText(f))
                     }
                 }
             }
@@ -215,7 +215,7 @@ private fun DoctorMain(
                 SettingsGroup {
                     advice.notes.forEachIndexed { i, f ->
                         if (i > 0) Separator()
-                        TextRow(Icons.Default.Info, Ios.SecondaryLabel, findingText(f))
+                        TextRow(Icons.Default.Info, DuskTheme.muted, findingText(f))
                     }
                 }
                 SettingsFooter(stringResource(R.string.doc_notes_footer))
@@ -225,7 +225,7 @@ private fun DoctorMain(
                 SettingsGroup {
                     advice.works.forEachIndexed { i, w ->
                         if (i > 0) Separator()
-                        TextRow(Icons.Default.CheckCircle, Ios.Green, worksText(w))
+                        TextRow(Icons.Default.CheckCircle, DuskTheme.success, worksText(w))
                     }
                 }
             }
@@ -235,16 +235,16 @@ private fun DoctorMain(
         if (report.isNotBlank() && !state.running) {
             SettingsSectionHeader(stringResource(R.string.doc_report))
             SettingsGroup {
-                SettingsActionRow(label = stringResource(R.string.doc_share), icon = Icons.Default.Send, tint = Ios.Blue) {
+                SettingsActionRow(label = stringResource(R.string.doc_share), icon = Icons.Default.Send, tint = DuskTheme.primary) {
                     if (!DoctorShare.share(context, DoctorEngine.fileName(context), report))
-                        Toast.makeText(context, S(R.string.doc_share_failed), Toast.LENGTH_SHORT).show()
+                        notify(S(R.string.doc_share_failed))
                 }
                 Separator()
-                SettingsActionRow(label = stringResource(R.string.doc_save), icon = Icons.Default.Save, tint = Ios.Teal) {
+                SettingsActionRow(label = stringResource(R.string.doc_save), icon = Icons.Default.Save, tint = DuskTheme.secondary) {
                     pendingSave = report; save.launch(DoctorEngine.fileName(context))
                 }
                 Separator()
-                SettingsActionRow(label = stringResource(R.string.doc_group), icon = Icons.Default.Group, tint = Ios.Indigo) {
+                SettingsActionRow(label = stringResource(R.string.doc_group), icon = Icons.Default.Group, tint = DuskTheme.indigo) {
                     runCatching { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://t.me/mlmvpn")).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)) }
                 }
                 Separator()
@@ -262,7 +262,7 @@ private fun DoctorMain(
                     SettingsToggle(
                         title = stringResource(title), checked = key in complaint,
                         onCheckedChange = { on -> complaint = if (on) complaint + key else complaint - key },
-                        icon = Icons.Default.Warning, tint = Ios.Orange,
+                        icon = Icons.Default.Warning, tint = DuskTheme.accent,
                     )
                 }
             }
@@ -275,13 +275,13 @@ private fun DoctorMain(
             SettingsGroup {
                 SettingsTextRow(
                     title = stringResource(R.string.doc_net_label), value = label, onValueChange = { label = it.take(40) },
-                    icon = Icons.Default.Speed, tint = Ios.Indigo, placeholder = stringResource(R.string.doc_net_label_hint),
+                    icon = Icons.Default.Speed, tint = DuskTheme.indigo, placeholder = stringResource(R.string.doc_net_label_hint),
                 )
                 if (account == null) {
                     Separator()
                     SettingsRow(
                         title = stringResource(R.string.doc_with_account), subtitle = stringResource(R.string.doc_with_account_sub),
-                        icon = Icons.Default.Person, tint = Ios.Orange,
+                        icon = Icons.Default.Person, tint = DuskTheme.accent,
                         value = stringResource(if (hasTypedCredential) R.string.doc_account_set else R.string.doc_account_off),
                         onClick = onAccount,
                     )
@@ -301,24 +301,24 @@ private fun Hero(state: DoctorEngine.State, onStart: () -> Unit, onStop: () -> U
     val advice = state.advice
     val tone by animateColorAsState(
         when {
-            state.running -> Ios.Blue
-            advice == null -> Ios.Blue
-            advice.overall == DoctorAdvice.Overall.ALL_GOOD -> Ios.Green
-            advice.overall == DoctorAdvice.Overall.PARTIAL -> Ios.Orange
-            advice.overall == DoctorAdvice.Overall.PROBLEMS -> Ios.Orange
-            else -> Ios.Red
+            state.running -> DuskTheme.primary
+            advice == null -> DuskTheme.primary
+            advice.overall == DoctorAdvice.Overall.ALL_GOOD -> DuskTheme.success
+            advice.overall == DoctorAdvice.Overall.PARTIAL -> DuskTheme.accent
+            advice.overall == DoctorAdvice.Overall.PROBLEMS -> DuskTheme.accent
+            else -> DuskTheme.error
         }, animationSpec = tween(450), label = "tone",
     )
     Column(
-        Modifier.fillMaxWidth().padding(horizontal = 16.dp).frostedGlass(RoundedCornerShape(30.dp)).padding(20.dp),
+        Modifier.fillMaxWidth().padding(horizontal = 16.dp).frostedGlass(DuskTheme.cardShape).padding(20.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
             Image(painterResource(R.drawable.ic_app_doctor), contentDescription = null, contentScale = ContentScale.Fit, modifier = Modifier.size(52.dp))
             Spacer(Modifier.width(12.dp))
             Column(Modifier.weight(1f)) {
-                Text(stringResource(R.string.cf_doctor_title), color = Ios.Label, fontSize = 19.sp, fontWeight = FontWeight.Bold)
-                Text(stringResource(R.string.doc_subtitle), color = Ios.SecondaryLabel, fontSize = 13.sp)
+                Text(stringResource(R.string.cf_doctor_title), color = DuskTheme.onSurface, fontSize = 19.sp, fontWeight = FontWeight.Bold)
+                Text(stringResource(R.string.doc_subtitle), color = DuskTheme.muted, fontSize = 13.sp)
             }
         }
         Spacer(Modifier.height(18.dp))
@@ -330,21 +330,21 @@ private fun Hero(state: DoctorEngine.State, onStart: () -> Unit, onStop: () -> U
                     CircularProgressIndicator(progress = 1f, color = Color.White.copy(alpha = 0.12f), strokeWidth = 8.dp, modifier = Modifier.size(132.dp))
                     CircularProgressIndicator(progress = shown, color = tone, strokeWidth = 8.dp, modifier = Modifier.size(132.dp))
                     Text("${fa((shown * 100).toInt())}٪".let { if (Locale.getDefault().language == "fa") it else "${(shown * 100).toInt()}%" },
-                        color = Ios.Label, fontSize = 26.sp, fontWeight = FontWeight.Bold)
+                        color = DuskTheme.onSurface, fontSize = 26.sp, fontWeight = FontWeight.Bold)
                 }
                 Spacer(Modifier.height(14.dp))
-                Text(stepText(state.step), color = Ios.Label, fontSize = 16.sp, fontWeight = FontWeight.SemiBold, textAlign = TextAlign.Center)
+                Text(stepText(state.step), color = DuskTheme.onSurface, fontSize = 16.sp, fontWeight = FontWeight.SemiBold, textAlign = TextAlign.Center)
                 var now by remember { mutableLongStateOf(0L) }
                 LaunchedEffect(Unit) { while (true) { now = System.currentTimeMillis(); delay(1_000) } }
                 val secs = (state.progress.elapsedMs / 1000).coerceAtLeast(0)
                 Text(
                     stringResource(R.string.doc_tests_done, fa(state.progress.rows.size), fa("%02d:%02d".format(Locale.US, secs / 60, secs % 60))),
-                    color = Ios.SecondaryLabel, fontSize = 13.sp,
+                    color = DuskTheme.muted, fontSize = 13.sp,
                 )
                 Spacer(Modifier.height(16.dp))
-                Capsule(stringResource(R.string.doc_stop), Color.White.copy(alpha = 0.14f), Ios.Red, onStop)
+                Capsule(stringResource(R.string.doc_stop), Color.White.copy(alpha = 0.14f), DuskTheme.error, onStop)
                 Spacer(Modifier.height(8.dp))
-                Text(stringResource(R.string.doc_running_note), color = Ios.SecondaryLabel, fontSize = 12.sp, textAlign = TextAlign.Center)
+                Text(stringResource(R.string.doc_running_note), color = DuskTheme.muted, fontSize = 12.sp, textAlign = TextAlign.Center)
             }
             advice != null -> {
                 val (icon, text) = when (advice.overall) {
@@ -358,23 +358,23 @@ private fun Hero(state: DoctorEngine.State, onStart: () -> Unit, onStop: () -> U
                     Icon(icon, contentDescription = null, tint = tone, modifier = Modifier.size(46.dp))
                 }
                 Spacer(Modifier.height(12.dp))
-                Text(text, color = Ios.Label, fontSize = 17.sp, fontWeight = FontWeight.SemiBold, textAlign = TextAlign.Center)
+                Text(text, color = DuskTheme.onSurface, fontSize = 17.sp, fontWeight = FontWeight.SemiBold, textAlign = TextAlign.Center)
                 if (state.failed) {
                     Spacer(Modifier.height(6.dp))
-                    Text(stringResource(R.string.doc_failed), color = Ios.Orange, fontSize = 13.sp, textAlign = TextAlign.Center)
+                    Text(stringResource(R.string.doc_failed), color = DuskTheme.accent, fontSize = 13.sp, textAlign = TextAlign.Center)
                 }
                 Spacer(Modifier.height(16.dp))
                 // Every finished run has a report, good or bad: sending it is the point of the run.
                 if (onShare != null) {
-                    Capsule(stringResource(R.string.doc_share), Ios.Green, Color.White, onShare)
+                    Capsule(stringResource(R.string.doc_share), DuskTheme.success, Color.White, onShare)
                     Spacer(Modifier.height(10.dp))
                 }
-                Capsule(stringResource(R.string.doc_again), Ios.Blue, Color.White, onStart)
+                Capsule(stringResource(R.string.doc_again), DuskTheme.primary, Color.White, onStart)
             }
             else -> {
-                Text(stringResource(R.string.doc_intro), color = Ios.SecondaryLabel, fontSize = 14.sp, lineHeight = 22.sp, textAlign = TextAlign.Center)
+                Text(stringResource(R.string.doc_intro), color = DuskTheme.muted, fontSize = 14.sp, lineHeight = 22.sp, textAlign = TextAlign.Center)
                 Spacer(Modifier.height(18.dp))
-                Capsule(stringResource(R.string.doc_start), Ios.Blue, Color.White, onStart)
+                Capsule(stringResource(R.string.doc_start), DuskTheme.primary, Color.White, onStart)
             }
         }
     }
@@ -383,7 +383,7 @@ private fun Hero(state: DoctorEngine.State, onStart: () -> Unit, onStop: () -> U
 @Composable
 private fun Capsule(text: String, bg: Color, fg: Color, onClick: () -> Unit) {
     Box(
-        Modifier.fillMaxWidth().heightIn(min = 50.dp).clip(RoundedCornerShape(14.dp)).background(bg)
+        Modifier.fillMaxWidth().heightIn(min = 50.dp).clip(DuskTheme.controlShape).background(bg)
             .clickable(role = Role.Button, onClick = onClick),
         contentAlignment = Alignment.Center,
     ) { Text(text, color = fg, fontSize = 17.sp, fontWeight = FontWeight.SemiBold) }
@@ -420,13 +420,13 @@ private fun liveStages(state: DoctorEngine.State): List<StageUi> {
 @Composable
 private fun StageRow(icon: ImageVector, tint: Color, title: String, s: StageUi) {
     val (value, color) = when (s) {
-        StageUi.Waiting -> stringResource(R.string.doc_v_waiting) to Ios.SecondaryLabel
-        StageUi.Running -> stringResource(R.string.doc_v_running) to Ios.Blue
+        StageUi.Waiting -> stringResource(R.string.doc_v_waiting) to DuskTheme.muted
+        StageUi.Running -> stringResource(R.string.doc_v_running) to DuskTheme.primary
         is StageUi.Done -> when (s.verdict) {
-            Verdict.PASS -> stringResource(R.string.doc_v_pass) to Ios.Green
-            Verdict.DEGRADED -> stringResource(R.string.doc_v_degraded) to Ios.Orange
-            Verdict.FAIL -> stringResource(R.string.doc_v_fail) to Ios.Red
-            Verdict.SKIPPED -> stringResource(R.string.doc_v_skipped) to Ios.SecondaryLabel
+            Verdict.PASS -> stringResource(R.string.doc_v_pass) to DuskTheme.success
+            Verdict.DEGRADED -> stringResource(R.string.doc_v_degraded) to DuskTheme.accent
+            Verdict.FAIL -> stringResource(R.string.doc_v_fail) to DuskTheme.error
+            Verdict.SKIPPED -> stringResource(R.string.doc_v_skipped) to DuskTheme.muted
         }
     }
     val detail = (s as? StageUi.Done)?.let { layerText(it) }
@@ -437,15 +437,15 @@ private fun StageRow(icon: ImageVector, tint: Color, title: String, s: StageUi) 
         SettingsGlyph(icon, tint)
         Spacer(Modifier.width(12.dp))
         Column(Modifier.weight(1f)) {
-            Text(title, color = Ios.Label, fontSize = 16.sp)
-            if (!detail.isNullOrBlank()) Text(detail, color = Ios.SecondaryLabel, fontSize = 12.sp, lineHeight = 17.sp)
+            Text(title, color = DuskTheme.onSurface, fontSize = 16.sp)
+            if (!detail.isNullOrBlank()) Text(detail, color = DuskTheme.muted, fontSize = 12.sp, lineHeight = 17.sp)
         }
         Spacer(Modifier.width(8.dp))
         if (s == StageUi.Running) {
-            CircularProgressIndicator(Modifier.size(16.dp), color = Ios.Blue, strokeWidth = 2.dp)
+            CircularProgressIndicator(Modifier.size(16.dp), color = DuskTheme.primary, strokeWidth = 2.dp)
         } else {
             Text(value, color = color, fontSize = 13.sp, fontWeight = FontWeight.SemiBold,
-                modifier = Modifier.clip(RoundedCornerShape(50)).background(color.copy(alpha = 0.15f)).padding(horizontal = 10.dp, vertical = 4.dp))
+                modifier = Modifier.clip(DuskTheme.controlShape).background(color.copy(alpha = 0.15f)).padding(horizontal = 10.dp, vertical = 4.dp))
         }
     }
 }
@@ -469,7 +469,7 @@ private fun TextRow(icon: ImageVector, tint: Color, text: String) {
     Row(Modifier.fillMaxWidth().heightIn(min = 46.dp).padding(horizontal = 16.dp, vertical = 9.dp), verticalAlignment = Alignment.CenterVertically) {
         Icon(icon, contentDescription = null, tint = tint, modifier = Modifier.size(20.dp))
         Spacer(Modifier.width(12.dp))
-        Text(text, color = Ios.Label, fontSize = 15.sp, lineHeight = 21.sp, modifier = Modifier.weight(1f))
+        Text(text, color = DuskTheme.onSurface, fontSize = 15.sp, lineHeight = 21.sp, modifier = Modifier.weight(1f))
     }
 }
 
@@ -564,10 +564,10 @@ private fun AccountPage(token: String, email: String, onToken: (String) -> Unit,
 @Composable
 private fun Field(placeholder: String, value: String, onChange: (String) -> Unit, secret: Boolean) {
     Box(Modifier.fillMaxWidth().heightIn(min = 48.dp).padding(horizontal = 16.dp, vertical = 12.dp), contentAlignment = Alignment.CenterStart) {
-        if (value.isEmpty()) Text(placeholder, color = Ios.SecondaryLabel.copy(alpha = 0.7f), fontSize = 16.sp)
+        if (value.isEmpty()) Text(placeholder, color = DuskTheme.muted.copy(alpha = 0.7f), fontSize = 16.sp)
         BasicTextField(
             value = value, onValueChange = { onChange(it.trim().take(200)) }, singleLine = true,
-            textStyle = TextStyle(color = Ios.Label, fontSize = 16.sp), cursorBrush = SolidColor(Ios.Blue),
+            textStyle = TextStyle(color = DuskTheme.onSurface, fontSize = 16.sp), cursorBrush = SolidColor(DuskTheme.primary),
             visualTransformation = if (secret) PasswordVisualTransformation() else VisualTransformation.None,
             modifier = Modifier.fillMaxWidth(),
         )
@@ -581,10 +581,10 @@ private fun ReportPage(onBack: () -> Unit) {
     IosScreen(title = stringResource(R.string.doc_report), onBack = onBack, backLabel = stringResource(R.string.cf_doctor_title), scrollable = false) {
         SelectionContainer(Modifier.weight(1f)) {
             LazyColumn(
-                Modifier.fillMaxWidth().padding(horizontal = 16.dp).clip(RoundedCornerShape(16.dp)).background(Ios.CardOverWallpaper),
+                Modifier.fillMaxWidth().padding(horizontal = 16.dp).clip(DuskTheme.chartShape).background(DuskTheme.surface),
                 contentPadding = androidx.compose.foundation.layout.PaddingValues(12.dp),
             ) {
-                items(lines) { Text(it, color = Ios.Label, fontFamily = FontFamily.Monospace, fontSize = 10.sp, lineHeight = 14.sp) }
+                items(lines) { Text(it, color = DuskTheme.onSurface, fontFamily = FontFamily.Monospace, fontSize = 10.sp, lineHeight = 14.sp) }
             }
         }
         Spacer(Modifier.height(16.dp))

@@ -1,6 +1,5 @@
 package com.mlmvpn.scanner.ui.cloud
 
-import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -36,10 +35,11 @@ import com.mlmvpn.scanner.engines.gateway.Gateway
 import com.mlmvpn.scanner.engines.gateway.SettingsPatch
 import com.mlmvpn.scanner.models.CloudAccount
 import com.mlmvpn.scanner.store.tr
-import com.mlmvpn.scanner.ui.settings.Ios
 import com.mlmvpn.scanner.ui.settings.IosAlert
 import com.mlmvpn.scanner.ui.settings.IosAlertAction
 import com.mlmvpn.scanner.ui.settings.IosScreen
+import com.mlmvpn.scanner.ui.theme.DuskTheme
+import com.mlmvpn.scanner.ui.theme.rememberDuskSnackbarAction
 import com.mlmvpn.scanner.ui.settings.SettingsActionRow
 import com.mlmvpn.scanner.ui.settings.SettingsFooter
 import com.mlmvpn.scanner.ui.settings.SettingsGroup
@@ -57,6 +57,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun GatewaySettingsScreen(account: CloudAccount, onDismiss: () -> Unit) {
     val context = LocalContext.current
+    val notify = rememberDuskSnackbarAction()
     val scope = rememberCoroutineScope()
     val version by EdgeGateway.version.collectAsState()
     val gw = remember(version, account.accountId) { EdgeGateway.status(context, account) }
@@ -70,7 +71,7 @@ fun GatewaySettingsScreen(account: CloudAccount, onDismiss: () -> Unit) {
     var busy by remember { mutableStateOf<String?>(null) }
     var confirm by remember { mutableStateOf<String?>(null) }
 
-    fun say(text: String) = Toast.makeText(context, text, Toast.LENGTH_LONG).show()
+    fun say(text: String) = notify(text)
 
     fun save() {
         if (busy != null) return
@@ -148,7 +149,7 @@ fun GatewaySettingsScreen(account: CloudAccount, onDismiss: () -> Unit) {
 
         Spacer(Modifier.height(18.dp))
         SettingsGroup {
-            SettingsActionRow(label = tr("ذخیره", "Save"), icon = Icons.Default.Save, tint = Ios.Blue, busy = busy == "save") { save() }
+            SettingsActionRow(label = tr("ذخیره", "Save"), icon = Icons.Default.Save, tint = DuskTheme.primary, busy = busy == "save") { save() }
             Separator()
             SettingsActionRow(label = tr("آزمایش ورکر", "Test the Worker"), icon = Icons.Default.CloudDone, busy = busy == "check") {
                 if (busy != null) return@SettingsActionRow
@@ -169,7 +170,7 @@ fun GatewaySettingsScreen(account: CloudAccount, onDismiss: () -> Unit) {
             }
             if (!gw.upToDate) {
                 Separator()
-                SettingsActionRow(label = tr("به‌روزرسانی ورکر", "Update the Worker"), icon = Icons.Default.Refresh, tint = Ios.Orange, busy = busy == "update") {
+                SettingsActionRow(label = tr("به‌روزرسانی ورکر", "Update the Worker"), icon = Icons.Default.Refresh, tint = DuskTheme.accent, busy = busy == "update") {
                     if (busy != null) return@SettingsActionRow
                     busy = "update"
                     scope.launch {
@@ -181,9 +182,9 @@ fun GatewaySettingsScreen(account: CloudAccount, onDismiss: () -> Unit) {
                 }
             }
             Separator()
-            SettingsActionRow(label = tr("شناسهٔ تازه برای همه", "New ids for everyone"), icon = Icons.Default.VpnKey, tint = Ios.Orange, busy = busy == "rotate") { confirm = "rotate" }
+            SettingsActionRow(label = tr("شناسهٔ تازه برای همه", "New ids for everyone"), icon = Icons.Default.VpnKey, tint = DuskTheme.accent, busy = busy == "rotate") { confirm = "rotate" }
             Separator()
-            SettingsActionRow(label = tr("حذف ورکر مرکزی از کلادفلر", "Remove the central Worker from Cloudflare"), icon = Icons.Default.DeleteForever, tint = Ios.Red, busy = busy == "remove") { confirm = "remove" }
+            SettingsActionRow(label = tr("حذف ورکر مرکزی از کلادفلر", "Remove the central Worker from Cloudflare"), icon = Icons.Default.DeleteForever, tint = DuskTheme.error, busy = busy == "remove") { confirm = "remove" }
         }
         SettingsFooter(tr("«شناسهٔ تازه» شناسهٔ همهٔ پنل‌ها و مسیر تونل را عوض می‌کند و کانفیگ‌های قبلی (روی گوشی و ویندوز) از کار می‌افتند.",
             "«New ids» renews every panel's id and the tunnel path; the earlier configs (on the phone and on Windows) stop working."))
@@ -241,13 +242,13 @@ private fun Editor(value: String, onChange: (String) -> Unit, hint: String, sing
             value = value,
             onValueChange = onChange,
             singleLine = single,
-            textStyle = TextStyle(color = Ios.Label, fontSize = 16.sp),
-            cursorBrush = SolidColor(Ios.Blue),
+            textStyle = TextStyle(color = DuskTheme.onSurface, fontSize = 16.sp),
+            cursorBrush = SolidColor(DuskTheme.primary),
             keyboardOptions = KeyboardOptions(keyboardType = androidx.compose.ui.text.input.KeyboardType.Uri),
             modifier = Modifier.fillMaxWidth(),
             decorationBox = { inner ->
                 Box(contentAlignment = Alignment.TopStart) {
-                    if (value.isEmpty()) Text(hint, color = Ios.SecondaryLabel.copy(alpha = 0.5f), fontSize = 16.sp)
+                    if (value.isEmpty()) Text(hint, color = DuskTheme.muted.copy(alpha = 0.5f), fontSize = 16.sp)
                     inner()
                 }
             },

@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material3.Icon
@@ -42,10 +41,10 @@ import com.mlmvpn.scanner.ui.PanelBadge
 import com.mlmvpn.scanner.ui.faCount
 import com.mlmvpn.scanner.ui.panelMonogram
 import com.mlmvpn.scanner.ui.panelTint
-import com.mlmvpn.scanner.ui.settings.Ios
 import com.mlmvpn.scanner.ui.settings.SettingsFooter
 import com.mlmvpn.scanner.ui.settings.SettingsGroup
 import com.mlmvpn.scanner.ui.settings.SettingsSectionHeader
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 
 /**
  * «کانفیگ‌های دریافتی»: every group of configs the panels handed over, from every account, in one
@@ -75,13 +74,13 @@ fun CloudReceivedModule(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Box(
-                    Modifier.size(30.dp).clip(RoundedCornerShape(8.dp))
+                    Modifier.size(30.dp).clip(DuskTheme.glyphShape)
                         .background(Brush.verticalGradient(listOf(tint, tint.copy(alpha = 0.78f)))),
                     contentAlignment = Alignment.Center,
                 ) { Text(panelMonogram(engine), color = Color.White, fontSize = 13.sp, fontWeight = FontWeight.Bold) }
                 Spacer(Modifier.width(12.dp))
                 Column(Modifier.weight(1f)) {
-                    Text(g.title, color = Ios.Label, fontSize = 15.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                    Text(g.title, color = DuskTheme.onSurface, fontSize = 15.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
                     Spacer(Modifier.height(3.dp))
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         PanelBadge(engine)
@@ -92,21 +91,21 @@ fun CloudReceivedModule(
                         Spacer(Modifier.width(6.dp))
                         // "2026-09-02 20:49" is Latin content; in an RTL line the clock would walk in front of the date.
                         CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
-                            Text(g.date, color = Ios.SecondaryLabel, fontSize = 11.sp)
+                            Text(g.date, color = DuskTheme.muted, fontSize = 11.sp)
                         }
                     }
                 }
-                Text(faCount(g.nodes.size), color = Ios.SecondaryLabel, fontSize = 14.sp)
+                Text(faCount(g.nodes.size), color = DuskTheme.muted, fontSize = 14.sp)
                 Spacer(Modifier.width(6.dp))
                 val rtl = LocalLayoutDirection.current == LayoutDirection.Rtl
-                Icon(Icons.Default.ChevronRight, null, tint = Ios.Chevron, modifier = Modifier.size(17.dp).scale(if (rtl) -1f else 1f, 1f))
+                Icon(Icons.Default.ChevronRight, null, tint = DuskTheme.muted, modifier = Modifier.size(17.dp).scale(if (rtl) -1f else 1f, 1f))
             }
         }
         if (groups.size > limit) {
             Separator()
             Text(
                 if (showAll) tr("کمتر", "Show less") else tr("همه (${faCount(groups.size)})", "All (${groups.size})"),
-                color = Ios.Blue, fontSize = 15.sp,
+                color = DuskTheme.primary, fontSize = 15.sp,
                 modifier = Modifier.fillMaxWidth().clickable { showAll = !showAll }.padding(horizontal = 16.dp, vertical = 12.dp),
             )
         }

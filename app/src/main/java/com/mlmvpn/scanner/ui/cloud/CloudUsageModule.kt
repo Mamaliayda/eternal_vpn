@@ -47,8 +47,8 @@ import com.mlmvpn.scanner.engines.cloud.CfUsage
 import com.mlmvpn.scanner.models.CloudAccount
 import com.mlmvpn.scanner.store.tr
 import com.mlmvpn.scanner.ui.faGrouped
-import com.mlmvpn.scanner.ui.settings.Ios
 import com.mlmvpn.scanner.ui.settings.SettingsFooter
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 import com.mlmvpn.scanner.ui.settings.SettingsGroup
 import com.mlmvpn.scanner.ui.settings.SettingsSectionHeader
 import kotlinx.coroutines.launch
@@ -56,12 +56,12 @@ import kotlinx.coroutines.launch
 /** One colour per account, in the order the accounts are listed, the way Screen Time colours its categories. */
 @Composable
 fun accountColor(index: Int): Color = when (index % 6) {
-    0 -> Ios.Blue
-    1 -> Ios.Teal
-    2 -> Ios.Indigo
-    3 -> Ios.Orange
-    4 -> Ios.Pink
-    else -> Ios.Purple
+    0 -> DuskTheme.primary
+    1 -> DuskTheme.secondary
+    2 -> DuskTheme.indigo
+    3 -> DuskTheme.accent
+    4 -> DuskTheme.coral
+    else -> DuskTheme.purple
 }
 
 private fun tehranDate(key: String): java.util.Date =
@@ -115,15 +115,15 @@ fun CloudUsageModule(accounts: List<CloudAccount>) {
         Column(Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp, top = 14.dp, bottom = 12.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Column(Modifier.weight(1f)) {
-                    Text(longDay(keys[sel], sel == today), color = Ios.SecondaryLabel, fontSize = 13.sp)
+                    Text(longDay(keys[sel], sel == today), color = DuskTheme.muted, fontSize = 13.sp)
                     Row(verticalAlignment = Alignment.Bottom) {
-                        Text(if (snap == null) "—" else grouped(totals[sel]), color = Ios.Label, fontSize = 32.sp, fontWeight = FontWeight.Bold)
+                        Text(if (snap == null) "—" else grouped(totals[sel]), color = DuskTheme.onSurface, fontSize = 32.sp, fontWeight = FontWeight.Bold)
                         Spacer(Modifier.width(6.dp))
-                        Text(tr("درخواست", "requests"), color = Ios.SecondaryLabel, fontSize = 15.sp, modifier = Modifier.padding(bottom = 6.dp))
+                        Text(tr("درخواست", "requests"), color = DuskTheme.muted, fontSize = 15.sp, modifier = Modifier.padding(bottom = 6.dp))
                     }
                 }
-                if (loading) CircularProgressIndicator(Modifier.size(20.dp), color = Ios.SecondaryLabel, strokeWidth = 2.dp)
-                else Icon(Icons.Default.Refresh, tr("تازه کردن", "Refresh"), tint = Ios.Blue,
+                if (loading) CircularProgressIndicator(Modifier.size(20.dp), color = DuskTheme.muted, strokeWidth = 2.dp)
+                else Icon(Icons.Default.Refresh, tr("تازه کردن", "Refresh"), tint = DuskTheme.primary,
                     modifier = Modifier.size(24.dp).clickable { scope.launch { runCatching { CfUsage.refresh(accounts, force = true) } } })
             }
             Spacer(Modifier.height(14.dp))
@@ -139,7 +139,7 @@ fun CloudUsageModule(accounts: List<CloudAccount>) {
                             verticalArrangement = Arrangement.Bottom,
                         ) {
                             if (totals[d] == 0L || snap == null) {
-                                Box(Modifier.fillMaxWidth().height(3.dp).clip(RoundedCornerShape(2.dp)).background(Ios.Gray.copy(alpha = 0.3f)))
+                                Box(Modifier.fillMaxWidth().height(3.dp).clip(RoundedCornerShape(2.dp)).background(DuskTheme.disabled.copy(alpha = 0.3f)))
                             } else {
                                 Column(Modifier.fillMaxWidth().fillMaxHeight(frac.coerceAtLeast(0.02f)).clip(RoundedCornerShape(topStart = 5.dp, topEnd = 5.dp, bottomStart = 2.dp, bottomEnd = 2.dp))) {
                                     // Top of the stack is the last account, so the first sits on the baseline.
@@ -155,7 +155,7 @@ fun CloudUsageModule(accounts: List<CloudAccount>) {
                 }
                 // The average, dashed, as Screen Time draws it.
                 if (snap != null && average > 0) {
-                    val avgColor = Ios.Green
+                    val avgColor = DuskTheme.success
                     Canvas(Modifier.fillMaxSize()) {
                         val y = size.height * (1f - (average.toFloat() / maxDay).coerceIn(0f, 1f))
                         drawLine(avgColor, Offset(0f, y), Offset(size.width, y), strokeWidth = 1.5.dp.toPx(),
@@ -166,15 +166,15 @@ fun CloudUsageModule(accounts: List<CloudAccount>) {
             Spacer(Modifier.height(6.dp))
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                 keys.indices.forEach { d ->
-                    Text(shortDay(keys[d]), color = when { d == sel -> Ios.Label; d > today -> Ios.SecondaryLabel.copy(alpha = 0.45f); else -> Ios.SecondaryLabel }, fontSize = 11.sp,
+                    Text(shortDay(keys[d]), color = when { d == sel -> DuskTheme.onSurface; d > today -> DuskTheme.muted.copy(alpha = 0.45f); else -> DuskTheme.muted }, fontSize = 11.sp,
                         fontWeight = if (d == sel) FontWeight.SemiBold else FontWeight.Normal,
                         modifier = Modifier.weight(1f), textAlign = androidx.compose.ui.text.style.TextAlign.Center)
                 }
             }
             if (snap != null && average > 0) Row(Modifier.padding(top = 8.dp), verticalAlignment = Alignment.CenterVertically) {
-                Box(Modifier.width(14.dp).height(2.dp).background(Ios.Green))
+                Box(Modifier.width(14.dp).height(2.dp).background(DuskTheme.success))
                 Spacer(Modifier.width(6.dp))
-                Text(tr("میانگین روزانه ", "Daily average ") + grouped(average), color = Ios.SecondaryLabel, fontSize = 12.sp)
+                Text(tr("میانگین روزانه ", "Daily average ") + grouped(average), color = DuskTheme.muted, fontSize = 12.sp)
             }
         }
         // One row per account: its colour, its address, the selected day's figure against its own 100,000.
@@ -183,24 +183,24 @@ fun CloudUsageModule(accounts: List<CloudAccount>) {
             val u = perAccount[i]
             val v = u?.days?.getOrNull(sel) ?: 0L
             val f = (v.toFloat() / CfUsage.FREE_DAILY).coerceIn(0f, 1f)
-            val barColor = when { f >= 0.95f -> Ios.Red; f >= 0.8f -> Ios.Orange; else -> accountColor(i) }
+            val barColor = when { f >= 0.95f -> DuskTheme.error; f >= 0.8f -> DuskTheme.accent; else -> accountColor(i) }
             Row(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 11.dp), verticalAlignment = Alignment.CenterVertically) {
                 Box(Modifier.size(10.dp).clip(CircleShape).background(accountColor(i)))
                 Spacer(Modifier.width(12.dp))
                 Column(Modifier.weight(1f)) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text(acc.email.ifBlank { acc.name }, color = Ios.Label, fontSize = 15.sp, maxLines = 1, overflow = TextOverflow.Ellipsis, modifier = Modifier.weight(1f))
+                        Text(acc.email.ifBlank { acc.name }, color = DuskTheme.onSurface, fontSize = 15.sp, maxLines = 1, overflow = TextOverflow.Ellipsis, modifier = Modifier.weight(1f))
                         Spacer(Modifier.width(8.dp))
                         Text(when {
                             u == null -> "—"
                             u.failed != null -> tr("آمار در دسترس نیست", "No statistics")
                             else -> grouped(v)
-                        }, color = Ios.SecondaryLabel, fontSize = 14.sp)
+                        }, color = DuskTheme.muted, fontSize = 14.sp)
                     }
                     if (u != null && u.failed == null) {
                         Spacer(Modifier.height(6.dp))
                         val w by animateFloatAsState(f, tween(600), label = "acc$i")
-                        Box(Modifier.fillMaxWidth().height(4.dp).clip(CircleShape).background(Ios.Gray.copy(alpha = 0.22f))) {
+                        Box(Modifier.fillMaxWidth().height(4.dp).clip(CircleShape).background(DuskTheme.disabled.copy(alpha = 0.22f))) {
                             Box(Modifier.fillMaxWidth(w).height(4.dp).clip(CircleShape).background(barColor))
                         }
                     }

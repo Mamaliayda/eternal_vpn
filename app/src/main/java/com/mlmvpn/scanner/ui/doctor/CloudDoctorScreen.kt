@@ -1,7 +1,6 @@
 package com.mlmvpn.scanner.ui.doctor
 
 import android.content.Context
-import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
@@ -57,7 +56,7 @@ import com.mlmvpn.scanner.models.CloudAccount
 import com.mlmvpn.scanner.ui.LocalTabVisible
 import com.mlmvpn.scanner.ui.cloud.PanelConfigs
 import com.mlmvpn.scanner.ui.home.frostedGlass
-import com.mlmvpn.scanner.ui.settings.Ios
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 import com.mlmvpn.scanner.ui.settings.IosAlert
 import com.mlmvpn.scanner.ui.settings.IosAlertAction
 import com.mlmvpn.scanner.ui.settings.IosScreen
@@ -66,8 +65,6 @@ import com.mlmvpn.scanner.ui.settings.SettingsFooter
 import com.mlmvpn.scanner.ui.settings.SettingsGlyph
 import com.mlmvpn.scanner.ui.settings.SettingsGroup
 import com.mlmvpn.scanner.ui.settings.SettingsSectionHeader
-import com.mlmvpn.scanner.ui.theme.CardShape
-import com.mlmvpn.scanner.ui.theme.ControlShape
 import com.mlmvpn.scanner.utils.S
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Dispatchers
@@ -160,11 +157,11 @@ private enum class Step(val stages: List<CfStage>, val title: Int, val desc: Int
 
 @Composable
 private fun Step.tint(): Color = when (this) {
-    Step.ACCOUNT -> Ios.Orange
-    Step.DEPLOY -> Ios.Indigo
-    Step.CONFIG -> Ios.Teal
-    Step.SCAN -> Ios.Purple
-    Step.CONNECT -> Ios.Green
+    Step.ACCOUNT -> DuskTheme.accent
+    Step.DEPLOY -> DuskTheme.indigo
+    Step.CONFIG -> DuskTheme.secondary
+    Step.SCAN -> DuskTheme.purple
+    Step.CONNECT -> DuskTheme.success
 }
 
 /** Where a step stands. Only [Passed] is green, and only when every stage behind it passed. */
@@ -363,7 +360,7 @@ fun CloudDoctorScreen(
                     }
                     SettingsFooter(stringResource(R.string.cfnet_deploy_footer))
                     Spacer(Modifier.height(12.dp))
-                    DoctorCapsule(stringResource(if (deployBusy) R.string.cfnet_deploy_busy else R.string.cfnet_deploy_go), Ios.Blue, Color.White,
+                    DoctorCapsule(stringResource(if (deployBusy) R.string.cfnet_deploy_busy else R.string.cfnet_deploy_go), DuskTheme.primary, Color.White,
                         enabled = deploySelection.isNotEmpty() && !busy, busy = deployBusy, inset = true) {
                         val target = activeAccount
                         scope.launch {
@@ -397,7 +394,7 @@ fun CloudDoctorScreen(
                         }
                         SettingsFooter(stringResource(R.string.cfnet_config_footer))
                         Spacer(Modifier.height(12.dp))
-                        DoctorCapsule(stringResource(if (configBusy) R.string.cfnet_config_busy else R.string.cfnet_config_go), Ios.Blue, Color.White,
+                        DoctorCapsule(stringResource(if (configBusy) R.string.cfnet_config_busy else R.string.cfnet_config_go), DuskTheme.primary, Color.White,
                             enabled = configSelection.isNotEmpty() && !busy, busy = configBusy, inset = true) {
                             val target = activeAccount
                             scope.launch {
@@ -441,7 +438,7 @@ fun CloudDoctorScreen(
                         }
                         SettingsFooter(stringResource(R.string.cfnet_scan_footer))
                         Spacer(Modifier.height(12.dp))
-                        DoctorCapsule(stringResource(R.string.cfnet_scan_go), Ios.Blue, Color.White, enabled = scanSelection.isNotEmpty() && !busy && !scanHandedOff, inset = true) {
+                        DoctorCapsule(stringResource(R.string.cfnet_scan_go), DuskTheme.primary, Color.White, enabled = scanSelection.isNotEmpty() && !busy && !scanHandedOff, inset = true) {
                             val target = activeAccount
                             scope.launch {
                                 val stamp = System.currentTimeMillis()
@@ -495,8 +492,8 @@ fun CloudDoctorScreen(
                 Spacer(Modifier.height(16.dp))
                 // Quiet on purpose: the setup is the thing on screen, leaving it is the side door.
                 Text(
-                    stringResource(R.string.cfnet_skip), color = Ios.SecondaryLabel, fontSize = 15.sp,
-                    modifier = Modifier.align(Alignment.CenterHorizontally).clip(ControlShape)
+                    stringResource(R.string.cfnet_skip), color = DuskTheme.muted, fontSize = 15.sp,
+                    modifier = Modifier.align(Alignment.CenterHorizontally).clip(DuskTheme.controlShape)
                         .clickable(role = Role.Button) { job?.cancel(); onContinue() }
                         .padding(horizontal = 20.dp, vertical = 12.dp),
                 )
@@ -511,7 +508,7 @@ fun CloudDoctorScreen(
             title = stringResource(R.string.cfnet_account_found),
             message = if (accountBusy) null else stringResource(R.string.cfnet_account_found_msg),
             onDismiss = { if (!accountBusy) accountDecision?.complete(false) },
-            content = if (accountBusy) ({ CircularProgressIndicator(Modifier.size(22.dp), color = Ios.Label, strokeWidth = 2.dp) }) else null,
+            content = if (accountBusy) ({ CircularProgressIndicator(Modifier.size(22.dp), color = DuskTheme.onSurface, strokeWidth = 2.dp) }) else null,
             actions = if (accountBusy) emptyList() else listOf(
                 IosAlertAction(stringResource(R.string.cfnet_account_not_now), { accountDecision?.complete(false) }),
                 IosAlertAction(stringResource(R.string.cfnet_account_add), { accountDecision?.complete(true) }, preferred = true),
@@ -525,7 +522,7 @@ fun CloudDoctorScreen(
 @Composable
 private fun HeroFrame(content: @Composable ColumnScope.() -> Unit) {
     Column(
-        Modifier.fillMaxWidth().padding(horizontal = 16.dp).frostedGlass(CardShape).padding(20.dp),
+        Modifier.fillMaxWidth().padding(horizontal = 16.dp).frostedGlass(DuskTheme.cardShape).padding(20.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         content = content,
     )
@@ -537,8 +534,8 @@ private fun HeroTitle(title: String, subtitle: String) {
         Image(painterResource(R.drawable.ic_app_doctor), contentDescription = null, contentScale = ContentScale.Fit, modifier = Modifier.size(52.dp))
         Spacer(Modifier.width(12.dp))
         Column(Modifier.weight(1f)) {
-            Text(title, color = Ios.Label, fontSize = 19.sp, fontWeight = FontWeight.Bold)
-            Text(subtitle, color = Ios.SecondaryLabel, fontSize = 13.sp, lineHeight = 19.sp)
+            Text(title, color = DuskTheme.onSurface, fontSize = 19.sp, fontWeight = FontWeight.Bold)
+            Text(subtitle, color = DuskTheme.muted, fontSize = 13.sp, lineHeight = 19.sp)
         }
     }
 }
@@ -549,10 +546,10 @@ private fun HubHero(running: Step?, tried: Int) {
         HeroTitle(stringResource(R.string.cf_doctor_title), stringResource(R.string.cfnet_hub_subtitle))
         AnimatedVisibility(running != null, enter = fadeIn() + expandVertically(), exit = fadeOut() + shrinkVertically()) {
             Row(Modifier.fillMaxWidth().padding(top = 16.dp), verticalAlignment = Alignment.CenterVertically) {
-                CircularProgressIndicator(Modifier.size(16.dp), color = Ios.Blue, strokeWidth = 2.dp)
+                CircularProgressIndicator(Modifier.size(16.dp), color = DuskTheme.primary, strokeWidth = 2.dp)
                 Spacer(Modifier.width(10.dp))
-                Text(stringResource(R.string.cfnet_trying), color = Ios.Label, fontSize = 14.sp, modifier = Modifier.weight(1f))
-                if (tried > 0) Text(stringResource(R.string.cfnet_tried_n, tried), color = Ios.SecondaryLabel, fontSize = 12.sp)
+                Text(stringResource(R.string.cfnet_trying), color = DuskTheme.onSurface, fontSize = 14.sp, modifier = Modifier.weight(1f))
+                if (tried > 0) Text(stringResource(R.string.cfnet_tried_n, tried), color = DuskTheme.muted, fontSize = 12.sp)
             }
         }
     }
@@ -565,37 +562,37 @@ private fun SetupHero(states: Map<Step, StepState>, running: Boolean, finished: 
     HeroFrame {
         when {
             finished || (stopped && !running) -> {
-                val tone = if (ready) Ios.Green else if (stopped && !finished) Ios.SecondaryLabel else Ios.Orange
+                val tone = if (ready) DuskTheme.success else if (stopped && !finished) DuskTheme.muted else DuskTheme.accent
                 PopIn(Modifier.size(84.dp).clip(CircleShape).background(tone.copy(alpha = 0.18f))) {
                     Icon(if (ready) Icons.Default.CheckCircle else if (stopped && !finished) Icons.Default.PauseCircle else Icons.Default.Info,
                         contentDescription = null, tint = tone, modifier = Modifier.size(46.dp))
                 }
                 Spacer(Modifier.height(12.dp))
                 Text(stringResource(when { ready -> R.string.cfnet_setup_ready; finished -> R.string.cfnet_setup_partial; else -> R.string.cfnet_stopped }),
-                    color = Ios.Label, fontSize = 19.sp, fontWeight = FontWeight.Bold, textAlign = TextAlign.Center)
+                    color = DuskTheme.onSurface, fontSize = 19.sp, fontWeight = FontWeight.Bold, textAlign = TextAlign.Center)
                 if (finished) {
                     Spacer(Modifier.height(6.dp))
                     Text(stringResource(if (ready) R.string.cfnet_setup_ready_sub else R.string.cfnet_setup_partial_sub),
-                        color = Ios.SecondaryLabel, fontSize = 14.sp, lineHeight = 21.sp, textAlign = TextAlign.Center)
+                        color = DuskTheme.muted, fontSize = 14.sp, lineHeight = 21.sp, textAlign = TextAlign.Center)
                 }
                 Spacer(Modifier.height(18.dp))
-                DoctorCapsule(stringResource(R.string.cfnet_go_cloud), Ios.Blue, Color.White, onClick = onContinue)
+                DoctorCapsule(stringResource(R.string.cfnet_go_cloud), DuskTheme.primary, Color.White, onClick = onContinue)
                 if (stopped && !finished) {
                     Spacer(Modifier.height(10.dp))
-                    DoctorCapsule(stringResource(R.string.cfnet_retry), Color.White.copy(alpha = 0.12f), Ios.Label, onClick = onRetry)
+                    DoctorCapsule(stringResource(R.string.cfnet_retry), Color.White.copy(alpha = 0.12f), DuskTheme.onSurface, onClick = onRetry)
                 }
             }
             else -> {
                 val fraction by animateFloatAsState(done / Step.entries.size.toFloat(), animationSpec = tween(600), label = "setup-progress")
                 Box(contentAlignment = Alignment.Center, modifier = Modifier.size(112.dp)) {
                     CircularProgressIndicator(progress = 1f, color = Color.White.copy(alpha = 0.12f), strokeWidth = 7.dp, modifier = Modifier.size(112.dp))
-                    CircularProgressIndicator(progress = fraction, color = Ios.Blue, strokeWidth = 7.dp, modifier = Modifier.size(112.dp))
+                    CircularProgressIndicator(progress = fraction, color = DuskTheme.primary, strokeWidth = 7.dp, modifier = Modifier.size(112.dp))
                     Image(painterResource(R.drawable.ic_app_doctor), contentDescription = null, modifier = Modifier.size(52.dp))
                 }
                 Spacer(Modifier.height(14.dp))
-                Text(stringResource(R.string.cfnet_checking_you), color = Ios.Label, fontSize = 17.sp, fontWeight = FontWeight.SemiBold, textAlign = TextAlign.Center)
+                Text(stringResource(R.string.cfnet_checking_you), color = DuskTheme.onSurface, fontSize = 17.sp, fontWeight = FontWeight.SemiBold, textAlign = TextAlign.Center)
                 Spacer(Modifier.height(4.dp))
-                Text(stringResource(R.string.cfnet_checking_sub), color = Ios.SecondaryLabel, fontSize = 13.sp, textAlign = TextAlign.Center)
+                Text(stringResource(R.string.cfnet_checking_sub), color = DuskTheme.muted, fontSize = 13.sp, textAlign = TextAlign.Center)
             }
         }
     }
@@ -613,13 +610,13 @@ private fun StepPage(
         Spacer(Modifier.height(14.dp))
         HeroFrame {
             Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-                Box(Modifier.size(52.dp).clip(ControlShape).background(step.tint()), contentAlignment = Alignment.Center) {
+                Box(Modifier.size(52.dp).clip(DuskTheme.controlShape).background(step.tint()), contentAlignment = Alignment.Center) {
                     Icon(step.icon, contentDescription = null, tint = Color.White, modifier = Modifier.size(28.dp))
                 }
                 Spacer(Modifier.width(12.dp))
                 Column(Modifier.weight(1f)) {
-                    Text(stringResource(step.title), color = Ios.Label, fontSize = 19.sp, fontWeight = FontWeight.Bold)
-                    Text(stringResource(step.desc), color = Ios.SecondaryLabel, fontSize = 13.sp, lineHeight = 19.sp)
+                    Text(stringResource(step.title), color = DuskTheme.onSurface, fontSize = 19.sp, fontWeight = FontWeight.Bold)
+                    Text(stringResource(step.desc), color = DuskTheme.muted, fontSize = 13.sp, lineHeight = 19.sp)
                 }
             }
             Spacer(Modifier.height(18.dp))
@@ -627,31 +624,31 @@ private fun StepPage(
                 Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
                     when (s) {
                         StepState.Running -> {
-                            CircularProgressIndicator(Modifier.size(40.dp), color = Ios.Blue, strokeWidth = 3.dp)
+                            CircularProgressIndicator(Modifier.size(40.dp), color = DuskTheme.primary, strokeWidth = 3.dp)
                             Spacer(Modifier.height(12.dp))
-                            Text(stringResource(R.string.cfnet_trying), color = Ios.Label, fontSize = 16.sp, fontWeight = FontWeight.SemiBold, textAlign = TextAlign.Center)
-                            if (tried > 0) Text(stringResource(R.string.cfnet_tried_n, tried), color = Ios.SecondaryLabel, fontSize = 13.sp)
+                            Text(stringResource(R.string.cfnet_trying), color = DuskTheme.onSurface, fontSize = 16.sp, fontWeight = FontWeight.SemiBold, textAlign = TextAlign.Center)
+                            if (tried > 0) Text(stringResource(R.string.cfnet_tried_n, tried), color = DuskTheme.muted, fontSize = 13.sp)
                             Spacer(Modifier.height(16.dp))
-                            DoctorCapsule(stringResource(R.string.cfnet_stop), Color.White.copy(alpha = 0.14f), Ios.Red, onClick = onStop)
+                            DoctorCapsule(stringResource(R.string.cfnet_stop), Color.White.copy(alpha = 0.14f), DuskTheme.error, onClick = onStop)
                         }
                         StepState.Passed -> {
-                            Verdict(Icons.Default.CheckCircle, Ios.Green, stringResource(R.string.cfnet_fixed), stringResource(step.ok))
+                            Verdict(Icons.Default.CheckCircle, DuskTheme.success, stringResource(R.string.cfnet_fixed), stringResource(step.ok))
                             Spacer(Modifier.height(16.dp))
-                            DoctorCapsule(stringResource(R.string.cfnet_check_again), Color.White.copy(alpha = 0.12f), Ios.Label, enabled = !busy, onClick = onStart)
+                            DoctorCapsule(stringResource(R.string.cfnet_check_again), Color.White.copy(alpha = 0.12f), DuskTheme.onSurface, enabled = !busy, onClick = onStart)
                         }
                         is StepState.Failed -> {
-                            Verdict(Icons.Default.Error, Ios.Orange, stringResource(s.text), null)
+                            Verdict(Icons.Default.Error, DuskTheme.accent, stringResource(s.text), null)
                             Spacer(Modifier.height(16.dp))
-                            DoctorCapsule(stringResource(R.string.cfnet_retry), Ios.Blue, Color.White, enabled = !busy, onClick = onStart)
+                            DoctorCapsule(stringResource(R.string.cfnet_retry), DuskTheme.primary, Color.White, enabled = !busy, onClick = onStart)
                         }
                         is StepState.Later -> {
-                            Verdict(Icons.Default.Schedule, Ios.SecondaryLabel, stringResource(s.text), null)
+                            Verdict(Icons.Default.Schedule, DuskTheme.muted, stringResource(s.text), null)
                             if (s.text != R.string.cfnet_later_account) {
                                 Spacer(Modifier.height(16.dp))
-                                DoctorCapsule(stringResource(R.string.cfnet_retry), Color.White.copy(alpha = 0.12f), Ios.Label, enabled = !busy, onClick = onStart)
+                                DoctorCapsule(stringResource(R.string.cfnet_retry), Color.White.copy(alpha = 0.12f), DuskTheme.onSurface, enabled = !busy, onClick = onStart)
                             }
                         }
-                        StepState.Waiting -> DoctorCapsule(stringResource(R.string.cfnet_start), Ios.Blue, Color.White, enabled = !busy, onClick = onStart)
+                        StepState.Waiting -> DoctorCapsule(stringResource(R.string.cfnet_start), DuskTheme.primary, Color.White, enabled = !busy, onClick = onStart)
                     }
                 }
             }
@@ -667,10 +664,10 @@ private fun Verdict(icon: ImageVector, tone: Color, title: String, subtitle: Str
         Icon(icon, contentDescription = null, tint = tone, modifier = Modifier.size(40.dp))
     }
     Spacer(Modifier.height(12.dp))
-    Text(title, color = Ios.Label, fontSize = 17.sp, fontWeight = FontWeight.SemiBold, lineHeight = 24.sp, textAlign = TextAlign.Center)
+    Text(title, color = DuskTheme.onSurface, fontSize = 17.sp, fontWeight = FontWeight.SemiBold, lineHeight = 24.sp, textAlign = TextAlign.Center)
     if (subtitle != null) {
         Spacer(Modifier.height(4.dp))
-        Text(subtitle, color = Ios.SecondaryLabel, fontSize = 14.sp, lineHeight = 20.sp, textAlign = TextAlign.Center)
+        Text(subtitle, color = DuskTheme.muted, fontSize = 14.sp, lineHeight = 20.sp, textAlign = TextAlign.Center)
     }
 }
 
@@ -695,10 +692,10 @@ private fun StepRow(step: Step, state: StepState, clickable: Boolean, onClick: (
         StepState.Waiting -> stringResource(if (clickable) R.string.cfnet_tap_to_check else step.desc)
     }
     val detailColor by animateColorAsState(when (state) {
-        StepState.Passed -> Ios.Green
-        is StepState.Failed -> Ios.Orange
-        StepState.Running -> Ios.Blue
-        else -> Ios.SecondaryLabel
+        StepState.Passed -> DuskTheme.success
+        is StepState.Failed -> DuskTheme.accent
+        StepState.Running -> DuskTheme.primary
+        else -> DuskTheme.muted
     }, animationSpec = tween(350), label = "step-detail")
     Row(
         Modifier.fillMaxWidth()
@@ -709,7 +706,7 @@ private fun StepRow(step: Step, state: StepState, clickable: Boolean, onClick: (
         SettingsGlyph(step.icon, step.tint())
         Spacer(Modifier.width(12.dp))
         Column(Modifier.weight(1f)) {
-            Text(stringResource(step.title), color = Ios.Label, fontSize = 16.sp)
+            Text(stringResource(step.title), color = DuskTheme.onSurface, fontSize = 16.sp)
             Text(detail, color = detailColor, fontSize = 12.sp, lineHeight = 17.sp, maxLines = 2, overflow = TextOverflow.Ellipsis)
         }
         Spacer(Modifier.width(8.dp))
@@ -717,11 +714,11 @@ private fun StepRow(step: Step, state: StepState, clickable: Boolean, onClick: (
             (fadeIn(tween(200)) + scaleIn(spring(dampingRatio = 0.55f, stiffness = Spring.StiffnessMedium), initialScale = 0.6f)) togetherWith fadeOut(tween(120))
         }, label = "step-pill") { s ->
             when (s) {
-                StepState.Running -> CircularProgressIndicator(Modifier.size(18.dp), color = Ios.Blue, strokeWidth = 2.dp)
-                StepState.Passed -> Icon(Icons.Default.CheckCircle, contentDescription = stringResource(R.string.cfnet_pill_ok), tint = Ios.Green, modifier = Modifier.size(24.dp))
-                is StepState.Failed -> Pill(stringResource(R.string.cfnet_pill_fail), Ios.Orange)
-                is StepState.Later -> Pill(stringResource(R.string.cfnet_pill_later), Ios.SecondaryLabel)
-                StepState.Waiting -> if (clickable) Chevron() else Pill(stringResource(R.string.cfnet_pill_waiting), Ios.SecondaryLabel)
+                StepState.Running -> CircularProgressIndicator(Modifier.size(18.dp), color = DuskTheme.primary, strokeWidth = 2.dp)
+                StepState.Passed -> Icon(Icons.Default.CheckCircle, contentDescription = stringResource(R.string.cfnet_pill_ok), tint = DuskTheme.success, modifier = Modifier.size(24.dp))
+                is StepState.Failed -> Pill(stringResource(R.string.cfnet_pill_fail), DuskTheme.accent)
+                is StepState.Later -> Pill(stringResource(R.string.cfnet_pill_later), DuskTheme.muted)
+                StepState.Waiting -> if (clickable) Chevron() else Pill(stringResource(R.string.cfnet_pill_waiting), DuskTheme.muted)
             }
         }
     }
@@ -735,7 +732,7 @@ private fun Pill(text: String, color: Color) {
 
 @Composable
 private fun Chevron() {
-    Icon(Icons.Default.ChevronRight, contentDescription = null, tint = Ios.Chevron, modifier = Modifier.size(18.dp).scale(
+    Icon(Icons.Default.ChevronRight, contentDescription = null, tint = DuskTheme.muted, modifier = Modifier.size(18.dp).scale(
         scaleX = if (androidx.compose.ui.platform.LocalLayoutDirection.current == androidx.compose.ui.unit.LayoutDirection.Rtl) -1f else 1f, scaleY = 1f))
 }
 
@@ -748,14 +745,14 @@ private fun SelectRow(title: String, detail: String, selected: Boolean, result: 
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Column(Modifier.weight(1f)) {
-            Text(title, color = Ios.Label, fontSize = 16.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
-            Text(result ?: detail, color = when (resultOk) { true -> Ios.Green; false -> Ios.Orange; null -> Ios.SecondaryLabel },
+            Text(title, color = DuskTheme.onSurface, fontSize = 16.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            Text(result ?: detail, color = when (resultOk) { true -> DuskTheme.success; false -> DuskTheme.accent; null -> DuskTheme.muted },
                 fontSize = 12.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
         }
         Spacer(Modifier.width(10.dp))
         Box(
             Modifier.size(22.dp).clip(CircleShape)
-                .background(if (selected) Ios.Blue else Color.Transparent)
+                .background(if (selected) DuskTheme.primary else Color.Transparent)
                 .then(if (selected) Modifier else Modifier.background(Color.White.copy(alpha = 0.14f), CircleShape)),
             contentAlignment = Alignment.Center,
         ) {
@@ -774,16 +771,16 @@ private fun CredentialSection(email: String, token: String, onEmail: (String) ->
     }
     SettingsFooter(stringResource(R.string.cfnet_account_footer))
     Spacer(Modifier.height(12.dp))
-    DoctorCapsule(stringResource(R.string.cfnet_account_check), Ios.Blue, Color.White, enabled = enabled, inset = true, onClick = onCheck)
+    DoctorCapsule(stringResource(R.string.cfnet_account_check), DuskTheme.primary, Color.White, enabled = enabled, inset = true, onClick = onCheck)
 }
 
 @Composable
 private fun DoctorField(placeholder: String, value: String, onChange: (String) -> Unit, secret: Boolean) {
     Box(Modifier.fillMaxWidth().heightIn(min = 48.dp).padding(horizontal = 16.dp, vertical = 12.dp), contentAlignment = Alignment.CenterStart) {
-        if (value.isEmpty()) Text(placeholder, color = Ios.SecondaryLabel.copy(alpha = 0.7f), fontSize = 16.sp)
+        if (value.isEmpty()) Text(placeholder, color = DuskTheme.muted.copy(alpha = 0.7f), fontSize = 16.sp)
         BasicTextField(
             value = value, onValueChange = { onChange(it.trim().take(200)) }, singleLine = true,
-            textStyle = TextStyle(color = Ios.Label, fontSize = 16.sp), cursorBrush = SolidColor(Ios.Blue),
+            textStyle = TextStyle(color = DuskTheme.onSurface, fontSize = 16.sp), cursorBrush = SolidColor(DuskTheme.primary),
             visualTransformation = if (secret) PasswordVisualTransformation() else VisualTransformation.None,
             modifier = Modifier.fillMaxWidth(),
         )
@@ -799,7 +796,7 @@ private fun DoctorCapsule(text: String, bg: Color, fg: Color, enabled: Boolean =
     val live = enabled && !busy
     Box(
         Modifier.fillMaxWidth().padding(horizontal = if (inset) 16.dp else 0.dp)
-            .heightIn(min = 50.dp).clip(ControlShape).background(if (live) bg else bg.copy(alpha = bg.alpha * 0.45f))
+            .heightIn(min = 50.dp).clip(DuskTheme.controlShape).background(if (live) bg else bg.copy(alpha = bg.alpha * 0.45f))
             .then(if (live) Modifier.clickable(role = Role.Button, onClick = onClick) else Modifier),
         contentAlignment = Alignment.Center,
     ) {
@@ -853,7 +850,7 @@ private fun DeveloperSection(manager: CfNetManager, outcomes: List<StrategyEngin
 @Composable
 private fun DevLine(label: String, value: String) {
     Column(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 10.dp)) {
-        Text(label, color = Ios.Label, fontSize = 13.sp, fontWeight = FontWeight.SemiBold)
-        Text(value, color = Ios.SecondaryLabel, fontSize = 11.sp, lineHeight = 16.sp, fontFamily = androidx.compose.ui.text.font.FontFamily.Monospace)
+        Text(label, color = DuskTheme.onSurface, fontSize = 13.sp, fontWeight = FontWeight.SemiBold)
+        Text(value, color = DuskTheme.muted, fontSize = 11.sp, lineHeight = 16.sp, fontFamily = androidx.compose.ui.text.font.FontFamily.Monospace)
     }
 }

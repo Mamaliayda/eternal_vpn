@@ -1,7 +1,6 @@
 package com.mlmvpn.scanner.ui.cloud
 
 import android.content.Context
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -41,8 +40,9 @@ import com.mlmvpn.scanner.models.CloudAccount
 import com.mlmvpn.scanner.models.VpnNode
 import com.mlmvpn.scanner.store.tr
 import com.mlmvpn.scanner.ui.CloudPanelHeaderRow
-import com.mlmvpn.scanner.ui.settings.Ios
 import com.mlmvpn.scanner.ui.settings.IosAlert
+import com.mlmvpn.scanner.ui.theme.DuskTheme
+import com.mlmvpn.scanner.ui.theme.rememberDuskSnackbarAction
 import com.mlmvpn.scanner.ui.settings.IosAlertAction
 import kotlinx.coroutines.launch
 
@@ -73,6 +73,7 @@ fun GatewayBlock(
     onInstallFullMlm: () -> Unit,
 ) {
     val context = LocalContext.current
+    val notify = rememberDuskSnackbarAction()
     val scope = rememberCoroutineScope()
     val version by EdgeGateway.version.collectAsState()
     val gw = remember(version, account.accountId) { EdgeGateway.status(context, account) }
@@ -89,8 +90,8 @@ fun GatewayBlock(
             val r = work()
             busyKey = null
             step = null
-            r.onSuccess { v -> done(v)?.let { toast(context, it) } }
-                .onFailure { toast(context, EdgeGateway.localized(it)) }
+            r.onSuccess { v -> done(v)?.let { notify(it) } }
+                .onFailure { notify(EdgeGateway.localized(it)) }
         }
     }
 
@@ -120,7 +121,7 @@ fun GatewayBlock(
             engine = "BPB",
             onClick = { setOpenPanel(if (openPanel == "GW") null else "GW") },
         )
-        if (openPanel == "GW") Column(Modifier.fillMaxWidth().background(Color.White.copy(alpha = 0.035f))) {
+        if (openPanel == "GW") Column(Modifier.fillMaxWidth().background(DuskTheme.surface)) {
             if (!gw.installed) {
                 ActionRow(Icons.Default.CloudUpload, if (busyKey == "GW") step ?: "…" else tr("نصب ورکر مرکزی", "Install the central Worker"), busy = busyKey == "GW") { install() }
                 Note(tr("یک‌بار برای همهٔ پنل‌های این حساب (و ویندوز) نصب می‌شود؛ پنل و تنظیماتی روی آن نیست و کدی از پنل‌ها نصب نمی‌شود.",
@@ -131,7 +132,7 @@ fun GatewayBlock(
                 ActionRow(Icons.Default.Settings, tr("تنظیمات ورکر مرکزی", "Central Worker settings"), busy = false) { onShowSettings() }
                 if (!gw.upToDate) {
                     GwDivider()
-                    ActionRow(Icons.Default.Refresh, if (busyKey == "GW") step ?: "…" else tr("به‌روزرسانی ورکر (شناسه‌ها همان می‌مانند)", "Update the Worker (ids stay the same)"), busy = busyKey == "GW", tint = Ios.Orange) { install() }
+                    ActionRow(Icons.Default.Refresh, if (busyKey == "GW") step ?: "…" else tr("به‌روزرسانی ورکر (شناسه‌ها همان می‌مانند)", "Update the Worker (ids stay the same)"), busy = busyKey == "GW", tint = DuskTheme.accent) { install() }
                 }
                 Note(sharedLine(gw.shared, gw.sharedBy) + (gw.extraScript?.let { "\n" + tr("ورکر قبلیِ این گوشی ($it) هنوز روی حساب مانده و استفاده نمی‌شود؛ از «منابع کلادفلر» پاکش کنید.", "This phone's earlier Worker ($it) is still on the account and unused; remove it from Cloudflare resources.") }.orEmpty()))
             }
@@ -153,7 +154,7 @@ fun GatewayBlock(
                 offLabel = tr("وصل نیست", "Not connected"),
                 onClick = { setOpenPanel(if (openPanel == code) null else code) },
             )
-            if (openPanel == code) Column(Modifier.fillMaxWidth().background(Color.White.copy(alpha = 0.035f))) {
+            if (openPanel == code) Column(Modifier.fillMaxWidth().background(DuskTheme.surface)) {
                 if (!on) {
                     val label = if (busyKey == code) step ?: "…"
                     else if (gw.installed) tr("اتصال به ورکر مرکزی", "Connect to the central Worker")
@@ -162,7 +163,7 @@ fun GatewayBlock(
                 } else {
                     ActionRow(Icons.Default.CloudDownload, if (busyKey == code) tr("در حال ساخت کانفیگ…", "Making the configs…") else tr("دریافت کانفیگ", "Get configs"), busy = busyKey == code) { fetch(code) }
                     GwDivider()
-                    ActionRow(Icons.Default.LinkOff, tr("جدا کردن از ورکر مرکزی", "Disconnect from the central Worker"), busy = false, tint = Ios.Red) { confirmDisconnect = code }
+                    ActionRow(Icons.Default.LinkOff, tr("جدا کردن از ورکر مرکزی", "Disconnect from the central Worker"), busy = false, tint = DuskTheme.error) { confirmDisconnect = code }
                 }
                 // MLM on the phone IS «کانفیگ استدیو», and it now runs on this same central Worker:
                 // users, «بسته» and links on this phone, one id each on the Worker — no second
@@ -199,17 +200,14 @@ internal fun sharedLine(shared: Boolean, by: String): String =
 
 @Composable
 private fun Note(text: String) {
-    Text(text, color = Ios.SecondaryLabel, fontSize = 12.sp, modifier = Modifier.fillMaxWidth().padding(start = 52.dp, end = 16.dp, top = 2.dp, bottom = 10.dp))
+    Text(text, color = DuskTheme.muted, fontSize = 12.sp, modifier = Modifier.fillMaxWidth().padding(start = 52.dp, end = 16.dp, top = 2.dp, bottom = 10.dp))
 }
 
 @Composable
 private fun GwDivider() {
-    Box(Modifier.fillMaxWidth().padding(start = 52.dp).height(0.5.dp).background(Ios.Separator))
+    Box(Modifier.fillMaxWidth().padding(start = 52.dp).height(0.5.dp).background(DuskTheme.outline.copy(alpha = 0.22f)))
 }
 
-private fun toast(context: Context, text: String?) {
-    if (!text.isNullOrBlank()) Toast.makeText(context, text, Toast.LENGTH_LONG).show()
-}
 
 /**
  * Taking a panel's links from the central Worker and filing them as a Cloud group, the way every

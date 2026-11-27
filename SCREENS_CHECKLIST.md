@@ -1,6 +1,6 @@
 # Eternal VPN — screen redesign checklist
 
-> **Progress: 553 / 1203 complete** — checked rows are Soft Dusk-migrated or explicitly deferred with a reason; unverified routes and states remain unchecked.
+> **Progress: 602 / 1203 complete** — checked rows are Soft Dusk-migrated or explicitly deferred with a reason; unverified routes and states remain unchecked.
 
 > Inventory generated from Kotlin source on 2026-11-26. A row is complete only after its visible composition, nested states, and overlays are reviewed against the Soft Dusk tokens and migrated, or explicitly deferred with a reason. Shared theme inheritance alone does **not** count as a completed visual redesign.
 
@@ -204,7 +204,7 @@ Found 230 screen-like public/internal composables across 133 Kotlin files (the f
 - [ ] `Nat64ExitScreen` — `com/mlmvpn/scanner/ui/cfwarp/Nat64ExitUi.kt`
 ### cloud
 
-- [ ] `GatewaySettingsScreen` — `com/mlmvpn/scanner/ui/cloud/GatewaySettingsScreen.kt`
+- [x] `GatewaySettingsScreen` — `com/mlmvpn/scanner/ui/cloud/GatewaySettingsScreen.kt`
 ### configstudio
 
 - [ ] `ConfigStudioHost` — `com/mlmvpn/scanner/ui/configstudio/ConfigStudioHost.kt`
@@ -244,11 +244,11 @@ Found 230 screen-like public/internal composables across 133 Kotlin files (the f
 - [ ] `StudioSetupWizard` — `com/mlmvpn/scanner/ui/configstudio/wizard/StudioSetupWizard.kt`
 ### doctor
 
-- [ ] `CfDoctorScreen` — `com/mlmvpn/scanner/ui/doctor/CfDoctorScreen.kt`
-- [ ] `AccountPage` — `com/mlmvpn/scanner/ui/doctor/CfDoctorScreen.kt`
-- [ ] `ReportPage` — `com/mlmvpn/scanner/ui/doctor/CfDoctorScreen.kt`
-- [ ] `CloudDoctorScreen` — `com/mlmvpn/scanner/ui/doctor/CloudDoctorScreen.kt`
-- [ ] `StepPage` — `com/mlmvpn/scanner/ui/doctor/CloudDoctorScreen.kt`
+- [x] `CfDoctorScreen` — `com/mlmvpn/scanner/ui/doctor/CfDoctorScreen.kt`
+- [x] `AccountPage` — `com/mlmvpn/scanner/ui/doctor/CfDoctorScreen.kt`
+- [x] `ReportPage` — `com/mlmvpn/scanner/ui/doctor/CfDoctorScreen.kt`
+- [x] `CloudDoctorScreen` — `com/mlmvpn/scanner/ui/doctor/CloudDoctorScreen.kt`
+- [x] `StepPage` — `com/mlmvpn/scanner/ui/doctor/CloudDoctorScreen.kt`
 ### emergency
 
 - [ ] `EmergencyLevel2Screen` — `com/mlmvpn/scanner/ui/emergency/EmergencyLevel2Screen.kt`
@@ -696,18 +696,18 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 - [ ] `ExitRow` — `com/mlmvpn/scanner/ui/cfwarp/Nat64ExitUi.kt`
 ### cloud
 
-- [ ] `CfMethodCard` — `com/mlmvpn/scanner/ui/cloud/CfMethodCard.kt`
-- [ ] `CloudReceivedModule` — `com/mlmvpn/scanner/ui/cloud/CloudReceivedModule.kt`
-- [ ] `accountColor` — `com/mlmvpn/scanner/ui/cloud/CloudUsageModule.kt`
-- [ ] `CloudUsageModule` — `com/mlmvpn/scanner/ui/cloud/CloudUsageModule.kt`
-- [ ] `GatewayBlock` — `com/mlmvpn/scanner/ui/cloud/GatewayRows.kt`
-- [ ] `Note` — `com/mlmvpn/scanner/ui/cloud/GatewayRows.kt`
-- [ ] `GwDivider` — `com/mlmvpn/scanner/ui/cloud/GatewayRows.kt`
-- [ ] `Editor` — `com/mlmvpn/scanner/ui/cloud/GatewaySettingsScreen.kt`
-- [ ] `PanelRows` — `com/mlmvpn/scanner/ui/cloud/PanelRows.kt`
-- [ ] `OpenPanelRow` — `com/mlmvpn/scanner/ui/cloud/PanelRows.kt`
-- [ ] `Divider` — `com/mlmvpn/scanner/ui/cloud/PanelRows.kt`
-- [ ] `ActionRow` — `com/mlmvpn/scanner/ui/cloud/PanelRows.kt`
+- [x] `CfMethodCard` — `com/mlmvpn/scanner/ui/cloud/CfMethodCard.kt`
+- [x] `CloudReceivedModule` — `com/mlmvpn/scanner/ui/cloud/CloudReceivedModule.kt`
+- [x] `accountColor` — `com/mlmvpn/scanner/ui/cloud/CloudUsageModule.kt`
+- [x] `CloudUsageModule` — `com/mlmvpn/scanner/ui/cloud/CloudUsageModule.kt`
+- [x] `GatewayBlock` — `com/mlmvpn/scanner/ui/cloud/GatewayRows.kt`
+- [x] `Note` — `com/mlmvpn/scanner/ui/cloud/GatewayRows.kt`
+- [x] `GwDivider` — `com/mlmvpn/scanner/ui/cloud/GatewayRows.kt`
+- [x] `Editor` — `com/mlmvpn/scanner/ui/cloud/GatewaySettingsScreen.kt`
+- [x] `PanelRows` — `com/mlmvpn/scanner/ui/cloud/PanelRows.kt`
+- [x] `OpenPanelRow` — `com/mlmvpn/scanner/ui/cloud/PanelRows.kt`
+- [x] `Divider` — `com/mlmvpn/scanner/ui/cloud/PanelRows.kt`
+- [x] `ActionRow` — `com/mlmvpn/scanner/ui/cloud/PanelRows.kt`
 ### configstudio
 
 - [x] `FleetSummary` — `com/mlmvpn/scanner/ui/configstudio/StudioAccountsScreen.kt`
@@ -795,32 +795,32 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 - [ ] `androidx` — `com/mlmvpn/scanner/ui/configstudio/wizard/StudioSetupWizard.kt`
 ### doctor
 
-- [ ] `DoctorMain` — `com/mlmvpn/scanner/ui/doctor/CfDoctorScreen.kt`
-- [ ] `Hero` — `com/mlmvpn/scanner/ui/doctor/CfDoctorScreen.kt`
-- [ ] `Capsule` — `com/mlmvpn/scanner/ui/doctor/CfDoctorScreen.kt`
-- [ ] `StageRow` — `com/mlmvpn/scanner/ui/doctor/CfDoctorScreen.kt`
-- [ ] `layerText` — `com/mlmvpn/scanner/ui/doctor/CfDoctorScreen.kt`
-- [ ] `TextRow` — `com/mlmvpn/scanner/ui/doctor/CfDoctorScreen.kt`
-- [ ] `stepText` — `com/mlmvpn/scanner/ui/doctor/CfDoctorScreen.kt`
-- [ ] `findingText` — `com/mlmvpn/scanner/ui/doctor/CfDoctorScreen.kt`
-- [ ] `worksText` — `com/mlmvpn/scanner/ui/doctor/CfDoctorScreen.kt`
-- [ ] `Field` — `com/mlmvpn/scanner/ui/doctor/CfDoctorScreen.kt`
-- [ ] `Step` — `com/mlmvpn/scanner/ui/doctor/CloudDoctorScreen.kt`
-- [ ] `HeroFrame` — `com/mlmvpn/scanner/ui/doctor/CloudDoctorScreen.kt`
-- [ ] `HeroTitle` — `com/mlmvpn/scanner/ui/doctor/CloudDoctorScreen.kt`
-- [ ] `HubHero` — `com/mlmvpn/scanner/ui/doctor/CloudDoctorScreen.kt`
-- [ ] `SetupHero` — `com/mlmvpn/scanner/ui/doctor/CloudDoctorScreen.kt`
-- [ ] `Verdict` — `com/mlmvpn/scanner/ui/doctor/CloudDoctorScreen.kt`
-- [ ] `PopIn` — `com/mlmvpn/scanner/ui/doctor/CloudDoctorScreen.kt`
-- [ ] `StepRow` — `com/mlmvpn/scanner/ui/doctor/CloudDoctorScreen.kt`
-- [ ] `Pill` — `com/mlmvpn/scanner/ui/doctor/CloudDoctorScreen.kt`
-- [ ] `Chevron` — `com/mlmvpn/scanner/ui/doctor/CloudDoctorScreen.kt`
-- [ ] `SelectRow` — `com/mlmvpn/scanner/ui/doctor/CloudDoctorScreen.kt`
-- [ ] `CredentialSection` — `com/mlmvpn/scanner/ui/doctor/CloudDoctorScreen.kt`
-- [ ] `DoctorField` — `com/mlmvpn/scanner/ui/doctor/CloudDoctorScreen.kt`
-- [ ] `DoctorCapsule` — `com/mlmvpn/scanner/ui/doctor/CloudDoctorScreen.kt`
-- [ ] `DeveloperSection` — `com/mlmvpn/scanner/ui/doctor/CloudDoctorScreen.kt`
-- [ ] `DevLine` — `com/mlmvpn/scanner/ui/doctor/CloudDoctorScreen.kt`
+- [x] `DoctorMain` — `com/mlmvpn/scanner/ui/doctor/CfDoctorScreen.kt`
+- [x] `Hero` — `com/mlmvpn/scanner/ui/doctor/CfDoctorScreen.kt`
+- [x] `Capsule` — `com/mlmvpn/scanner/ui/doctor/CfDoctorScreen.kt`
+- [x] `StageRow` — `com/mlmvpn/scanner/ui/doctor/CfDoctorScreen.kt`
+- [x] `layerText` — `com/mlmvpn/scanner/ui/doctor/CfDoctorScreen.kt` (deferred: localized text formatter has no independent visual surface; rendered in the Dusk-styled Doctor screen)
+- [x] `TextRow` — `com/mlmvpn/scanner/ui/doctor/CfDoctorScreen.kt`
+- [x] `stepText` — `com/mlmvpn/scanner/ui/doctor/CfDoctorScreen.kt` (deferred: localized text formatter has no independent visual surface; rendered in the Dusk-styled Doctor screen)
+- [x] `findingText` — `com/mlmvpn/scanner/ui/doctor/CfDoctorScreen.kt` (deferred: localized text formatter has no independent visual surface; rendered in the Dusk-styled Doctor screen)
+- [x] `worksText` — `com/mlmvpn/scanner/ui/doctor/CfDoctorScreen.kt` (deferred: localized text formatter has no independent visual surface; rendered in the Dusk-styled Doctor screen)
+- [x] `Field` — `com/mlmvpn/scanner/ui/doctor/CfDoctorScreen.kt`
+- [x] `Step` — `com/mlmvpn/scanner/ui/doctor/CloudDoctorScreen.kt`
+- [x] `HeroFrame` — `com/mlmvpn/scanner/ui/doctor/CloudDoctorScreen.kt`
+- [x] `HeroTitle` — `com/mlmvpn/scanner/ui/doctor/CloudDoctorScreen.kt`
+- [x] `HubHero` — `com/mlmvpn/scanner/ui/doctor/CloudDoctorScreen.kt`
+- [x] `SetupHero` — `com/mlmvpn/scanner/ui/doctor/CloudDoctorScreen.kt`
+- [x] `Verdict` — `com/mlmvpn/scanner/ui/doctor/CloudDoctorScreen.kt`
+- [x] `PopIn` — `com/mlmvpn/scanner/ui/doctor/CloudDoctorScreen.kt`
+- [x] `StepRow` — `com/mlmvpn/scanner/ui/doctor/CloudDoctorScreen.kt`
+- [x] `Pill` — `com/mlmvpn/scanner/ui/doctor/CloudDoctorScreen.kt`
+- [x] `Chevron` — `com/mlmvpn/scanner/ui/doctor/CloudDoctorScreen.kt`
+- [x] `SelectRow` — `com/mlmvpn/scanner/ui/doctor/CloudDoctorScreen.kt`
+- [x] `CredentialSection` — `com/mlmvpn/scanner/ui/doctor/CloudDoctorScreen.kt`
+- [x] `DoctorField` — `com/mlmvpn/scanner/ui/doctor/CloudDoctorScreen.kt`
+- [x] `DoctorCapsule` — `com/mlmvpn/scanner/ui/doctor/CloudDoctorScreen.kt`
+- [x] `DeveloperSection` — `com/mlmvpn/scanner/ui/doctor/CloudDoctorScreen.kt`
+- [x] `DevLine` — `com/mlmvpn/scanner/ui/doctor/CloudDoctorScreen.kt`
 ### emergency
 
 - [ ] `dialAccent` — `com/mlmvpn/scanner/ui/emergency/EmergencyKit.kt`
@@ -1465,12 +1465,12 @@ Toast / short transient feedback call sites (OS-rendered surfaces; validate app 
 - [x] `com/mlmvpn/scanner/ui/arena/ArenaScreen.kt` — Toast × 1 (replaced with Dusk snackbar)
 - [ ] `com/mlmvpn/scanner/ui/backup/BackupScreen.kt` — Toast × 1
 - [ ] `com/mlmvpn/scanner/ui/cfwarp/Nat64ExitUi.kt` — Toast × 2
-- [ ] `com/mlmvpn/scanner/ui/cloud/CfMethodCard.kt` — Toast × 1
-- [ ] `com/mlmvpn/scanner/ui/cloud/GatewayRows.kt` — Toast × 1
-- [ ] `com/mlmvpn/scanner/ui/cloud/GatewaySettingsScreen.kt` — Toast × 1
-- [ ] `com/mlmvpn/scanner/ui/cloud/PanelRows.kt` — Toast × 1
+- [x] `com/mlmvpn/scanner/ui/cloud/CfMethodCard.kt` — Toast × 1 (replaced with Dusk snackbar)
+- [x] `com/mlmvpn/scanner/ui/cloud/GatewayRows.kt` — Toast × 1 (replaced with Dusk snackbars)
+- [x] `com/mlmvpn/scanner/ui/cloud/GatewaySettingsScreen.kt` — Toast × 1 (replaced with Dusk snackbar)
+- [x] `com/mlmvpn/scanner/ui/cloud/PanelRows.kt` — Toast × 1 (replaced with Dusk snackbars)
 - [x] `com/mlmvpn/scanner/ui/configstudio/StudioLocationsEditScreen.kt` — Toast × 1 (replaced with Dusk snackbar)
-- [ ] `com/mlmvpn/scanner/ui/doctor/CfDoctorScreen.kt` — Toast × 3
+- [x] `com/mlmvpn/scanner/ui/doctor/CfDoctorScreen.kt` — Toast × 3 (replaced with Dusk snackbars)
 - [ ] `com/mlmvpn/scanner/ui/emergency/EmergencyKit.kt` — Toast × 1
 - [ ] `com/mlmvpn/scanner/ui/emergency/EmergencyLevel2Screen.kt` — Toast × 1
 - [ ] `com/mlmvpn/scanner/ui/emergency/EmergencyLevel3Screen.kt` — Toast × 4

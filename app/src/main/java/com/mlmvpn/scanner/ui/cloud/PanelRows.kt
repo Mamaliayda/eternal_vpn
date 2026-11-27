@@ -1,7 +1,6 @@
 package com.mlmvpn.scanner.ui.cloud
 
 import android.content.Context
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -40,8 +39,9 @@ import com.mlmvpn.scanner.data.GroupManager
 import com.mlmvpn.scanner.models.CloudAccount
 import com.mlmvpn.scanner.models.VpnNode
 import com.mlmvpn.scanner.store.tr
-import com.mlmvpn.scanner.ui.settings.Ios
 import com.mlmvpn.scanner.ui.settings.IosAlert
+import com.mlmvpn.scanner.ui.theme.DuskTheme
+import com.mlmvpn.scanner.ui.theme.rememberDuskSnackbarAction
 import com.mlmvpn.scanner.ui.settings.IosAlertAction
 import kotlinx.coroutines.launch
 
@@ -97,19 +97,20 @@ fun PanelRows(
     extra: (@Composable () -> Unit)? = null,
 ) {
     val context = LocalContext.current
+    val notify = rememberDuskSnackbarAction()
     val scope = rememberCoroutineScope()
     var step by remember { mutableStateOf<String?>(null) }
     var fetching by remember { mutableStateOf(false) }
     var confirmRemove by remember { mutableStateOf(false) }
-    Column(Modifier.fillMaxWidth().background(Color.White.copy(alpha = 0.035f))) {
+    Column(Modifier.fillMaxWidth().background(DuskTheme.surface)) {
         if (!installed) {
             ActionRow(Icons.Default.CloudUpload, step ?: tr("نصب روی کلادفلر", "Install on Cloudflare"), busy = step != null) {
                 if (step != null) return@ActionRow
                 step = tr("آماده‌سازی…", "Preparing…")
                 scope.launch {
                     install { s -> step = s }
-                        .onSuccess { toast(context, tr("$label روی حساب نصب شد.", "$label was installed on the account.")); onChanged() }
-                        .onFailure { toast(context, it.message) }
+                        .onSuccess { notify(tr("$label روی حساب نصب شد.", "$label was installed on the account.")); onChanged() }
+                        .onFailure { notify(it.message) }
                     step = null
                 }
             }
@@ -123,17 +124,17 @@ fun PanelRows(
                 result.onSuccess { list ->
                     if (PanelConfigs.file(context, groupManager, account, engine, label, list) != null) {
                         onGroupsUpdated()
-                        toast(context, context.getString(R.string.cloud_admin_configs_received, list.size))
-                    } else toast(context, tr("کانفیگی نیامد.", "No configs came back."))
+                        notify(context.getString(R.string.cloud_admin_configs_received, list.size))
+                    } else notify(tr("کانفیگی نیامد.", "No configs came back."))
                 }.onFailure {
                     android.util.Log.w("PanelRows", "$engine configs", it)
-                    toast(context, it.message)
+                    notify(it.message)
                 }
             }
         }
         extra?.let { Divider(); it() }
         Divider()
-        ActionRow(Icons.Default.DeleteForever, tr("حذف از کلادفلر", "Remove from Cloudflare"), busy = false, tint = Ios.Red) { confirmRemove = true }
+        ActionRow(Icons.Default.DeleteForever, tr("حذف از کلادفلر", "Remove from Cloudflare"), busy = false, tint = DuskTheme.error) { confirmRemove = true }
         }
     }
     if (confirmRemove) IosAlert(
@@ -144,7 +145,7 @@ fun PanelRows(
             IosAlertAction(tr("انصراف", "Cancel"), { confirmRemove = false }),
             IosAlertAction(tr("حذف", "Remove"), {
                 confirmRemove = false
-                scope.launch { remove().onSuccess { onChanged() }.onFailure { toast(context, it.message) } }
+                scope.launch { remove().onSuccess { onChanged() }.onFailure { notify(it.message) } }
             }, destructive = true),
         ),
         onDismiss = { confirmRemove = false },
@@ -155,20 +156,21 @@ fun PanelRows(
 @Composable
 fun OpenPanelRow(url: String, note: String? = null, beforeOpen: (() -> Unit)? = null) {
     val context = LocalContext.current
+    val notify = rememberDuskSnackbarAction()
     ActionRow(Icons.Default.OpenInBrowser, tr("باز کردن پنل وب", "Open the web panel"), busy = false) {
         beforeOpen?.invoke()
-        note?.let { toast(context, it) }
+        note?.let { notify(it) }
         runCatching { context.startActivity(android.content.Intent(android.content.Intent.ACTION_VIEW, android.net.Uri.parse(url)).addFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK)) }
     }
 }
 
 @Composable
 private fun Divider() {
-    Box(Modifier.fillMaxWidth().padding(start = 52.dp).height(0.5.dp).background(Ios.Separator))
+    Box(Modifier.fillMaxWidth().padding(start = 52.dp).height(0.5.dp).background(DuskTheme.outline.copy(alpha = 0.22f)))
 }
 
 @Composable
-fun ActionRow(icon: ImageVector, label: String, busy: Boolean, tint: Color = Ios.Label, onClick: () -> Unit) {
+fun ActionRow(icon: ImageVector, label: String, busy: Boolean, tint: Color = DuskTheme.onSurface, onClick: () -> Unit) {
     Row(
         Modifier.fillMaxWidth().clickable(enabled = !busy, onClick = onClick).padding(horizontal = 16.dp, vertical = 13.dp),
         verticalAlignment = Alignment.CenterVertically,
@@ -176,10 +178,6 @@ fun ActionRow(icon: ImageVector, label: String, busy: Boolean, tint: Color = Ios
         Icon(icon, contentDescription = null, tint = tint, modifier = Modifier.size(20.dp))
         Spacer(Modifier.width(12.dp))
         Text(label, color = tint, fontSize = 15.sp, modifier = Modifier.weight(1f))
-        if (busy) CircularProgressIndicator(Modifier.size(16.dp), color = Ios.Blue, strokeWidth = 2.dp)
+        if (busy) CircularProgressIndicator(Modifier.size(16.dp), color = DuskTheme.primary, strokeWidth = 2.dp)
     }
-}
-
-private fun toast(context: Context, text: String?) {
-    if (!text.isNullOrBlank()) Toast.makeText(context, text, Toast.LENGTH_LONG).show()
 }

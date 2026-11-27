@@ -1,6 +1,5 @@
 package com.mlmvpn.scanner.ui.cloud
 
-import android.widget.Toast
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Radar
 import androidx.compose.runtime.Composable
@@ -22,8 +21,9 @@ import com.mlmvpn.scanner.models.CloudAccount
 import com.mlmvpn.scanner.store.tr
 import com.mlmvpn.scanner.ui.faCount
 import com.mlmvpn.scanner.ui.tunnel.Transport
-import com.mlmvpn.scanner.ui.settings.Ios
 import com.mlmvpn.scanner.ui.settings.SettingsActionRow
+import com.mlmvpn.scanner.ui.theme.DuskTheme
+import com.mlmvpn.scanner.ui.theme.rememberDuskSnackbarAction
 import com.mlmvpn.scanner.ui.settings.SettingsFooter
 import com.mlmvpn.scanner.ui.settings.SettingsGroup
 import com.mlmvpn.scanner.ui.settings.SettingsRow
@@ -53,6 +53,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun CfMethodCard(accounts: List<CloudAccount>) {
     val context = LocalContext.current
+    val notify = rememberDuskSnackbarAction()
     val scope = rememberCoroutineScope()
     val manager = remember { CfNetManager.get(context) }
     val live by manager.live.collectAsState()
@@ -140,7 +141,7 @@ fun CfMethodCard(accounts: List<CloudAccount>) {
                 else -> tr("هیچ‌کدام از روش‌های کلادفلر روی این شبکه جواب نداد ($tried روش آزمایش شد)، و امتحان WARP و MASQUE انجام نشد. کمی بعد دوباره امتحان کنید.",
                     "None of the Cloudflare ways worked here (${scan.tried.size + connect.tried.size} tried), and WARP and MASQUE could not be tried. Try again in a moment.")
             }
-            Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+            notify(message)
         }
     }
 
@@ -149,7 +150,7 @@ fun CfMethodCard(accounts: List<CloudAccount>) {
         SettingsRow(
             title = tr("بهترین روش", "Best method"),
             icon = Icons.Default.Radar,
-            tint = Ios.Blue,
+            tint = DuskTheme.primary,
             value = if (verdict.proven) name(verdict.best) else tr("هنوز سنجیده نشده", "Not measured yet"),
             subtitle = when {
                 verdict.proven -> tr("اسکنر: ${name(verdict.scan)} · اتصال: ${name(verdict.connect)} · ${ageText(verdict.bestAt)}",
@@ -169,7 +170,7 @@ fun CfMethodCard(accounts: List<CloudAccount>) {
                 else -> tr("در حال سنجش… ${faCount(live.tried)} روش آزمایش شد", "Measuring… ${live.tried} tried")
             },
             icon = Icons.Default.Radar,
-            tint = Ios.Blue,
+            tint = DuskTheme.primary,
             busy = running,
         ) { measure() }
         if (!on) {
