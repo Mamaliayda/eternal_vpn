@@ -95,9 +95,9 @@ internal fun OutlineUndoBar(modifier: Modifier = Modifier) {
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(tr("${fa(count)} سرور حذف شد", if (count == 1) "1 server deleted" else "$count servers deleted"),
-                color = DuskTheme.onSurface, fontSize = 14.sp, modifier = Modifier.weight(1f))
+                color = DuskTheme.onSurface, fontSize = DuskTheme.textSize14, modifier = Modifier.weight(1f))
             Text(
-                tr("بازگردانی", "Undo"), color = DuskTheme.primary, fontSize = 15.sp, fontWeight = FontWeight.SemiBold,
+                tr("بازگردانی", "Undo"), color = DuskTheme.primary, fontSize = DuskTheme.textSize15, fontWeight = FontWeight.SemiBold,
                 modifier = Modifier.clip(RoundedCornerShape(DuskTheme.space2_5)).clickable { OutlineEngine.undoDelete() }
                     .padding(horizontal = DuskTheme.space3, vertical = DuskTheme.space2_5),
             )

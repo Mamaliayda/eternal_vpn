@@ -860,7 +860,7 @@ fun getHelpArticlesFa(): List<HelpArticle> {
                 **راه‌اندازی (چند دقیقه، یک‌بار برای همیشه):**
                 ۱. تب **اتصال** ← پوشه‌ی **«دامین‌فرانتینگ (بدون سرور)»** را انتخاب کنید.
                 ۲. دکمه‌ی **«شروع راه‌اندازی»** را بزنید. برنامه یک گواهی مخصوص همین گوشی می‌سازد و کانفیگ را در همان پوشه اضافه می‌کند.
-                ۳. دکمه‌ی **«ذخیره گواهی در پوشه دانلود»** را بزنید. فایل `MLM-VPN-Certificate.crt` در پوشه Download ذخیره می‌شود.
+                ۳. دکمه‌ی **«ذخیره گواهی در پوشه دانلود»** را بزنید. فایل `Eternal-VPN-Certificate.crt` در پوشه Download ذخیره می‌شود.
                 ۴. دکمه‌ی **«باز کردن تنظیمات اندروید»** را بزنید و از مسیر برند گوشی خودتان (پایین‌تر) گواهی را نصب کنید.
                 ۵. به برنامه برگردید. مرحله‌ی دوم **خودش تیک می‌خورد** و دکمه‌ها محو می‌شوند. لازم نیست برنامه را ببندید.
                 ۶. کانفیگ داخل همان پوشه را انتخاب و اتصال را بزنید. حالا در **کروم** سایت‌ها را باز کنید.
@@ -882,14 +882,14 @@ fun getHelpArticlesFa(): List<HelpArticle> {
                 • **ویوو (Funtouch OS / OriginOS):** تنظیمات ← تنظیمات بیشتر (More settings) ← امنیت و حریم خصوصی ← رمزگذاری و اطلاعات ورود ← نصب گواهی
                 • **موتورولا، نوکیا، ایسوس، سونی:** همان مسیر اندروید خام
 
-                وقتی پرسید نوع گواهی چیست، **«گواهی CA / CA certificate»** را انتخاب کنید. اگر اخطار داد، **Install anyway** را بزنید. در آخر از پوشه **Download** فایل `MLM-VPN-Certificate.crt` را انتخاب کنید.
+                وقتی پرسید نوع گواهی چیست، **«گواهی CA / CA certificate»** را انتخاب کنید. اگر اخطار داد، **Install anyway** را بزنید. در آخر از پوشه **Download** فایل `Eternal-VPN-Certificate.crt` را انتخاب کنید.
 
                 ────────────────────────
                 **🗑 مسیر حذف گواهی بر اساس برند**
 
                 هر وقت خواستید این روش را کنار بگذارید، یا گواهی جدید ساختید و می‌خواهید قبلی را پاک کنید، گواهی را حذف کنید. گواهی نصب‌شده تا خودتان پاکش نکنید باقی می‌ماند.
 
-                سریع‌ترین راه در همه‌ی گوشی‌ها: در جستجوی تنظیمات بنویسید `trusted credentials` یا `گواهی` و بعد سربرگ **«کاربر / User»** را انتخاب کنید. گواهی ما با نامی مثل **«MLM VPN Local CA …»** آنجاست؛ رویش بزنید و **حذف / Remove** را انتخاب کنید.
+                سریع‌ترین راه در همه‌ی گوشی‌ها: در جستجوی تنظیمات بنویسید `trusted credentials` یا `گواهی` و بعد سربرگ **«کاربر / User»** را انتخاب کنید. گواهی ما با نامی مثل **«Eternal VPN Local CA …»** آنجاست؛ رویش بزنید و **حذف / Remove** را انتخاب کنید.
 
                 • **سامسونگ (One UI):** تنظیمات ← بیومتریک و امنیت ← تنظیمات امنیتی دیگر ← **مشاهده گواهی‌های امنیتی (View security certificates)** ← سربرگ **User** ← گواهی را انتخاب و **Remove** بزنید
                 • **شیائومی / ردمی / پوکو:** تنظیمات ← رمزها و امنیت ← حریم خصوصی / امنیت سیستم ← رمزگذاری و اطلاعات ورود ← **اطلاعات ورود مورد اعتماد (Trusted credentials)** ← سربرگ **User** ← حذف
@@ -901,12 +901,12 @@ fun getHelpArticlesFa(): List<HelpArticle> {
 
                 **راه سریع پاک کردن همه‌ی گواهی‌های کاربر با هم:** در همان صفحه‌ی «رمزگذاری و اطلاعات ورود» گزینه‌ای به نام **«پاک کردن اطلاعات ورود (Clear credentials)»** هست. توجه: این گزینه **تمام** گواهی‌های نصب‌شده توسط کاربر را پاک می‌کند، نه فقط گواهی ما.
 
-                بعد از حذف، در پوشه‌ی دامین‌فرانتینگ برنامه، تیک مرحله‌ی دوم خودش برداشته می‌شود و دکمه‌های نصب برمی‌گردند. فایل `MLM-VPN-Certificate.crt` را هم می‌توانید از پوشه Download پاک کنید.
+                بعد از حذف، در پوشه‌ی دامین‌فرانتینگ برنامه، تیک مرحله‌ی دوم خودش برداشته می‌شود و دکمه‌های نصب برمی‌گردند. فایل `Eternal-VPN-Certificate.crt` را هم می‌توانید از پوشه Download پاک کنید.
 
                 ────────────────────────
                 **رفع اشکال**
 
-                • **مرحله‌ی نصب گواهی تیک نمی‌خورد:** یعنی اندروید هنوز گواهی را قبول نکرده. مطمئن شوید در مرحله‌ی انتخاب نوع، **«گواهی CA»** را زده‌اید (نه VPN و نه Wi-Fi) و فایل درست (`MLM-VPN-Certificate.crt`) را انتخاب کرده‌اید.
+                • **مرحله‌ی نصب گواهی تیک نمی‌خورد:** یعنی اندروید هنوز گواهی را قبول نکرده. مطمئن شوید در مرحله‌ی انتخاب نوع، **«گواهی CA»** را زده‌اید (نه VPN و نه Wi-Fi) و فایل درست (`Eternal-VPN-Certificate.crt`) را انتخاب کرده‌اید.
                 • **اندروید می‌گوید اول قفل صفحه بگذارید:** شرط خود اندروید است؛ تا رمز یا الگو یا اثر انگشت نگذارید گواهی نصب نمی‌شود.
                 • **پیام «نصب گواهی‌های CA ممکن نبود … از null»:** این پیام یعنی از مسیر اشتباه رفته‌اید. اندروید ۱۱ به بالا اجازه نمی‌دهد برنامه‌ها خودشان گواهی نصب کنند؛ باید از **تنظیمات** و از روی **فایل** نصب شود، دقیقاً همان کاری که مرحله‌ی ۳ و ۴ بالا می‌گوید.
                 • **وصل می‌شود ولی سایت‌ها باز نمی‌شوند:** احتمالاً در اپ سایت را باز می‌کنید نه مرورگر. در کروم امتحان کنید.
@@ -1005,8 +1005,8 @@ fun getHelpArticlesFa(): List<HelpArticle> {
                 • **پرچم یک سرور اشتباه است** — یک بار به آن وصل شوید؛ خودش اصلاح و ثبت می‌شود.
                 • **می‌خواهم همه‌ی اصلاح‌ها پاک شود** — فهرست کشورها را باز کنید و پایین صفحه «پاک کردن کشورهای اندازه‌گیری‌شده» را بزنید.
 
-                **گیت‌وی MLM کجا رفت؟**
-                گیت‌وی MLM (همان VPN Gate) **آیکون خودش را روی صفحه‌ی اصلی** دارد و هیچ تغییری نکرده.
+                **گیت‌وی Eternal VPN کجا رفت؟**
+                گیت‌وی Eternal VPN (همان VPN Gate) **آیکون خودش را روی صفحه‌ی اصلی** دارد و هیچ تغییری نکرده.
             """.trimIndent()
         ),
         HelpArticle(
@@ -1016,7 +1016,7 @@ fun getHelpArticlesFa(): List<HelpArticle> {
             content = """
                 **منوی همبرگری حذف شد — هر چه داخلش بود روی صفحه‌ی اول آمد**
 
-                دیگر هیچ قابلیتی پشت منو پنهان نیست. آیپی ثابت، لیست ورکرها، DNS ضد تحریم، لینک ساب، مصرف، آموزش‌ها، درباره ما، هر سه حالت اضطراری، گیت‌وی MLM، اتصال سریع، کانفیگ رایگان، ابری و گیم بوستر — همه روی صفحه‌ی اصلی آیکون دارند.
+                دیگر هیچ قابلیتی پشت منو پنهان نیست. آیپی ثابت، لیست ورکرها، DNS ضد تحریم، لینک ساب، مصرف، آموزش‌ها، درباره ما، هر سه حالت اضطراری، گیت‌وی Eternal VPN، اتصال سریع، کانفیگ رایگان، ابری و گیم بوستر — همه روی صفحه‌ی اصلی آیکون دارند.
 
                 **داک پایین صفحه**
 
@@ -1421,7 +1421,7 @@ fun getHelpArticlesEn(): List<HelpArticle> {
                 **Setup (a few minutes, once):**
                 1. **Connection** tab → open the **"دامین‌فرانتینگ (بدون سرور)"** (Domain Fronting) folder.
                 2. Tap **"Start setup"**. The app mints a certificate unique to this device and adds the config to the same folder.
-                3. Tap **"Save certificate to Downloads"**. The file `MLM-VPN-Certificate.crt` lands in your Download folder.
+                3. Tap **"Save certificate to Downloads"**. The file `Eternal-VPN-Certificate.crt` lands in your Download folder.
                 4. Tap **"Open Android settings"** and install it using the path for your phone brand (below).
                 5. Come back to the app. Step 2 **ticks itself** and the buttons disappear. No need to restart the app.
                 6. Select the config in that folder and connect. Now open the sites **in Chrome**.
@@ -1443,14 +1443,14 @@ fun getHelpArticlesEn(): List<HelpArticle> {
                 • **Vivo (Funtouch OS, OriginOS):** Settings → More settings → Security & privacy → Encryption & credentials → Install a certificate
                 • **Motorola, Nokia, Asus, Sony:** same as stock Android
 
-                When asked what kind of certificate it is, pick **CA certificate** (not VPN, not Wi-Fi). If it warns you, tap **Install anyway**. Finally pick `MLM-VPN-Certificate.crt` from the **Download** folder.
+                When asked what kind of certificate it is, pick **CA certificate** (not VPN, not Wi-Fi). If it warns you, tap **Install anyway**. Finally pick `Eternal-VPN-Certificate.crt` from the **Download** folder.
 
                 ────────────────────────
                 **🗑 Removal path by brand**
 
                 Remove the certificate whenever you stop using this method, or after generating a new one so the old entry does not linger. An installed certificate stays until you remove it yourself.
 
-                Fastest route on any phone: search Settings for `trusted credentials`, then open the **User** tab. Our certificate is listed as **"MLM VPN Local CA …"** — tap it and choose **Remove**.
+                Fastest route on any phone: search Settings for `trusted credentials`, then open the **User** tab. Our certificate is listed as **"Eternal VPN Local CA …"** — tap it and choose **Remove**.
 
                 • **Samsung (One UI):** Settings → Biometrics and security → Other security settings → **View security certificates** → **User** tab → select it → **Remove**
                 • **Xiaomi / Redmi / Poco:** Settings → Passwords & security → Privacy / System security → Encryption & credentials → **Trusted credentials** → **User** tab → remove
@@ -1462,12 +1462,12 @@ fun getHelpArticlesEn(): List<HelpArticle> {
 
                 **Shortcut to wipe all user certificates at once:** the same "Encryption & credentials" screen has **Clear credentials**. Note this removes **every** user-installed certificate, not just ours.
 
-                After removal, step 2 in the Domain Fronting folder un-ticks itself and the install buttons come back. You can also delete `MLM-VPN-Certificate.crt` from your Download folder.
+                After removal, step 2 in the Domain Fronting folder un-ticks itself and the install buttons come back. You can also delete `Eternal-VPN-Certificate.crt` from your Download folder.
 
                 ────────────────────────
                 **Troubleshooting**
 
-                • **Step 2 never ticks:** Android has not accepted the certificate yet. Make sure you chose **CA certificate** (not VPN or Wi-Fi) and picked the right file (`MLM-VPN-Certificate.crt`).
+                • **Step 2 never ticks:** Android has not accepted the certificate yet. Make sure you chose **CA certificate** (not VPN or Wi-Fi) and picked the right file (`Eternal-VPN-Certificate.crt`).
                 • **Android asks you to set a screen lock first:** that is Android's own requirement — no PIN/pattern/fingerprint, no certificate install.
                 • **"CA certificates could not be installed … from null":** you took the wrong route. Android 11+ does not let apps install certificates themselves; it has to be installed from **Settings**, from the **file** — exactly what steps 3 and 4 above do.
                 • **It connects but sites do not open:** you are probably using the app rather than a browser. Try Chrome.
@@ -1566,8 +1566,8 @@ fun getHelpArticlesEn(): List<HelpArticle> {
                 • **A server's flag is wrong** — connect to it once; it corrects and records itself.
                 • **I want all corrections cleared** — open the country list and press "Clear measured countries" at the bottom.
 
-                **Where did the MLM Gateway go?**
-                The MLM Gateway (VPN Gate) has **its own icon on the home screen** now. It is otherwise unchanged.
+                **Where did the Eternal VPN Gateway go?**
+                The Eternal VPN Gateway (VPN Gate) has **its own icon on the home screen** now. It is otherwise unchanged.
             """.trimIndent()
         ),
         HelpArticle(
@@ -1578,7 +1578,7 @@ fun getHelpArticlesEn(): List<HelpArticle> {
                 **The hamburger drawer is gone — everything it held is on the home screen**
 
                 No feature is hidden behind a menu any more. Fixed IP, Workers, anti-sanction DNS,
-                Sub Link, Usage, Tutorials, About, all three emergency modes, MLM Gateway, Quick
+                Sub Link, Usage, Tutorials, About, all three emergency modes, Eternal VPN Gateway, Quick
                 Connect, Free Configs, Cloud and Game Boost all have icons on the home screen.
 
                 **The dock**
@@ -1719,7 +1719,7 @@ fun getFaqsEn(): List<FaqItem> = listOf(
 
     FaqItem("What is \"Quick Connect\" and how is it different from the rest of the app?", "Quick Connect is one of the icons on the app's home screen: a ready-made list of thousands of public servers that the app downloads itself. No account, no panel to deploy, no config to paste. The difference from the cloud panel is that there the server is your own, on your own Cloudflare account (more stable, but you have to deploy it once), while here the servers are public and shared (instant, but their quality is not guaranteed). Full walkthrough in Tutorials, number 18."),
 
-    FaqItem("Where is the MLM Gateway (VPN Gate)?", "On the home screen, as an icon labelled \"MLM Gateway\". It is otherwise unchanged and every one of its features is where it was. If you cannot find it, you may have moved it yourself."),
+    FaqItem("Where is the Eternal VPN Gateway (VPN Gate)?", "On the home screen, as an icon labelled \"Eternal VPN Gateway\". It is otherwise unchanged and every one of its features is where it was. If you cannot find it, you may have moved it yourself."),
 
     FaqItem("In Quick Connect, what does the green tick next to a server mean?", "It means that server's country is no longer the list's claim — it has been measured. After you actually connect, the app asks Cloudflare through that same tunnel where the traffic came out. If the answer differs from the previous flag, the server moves to its real country for good and you are told. The reason: when someone picks a country, the point is to come out in that country."),
 

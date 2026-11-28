@@ -200,7 +200,7 @@ internal fun sharedLine(shared: Boolean, by: String): String =
 
 @Composable
 private fun Note(text: String) {
-    Text(text, color = DuskTheme.muted, fontSize = 12.sp, modifier = Modifier.fillMaxWidth().padding(start = 52.dp, end = 16.dp, top = 2.dp, bottom = 10.dp))
+    Text(text, color = DuskTheme.muted, fontSize = DuskTheme.textSize12, modifier = Modifier.fillMaxWidth().padding(start = 52.dp, end = 16.dp, top = 2.dp, bottom = 10.dp))
 }
 
 @Composable

@@ -679,7 +679,7 @@ private fun ModeRow(label: String, selected: Boolean, onClick: () -> Unit) {
             .padding(horizontal = 16.dp, vertical = 9.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Text(label, color = DuskTheme.onSurface, fontSize = 16.sp, modifier = Modifier.weight(1f))
+        Text(label, color = DuskTheme.onSurface, fontSize = DuskTheme.textSize16, modifier = Modifier.weight(1f))
         if (selected) Icon(Icons.Default.Check, contentDescription = null, tint = DuskTheme.primary, modifier = Modifier.size(20.dp))
     }
 }
@@ -689,8 +689,8 @@ private fun WarningFooter(text: String) {
     Text(
         text,
         color = DuskTheme.accent,
-        fontSize = 13.sp,
-        lineHeight = 21.sp,
+        fontSize = DuskTheme.textSize13,
+        lineHeight = DuskTheme.textSize21,
         modifier = Modifier.padding(start = 32.dp, end = 32.dp, top = 8.dp),
     )
 }

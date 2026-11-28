@@ -124,7 +124,7 @@
     <string name="scanner_copy_ips_button">Copy IPs</string>
     <string name="scanner_vpn_active_warning">Active VPN Warning</string>
     <string name="scanner_vpn_active_desc">An active VPN was detected on your system. For accurate tests (Real Delay), traffic must bypass VPN.\nPlease turn off the current VPN to continue testing.</string>
-    <string name="scanner_turn_off_vpn_and_scan">Turn off MLMVPN &amp; Scan</string>
+    <string name="scanner_turn_off_vpn_and_scan">Turn off Eternal VPN &amp; Scan</string>
     <string name="scanner_understood">Understood</string>
     <string name="scanner_cancel">Cancel</string>
     <string name="scanner_test_archive_ips_health">Test Archive IPs Health</string>
@@ -574,7 +574,7 @@
     <string name="home_quick">Quick Connect</string>
     <string name="home_freeconfig">Free Configs</string>
     <string name="home_game">Game Boost</string>
-    <string name="home_gateway">MLM Gateway</string>
+    <string name="home_gateway">Eternal VPN Gateway</string>
     <string name="home_fixed_ip">Fixed IP</string>
     <string name="home_sublink">Sub Link</string>
     <string name="home_workers">Workers</string>
@@ -634,7 +634,7 @@
     <string name="vpn_selected_apps">Selected Apps</string>
     <string name="vpn_apps_count">%d apps</string>
     <string name="vpn_quick_tile_count">Quick Connect servers</string>
-    <string name="vpn_quick_tile_desc">Add the mlmvpn button to your phone\'s quick settings panel. One tap picks the fastest server from this many recent servers and connects.</string>
+    <string name="vpn_quick_tile_desc">Add the Eternal VPN button to your phone\'s quick settings panel. One tap picks the fastest server from this many recent servers and connects.</string>
     <string name="vpn_mtu_footer">The size of the packets this phone sends, applied to every method: V2Ray, MASQUE, WireGuard, WARP-in-WARP, Psiphon, Tor and VPN Gate. Each one has its own default, measured rather than guessed. Use “Find the best value” on any of them to measure this line instead. Lower it if a connection reports fine but large pages stall; 1280 goes through almost any path. Allowed range 576–1500.</string>
 
     <!-- Display: icon size, theme, backdrop scope -->
@@ -821,7 +821,7 @@
          below used to read "NetDoctor" — the name of the project the transport stack was
          ported from — which looked like a second, unrelated app the user had not installed. -->
     <string name="tile_label_vpn">Eternal VPN</string>
-    <string name="tile_label_tunnel">Mlm Tunnel</string>
+    <string name="tile_label_tunnel">Eternal VPN Tunnel</string>
     <string name="wg_data_check">Verify data actually flows</string>
     <string name="wg_data_check_hint">Waits for real traffic to pass before reporting success. A WireGuard handshake completes on carriers that then drop every data packet, so the handshake alone proves nothing. Turning this off connects faster and makes "connected" mean less.</string>
     <string name="wg_section_verify">Connection check</string>
@@ -854,7 +854,7 @@
     <string name="cf_resources_workers_empty_body">No worker is deployed on this account yet. Install a panel from the Cloud screen.</string>
     <string name="cf_resources_workers_footer">A worker is a server on your Cloudflare account. Deleting one breaks the configs built from it.</string>
     <string name="cf_resources_d1_empty">No D1 database</string>
-    <string name="cf_resources_d1_empty_body">The MLM and Nahan panels create one when they are deployed.</string>
+    <string name="cf_resources_d1_empty_body">The Eternal VPN and Nahan panels create one when they are deployed.</string>
     <string name="cf_resources_d1_failed">Could not read the D1 list</string>
     <string name="cf_resources_d1_footer">Cloudflare caps how many databases a free account may hold. Delete one from the Cloudflare dashboard.</string>
     <string name="cf_resources_kv_empty">No KV namespace</string>
@@ -1204,9 +1204,9 @@
     <string name="measuring_of">Measuring %1$s of %2$s</string>
     <string name="minutes">%1$s minutes</string>
     <string name="minutes_ago"> minutes ago</string>
-    <string name="mlm_account_not_found">MLM account not found!</string>
-    <string name="mlm_gateway">MLM Gateway</string>
-    <string name="mlmvpn_private_list">MLMVPN private list · </string>
+    <string name="mlm_account_not_found">Eternal VPN account not found!</string>
+    <string name="mlm_gateway">Eternal VPN Gateway</string>
+    <string name="mlmvpn_private_list">Eternal VPN private list · </string>
     <string name="months_ago"> months ago</string>
     <string name="move_configs_to_the_connection_page">Move %1$s configs to the connection page</string>
     <string name="my_list">My list</string>
@@ -1266,7 +1266,7 @@
     <string name="panel_installed_now_i_will_fetch_the">Panel installed. Now I will fetch the configs from it, and then we go </string>
     <string name="panels_have_configs">%1$s panels have configs</string>
     <string name="pick_a_country_and_tap_quick_scan">Pick a country and tap “Quick scan”. “Scan all servers” tests every server in that </string>
-    <string name="pick_a_server_in_mlm_gateway_first">Pick a server in “MLM Gateway” first</string>
+    <string name="pick_a_server_in_mlm_gateway_first">Pick a server in “Eternal VPN Gateway” first</string>
     <string name="pick_a_server_in_the_gateway_first">Pick a server in the gateway first</string>
     <string name="pick_the_region_you_usually_play_on">Pick the region you usually play on. The boost measures the route to that region\'s </string>
     <string name="ping">Ping</string>
@@ -1522,7 +1522,7 @@
     <string name="used_so_far_usedmb_mb_of_limitstr">Used so far: %1$s MB of %2$s</string>
     <string name="user_created_successfully">User created successfully</string>
     <string name="user_edited_successfully">User edited successfully</string>
-    <string name="user_management_mlm">User management (MLM)</string>
+    <string name="user_management_mlm">User management (Eternal VPN)</string>
     <string name="user_not_found">User not found!</string>
     <string name="username">Username</string>
     <string name="users">Users</string>
@@ -1774,7 +1774,7 @@
     <string name="save_and_fetch">Save and fetch</string>
     <string name="save_as_a_file">Save as a file</string>
     <string name="save_as_a_file_the_file_is">“Save as a file” — the file is written out exactly and in full. </string>
-    <string name="saved_to_your_downloads_folder_mlmvpn_relay">Saved to your Downloads folder: MLMVPN_relay.gs</string>
+    <string name="saved_to_your_downloads_folder_mlmvpn_relay">Saved to your Downloads folder: EternalVPN_relay.gs</string>
     <string name="scan_qr">Scan QR</string>
     <string name="scan_the_config_s_qr_code">Scan the config\'s QR code</string>
     <string name="scanner">Scanner · </string>
@@ -2528,7 +2528,7 @@
     <string name="manual_2">Manual</string>
     <string name="means_throwing_away_the_very_thing_that">means throwing away the very thing that shows the problem.</string>
     <string name="medium_2">Medium</string>
-    <string name="mlmvpn_private_list_2">MLMVPN private list</string>
+    <string name="mlmvpn_private_list_2">Eternal VPN private list</string>
     <string name="myself_you_can_leave_it_at_any">myself; you can leave it at any point.</string>
     <string name="network_filtering_a_job_for_the_vpn">Network filtering (a job for the VPN, not this section)</string>
     <string name="no_bridge_straight_to_the_tor_network">No bridge, straight to the Tor network. For a network that has not blocked Tor</string>
@@ -2689,7 +2689,7 @@
     <string name="wireguard_game_trial">WireGuard (game trial)</string>
     <string name="wireguard_is_active">WireGuard is active</string>
     <string name="wireguard_scan">WireGuard scan</string>
-    <string name="with_mlmvpn_stay_connected_always_whatever_the">With MLMVPN, stay connected always, whatever the conditions</string>
+    <string name="with_mlmvpn_stay_connected_always_whatever_the">With Eternal VPN, stay connected always, whatever the conditions</string>
     <string name="with_no_filter_every_server_in_this">With no filter, every server in this list is shown. You can select several countries </string>
     <string name="word_processing">Word processing</string>
     <string name="working_ips_were_found_but_no_combination">Working IPs were found but no combination was built. The group chosen for combining </string>
@@ -2813,18 +2813,18 @@
     <string name="in_quick_connect_i_get_no_responding">In Quick Connect I get “no responding server was found”. What do I do?</string>
     <string name="in_quick_connect_what_does_the_green">In Quick Connect, what does the green tick next to a server name mean?</string>
     <string name="in_the_nhn_section_when_i_create">In the NHN section, when I create a user with a data and time limit, why does the resulting config not work?</string>
-    <string name="in_your_phone_s_settings_search_type">In your phone\'s settings search, type “trusted credentials” or “certificate”, then pick the “User” tab. Ours is there as “MLM VPN Local CA …”; tap it and choose “Remove”. The exact path for Samsung, Xiaomi, Pixel, Huawei, Oppo/Realme and Vivo is written out separately in tutorial 17. If you want to clear every installed certificate at once, that same page has “Clear credentials” — but note it clears all of them, not only ours. After removal, the second step\'s tick inside the domain-fronting folder clears itself.</string>
+    <string name="in_your_phone_s_settings_search_type">In your phone\'s settings search, type “trusted credentials” or “certificate”, then pick the “User” tab. Ours is there as “Eternal VPN Local CA …”; tap it and choose “Remove”. The exact path for Samsung, Xiaomi, Pixel, Huawei, Oppo/Realme and Vivo is written out separately in tutorial 17. If you want to clear every installed certificate at once, that same page has “Clear credentials” — but note it clears all of them, not only ours. After removal, the second step\'s tick inside the domain-fronting folder clears itself.</string>
     <string name="iran_configs_1_to_8_no_server">• **Iran configs (1 to 8):** no server, for opening ordinary sites and apps. The first thing to try.\n• **Cloud panel (BPB / EDG / Nahan):** your own private server on your own Cloudflare account; the most dependable option for every app, but you have to deploy it once.\n• **Domain fronting:** no server and no cost, but browser-only and it needs a certificate installed.\n• **Gaming tab:** for lowering game ping, not for opening sites.\n• **Emergency:** for when everything is blocked and you cannot even fetch a config.</string>
     <string name="is_installing_this_certificate_dangerous_for_my">Is installing this certificate dangerous for my phone? Can I install my friend\'s certificate?</string>
     <string name="is_there_a_per_app_setting_choosing">Is there a “per-app setting” (choosing which apps go through the VPN)?</string>
     <string name="it_is_the_port_the_app_opens">It is the port the app opens on the phone itself to pass traffic. The default is 10808 and unless you have a particular reason, leave it alone. The important thing is that besides the number you enter, the app also uses “that number + 10000” (for checking connection state and country). That is why some numbers cause trouble even though they look valid — 21000, for instance, clashes with the range the app uses to test servers. If you enter an unsuitable number, the problem is written under the field and the save button will not work until you fix it.</string>
-    <string name="it_means_android_has_not_accepted_the">It means Android has not accepted the certificate yet. There are three common reasons: 1) at the certificate-type step you did not choose “CA certificate” (choosing VPN or Wi-Fi installs it but is no use to us); 2) you picked the wrong file — it has to be MLM-VPN-Certificate.crt; 3) your phone has no screen lock (PIN, pattern or fingerprint) — Android will not install a certificate until you set one. You do not need to close and reopen the app; it checks constantly and ticks the moment the certificate is installed.</string>
+    <string name="it_means_android_has_not_accepted_the">It means Android has not accepted the certificate yet. There are three common reasons: 1) at the certificate-type step you did not choose “CA certificate” (choosing VPN or Wi-Fi installs it but is no use to us); 2) you picked the wrong file — it has to be eternal-VPN-Certificate.crt; 3) your phone has no screen lock (PIN, pattern or fingerprint) — Android will not install a certificate until you set one. You do not need to close and reopen the app; it checks constantly and ticks the moment the certificate is installed.</string>
     <string name="it_means_that_server_s_country_is">It means that server\'s country is no longer the list\'s claim but a measurement. After you actually connect to a server, the app asks Cloudflare from inside that tunnel where the traffic came out. If the answer differs from the old flag, the server is moved to its real country for good and you are told. The reason is that when someone picks a country, the point is to come out in that country.</string>
     <string name="managing_nahan_users_making_configs_for_friends">Managing Nahan users (making configs for friends)</string>
     <string name="no_tutorial_matched_that_phrase_the_search">No tutorial matched that phrase. The search covers both titles and tutorial text, </string>
     <string name="nothing_is_wrong_this_method_was_only">Nothing is wrong; this method was only ever for the browser. Since Android 7, Android does not let ordinary apps trust user-installed certificates — so YouTube, Instagram and the rest never see this certificate and will not work. That is Android\'s own restriction and no app can get around it without root. Open the sites in Chrome; if you want the apps themselves to work, use the cloud panel configs or the Iran configs.</string>
     <string name="numbers_1_to_6_are_built_on">Numbers 1 to 6 are built on an older version of the Serverless project, and 7 and 8 are the new one (v48), added completely unchanged. The only difference between 7 and 8 is the interval between the fragments sent (8 is for networks that object to short intervals). If they will not connect, check the local port first: these configs only work on port `10808` and we deliberately left them untouched. Inside the Iran configs folder, a red warning is shown if your port is wrong.</string>
-    <string name="on_the_home_screen_an_icon_named">On the home screen, an icon named “MLM Gateway”. It has not changed at all and everything it does is still there. If you cannot find it, you may have moved it yourself.</string>
+    <string name="on_the_home_screen_an_icon_named">On the home screen, an icon named “Eternal VPN Gateway”. It has not changed at all and everything it does is still there. If you cannot find it, you may have moved it yourself.</string>
     <string name="quick_connect_is_one_of_the_home">Quick Connect is one of the home screen icons: a ready-made list of thousands of public servers the app downloads itself. It needs no account, no panel to build and no config to enter. It differs from the cloud panel in that there the server is your own, on your own Cloudflare account (steadier, but you have to deploy it once), while here the servers are public and shared (instant, but their quality is not guaranteed). The full guide is in the tutorials, number 18.</string>
     <string name="quick_connect_the_ready_made_server_list">Quick Connect — the ready-made server list and choosing a country</string>
     <string name="s_0_9_s">^\\s*([۰-۹0-9]+)[.)\\-]\\s*(.*)$</string>
@@ -2834,7 +2834,7 @@
     <string name="that_error_means_your_cloudflare_token_is">That error means your Cloudflare token is wrong or has expired. Recreate the token exactly as the video guides show and enter it in the app again.</string>
     <string name="that_is_usually_a_clash_with_the">That is usually a clash with the previous version. Uninstall the old version completely first, then install the new one.</string>
     <string name="that_is_usually_down_to_dns_or">That is usually down to DNS or MTU settings. Newer versions try to improve it, but switching protocol (from BPB to Edge or the other way round) can help.</string>
-    <string name="that_message_means_you_took_the_wrong">That message means you took the wrong route. Android 11 and above blocks certificate installation from inside apps entirely. The right way is what the app itself says: tap “Save the certificate to Downloads” first, then from Android settings → Install a certificate → CA certificate, pick MLM-VPN-Certificate.crt from the Download folder.</string>
+    <string name="that_message_means_you_took_the_wrong">That message means you took the wrong route. Android 11 and above blocks certificate installation from inside apps entirely. The right way is what the app itself says: tap “Save the certificate to Downloads” first, then from Android settings → Install a certificate → CA certificate, pick eternal-VPN-Certificate.crt from the Download folder.</string>
     <string name="that_usually_means_the_country_you_picked">That usually means the country you picked has few working servers. Set the country box to “All countries” and search again. If instead you get “no servers were fetched”, the problem is different: access to the list source is blocked, so connect one of the anti-sanction options or an Iran config first, then tap the refresh button next to the country picker.</string>
     <string name="that_was_fixed_in_update_1_0">That was fixed in update 1.0.5.</string>
     <string name="the_app_is_tuned_for_most_android">The app is tuned for most Android versions, but if a particular version misbehaves, make sure you are on the latest update or clear the app\'s cache.</string>
@@ -2848,7 +2848,7 @@
     <string name="what_is_quick_connect_and_how_does">What is “Quick Connect” and how does it differ from the other sections?</string>
     <string name="what_is_the_local_port_in_settings">What is the “local port” in settings, and what number should I use?</string>
     <string name="where_do_the_mythological_config_names_come">Where do the mythological config names come from?</string>
-    <string name="where_is_the_mlm_gateway_vpn_gate">Where is the MLM Gateway (VPN Gate)?</string>
+    <string name="where_is_the_mlm_gateway_vpn_gate">Where is the Eternal VPN Gateway (VPN Gate)?</string>
     <string name="which_mode_should_i_use_for_what">Which mode should I use for what?</string>
     <string name="while_installing_the_certificate_i_get_couldn">While installing the certificate I get “Couldn\'t install CA certificates … from null”. What do I do?</string>
     <string name="why_are_videos_and_bots_slow_to">Why are videos and bots slow to load in Telegram or Instagram even though I am connected?</string>
@@ -2860,7 +2860,7 @@
     <string name="why_will_the_new_version_not_install">Why will the new version not install, and why do I get a “Package conflicts” error?</string>
     <string name="yes_since_version_1_0_5_it">Yes, since version 1.0.5 it is optimised for Android smart TVs.</string>
     <string name="yes_the_app_has_it_go_to">Yes, the app has it — go to Settings, then VPN settings.</string>
-    <string name="you_can_add_the_mlmvpn_tile_to">You can add the “mlmvpn” tile to your phone\'s quick settings panel (swipe down from the top → edit/add tiles). One tap turns the VPN on or off; on turning it on, the delay of your last few servers is measured and you are connected to the fastest. You can change how many servers are tested (20 by default) in Settings → VPN settings. Note: the first time, you have to connect the VPN once from inside the app so permission is granted.</string>
+    <string name="you_can_add_the_mlmvpn_tile_to">You can add the “Eternal VPN” tile to your phone\'s quick settings panel (swipe down from the top → edit/add tiles). One tap turns the VPN on or off; on turning it on, the delay of your last few servers is measured and you are connected to the fastest. You can change how many servers are tested (20 by default) in Settings → VPN settings. Note: the first time, you have to connect the VPN once from inside the app so permission is granted.</string>
     <string name="vpn_permission_denied">VPN permission denied</string>
     <string name="checking_ping">Checking ping…</string>
     <string name="starting_real_delay_test">Starting the real delay test…</string>
@@ -2959,13 +2959,13 @@ The per-app list in Advanced VPN is the other way round and is often the better 
     <string name="sni_measuring_progress">Measuring… %1$s of %2$s</string>
     <string name="sni_trying_method">Trying connection method %1$s of %2$s…</string>
     <string name="sni_build_configs">Build SNI configs</string>
-    <string name="sni_build_footer">Cloud panel configs only — BPB, EDG, Nahan and MLM, combined ones included. The SNI engine dials a Cloudflare edge and lets the edge route the rest, so a config whose own server does not sit behind that edge cannot be reached this way and is not offered. Your originals are left exactly as they are: each one is copied into a new config pointed at the local SNI engine, and the copies go into their own folder. Configs that already exist are skipped, so running this twice does not duplicate them.</string>
+    <string name="sni_build_footer">Cloud panel configs only — BPB, EDG, Nahan and Eternal VPN, combined ones included. The SNI engine dials a Cloudflare edge and lets the edge route the rest, so a config whose own server does not sit behind that edge cannot be reached this way and is not offered. Your originals are left exactly as they are: each one is copied into a new config pointed at the local SNI engine, and the copies go into their own folder. Configs that already exist are skipped, so running this twice does not duplicate them.</string>
     <string name="sni_picker_footer">Milliseconds appear here once you have run a measurement. A config with no answer is not necessarily broken — it may just be the entry point that is blocked, which the scan below the dial is for.</string>
     <string name="sni_delete_selected">Delete the selected config</string>
     <string name="sni_delete_all">Delete every SNI config (%1$s)</string>
     <string name="sni_delete_footer">This removes the SNI copies only. The configs they were built from stay exactly where they are, and you can build them again whenever you want.</string>
     <string name="sni_configs_deleted">%1$s SNI configs deleted</string>
-    <string name="sni_no_cloud_config">There is no cloud config to convert. SNI configs are built from the panels — BPB, EDG, Nahan and MLM, combined ones included — because the SNI engine reaches a server through a Cloudflare edge, and only a config that lives behind that edge can be reached that way.</string>
+    <string name="sni_no_cloud_config">There is no cloud config to convert. SNI configs are built from the panels — BPB, EDG, Nahan and Eternal VPN, combined ones included — because the SNI engine reaches a server through a Cloudflare edge, and only a config that lives behind that edge can be reached that way.</string>
     <!-- ==== Settings > Software update ==== -->
     <string name="update_checking">Checking…</string>
     <!-- Local network sharing -->
@@ -3793,7 +3793,7 @@ The per-app list in Advanced VPN is the other way round and is often the better 
     <string name="studio_bulk_new_title">Many users at once</string>
     <string name="studio_bulk_new_sub">A prefix and a count, and everybody gets the same terms. Each one is created, given a config and handed a link — the same three steps as one person, repeated.</string>
     <string name="studio_bulk_new_prefix">Name prefix</string>
-    <string name="studio_bulk_new_prefix_hint">mlm-</string>
+    <string name="studio_bulk_new_prefix_hint">eternal-</string>
     <string name="studio_bulk_new_count">How many</string>
     <string name="studio_bulk_new_start">Start numbering at</string>
     <string name="studio_bulk_new_preview">%1$s … %2$s — %3$s people</string>
@@ -4768,7 +4768,7 @@ After that it builds the combinations itself, measures every one with a real req
     <string name="warp_ladder_none">None of MASQUE, WireGuard and WARP-in-WARP gets through on this internet right now; try Quick Connect.</string>
     <!-- MAE — MLM Adaptive Engine -->
     <string name="mae_short">MAE</string>
-    <string name="mae_title">MLM Adaptive Engine</string>
+    <string name="mae_title">Eternal VPN Adaptive Engine</string>
     <string name="mae_onboard_title">Which apps and sites do you use most?</string>
     <string name="mae_onboard_subtitle">Pick what matters to you. MAE finds the fastest working path for each one on your network.</string>
     <string name="mae_onboard_installed">On this phone</string>
@@ -4917,7 +4917,7 @@ After that it builds the combinations itself, measures every one with a real req
     <string name="mae_remove_app">Remove from MAE</string>
     <!-- FLUX -->
     <string name="flux_title_short">FLUX</string>
-    <string name="flux_title">MLM FLUX Engine</string>
+    <string name="flux_title">Eternal VPN FLUX Engine</string>
     <string name="flux_country">Country</string>
     <string name="flux_country_auto">Automatic</string>
     <string name="flux_country_here">Works on this network</string>
@@ -5078,10 +5078,10 @@ After that it builds the combinations itself, measures every one with a real req
     <string name="doc_works">What works on this internet</string>
     <string name="doc_stages">Results</string>
     <string name="doc_report">Report</string>
-    <string name="doc_report_footer">Send the file in the mlmvpn group so we can fix this for everyone. It has no personal information.</string>
+    <string name="doc_report_footer">Send the file in the Eternal VPN group so we can fix this for everyone. It has no personal information.</string>
     <string name="doc_share">Send report file</string>
     <string name="doc_save">Save file</string>
-    <string name="doc_group">Open mlmvpn group</string>
+    <string name="doc_group">Open Eternal VPN group</string>
     <string name="doc_view">View report text</string>
     <string name="doc_saved">File saved</string>
     <string name="doc_save_failed">Could not save the file</string>
@@ -5424,7 +5424,7 @@ After that it builds the combinations itself, measures every one with a real req
     <string name="cfnet_panel_netra">Config subscription panel</string>
     <string name="cfnet_panel_gozargah">Connection management panel</string>
     <string name="cfnet_panel_nova">Simple panel</string>
-    <string name="cfnet_panel_mlm">Config Studio / MLM panel</string>
+    <string name="cfnet_panel_mlm">Config Studio / Eternal VPN panel</string>
     <string name="cfnet_config_header">Get configs from panels</string>
     <string name="cfnet_config_footer">Only the panels installed on this account are listed. Configs are saved as a Cloud group.</string>
     <string name="cfnet_config_go">Get configs</string>
@@ -5453,7 +5453,7 @@ After that it builds the combinations itself, measures every one with a real req
     <string name="mlm_get_xhttp">Get XHTTP config</string>
     <string name="mlm_xhttp_checking">Making it and testing it on this network…</string>
     <string name="mlm_xhttp_ready">The XHTTP config carried real data on this network and was added to your configs.</string>
-    <string name="mlm_xhttp_outdated">Update the MLM panel first (the Update row below); XHTTP needs its new version.</string>
+    <string name="mlm_xhttp_outdated">Update the Eternal VPN panel first (the Update row below); XHTTP needs its new version.</string>
     <string name="mlm_xhttp_not_working">The XHTTP config did not carry data on this network, so it was not added.</string>
     <string name="mlm_xhttp_no_config">The panel gave no config to make XHTTP from.</string>
     <string name="mlm_xhttp_failed">Getting the XHTTP config failed; try again.</string>
@@ -5549,7 +5549,7 @@ After that it builds the combinations itself, measures every one with a real req
     <string name="proton_route_lost">The way in dropped. The page stays; it carries on when the way in is back.</string>
     <string name="proton_reload">Reload</string>
     <string name="proton_page_error">Page error: %1$s</string>
-    <string name="scout_title">MLM Scout</string>
+    <string name="scout_title">Eternal VPN Scout</string>
     <string name="gst_relay_not_found">❌ Google has no web app under this ID (404). You may have pasted the Script ID or a test (/dev) ID, or the deployment was archived. In Apps Script open Deploy › Manage deployments and copy the Deployment ID (it starts with AKfy).</string>
     <string name="gst_relay_key_not_used">⚠️ This relay works, but its password differs from your other relays, so the tunnel leaves it out. Build it again with the same password as the first relay.</string>
     <string name="gst_front_blocked">⚠️ The relay works, but Google\'s route to it is closed on this network, so the tunnel would carry no data. Try another network, or tick other addresses under Network route.</string>

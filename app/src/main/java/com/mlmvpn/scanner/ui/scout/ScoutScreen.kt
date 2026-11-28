@@ -76,7 +76,7 @@ fun ScoutScreen(onBack: () -> Unit, onOpen: (String) -> Unit, visible: Boolean =
     if (!visible) return
     val run = ui.run
     val openDetails: (String) -> Unit = { details = it }
-    IosScreen(largeTitle = "MLM Scout", onBack = onBack, trailing = {
+    IosScreen(largeTitle = "Eternal VPN Scout", onBack = onBack, trailing = {
         TextButton(onClick = { coverage = true }) { Text(tr("پوشش", "Coverage"), color = DuskTheme.primary) }
     }) {
         Column(Modifier.fillMaxWidth().padding(20.dp), horizontalAlignment = Alignment.CenterHorizontally,
@@ -84,7 +84,7 @@ fun ScoutScreen(onBack: () -> Unit, onOpen: (String) -> Unit, visible: Boolean =
             if (ui.running) {
                 ProgressRing(if (ui.tasksTotal > 0) ui.tasksDone.toFloat() / ui.tasksTotal else 0f) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Text("${ui.tasksDone} / ${ui.tasksTotal}", color = DuskTheme.onSurface, fontSize = 22.sp)
+                        Text("${ui.tasksDone} / ${ui.tasksTotal}", color = DuskTheme.onSurface, fontSize = DuskTheme.textSize22)
                         Text(mmss(now - ui.startedAt), color = DuskTheme.muted)
                     }
                 }
@@ -101,12 +101,12 @@ fun ScoutScreen(onBack: () -> Unit, onOpen: (String) -> Unit, visible: Boolean =
                 Text(tr("کدام روش روی اینترنت شما کار می‌کند؟", "Which method works on your internet?"), color = DuskTheme.onSurface)
                 if (ready) {
                     Text(tr("برآورد بررسی کامل: ${estimate.first / 60 + 1} دقیقه · ${String.format(java.util.Locale.US, "%.1f", estimate.second)} مگابایت",
-                        "Full check estimate: ${estimate.first / 60 + 1} min · ${String.format(java.util.Locale.US, "%.1f", estimate.second)} MB"), color = DuskTheme.muted, fontSize = 12.sp)
+                        "Full check estimate: ${estimate.first / 60 + 1} min · ${String.format(java.util.Locale.US, "%.1f", estimate.second)} MB"), color = DuskTheme.muted, fontSize = DuskTheme.textSize12)
                     PillButton(tr("شروع بررسی", "Start check"), DuskTheme.primary) { checked { ScoutEngine.start(context, pauseApproved = it) } }
                     Text(tr("راه‌اندازی‌های خودکار مثل گف انجام می‌شوند؛ دانلود موتور در برآورد مصرف بالا نیست.",
-                        "Automatic setup, including Geph, runs as needed; engine downloads are additional to this estimate."), color = DuskTheme.muted, fontSize = 12.sp)
+                        "Automatic setup, including Geph, runs as needed; engine downloads are additional to this estimate."), color = DuskTheme.muted, fontSize = DuskTheme.textSize12)
                     Text(tr("کشورها در روش‌های دارای انتخاب کشور جداگانه سنجیده می‌شوند؛ تعداد خروجی‌ها زمان و مصرف بررسی را افزایش می‌دهد.",
-                        "Methods with country selection test each exit separately; more exits increase time and data use."), color = DuskTheme.muted, fontSize = 12.sp)
+                        "Methods with country selection test each exit separately; more exits increase time and data use."), color = DuskTheme.muted, fontSize = DuskTheme.textSize12)
                     if (run != null && run.partial && run.netKey == netKey) {
                         PillButton(tr("ادامهٔ بررسی همین شبکه", "Resume on this network"), DuskTheme.primary, filled = false) {
                             checked { ScoutEngine.start(context, resume = run, pauseApproved = it) }
@@ -134,7 +134,7 @@ fun ScoutScreen(onBack: () -> Unit, onOpen: (String) -> Unit, visible: Boolean =
                 if (now - run.startedAt > ScoutStore.FRESH_MS) add(tr("قدیمی — دوباره بررسی کن", "Old — check again"))
                 if (run.partial) add(tr("نتیجهٔ نیمه‌کاره", "Partial result"))
                 run.dataBytes?.let { add(tr("${megabytes(it)} مگابایت مصرف برنامه", "${megabytes(it)} MB app traffic")) }
-            }.joinToString(" · "), color = DuskTheme.muted, fontSize = 12.sp, modifier = Modifier.padding(20.dp))
+            }.joinToString(" · "), color = DuskTheme.muted, fontSize = DuskTheme.textSize12, modifier = Modifier.padding(20.dp))
             LineCard(run.line) { showLine = true }
             val summary = ScoutSummary.build(run.methods.values,
                 { id -> ScoutRegistry.byId(id)?.let { ScoutSummary.Info(it.kind, it.evidence) } },
@@ -190,7 +190,7 @@ fun ScoutScreen(onBack: () -> Unit, onOpen: (String) -> Unit, visible: Boolean =
             ),
         )
     }
-    message?.let { value -> ScoutDialog(tr("MLM Scout", "MLM Scout"), { message = null }) { Text(value) } }
+    message?.let { value -> ScoutDialog(tr("Eternal VPN Scout", "Eternal VPN Scout"), { message = null }) { Text(value) } }
     if (showHistory) ScoutDialog(tr("سابقهٔ بررسی‌ها", "History"), { showHistory = false }) {
         if (ui.running) Text(tr("برای مشاهدهٔ بررسی قبلی، ابتدا بررسی جاری را متوقف کنید.", "Stop the current check before viewing history."))
         history.forEach { previous -> TextButton(enabled = !ui.running, onClick = { ScoutEngine.show(previous); showHistory = false }) {

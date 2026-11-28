@@ -1,0 +1,850 @@
+{
+  "checked_rows": 1101,
+  "rows_with_references": 1100,
+  "files_scanned": 213,
+  "unresolved_references": [],
+  "unresolved_findings": 0,
+  "reviewed_material_defaults": 41,
+  "reviewed_toast_deferrals": 6,
+  "finding_counts": {},
+  "findings": [
+    {
+      "category": "reviewed_toast_deferral",
+      "file": "app/src/main/java/com/mlmvpn/core/aether/AetherScanService.kt",
+      "line": 246,
+      "text": "android.widget.Toast.makeText(context,",
+      "checked_rows": [
+        1516
+      ],
+      "rationale": "service-start failure fallback"
+    },
+    {
+      "category": "reviewed_toast_deferral",
+      "file": "app/src/main/java/com/mlmvpn/scanner/MainActivity.kt",
+      "line": 53,
+      "text": "android.widget.Toast.makeText(this, getString(R.string.screen_missing_on_device), android.widget.Toast.LENGTH_LONG).show()",
+      "checked_rows": [
+        1285,
+        1324,
+        1342
+      ],
+      "rationale": "missing system permission/activity resolver fallback"
+    },
+    {
+      "category": "reviewed_toast_deferral",
+      "file": "app/src/main/java/com/mlmvpn/scanner/VpnTileService.kt",
+      "line": 175,
+      "text": "Toast.makeText(this@VpnTileService, msg, Toast.LENGTH_SHORT).show()",
+      "checked_rows": [
+        1325
+      ],
+      "rationale": "system quick-settings tile action fallback; platform owns tile surface"
+    },
+    {
+      "category": "material_default_colors_review",
+      "file": "app/src/main/java/com/mlmvpn/scanner/engines/edg/EdgSettingsScreen.kt",
+      "line": 114,
+      "text": "Surface(",
+      "checked_rows": [
+        67,
+        1447
+      ]
+    },
+    {
+      "category": "material_default_colors_review",
+      "file": "app/src/main/java/com/mlmvpn/scanner/engines/edg/EdgSettingsScreen.kt",
+      "line": 209,
+      "text": "Button(",
+      "checked_rows": [
+        67,
+        1447
+      ]
+    },
+    {
+      "category": "material_default_colors_review",
+      "file": "app/src/main/java/com/mlmvpn/scanner/engines/mlm/MlmSettingsScreen.kt",
+      "line": 52,
+      "text": "Surface(",
+      "checked_rows": [
+        68,
+        1449
+      ]
+    },
+    {
+      "category": "material_default_colors_review",
+      "file": "app/src/main/java/com/mlmvpn/scanner/engines/mlm/MlmSettingsScreen.kt",
+      "line": 124,
+      "text": "TextButton(onClick = onDismiss, enabled = !isSaving) {",
+      "checked_rows": [
+        68,
+        1449
+      ]
+    },
+    {
+      "category": "material_default_colors_review",
+      "file": "app/src/main/java/com/mlmvpn/scanner/engines/mlm/MlmSettingsScreen.kt",
+      "line": 128,
+      "text": "Button(",
+      "checked_rows": [
+        68,
+        1449
+      ]
+    },
+    {
+      "category": "material_default_colors_review",
+      "file": "app/src/main/java/com/mlmvpn/scanner/engines/mlm/MlmUsersScreen.kt",
+      "line": 85,
+      "text": "Surface(",
+      "checked_rows": [
+        69,
+        70,
+        428,
+        429,
+        430,
+        1295,
+        1450
+      ]
+    },
+    {
+      "category": "material_default_colors_review",
+      "file": "app/src/main/java/com/mlmvpn/scanner/engines/nahan/NahanSettingsScreen.kt",
+      "line": 105,
+      "text": "Surface(",
+      "checked_rows": [
+        71,
+        72,
+        431,
+        432,
+        433,
+        1296,
+        1451
+      ]
+    },
+    {
+      "category": "material_default_colors_review",
+      "file": "app/src/main/java/com/mlmvpn/scanner/engines/nahan/NahanSettingsScreen.kt",
+      "line": 510,
+      "text": "Button(",
+      "checked_rows": [
+        71,
+        72,
+        431,
+        432,
+        433,
+        1296,
+        1451
+      ]
+    },
+    {
+      "category": "reviewed_toast_deferral",
+      "file": "app/src/main/java/com/mlmvpn/scanner/lan/LanNotification.kt",
+      "line": 162,
+      "text": "Toast.makeText(context, S(R.string.lanweb_copied), Toast.LENGTH_SHORT).show()",
+      "checked_rows": [
+        1325,
+        1522
+      ],
+      "rationale": "pre-Android-13 clipboard feedback; Android 13+ supplies system feedback"
+    },
+    {
+      "category": "material_default_colors_review",
+      "file": "app/src/main/java/com/mlmvpn/scanner/ui/BpbSettingsModal.kt",
+      "line": 72,
+      "text": "Surface(",
+      "checked_rows": [
+        90,
+        450,
+        451
+      ]
+    },
+    {
+      "category": "material_default_colors_review",
+      "file": "app/src/main/java/com/mlmvpn/scanner/ui/BpbSettingsModal.kt",
+      "line": 162,
+      "text": "Button(",
+      "checked_rows": [
+        90,
+        450,
+        451
+      ]
+    },
+    {
+      "category": "material_default_colors_review",
+      "file": "app/src/main/java/com/mlmvpn/scanner/ui/CloudTab.kt",
+      "line": 2066,
+      "text": "TextButton(onClick = onTroubleshoot) {",
+      "checked_rows": [
+        100,
+        466,
+        467,
+        468,
+        1299,
+        1401,
+        1456
+      ]
+    },
+    {
+      "category": "material_default_colors_review",
+      "file": "app/src/main/java/com/mlmvpn/scanner/ui/GameTab.kt",
+      "line": 825,
+      "text": "Surface(",
+      "checked_rows": [
+        119,
+        120,
+        121,
+        488,
+        489,
+        490,
+        491,
+        492,
+        493,
+        494,
+        495,
+        1301,
+        1459
+      ]
+    },
+    {
+      "category": "material_default_colors_review",
+      "file": "app/src/main/java/com/mlmvpn/scanner/ui/GameTab.kt",
+      "line": 874,
+      "text": "Surface(",
+      "checked_rows": [
+        119,
+        120,
+        121,
+        488,
+        489,
+        490,
+        491,
+        492,
+        493,
+        494,
+        495,
+        1301,
+        1459
+      ]
+    },
+    {
+      "category": "material_default_colors_review",
+      "file": "app/src/main/java/com/mlmvpn/scanner/ui/GameTab.kt",
+      "line": 942,
+      "text": "Surface(",
+      "checked_rows": [
+        119,
+        120,
+        121,
+        488,
+        489,
+        490,
+        491,
+        492,
+        493,
+        494,
+        495,
+        1301,
+        1459
+      ]
+    },
+    {
+      "category": "material_default_colors_review",
+      "file": "app/src/main/java/com/mlmvpn/scanner/ui/GameTab.kt",
+      "line": 1210,
+      "text": "Surface(",
+      "checked_rows": [
+        119,
+        120,
+        121,
+        488,
+        489,
+        490,
+        491,
+        492,
+        493,
+        494,
+        495,
+        1301,
+        1459
+      ]
+    },
+    {
+      "category": "material_default_colors_review",
+      "file": "app/src/main/java/com/mlmvpn/scanner/ui/GameTab.kt",
+      "line": 1289,
+      "text": "Surface(",
+      "checked_rows": [
+        119,
+        120,
+        121,
+        488,
+        489,
+        490,
+        491,
+        492,
+        493,
+        494,
+        495,
+        1301,
+        1459
+      ]
+    },
+    {
+      "category": "material_default_colors_review",
+      "file": "app/src/main/java/com/mlmvpn/scanner/ui/ScannerTab.kt",
+      "line": 1118,
+      "text": "TextButton(onClick = { com.mlmvpn.scanner.data.ScannerManager.reset() }, modifier = Modifier.padding(top = 8.dp)) {",
+      "checked_rows": [
+        156,
+        551,
+        552,
+        553,
+        554,
+        555,
+        1304,
+        1463
+      ]
+    },
+    {
+      "category": "material_default_colors_review",
+      "file": "app/src/main/java/com/mlmvpn/scanner/ui/ScannerTab.kt",
+      "line": 1235,
+      "text": "Button(",
+      "checked_rows": [
+        156,
+        551,
+        552,
+        553,
+        554,
+        555,
+        1304,
+        1463
+      ]
+    },
+    {
+      "category": "material_default_colors_review",
+      "file": "app/src/main/java/com/mlmvpn/scanner/ui/ScannerTab.kt",
+      "line": 1289,
+      "text": "Button(",
+      "checked_rows": [
+        156,
+        551,
+        552,
+        553,
+        554,
+        555,
+        1304,
+        1463
+      ]
+    },
+    {
+      "category": "material_default_colors_review",
+      "file": "app/src/main/java/com/mlmvpn/scanner/ui/ScannerTab.kt",
+      "line": 1595,
+      "text": "Button(",
+      "checked_rows": [
+        156,
+        551,
+        552,
+        553,
+        554,
+        555,
+        1304,
+        1463
+      ]
+    },
+    {
+      "category": "material_default_colors_review",
+      "file": "app/src/main/java/com/mlmvpn/scanner/ui/ScannerTab.kt",
+      "line": 1919,
+      "text": "is ScanPreflight.Verdict.OwnVpn -> TextButton(onClick = {",
+      "checked_rows": [
+        156,
+        551,
+        552,
+        553,
+        554,
+        555,
+        1304,
+        1463
+      ]
+    },
+    {
+      "category": "material_default_colors_review",
+      "file": "app/src/main/java/com/mlmvpn/scanner/ui/ScannerTab.kt",
+      "line": 1928,
+      "text": "is ScanPreflight.Verdict.ForeignVpn -> TextButton(onClick = {",
+      "checked_rows": [
+        156,
+        551,
+        552,
+        553,
+        554,
+        555,
+        1304,
+        1463
+      ]
+    },
+    {
+      "category": "material_default_colors_review",
+      "file": "app/src/main/java/com/mlmvpn/scanner/ui/ScannerTab.kt",
+      "line": 1936,
+      "text": "else -> TextButton(onClick = { preflight = null }) {",
+      "checked_rows": [
+        156,
+        551,
+        552,
+        553,
+        554,
+        555,
+        1304,
+        1463
+      ]
+    },
+    {
+      "category": "material_default_colors_review",
+      "file": "app/src/main/java/com/mlmvpn/scanner/ui/ScannerTab.kt",
+      "line": 2136,
+      "text": "TextButton(onClick = { com.mlmvpn.scanner.data.ScannerManager.dismissHealthTestCleanup() }) {",
+      "checked_rows": [
+        156,
+        551,
+        552,
+        553,
+        554,
+        555,
+        1304,
+        1463
+      ]
+    },
+    {
+      "category": "material_default_colors_review",
+      "file": "app/src/main/java/com/mlmvpn/scanner/ui/aether/AetherScreen.kt",
+      "line": 882,
+      "text": "Switch(checked = retry, onCheckedChange = onRetry)",
+      "checked_rows": [
+        185,
+        186,
+        602,
+        603,
+        604,
+        605,
+        606,
+        607,
+        608,
+        609,
+        610,
+        611,
+        612,
+        613,
+        614,
+        615,
+        616,
+        617,
+        618,
+        619,
+        620,
+        621,
+        622,
+        623,
+        624,
+        625,
+        626,
+        627,
+        628,
+        1306,
+        1464
+      ]
+    },
+    {
+      "category": "material_default_colors_review",
+      "file": "app/src/main/java/com/mlmvpn/scanner/ui/aether/AetherScreen.kt",
+      "line": 968,
+      "text": "Switch(checked = quick, onCheckedChange = onQuick)",
+      "checked_rows": [
+        185,
+        186,
+        602,
+        603,
+        604,
+        605,
+        606,
+        607,
+        608,
+        609,
+        610,
+        611,
+        612,
+        613,
+        614,
+        615,
+        616,
+        617,
+        618,
+        619,
+        620,
+        621,
+        622,
+        623,
+        624,
+        625,
+        626,
+        627,
+        628,
+        1306,
+        1464
+      ]
+    },
+    {
+      "category": "material_default_colors_review",
+      "file": "app/src/main/java/com/mlmvpn/scanner/ui/aether/AetherScreen.kt",
+      "line": 976,
+      "text": "Switch(checked = noDataCheck, onCheckedChange = onNoDataCheck)",
+      "checked_rows": [
+        185,
+        186,
+        602,
+        603,
+        604,
+        605,
+        606,
+        607,
+        608,
+        609,
+        610,
+        611,
+        612,
+        613,
+        614,
+        615,
+        616,
+        617,
+        618,
+        619,
+        620,
+        621,
+        622,
+        623,
+        624,
+        625,
+        626,
+        627,
+        628,
+        1306,
+        1464
+      ]
+    },
+    {
+      "category": "material_default_colors_review",
+      "file": "app/src/main/java/com/mlmvpn/scanner/ui/aether/AetherScreen.kt",
+      "line": 990,
+      "text": "Switch(checked = verbose, onCheckedChange = onVerbose)",
+      "checked_rows": [
+        185,
+        186,
+        602,
+        603,
+        604,
+        605,
+        606,
+        607,
+        608,
+        609,
+        610,
+        611,
+        612,
+        613,
+        614,
+        615,
+        616,
+        617,
+        618,
+        619,
+        620,
+        621,
+        622,
+        623,
+        624,
+        625,
+        626,
+        627,
+        628,
+        1306,
+        1464
+      ]
+    },
+    {
+      "category": "material_default_colors_review",
+      "file": "app/src/main/java/com/mlmvpn/scanner/ui/aether/AetherScreen.kt",
+      "line": 1020,
+      "text": "Switch(checked = quick, onCheckedChange = onQuick)",
+      "checked_rows": [
+        185,
+        186,
+        602,
+        603,
+        604,
+        605,
+        606,
+        607,
+        608,
+        609,
+        610,
+        611,
+        612,
+        613,
+        614,
+        615,
+        616,
+        617,
+        618,
+        619,
+        620,
+        621,
+        622,
+        623,
+        624,
+        625,
+        626,
+        627,
+        628,
+        1306,
+        1464
+      ]
+    },
+    {
+      "category": "material_default_colors_review",
+      "file": "app/src/main/java/com/mlmvpn/scanner/ui/aether/AetherScreen.kt",
+      "line": 1028,
+      "text": "Switch(checked = noDataCheck, onCheckedChange = onNoDataCheck)",
+      "checked_rows": [
+        185,
+        186,
+        602,
+        603,
+        604,
+        605,
+        606,
+        607,
+        608,
+        609,
+        610,
+        611,
+        612,
+        613,
+        614,
+        615,
+        616,
+        617,
+        618,
+        619,
+        620,
+        621,
+        622,
+        623,
+        624,
+        625,
+        626,
+        627,
+        628,
+        1306,
+        1464
+      ]
+    },
+    {
+      "category": "material_default_colors_review",
+      "file": "app/src/main/java/com/mlmvpn/scanner/ui/aether/AetherScreen.kt",
+      "line": 1042,
+      "text": "Switch(checked = verbose, onCheckedChange = onVerbose)",
+      "checked_rows": [
+        185,
+        186,
+        602,
+        603,
+        604,
+        605,
+        606,
+        607,
+        608,
+        609,
+        610,
+        611,
+        612,
+        613,
+        614,
+        615,
+        616,
+        617,
+        618,
+        619,
+        620,
+        621,
+        622,
+        623,
+        624,
+        625,
+        626,
+        627,
+        628,
+        1306,
+        1464
+      ]
+    },
+    {
+      "category": "material_default_colors_review",
+      "file": "app/src/main/java/com/mlmvpn/scanner/ui/mitm/MitmSetupCard.kt",
+      "line": 559,
+      "text": "OutlinedButton(",
+      "checked_rows": [
+        1017,
+        1018,
+        1019,
+        1020,
+        1021
+      ]
+    },
+    {
+      "category": "material_default_colors_review",
+      "file": "app/src/main/java/com/mlmvpn/scanner/ui/mitm/MitmSetupCard.kt",
+      "line": 583,
+      "text": "OutlinedButton(",
+      "checked_rows": [
+        1017,
+        1018,
+        1019,
+        1020,
+        1021
+      ]
+    },
+    {
+      "category": "reviewed_toast_deferral",
+      "file": "app/src/main/java/com/mlmvpn/scanner/ui/npv/NpvImportActivity.kt",
+      "line": 33,
+      "text": "Toast.makeText(this, when {",
+      "checked_rows": [
+        1287,
+        1327,
+        1344
+      ],
+      "rationale": "one-shot ACTION_VIEW importer immediately launches app; no screen UI"
+    },
+    {
+      "category": "material_default_colors_review",
+      "file": "app/src/main/java/com/mlmvpn/scanner/ui/npv/NpvScreen.kt",
+      "line": 576,
+      "text": "TextButton(onClick = { NpvEngine.stopMeasure() }) { Text(tr(\"توقف\", \"Stop\"), color = DuskTheme.accent) }",
+      "checked_rows": [
+        315,
+        316,
+        1024,
+        1025,
+        1026,
+        1027,
+        1028,
+        1029,
+        1030,
+        1314,
+        1487
+      ]
+    },
+    {
+      "category": "material_default_colors_review",
+      "file": "app/src/main/java/com/mlmvpn/scanner/ui/npv/NpvSourcesPage.kt",
+      "line": 410,
+      "text": "TextButton(onClick = { NpvEngine.cancelRefresh() }) { Text(tr(\"توقف\", \"Stop\"), color = DuskTheme.accent) }",
+      "checked_rows": [
+        317,
+        1031,
+        1032,
+        1033,
+        1034,
+        1035,
+        1036,
+        1315,
+        1488
+      ]
+    },
+    {
+      "category": "material_default_colors_review",
+      "file": "app/src/main/java/com/mlmvpn/scanner/ui/npv/NpvSourcesPage.kt",
+      "line": 476,
+      "text": "TextButton(onClick = { if (onAdd(text)) text = \"\" }, enabled = text.isNotBlank()) { Text(tr(\"افزودن\", \"Add\")) }",
+      "checked_rows": [
+        317,
+        1031,
+        1032,
+        1033,
+        1034,
+        1035,
+        1036,
+        1315,
+        1488
+      ]
+    },
+    {
+      "category": "material_default_colors_review",
+      "file": "app/src/main/java/com/mlmvpn/scanner/ui/scout/ScoutScreen.kt",
+      "line": 80,
+      "text": "TextButton(onClick = { coverage = true }) { Text(tr(\"پوشش\", \"Coverage\"), color = DuskTheme.primary) }",
+      "checked_rows": [
+        334,
+        335,
+        1317
+      ]
+    },
+    {
+      "category": "material_default_colors_review",
+      "file": "app/src/main/java/com/mlmvpn/scanner/ui/scout/ScoutScreen.kt",
+      "line": 127,
+      "text": "if (history.isNotEmpty()) TextButton(onClick = { showHistory = true }) { Text(tr(\"سابقهٔ بررسی‌ها\", \"History\"), color = DuskTheme.primary) }",
+      "checked_rows": [
+        334,
+        335,
+        1317
+      ]
+    },
+    {
+      "category": "material_default_colors_review",
+      "file": "app/src/main/java/com/mlmvpn/scanner/ui/scout/ScoutScreen.kt",
+      "line": 196,
+      "text": "history.forEach { previous -> TextButton(enabled = !ui.running, onClick = { ScoutEngine.show(previous); showHistory = false }) {",
+      "checked_rows": [
+        334,
+        335,
+        1317
+      ]
+    },
+    {
+      "category": "material_default_colors_review",
+      "file": "app/src/main/java/com/mlmvpn/scanner/ui/scout/ScoutScreen.kt",
+      "line": 256,
+      "text": "if (adapter != null) TextButton(onClick = { details = null; onOpen(if (method.status == ScoutStatus.NOT_INSTALLED) \"store\" else adapter.homeId) }) {",
+      "checked_rows": [
+        334,
+        335,
+        1317
+      ]
+    },
+    {
+      "category": "material_default_colors_review",
+      "file": "app/src/main/java/com/mlmvpn/scanner/ui/scout/ScoutScreen.kt",
+      "line": 259,
+      "text": "if (!ui.running && adapter?.built == true) TextButton(onClick = { details = null; checked { ScoutEngine.retest(context, id, pauseApproved = it) } }) {",
+      "checked_rows": [
+        334,
+        335,
+        1317
+      ]
+    },
+    {
+      "category": "reviewed_toast_deferral",
+      "file": "app/src/main/java/com/mlmvpn/scanner/widget/WidgetActionActivity.kt",
+      "line": 152,
+      "text": "runCatching { Toast.makeText(applicationContext, text, Toast.LENGTH_LONG).show() }",
+      "checked_rows": [
+        1288,
+        1347
+      ],
+      "rationale": "transparent one-shot widget trampoline outside Compose UI"
+    }
+  ]
+}

@@ -1,5 +1,7 @@
 package com.mlmvpn.scanner.ui.aether
 
+import com.mlmvpn.scanner.ui.theme.DuskTheme
+
 import com.mlmvpn.scanner.ui.home.frostedGlass
 import com.mlmvpn.scanner.ui.theme.*
 import android.app.Activity
@@ -328,7 +330,7 @@ fun AetherScreen() {
         Text(
             S(R.string.wireguard_engine),
             fontWeight = FontWeight.Bold,
-            fontSize = 16.sp,
+            fontSize = DuskTheme.textSize16,
             modifier = Modifier.align(Alignment.CenterHorizontally),
         )
 
@@ -357,8 +359,8 @@ fun AetherScreen() {
             Text(
                 text = note,
                 color = DuskTheme.primary,
-                fontSize = 11.sp,
-                lineHeight = 16.sp,
+                fontSize = DuskTheme.textSize11,
+                lineHeight = DuskTheme.textSize16,
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
                     .clip(ControlShape)
@@ -498,13 +500,13 @@ private fun AetherStatusLine(state: AetherState, modifier: Modifier = Modifier) 
         else -> DuskTheme.accent
     }
     Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
-        Text(state.stageFa, color = color, fontSize = 15.sp, fontWeight = FontWeight.SemiBold)
+        Text(state.stageFa, color = color, fontSize = DuskTheme.textSize15, fontWeight = FontWeight.SemiBold)
         state.error?.takeIf { it.isNotBlank() }?.also {
             Text(
                 text = it,
                 color = DuskTheme.error,
-                fontSize = 11.sp,
-                lineHeight = 16.sp,
+                fontSize = DuskTheme.textSize11,
+                lineHeight = DuskTheme.textSize16,
                 modifier = Modifier.padding(top = 6.dp, start = 16.dp, end = 16.dp),
             )
         }
@@ -581,7 +583,7 @@ private fun QuickSettings(
 @Composable
 private fun QuickRow(label: String, content: @Composable () -> Unit) {
     Column(modifier = Modifier.fillMaxWidth()) {
-        Text(label, fontSize = 11.sp, color = DuskTheme.muted)
+        Text(label, fontSize = DuskTheme.textSize11, color = DuskTheme.muted)
         Spacer(modifier = Modifier.height(6.dp))
         content()
     }
@@ -616,7 +618,7 @@ private fun MiniSegmented(
             ) {
                 Text(
                     label,
-                    fontSize = 12.sp,
+                    fontSize = DuskTheme.textSize12,
                     fontWeight = if (on) FontWeight.Bold else FontWeight.Normal,
                     color = when {
                         on -> Color.White
@@ -664,7 +666,7 @@ private fun AetherProgressStrip(state: AetherState, protocol: AetherProtocol) {
         Spacer(modifier = Modifier.height(6.dp))
         Text(
             text = steps.getOrNull(activeIdx)?.second ?: S(R.string.ready_4),
-            fontSize = 10.sp,
+            fontSize = DuskTheme.textSize10,
             color = DuskTheme.muted,
             modifier = Modifier.align(Alignment.CenterHorizontally),
         )
@@ -783,14 +785,14 @@ private fun HeaderCard() {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(Icons.Default.Bolt, null, tint = DuskTheme.primary.copy(alpha = 0.7f))
                 Spacer(modifier = Modifier.width(8.dp))
-                Text(S(R.string.wireguard_engine), fontWeight = FontWeight.Bold, fontSize = 16.sp)
+                Text(S(R.string.wireguard_engine), fontWeight = FontWeight.Bold, fontSize = DuskTheme.textSize16)
             }
             Spacer(modifier = Modifier.height(6.dp))
             Text(
                 S(R.string.a_censorship_circumvention_engine_built_on_cloudflare) +
                     S(R.string.like_the_windows_build_it_finds_a) +
                     S(R.string.exposes_a_socks5_proxy_on_127_0, AetherEngine.AETHER_SOCKS_PORT),
-                fontSize = 12.sp, lineHeight = 18.sp, color = DuskTheme.muted
+                fontSize = DuskTheme.textSize12, lineHeight = DuskTheme.textSize18, color = DuskTheme.muted
             )
         }
     }
@@ -810,7 +812,7 @@ private fun TabRow(active: AetherProtocol, onSelect: (AetherProtocol) -> Unit) {
             val selected = proto == active
             AssistChip(
                 onClick = { onSelect(proto) },
-                label = { Text(proto.displayFa, fontSize = 12.sp) },
+                label = { Text(proto.displayFa, fontSize = DuskTheme.textSize12) },
                 colors = AssistChipDefaults.assistChipColors(
                     containerColor = if (selected) DuskTheme.primary else DuskTheme.navyNight,
                     labelColor = if (selected) Color.White else DuskTheme.muted
@@ -841,7 +843,7 @@ private fun MasquePane(
             Switch(checked = fragment, onCheckedChange = onFragment,
                 colors = SwitchDefaults.colors(checkedThumbColor = DuskTheme.primary))
             Spacer(modifier = Modifier.width(6.dp))
-            Text(if (fragment) S(R.string.on_3) else S(R.string.off_3), fontSize = 12.sp)
+            Text(if (fragment) S(R.string.on_3) else S(R.string.off_3), fontSize = DuskTheme.textSize12)
         }
         Spacer(modifier = Modifier.height(6.dp))
         Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
@@ -1173,7 +1175,7 @@ private fun StatusCard(state: AetherState, @Suppress("UNUSED_PARAMETER") protoco
     }
     SettingsCard(title = S(R.string.status_2)) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Text(state.stageFa, fontWeight = FontWeight.Bold, fontSize = 14.sp,
+            Text(state.stageFa, fontWeight = FontWeight.Bold, fontSize = DuskTheme.textSize14,
                 color = when (state.stage) {
                     AetherStage.CONNECTED -> DuskTheme.success
                     AetherStage.FAILED, AetherStage.CRASHED -> DuskTheme.error
@@ -1196,7 +1198,7 @@ private fun StatusCard(state: AetherState, @Suppress("UNUSED_PARAMETER") protoco
             Box(modifier = Modifier
                 .background(badgeColor, ControlShape)
                 .padding(horizontal = 10.dp, vertical = 3.dp)) {
-                Text(badgeText, fontSize = 11.sp,
+                Text(badgeText, fontSize = DuskTheme.textSize11,
                     color = when {
                         state.stage == AetherStage.CONNECTED -> DuskTheme.success
                         state.stage == AetherStage.FAILED || state.stage == AetherStage.CRASHED -> DuskTheme.error
@@ -1233,12 +1235,12 @@ private fun StatusCard(state: AetherState, @Suppress("UNUSED_PARAMETER") protoco
                 modifier = Modifier.padding(vertical = 2.dp)) {
                 StepDot(done = done, active = active)
                 Spacer(modifier = Modifier.width(8.dp))
-                Text(fa, fontSize = 12.sp,
+                Text(fa, fontSize = DuskTheme.textSize12,
                     color = if (done) DuskTheme.success
                     else if (active) DuskTheme.primary.copy(alpha = 0.7f) else DuskTheme.muted)
                 if (key == "scan" && active && scanElapsedSec > 0) {
                     Spacer(modifier = Modifier.width(6.dp))
-                    Text("${scanElapsedSec}s", fontSize = 11.sp, color = DuskTheme.muted)
+                    Text("${scanElapsedSec}s", fontSize = DuskTheme.textSize11, color = DuskTheme.muted)
                 }
             }
         }
@@ -1246,9 +1248,9 @@ private fun StatusCard(state: AetherState, @Suppress("UNUSED_PARAMETER") protoco
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 S(R.string.this_step_can_take_a_few_minutes),
-                fontSize = 11.sp,
+                fontSize = DuskTheme.textSize11,
                 color = DuskTheme.muted,
-                lineHeight = 16.sp,
+                lineHeight = DuskTheme.textSize16,
             )
         }
         if (state.server != null || state.rtt != null || state.profile != null) {

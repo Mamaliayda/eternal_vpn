@@ -453,14 +453,14 @@ fun CoachBar(
                         .background(accent.copy(alpha = 0.30f)),
                     contentAlignment = Alignment.Center,
                 ) {
-                    Text(faCount(n), color = accent, fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                    Text(faCount(n), color = accent, fontSize = DuskTheme.textSize11, fontWeight = FontWeight.Bold)
                 }
                 Spacer(Modifier.width(8.dp))
             }
             Text(
                 if (failed) S(R.string.the_guide_was_stopped) else S(R.string.step_of, faCount(n), faCount(total)),
                 color = accent,
-                fontSize = 12.sp,
+                fontSize = DuskTheme.textSize12,
                 fontWeight = FontWeight.SemiBold,
                 modifier = Modifier.weight(1f),
             )
@@ -476,7 +476,7 @@ fun CoachBar(
         }
 
         Spacer(Modifier.height(8.dp))
-        Text(body, color = DuskTheme.onSurface, fontSize = 13.sp, lineHeight = 21.sp)
+        Text(body, color = DuskTheme.onSurface, fontSize = DuskTheme.textSize13, lineHeight = DuskTheme.textSize21)
 
         if (working) {
             Spacer(Modifier.height(10.dp))
@@ -487,7 +487,7 @@ fun CoachBar(
                     strokeWidth = 2.dp,
                 )
                 Spacer(Modifier.width(8.dp))
-                Text(workText, color = DuskTheme.muted, fontSize = 12.sp, modifier = Modifier.weight(1f))
+                Text(workText, color = DuskTheme.muted, fontSize = DuskTheme.textSize12, modifier = Modifier.weight(1f))
             }
             if (workProgress > 0f) {
                 Spacer(Modifier.height(8.dp))
@@ -512,7 +512,7 @@ fun CoachBar(
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                Text(actionLabel, color = DuskTheme.onSurface, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
+                Text(actionLabel, color = DuskTheme.onSurface, fontSize = DuskTheme.textSize14, fontWeight = FontWeight.SemiBold)
             }
         }
     }

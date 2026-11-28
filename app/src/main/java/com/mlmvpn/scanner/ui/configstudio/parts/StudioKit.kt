@@ -80,7 +80,7 @@ fun StepDots(current: Int, total: Int) {
                             i < current -> DuskTheme.primary.copy(alpha = 0.45f)
                             else -> DuskTheme.muted.copy(alpha = 0.30f)
                         },
-                        RoundedCornerShape(3.dp),
+                        RoundedCornerShape(DuskTheme.corner3),
                     )
             )
         }
@@ -93,7 +93,7 @@ fun StepHeader(title: String, subtitle: String) {
     Text(
         title,
         color = DuskTheme.onSurface,
-        fontSize = 22.sp,
+        fontSize = DuskTheme.textSize22,
         fontWeight = FontWeight.Bold,
         modifier = Modifier.padding(horizontal = 20.dp),
     )
@@ -101,8 +101,8 @@ fun StepHeader(title: String, subtitle: String) {
     Text(
         subtitle,
         color = DuskTheme.muted,
-        fontSize = 14.sp,
-        lineHeight = 23.sp,
+        fontSize = DuskTheme.textSize14,
+        lineHeight = DuskTheme.textSize23,
         modifier = Modifier.padding(horizontal = 20.dp),
     )
     Spacer(Modifier.height(18.dp))
@@ -153,7 +153,7 @@ fun WizardField(
                     minLines = lines,
                     textStyle = TextStyle(
                         color = DuskTheme.onSurface,
-                        fontSize = 17.sp,
+                        fontSize = DuskTheme.textSize17,
                         fontFamily = if (monospace) FontFamily.Monospace else FontFamily.Default,
                     ),
                     cursorBrush = SolidColor(DuskTheme.primary),
@@ -168,7 +168,7 @@ fun WizardField(
                                 Text(
                                     placeholder,
                                     color = DuskTheme.muted.copy(alpha = 0.6f),
-                                    fontSize = 17.sp,
+                                    fontSize = DuskTheme.textSize17,
                                 )
                             }
                             inner()
@@ -213,7 +213,7 @@ fun WizardPrimary(
                 strokeWidth = 2.dp,
             )
         } else {
-            Text(label, color = Color.White, fontSize = 17.sp, fontWeight = FontWeight.SemiBold)
+            Text(label, color = Color.White, fontSize = DuskTheme.textSize17, fontWeight = FontWeight.SemiBold)
         }
     }
 }
@@ -240,7 +240,7 @@ fun InfoCard(text: String, underHeader: Boolean = false) {
             .frostedGlass(DuskTheme.cardShape)
             .padding(16.dp),
     ) {
-        Text(text, color = DuskTheme.muted, fontSize = 13.sp, lineHeight = 22.sp)
+        Text(text, color = DuskTheme.muted, fontSize = DuskTheme.textSize13, lineHeight = DuskTheme.textSize22)
     }
 }
 
@@ -254,7 +254,7 @@ fun ProblemCard(text: String, underHeader: Boolean = false) {
             .background(DuskTheme.error.copy(alpha = 0.12f), DuskTheme.cardShape)
             .padding(16.dp),
     ) {
-        Text(text, color = DuskTheme.onSurface, fontSize = 13.sp, lineHeight = 22.sp)
+        Text(text, color = DuskTheme.onSurface, fontSize = DuskTheme.textSize13, lineHeight = DuskTheme.textSize22)
     }
 }
 
@@ -272,8 +272,8 @@ fun PayloadText(value: String, modifier: Modifier = Modifier) {
             value,
             modifier = modifier,
             color = DuskTheme.onSurface,
-            fontSize = 12.sp,
-            lineHeight = 19.sp,
+            fontSize = DuskTheme.textSize12,
+            lineHeight = DuskTheme.textSize19,
             fontFamily = FontFamily.Monospace,
             textAlign = TextAlign.Start,
         )
@@ -291,7 +291,7 @@ fun ColumnScope.WizardBusy(message: String) {
     Text(
         message,
         color = DuskTheme.muted,
-        fontSize = 14.sp,
+        fontSize = DuskTheme.textSize14,
         textAlign = TextAlign.Center,
         modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp),
     )
@@ -310,11 +310,11 @@ fun MeterBar(fraction: Float?, tint: Color, modifier: Modifier = Modifier) {
     if (fraction == null) return
     Box(
         modifier = modifier.fillMaxWidth().height(4.dp)
-            .background(DuskTheme.outline.copy(alpha = 0.22f), RoundedCornerShape(2.dp))
+            .background(DuskTheme.outline.copy(alpha = 0.22f), RoundedCornerShape(DuskTheme.corner2))
     ) {
         Box(
             modifier = Modifier.fillMaxWidth(fraction.coerceIn(0f, 1f)).height(4.dp)
-                .background(tint, RoundedCornerShape(2.dp))
+                .background(tint, RoundedCornerShape(DuskTheme.corner2))
         )
     }
 }
@@ -337,8 +337,8 @@ fun FactsCard(text: String) {
         Text(
             text,
             color = DuskTheme.onSurface,
-            fontSize = 15.sp,
-            lineHeight = 25.sp,
+            fontSize = DuskTheme.textSize15,
+            lineHeight = DuskTheme.textSize25,
             modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 13.dp),
         )
     }
@@ -384,7 +384,7 @@ fun StudioChip(
     Text(
         label,
         color = DuskTheme.onSurface,
-        fontSize = 13.sp,
+        fontSize = DuskTheme.textSize13,
         fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Normal,
         textAlign = TextAlign.Center,
         modifier = modifier
@@ -439,8 +439,8 @@ fun PageIntro(text: String) {
     Text(
         text,
         color = DuskTheme.muted,
-        fontSize = 14.sp,
-        lineHeight = 23.sp,
+        fontSize = DuskTheme.textSize14,
+        lineHeight = DuskTheme.textSize23,
         modifier = Modifier.fillMaxWidth().padding(start = 20.dp, end = 20.dp, bottom = 4.dp),
     )
 }
@@ -494,8 +494,8 @@ fun StudioTile(
         Text(
             label,
             color = DuskTheme.onSurface,
-            fontSize = 12.sp,
-            lineHeight = 15.sp,
+            fontSize = DuskTheme.textSize12,
+            lineHeight = DuskTheme.textSize15,
             fontWeight = FontWeight.Medium,
             textAlign = TextAlign.Center,
             maxLines = 2,

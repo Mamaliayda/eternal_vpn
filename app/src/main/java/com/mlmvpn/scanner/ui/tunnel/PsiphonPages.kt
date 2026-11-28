@@ -216,7 +216,7 @@ fun PsiphonLiveCard() {
         if (l.note.isNotBlank()) add(l.note to DuskTheme.muted)
     }
     Column(
-        Modifier.fillMaxWidth().padding(horizontal = 16.dp).frostedGlass(RoundedCornerShape(16.dp)).padding(14.dp),
+        Modifier.fillMaxWidth().padding(horizontal = 16.dp).frostedGlass(RoundedCornerShape(DuskTheme.corner16)).padding(14.dp),
         verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {
         lines.forEachIndexed { i, (text, color) ->
@@ -295,9 +295,9 @@ private fun MethodRow(title: String, detail: String, warn: String?, selected: Bo
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Column(Modifier.weight(1f)) {
-            Text(title, color = DuskTheme.onSurface, fontSize = 16.sp)
-            Text(detail, color = DuskTheme.muted, fontSize = 12.sp, lineHeight = 18.sp)
-            if (warn != null) Text(warn, color = DuskTheme.accent, fontSize = 12.sp, lineHeight = 18.sp)
+            Text(title, color = DuskTheme.onSurface, fontSize = DuskTheme.textSize16)
+            Text(detail, color = DuskTheme.muted, fontSize = DuskTheme.textSize12, lineHeight = DuskTheme.textSize18)
+            if (warn != null) Text(warn, color = DuskTheme.accent, fontSize = DuskTheme.textSize12, lineHeight = DuskTheme.textSize18)
         }
         if (selected) {
             Spacer(Modifier.width(8.dp))
@@ -530,7 +530,7 @@ fun PsiphonProxyScreen(onBack: () -> Unit, backLabel: String) {
                 }
                 if (!showAll && rows.size > shown.size) {
                     item(key = "more", contentType = "more") {
-                        Text(tr("نمایش همهٔ ${fa(rows.size)} کشور", "Show all ${rows.size} countries"), color = DuskTheme.primary, fontSize = 15.sp,
+                        Text(tr("نمایش همهٔ ${fa(rows.size)} کشور", "Show all ${rows.size} countries"), color = DuskTheme.primary, fontSize = DuskTheme.textSize15,
                             modifier = Modifier.fillMaxWidth().clickable { showAll = true }.padding(horizontal = 20.dp, vertical = 12.dp))
                     }
                 }
@@ -695,16 +695,16 @@ fun PsiphonCleanIpScreen(onBack: () -> Unit, backLabel: String) {
                     Column {
                         SettingsSectionHeader(tr("آی‌پی‌های خودتان", "Your own IPs"))
                         Box(
-                            Modifier.fillMaxWidth().padding(horizontal = 16.dp).frostedGlass(RoundedCornerShape(12.dp)).heightIn(min = 96.dp).padding(12.dp),
+                            Modifier.fillMaxWidth().padding(horizontal = 16.dp).frostedGlass(RoundedCornerShape(DuskTheme.corner12)).heightIn(min = 96.dp).padding(12.dp),
                         ) {
                             BasicTextField(
                                 value = text, onValueChange = { text = it },
-                                textStyle = TextStyle(color = DuskTheme.onSurface, fontSize = 13.sp, fontFamily = FontFamily.Monospace),
+                                textStyle = TextStyle(color = DuskTheme.onSurface, fontSize = DuskTheme.textSize13, fontFamily = FontFamily.Monospace),
                                 cursorBrush = SolidColor(DuskTheme.primary),
                                 modifier = Modifier.fillMaxWidth(),
                                 decorationBox = { inner ->
                                     Box {
-                                        if (text.isEmpty()) Text("2a02:26f0:3500:4::b818:4db5\n2.16.10.69\n2.16.10.0/24", color = DuskTheme.muted, fontSize = 13.sp, fontFamily = FontFamily.Monospace)
+                                        if (text.isEmpty()) Text("2a02:26f0:3500:4::b818:4db5\n2.16.10.69\n2.16.10.0/24", color = DuskTheme.muted, fontSize = DuskTheme.textSize13, fontFamily = FontFamily.Monospace)
                                         inner()
                                     }
                                 },
@@ -767,7 +767,7 @@ fun PsiphonCleanIpScreen(onBack: () -> Unit, backLabel: String) {
                 // ── the guide ──
                 item(key = "guide", contentType = "guide") {
                     Column {
-                        Text(if (guide) tr("بستن راهنمای اسکن", "Hide the scan guide") else tr("راهنمای اسکن", "Scan guide"), color = DuskTheme.primary, fontSize = 15.sp,
+                        Text(if (guide) tr("بستن راهنمای اسکن", "Hide the scan guide") else tr("راهنمای اسکن", "Scan guide"), color = DuskTheme.primary, fontSize = DuskTheme.textSize15,
                             modifier = Modifier.fillMaxWidth().clickable { guide = !guide }.padding(horizontal = 20.dp, vertical = 14.dp))
                         if (guide) {
                             SettingsFooter(tr(
@@ -975,7 +975,7 @@ private fun ProgressShell(
     details: @Composable ColumnScope.() -> Unit,
 ) {
     var open by rememberSaveable { mutableStateOf(true) }
-    val shape = RoundedCornerShape(18.dp)
+    val shape = RoundedCornerShape(DuskTheme.corner18)
     Column(
         modifier.fillMaxWidth().padding(horizontal = 12.dp).frostedGlass(shape)
             // Over the list rather than the wallpaper alone: dense enough that rows passing under it never show through.
@@ -983,15 +983,15 @@ private fun ProgressShell(
             .padding(horizontal = 14.dp, vertical = 12.dp),
     ) {
         Row(Modifier.fillMaxWidth().clickable { open = !open }, verticalAlignment = Alignment.CenterVertically) {
-            Text(title, color = DuskTheme.onSurface, fontSize = 14.sp, fontWeight = FontWeight.SemiBold, lineHeight = 19.sp, maxLines = 2,
+            Text(title, color = DuskTheme.onSurface, fontSize = DuskTheme.textSize14, fontWeight = FontWeight.SemiBold, lineHeight = DuskTheme.textSize19, maxLines = 2,
                 overflow = TextOverflow.Ellipsis, modifier = Modifier.weight(1f))
-            Text(clockText, color = DuskTheme.muted, fontSize = 12.sp, modifier = Modifier.padding(horizontal = 8.dp))
-            Text(tr("توقف", "Stop"), color = DuskTheme.onError, fontSize = 14.sp, fontWeight = FontWeight.SemiBold,
+            Text(clockText, color = DuskTheme.muted, fontSize = DuskTheme.textSize12, modifier = Modifier.padding(horizontal = 8.dp))
+            Text(tr("توقف", "Stop"), color = DuskTheme.onError, fontSize = DuskTheme.textSize14, fontWeight = FontWeight.SemiBold,
                 modifier = Modifier.clip(RoundedCornerShape(50)).background(DuskTheme.error).clickable(onClick = onStop)
                     .padding(horizontal = 16.dp, vertical = 7.dp))
         }
         Spacer(Modifier.height(10.dp))
-        val bar = Modifier.fillMaxWidth().height(5.dp).clip(RoundedCornerShape(3.dp))
+        val bar = Modifier.fillMaxWidth().height(5.dp).clip(RoundedCornerShape(DuskTheme.corner3))
         if (progress == null) {
             LinearProgressIndicator(color = DuskTheme.success, trackColor = Color.White.copy(alpha = 0.15f), modifier = bar)
         } else {
@@ -1007,13 +1007,13 @@ private fun ProgressShell(
 
 @Composable
 private fun CardLine(text: String, color: Color = DuskTheme.muted) {
-    Text(text, color = color, fontSize = 12.sp, lineHeight = 17.sp, maxLines = 2, overflow = TextOverflow.Ellipsis)
+    Text(text, color = color, fontSize = DuskTheme.textSize12, lineHeight = DuskTheme.textSize17, maxLines = 2, overflow = TextOverflow.Ellipsis)
 }
 
 /** An address or a proxy on the card: its own left-to-right run, so the sentence around it cannot reorder it. */
 @Composable
 private fun Mono(text: String, color: Color = DuskTheme.onSurface) {
-    Text(text, color = color, fontSize = 12.sp, fontFamily = FontFamily.Monospace, maxLines = 1,
+    Text(text, color = color, fontSize = DuskTheme.textSize12, fontFamily = FontFamily.Monospace, maxLines = 1,
         style = TextStyle(textDirection = TextDirection.Ltr))
 }
 
@@ -1062,25 +1062,25 @@ private fun CleanProgressCard(
                 job.current.entries.sortedBy { it.value.since }.take(3).forEach { (ip, test) ->
                     val s = ((t - test.since) / 1000).coerceAtLeast(0)
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text(if (test.connected) "✓" else "⏳", fontSize = 12.sp, color = if (test.connected) DuskTheme.success else DuskTheme.muted)
+                        Text(if (test.connected) "✓" else "⏳", fontSize = DuskTheme.textSize12, color = if (test.connected) DuskTheme.success else DuskTheme.muted)
                         Spacer(Modifier.width(6.dp))
                         Mono(shortIp(ip))
                         Spacer(Modifier.weight(1f))
                         Text(if (test.connected) tr("وصل شد، سنجش پینگ…", "connected, measuring the ping…")
                             else tr("${fa(s)} از ${fa(job.budgetMs / 1000)} ثانیه", "$s of ${job.budgetMs / 1000} s"),
-                            color = DuskTheme.muted, fontSize = 12.sp)
+                            color = DuskTheme.muted, fontSize = DuskTheme.textSize12)
                     }
                 }
                 if (job.current.size > 3) CardLine(tr("و ${fa(job.current.size - 3)} سنجش دیگر", "and ${job.current.size - 3} more"))
                 if (job.recent.isNotEmpty()) {
                     Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                        Text(tr("آخرین‌ها:", "Latest:"), color = DuskTheme.muted, fontSize = 12.sp)
+                        Text(tr("آخرین‌ها:", "Latest:"), color = DuskTheme.muted, fontSize = DuskTheme.textSize12)
                         job.recent.forEach { rc ->
                             Row(verticalAlignment = Alignment.CenterVertically) {
-                                Text(if (rc.ok) "✓" else "✗", fontSize = 12.sp, color = if (rc.ok) DuskTheme.success else DuskTheme.error)
+                                Text(if (rc.ok) "✓" else "✗", fontSize = DuskTheme.textSize12, color = if (rc.ok) DuskTheme.success else DuskTheme.error)
                                 Spacer(Modifier.width(3.dp))
                                 Mono(shortIp(rc.ip), DuskTheme.muted)
-                                if (rc.ok && rc.pingMs != null) Text(" " + fa(rc.pingMs), color = DuskTheme.success, fontSize = 12.sp)
+                                if (rc.ok && rc.pingMs != null) Text(" " + fa(rc.pingMs), color = DuskTheme.success, fontSize = DuskTheme.textSize12)
                             }
                         }
                     }
@@ -1090,17 +1090,17 @@ private fun CleanProgressCard(
         if (fastest != null) {
             Spacer(Modifier.height(4.dp))
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(tr("⚡ سریع‌ترین تا اینجا:", "⚡ Fastest so far:"), color = DuskTheme.onSurface, fontSize = 12.sp)
+                Text(tr("⚡ سریع‌ترین تا اینجا:", "⚡ Fastest so far:"), color = DuskTheme.onSurface, fontSize = DuskTheme.textSize12)
                 Spacer(Modifier.width(6.dp))
                 Mono(shortIp(fastest.ip))
-                Text(" · " + ms(fastest.real?.pingMs), color = DuskTheme.success, fontSize = 12.sp)
+                Text(" · " + ms(fastest.real?.pingMs), color = DuskTheme.success, fontSize = DuskTheme.textSize12)
                 Spacer(Modifier.weight(1f))
                 if (!fastest.pinned) {
-                    Text(tr("انتخاب", "Choose"), color = DuskTheme.onAccent, fontSize = 12.sp, fontWeight = FontWeight.SemiBold,
+                    Text(tr("انتخاب", "Choose"), color = DuskTheme.onAccent, fontSize = DuskTheme.textSize12, fontWeight = FontWeight.SemiBold,
                         modifier = Modifier.clip(RoundedCornerShape(50)).background(DuskTheme.primary).clickable { onPick(fastest.ip) }
                             .padding(horizontal = 12.dp, vertical = 5.dp))
                 } else {
-                    Text(tr("انتخاب شد", "Chosen"), color = DuskTheme.primary, fontSize = 12.sp)
+                    Text(tr("انتخاب شد", "Chosen"), color = DuskTheme.primary, fontSize = DuskTheme.textSize12)
                 }
             }
         }
@@ -1135,14 +1135,14 @@ private fun ProxyProgressCard(job: PsiphonUpstream.Job, now: State<Long>, cname:
         job.testing.entries.sortedBy { it.value.since }.take(3).forEach { (key, test) ->
             val s = ((t - test.since) / 1000).coerceAtLeast(0)
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(if (test.connected) "✓" else "⏳", fontSize = 12.sp, color = if (test.connected) DuskTheme.success else DuskTheme.muted)
+                Text(if (test.connected) "✓" else "⏳", fontSize = DuskTheme.textSize12, color = if (test.connected) DuskTheme.success else DuskTheme.muted)
                 Spacer(Modifier.width(6.dp))
                 Mono(key)
-                Text(" · " + cname(test.country), color = DuskTheme.muted, fontSize = 12.sp, maxLines = 1)
+                Text(" · " + cname(test.country), color = DuskTheme.muted, fontSize = DuskTheme.textSize12, maxLines = 1)
                 Spacer(Modifier.weight(1f))
                 Text(if (test.connected) tr("وصل شد، سنجش پینگ…", "connected, measuring the ping…")
                     else tr("${fa(s)} از ${fa(PsiphonProbes.UPSTREAM_MS / 1000)} ثانیه", "$s of ${PsiphonProbes.UPSTREAM_MS / 1000} s"),
-                    color = DuskTheme.muted, fontSize = 12.sp)
+                    color = DuskTheme.muted, fontSize = DuskTheme.textSize12)
             }
         }
         if (job.testing.size > 3) CardLine(tr("و ${fa(job.testing.size - 3)} سنجش دیگر", "and ${job.testing.size - 3} more"))
@@ -1219,16 +1219,16 @@ fun PsiphonPairingScreen(onBack: () -> Unit, backLabel: String) {
         }
         SettingsSectionHeader(tr("لینک جفت‌سازی", "Pairing link"))
         Box(
-            Modifier.fillMaxWidth().padding(horizontal = 16.dp).frostedGlass(RoundedCornerShape(12.dp)).heightIn(min = 84.dp).padding(12.dp),
+            Modifier.fillMaxWidth().padding(horizontal = 16.dp).frostedGlass(RoundedCornerShape(DuskTheme.corner12)).heightIn(min = 84.dp).padding(12.dp),
         ) {
             BasicTextField(
                 value = link, onValueChange = { link = it; error = null },
-                textStyle = TextStyle(color = DuskTheme.onSurface, fontSize = 12.sp, fontFamily = FontFamily.Monospace),
+                textStyle = TextStyle(color = DuskTheme.onSurface, fontSize = DuskTheme.textSize12, fontFamily = FontFamily.Monospace),
                 cursorBrush = SolidColor(DuskTheme.primary),
                 modifier = Modifier.fillMaxWidth(),
                 decorationBox = { inner ->
                     Box {
-                        if (link.isEmpty()) Text("psiphon://pair/eyJ2IjoiMSIsImRhdGEiOnsi...", color = DuskTheme.muted, fontSize = 12.sp, fontFamily = FontFamily.Monospace)
+                        if (link.isEmpty()) Text("psiphon://pair/eyJ2IjoiMSIsImRhdGEiOnsi...", color = DuskTheme.muted, fontSize = DuskTheme.textSize12, fontFamily = FontFamily.Monospace)
                         inner()
                     }
                 },
@@ -1267,7 +1267,7 @@ fun PsiphonPairingScreen(onBack: () -> Unit, backLabel: String) {
 
 @Composable
 private fun Note(text: String, color: Color) {
-    Text(text, color = color, fontSize = 13.sp, lineHeight = 20.sp,
+    Text(text, color = color, fontSize = DuskTheme.textSize13, lineHeight = DuskTheme.textSize20,
         modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 6.dp))
 }
 
@@ -1280,7 +1280,7 @@ private fun Chip(label: String, selected: Boolean, onClick: () -> Unit) {
 @Composable
 private fun OptionRow(label: String, chips: @Composable () -> Unit) {
     Column(Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 4.dp)) {
-        Text(label, color = DuskTheme.muted, fontSize = 12.sp)
+        Text(label, color = DuskTheme.muted, fontSize = DuskTheme.textSize12)
         Spacer(Modifier.height(4.dp))
         Row(Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) { chips() }
     }

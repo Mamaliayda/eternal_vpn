@@ -221,19 +221,19 @@ private fun TgMainPage(manager: TgProxyManager, onBack: () -> Unit, onDomain: (S
         // What this is, in one breath.
         Column(Modifier.fillMaxWidth().padding(start = 24.dp, end = 24.dp, top = 18.dp), horizontalAlignment = Alignment.CenterHorizontally) {
             Box(
-                Modifier.size(64.dp).clip(RoundedCornerShape(18.dp)).background(Brush.verticalGradient(listOf(DuskTheme.telegramBlue, DuskTheme.telegramBlue))),
+                Modifier.size(64.dp).clip(RoundedCornerShape(DuskTheme.corner18)).background(Brush.verticalGradient(listOf(DuskTheme.telegramBlue, DuskTheme.telegramBlue))),
                 contentAlignment = Alignment.Center,
             ) { Icon(Icons.Default.Bolt, contentDescription = null, tint = Color.White, modifier = Modifier.size(34.dp)) }
             Spacer(Modifier.height(12.dp))
             Text(
                 tr("پروکسی تلگرام روی حساب Cloudflare خودتان", "A Telegram proxy on your own Cloudflare account"),
-                color = DuskTheme.onSurface, fontSize = 18.sp, fontWeight = FontWeight.Bold, textAlign = TextAlign.Center,
+                color = DuskTheme.onSurface, fontSize = DuskTheme.textSize18, fontWeight = FontWeight.Bold, textAlign = TextAlign.Center,
             )
             Spacer(Modifier.height(6.dp))
             Text(
                 tr("یک دکمه می‌زنید، ساخته و آزمایش می‌شود و با یک دکمهٔ دیگر به تلگرام اضافه می‌شود.",
                     "One tap builds and tests it; one more adds it to Telegram."),
-                color = DuskTheme.muted, fontSize = 14.sp, lineHeight = 21.sp, textAlign = TextAlign.Center,
+                color = DuskTheme.muted, fontSize = DuskTheme.textSize14, lineHeight = DuskTheme.textSize21, textAlign = TextAlign.Center,
             )
         }
 
@@ -433,19 +433,19 @@ private fun ProgressCard(p: TgProgress, manager: TgProxyManager, onCancel: () ->
         TgStep.CLEANUP to tr("پاک‌سازی", "Cleaning up"),
     )
     Column(
-        Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 12.dp).frostedGlass(RoundedCornerShape(22.dp)).padding(16.dp),
+        Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 12.dp).frostedGlass(RoundedCornerShape(DuskTheme.corner22)).padding(16.dp),
     ) {
-        Text(words[p.step].orEmpty() + "…", color = DuskTheme.onSurface, fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
+        Text(words[p.step].orEmpty() + "…", color = DuskTheme.onSurface, fontSize = DuskTheme.textSize16, fontWeight = FontWeight.SemiBold)
         Spacer(Modifier.height(10.dp))
         val index = steps.indexOf(p.step).let { if (it < 0) steps.size - 1 else it }
         LinearProgressIndicator(
-            progress = (index + 1f) / steps.size, modifier = Modifier.fillMaxWidth().height(4.dp).clip(RoundedCornerShape(2.dp)),
+            progress = (index + 1f) / steps.size, modifier = Modifier.fillMaxWidth().height(4.dp).clip(RoundedCornerShape(DuskTheme.corner2)),
             color = DuskTheme.primary, trackColor = Color.White.copy(alpha = 0.15f),
         )
         Spacer(Modifier.height(10.dp))
         Text(
             tr("می‌توانید لغو کنید؛ هر چه ساخته شده باشد در فهرست می‌ماند و بعداً ادامه یا حذف می‌شود.", "You can cancel; whatever was built stays in the list to continue or delete later."),
-            color = DuskTheme.muted, fontSize = 12.sp, lineHeight = 18.sp,
+            color = DuskTheme.muted, fontSize = DuskTheme.textSize12, lineHeight = DuskTheme.textSize18,
         )
         Spacer(Modifier.height(8.dp))
         SmallButton(tr("لغو", "Cancel"), filled = false, onClick = onCancel)
@@ -463,7 +463,7 @@ private fun ServiceCard(
     val (stateWord, stateColor) = stateOf(s, clock)
     val waiting = s.state == TgState.ACTION && s.reason == "rate_limited" && s.blockedUntil > clock
     Column(
-        Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 6.dp).frostedGlass(RoundedCornerShape(22.dp)).padding(16.dp),
+        Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 6.dp).frostedGlass(RoundedCornerShape(DuskTheme.corner22)).padding(16.dp),
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Tag(if (s.method == TgMethod.WORKERS) "Workers" else "Pages", if (s.method == TgMethod.WORKERS) DuskTheme.accent else DuskTheme.blueGray)
@@ -477,21 +477,21 @@ private fun ServiceCard(
         }
         Spacer(Modifier.height(8.dp))
         Text(
-            s.shownHost.ifBlank { s.resource }, color = DuskTheme.onSurface, fontSize = 14.sp, fontFamily = FontFamily.Monospace,
+            s.shownHost.ifBlank { s.resource }, color = DuskTheme.onSurface, fontSize = DuskTheme.textSize14, fontFamily = FontFamily.Monospace,
             maxLines = 2, overflow = TextOverflow.Ellipsis,
         )
-        accountName?.let { Text(it, color = DuskTheme.muted, fontSize = 12.sp, maxLines = 1, overflow = TextOverflow.Ellipsis) }
+        accountName?.let { Text(it, color = DuskTheme.muted, fontSize = DuskTheme.textSize12, maxLines = 1, overflow = TextOverflow.Ellipsis) }
         reasonText(s, clock)?.let {
             Spacer(Modifier.height(6.dp))
-            Text(it, color = DuskTheme.muted, fontSize = 13.sp, lineHeight = 19.sp)
+            Text(it, color = DuskTheme.muted, fontSize = DuskTheme.textSize13, lineHeight = DuskTheme.textSize19)
         }
         if (s.state == TgState.READY) probeLines(s).forEach { (ok, text) ->
             Spacer(Modifier.height(4.dp))
-            Text((if (ok) "✓  " else "⚠  ") + text, color = if (ok) DuskTheme.success else DuskTheme.accent, fontSize = 12.sp, lineHeight = 18.sp)
+            Text((if (ok) "✓  " else "⚠  ") + text, color = if (ok) DuskTheme.success else DuskTheme.accent, fontSize = DuskTheme.textSize12, lineHeight = DuskTheme.textSize18)
         }
         if (s.state == TgState.READY && bridge != null) bridgeLine(bridge)?.let { (color, text) ->
             Spacer(Modifier.height(6.dp))
-            Text(text, color = color, fontSize = 12.sp, lineHeight = 18.sp)
+            Text(text, color = color, fontSize = DuskTheme.textSize12, lineHeight = DuskTheme.textSize18)
         }
         Spacer(Modifier.height(12.dp))
         FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -515,10 +515,10 @@ private fun ServiceCard(
 private fun SmallButton(text: String, filled: Boolean, onClick: () -> Unit, enabled: Boolean = true) {
     val bg = if (!enabled) Color.White.copy(alpha = 0.10f) else if (filled) DuskTheme.primary else Color.White.copy(alpha = 0.14f)
     Box(
-        Modifier.heightIn(min = 38.dp).clip(RoundedCornerShape(12.dp)).background(bg)
+        Modifier.heightIn(min = 38.dp).clip(RoundedCornerShape(DuskTheme.corner12)).background(bg)
             .then(if (enabled) Modifier.clickable(onClick = onClick) else Modifier).padding(horizontal = 16.dp, vertical = 8.dp),
         contentAlignment = Alignment.Center,
-    ) { Text(text, color = if (enabled) Color.White else DuskTheme.muted, fontSize = 15.sp, fontWeight = FontWeight.SemiBold) }
+    ) { Text(text, color = if (enabled) Color.White else DuskTheme.muted, fontSize = DuskTheme.textSize15, fontWeight = FontWeight.SemiBold) }
 }
 
 /** The no-account gate: the Cloud tab's own add-account form, so an account added here is its account too. */
@@ -536,16 +536,16 @@ private fun TgCloudGate(cloud: CloudManager, onBack: () -> Unit) {
     IosScreen(title = tr("پروکسی تلگرام", "Telegram Proxy"), onBack = onBack, backLabel = stringResource(R.string.home)) {
         Column(Modifier.fillMaxWidth().padding(start = 24.dp, end = 24.dp, top = 28.dp), horizontalAlignment = Alignment.CenterHorizontally) {
             Box(
-                Modifier.size(76.dp).clip(RoundedCornerShape(20.dp)).background(Brush.verticalGradient(listOf(DuskTheme.cloudflareOrangeLight, DuskTheme.cloudflareOrange))),
+                Modifier.size(76.dp).clip(RoundedCornerShape(DuskTheme.corner20)).background(Brush.verticalGradient(listOf(DuskTheme.cloudflareOrangeLight, DuskTheme.cloudflareOrange))),
                 contentAlignment = Alignment.Center,
             ) { Icon(Icons.Default.Cloud, contentDescription = null, tint = Color.White, modifier = Modifier.size(42.dp)) }
             Spacer(Modifier.height(16.dp))
-            Text(tr("اول یک حساب Cloudflare وصل کنید", "Connect a Cloudflare account first"), color = DuskTheme.onSurface, fontSize = 22.sp, fontWeight = FontWeight.Bold, textAlign = TextAlign.Center)
+            Text(tr("اول یک حساب Cloudflare وصل کنید", "Connect a Cloudflare account first"), color = DuskTheme.onSurface, fontSize = DuskTheme.textSize22, fontWeight = FontWeight.Bold, textAlign = TextAlign.Center)
             Spacer(Modifier.height(8.dp))
             Text(
                 tr("پروکسی روی حساب خودتان ساخته می‌شود. ایمیل و کلید (Global API Key یا توکن API) را وارد کنید؛ فقط به Cloudflare فرستاده می‌شود.",
                     "The proxy is built on your own account. Enter the email and the key (Global API Key or an API token); it is sent only to Cloudflare."),
-                color = DuskTheme.muted, fontSize = 14.sp, lineHeight = 21.sp, textAlign = TextAlign.Center,
+                color = DuskTheme.muted, fontSize = DuskTheme.textSize14, lineHeight = DuskTheme.textSize21, textAlign = TextAlign.Center,
             )
         }
         CloudAddAccountForm(

@@ -125,7 +125,7 @@
     <string name="scanner_copy_ips_button">کپی آی‌پی‌ها</string>
     <string name="scanner_vpn_active_warning">اخطار VPN فعال</string>
     <string name="scanner_vpn_active_desc">یک VPN فعال روی سیستم شما شناسایی شد. برای تست دقیق (Real Delay)، ترافیک باید مستقیماً از طریق اینترنت شما عبور کند.\nلطفاً برای ادامه تست VPN فعلی را خاموش کنید.</string>
-    <string name="scanner_turn_off_vpn_and_scan">خاموش کردن MLMVPN و اسکن</string>
+    <string name="scanner_turn_off_vpn_and_scan">خاموش کردن Eternal VPN و اسکن</string>
     <string name="scanner_understood">متوجه شدم</string>
     <string name="scanner_cancel">انصراف</string>
     <string name="scanner_test_archive_ips_health">تست سلامت آی‌پی‌های آرشیو</string>
@@ -570,7 +570,7 @@
     <string name="home_quick">اتصال سریع</string>
     <string name="home_freeconfig">کانفیگ رایگان</string>
     <string name="home_game">گیم بوستر</string>
-    <string name="home_gateway">گیت‌وی MLM</string>
+    <string name="home_gateway">گیت‌وی Eternal VPN</string>
     <string name="home_fixed_ip">آیپی ثابت</string>
     <string name="home_sublink">لینک ساب</string>
     <string name="home_workers">ورکرها</string>
@@ -630,7 +630,7 @@
     <string name="vpn_selected_apps">برنامه‌های انتخاب‌شده</string>
     <string name="vpn_apps_count">%d برنامه</string>
     <string name="vpn_quick_tile_count">تعداد سرور اتصال سریع</string>
-    <string name="vpn_quick_tile_desc">دکمه‌ی mlmvpn را از پنل تنظیمات سریع گوشی اضافه کنید؛ با یک لمس، سریع‌ترین سرور از میان این تعداد سرور اخیر انتخاب و متصل می‌شود.</string>
+    <string name="vpn_quick_tile_desc">دکمه‌ی Eternal VPN را از پنل تنظیمات سریع گوشی اضافه کنید؛ با یک لمس، سریع‌ترین سرور از میان این تعداد سرور اخیر انتخاب و متصل می‌شود.</string>
     <string name="vpn_mtu_footer">اندازهٔ بسته‌هایی که این گوشی می‌فرستد، روی همهٔ روش‌ها اعمال می‌شود: V2Ray، ماسکوی، وایرگارد، وارپ در وارپ، سایفون، تور و VPN Gate. هر روش پیش‌فرض خودش را دارد، اندازه‌گیری‌شده نه حدسی. برای اینکه خط خودتان اندازه‌گیری شود، در هر روش «پیدا کردن بهترین مقدار» را بزنید. اگر اتصال سالم گزارش می‌شود ولی صفحه‌های سنگین بالا نمی‌آیند، کمش کنید؛ ۱۲۸۰ تقریباً از هر مسیری رد می‌شود. محدودهٔ مجاز ۵۷۶ تا ۱۵۰۰.</string>
 
     <!-- صفحه نمایش: اندازه آیکون، تم، دامنه پس‌زمینه -->
@@ -813,7 +813,7 @@
     <string name="vpn_kill_switch">قطع‌کن اضطراری</string>
     <string name="vpn_reconnect">اتصال دوباره</string>
     <string name="tile_label_vpn">Eternal VPN</string>
-    <string name="tile_label_tunnel">تونل Mlm</string>
+    <string name="tile_label_tunnel">تونل Eternal VPN</string>
     <string name="wg_data_check">بررسی عبور واقعی داده</string>
     <string name="wg_data_check_hint">پیش از اعلام موفقیت، صبر می‌کند تا ترافیک واقعی رد شود. دست‌دهی وایرگارد روی اپراتورهایی کامل می‌شود که بعد هر بستهٔ داده را دور می‌ریزند، پس دست‌دهی به‌تنهایی چیزی را ثابت نمی‌کند. خاموش‌کردنش اتصال را سریع‌تر می‌کند و معنای «متصل» را کم.</string>
     <string name="wg_section_verify">بررسی اتصال</string>
@@ -846,7 +846,7 @@
     <string name="cf_resources_workers_empty_body">هنوز هیچ وورکری روی این حساب نصب نشده است. از صفحهٔ «ابری» یک پنل نصب کنید.</string>
     <string name="cf_resources_workers_footer">هر وورکر یک سرور روی حساب کلادفلر شماست. حذف یک وورکر کانفیگ‌هایی را که از آن ساخته شده‌اند از کار می‌اندازد.</string>
     <string name="cf_resources_d1_empty">پایگاه‌داده‌ای نیست</string>
-    <string name="cf_resources_d1_empty_body">پنل‌های MLM و ناهان موقع نصب یکی می‌سازند.</string>
+    <string name="cf_resources_d1_empty_body">پنل‌های Eternal VPN و ناهان موقع نصب یکی می‌سازند.</string>
     <string name="cf_resources_d1_failed">لیست D1 خوانده نشد</string>
     <string name="cf_resources_d1_footer">کلادفلر تعداد پایگاه‌داده‌های یک حساب رایگان را محدود می‌کند. حذفشان از پنل کلادفلر انجام می‌شود.</string>
     <string name="cf_resources_kv_empty">فضای KV نیست</string>
@@ -1196,9 +1196,9 @@
     <string name="measuring_of">در حال سنجش %1$s از %2$s</string>
     <string name="minutes">%1$s دقیقه</string>
     <string name="minutes_ago"> دقیقه پیش</string>
-    <string name="mlm_account_not_found">اکانت MLM یافت نشد!</string>
-    <string name="mlm_gateway">گیت‌وی MLM</string>
-    <string name="mlmvpn_private_list">لیست اختصاصی MLMVPN · </string>
+    <string name="mlm_account_not_found">اکانت Eternal VPN یافت نشد!</string>
+    <string name="mlm_gateway">گیت‌وی Eternal VPN</string>
+    <string name="mlmvpn_private_list">لیست اختصاصی Eternal VPN · </string>
     <string name="months_ago"> ماه پیش</string>
     <string name="move_configs_to_the_connection_page">انتقال %1$s کانفیگ به صفحهٔ اتصال</string>
     <string name="my_list">فهرست من</string>
@@ -1258,7 +1258,7 @@
     <string name="panel_installed_now_i_will_fetch_the">پنل نصب شد. حالا کانفیگ‌ها را از آن می‌گیرم و بعد می‌رویم </string>
     <string name="panels_have_configs">%1$s پنل کانفیگ دارد</string>
     <string name="pick_a_country_and_tap_quick_scan">کشور را انتخاب کنید و «بررسی سریع» را بزنید. «بررسی همه سرورها» کل سرورهای آن </string>
-    <string name="pick_a_server_in_mlm_gateway_first">اول در «گیت‌وی MLM» یک سرور انتخاب کنید</string>
+    <string name="pick_a_server_in_mlm_gateway_first">اول در «گیت‌وی Eternal VPN» یک سرور انتخاب کنید</string>
     <string name="pick_a_server_in_the_gateway_first">اول در گیت‌وی یک سرور انتخاب کنید</string>
     <string name="pick_the_region_you_usually_play_on">ریجنی را بزنید که معمولاً روی آن بازی می‌کنید. بوست مسیر رسیدن به سرورهای همان </string>
     <string name="ping">پینگ</string>
@@ -1514,7 +1514,7 @@
     <string name="used_so_far_usedmb_mb_of_limitstr">مصرف کاربر تا کنون: %1$s مگابایت از %2$s</string>
     <string name="user_created_successfully">کاربر با موفقیت ایجاد شد</string>
     <string name="user_edited_successfully">کاربر با موفقیت ویرایش شد</string>
-    <string name="user_management_mlm">مدیریت کاربران (MLM)</string>
+    <string name="user_management_mlm">مدیریت کاربران (Eternal VPN)</string>
     <string name="user_not_found">کاربر یافت نشد!</string>
     <string name="username">نام کاربری</string>
     <string name="users">کاربران</string>
@@ -1766,7 +1766,7 @@
     <string name="save_and_fetch">ذخیره و دریافت</string>
     <string name="save_as_a_file">ذخیره به‌صورت فایل</string>
     <string name="save_as_a_file_the_file_is">«ذخیره به‌صورت فایل» استفاده کنید — فایل عیناً و کامل نوشته می‌شود. </string>
-    <string name="saved_to_your_downloads_folder_mlmvpn_relay">فایل در پوشهٔ دانلودها ذخیره شد: MLMVPN_relay.gs</string>
+    <string name="saved_to_your_downloads_folder_mlmvpn_relay">فایل در پوشهٔ دانلودها ذخیره شد: EternalVPN_relay.gs</string>
     <string name="scan_qr">اسکن QR</string>
     <string name="scan_the_config_s_qr_code">کد QR کانفیگ را اسکن کنید</string>
     <string name="scanner">اسکنر · </string>
@@ -2520,7 +2520,7 @@
     <string name="manual_2">دستی</string>
     <string name="means_throwing_away_the_very_thing_that">یعنی دور ریختن همان چیزی که مشکل را نشان می‌دهد.</string>
     <string name="medium_2">متوسط</string>
-    <string name="mlmvpn_private_list_2">لیست اختصاصی MLMVPN</string>
+    <string name="mlmvpn_private_list_2">لیست اختصاصی Eternal VPN</string>
     <string name="myself_you_can_leave_it_at_any">را انجام می‌دهم؛ هر جا خواستید می‌توانید رهایش کنید.</string>
     <string name="network_filtering_a_job_for_the_vpn">فیلتر شبکه‌ای (کار VPN، نه این بخش)</string>
     <string name="no_bridge_straight_to_the_tor_network">بدون پل، مستقیم به شبکهٔ تور. برای شبکه‌ای که تور را نبسته باشد</string>
@@ -2681,7 +2681,7 @@
     <string name="wireguard_game_trial">وایرگارد (تست بازی)</string>
     <string name="wireguard_is_active">وایرگارد فعال است</string>
     <string name="wireguard_scan">اسکن وایرگارد</string>
-    <string name="with_mlmvpn_stay_connected_always_whatever_the">با MLMVPN همیشه، در هر شرایطی، متصل بمان</string>
+    <string name="with_mlmvpn_stay_connected_always_whatever_the">با Eternal VPN همیشه، در هر شرایطی، متصل بمان</string>
     <string name="with_no_filter_every_server_in_this">بدون فیلتر، همهٔ سرورهای این فهرست نمایش داده می‌شوند. می‌توانید چند کشور را </string>
     <string name="word_processing">پردازش کلمه</string>
     <string name="working_ips_were_found_but_no_combination">آی‌پی سالم پیدا شد ولی ترکیبی ساخته نشد. گروهی که برای ترکیب انتخاب شد </string>
@@ -2805,18 +2805,18 @@
     <string name="in_quick_connect_i_get_no_responding">در اتصال سریع پیام «هیچ سرور پاسخ‌گویی پیدا نشد» می‌گیرم، چه کار کنم؟</string>
     <string name="in_quick_connect_what_does_the_green">در اتصال سریع تیک سبز کنار اسم سرور یعنی چه؟</string>
     <string name="in_the_nhn_section_when_i_create">چرا در بخش NHN وقتی کاربر با حجم و زمان مشخص میسازم، کانفیگ خروجی کار نمیکند؟</string>
-    <string name="in_your_phone_s_settings_search_type">در جستجوی تنظیمات گوشی بنویسید «trusted credentials» یا «گواهی»، بعد سربرگ «کاربر / User» را انتخاب کنید. گواهی ما با نام «MLM VPN Local CA …» آنجاست؛ رویش بزنید و «حذف / Remove» را انتخاب کنید. مسیر دقیق برای سامسونگ، شیائومی، پیکسل، هواوی، اوپو/ریلمی و ویوو به‌صورت جداگانه در آموزش شماره ۱۷ نوشته شده. اگر می‌خواهید همه‌ی گواهی‌های نصب‌شده را یک‌جا پاک کنید، در همان صفحه گزینه‌ی «پاک کردن اطلاعات ورود (Clear credentials)» هست — ولی توجه کنید که آن گزینه همه را پاک می‌کند نه فقط گواهی ما. بعد از حذف، تیک مرحله‌ی دوم داخل پوشه‌ی دامین‌فرانتینگ خودش برداشته می‌شود.</string>
+    <string name="in_your_phone_s_settings_search_type">در جستجوی تنظیمات گوشی بنویسید «trusted credentials» یا «گواهی»، بعد سربرگ «کاربر / User» را انتخاب کنید. گواهی ما با نام «Eternal VPN Local CA …» آنجاست؛ رویش بزنید و «حذف / Remove» را انتخاب کنید. مسیر دقیق برای سامسونگ، شیائومی، پیکسل، هواوی، اوپو/ریلمی و ویوو به‌صورت جداگانه در آموزش شماره ۱۷ نوشته شده. اگر می‌خواهید همه‌ی گواهی‌های نصب‌شده را یک‌جا پاک کنید، در همان صفحه گزینه‌ی «پاک کردن اطلاعات ورود (Clear credentials)» هست — ولی توجه کنید که آن گزینه همه را پاک می‌کند نه فقط گواهی ما. بعد از حذف، تیک مرحله‌ی دوم داخل پوشه‌ی دامین‌فرانتینگ خودش برداشته می‌شود.</string>
     <string name="iran_configs_1_to_8_no_server">• **کانفیگ‌های ایران (۱ تا ۸):** بدون سرور، برای باز شدن سایت‌ها و اپ‌های عمومی. اولین چیزی که باید امتحان کنید.\n• **پنل ابری (BPB / EDG / نهان):** سرور شخصی روی حساب کلادفلر خودتان؛ پایدارترین گزینه برای همه‌ی اپ‌ها، ولی باید یک‌بار دیپلوی کنید.\n• **دامین‌فرانتینگ:** بدون سرور و بدون هزینه، ولی فقط داخل مرورگر و نیاز به نصب گواهی دارد.\n• **تب گیمینگ:** برای کم کردن پینگ بازی، نه برای باز کردن سایت.\n• **اضطراری:** وقتی همه‌چیز مسدود است و حتی نمی‌توانید کانفیگ بگیرید.</string>
     <string name="is_installing_this_certificate_dangerous_for_my">آیا نصب این گواهی برای گوشی من خطرناک است؟ می‌توانم گواهی دوستم را نصب کنم؟</string>
     <string name="is_there_a_per_app_setting_choosing">آیا امکان استفاده از قابلیت \\"Per-app setting\\" (انتخاب برنامه‌های خاص برای عبور از VPN) وجود دارد؟</string>
     <string name="it_is_the_port_the_app_opens">پورتی است که برنامه روی خود گوشی برای عبور ترافیک باز می‌کند. پیش‌فرضش ۱۰۸۰۸ است و اگر دلیل خاصی ندارید همان را دست نزنید. نکته‌ی مهم این است که برنامه علاوه بر عددی که وارد می‌کنید، از «آن عدد + ۱۰۰۰۰» هم استفاده می‌کند (برای بررسی وضعیت اتصال و کشور). برای همین بعضی عددها با اینکه معتبر به نظر می‌رسند مشکل‌ساز می‌شوند — مثلاً ۲۱۰۰۰ باعث تداخل با بازه‌ای می‌شود که برنامه برای تست سرورها استفاده می‌کند. اگر عدد نامناسبی وارد کنید، همان‌جا زیر فیلد نوشته می‌شود مشکل چیست و تا اصلاحش نکنید دکمه‌ی ذخیره کار نمی‌کند.</string>
-    <string name="it_means_android_has_not_accepted_the">یعنی اندروید هنوز گواهی را قبول نکرده. سه دلیل رایج دارد: ۱) در مرحله‌ی انتخاب نوع گواهی، «گواهی CA / CA certificate» را نزده‌اید (اگر VPN یا Wi-Fi را بزنید نصب می‌شود ولی به کار ما نمی‌آید). ۲) فایل اشتباهی را انتخاب کرده‌اید؛ باید MLM-VPN-Certificate.crt باشد. ۳) گوشی شما قفل صفحه (رمز/الگو/اثر انگشت) ندارد — اندروید تا قفل صفحه نگذارید گواهی نصب نمی‌کند. لازم نیست برنامه را ببندید و باز کنید؛ برنامه خودش هر لحظه چک می‌کند و به‌محض نصب شدن، تیک می‌خورد.</string>
+    <string name="it_means_android_has_not_accepted_the">یعنی اندروید هنوز گواهی را قبول نکرده. سه دلیل رایج دارد: ۱) در مرحله‌ی انتخاب نوع گواهی، «گواهی CA / CA certificate» را نزده‌اید (اگر VPN یا Wi-Fi را بزنید نصب می‌شود ولی به کار ما نمی‌آید). ۲) فایل اشتباهی را انتخاب کرده‌اید؛ باید eternal-VPN-Certificate.crt باشد. ۳) گوشی شما قفل صفحه (رمز/الگو/اثر انگشت) ندارد — اندروید تا قفل صفحه نگذارید گواهی نصب نمی‌کند. لازم نیست برنامه را ببندید و باز کنید؛ برنامه خودش هر لحظه چک می‌کند و به‌محض نصب شدن، تیک می‌خورد.</string>
     <string name="it_means_that_server_s_country_is">یعنی کشور آن سرور دیگر ادعای فهرست نیست، اندازه‌گیری شده است. بعد از اینکه واقعاً به یک سرور وصل شدید، برنامه از داخل همان تونل از کلادفلر می‌پرسد ترافیک از کجا بیرون آمده. اگر جواب با پرچم قبلی فرق داشت، سرور برای همیشه به کشور واقعی‌اش منتقل می‌شود و به شما هم گفته می‌شود. دلیلش این است که وقتی کسی کشوری را انتخاب می‌کند، هدفش این است که از همان کشور بیرون بیاید.</string>
     <string name="managing_nahan_users_making_configs_for_friends">مدیریت کاربران نهان (ساخت کانفیگ برای دوستان)</string>
     <string name="no_tutorial_matched_that_phrase_the_search">هیچ آموزشی با این عبارت پیدا نشد. جست‌وجو هم در عنوان‌ها و هم در متن </string>
     <string name="nothing_is_wrong_this_method_was_only">مشکلی نیست، این روش از اول هم فقط برای مرورگر است. از اندروید ۷ به بعد، اندروید اجازه نمی‌دهد اپ‌های معمولی به گواهی‌هایی که کاربر نصب کرده اعتماد کنند — پس یوتیوب، اینستاگرام و بقیه‌ی اپ‌ها این گواهی را نمی‌بینند و کار نمی‌کنند. این محدودیت خود اندروید است و هیچ برنامه‌ای (بدون روت) نمی‌تواند دورش بزند. سایت‌ها را در کروم باز کنید؛ اگر می‌خواهید خودِ اپ‌ها هم کار کنند از کانفیگ‌های پنل ابری یا کانفیگ‌های ایران استفاده کنید.</string>
     <string name="numbers_1_to_6_are_built_on">شماره ۱ تا ۶ بر پایه نسخه‌ی قدیمی‌تر پروژه‌ی سرورلس ساخته شده‌اند و شماره ۷ و ۸ نسخه‌ی جدید (v48) هستند که کاملاً بدون تغییر اضافه شده‌اند. تفاوت ۷ و ۸ با هم فقط فاصله‌ی بین قطعه‌های ارسالی است (۸ برای شبکه‌هایی که به فاصله‌ی کوتاه گیر می‌دهند). اگر وصل نمی‌شوند، اول از همه پورت محلی را چک کنید: این کانفیگ‌ها فقط با پورت `10808` کار می‌کنند و ما عمداً دست‌کاری‌شان نکرده‌ایم. داخل خود پوشه‌ی کانفیگ‌های ایران هم اگر پورتتان اشتباه باشد اخطار قرمز نشان داده می‌شود.</string>
-    <string name="on_the_home_screen_an_icon_named">روی صفحه‌ی اصلی، آیکونی با نام «گیت‌وی MLM». خودش هیچ تغییری نکرده و همه‌ی امکاناتش سر جایش است. اگر پیدایش نمی‌کنید، شاید خودتان جایش را عوض کرده‌اید.</string>
+    <string name="on_the_home_screen_an_icon_named">روی صفحه‌ی اصلی، آیکونی با نام «گیت‌وی Eternal VPN». خودش هیچ تغییری نکرده و همه‌ی امکاناتش سر جایش است. اگر پیدایش نمی‌کنید، شاید خودتان جایش را عوض کرده‌اید.</string>
     <string name="quick_connect_is_one_of_the_home">اتصال سریع یکی از آیکون‌های صفحه‌ی اصلی برنامه است: یک فهرست آماده از هزاران سرور عمومی که خود برنامه دانلود می‌کند. هیچ اکانتی نمی‌خواهد، پنلی نباید بسازید و کانفیگی نباید وارد کنید. فرقش با پنل ابری این است که آنجا سرور شخصی خودتان روی حساب کلادفلر شماست (پایدارتر، ولی باید یک‌بار دیپلوی کنید) و اینجا سرورهای عمومی مشترک هستند (فوری، ولی کیفیتشان تضمینی نیست). آموزش کامل در بخش آموزش‌ها، شماره ۱۸.</string>
     <string name="quick_connect_the_ready_made_server_list">اتصال سریع — فهرست آماده‌ی سرورها و انتخاب کشور</string>
     <string name="s_0_9_s">^\\s*([۰-۹0-9]+)[.)\\-]\\s*(.*)$</string>
@@ -2826,7 +2826,7 @@
     <string name="that_error_means_your_cloudflare_token_is">این ارور مربوط به اشتباه بودن یا منقضی شدن توکن کلودفلر شماست. حتماً توکن را مطابق آموزش ویدیوها مجدداً ساخته و در برنامه وارد کنید.</string>
     <string name="that_is_usually_a_clash_with_the">این مشکل معمولاً به دلیل تداخل با نسخه قبلی است. ابتدا نسخه قدیمی را کاملاً پاک کنید و سپس نسخه جدید را نصب نمایید.</string>
     <string name="that_is_usually_down_to_dns_or">این موضوع معمولاً به دلیل تنظیمات DNS یا MTU است. در نسخه‌های جدید تلاش شده این مورد بهبود یابد، اما تعویض پروتکل (مثلاً از BPB به Edge یا برعکس) میتواند کمک کند.</string>
-    <string name="that_message_means_you_took_the_wrong">این پیام یعنی از مسیر اشتباه رفته‌اید. اندروید ۱۱ به بالا کامل جلوی نصب گواهی از داخل برنامه‌ها را گرفته است. راه درست همان چیزی است که خود برنامه می‌گوید: اول دکمه‌ی «ذخیره گواهی در پوشه دانلود» را بزنید، بعد از تنظیمات اندروید ← نصب گواهی ← گواهی CA، فایل MLM-VPN-Certificate.crt را از پوشه Download انتخاب کنید.</string>
+    <string name="that_message_means_you_took_the_wrong">این پیام یعنی از مسیر اشتباه رفته‌اید. اندروید ۱۱ به بالا کامل جلوی نصب گواهی از داخل برنامه‌ها را گرفته است. راه درست همان چیزی است که خود برنامه می‌گوید: اول دکمه‌ی «ذخیره گواهی در پوشه دانلود» را بزنید، بعد از تنظیمات اندروید ← نصب گواهی ← گواهی CA، فایل eternal-VPN-Certificate.crt را از پوشه Download انتخاب کنید.</string>
     <string name="that_usually_means_the_country_you_picked">معمولاً یعنی کشوری که انتخاب کرده‌اید سرور سالم کمی دارد. کادر کشور را روی «همه کشورها» بگذارید و دوباره جست‌وجو بزنید. اگر پیام «هیچ سروری دریافت نشد» می‌آید مشکل فرق دارد: دسترسی به منبع فهرست بسته است، پس اول یکی از گزینه‌های ضد تحریم یا کانفیگ‌های ایران را وصل کنید و بعد دکمه‌ی تازه‌سازی کنار انتخاب کشور را بزنید.</string>
     <string name="that_was_fixed_in_update_1_0">در آپدیت جدید 1.0.5 این مشکل حل شده.</string>
     <string name="the_app_is_tuned_for_most_android">برنامه برای اکثر نسخه‌های اندروید بهینه شده است، اما در صورت بروز مشکل در نسخه‌های خاص، حتماً از آخرین آپدیت استفاده کنید یا کش برنامه را پاک کنید.</string>
@@ -2840,7 +2840,7 @@
     <string name="what_is_quick_connect_and_how_does">«اتصال سریع» چیست و با بقیه‌ی بخش‌ها چه فرقی دارد؟</string>
     <string name="what_is_the_local_port_in_settings">«پورت محلی» در تنظیمات چیست و چه عددی بگذارم؟</string>
     <string name="where_do_the_mythological_config_names_come">داستان اسامی اساطیری کانفیگ‌ها چیست؟</string>
-    <string name="where_is_the_mlm_gateway_vpn_gate">گیت‌وی MLM (VPN Gate) کجاست؟</string>
+    <string name="where_is_the_mlm_gateway_vpn_gate">گیت‌وی Eternal VPN (VPN Gate) کجاست؟</string>
     <string name="which_mode_should_i_use_for_what">کدام حالت را برای چه کاری استفاده کنم؟</string>
     <string name="while_installing_the_certificate_i_get_couldn">موقع نصب گواهی پیام «نصب گواهی‌های CA ممکن نبود … از null» می‌آید، چه کار کنم؟</string>
     <string name="why_are_videos_and_bots_slow_to">چرا در تلگرام یا اینستاگرام با وجود وصل بودن، لود شدن ویدیوها یا ربات‌ها کند است؟</string>
@@ -2852,7 +2852,7 @@
     <string name="why_will_the_new_version_not_install">چرا نسخه جدید روی گوشی من نصب نمیشود و ارور \\"Package conflicts\\" میدهد؟</string>
     <string name="yes_since_version_1_0_5_it">بله از نسخه 1.0.5 برای تلویزیون های هوشمند اندروید بهینه سازی شده است.</string>
     <string name="yes_the_app_has_it_go_to">این قابلیت در برنامه وجود دارد به تنظیمات برنامه، تنظیمات vpn مراجعه بفرمایید.</string>
-    <string name="you_can_add_the_mlmvpn_tile_to">می‌توانید دکمه‌ی »mlmvpn» را از پنل تنظیمات سریع گوشی اضافه کنید (از بالای صفحه به پایین بکشید ← ویرایش/افزودن دکمه‌ها). با یک لمس، VPN روشن یا خاموش می‌شود؛ هنگام روشن‌شدن، تأخیر (delay) چند سرور اخیر شما گرفته شده و به سریع‌ترین وصل می‌شوید. تعداد سرورهایی که تست می‌شوند (پیش‌فرض ۲۰) را می‌توانید در تنظیمات ← تنظیمات VPN تغییر دهید. نکته: بار اول باید یک‌بار از داخل برنامه VPN را وصل کنید تا مجوز اتصال داده شود.</string>
+    <string name="you_can_add_the_mlmvpn_tile_to">می‌توانید دکمه‌ی »Eternal VPN» را از پنل تنظیمات سریع گوشی اضافه کنید (از بالای صفحه به پایین بکشید ← ویرایش/افزودن دکمه‌ها). با یک لمس، VPN روشن یا خاموش می‌شود؛ هنگام روشن‌شدن، تأخیر (delay) چند سرور اخیر شما گرفته شده و به سریع‌ترین وصل می‌شوید. تعداد سرورهایی که تست می‌شوند (پیش‌فرض ۲۰) را می‌توانید در تنظیمات ← تنظیمات VPN تغییر دهید. نکته: بار اول باید یک‌بار از داخل برنامه VPN را وصل کنید تا مجوز اتصال داده شود.</string>
     <string name="vpn_permission_denied">اجازهٔ VPN داده نشد</string>
     <string name="checking_ping">در حال بررسی پینگ…</string>
     <string name="starting_real_delay_test">شروع تست دیلی واقعی…</string>
@@ -2951,13 +2951,13 @@
     <string name="sni_measuring_progress">در حال اندازه‌گیری… %1$s از %2$s</string>
     <string name="sni_trying_method">آزمایش روش اتصال %1$s از %2$s…</string>
     <string name="sni_build_configs">ساخت کانفیگ SNI</string>
-    <string name="sni_build_footer">فقط کانفیگ‌های پنل‌های ابری — BPB، EDG، نهان و MLM، حتی ترکیب‌شده‌ها. موتور SNI به لبهٔ کلادفلر وصل می‌شود و بقیهٔ مسیر را همان لبه انجام می‌دهد؛ پس کانفیگی که سرورش پشت این لبه نیست از این راه در دسترس نیست و پیشنهاد هم نمی‌شود. کانفیگ‌های اصلی شما دست‌نخورده می‌مانند: از هرکدام یک نسخه ساخته می‌شود که به موتور SNI محلی اشاره می‌کند و در پوشهٔ خودش قرار می‌گیرد. کانفیگ‌هایی که از قبل ساخته شده‌اند رد می‌شوند، پس اجرای دوباره نسخهٔ تکراری نمی‌سازد.</string>
+    <string name="sni_build_footer">فقط کانفیگ‌های پنل‌های ابری — BPB، EDG، نهان و Eternal VPN، حتی ترکیب‌شده‌ها. موتور SNI به لبهٔ کلادفلر وصل می‌شود و بقیهٔ مسیر را همان لبه انجام می‌دهد؛ پس کانفیگی که سرورش پشت این لبه نیست از این راه در دسترس نیست و پیشنهاد هم نمی‌شود. کانفیگ‌های اصلی شما دست‌نخورده می‌مانند: از هرکدام یک نسخه ساخته می‌شود که به موتور SNI محلی اشاره می‌کند و در پوشهٔ خودش قرار می‌گیرد. کانفیگ‌هایی که از قبل ساخته شده‌اند رد می‌شوند، پس اجرای دوباره نسخهٔ تکراری نمی‌سازد.</string>
     <string name="sni_picker_footer">عدد میلی‌ثانیه بعد از اجرای اندازه‌گیری اینجا ظاهر می‌شود. کانفیگی که جواب نداده لزوماً خراب نیست — ممکن است نقطهٔ ورودی مسدود باشد، که اسکن زیر دکمه برای همین است.</string>
     <string name="sni_delete_selected">حذف کانفیگ انتخاب‌شده</string>
     <string name="sni_delete_all">حذف همهٔ کانفیگ‌های SNI (%1$s)</string>
     <string name="sni_delete_footer">فقط نسخه‌های SNI حذف می‌شوند. کانفیگ‌هایی که از رویشان ساخته شده‌اند سر جای خودشان می‌مانند و هر وقت خواستید دوباره می‌توانید بسازید.</string>
     <string name="sni_configs_deleted">%1$s کانفیگ SNI حذف شد</string>
-    <string name="sni_no_cloud_config">کانفیگ ابری‌ای برای تبدیل وجود ندارد. کانفیگ‌های SNI از پنل‌ها ساخته می‌شوند — BPB، EDG، نهان و MLM، حتی ترکیب‌شده‌ها — چون موتور SNI از لبهٔ کلادفلر عبور می‌کند و فقط کانفیگی که پشت همان لبه باشد از این راه قابل دسترسی است.</string>
+    <string name="sni_no_cloud_config">کانفیگ ابری‌ای برای تبدیل وجود ندارد. کانفیگ‌های SNI از پنل‌ها ساخته می‌شوند — BPB، EDG، نهان و Eternal VPN، حتی ترکیب‌شده‌ها — چون موتور SNI از لبهٔ کلادفلر عبور می‌کند و فقط کانفیگی که پشت همان لبه باشد از این راه قابل دسترسی است.</string>
     <!-- ==== تنظیمات > به‌روزرسانی نرم‌افزار ==== -->
     <string name="update_checking">در حال بررسی…</string>
     <!-- Local network sharing -->
@@ -3785,7 +3785,7 @@
     <string name="studio_bulk_new_title">ساخت گروهی کاربر</string>
     <string name="studio_bulk_new_sub">یک پیشوند و یک تعداد، و همه شرایط یکسان می‌گیرند. برای هرکدام کاربر ساخته می‌شود، کانفیگ می‌گیرد و لینک می‌گیرد — همان سه قدمِ یک نفر، تکرارشده.</string>
     <string name="studio_bulk_new_prefix">پیشوند نام</string>
-    <string name="studio_bulk_new_prefix_hint">mlm-</string>
+    <string name="studio_bulk_new_prefix_hint">eternal-</string>
     <string name="studio_bulk_new_count">چند نفر</string>
     <string name="studio_bulk_new_start">شماره از کجا شروع شود</string>
     <string name="studio_bulk_new_preview">%1$s تا %2$s — %3$s نفر</string>
@@ -4760,7 +4760,7 @@
     <string name="warp_ladder_none">الان روی این اینترنت هیچ‌کدام از ماسک، وایرگارد و وارپ در وارپ باز نیست؛ «اتصال سریع» را امتحان کنید.</string>
     <!-- MAE — موتور تطبیقی MLM -->
     <string name="mae_short">MAE</string>
-    <string name="mae_title">موتور تطبیقی MLM</string>
+    <string name="mae_title">موتور تطبیقی Eternal VPN</string>
     <string name="mae_onboard_title">بیشتر از چه برنامه‌ها و سایت‌هایی استفاده می‌کنید؟</string>
     <string name="mae_onboard_subtitle">هرچه برایتان مهم است را انتخاب کنید. MAE برای هرکدام، سریع‌ترین مسیر سالم را روی شبکهٔ شما پیدا می‌کند.</string>
     <string name="mae_onboard_installed">روی این گوشی</string>
@@ -5070,10 +5070,10 @@
     <string name="doc_works">روش‌هایی که روی این اینترنت جواب داد</string>
     <string name="doc_stages">نتیجه‌ها</string>
     <string name="doc_report">گزارش</string>
-    <string name="doc_report_footer">فایل را در گروه mlmvpn بفرستید تا مشکل برای همه حل شود. هیچ اطلاعات شخصی در آن نیست.</string>
+    <string name="doc_report_footer">فایل را در گروه Eternal VPN بفرستید تا مشکل برای همه حل شود. هیچ اطلاعات شخصی در آن نیست.</string>
     <string name="doc_share">ارسال فایل گزارش</string>
     <string name="doc_save">ذخیره‌ی فایل</string>
-    <string name="doc_group">باز کردن گروه mlmvpn</string>
+    <string name="doc_group">باز کردن گروه Eternal VPN</string>
     <string name="doc_view">دیدن متن گزارش</string>
     <string name="doc_saved">فایل ذخیره شد</string>
     <string name="doc_save_failed">ذخیره‌ی فایل انجام نشد</string>
@@ -5416,7 +5416,7 @@
     <string name="cfnet_panel_netra">پنل اشتراک کانفیگ</string>
     <string name="cfnet_panel_gozargah">پنل مدیریت اتصال</string>
     <string name="cfnet_panel_nova">پنل ساده</string>
-    <string name="cfnet_panel_mlm">پنل Config Studio / MLM</string>
+    <string name="cfnet_panel_mlm">پنل Config Studio / Eternal VPN</string>
     <string name="cfnet_config_header">گرفتن کانفیگ از پنل‌ها</string>
     <string name="cfnet_config_footer">فقط پنل‌های نصب‌شدهٔ این حساب آمده‌اند. کانفیگ‌ها به‌صورت یک گروه در Cloud ذخیره می‌شوند.</string>
     <string name="cfnet_config_go">گرفتن کانفیگ</string>
@@ -5445,7 +5445,7 @@
     <string name="mlm_get_xhttp">دریافت کانفیگ xhttp</string>
     <string name="mlm_xhttp_checking">در حال ساخت و تست روی همین شبکه…</string>
     <string name="mlm_xhttp_ready">کانفیگ XHTTP روی همین شبکه واقعاً داده رد و بدل کرد و به کانفیگ‌ها اضافه شد.</string>
-    <string name="mlm_xhttp_outdated">اول پنل MLM را به‌روزرسانی کنید (ردیف «به‌روزرسانی» پایین همین بخش)؛ XHTTP به نسخهٔ جدید آن نیاز دارد.</string>
+    <string name="mlm_xhttp_outdated">اول پنل Eternal VPN را به‌روزرسانی کنید (ردیف «به‌روزرسانی» پایین همین بخش)؛ XHTTP به نسخهٔ جدید آن نیاز دارد.</string>
     <string name="mlm_xhttp_not_working">کانفیگ XHTTP روی این شبکه داده‌ای رد و بدل نکرد، برای همین اضافه نشد.</string>
     <string name="mlm_xhttp_no_config">پنل کانفیگی نداد که XHTTP از روی آن ساخته شود.</string>
     <string name="mlm_xhttp_failed">دریافت کانفیگ XHTTP انجام نشد؛ دوباره امتحان کنید.</string>
@@ -5541,7 +5541,7 @@
     <string name="proton_route_lost">راه ورود قطع شد. صفحه سر جایش می‌ماند و وقتی راه برگشت ادامه می‌دهد.</string>
     <string name="proton_reload">بارگذاری دوباره</string>
     <string name="proton_page_error">خطای صفحه: %1$s</string>
-    <string name="scout_title">MLM Scout</string>
+    <string name="scout_title">Eternal VPN Scout</string>
     <string name="gst_relay_not_found">❌ گوگل زیر این شناسه چیزی پیدا نکرد (۴۰۴). احتمالاً به‌جای Deployment ID، شناسه‌ی پروژه (Script ID) یا شناسه‌ی تستی (/dev) را گذاشته‌اید، یا آن Deployment بایگانی شده. در Apps Script بروید به Deploy › Manage deployments و شناسه‌ای را که با AKfy شروع می‌شود کپی کنید.</string>
     <string name="gst_relay_key_not_used">⚠️ این رله سالم است، ولی رمزش با بقیه‌ی رله‌ها فرق دارد و تونل از آن استفاده نمی‌کند. آن را با همان رمز رله‌ی اول دوباره بسازید.</string>
     <string name="gst_front_blocked">⚠️ رله سالم است، ولی مسیر گوگل تا آن روی این شبکه بسته است و تونل داده‌ای رد نمی‌کند. شبکه را عوض کنید یا در «مسیر شبکه» آدرس‌های دیگری را تیک بزنید.</string>

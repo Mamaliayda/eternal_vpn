@@ -163,7 +163,7 @@ fun RegionPickerScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp, vertical = 8.dp)
-                .clip(RoundedCornerShape(12.dp))
+                .clip(RoundedCornerShape(DuskTheme.corner12))
                 .background(Color.White.copy(alpha = 0.10f))
                 .heightIn(min = 36.dp)
                 .padding(horizontal = 10.dp),
@@ -180,13 +180,13 @@ fun RegionPickerScreen(
                 value = query,
                 onValueChange = { query = it },
                 singleLine = true,
-                textStyle = TextStyle(color = DuskTheme.onSurface, fontSize = 16.sp),
+                textStyle = TextStyle(color = DuskTheme.onSurface, fontSize = DuskTheme.textSize16),
                 cursorBrush = SolidColor(DuskTheme.primary),
                 modifier = Modifier.fillMaxWidth(),
                 decorationBox = { inner ->
                     Box {
                         if (query.isEmpty()) {
-                            Text(S(R.string.search_country_2), color = DuskTheme.muted, fontSize = 16.sp)
+                            Text(S(R.string.search_country_2), color = DuskTheme.muted, fontSize = DuskTheme.textSize16)
                         }
                         inner()
                     }
@@ -284,8 +284,8 @@ fun RegionPickerScreen(
                 Text(
                     footer,
                     color = DuskTheme.muted,
-                    fontSize = 13.sp,
-                    lineHeight = 21.sp,
+                    fontSize = DuskTheme.textSize13,
+                    lineHeight = DuskTheme.textSize21,
                     modifier = Modifier.padding(horizontal = 16.dp),
                 )
             }
@@ -312,12 +312,12 @@ private fun RegionRow(
             .padding(horizontal = 14.dp, vertical = 9.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Text(flag, fontSize = 22.sp)
+        Text(flag, fontSize = DuskTheme.textSize22)
         Spacer(Modifier.width(12.dp))
         Column(modifier = Modifier.weight(1f)) {
-            Text(name, color = DuskTheme.onSurface, fontSize = 16.sp, maxLines = 1)
+            Text(name, color = DuskTheme.onSurface, fontSize = DuskTheme.textSize16, maxLines = 1)
             if (detail.isNotBlank()) {
-                Text(detail, color = DuskTheme.muted, fontSize = 11.sp, maxLines = 2)
+                Text(detail, color = DuskTheme.muted, fontSize = DuskTheme.textSize11, maxLines = 2)
             }
         }
         if (onStar != null) {
@@ -327,7 +327,7 @@ private fun RegionRow(
                 tint = if (starred) DuskTheme.accent else DuskTheme.muted.copy(alpha = 0.55f),
                 modifier = Modifier
                     .size(30.dp)
-                    .clip(RoundedCornerShape(15.dp))
+                    .clip(RoundedCornerShape(DuskTheme.corner15))
                     .clickable(onClick = onStar)
                     .padding(5.dp),
             )

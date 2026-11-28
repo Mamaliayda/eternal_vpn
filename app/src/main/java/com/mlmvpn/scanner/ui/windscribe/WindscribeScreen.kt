@@ -130,7 +130,7 @@ fun WindscribeScreen(onBack: () -> Unit) {
                             enabled = running || !busy) { if (running) engine.disconnect() else connect() }
                         Spacer(Modifier.height(12.dp))
                         Text(connectionLabel(connection), color = if (connection.phase == WsPhase.ERROR) DuskTheme.accent else DuskTheme.muted,
-                            fontSize = 14.sp, textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp))
+                            fontSize = DuskTheme.textSize14, textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp))
                         Spacer(Modifier.height(6.dp))
                         com.mlmvpn.scanner.ui.RouteChips()
                     }
@@ -207,7 +207,7 @@ fun WindscribeScreen(onBack: () -> Unit) {
                         item(key = "srv-$serverId") {
                             val server = data.servers.firstOrNull { it.id == serverId }
                             Text(server?.let { com.mlmvpn.scanner.ui.tunnel.CountryLabel.withFlag(it.country) + " · " + it.city }.orEmpty(),
-                                color = DuskTheme.muted, fontSize = 13.sp, fontWeight = FontWeight.SemiBold,
+                                color = DuskTheme.muted, fontSize = DuskTheme.textSize13, fontWeight = FontWeight.SemiBold,
                                 modifier = Modifier.fillMaxWidth().padding(start = 32.dp, end = 32.dp, top = 14.dp, bottom = 6.dp))
                             SettingsGroup {
                                 rows.sortedWith(compareByDescending<WsMeasurement> { it.success }.thenComparator { a, b -> WsPlanner.SCORE.compare(b, a) })
@@ -278,12 +278,12 @@ fun WindscribeScreen(onBack: () -> Unit) {
 
 @Composable private fun Action(text: String, enabled: Boolean, click: () -> Unit) {
     Box(
-        Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 5.dp).clip(RoundedCornerShape(12.dp))
+        Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 5.dp).clip(RoundedCornerShape(DuskTheme.corner12))
             .background(if (enabled) DuskTheme.primary else DuskTheme.primary.copy(alpha = 0.4f))
             .clickable(enabled = enabled, role = Role.Button, onClick = click)
             .padding(vertical = 13.dp),
         contentAlignment = Alignment.Center,
-    ) { Text(text, color = DuskTheme.onPrimary, fontSize = 16.sp, fontWeight = FontWeight.SemiBold) }
+    ) { Text(text, color = DuskTheme.onPrimary, fontSize = DuskTheme.textSize16, fontWeight = FontWeight.SemiBold) }
 }
 
 /** The same round power button as FLUX: gray when off, orange while it searches, green when connected. */
@@ -300,7 +300,7 @@ fun WindscribeScreen(onBack: () -> Unit) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Icon(Icons.Default.PowerSettingsNew, contentDescription = null, tint = ring, modifier = Modifier.size(44.dp))
                 Spacer(Modifier.height(4.dp))
-                Text(label, color = DuskTheme.onSurface, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
+                Text(label, color = DuskTheme.onSurface, fontSize = DuskTheme.textSize14, fontWeight = FontWeight.SemiBold)
             }
         }
     }
@@ -335,15 +335,15 @@ private fun timestamp(value: Long) = DateFormat.getDateTimeInstance(DateFormat.S
     val server = connection.method?.let { m -> servers.firstOrNull { it.id == m.serverId } }
     Column(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 12.dp)) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Text(stringResource(R.string.windscribe_testing, connection.attempt, connection.total), color = DuskTheme.onSurface, fontSize = 15.sp, modifier = Modifier.weight(1f))
-            Text(stringResource(R.string.windscribe_stop), color = DuskTheme.error, fontSize = 15.sp, fontWeight = FontWeight.SemiBold,
-                modifier = Modifier.clip(RoundedCornerShape(8.dp)).clickable(onClick = onStop).padding(horizontal = 8.dp, vertical = 4.dp))
+            Text(stringResource(R.string.windscribe_testing, connection.attempt, connection.total), color = DuskTheme.onSurface, fontSize = DuskTheme.textSize15, modifier = Modifier.weight(1f))
+            Text(stringResource(R.string.windscribe_stop), color = DuskTheme.error, fontSize = DuskTheme.textSize15, fontWeight = FontWeight.SemiBold,
+                modifier = Modifier.clip(RoundedCornerShape(DuskTheme.corner8)).clickable(onClick = onStop).padding(horizontal = 8.dp, vertical = 4.dp))
         }
         Spacer(Modifier.height(10.dp))
         LinearProgressIndicator(progress = if (connection.total > 0) connection.attempt.toFloat() / connection.total else 0f,
-            color = DuskTheme.success, trackColor = DuskTheme.outline.copy(alpha = 0.25f), modifier = Modifier.fillMaxWidth().height(4.dp).clip(RoundedCornerShape(2.dp)))
+            color = DuskTheme.success, trackColor = DuskTheme.outline.copy(alpha = 0.25f), modifier = Modifier.fillMaxWidth().height(4.dp).clip(RoundedCornerShape(DuskTheme.corner2)))
         Spacer(Modifier.height(8.dp))
-        Text(listOfNotNull(server?.city, connection.method?.let { protocolName(it.protocol) }).joinToString(" · "), color = DuskTheme.muted, fontSize = 13.sp)
+        Text(listOfNotNull(server?.city, connection.method?.let { protocolName(it.protocol) }).joinToString(" · "), color = DuskTheme.muted, fontSize = DuskTheme.textSize13)
     }
 }
 

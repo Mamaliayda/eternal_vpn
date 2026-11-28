@@ -242,13 +242,13 @@ private fun Editor(value: String, onChange: (String) -> Unit, hint: String, sing
             value = value,
             onValueChange = onChange,
             singleLine = single,
-            textStyle = TextStyle(color = DuskTheme.onSurface, fontSize = 16.sp),
+            textStyle = TextStyle(color = DuskTheme.onSurface, fontSize = DuskTheme.textSize16),
             cursorBrush = SolidColor(DuskTheme.primary),
             keyboardOptions = KeyboardOptions(keyboardType = androidx.compose.ui.text.input.KeyboardType.Uri),
             modifier = Modifier.fillMaxWidth(),
             decorationBox = { inner ->
                 Box(contentAlignment = Alignment.TopStart) {
-                    if (value.isEmpty()) Text(hint, color = DuskTheme.muted.copy(alpha = 0.5f), fontSize = 16.sp)
+                    if (value.isEmpty()) Text(hint, color = DuskTheme.muted.copy(alpha = 0.5f), fontSize = DuskTheme.textSize16)
                     inner()
                 }
             },

@@ -644,8 +644,8 @@ private fun Footer(text: String) {
     Text(
         text,
         color = DuskTheme.muted,
-        fontSize = 13.sp,
-        lineHeight = 21.sp,
+        fontSize = DuskTheme.textSize13,
+        lineHeight = DuskTheme.textSize21,
         modifier = Modifier.padding(start = 32.dp, end = 32.dp, top = 8.dp),
     )
 }

@@ -283,10 +283,10 @@ fun GithubTunnelScreen(onBack: () -> Unit, onOpenScanner: () -> Unit, onOpenClou
                 onClick = { dialAction?.invoke() },
             )
             Spacer(Modifier.height(14.dp))
-            Text(headline, color = DuskTheme.onSurface, fontSize = 20.sp, fontWeight = FontWeight.Bold, textAlign = TextAlign.Center,
+            Text(headline, color = DuskTheme.onSurface, fontSize = DuskTheme.textSize20, fontWeight = FontWeight.Bold, textAlign = TextAlign.Center,
                 modifier = Modifier.padding(horizontal = 24.dp))
             Spacer(Modifier.height(6.dp))
-            Text(line, color = DuskTheme.muted, fontSize = 13.sp, lineHeight = 20.sp, textAlign = TextAlign.Center,
+            Text(line, color = DuskTheme.muted, fontSize = DuskTheme.textSize13, lineHeight = DuskTheme.textSize20, textAlign = TextAlign.Center,
                 modifier = Modifier.padding(horizontal = 28.dp))
         }
         com.mlmvpn.scanner.ui.RouteChips()
@@ -672,7 +672,7 @@ private fun Dial(on: Boolean, working: Boolean, failed: Boolean, enabled: Boolea
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Icon(if (on) Icons.Default.Power else Icons.Default.PowerSettingsNew, null, tint = Color.White, modifier = Modifier.size(34.dp))
                 Spacer(Modifier.height(4.dp))
-                Text(label, color = Color.White, fontSize = 14.sp, fontWeight = FontWeight.SemiBold, textAlign = TextAlign.Center)
+                Text(label, color = Color.White, fontSize = DuskTheme.textSize14, fontWeight = FontWeight.SemiBold, textAlign = TextAlign.Center)
             }
         }
     }
@@ -682,12 +682,12 @@ private fun Dial(on: Boolean, working: Boolean, failed: Boolean, enabled: Boolea
 private fun Notice(text: String, tint: Color) {
     Row(
         modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp)
-            .clip(RoundedCornerShape(14.dp)).background(tint.copy(alpha = 0.14f)).padding(horizontal = 14.dp, vertical = 11.dp),
+            .clip(RoundedCornerShape(DuskTheme.corner14)).background(tint.copy(alpha = 0.14f)).padding(horizontal = 14.dp, vertical = 11.dp),
         verticalAlignment = Alignment.Top,
     ) {
         Icon(Icons.Default.ErrorOutline, null, tint = tint, modifier = Modifier.size(18.dp).padding(top = 1.dp))
         Spacer(Modifier.width(10.dp))
-        Text(text, color = DuskTheme.onSurface, fontSize = 13.sp, lineHeight = 20.sp)
+        Text(text, color = DuskTheme.onSurface, fontSize = DuskTheme.textSize13, lineHeight = DuskTheme.textSize20)
     }
 }
 
@@ -699,28 +699,28 @@ private fun SignInCard(s: com.mlmvpn.scanner.engines.github.GtSignIn, context: C
             if (s.userCode.isBlank() && s.error.isBlank()) {
                 CircularProgressIndicator(Modifier.size(22.dp), color = DuskTheme.primary, strokeWidth = 2.dp)
                 Spacer(Modifier.height(8.dp))
-                Text(stringResource(R.string.gt_signin_making), color = DuskTheme.muted, fontSize = 13.sp)
+                Text(stringResource(R.string.gt_signin_making), color = DuskTheme.muted, fontSize = DuskTheme.textSize13)
             } else if (s.userCode.isNotBlank()) {
-                Text(stringResource(R.string.gt_signin_enter), color = DuskTheme.muted, fontSize = 13.sp, textAlign = TextAlign.Center)
+                Text(stringResource(R.string.gt_signin_enter), color = DuskTheme.muted, fontSize = DuskTheme.textSize13, textAlign = TextAlign.Center)
                 Spacer(Modifier.height(10.dp))
-                Text(s.userCode, color = DuskTheme.onSurface, fontSize = 30.sp, fontWeight = FontWeight.Bold, fontFamily = FontFamily.Monospace,
+                Text(s.userCode, color = DuskTheme.onSurface, fontSize = DuskTheme.textSize30, fontWeight = FontWeight.Bold, fontFamily = FontFamily.Monospace,
                     letterSpacing = 4.sp,
-                    modifier = Modifier.clip(RoundedCornerShape(12.dp)).background(Color.White.copy(alpha = 0.08f))
+                    modifier = Modifier.clip(RoundedCornerShape(DuskTheme.corner12)).background(Color.White.copy(alpha = 0.08f))
                         .clickable { copy(context, s.userCode, showSnackbar) }.padding(horizontal = 22.dp, vertical = 8.dp))
                 Spacer(Modifier.height(6.dp))
-                Text(s.verificationUri, color = DuskTheme.muted, fontSize = 11.sp, fontFamily = FontFamily.Monospace)
+                Text(s.verificationUri, color = DuskTheme.muted, fontSize = DuskTheme.textSize11, fontFamily = FontFamily.Monospace)
                 if (s.waiting) {
                     Spacer(Modifier.height(10.dp))
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         CircularProgressIndicator(Modifier.size(14.dp), color = DuskTheme.muted, strokeWidth = 2.dp)
                         Spacer(Modifier.width(8.dp))
-                        Text(stringResource(R.string.gt_signin_waiting), color = DuskTheme.muted, fontSize = 12.sp)
+                        Text(stringResource(R.string.gt_signin_waiting), color = DuskTheme.muted, fontSize = DuskTheme.textSize12)
                     }
                 }
             }
             if (s.error.isNotBlank()) {
                 Spacer(Modifier.height(8.dp))
-                Text(s.error, color = DuskTheme.error, fontSize = 13.sp, textAlign = TextAlign.Center)
+                Text(s.error, color = DuskTheme.error, fontSize = DuskTheme.textSize13, textAlign = TextAlign.Center)
             }
         }
         if (s.userCode.isNotBlank() && s.waiting) {
@@ -763,15 +763,15 @@ private fun SetupStep(number: Int, current: Int, title: String, value: String, b
                 done -> Icon(Icons.Default.CheckCircle, null, tint = Color.White, modifier = Modifier.size(18.dp))
                 active && busy -> CircularProgressIndicator(Modifier.size(14.dp), color = Color.White, strokeWidth = 2.dp)
                 else -> Text(com.mlmvpn.scanner.ui.faCount(number), color = if (active) Color.White else DuskTheme.muted,
-                    fontSize = 13.sp, fontWeight = FontWeight.Bold)
+                    fontSize = DuskTheme.textSize13, fontWeight = FontWeight.Bold)
             }
         }
         Spacer(Modifier.width(12.dp))
-        Text(title, color = if (done || active) DuskTheme.onSurface else DuskTheme.muted, fontSize = 15.sp,
+        Text(title, color = if (done || active) DuskTheme.onSurface else DuskTheme.muted, fontSize = DuskTheme.textSize15,
             fontWeight = if (active) FontWeight.SemiBold else FontWeight.Normal, modifier = Modifier.weight(1f))
         if (value.isNotBlank()) {
             Spacer(Modifier.width(8.dp))
-            Text(value, color = if (active) DuskTheme.primary else DuskTheme.muted, fontSize = 14.sp, maxLines = 1)
+            Text(value, color = if (active) DuskTheme.primary else DuskTheme.muted, fontSize = DuskTheme.textSize14, maxLines = 1)
         }
     }
 }
@@ -787,7 +787,7 @@ private fun StepRow(label: String, done: Boolean, active: Boolean) {
             }
         }
         Spacer(Modifier.width(12.dp))
-        Text(label, color = if (done || active) DuskTheme.onSurface else DuskTheme.muted, fontSize = 15.sp,
+        Text(label, color = if (done || active) DuskTheme.onSurface else DuskTheme.muted, fontSize = DuskTheme.textSize15,
             fontWeight = if (active) FontWeight.SemiBold else FontWeight.Normal)
     }
 }
@@ -795,11 +795,11 @@ private fun StepRow(label: String, done: Boolean, active: Boolean) {
 @Composable
 private fun LogBlock(lines: List<String>) {
     Column(
-        Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp).clip(RoundedCornerShape(14.dp))
+        Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp).clip(RoundedCornerShape(DuskTheme.corner14))
             .background(Color.Black.copy(alpha = 0.28f)).padding(12.dp),
         verticalArrangement = Arrangement.spacedBy(3.dp),
     ) {
-        lines.forEach { Text(it, color = DuskTheme.muted, fontSize = 12.sp, lineHeight = 18.sp) }
+        lines.forEach { Text(it, color = DuskTheme.muted, fontSize = DuskTheme.textSize12, lineHeight = DuskTheme.textSize18) }
     }
 }
 
@@ -1004,7 +1004,7 @@ private fun SitesField(value: String, onChange: (String) -> Unit) {
     androidx.compose.foundation.text.BasicTextField(
         value = value,
         onValueChange = onChange,
-        textStyle = androidx.compose.ui.text.TextStyle(color = DuskTheme.onSurface, fontSize = 15.sp,
+        textStyle = androidx.compose.ui.text.TextStyle(color = DuskTheme.onSurface, fontSize = DuskTheme.textSize15,
             textDirection = androidx.compose.ui.text.style.TextDirection.Ltr),
         cursorBrush = androidx.compose.ui.graphics.SolidColor(DuskTheme.primary),
         keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(keyboardType = androidx.compose.ui.text.input.KeyboardType.Uri),
@@ -1012,7 +1012,7 @@ private fun SitesField(value: String, onChange: (String) -> Unit) {
         decorationBox = { inner ->
             Box {
                 if (value.isEmpty()) {
-                    Text("instagram.com  x.com  telegram.org", color = DuskTheme.muted, fontSize = 15.sp,
+                    Text("instagram.com  x.com  telegram.org", color = DuskTheme.muted, fontSize = DuskTheme.textSize15,
                         style = androidx.compose.ui.text.TextStyle(textDirection = androidx.compose.ui.text.style.TextDirection.Ltr))
                 }
                 inner()
@@ -1081,7 +1081,7 @@ private fun accountState(a: GtAccount): String = when {
 private fun copy(context: Context, text: String, showSnackbar: (String) -> Unit) {
     runCatching {
         val cm = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-        cm.setPrimaryClip(ClipData.newPlainText("MLMVPN", text))
+        cm.setPrimaryClip(ClipData.newPlainText("Eternal VPN", text))
         showSnackbar(S(R.string.gt_copied))
     }
 }

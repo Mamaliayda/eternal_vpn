@@ -99,7 +99,7 @@ fun StudioTabBar(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .frostedGlass(RoundedCornerShape(topStart = 22.dp, topEnd = 22.dp))
+            .frostedGlass(RoundedCornerShape(topStart = DuskTheme.corner22, topEnd = DuskTheme.corner22))
             .navigationBarsPadding()
             .height(StudioTabBarHeight)
             .padding(horizontal = 8.dp),
@@ -148,7 +148,7 @@ fun StudioBadge(
 ) {
     Row(
         modifier = modifier
-            .background(tint.copy(alpha = 0.16f), RoundedCornerShape(7.dp))
+            .background(tint.copy(alpha = 0.16f), RoundedCornerShape(DuskTheme.corner7))
             .padding(horizontal = 7.dp, vertical = 3.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -174,7 +174,7 @@ fun CountryBadge(cc: String, modifier: Modifier = Modifier) {
             fontWeight = FontWeight.Bold,
             fontFamily = FontFamily.Monospace,
             modifier = modifier
-                .border(1.dp, DuskTheme.muted.copy(alpha = 0.45f), RoundedCornerShape(5.dp))
+                .border(1.dp, DuskTheme.muted.copy(alpha = 0.45f), RoundedCornerShape(DuskTheme.corner5))
                 .padding(horizontal = 5.dp, vertical = 1.dp),
         )
     }
@@ -218,7 +218,7 @@ fun StudioStatTile(
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Box(
-                modifier = Modifier.size(28.dp).clip(RoundedCornerShape(8.dp)).background(tint.copy(alpha = 0.18f)),
+                modifier = Modifier.size(28.dp).clip(RoundedCornerShape(DuskTheme.corner8)).background(tint.copy(alpha = 0.18f)),
                 contentAlignment = Alignment.Center,
             ) {
                 Icon(icon, contentDescription = null, tint = tint, modifier = Modifier.size(17.dp))
@@ -227,7 +227,7 @@ fun StudioStatTile(
             Text(label, color = DuskTheme.muted, fontSize = StudioType.Caption, maxLines = 1, overflow = TextOverflow.Ellipsis)
         }
         Spacer(Modifier.height(10.dp))
-        Text(value, color = DuskTheme.onSurface, fontSize = 24.sp, fontWeight = FontWeight.Bold, maxLines = 1)
+        Text(value, color = DuskTheme.onSurface, fontSize = DuskTheme.textSize24, fontWeight = FontWeight.Bold, maxLines = 1)
         if (detail != null) {
             Spacer(Modifier.height(2.dp))
             Text(detail, color = DuskTheme.muted, fontSize = StudioType.Tiny, maxLines = 1, overflow = TextOverflow.Ellipsis)
@@ -269,7 +269,7 @@ fun NoticeCard(
         verticalAlignment = Alignment.Top,
     ) {
         Box(
-            modifier = Modifier.size(30.dp).clip(RoundedCornerShape(9.dp)).background(tint.copy(alpha = 0.18f)),
+            modifier = Modifier.size(30.dp).clip(RoundedCornerShape(DuskTheme.corner9)).background(tint.copy(alpha = 0.18f)),
             contentAlignment = Alignment.Center,
         ) {
             Icon(icon, contentDescription = null, tint = tint, modifier = Modifier.size(18.dp))
@@ -279,7 +279,7 @@ fun NoticeCard(
             Text(title, color = DuskTheme.onSurface, fontSize = StudioType.Callout, fontWeight = FontWeight.SemiBold)
             if (body != null) {
                 Spacer(Modifier.height(4.dp))
-                Text(body, color = DuskTheme.muted, fontSize = StudioType.Footnote, lineHeight = 21.sp)
+                Text(body, color = DuskTheme.muted, fontSize = StudioType.Footnote, lineHeight = DuskTheme.textSize21)
             }
             if (actionLabel != null && onAction != null) {
                 Spacer(Modifier.height(10.dp))
@@ -375,7 +375,7 @@ fun ChoiceRow(
             )
             if (subtitle != null) {
                 Spacer(Modifier.height(2.dp))
-                Text(subtitle, color = DuskTheme.muted, fontSize = StudioType.Caption, lineHeight = 17.sp)
+                Text(subtitle, color = DuskTheme.muted, fontSize = StudioType.Caption, lineHeight = DuskTheme.textSize17)
             }
         }
         Spacer(Modifier.width(8.dp))
@@ -478,7 +478,7 @@ fun SegmentedControl(
                 maxLines = 1,
                 modifier = Modifier
                     .weight(1f)
-                    .clip(RoundedCornerShape(9.dp))
+                    .clip(RoundedCornerShape(DuskTheme.corner9))
                     .then(if (sel) Modifier.background(DuskTheme.primary) else Modifier)
                     .clickable { onSelect(i) }
                     .padding(vertical = 7.dp),

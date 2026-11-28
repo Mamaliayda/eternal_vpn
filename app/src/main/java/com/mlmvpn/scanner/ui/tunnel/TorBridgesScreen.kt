@@ -277,7 +277,7 @@ private fun BridgeListPage(onBack: () -> Unit, backLabel: String, onAdd: () -> U
                     if (sort == Sort.COUNTRY && country == null && (i == 0 || page[i - 1].country != e.country)) {
                         Text(
                             e.country?.let { CountryLabel.withFlag(it) } ?: stringResource(R.string.tor_br_country_unknown),
-                            color = DuskTheme.muted, fontSize = 13.sp, fontWeight = FontWeight.SemiBold,
+                            color = DuskTheme.muted, fontSize = DuskTheme.textSize13, fontWeight = FontWeight.SemiBold,
                             modifier = Modifier.padding(top = if (i == 0) 0.dp else 8.dp, start = 4.dp),
                         )
                     }
@@ -287,7 +287,7 @@ private fun BridgeListPage(onBack: () -> Unit, backLabel: String, onAdd: () -> U
             if (shown.size > visible) {
                 val left = shown.size - visible
                 Text(
-                    stringResource(R.string.tor_br_more, fa(minOf(PAGE_STEP, left)), fa(left)), color = DuskTheme.primary, fontSize = 15.sp,
+                    stringResource(R.string.tor_br_more, fa(minOf(PAGE_STEP, left)), fa(left)), color = DuskTheme.primary, fontSize = DuskTheme.textSize15,
                     modifier = Modifier.fillMaxWidth().clickable { visible += PAGE_STEP }.padding(vertical = 12.dp, horizontal = 20.dp),
                 )
             }
@@ -357,13 +357,13 @@ private fun Chip(label: String, selected: Boolean, onClick: () -> Unit) {
     Box(
         Modifier.clip(RoundedCornerShape(50)).background(if (selected) DuskTheme.primary else DuskTheme.outline.copy(alpha = 0.18f))
             .clickable(onClick = onClick).padding(horizontal = 12.dp, vertical = 6.dp),
-    ) { Text(label, color = if (selected) DuskTheme.onPrimary else DuskTheme.onSurface, fontSize = 13.sp) }
+    ) { Text(label, color = if (selected) DuskTheme.onPrimary else DuskTheme.onSurface, fontSize = DuskTheme.textSize13) }
 }
 
 @Composable
 private fun Note(text: String) {
     Text(
-        text, color = DuskTheme.accent, fontSize = 13.sp, lineHeight = 20.sp,
+        text, color = DuskTheme.accent, fontSize = DuskTheme.textSize13, lineHeight = DuskTheme.textSize20,
         modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 4.dp),
     )
 }
@@ -474,8 +474,8 @@ private fun BridgeDetailPage(e: Entry, onBack: () -> Unit, showSnackbar: (String
         // The technical part, for whoever wants it.
         SettingsSectionHeader(stringResource(R.string.tor_br_d_line))
         Text(
-            e.bridge.line, color = DuskTheme.muted, fontSize = 11.sp, fontFamily = FontFamily.Monospace, lineHeight = 16.sp,
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp).frostedGlass(RoundedCornerShape(12.dp)).padding(12.dp),
+            e.bridge.line, color = DuskTheme.muted, fontSize = DuskTheme.textSize11, fontFamily = FontFamily.Monospace, lineHeight = DuskTheme.textSize16,
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp).frostedGlass(RoundedCornerShape(DuskTheme.corner12)).padding(12.dp),
         )
         SettingsFooter(stringResource(R.string.tor_br_d_footer))
         Spacer(Modifier.height(28.dp))
@@ -498,16 +498,16 @@ private fun AddBridgesPage(onBack: () -> Unit) {
     IosScreen(title = stringResource(R.string.tor_br_add), onBack = onBack, backLabel = stringResource(R.string.tor_br_title)) {
         Spacer(Modifier.height(12.dp))
         Box(
-            Modifier.fillMaxWidth().padding(horizontal = 16.dp).frostedGlass(RoundedCornerShape(12.dp))
+            Modifier.fillMaxWidth().padding(horizontal = 16.dp).frostedGlass(RoundedCornerShape(DuskTheme.corner12))
                 .heightIn(min = 140.dp).padding(12.dp),
         ) {
             BasicTextField(
                 value = text, onValueChange = { text = it; result = null },
-                textStyle = TextStyle(color = DuskTheme.onSurface, fontSize = 12.sp, fontFamily = FontFamily.Monospace),
+                textStyle = TextStyle(color = DuskTheme.onSurface, fontSize = DuskTheme.textSize12, fontFamily = FontFamily.Monospace),
                 cursorBrush = SolidColor(DuskTheme.primary),
                 modifier = Modifier.fillMaxWidth(),
                 decorationBox = { inner ->
-                    Box { if (text.isEmpty()) Text(stringResource(R.string.tor_br_add_hint), color = DuskTheme.muted, fontSize = 13.sp); inner() }
+                    Box { if (text.isEmpty()) Text(stringResource(R.string.tor_br_add_hint), color = DuskTheme.muted, fontSize = DuskTheme.textSize13); inner() }
                 },
             )
         }
@@ -526,14 +526,14 @@ private fun AddBridgesPage(onBack: () -> Unit) {
                 if (r.bad.isNotEmpty()) add(stringResource(R.string.tor_br_bad, fa(r.bad.size)))
                 if (r.added == 0 && r.duplicates == 0 && r.bad.isEmpty()) add(stringResource(R.string.tor_br_nothing))
             }
-            Text(lines.joinToString("\n"), color = if (r.bad.isEmpty()) DuskTheme.success else DuskTheme.accent, fontSize = 14.sp, lineHeight = 22.sp,
+            Text(lines.joinToString("\n"), color = if (r.bad.isEmpty()) DuskTheme.success else DuskTheme.accent, fontSize = DuskTheme.textSize14, lineHeight = DuskTheme.textSize22,
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 10.dp))
             if (r.bad.isNotEmpty()) {
-                Text(stringResource(if (details) R.string.tor_br_hide_details else R.string.tor_br_show_details), color = DuskTheme.primary, fontSize = 13.sp,
+                Text(stringResource(if (details) R.string.tor_br_hide_details else R.string.tor_br_show_details), color = DuskTheme.primary, fontSize = DuskTheme.textSize13,
                     modifier = Modifier.clickable { details = !details }.padding(horizontal = 20.dp, vertical = 4.dp))
                 if (details) {
                     r.bad.forEach { b ->
-                        Text("• " + badReason(b.error) + "\n" + b.input.take(90), color = DuskTheme.muted, fontSize = 11.sp, lineHeight = 16.sp,
+                        Text("• " + badReason(b.error) + "\n" + b.input.take(90), color = DuskTheme.muted, fontSize = DuskTheme.textSize11, lineHeight = DuskTheme.textSize16,
                             modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 3.dp))
                     }
                 }
@@ -586,15 +586,15 @@ fun TorEntryCard(exitCode: String) {
     val entry = e.country?.uppercase()
     Spacer(Modifier.height(8.dp))
     Row(
-        Modifier.fillMaxWidth().frostedGlass(RoundedCornerShape(16.dp))
+        Modifier.fillMaxWidth().frostedGlass(RoundedCornerShape(DuskTheme.corner16))
             .padding(horizontal = 16.dp, vertical = 12.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Text(stringResource(R.string.tor_entry_from), color = DuskTheme.muted, fontSize = 13.sp)
+        Text(stringResource(R.string.tor_entry_from), color = DuskTheme.muted, fontSize = DuskTheme.textSize13)
         Spacer(Modifier.weight(1f))
         Text(
             (entry?.let { CountryLabel.withFlag(it) } ?: stringResource(R.string.tor_br_country_unknown)) + " · " + e.bridge.transport.label,
-            color = DuskTheme.onSurface, fontSize = 15.sp, maxLines = 1,
+            color = DuskTheme.onSurface, fontSize = DuskTheme.textSize15, maxLines = 1,
         )
     }
     val exit = exitCode.uppercase().takeIf { IpFormatter.isRealCountry(it) }
@@ -602,7 +602,7 @@ fun TorEntryCard(exitCode: String) {
         Text(
             stringResource(R.string.tor_entry_exit_differ, CountryLabel.localized(entry), CountryLabel.localized(exit)) +
                 "\n" + stringResource(R.string.tor_exit_tip),
-            color = DuskTheme.muted, fontSize = 12.sp, lineHeight = 19.sp,
+            color = DuskTheme.muted, fontSize = DuskTheme.textSize12, lineHeight = DuskTheme.textSize19,
             modifier = Modifier.fillMaxWidth().padding(horizontal = 4.dp, vertical = 8.dp),
         )
     }

@@ -78,7 +78,7 @@ import com.mlmvpn.scanner.ui.home.frostedGlass
 import com.mlmvpn.scanner.ui.theme.DuskTheme
 import java.util.Locale
 
-internal val CardShape22 = RoundedCornerShape(22.dp)
+internal val CardShape22 = RoundedCornerShape(DuskTheme.corner22)
 
 // ---- words -------------------------------------------------------------------------------------
 
@@ -227,7 +227,7 @@ internal fun StatusPill(s: ScoutStatus) {
     Box(
         Modifier.clip(RoundedCornerShape(50)).background(c.copy(alpha = 0.18f * pulse + 0.04f)).padding(horizontal = 9.dp, vertical = 3.dp),
     ) {
-        Text(statusLabel(s), color = c, fontSize = 12.sp, fontWeight = FontWeight.SemiBold, maxLines = 1)
+        Text(statusLabel(s), color = c, fontSize = DuskTheme.textSize12, fontWeight = FontWeight.SemiBold, maxLines = 1)
     }
 }
 
@@ -247,9 +247,9 @@ internal fun MethodRow(m: MethodResult, onClick: () -> Unit) {
         MethodIcon(m.id, 36.dp)
         Spacer(Modifier.width(12.dp))
         Column(Modifier.weight(1f)) {
-            Text(methodTitle(m.id), color = DuskTheme.onSurface, fontSize = 16.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            Text(methodTitle(m.id), color = DuskTheme.onSurface, fontSize = DuskTheme.textSize16, maxLines = 1, overflow = TextOverflow.Ellipsis)
             val line = methodLine(m)
-            if (line.isNotBlank()) Text(line, color = DuskTheme.muted, fontSize = 12.sp, maxLines = 2, overflow = TextOverflow.Ellipsis)
+            if (line.isNotBlank()) Text(line, color = DuskTheme.muted, fontSize = DuskTheme.textSize12, maxLines = 2, overflow = TextOverflow.Ellipsis)
         }
         Spacer(Modifier.width(8.dp))
         StatusPill(if (m.step != null && !m.status.finished) ScoutStatus.CHECKING else m.status)
@@ -284,7 +284,7 @@ internal fun FoldSection(title: String, items: List<MethodResult>, startOpen: Bo
         Modifier.fillMaxWidth().clickable { open = !open }.padding(start = 20.dp, end = 20.dp, top = 22.dp, bottom = 7.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Text("$title (${items.size})", color = DuskTheme.muted, fontSize = 13.sp, modifier = Modifier.weight(1f))
+        Text("$title (${items.size})", color = DuskTheme.muted, fontSize = DuskTheme.textSize13, modifier = Modifier.weight(1f))
         Icon(Icons.Default.ExpandMore, null, tint = DuskTheme.muted, modifier = Modifier.size(18.dp).rotate(turn))
     }
     AnimatedVisibility(open) { MethodCard(items, onOpen) }
@@ -292,7 +292,7 @@ internal fun FoldSection(title: String, items: List<MethodResult>, startOpen: Bo
 
 @Composable
 internal fun SectionTitle(text: String) {
-    Text(text, color = DuskTheme.muted, fontSize = 13.sp, modifier = Modifier.padding(start = 20.dp, end = 20.dp, top = 22.dp, bottom = 7.dp))
+    Text(text, color = DuskTheme.muted, fontSize = DuskTheme.textSize13, modifier = Modifier.padding(start = 20.dp, end = 20.dp, top = 22.dp, bottom = 7.dp))
 }
 
 // ---- «اینترنت شما» in brief ----------------------------------------------------------------------
@@ -339,7 +339,7 @@ internal fun LineCard(l: LineFacts, onOpen: () -> Unit) {
         Modifier.fillMaxWidth().padding(horizontal = 16.dp).frostedGlass(CardShape22).clickable(onClick = onOpen).padding(14.dp),
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Text(tr("اینترنت شما", "Your internet"), color = DuskTheme.onSurface, fontSize = 16.sp, fontWeight = FontWeight.SemiBold, modifier = Modifier.weight(1f))
+            Text(tr("اینترنت شما", "Your internet"), color = DuskTheme.onSurface, fontSize = DuskTheme.textSize16, fontWeight = FontWeight.SemiBold, modifier = Modifier.weight(1f))
             Icon(Icons.Default.ChevronRight, null, tint = DuskTheme.disabled, modifier = Modifier.size(18.dp)
                 .scale(if (LocalLayoutDirection.current == LayoutDirection.Rtl) -1f else 1f, 1f))
         }
@@ -359,12 +359,12 @@ private fun LineChip(c: Chip) {
         t.animateFloat(0.35f, 0.8f, infiniteRepeatable(tween(800), RepeatMode.Reverse), label = "c").value
     } else 1f
     Row(
-        Modifier.clip(RoundedCornerShape(10.dp)).background(Color.White.copy(alpha = 0.08f)).padding(horizontal = 9.dp, vertical = 5.dp),
+        Modifier.clip(RoundedCornerShape(DuskTheme.corner10)).background(Color.White.copy(alpha = 0.08f)).padding(horizontal = 9.dp, vertical = 5.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Text(c.label, color = DuskTheme.muted, fontSize = 12.sp)
+        Text(c.label, color = DuskTheme.muted, fontSize = DuskTheme.textSize12)
         Spacer(Modifier.width(5.dp))
-        Text(c.value ?: "…", color = color.copy(alpha = a), fontSize = 12.sp, fontWeight = FontWeight.SemiBold)
+        Text(c.value ?: "…", color = color.copy(alpha = a), fontSize = DuskTheme.textSize12, fontWeight = FontWeight.SemiBold)
     }
 }
 
@@ -386,7 +386,7 @@ internal fun PillButton(text: String, color: Color, filled: Boolean = true, modi
             .padding(horizontal = 22.dp, vertical = 12.dp),
         contentAlignment = Alignment.Center,
     ) {
-        Text(text, color = if (filled) Color.White else color, fontSize = 16.sp, fontWeight = FontWeight.SemiBold, textAlign = TextAlign.Center)
+        Text(text, color = if (filled) Color.White else color, fontSize = DuskTheme.textSize16, fontWeight = FontWeight.SemiBold, textAlign = TextAlign.Center)
     }
 }
 

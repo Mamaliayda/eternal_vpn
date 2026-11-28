@@ -49,7 +49,7 @@ fun PortPicker(picked: Set<Int>, onToggle: (Int) -> Unit) {
                 Text(
                     port.toString(),
                     color = if (on) Color.White else DuskTheme.onSurface,
-                    fontSize = 14.sp,
+                    fontSize = DuskTheme.textSize14,
                     fontWeight = if (on) FontWeight.SemiBold else FontWeight.Normal,
                 )
             }

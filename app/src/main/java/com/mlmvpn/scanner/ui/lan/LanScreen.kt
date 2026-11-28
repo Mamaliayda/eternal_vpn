@@ -464,15 +464,15 @@ private fun LanStateCard(
                     Text(
                         headline(status),
                         color = DuskTheme.onSurface,
-                        fontSize = 19.sp,
+                        fontSize = DuskTheme.textSize19,
                         fontWeight = FontWeight.Bold,
                     )
                     Spacer(Modifier.height(3.dp))
                     Text(
                         detail(status),
                         color = DuskTheme.muted,
-                        fontSize = 14.sp,
-                        lineHeight = 20.sp,
+                        fontSize = DuskTheme.textSize14,
+                        lineHeight = DuskTheme.textSize20,
                     )
                 }
             }
@@ -569,12 +569,12 @@ private fun ActionButton(label: String, tint: Color, onClick: () -> Unit) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .background(tint.copy(alpha = 0.20f), RoundedCornerShape(14.dp))
+            .background(tint.copy(alpha = 0.20f), RoundedCornerShape(DuskTheme.corner14))
             .clickable(onClick = onClick)
             .padding(vertical = 13.dp),
         contentAlignment = Alignment.Center,
     ) {
-        Text(label, color = tint, fontSize = 15.sp, fontWeight = FontWeight.Bold)
+        Text(label, color = tint, fontSize = DuskTheme.textSize15, fontWeight = FontWeight.Bold)
     }
 }
 
@@ -752,7 +752,7 @@ private fun HotspotCard(
             Text(
                 stringResource(R.string.lan_hotspot_started),
                 color = DuskTheme.success,
-                fontSize = 16.sp,
+                fontSize = DuskTheme.textSize16,
                 fontWeight = FontWeight.Bold,
             )
             if (credentials == null) {
@@ -760,8 +760,8 @@ private fun HotspotCard(
                 Text(
                     stringResource(R.string.lan_hotspot_no_creds),
                     color = DuskTheme.muted,
-                    fontSize = 13.sp,
-                    lineHeight = 19.sp,
+                    fontSize = DuskTheme.textSize13,
+                    lineHeight = DuskTheme.textSize19,
                     textAlign = TextAlign.Center,
                 )
             } else {
@@ -769,7 +769,7 @@ private fun HotspotCard(
                     Spacer(Modifier.height(14.dp))
                     Box(
                         modifier = Modifier
-                            .background(DuskTheme.qrSurface, RoundedCornerShape(14.dp))
+                            .background(DuskTheme.qrSurface, RoundedCornerShape(DuskTheme.corner14))
                             .padding(12.dp),
                     ) {
                         Image(
@@ -799,9 +799,9 @@ private fun HotspotCard(
 @Composable
 private fun LabelledValue(label: String, value: String) {
     Row(verticalAlignment = Alignment.CenterVertically) {
-        Text(label, color = DuskTheme.muted, fontSize = 13.sp)
+        Text(label, color = DuskTheme.muted, fontSize = DuskTheme.textSize13)
         Spacer(Modifier.width(10.dp))
-        Text(value, color = DuskTheme.onSurface, fontSize = 15.sp, fontFamily = FontFamily.Monospace)
+        Text(value, color = DuskTheme.onSurface, fontSize = DuskTheme.textSize15, fontFamily = FontFamily.Monospace)
     }
 }
 
@@ -839,7 +839,7 @@ private fun SetupCard(
                 // and every surface in this app is dark.
                 Box(
                     modifier = Modifier
-                        .background(DuskTheme.qrSurface, RoundedCornerShape(14.dp))
+                        .background(DuskTheme.qrSurface, RoundedCornerShape(DuskTheme.corner14))
                         .padding(12.dp),
                 ) {
                     Image(
@@ -853,7 +853,7 @@ private fun SetupCard(
             Text(
                 url,
                 color = DuskTheme.onSurface,
-                fontSize = 15.sp,
+                fontSize = DuskTheme.textSize15,
                 fontFamily = FontFamily.Monospace,
             )
             Spacer(Modifier.height(16.dp))
@@ -939,19 +939,19 @@ private fun CopyRow(
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Box(
-            modifier = Modifier.size(28.dp).background(tint, RoundedCornerShape(8.dp)),
+            modifier = Modifier.size(28.dp).background(tint, RoundedCornerShape(DuskTheme.corner8)),
             contentAlignment = Alignment.Center,
         ) {
             Icon(icon, contentDescription = null, tint = DuskTheme.onSuccess, modifier = Modifier.size(17.dp))
         }
         Spacer(Modifier.width(14.dp))
         Column(Modifier.weight(1f)) {
-            Text(label, color = DuskTheme.muted, fontSize = 12.sp)
+            Text(label, color = DuskTheme.muted, fontSize = DuskTheme.textSize12)
             Spacer(Modifier.height(2.dp))
             Text(
                 value,
                 color = DuskTheme.onSurface,
-                fontSize = 15.sp,
+                fontSize = DuskTheme.textSize15,
                 fontFamily = FontFamily.Monospace,
                 textAlign = TextAlign.Start,
             )
@@ -997,7 +997,7 @@ private fun SecurityBar(status: LanStatus) {
                 Text(
                     stringResource(mediumLabel(status.medium)),
                     color = tint,
-                    fontSize = 14.sp,
+                    fontSize = DuskTheme.textSize14,
                     fontWeight = FontWeight.Bold,
                 )
                 Spacer(Modifier.height(4.dp))
@@ -1006,8 +1006,8 @@ private fun SecurityBar(status: LanStatus) {
                         if (trusted) R.string.lan_warn_own else R.string.lan_warn_public
                     ),
                     color = DuskTheme.muted,
-                    fontSize = 13.sp,
-                    lineHeight = 19.sp,
+                    fontSize = DuskTheme.textSize13,
+                    lineHeight = DuskTheme.textSize19,
                 )
             }
         }

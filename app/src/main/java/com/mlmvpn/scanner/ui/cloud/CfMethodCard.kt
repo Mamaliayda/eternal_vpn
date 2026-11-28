@@ -136,8 +136,8 @@ fun CfMethodCard(accounts: List<CloudAccount>) {
                     "The Cloudflare ways (ECH, IPv6, F&F) did not work here, but MASQUE does: connect with the «MASQUE» tile on the home screen.")
                 skip != null -> tr("روش‌های کلادفلر روی این شبکه جواب ندادند ($tried روش آزمایش شد). WARP و MASQUE امتحان نشد: ${skipFa(skip)}",
                     "The Cloudflare ways did not work here (${scan.tried.size + connect.tried.size} tried). WARP and MASQUE were not tried: ${skipEn(skip)}")
-                warp != null -> tr("هیچ روشی روی این شبکه جواب نداد: نه روش‌های کلادفلر ($tried روش آزمایش شد)، نه WARP و MASQUE در بررسی سریع. «دوباره تست کن» در MLM Scout همهٔ حالت‌های آن دو را می‌سنجد.",
-                    "Nothing worked on this network: neither the Cloudflare ways (${scan.tried.size + connect.tried.size} tried) nor WARP and MASQUE in the quick check. «Retest» in MLM Scout checks all of their modes.")
+                warp != null -> tr("هیچ روشی روی این شبکه جواب نداد: نه روش‌های کلادفلر ($tried روش آزمایش شد)، نه WARP و MASQUE در بررسی سریع. «دوباره تست کن» در Eternal VPN Scout همهٔ حالت‌های آن دو را می‌سنجد.",
+                    "Nothing worked on this network: neither the Cloudflare ways (${scan.tried.size + connect.tried.size} tried) nor WARP and MASQUE in the quick check. «Retest» in Eternal VPN Scout checks all of their modes.")
                 else -> tr("هیچ‌کدام از روش‌های کلادفلر روی این شبکه جواب نداد ($tried روش آزمایش شد)، و امتحان WARP و MASQUE انجام نشد. کمی بعد دوباره امتحان کنید.",
                     "None of the Cloudflare ways worked here (${scan.tried.size + connect.tried.size} tried), and WARP and MASQUE could not be tried. Try again in a moment.")
             }
@@ -202,7 +202,7 @@ private fun skipFa(s: ScoutEngine.WarpSkip): String = when (s) {
     ScoutEngine.WarpSkip.OUR_VPN -> "اول VPN برنامه را خاموش کنید و دوباره بسنجید."
     ScoutEngine.WarpSkip.FOREIGN_VPN -> "یک VPN دیگر روشن است؛ خاموشش کنید و دوباره بسنجید."
     ScoutEngine.WarpSkip.SCANNING -> "اسکن آی‌پی در جریان است؛ بعد از آن دوباره بسنجید."
-    ScoutEngine.WarpSkip.BUSY -> "MLM Scout در حال کار است؛ بعد از پایانش دوباره بسنجید."
+    ScoutEngine.WarpSkip.BUSY -> "Eternal VPN Scout در حال کار است؛ بعد از پایانش دوباره بسنجید."
     ScoutEngine.WarpSkip.OFFLINE -> "اینترنت در دسترس نیست."
     ScoutEngine.WarpSkip.INTERRUPTED -> "امتحان نیمه‌کاره ماند؛ دوباره بسنجید."
 }
@@ -211,7 +211,7 @@ private fun skipEn(s: ScoutEngine.WarpSkip): String = when (s) {
     ScoutEngine.WarpSkip.OUR_VPN -> "turn the app's VPN off first and measure again."
     ScoutEngine.WarpSkip.FOREIGN_VPN -> "another VPN is on; turn it off and measure again."
     ScoutEngine.WarpSkip.SCANNING -> "an IP scan is running; measure again after it."
-    ScoutEngine.WarpSkip.BUSY -> "MLM Scout is running; measure again when it is done."
+    ScoutEngine.WarpSkip.BUSY -> "Eternal VPN Scout is running; measure again when it is done."
     ScoutEngine.WarpSkip.OFFLINE -> "there is no internet."
     ScoutEngine.WarpSkip.INTERRUPTED -> "the check was cut short; measure again."
 }

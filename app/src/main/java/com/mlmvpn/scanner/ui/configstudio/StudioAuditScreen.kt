@@ -179,21 +179,21 @@ private fun AuditRow(entry: AuditEntry) {
                 Text(
                     actionLabel(entry.action),
                     color = if (isBootstrap) DuskTheme.accent else DuskTheme.onSurface,
-                    fontSize = 15.sp,
+                    fontSize = DuskTheme.textSize15,
                     fontWeight = FontWeight.Medium,
                     modifier = Modifier.weight(1f),
                 )
-                Text(whenText(entry.ts), color = DuskTheme.muted, fontSize = 12.sp)
+                Text(whenText(entry.ts), color = DuskTheme.muted, fontSize = DuskTheme.textSize12)
             }
             Spacer(Modifier.height(3.dp))
             Text(
                 entry.actor.ifBlank { S(R.string.studio_device_unknown) },
                 color = DuskTheme.muted,
-                fontSize = 12.sp,
+                fontSize = DuskTheme.textSize12,
             )
             if (isBootstrap) {
                 Spacer(Modifier.height(4.dp))
-                Text(S(R.string.studio_audit_bootstrap_note), color = DuskTheme.accent, fontSize = 11.sp)
+                Text(S(R.string.studio_audit_bootstrap_note), color = DuskTheme.accent, fontSize = DuskTheme.textSize11)
             }
         }
     }

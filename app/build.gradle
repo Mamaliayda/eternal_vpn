@@ -122,7 +122,7 @@ android.applicationVariants.all { variant ->
         if (offset != null) {
             output.versionCodeOverride = base + offset
         }
-        output.outputFileName = "mlmvpn-${variant.versionName}-${abi ?: 'universal'}-${variant.buildType.name}.apk"
+        output.outputFileName = "eternalvpn-${variant.versionName}-${abi ?: 'universal'}-${variant.buildType.name}.apk"
     }
 }
 

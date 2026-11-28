@@ -383,20 +383,20 @@ fun GameTab(onBack: () -> Unit = {}, onNavigateToCloud: (() -> Unit)? = null) {
                         )
                     } else {
                         Box(modifier = Modifier.size(28.dp), contentAlignment = Alignment.Center) {
-                            Text(game?.iconEmoji ?: "🎮", fontSize = 20.sp)
+                            Text(game?.iconEmoji ?: "🎮", fontSize = DuskTheme.textSize20)
                         }
                     }
                     Spacer(Modifier.width(12.dp))
                     Text(
                         S(R.string.game),
                         color = DuskTheme.onSurface,
-                        fontSize = 16.sp,
+                        fontSize = DuskTheme.textSize16,
                         modifier = Modifier.weight(1f),
                     )
                     Text(
                         game?.name ?: "—",
                         color = DuskTheme.muted,
-                        fontSize = 15.sp,
+                        fontSize = DuskTheme.textSize15,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
                     )
@@ -444,9 +444,9 @@ fun GameTab(onBack: () -> Unit = {}, onNavigateToCloud: (() -> Unit)? = null) {
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
                         Column(modifier = Modifier.weight(1f)) {
-                            Text(label, color = DuskTheme.onSurface, fontSize = 16.sp)
+                            Text(label, color = DuskTheme.onSurface, fontSize = DuskTheme.textSize16)
                             Spacer(Modifier.height(2.dp))
-                            Text(note, color = DuskTheme.muted, fontSize = 12.sp)
+                            Text(note, color = DuskTheme.muted, fontSize = DuskTheme.textSize12)
                         }
                         if (selectedMode == mode) {
                             Icon(
@@ -615,7 +615,7 @@ fun GameTab(onBack: () -> Unit = {}, onNavigateToCloud: (() -> Unit)? = null) {
                     ) {
                         Icon(Icons.Rounded.SportsEsports, contentDescription = null, tint = GameColors.GameGreen, modifier = Modifier.size(36.dp))
                         Spacer(Modifier.height(8.dp))
-                        Text(S(R.string.aether_engine_only_the_selected_game_goes), color = GameColors.TextMuted, fontSize = 13.sp, textAlign = TextAlign.Center)
+                        Text(S(R.string.aether_engine_only_the_selected_game_goes), color = GameColors.TextMuted, fontSize = DuskTheme.textSize13, textAlign = TextAlign.Center)
 
                         // Protocol picker. WireGuard is the lower-overhead data plane — no HTTP
                         // framing around each datagram — so for a latency-bound workload it is
@@ -623,7 +623,7 @@ fun GameTab(onBack: () -> Unit = {}, onNavigateToCloud: (() -> Unit)? = null) {
                         // than assuming. MASQUE stays the default because it is the mode proven
                         // to carry traffic here.
                         Spacer(Modifier.height(12.dp))
-                        Text(S(R.string.protocol), color = GameColors.TextMuted, fontSize = 11.sp)
+                        Text(S(R.string.protocol), color = GameColors.TextMuted, fontSize = DuskTheme.textSize11)
                         Spacer(Modifier.height(6.dp))
                         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                             listOf(
@@ -639,7 +639,7 @@ fun GameTab(onBack: () -> Unit = {}, onNavigateToCloud: (() -> Unit)? = null) {
                                             .putString(GameBoosterManager.PREF_AETHER_PROTOCOL, proto.name)
                                             .apply()
                                     },
-                                    label = { Text(label, fontSize = 11.sp) },
+                                    label = { Text(label, fontSize = DuskTheme.textSize11) },
                                     colors = FilterChipDefaults.filterChipColors(
                                         selectedContainerColor = GameColors.GameGreen.copy(alpha = 0.2f),
                                         selectedLabelColor = GameColors.GameGreen,
@@ -653,7 +653,7 @@ fun GameTab(onBack: () -> Unit = {}, onNavigateToCloud: (() -> Unit)? = null) {
                         // one endpoint survives — and wasted minutes on a line where none do.
                         // The user's connection decides which is true, so the user chooses.
                         Spacer(Modifier.height(10.dp))
-                        Text(S(R.string.scan_mode), color = GameColors.TextMuted, fontSize = 11.sp)
+                        Text(S(R.string.scan_mode), color = GameColors.TextMuted, fontSize = DuskTheme.textSize11)
                         Spacer(Modifier.height(6.dp))
                         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                             listOf(
@@ -669,7 +669,7 @@ fun GameTab(onBack: () -> Unit = {}, onNavigateToCloud: (() -> Unit)? = null) {
                                             .putString(GameBoosterManager.PREF_AETHER_SCAN, mode.name)
                                             .apply()
                                     },
-                                    label = { Text(label, fontSize = 11.sp) },
+                                    label = { Text(label, fontSize = DuskTheme.textSize11) },
                                     colors = FilterChipDefaults.filterChipColors(
                                         selectedContainerColor = GameColors.GameGreen.copy(alpha = 0.2f),
                                         selectedLabelColor = GameColors.GameGreen,
@@ -681,7 +681,7 @@ fun GameTab(onBack: () -> Unit = {}, onNavigateToCloud: (() -> Unit)? = null) {
                         Text(
                             S(R.string.both_protocols_run_over_udp_quic_that) +
                                 S(R.string.turbo_usually_takes_seconds_balanced_can_take),
-                            color = GameColors.TextMuted, fontSize = 10.sp,
+                            color = GameColors.TextMuted, fontSize = DuskTheme.textSize10,
                             textAlign = TextAlign.Center,
                             modifier = Modifier.padding(top = 8.dp),
                         )
@@ -700,7 +700,7 @@ fun GameTab(onBack: () -> Unit = {}, onNavigateToCloud: (() -> Unit)? = null) {
                                     strokeWidth = 2.dp,
                                     color = GameColors.GameGreen,
                                 )
-                                Text(stage, color = GameColors.GameGreen, fontSize = 12.sp)
+                                Text(stage, color = GameColors.GameGreen, fontSize = DuskTheme.textSize12)
                             }
                         }
                     }
@@ -793,7 +793,7 @@ fun GameTab(onBack: () -> Unit = {}, onNavigateToCloud: (() -> Unit)? = null) {
                 Text(
                     stringResource(R.string.game_result_best),
                     color = GameColors.TextPrimary,
-                    fontSize = 14.sp,
+                    fontSize = DuskTheme.textSize14,
                     fontWeight = FontWeight.Medium
                 )
             }
@@ -835,7 +835,7 @@ fun GameTab(onBack: () -> Unit = {}, onNavigateToCloud: (() -> Unit)? = null) {
                         Text(
                             text = S(R.string.your_normal_ping_on_your_own_connection, gameName, origStr, currentStr),
                             color = GameColors.GameGreen,
-                            fontSize = 13.sp,
+                            fontSize = DuskTheme.textSize13,
                             fontWeight = FontWeight.Medium,
                             textAlign = TextAlign.Center
                         )
@@ -858,7 +858,7 @@ fun GameTab(onBack: () -> Unit = {}, onNavigateToCloud: (() -> Unit)? = null) {
                                     S(R.string.the_current_tunnel_node_is_on_a)
                                 },
                                 color = GameColors.PingTerrible,
-                                fontSize = 11.sp,
+                                fontSize = DuskTheme.textSize11,
                                 fontWeight = FontWeight.Normal,
                                 textAlign = TextAlign.Center
                             )
@@ -885,7 +885,7 @@ fun GameTab(onBack: () -> Unit = {}, onNavigateToCloud: (() -> Unit)? = null) {
                         Text(
                             stringResource(R.string.game_failed),
                             color = GameColors.PingTerrible,
-                            fontSize = 13.sp
+                            fontSize = DuskTheme.textSize13
                         )
                     }
                 }
@@ -963,18 +963,18 @@ private fun GameCard(
                         .clip(DuskTheme.glyphShape)
                 )
             } else {
-                Text(game.iconEmoji, fontSize = 28.sp)
+                Text(game.iconEmoji, fontSize = DuskTheme.textSize28)
             }
             Spacer(modifier = Modifier.height(6.dp))
             Text(
                 game.name,
                 color = if (isSelected) GameColors.GameGreen else GameColors.TextPrimary,
-                fontSize = 10.sp,
+                fontSize = DuskTheme.textSize10,
                 fontWeight = FontWeight.Medium,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
                 textAlign = TextAlign.Center,
-                lineHeight = 13.sp
+                lineHeight = DuskTheme.textSize13
             )
             Spacer(modifier = Modifier.height(4.dp))
             if (isInstalled) {
@@ -983,10 +983,10 @@ private fun GameCard(
                         .background(GameColors.GameGreen.copy(alpha = 0.15f), DuskTheme.glyphShape)
                         .padding(horizontal = 6.dp, vertical = 2.dp)
                 ) {
-                    Text("✓", color = GameColors.GameGreen, fontSize = 9.sp)
+                    Text("✓", color = GameColors.GameGreen, fontSize = DuskTheme.textSize9)
                 }
             } else {
-                Text("—", color = GameColors.TextMuted, fontSize = 9.sp)
+                Text("—", color = GameColors.TextMuted, fontSize = DuskTheme.textSize9)
             }
         }
     }
@@ -1021,10 +1021,10 @@ Row(
         Spacer(Modifier.width(12.dp))
     }
     Column(modifier = Modifier.weight(1f)) {
-        Text(title, color = DuskTheme.onSurface, fontSize = 16.sp)
+        Text(title, color = DuskTheme.onSurface, fontSize = DuskTheme.textSize16)
         if (subtitle != null) {
             Spacer(Modifier.height(2.dp))
-            Text(subtitle, color = DuskTheme.muted, fontSize = 12.sp)
+            Text(subtitle, color = DuskTheme.muted, fontSize = DuskTheme.textSize12)
         }
     }
     if (selected) {
@@ -1078,7 +1078,7 @@ com.mlmvpn.scanner.ui.settings.IosScreen(
                             )
                         } else {
                             Box(modifier = Modifier.size(28.dp), contentAlignment = Alignment.Center) {
-                                Text(game.iconEmoji, fontSize = 20.sp)
+                                Text(game.iconEmoji, fontSize = DuskTheme.textSize20)
                             }
                         }
                     },
@@ -1174,7 +1174,7 @@ private fun BoostButton(
             Text(
                 S(R.string.measuring_of, faCount(progress.first), faCount(progress.second)),
                 color = DuskTheme.muted,
-                fontSize = 12.sp,
+                fontSize = DuskTheme.textSize12,
             )
         }
     }
@@ -1240,14 +1240,14 @@ private fun ResultCard(
             // Info
             Column(modifier = Modifier.weight(1f)) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text(modeLabel, color = GameColors.TextPrimary, fontSize = 14.sp, fontWeight = FontWeight.Medium)
+                    Text(modeLabel, color = GameColors.TextPrimary, fontSize = DuskTheme.textSize14, fontWeight = FontWeight.Medium)
                     if (isBest) {
                         Spacer(modifier = Modifier.width(6.dp))
-                        Text("★", color = GameColors.Gold, fontSize = 12.sp)
+                        Text("★", color = GameColors.Gold, fontSize = DuskTheme.textSize12)
                     }
                 }
                 if (result.details.isNotEmpty()) {
-                    Text(result.details, color = GameColors.TextMuted, fontSize = 11.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                    Text(result.details, color = GameColors.TextMuted, fontSize = DuskTheme.textSize11, maxLines = 1, overflow = TextOverflow.Ellipsis)
                 }
             }
 
@@ -1256,7 +1256,7 @@ private fun ResultCard(
                 Text(
                     pingLabel(result.pingMs),
                     color = pingColor(result.pingMs),
-                    fontSize = 18.sp,
+                    fontSize = DuskTheme.textSize18,
                     fontWeight = FontWeight.Bold,
                     fontFamily = FontFamily.Monospace
                 )
@@ -1264,7 +1264,7 @@ private fun ResultCard(
                     Text(
                         "±${result.jitterMs}ms",
                         color = GameColors.TextMuted,
-                        fontSize = 10.sp,
+                        fontSize = DuskTheme.textSize10,
                         fontFamily = FontFamily.Monospace
                     )
                 }
@@ -1303,7 +1303,7 @@ private fun LivePingCard(ping: Long, bestResult: BoostResult?) {
                 Text(
                     stringResource(R.string.game_ping_live),
                     color = GameColors.GameGreen,
-                    fontSize = 14.sp,
+                    fontSize = DuskTheme.textSize14,
                     fontWeight = FontWeight.Medium
                 )
                 Spacer(modifier = Modifier.weight(1f))
@@ -1317,7 +1317,7 @@ private fun LivePingCard(ping: Long, bestResult: BoostResult?) {
                         BoostMode.AUTO -> "Auto"
                         BoostMode.AETHER -> "Aether"
                     }
-                    Text(modeLabel, color = GameColors.TextMuted, fontSize = 11.sp)
+                    Text(modeLabel, color = GameColors.TextMuted, fontSize = DuskTheme.textSize11)
                 }
             }
 
@@ -1330,7 +1330,7 @@ private fun LivePingCard(ping: Long, bestResult: BoostResult?) {
                 Text(
                     if (ping > 0) "${ping}" else "—",
                     color = pingColor(ping),
-                    fontSize = 42.sp,
+                    fontSize = DuskTheme.textSize42,
                     fontWeight = FontWeight.Bold,
                     fontFamily = FontFamily.Monospace
                 )
@@ -1338,7 +1338,7 @@ private fun LivePingCard(ping: Long, bestResult: BoostResult?) {
                     Text(
                         "ms",
                         color = pingColor(ping).copy(alpha = 0.7f),
-                        fontSize = 16.sp,
+                        fontSize = DuskTheme.textSize16,
                         modifier = Modifier.padding(bottom = 6.dp, start = 4.dp)
                     )
                 }
@@ -1446,13 +1446,13 @@ private fun DedicatedDnsCard(
                                 if (isFa) "در حال استقرار…" else "Deploying…"
                             },
                             color = DuskTheme.onSurface,
-                            fontSize = 14.sp,
+                            fontSize = DuskTheme.textSize14,
                             modifier = Modifier.weight(1f),
                         )
                         Text(
                             S(R.string.str_2, faCount(deployProgress.first)),
                             color = DuskTheme.muted,
-                            fontSize = 13.sp,
+                            fontSize = DuskTheme.textSize13,
                         )
                     }
                     Spacer(Modifier.height(10.dp))
@@ -1509,14 +1509,14 @@ private fun DedicatedDnsCard(
                             Text(
                                 if (isFa) "پینگ از این منطقه" else "Ping via this region",
                                 color = DuskTheme.onSurface,
-                                fontSize = 16.sp,
+                                fontSize = DuskTheme.textSize16,
                                 modifier = Modifier.weight(1f),
                             )
                             // A measurement IS a state, so this one keeps its colour.
                             Text(
                                 pingLabel(activePing),
                                 color = pingColor(activePing),
-                                fontSize = 15.sp,
+                                fontSize = DuskTheme.textSize15,
                                 fontWeight = FontWeight.SemiBold,
                             )
                         }
@@ -1556,14 +1556,14 @@ private fun DedicatedDnsCard(
                                 Text(
                                     if (isFa) r.nameFa else r.nameEn,
                                     color = DuskTheme.onSurface,
-                                    fontSize = 15.sp,
+                                    fontSize = DuskTheme.textSize15,
                                     modifier = Modifier.weight(1f),
                                 )
                                 if (measured != null) {
                                     Text(
                                         pingLabel(measured.pingMs),
                                         color = pingColor(measured.pingMs),
-                                        fontSize = 14.sp,
+                                        fontSize = DuskTheme.textSize14,
                                         fontWeight = FontWeight.Medium,
                                     )
                                     Spacer(Modifier.width(8.dp))
@@ -1639,14 +1639,14 @@ private fun DedicatedDnsCard(
                     Text(
                         if (isFa) r.region.nameFa else r.region.nameEn,
                         color = DuskTheme.onSurface,
-                        fontSize = 15.sp,
+                        fontSize = DuskTheme.textSize15,
                     )
                     if (index == 0) {
                         Spacer(Modifier.width(8.dp))
                         Text(
                             if (isFa) "بهترین" else "best",
                             color = DuskTheme.muted,
-                            fontSize = 11.sp,
+                            fontSize = DuskTheme.textSize11,
                         )
                     }
                     Spacer(Modifier.weight(1f))
@@ -1654,14 +1654,14 @@ private fun DedicatedDnsCard(
                         Text(
                             (if (isFa) "نوسان " else "jit ") + "${r.jitterMs}ms",
                             color = DuskTheme.muted,
-                            fontSize = 11.sp,
+                            fontSize = DuskTheme.textSize11,
                         )
                         Spacer(Modifier.width(10.dp))
                     }
                     Text(
                         pingLabel(r.pingMs),
                         color = pingColor(r.pingMs),
-                        fontSize = 15.sp,
+                        fontSize = DuskTheme.textSize15,
                         fontWeight = FontWeight.SemiBold,
                     )
                     if (r.region.code == activeRegionCode) {

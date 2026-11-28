@@ -76,14 +76,14 @@ fun GephNewsScreen(onBack: () -> Unit, backLabel: String) {
                         (if (n.important) "❗ " else "") + n.title,
                         color = if (n.important) DuskTheme.accent else DuskTheme.onSurface,
                         fontWeight = FontWeight.SemiBold,
-                        fontSize = 15.sp,
+                        fontSize = DuskTheme.textSize15,
                     )
                     Spacer(Modifier.height(6.dp))
                     Text(
                         HtmlCompat.fromHtml(n.contents, HtmlCompat.FROM_HTML_MODE_COMPACT).toString().trim(),
                         color = DuskTheme.muted,
-                        fontSize = 13.sp,
-                        lineHeight = 21.sp,
+                        fontSize = DuskTheme.textSize13,
+                        lineHeight = DuskTheme.textSize21,
                     )
                 }
             }
@@ -171,8 +171,8 @@ fun GephSessionsScreen(onBack: () -> Unit, backLabel: String) {
             Text(
                 shown.joinToString("\n").ifBlank { "—" },
                 color = DuskTheme.muted,
-                fontSize = 11.sp,
-                lineHeight = 15.sp,
+                fontSize = DuskTheme.textSize11,
+                lineHeight = DuskTheme.textSize15,
                 fontFamily = FontFamily.Monospace,
                 modifier = Modifier.padding(horizontal = 14.dp, vertical = 10.dp),
             )

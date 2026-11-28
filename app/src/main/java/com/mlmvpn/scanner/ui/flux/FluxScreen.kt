@@ -131,7 +131,7 @@ private fun FluxMain(onBack: () -> Unit, onCountry: () -> Unit, onDiagnostics: (
         // The title is also the developer's door: a long press opens diagnostics.
         Text(
             stringResource(R.string.flux_title_short),
-            color = DuskTheme.onSurface, fontSize = 34.sp, fontWeight = FontWeight.Bold, textAlign = TextAlign.Center,
+            color = DuskTheme.onSurface, fontSize = DuskTheme.textSize34, fontWeight = FontWeight.Bold, textAlign = TextAlign.Center,
             modifier = Modifier.fillMaxWidth().longPress(onDiagnostics),
         )
         Spacer(Modifier.height(18.dp))
@@ -158,7 +158,7 @@ private fun FluxMain(onBack: () -> Unit, onCountry: () -> Unit, onDiagnostics: (
         Text(
             statusText(ui, connected, searching),
             color = if (ui is FluxUiState.Failed) DuskTheme.accent else DuskTheme.muted,
-            fontSize = 14.sp, textAlign = TextAlign.Center,
+            fontSize = DuskTheme.textSize14, textAlign = TextAlign.Center,
             modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp),
         )
         com.mlmvpn.scanner.ui.RouteChips()
@@ -193,19 +193,19 @@ private fun statusText(ui: FluxUiState, connected: Boolean, searching: Boolean):
 private fun IpSelector(mode: IpMode, enabled: Boolean, onSelect: (IpMode) -> Unit) {
     val options = listOf(IpMode.V4 to "IPv4", IpMode.V6 to "IPv6", IpMode.BOTH to stringResource(R.string.flux_ip_both))
     Row(
-        Modifier.fillMaxWidth().padding(horizontal = 16.dp).frostedGlass(RoundedCornerShape(12.dp)).padding(3.dp),
+        Modifier.fillMaxWidth().padding(horizontal = 16.dp).frostedGlass(RoundedCornerShape(DuskTheme.corner12)).padding(3.dp),
         horizontalArrangement = Arrangement.spacedBy(3.dp),
     ) {
         options.forEach { (m, label) ->
             val sel = m == mode
             Box(
-                Modifier.weight(1f).clip(RoundedCornerShape(10.dp))
+                Modifier.weight(1f).clip(RoundedCornerShape(DuskTheme.corner10))
                     .background(if (sel) DuskTheme.primary else Color.Transparent)
                     .then(if (enabled) Modifier.clickable(role = Role.RadioButton) { onSelect(m) } else Modifier)
                     .padding(vertical = 10.dp),
                 contentAlignment = Alignment.Center,
             ) {
-                Text(label, color = if (sel) Color.White else DuskTheme.onSurface, fontSize = 15.sp, fontWeight = if (sel) FontWeight.SemiBold else FontWeight.Normal)
+                Text(label, color = if (sel) Color.White else DuskTheme.onSurface, fontSize = DuskTheme.textSize15, fontWeight = if (sel) FontWeight.SemiBold else FontWeight.Normal)
             }
         }
     }
@@ -233,7 +233,7 @@ private fun ConnectButton(connected: Boolean, busy: Boolean, onClick: () -> Unit
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Icon(Icons.Default.PowerSettingsNew, contentDescription = null, tint = ring, modifier = Modifier.size(44.dp))
                 Spacer(Modifier.height(4.dp))
-                Text(label, color = DuskTheme.onSurface, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
+                Text(label, color = DuskTheme.onSurface, fontSize = DuskTheme.textSize14, fontWeight = FontWeight.SemiBold)
             }
         }
     }
@@ -330,9 +330,9 @@ private fun AddSubscription(onBack: () -> Unit) {
 @Composable
 private fun Mono(lines: List<String>) {
     Column(
-        Modifier.fillMaxWidth().padding(horizontal = 16.dp).frostedGlass(RoundedCornerShape(14.dp)).padding(12.dp),
+        Modifier.fillMaxWidth().padding(horizontal = 16.dp).frostedGlass(RoundedCornerShape(DuskTheme.corner14)).padding(12.dp),
     ) {
-        lines.forEach { Text(it, color = DuskTheme.onSurface, fontSize = 11.sp, fontFamily = FontFamily.Monospace, lineHeight = 15.sp) }
+        lines.forEach { Text(it, color = DuskTheme.onSurface, fontSize = DuskTheme.textSize11, fontFamily = FontFamily.Monospace, lineHeight = DuskTheme.textSize15) }
     }
 }
 

@@ -65,7 +65,7 @@ class MlmApiManager(private val context: Context) {
         lastGetUsersError = null
         try {
             val req = buildRequest(account, "/api/users") ?: run {
-                lastGetUsersError = "No worker URL saved for this account -- deploy MLM first."
+                lastGetUsersError = "No worker URL saved for this account -- deploy Eternal VPN first."
                 return@withContext null
             }
             client.newCall(req).execute().use { response ->

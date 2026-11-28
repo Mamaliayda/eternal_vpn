@@ -124,7 +124,7 @@ fun CreatedConfigsCard(made: List<LocationConfigs.Made>) {
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Box(
-                    modifier = Modifier.size(30.dp).clip(RoundedCornerShape(8.dp))
+                    modifier = Modifier.size(30.dp).clip(RoundedCornerShape(DuskTheme.corner8))
                         .background(protocolTint(m.shape).copy(alpha = 0.18f)),
                     contentAlignment = Alignment.Center,
                 ) {

@@ -251,11 +251,11 @@ private fun ProtonHome(notify: (String) -> Unit, onBack: () -> Unit, onSignIn: (
         }
         Spacer(Modifier.height(DuskTheme.space2))
         Text(
-            stringResource(R.string.proton_title), color = DuskTheme.onSurface, fontSize = 32.sp, fontWeight = FontWeight.Bold,
+            stringResource(R.string.proton_title), color = DuskTheme.onSurface, fontSize = DuskTheme.textSize32, fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth(),
         )
         Text(
-            stringResource(R.string.proton_tagline), color = DuskTheme.muted, fontSize = 13.sp,
+            stringResource(R.string.proton_tagline), color = DuskTheme.muted, fontSize = DuskTheme.textSize13,
             textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth().padding(horizontal = DuskTheme.space5, vertical = DuskTheme.space1),
         )
         com.mlmvpn.scanner.ui.RouteChips()
@@ -292,7 +292,7 @@ private fun ProtonHome(notify: (String) -> Unit, onBack: () -> Unit, onSignIn: (
             Text(
                 if (switching) stringResource(R.string.proton_switching) else statusText(conn, ours, activeId?.let { byId[it] }),
                 color = if (ours && conn is AmzConnect.Failed) DuskTheme.accent else DuskTheme.muted,
-                fontSize = 14.sp, textAlign = TextAlign.Center,
+                fontSize = DuskTheme.textSize14, textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth().padding(horizontal = DuskTheme.space5),
             )
 
@@ -368,10 +368,10 @@ private fun PingProgress(progress: com.mlmvpn.scanner.engines.amnezia.AmzTestPro
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text(
                 stringResource(R.string.amz_testing, fa(progress.done.toString()), fa(progress.total.toString()), fa(progress.alive.toString())),
-                color = DuskTheme.onSurface, fontSize = 15.sp, modifier = Modifier.weight(1f),
+                color = DuskTheme.onSurface, fontSize = DuskTheme.textSize15, modifier = Modifier.weight(1f),
             )
             Text(
-                stringResource(R.string.amz_stop), color = DuskTheme.error, fontSize = 15.sp, fontWeight = FontWeight.SemiBold,
+                stringResource(R.string.amz_stop), color = DuskTheme.error, fontSize = DuskTheme.textSize15, fontWeight = FontWeight.SemiBold,
                 modifier = Modifier.clip(RoundedCornerShape(DuskTheme.space2)).clickable { AmzEngine.stopTest() }.padding(horizontal = DuskTheme.space2, vertical = DuskTheme.space1),
             )
         }
@@ -379,7 +379,7 @@ private fun PingProgress(progress: com.mlmvpn.scanner.engines.amnezia.AmzTestPro
         LinearProgressIndicator(
             progress = if (progress.total > 0) progress.done.toFloat() / progress.total else 0f,
             color = DuskTheme.success, trackColor = DuskTheme.white.copy(alpha = 0.15f),
-            modifier = Modifier.fillMaxWidth().height(DuskTheme.space1).clip(RoundedCornerShape(2.dp)),
+            modifier = Modifier.fillMaxWidth().height(DuskTheme.space1).clip(RoundedCornerShape(DuskTheme.corner2)),
         )
         Spacer(Modifier.height(DuskTheme.space2))
         Text(
@@ -392,7 +392,7 @@ private fun PingProgress(progress: com.mlmvpn.scanner.engines.amnezia.AmzTestPro
                 "all" -> R.string.proton_ping_via_all
                 else -> R.string.proton_ping_starting
             }),
-            color = DuskTheme.muted, fontSize = 13.sp,
+            color = DuskTheme.muted, fontSize = DuskTheme.textSize13,
         )
     }
 }
@@ -405,17 +405,17 @@ private fun ServerRow(server: AmzServer, active: Boolean, ms: Long?, testing: Bo
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Box(Modifier.size(38.dp).clip(CircleShape).background(DuskTheme.white.copy(alpha = 0.12f)), contentAlignment = Alignment.Center) {
-            Text(groupFlag(key), fontSize = 20.sp)
+            Text(groupFlag(key), fontSize = DuskTheme.textSize20)
         }
         Spacer(Modifier.width(DuskTheme.space3))
         Column(Modifier.weight(1f)) {
-            Text(server.name, color = if (active) DuskTheme.success else DuskTheme.onSurface, fontSize = 16.sp, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
-            Text(groupName(key), color = DuskTheme.muted, fontSize = 12.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            Text(server.name, color = if (active) DuskTheme.success else DuskTheme.onSurface, fontSize = DuskTheme.textSize16, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            Text(groupName(key), color = DuskTheme.muted, fontSize = DuskTheme.textSize12, maxLines = 1, overflow = TextOverflow.Ellipsis)
         }
         when {
-            testing -> Text("…", color = DuskTheme.muted, fontSize = 16.sp)
+            testing -> Text("…", color = DuskTheme.muted, fontSize = DuskTheme.textSize16)
             ms != null -> DelayCapsule(ms)
-            failed -> Text("—", color = DuskTheme.error, fontSize = 16.sp)
+            failed -> Text("—", color = DuskTheme.error, fontSize = DuskTheme.textSize16)
         }
         Spacer(Modifier.width(DuskTheme.space1))
         Box(
@@ -462,7 +462,7 @@ private fun PrimaryButton(label: String, tone: Color = DuskTheme.purple, onClick
             .padding(vertical = 13.dp),
         contentAlignment = Alignment.Center,
     ) {
-        Text(label, color = DuskTheme.onSurface, fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
+        Text(label, color = DuskTheme.onSurface, fontSize = DuskTheme.textSize16, fontWeight = FontWeight.SemiBold)
     }
 }
 
@@ -694,12 +694,12 @@ private fun ProtonWebPage(url: String, notify: (String) -> Unit, onBack: () -> U
                 else -> {
                     Column(Modifier.fillMaxSize()) {
                         Text(
-                            stringResource(R.string.proton_web_hint), color = DuskTheme.muted, fontSize = 13.sp, textAlign = TextAlign.Center,
+                            stringResource(R.string.proton_web_hint), color = DuskTheme.muted, fontSize = DuskTheme.textSize13, textAlign = TextAlign.Center,
                             modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = DuskTheme.space1_5),
                         )
                         if (lost) {
                             Text(
-                                stringResource(R.string.proton_route_lost), color = DuskTheme.accent, fontSize = 13.sp, textAlign = TextAlign.Center,
+                                stringResource(R.string.proton_route_lost), color = DuskTheme.accent, fontSize = DuskTheme.textSize13, textAlign = TextAlign.Center,
                                 modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = DuskTheme.space1),
                             )
                         }
@@ -791,8 +791,8 @@ private fun ProtonWebPage(url: String, notify: (String) -> Unit, onBack: () -> U
                                     verticalArrangement = androidx.compose.foundation.layout.Arrangement.Center,
                                     horizontalAlignment = Alignment.CenterHorizontally,
                                 ) {
-                                    Text(stringResource(R.string.proton_page_failed), color = DuskTheme.onSurface, fontSize = 16.sp, fontWeight = FontWeight.SemiBold, textAlign = TextAlign.Center)
-                                    Text(failed.orEmpty(), color = DuskTheme.muted, fontSize = 12.sp, textAlign = TextAlign.Center, modifier = Modifier.padding(top = DuskTheme.space1))
+                                    Text(stringResource(R.string.proton_page_failed), color = DuskTheme.onSurface, fontSize = DuskTheme.textSize16, fontWeight = FontWeight.SemiBold, textAlign = TextAlign.Center)
+                                    Text(failed.orEmpty(), color = DuskTheme.muted, fontSize = DuskTheme.textSize12, textAlign = TextAlign.Center, modifier = Modifier.padding(top = DuskTheme.space1))
                                     Spacer(Modifier.height(DuskTheme.space3_5))
                                     PrimaryButton(stringResource(R.string.proton_retry)) { failed = null; autoReloads = 0; web[0]?.loadUrl(url) }
                                 }
@@ -801,8 +801,8 @@ private fun ProtonWebPage(url: String, notify: (String) -> Unit, onBack: () -> U
                                     Modifier.align(Alignment.BottomCenter).fillMaxWidth().background(DuskTheme.background.copy(alpha = 0.94f)).padding(DuskTheme.space3),
                                     horizontalAlignment = Alignment.CenterHorizontally,
                                 ) {
-                                    Text(stringResource(R.string.proton_blank), color = DuskTheme.onSurface, fontSize = 14.sp, fontWeight = FontWeight.SemiBold, textAlign = TextAlign.Center)
-                                    errs.forEach { Text(it, color = DuskTheme.muted, fontSize = 11.sp, textAlign = TextAlign.Center, maxLines = 2, overflow = TextOverflow.Ellipsis, modifier = Modifier.padding(top = 2.dp)) }
+                                    Text(stringResource(R.string.proton_blank), color = DuskTheme.onSurface, fontSize = DuskTheme.textSize14, fontWeight = FontWeight.SemiBold, textAlign = TextAlign.Center)
+                                    errs.forEach { Text(it, color = DuskTheme.muted, fontSize = DuskTheme.textSize11, textAlign = TextAlign.Center, maxLines = 2, overflow = TextOverflow.Ellipsis, modifier = Modifier.padding(top = 2.dp)) }
                                     Spacer(Modifier.height(DuskTheme.space2))
                                     Row(horizontalArrangement = androidx.compose.foundation.layout.Arrangement.spacedBy(DuskTheme.space2)) {
                                         Box(Modifier.weight(1f)) { PrimaryButton(stringResource(R.string.proton_reload)) { blank = false; web[0]?.reload() } }
@@ -826,10 +826,10 @@ private fun ProtonWebPage(url: String, notify: (String) -> Unit, onBack: () -> U
                     ) {
                         CircularProgressIndicator(color = DuskTheme.purple, strokeWidth = 2.dp, modifier = Modifier.size(DuskTheme.space4))
                         Spacer(Modifier.width(DuskTheme.space2))
-                        Text(stringResource(R.string.proton_taking), color = DuskTheme.muted, fontSize = 13.sp)
+                        Text(stringResource(R.string.proton_taking), color = DuskTheme.muted, fontSize = DuskTheme.textSize13)
                     }
                     got > 0 -> Text(
-                        stringResource(R.string.proton_got_servers, fa(got)), color = DuskTheme.success, fontSize = 13.sp,
+                        stringResource(R.string.proton_got_servers, fa(got)), color = DuskTheme.success, fontSize = DuskTheme.textSize13,
                         textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth().padding(bottom = DuskTheme.space1_5),
                     )
                     outcome != null && outcome !is ProtonApi.Outcome.Got -> Text(
@@ -840,7 +840,7 @@ private fun ProtonWebPage(url: String, notify: (String) -> Unit, onBack: () -> U
                             is ProtonApi.Outcome.Failed -> stringResource(R.string.proton_take_failed, outcome.detail.take(120))
                             is ProtonApi.Outcome.Got -> ""
                         },
-                        color = DuskTheme.accent, fontSize = 13.sp,
+                        color = DuskTheme.accent, fontSize = DuskTheme.textSize13,
                         textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth().padding(bottom = DuskTheme.space1_5),
                     )
                 }
@@ -903,7 +903,7 @@ private const val AUTO_RELOADS = 2
 @Composable
 private fun Message(text: String) {
     Box(Modifier.fillMaxSize().padding(DuskTheme.space5), contentAlignment = Alignment.Center) {
-        Text(text, color = DuskTheme.muted, fontSize = 15.sp, textAlign = TextAlign.Center)
+        Text(text, color = DuskTheme.muted, fontSize = DuskTheme.textSize15, textAlign = TextAlign.Center)
     }
 }
 
@@ -938,9 +938,9 @@ private fun HelperProgress(
     ) {
         CircularProgressIndicator(color = DuskTheme.purple, modifier = Modifier.size(44.dp))
         Spacer(Modifier.height(DuskTheme.space4))
-        Text(stringResource(R.string.proton_wait_title, name), color = DuskTheme.onSurface, fontSize = 17.sp, fontWeight = FontWeight.SemiBold, textAlign = TextAlign.Center)
+        Text(stringResource(R.string.proton_wait_title, name), color = DuskTheme.onSurface, fontSize = DuskTheme.textSize17, fontWeight = FontWeight.SemiBold, textAlign = TextAlign.Center)
         Spacer(Modifier.height(DuskTheme.space1_5))
-        Text(line, color = DuskTheme.muted, fontSize = 13.sp, textAlign = TextAlign.Center)
+        Text(line, color = DuskTheme.muted, fontSize = DuskTheme.textSize13, textAlign = TextAlign.Center)
         Spacer(Modifier.height(20.dp))
         Box(Modifier.width(220.dp)) { PrimaryButton(stringResource(R.string.proton_cancel), tone = DuskTheme.muted, onClick = onCancel) }
     }
@@ -959,7 +959,7 @@ private fun HelperChooser(
     val context = LocalContext.current
     Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(top = DuskTheme.space2)) {
         Text(
-            stringResource(R.string.proton_blocked_title), color = DuskTheme.onSurface, fontSize = 17.sp, fontWeight = FontWeight.SemiBold,
+            stringResource(R.string.proton_blocked_title), color = DuskTheme.onSurface, fontSize = DuskTheme.textSize17, fontWeight = FontWeight.SemiBold,
             textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth().padding(horizontal = DuskTheme.space5),
         )
         Text(
@@ -969,7 +969,7 @@ private fun HelperChooser(
                 afterBlockedRoute -> R.string.proton_helper_up_failed
                 else -> R.string.proton_blocked_body
             }),
-            color = if (engineFailed) DuskTheme.accent else DuskTheme.muted, fontSize = 13.sp, textAlign = TextAlign.Center,
+            color = if (engineFailed) DuskTheme.accent else DuskTheme.muted, fontSize = DuskTheme.textSize13, textAlign = TextAlign.Center,
             modifier = Modifier.fillMaxWidth().padding(horizontal = DuskTheme.space5, vertical = DuskTheme.space2),
         )
         if (!proxyUnsupported) {

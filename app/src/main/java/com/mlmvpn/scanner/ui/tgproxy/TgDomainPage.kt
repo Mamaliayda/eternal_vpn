@@ -112,7 +112,7 @@ internal fun TgDomainPage(manager: TgProxyManager, serviceId: String, onBack: ()
                     "اگر شبکه‌تان آدرس ${if (service.method == com.mlmvpn.scanner.engines.tgproxy.TgMethod.WORKERS) "workers.dev" else "pages.dev"} را می‌بندد، با دامنهٔ خودتان پروکسی کار می‌کند. این راهنما قدم‌به‌قدم است و خودش پیش می‌رود.",
                     "If your network blocks ${if (service.method == com.mlmvpn.scanner.engines.tgproxy.TgMethod.WORKERS) "workers.dev" else "pages.dev"}, a domain of your own gets the proxy through. This guide goes step by step and ticks each one itself.",
                 ),
-                color = DuskTheme.muted, fontSize = 14.sp, lineHeight = 21.sp,
+                color = DuskTheme.muted, fontSize = DuskTheme.textSize14, lineHeight = DuskTheme.textSize21,
             )
         }
 
@@ -142,7 +142,7 @@ internal fun TgDomainPage(manager: TgProxyManager, serviceId: String, onBack: ()
                 zone.nameServers.forEach { ns ->
                     Spacer(Modifier.height(6.dp))
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text(ns, color = DuskTheme.onSurface, fontSize = 13.sp, fontFamily = FontFamily.Monospace, modifier = Modifier.weight(1f))
+                        Text(ns, color = DuskTheme.onSurface, fontSize = DuskTheme.textSize13, fontFamily = FontFamily.Monospace, modifier = Modifier.weight(1f))
                         Icon(
                             Icons.Default.ContentCopy, contentDescription = tr("کپی", "Copy"), tint = DuskTheme.primary,
                             modifier = Modifier.size(20.dp).clickable { copyPlain(context, ns, showNotice) },
@@ -167,9 +167,9 @@ internal fun TgDomainPage(manager: TgProxyManager, serviceId: String, onBack: ()
                 }
                 Spacer(Modifier.height(6.dp))
                 Text(host ?: tr("نام معتبر نیست (حروف انگلیسی، عدد و خط تیره)", "Not a valid name (letters, digits, hyphens)"),
-                    color = if (host != null) DuskTheme.onSurface else DuskTheme.accent, fontSize = 13.sp, fontFamily = FontFamily.Monospace)
+                    color = if (host != null) DuskTheme.onSurface else DuskTheme.accent, fontSize = DuskTheme.textSize13, fontFamily = FontFamily.Monospace)
             } else {
-                Text(domain.host, color = DuskTheme.onSurface, fontSize = 14.sp, fontFamily = FontFamily.Monospace)
+                Text(domain.host, color = DuskTheme.onSurface, fontSize = DuskTheme.textSize14, fontFamily = FontFamily.Monospace)
             }
         }
         // ---- 4
@@ -200,7 +200,7 @@ internal fun TgDomainPage(manager: TgProxyManager, serviceId: String, onBack: ()
             val running = progress?.takeIf { it.serviceId == serviceId && it.op == TgOp.DOMAIN }
             if (running != null) {
                 Spacer(Modifier.height(8.dp))
-                Text(tr("در حال کار…", "Working…"), color = DuskTheme.primary, fontSize = 13.sp)
+                Text(tr("در حال کار…", "Working…"), color = DuskTheme.primary, fontSize = DuskTheme.textSize13)
                 Spacer(Modifier.height(6.dp))
                 Pill(tr("لغو", "Cancel")) { manager.cancel() }
             }
@@ -246,17 +246,17 @@ internal fun TgDomainPage(manager: TgProxyManager, serviceId: String, onBack: ()
 
 @Composable
 private fun Step(number: Int, done: Boolean, title: String, content: @Composable ColumnScope.() -> Unit) {
-    Row(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 6.dp).frostedGlass(RoundedCornerShape(22.dp)).padding(14.dp), verticalAlignment = Alignment.Top) {
+    Row(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 6.dp).frostedGlass(RoundedCornerShape(DuskTheme.corner22)).padding(14.dp), verticalAlignment = Alignment.Top) {
         Box(
             Modifier.size(28.dp).clip(CircleShape).background(if (done) DuskTheme.success else Color.White.copy(alpha = 0.18f)),
             contentAlignment = Alignment.Center,
         ) {
             if (done) Icon(Icons.Default.Check, contentDescription = null, tint = Color.White, modifier = Modifier.size(18.dp))
-            else Text(com.mlmvpn.scanner.ui.amnezia.fa(number), color = DuskTheme.onSurface, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
+            else Text(com.mlmvpn.scanner.ui.amnezia.fa(number), color = DuskTheme.onSurface, fontSize = DuskTheme.textSize14, fontWeight = FontWeight.SemiBold)
         }
         Spacer(Modifier.width(12.dp))
         Column(Modifier.weight(1f)) {
-            Text(title, color = DuskTheme.onSurface, fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
+            Text(title, color = DuskTheme.onSurface, fontSize = DuskTheme.textSize16, fontWeight = FontWeight.SemiBold)
             Spacer(Modifier.height(6.dp))
             content()
         }
@@ -265,17 +265,17 @@ private fun Step(number: Int, done: Boolean, title: String, content: @Composable
 
 @Composable
 private fun Body(text: String) {
-    Text(text, color = DuskTheme.muted, fontSize = 13.sp, lineHeight = 20.sp)
+    Text(text, color = DuskTheme.muted, fontSize = DuskTheme.textSize13, lineHeight = DuskTheme.textSize20)
 }
 
 @Composable
 private fun Pill(text: String, filled: Boolean = false, enabled: Boolean = true, onClick: () -> Unit) {
     val bg = if (!enabled) Color.White.copy(alpha = 0.10f) else if (filled) DuskTheme.primary else Color.White.copy(alpha = 0.14f)
     Box(
-        Modifier.clip(RoundedCornerShape(12.dp)).background(bg).then(if (enabled) Modifier.clickable(onClick = onClick) else Modifier)
+        Modifier.clip(RoundedCornerShape(DuskTheme.corner12)).background(bg).then(if (enabled) Modifier.clickable(onClick = onClick) else Modifier)
             .padding(horizontal = 14.dp, vertical = 8.dp),
         contentAlignment = Alignment.Center,
-    ) { Text(text, color = if (enabled) Color.White else DuskTheme.muted, fontSize = 14.sp, fontWeight = FontWeight.SemiBold) }
+    ) { Text(text, color = if (enabled) Color.White else DuskTheme.muted, fontSize = DuskTheme.textSize14, fontWeight = FontWeight.SemiBold) }
 }
 
 private fun openUrl(context: Context, url: String) {

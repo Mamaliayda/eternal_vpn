@@ -90,10 +90,10 @@ class VpnTileService : TileService() {
             return
         }
 
-        // MLM Scout is measuring the line itself: a tunnel now would make every number about the
+        // Eternal VPN Scout is measuring the line itself: a tunnel now would make every number about the
         // tunnel instead. The tile has no screen to ask on, so it says why and does nothing.
         if (com.mlmvpn.scanner.engines.scout.ScoutEngine.isRunning()) {
-            toast(com.mlmvpn.scanner.store.tr("MLM Scout در حال بررسی است؛ اول آن را متوقف کنید", "MLM Scout is running; stop it first"))
+            toast(com.mlmvpn.scanner.store.tr("Eternal VPN Scout در حال بررسی است؛ اول آن را متوقف کنید", "Eternal VPN Scout is running; stop it first"))
             return
         }
 
@@ -106,7 +106,7 @@ class VpnTileService : TileService() {
         setTile(Tile.STATE_UNAVAILABLE, S(R.string.tile_connecting))
         scope.launch {
             try {
-                // Shared with MLM Scout's «وصل کردن دوباره»: see LastEngineReplay.
+                // Shared with Eternal VPN Scout's «وصل کردن دوباره»: see LastEngineReplay.
                 if (!LastEngineReplay.replay(applicationContext)) {
                     // Nothing has ever connected on this device. Rather than opening the app and
                     // giving up -- which is what this used to do and what read as a dead button --

@@ -101,13 +101,13 @@ fun nodeBadge(node: VpnNode): Pair<String, Color> {
     val isFree = node.engineType == "Manual" &&
         node.groupTitle == com.mlmvpn.scanner.engines.freeconfig.FreeConfigEngine.GROUP_NAME
     return when {
-        node.id.startsWith("default_mlmvpn") -> "MLMVPN" to DuskTheme.success
+        node.id.startsWith("default_mlmvpn") -> "Eternal VPN" to DuskTheme.success
         isSni -> "SNI" to DuskTheme.secondary
         isMitm -> S(R.string.fronting) to DuskTheme.secondary
         isFree -> S(R.string.free) to DuskTheme.purple
         node.engineType == "EDG" -> "EDG" to DuskTheme.indigo
         node.engineType == "NHN" -> "NHN" to DuskTheme.success
-        node.engineType == "MLM" -> "MLM" to DuskTheme.purple
+        node.engineType == "MLM" -> "Eternal VPN" to DuskTheme.purple
         node.engineType == "SPD" -> "Spider" to DuskTheme.accent
         node.engineType == "NTR" -> "Netra" to DuskTheme.purple
         node.engineType == "GZG" -> "Gozargah" to DuskTheme.secondary

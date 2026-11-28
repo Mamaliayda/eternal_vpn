@@ -27,7 +27,7 @@ fun ScanGuardHost() {
 
     com.mlmvpn.scanner.ui.settings.IosAlert(
         onDismiss = { ScanGuard.dismiss() },
-        title = if (scout) com.mlmvpn.scanner.store.tr("MLM Scout در حال بررسی است", "MLM Scout is running")
+        title = if (scout) com.mlmvpn.scanner.store.tr("Eternal VPN Scout در حال بررسی است", "Eternal VPN Scout is running")
         else stringResource(R.string.scan_busy_title),
         message = when {
             scout -> com.mlmvpn.scanner.store.tr(

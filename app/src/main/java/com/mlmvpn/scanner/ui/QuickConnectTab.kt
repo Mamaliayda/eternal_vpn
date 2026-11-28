@@ -746,7 +746,7 @@ private fun EgressBanner(res: EgressResult) {
             .background(tint.copy(alpha = 0.13f))
             .padding(DuskTheme.space3),
     ) {
-        Text(text, color = DuskTheme.onSurface, style = MaterialTheme.typography.bodySmall, lineHeight = 20.sp)
+        Text(text, color = DuskTheme.onSurface, style = MaterialTheme.typography.bodySmall, lineHeight = DuskTheme.textSize20)
     }
 }
 
@@ -907,7 +907,7 @@ private fun SavedRow(
 internal fun Badge(text: String, color: Color) {
     Box(
         modifier = Modifier
-            .clip(RoundedCornerShape(DuskTheme.space1 + 2.dp))
+            .clip(RoundedCornerShape(DuskTheme.space1 + DuskTheme.corner2))
             .background(color.copy(alpha = 0.18f))
             .padding(horizontal = DuskTheme.space1 + 2.dp, vertical = 2.dp),
     ) {

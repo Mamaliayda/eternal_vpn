@@ -19,7 +19,6 @@ import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.produceState
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.AbsoluteAlignment
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
@@ -67,6 +66,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.unit.LayoutDirection
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
@@ -168,7 +169,7 @@ fun MaeScreen(onBack: () -> Unit, onOpenTile: (String) -> Unit = {}) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     CircularProgressIndicator(color = DuskTheme.primary)
                     Spacer(Modifier.height(12.dp))
-                    Text(stringResource(R.string.mae_loading), color = DuskTheme.muted, fontSize = 14.sp)
+                    Text(stringResource(R.string.mae_loading), color = DuskTheme.muted, fontSize = DuskTheme.textSize14)
                 }
             }
         }
@@ -308,7 +309,7 @@ private fun MaeContent(onBack: () -> Unit, onOpenTile: (String) -> Unit) {
                 else -> stringResource(R.string.mae_status_idle)
             },
             color = DuskTheme.muted,
-            fontSize = 14.sp,
+            fontSize = DuskTheme.textSize14,
             textAlign = TextAlign.Center,
             // A developer's door, not a button: no click role for a screen reader to announce.
             modifier = Modifier.fillMaxWidth()
@@ -321,7 +322,7 @@ private fun MaeContent(onBack: () -> Unit, onOpenTile: (String) -> Unit) {
             Modifier.fillMaxWidth().padding(start = 20.dp, end = 8.dp, top = 22.dp, bottom = 3.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Text(stringResource(R.string.mae_your_services), color = DuskTheme.muted, fontSize = 13.sp, modifier = Modifier.weight(1f))
+            Text(stringResource(R.string.mae_your_services), color = DuskTheme.muted, fontSize = DuskTheme.textSize13, modifier = Modifier.weight(1f))
             val idle = views.any { !it.paused } && testing.size < views.count { !it.paused }
             Row(
                 Modifier.clip(RoundedCornerShape(50)).then(if (idle) Modifier.combinedClickableCompat { MaeEngine.recheckAll() } else Modifier)
@@ -330,7 +331,7 @@ private fun MaeContent(onBack: () -> Unit, onOpenTile: (String) -> Unit) {
             ) {
                 Icon(Icons.Default.Refresh, contentDescription = null, tint = if (idle) DuskTheme.primary else DuskTheme.muted, modifier = Modifier.size(16.dp))
                 Spacer(Modifier.width(4.dp))
-                Text(stringResource(R.string.mae_recheck_all), color = if (idle) DuskTheme.primary else DuskTheme.muted, fontSize = 14.sp)
+                Text(stringResource(R.string.mae_recheck_all), color = if (idle) DuskTheme.primary else DuskTheme.muted, fontSize = DuskTheme.textSize14)
             }
         }
         SettingsGroup {
@@ -366,9 +367,8 @@ private fun MaeContent(onBack: () -> Unit, onOpenTile: (String) -> Unit) {
 }
 
 /**
- * A row that swipes like one in iOS's Phone app: to the left it shows Delete, to the right Check
- * again. A short swipe leaves the button open for a tap; a long one does it at once. Directions
- * are physical, as the finger moves, whatever the layout direction.
+ * A row with logical actions: swiping toward the trailing edge reveals Delete; toward the leading
+ * edge reveals Check again. In RTL the gestures and actions mirror with the layout direction.
  */
 @Composable
 private fun SwipeActionsRow(
@@ -380,6 +380,7 @@ private fun SwipeActionsRow(
     content: @Composable () -> Unit,
 ) {
     val density = LocalDensity.current
+    val isRtl = LocalLayoutDirection.current == LayoutDirection.Rtl
     val actionPx = with(density) { 88.dp.toPx() }
     val offset = remember { Animatable(0f) }
     val scope = rememberCoroutineScope()
@@ -400,41 +401,46 @@ private fun SwipeActionsRow(
                 },
                 onDragStarted = { if (openId != id) onOpenChange(id) },
                 onDragStopped = { velocity ->
-                    val v = offset.value
+                    val physicalOffset = offset.value
+                    val logicalOffset = if (isRtl) -physicalOffset else physicalOffset
+                    val logicalVelocity = if (isRtl) -velocity else velocity
+                    val deleteOffset = if (isRtl) actionPx else -actionPx
+                    val recheckOffset = -deleteOffset
                     when {
-                        // A long swipe does it at once, like iOS's full swipe.
-                        v < 0 && (-v > width * 0.55f || (velocity < -2500f && -v > actionPx)) -> {
+                        // A long swipe toward logical End does it at once, like iOS's full swipe.
+                        logicalOffset < 0 && (-logicalOffset > width * 0.55f || (logicalVelocity < -2500f && -logicalOffset > actionPx)) -> {
                             offset.animateTo(0f, tween(220)); onOpenChange(null); onDelete()
                         }
-                        v > 0 && (v > width * 0.45f || (velocity > 2500f && v > actionPx)) -> {
+                        logicalOffset > 0 && (logicalOffset > width * 0.45f || (logicalVelocity > 2500f && logicalOffset > actionPx)) -> {
                             offset.animateTo(0f, tween(220)); onOpenChange(null); onRecheck()
                         }
-                        v < 0 && -v > actionPx / 2 -> offset.animateTo(-actionPx, tween(200))
-                        v > 0 && v > actionPx / 2 -> offset.animateTo(actionPx, tween(200))
+                        logicalOffset < 0 && -logicalOffset > actionPx / 2 -> offset.animateTo(deleteOffset, tween(200))
+                        logicalOffset > 0 && logicalOffset > actionPx / 2 -> offset.animateTo(recheckOffset, tween(200))
                         else -> { offset.animateTo(0f, tween(200)); if (openId == id) onOpenChange(null) }
                     }
                 },
             ),
     ) {
         val shown = offset.value
-        if (shown < 0f) {
-            // Delete, on the physical right: revealed by a swipe to the left.
+        val deleteVisible = if (isRtl) shown > 0f else shown < 0f
+        if (deleteVisible) {
+            // Delete stays on logical End, including Persian RTL.
             SwipeAction(
                 width = with(density) { (-shown).toDp() },
                 color = DuskTheme.error,
                 icon = Icons.Default.Delete,
                 label = stringResource(R.string.mae_remove),
-                modifier = Modifier.matchParentSize().wrapContentWidth(AbsoluteAlignment.Right),
+                modifier = Modifier.matchParentSize().wrapContentWidth(Alignment.End),
                 onClick = { close(); onDelete() },
             )
-        } else if (shown > 0f) {
-            // Check again, on the physical left: revealed by a swipe to the right.
+        } else if (shown != 0f) {
+            // Check again stays on logical Start.
             SwipeAction(
                 width = with(density) { shown.toDp() },
                 color = DuskTheme.primary,
                 icon = Icons.Default.Refresh,
                 label = stringResource(R.string.mae_recheck),
-                modifier = Modifier.matchParentSize().wrapContentWidth(AbsoluteAlignment.Left),
+                modifier = Modifier.matchParentSize().wrapContentWidth(Alignment.Start),
                 onClick = { close(); onRecheck() },
             )
         }
@@ -466,7 +472,7 @@ private fun SwipeAction(
                     Icon(icon, contentDescription = null, tint = Color.White, modifier = Modifier.size(22.dp))
                     if (width > 70.dp) {
                         Spacer(Modifier.height(2.dp))
-                        Text(label, color = Color.White, fontSize = 12.sp, fontWeight = FontWeight.Medium, maxLines = 1)
+                        Text(label, color = Color.White, fontSize = DuskTheme.textSize12, fontWeight = FontWeight.Medium, maxLines = 1)
                     }
                 }
             }
@@ -496,7 +502,7 @@ private fun ConnectButton(connected: Boolean, connecting: Boolean, onClick: () -
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Icon(Icons.Default.PowerSettingsNew, contentDescription = null, tint = ring, modifier = Modifier.size(44.dp))
                 Spacer(Modifier.height(4.dp))
-                Text(label, color = DuskTheme.onSurface, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
+                Text(label, color = DuskTheme.onSurface, fontSize = DuskTheme.textSize14, fontWeight = FontWeight.SemiBold)
             }
         }
     }
@@ -582,8 +588,8 @@ private fun ServiceRow(
             }
             Spacer(Modifier.width(12.dp))
             Column(Modifier.weight(1f)) {
-                Text(name, color = DuskTheme.onSurface, fontSize = 16.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
-                Text(status, color = DuskTheme.muted, fontSize = 12.sp, maxLines = 2, overflow = TextOverflow.Ellipsis)
+                Text(name, color = DuskTheme.onSurface, fontSize = DuskTheme.textSize16, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                Text(status, color = DuskTheme.muted, fontSize = DuskTheme.textSize12, maxLines = 2, overflow = TextOverflow.Ellipsis)
                 // No exit abroad worked for this app: right under it, what is not set up yet -- the
                 // user's ask (2026-10-18), shown only while one of FENIX / Proton / Windscribe is missing.
                 val noExit = v.phase == MaeEngine.Phase.NO_FOREIGN_ROUTE || note?.kind == MaeEngine.NoteKind.NO_FOREIGN_EXIT
@@ -591,7 +597,7 @@ private fun ServiceRow(
                     val names = sayList(setUp.map { it.title })
                     Text(
                         com.mlmvpn.scanner.store.tr("$names را راه‌اندازی کنید", "Set up $names"),
-                        color = DuskTheme.accent, fontSize = 12.sp, fontWeight = FontWeight.Medium,
+                        color = DuskTheme.accent, fontSize = DuskTheme.textSize12, fontWeight = FontWeight.Medium,
                         maxLines = 2, overflow = TextOverflow.Ellipsis,
                         modifier = Modifier.combinedClickableCompat(onSetUp),
                     )
@@ -625,8 +631,8 @@ private fun ServiceRow(
             Text(
                 noteText(v, note),
                 color = if (warn) DuskTheme.accent else DuskTheme.muted,
-                fontSize = 12.sp,
-                lineHeight = 18.sp,
+                fontSize = DuskTheme.textSize12,
+                lineHeight = DuskTheme.textSize18,
                 modifier = Modifier.fillMaxWidth().padding(start = 64.dp, end = 16.dp, bottom = 10.dp),
             )
         }

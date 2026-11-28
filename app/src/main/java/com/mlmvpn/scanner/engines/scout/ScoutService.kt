@@ -127,9 +127,9 @@ class ScoutService : Service() {
 
     private fun createChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val ch = NotificationChannel(CHANNEL_ID, "MLM Scout", NotificationManager.IMPORTANCE_LOW).apply {
+            val ch = NotificationChannel(CHANNEL_ID, "Eternal VPN Scout", NotificationManager.IMPORTANCE_LOW).apply {
                 setShowBadge(false)
-                description = tr("پیشرفت بررسی MLM Scout", "MLM Scout's progress")
+                description = tr("پیشرفت بررسی Eternal VPN Scout", "Eternal VPN Scout's progress")
             }
             (getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager).createNotificationChannel(ch)
         }
@@ -143,7 +143,7 @@ class ScoutService : Service() {
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
         val b = NotificationCompat.Builder(this, CHANNEL_ID)
             .setColor(androidx.core.content.ContextCompat.getColor(this, R.color.dusk_primary))
-            .setContentTitle("MLM Scout")
+            .setContentTitle("Eternal VPN Scout")
             .setContentText(text)
             .setSmallIcon(R.drawable.ic_scanner)
             .setOngoing(true)

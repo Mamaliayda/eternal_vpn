@@ -325,7 +325,7 @@ private fun MainPage(
                 Text(
                     tr("هنوز کانفیگی اینجا نیست. در «منبع کانفیگ‌ها» کانفیگ‌های سالم انبار را علامت بزنید و به این صفحه بفرستید، یا کانفیگ خودتان را وارد کنید.",
                         "Nothing here yet. In «Config sources», tick working configs in the store and send them here, or import your own."),
-                    color = DuskTheme.muted, fontSize = 14.sp, lineHeight = 22.sp, modifier = Modifier.padding(16.dp),
+                    color = DuskTheme.muted, fontSize = DuskTheme.textSize14, lineHeight = DuskTheme.textSize22, modifier = Modifier.padding(16.dp),
                 )
             }
         } else {
@@ -367,8 +367,8 @@ private fun MainPage(
                 })
         }
         SettingsFooter(tr(
-            "لینک‌های استاندارد با موتور Xray همین برنامه وصل می‌شوند. فایل‌های npvt و npvs با کلید برنامهٔ NPV Tunnel رمز شده‌اند و آن کلید منتشر نشده؛ این فایل‌ها نگه داشته و با یک لمس در NPV Tunnel باز می‌شوند. فایل را از تلگرام با «باز کردن با MLMVPN» هم می‌شود فرستاد. MLMVPN وابستگی رسمی به NPV Tunnel ندارد.",
-            "Standard links connect on this app's Xray engine. npvt and npvs files are encrypted with NPV Tunnel's key, which is not published; they are kept and open in NPV Tunnel with one tap. Files can also come from Telegram with «Open with MLMVPN». MLMVPN is not affiliated with NPV Tunnel.",
+            "لینک‌های استاندارد با موتور Xray همین برنامه وصل می‌شوند. فایل‌های npvt و npvs با کلید برنامهٔ NPV Tunnel رمز شده‌اند و آن کلید منتشر نشده؛ این فایل‌ها نگه داشته و با یک لمس در NPV Tunnel باز می‌شوند. فایل را از تلگرام با «باز کردن با Eternal VPN» هم می‌شود فرستاد. Eternal VPN وابستگی رسمی به NPV Tunnel ندارد.",
+            "Standard links connect on this app's Xray engine. npvt and npvs files are encrypted with NPV Tunnel's key, which is not published; they are kept and open in NPV Tunnel with one tap. Files can also come from Telegram with «Open with Eternal VPN». Eternal VPN is not affiliated with NPV Tunnel.",
         ))
         Spacer(Modifier.height(36.dp))
     }
@@ -429,7 +429,7 @@ private fun HeroCard(
     var since by remember { mutableLongStateOf(0L) }
     LaunchedEffect(connected) { if (connected) since = System.currentTimeMillis() }
     Column(
-        Modifier.fillMaxWidth().padding(horizontal = 16.dp).frostedGlass(RoundedCornerShape(30.dp)).padding(horizontal = 20.dp, vertical = 18.dp),
+        Modifier.fillMaxWidth().padding(horizontal = 16.dp).frostedGlass(RoundedCornerShape(DuskTheme.corner30)).padding(horizontal = 20.dp, vertical = 18.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
@@ -441,7 +441,7 @@ private fun HeroCard(
                 Spacer(Modifier.width(6.dp))
                 Text(
                     when { connected -> tr("متصل", "Connected"); connecting -> tr("در حال اتصال", "Connecting"); failed -> tr("ناموفق", "Failed"); else -> tr("قطع", "Off") },
-                    color = DuskTheme.onSurface, fontSize = 12.sp, fontWeight = FontWeight.SemiBold,
+                    color = DuskTheme.onSurface, fontSize = DuskTheme.textSize12, fontWeight = FontWeight.SemiBold,
                 )
             }
             Spacer(Modifier.weight(1f))
@@ -452,7 +452,7 @@ private fun HeroCard(
         Spacer(Modifier.height(14.dp))
         Text(
             when { connected -> tr("متصل", "Connected"); connecting -> tr("در حال اتصال…", "Connecting…"); failed -> tr("وصل نشد", "Did not connect"); else -> tr("قطع است", "Not connected") },
-            color = DuskTheme.onSurface, fontSize = 20.sp, fontWeight = FontWeight.Bold,
+            color = DuskTheme.onSurface, fontSize = DuskTheme.textSize20, fontWeight = FontWeight.Bold,
         )
         Spacer(Modifier.height(4.dp))
         Text(
@@ -462,17 +462,17 @@ private fun HeroCard(
                 best != null -> tr("سریع‌ترین: ", "Fastest: ") + best.name
                 else -> tr("کانفیگ سالمی نیست", "No working config")
             },
-            color = if (failed) DuskTheme.accent else DuskTheme.muted, fontSize = 13.sp, maxLines = 2, overflow = TextOverflow.Ellipsis, textAlign = TextAlign.Center,
+            color = if (failed) DuskTheme.accent else DuskTheme.muted, fontSize = DuskTheme.textSize13, maxLines = 2, overflow = TextOverflow.Ellipsis, textAlign = TextAlign.Center,
         )
         Spacer(Modifier.height(16.dp))
         Box(
-            Modifier.fillMaxWidth().heightIn(min = 48.dp).clip(RoundedCornerShape(14.dp)).background(Color.White.copy(alpha = 0.14f))
+            Modifier.fillMaxWidth().heightIn(min = 48.dp).clip(RoundedCornerShape(DuskTheme.corner14)).background(Color.White.copy(alpha = 0.14f))
                 .clickable(role = Role.Button, onClick = onButton),
             contentAlignment = Alignment.Center,
         ) {
             Text(
                 when { connecting -> tr("لغو", "Cancel"); connected -> tr("قطع اتصال", "Disconnect"); else -> tr("اتصال به سریع‌ترین", "Connect to the fastest") },
-                color = when { connecting -> DuskTheme.accent; connected -> DuskTheme.error; else -> DuskTheme.onSurface }, fontSize = 17.sp, fontWeight = FontWeight.SemiBold,
+                color = when { connecting -> DuskTheme.accent; connected -> DuskTheme.error; else -> DuskTheme.onSurface }, fontSize = DuskTheme.textSize17, fontWeight = FontWeight.SemiBold,
             )
         }
         AnimatedVisibility(connected, enter = expandVertically() + fadeIn(), exit = shrinkVertically() + fadeOut()) {
@@ -541,9 +541,9 @@ private fun Orb(tone: Color, connecting: Boolean, connected: Boolean, onClick: (
 
 @Composable
 private fun Stat(label: String, value: String, modifier: Modifier) {
-    Column(modifier.clip(RoundedCornerShape(16.dp)).background(Color.White.copy(alpha = 0.08f)).padding(10.dp), horizontalAlignment = Alignment.CenterHorizontally) {
-        Text(label, color = DuskTheme.muted, fontSize = 11.sp)
-        Text(value, color = DuskTheme.onSurface, fontSize = 15.sp, fontWeight = FontWeight.SemiBold, textAlign = TextAlign.Center)
+    Column(modifier.clip(RoundedCornerShape(DuskTheme.corner16)).background(Color.White.copy(alpha = 0.08f)).padding(10.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+        Text(label, color = DuskTheme.muted, fontSize = DuskTheme.textSize11)
+        Text(value, color = DuskTheme.onSurface, fontSize = DuskTheme.textSize15, fontWeight = FontWeight.SemiBold, textAlign = TextAlign.Center)
     }
 }
 
@@ -571,13 +571,13 @@ internal fun MeasureRow(shelf: Shelf, count: Int, m: NpvEngine.Measure, onMeasur
                 Spacer(Modifier.width(10.dp))
                 Text(
                     tr("در حال سنجش… ${fa(m.done)} از ${fa(m.total)} · ${fa(m.working)} سالم", "Measuring… ${m.done} of ${m.total} · ${m.working} working"),
-                    color = DuskTheme.onSurface, fontSize = 15.sp, modifier = Modifier.weight(1f),
+                    color = DuskTheme.onSurface, fontSize = DuskTheme.textSize15, modifier = Modifier.weight(1f),
                 )
                 TextButton(onClick = { NpvEngine.stopMeasure() }) { Text(tr("توقف", "Stop"), color = DuskTheme.accent) }
             }
             LinearProgressIndicator(
                 progress = if (m.total > 0) m.done.toFloat() / m.total else 0f, color = DuskTheme.success, trackColor = Color.White.copy(alpha = 0.15f),
-                modifier = Modifier.fillMaxWidth().height(5.dp).clip(RoundedCornerShape(3.dp)),
+                modifier = Modifier.fillMaxWidth().height(5.dp).clip(RoundedCornerShape(DuskTheme.corner3)),
             )
         }
     } else {
@@ -626,17 +626,17 @@ internal fun ConfigRow(
         }))
         Spacer(Modifier.width(10.dp))
         Column(Modifier.weight(1f)) {
-            Text(e.name, color = DuskTheme.onSurface, fontSize = 15.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            Text(e.name, color = DuskTheme.onSurface, fontSize = DuskTheme.textSize15, maxLines = 1, overflow = TextOverflow.Ellipsis)
             Text(
                 (e.uri?.substringBefore("://")?.uppercase() ?: "") + " · " + sourceLabel(e.source) + if (active) tr(" · متصل", " · connected") else "",
-                color = if (active) DuskTheme.success else DuskTheme.muted, fontSize = 12.sp, maxLines = 1, overflow = TextOverflow.Ellipsis,
+                color = if (active) DuskTheme.success else DuskTheme.muted, fontSize = DuskTheme.textSize12, maxLines = 1, overflow = TextOverflow.Ellipsis,
             )
         }
         Spacer(Modifier.width(6.dp))
         when {
             ms > 0 -> DelayCapsule(ms)
-            ms < 0 -> Text(tr("خراب", "broken"), color = DuskTheme.error, fontSize = 13.sp, fontWeight = FontWeight.SemiBold)
-            else -> Text("—", color = DuskTheme.muted, fontSize = 13.sp)
+            ms < 0 -> Text(tr("خراب", "broken"), color = DuskTheme.error, fontSize = DuskTheme.textSize13, fontWeight = FontWeight.SemiBold)
+            else -> Text("—", color = DuskTheme.muted, fontSize = DuskTheme.textSize13)
         }
     }
 }
@@ -653,8 +653,8 @@ private fun NativeRow(e: NpvLibrary.Entry, showNotice: (String) -> Unit, onRemov
         Box(Modifier.size(8.dp).clip(CircleShape).background(DuskTheme.disabled))
         Spacer(Modifier.width(10.dp))
         Column(Modifier.weight(1f)) {
-            Text(e.name, color = DuskTheme.onSurface, fontSize = 15.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
-            Text(tr("فایل NPV Tunnel · باز کردن در NPV Tunnel", "NPV Tunnel file · opens in NPV Tunnel"), color = DuskTheme.muted, fontSize = 12.sp)
+            Text(e.name, color = DuskTheme.onSurface, fontSize = DuskTheme.textSize15, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            Text(tr("فایل NPV Tunnel · باز کردن در NPV Tunnel", "NPV Tunnel file · opens in NPV Tunnel"), color = DuskTheme.muted, fontSize = DuskTheme.textSize12)
         }
     }
     if (ask) {

@@ -283,7 +283,7 @@ private fun BusyStep(
                 body,
                 color = DuskTheme.muted,
                 style = MaterialTheme.typography.bodySmall,
-                lineHeight = 21.sp,
+                lineHeight = DuskTheme.textSize21,
                 textAlign = TextAlign.Center,
             )
             if (spinner) {
@@ -517,7 +517,7 @@ private fun FetchingStep(
                 S(R.string.only_configs_that_actually_connected_are_added),
                 color = DuskTheme.muted,
                 style = MaterialTheme.typography.bodySmall,
-                lineHeight = 20.sp,
+                lineHeight = DuskTheme.textSize20,
             )
             Spacer(Modifier.height(DuskTheme.space4))
             LinearProgressIndicator(
@@ -620,7 +620,7 @@ private fun ResultsStep(
                         S(R.string.new_configs_will_be_moved_across, faCount(newCount)),
                     color = DuskTheme.onSurface,
                     style = MaterialTheme.typography.bodySmall,
-                    lineHeight = 19.sp,
+                    lineHeight = DuskTheme.textSize19,
                 )
             }
         }
@@ -726,7 +726,7 @@ private fun DoneStep(
                     S(R.string.folder_r2),
                 color = DuskTheme.muted,
                 style = MaterialTheme.typography.bodySmall,
-                lineHeight = 21.sp,
+                lineHeight = DuskTheme.textSize21,
                 textAlign = TextAlign.Center,
             )
         }

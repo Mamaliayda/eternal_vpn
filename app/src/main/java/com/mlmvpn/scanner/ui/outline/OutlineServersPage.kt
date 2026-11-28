@@ -262,7 +262,7 @@ internal fun OutlineServersPage(
                         Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(horizontal = 20.dp, vertical = DuskTheme.space1)) {
                             CircularProgressIndicator(Modifier.size(DuskTheme.space3_5), color = DuskTheme.muted, strokeWidth = 2.dp)
                             Spacer(Modifier.width(DuskTheme.space2))
-                            Text(tr("در حال دریافت فهرست‌ها…", "Fetching the lists…"), color = DuskTheme.muted, fontSize = 13.sp)
+                            Text(tr("در حال دریافت فهرست‌ها…", "Fetching the lists…"), color = DuskTheme.muted, fontSize = DuskTheme.textSize13)
                         }
                     }
                     if (!progress.running) {
@@ -275,7 +275,7 @@ internal fun OutlineServersPage(
                         }
                     }
                     Row(Modifier.padding(horizontal = DuskTheme.space4, vertical = DuskTheme.space1_5), horizontalArrangement = Arrangement.spacedBy(DuskTheme.space1_5), verticalAlignment = Alignment.CenterVertically) {
-                        Text(tr("مرتب‌سازی:", "Sort:"), color = DuskTheme.muted, fontSize = 12.sp)
+                        Text(tr("مرتب‌سازی:", "Sort:"), color = DuskTheme.muted, fontSize = DuskTheme.textSize12)
                         SortChip(tr("پینگ", "Delay"), sort == Sort.DELAY) { sort = Sort.DELAY }
                         SortChip(tr("سرعت", "Speed"), sort == Sort.SPEED) { sort = Sort.SPEED }
                         SortChip(tr("جدیدترین", "Newest"), sort == Sort.NEWEST) { sort = Sort.NEWEST }
@@ -293,7 +293,7 @@ internal fun OutlineServersPage(
                             state.servers.isEmpty() -> tr("هنوز سروری نیست. فهرست‌ها را به‌روز کنید یا کلید خودتان را اضافه کنید.", "No servers yet. Refresh the lists or add your own key.")
                             else -> tr("با این فیلتر سروری نیست", "No server matches this filter")
                         },
-                        color = DuskTheme.muted, fontSize = 14.sp, textAlign = TextAlign.Center, lineHeight = 22.sp,
+                        color = DuskTheme.muted, fontSize = DuskTheme.textSize14, textAlign = TextAlign.Center, lineHeight = DuskTheme.textSize22,
                         modifier = Modifier.fillMaxWidth().padding(horizontal = DuskTheme.space6, vertical = 40.dp),
                     )
                 }
@@ -388,10 +388,10 @@ private fun SearchBar(query: String, onChange: (String) -> Unit) {
         Icon(Icons.Default.Search, contentDescription = null, tint = DuskTheme.muted, modifier = Modifier.size(18.dp))
         Spacer(Modifier.width(DuskTheme.space2))
         Box(Modifier.weight(1f)) {
-            if (query.isEmpty()) Text(tr("جستجو: نام، کشور، آدرس", "Search: name, country, address"), color = DuskTheme.muted, fontSize = 16.sp)
+            if (query.isEmpty()) Text(tr("جستجو: نام، کشور، آدرس", "Search: name, country, address"), color = DuskTheme.muted, fontSize = DuskTheme.textSize16)
             BasicTextField(
                 value = query, onValueChange = onChange, singleLine = true,
-                textStyle = TextStyle(color = DuskTheme.onSurface, fontSize = 16.sp), cursorBrush = SolidColor(DuskTheme.primary),
+                textStyle = TextStyle(color = DuskTheme.onSurface, fontSize = DuskTheme.textSize16), cursorBrush = SolidColor(DuskTheme.primary),
                 modifier = Modifier.fillMaxWidth(),
             )
         }
@@ -406,17 +406,17 @@ private fun SearchBar(query: String, onChange: (String) -> Unit) {
 private fun <T> Segmented(options: List<Pair<T, String>>, selected: T, onSelect: (T) -> Unit) {
     Row(
         Modifier.fillMaxWidth().padding(horizontal = DuskTheme.space4, vertical = DuskTheme.space1_5)
-            .clip(RoundedCornerShape(11.dp)).background(DuskTheme.raisedSurface).padding(3.dp),
+            .clip(RoundedCornerShape(DuskTheme.corner11)).background(DuskTheme.raisedSurface).padding(3.dp),
         horizontalArrangement = Arrangement.spacedBy(3.dp),
     ) {
         options.forEach { (s, label) ->
             val sel = s == selected
             val bg by animateColorAsState(if (sel) DuskTheme.white.copy(alpha = 0.22f) else Color.Transparent, label = "seg")
             Box(
-                Modifier.weight(1f).clip(RoundedCornerShape(9.dp)).background(bg)
+                Modifier.weight(1f).clip(RoundedCornerShape(DuskTheme.corner9)).background(bg)
                     .clickable(role = Role.RadioButton) { onSelect(s) }.padding(vertical = DuskTheme.space2),
                 contentAlignment = Alignment.Center,
-            ) { Text(label, color = DuskTheme.onSurface, fontSize = 13.sp, fontWeight = if (sel) FontWeight.SemiBold else FontWeight.Normal, maxLines = 1) }
+            ) { Text(label, color = DuskTheme.onSurface, fontSize = DuskTheme.textSize13, fontWeight = if (sel) FontWeight.SemiBold else FontWeight.Normal, maxLines = 1) }
         }
     }
 }
@@ -425,14 +425,14 @@ private fun <T> Segmented(options: List<Pair<T, String>>, selected: T, onSelect:
 private fun Chip(text: String, selected: Boolean, onClick: () -> Unit) {
     val bg by animateColorAsState(if (selected) DuskTheme.accent else DuskTheme.raisedSurface, label = "chip")
     Box(Modifier.clip(RoundedCornerShape(50)).background(bg).clickable(onClick = onClick).padding(horizontal = DuskTheme.space3_5, vertical = DuskTheme.space2)) {
-        Text(text, color = if (selected) DuskTheme.onAccent else DuskTheme.onSurface, fontSize = 13.sp, fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Normal, maxLines = 1)
+        Text(text, color = if (selected) DuskTheme.onAccent else DuskTheme.onSurface, fontSize = DuskTheme.textSize13, fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Normal, maxLines = 1)
     }
 }
 
 @Composable
 private fun SortChip(text: String, selected: Boolean, onClick: () -> Unit) {
     Text(
-        text, color = if (selected) DuskTheme.primary else DuskTheme.muted, fontSize = 12.sp, fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Normal,
+        text, color = if (selected) DuskTheme.primary else DuskTheme.muted, fontSize = DuskTheme.textSize12, fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Normal,
         modifier = Modifier.clip(RoundedCornerShape(50)).background(if (selected) DuskTheme.primary.copy(alpha = 0.15f) else Color.Transparent)
             .clickable(onClick = onClick).padding(horizontal = DuskTheme.space2_5, vertical = 5.dp),
     )
@@ -446,7 +446,7 @@ private fun Pill(text: String, icon: androidx.compose.ui.graphics.vector.ImageVe
     ) {
         Icon(icon, contentDescription = null, tint = tint, modifier = Modifier.size(DuskTheme.space4))
         Spacer(Modifier.width(DuskTheme.space1_5))
-        Text(text, color = DuskTheme.onSurface, fontSize = 13.sp, maxLines = 1)
+        Text(text, color = DuskTheme.onSurface, fontSize = DuskTheme.textSize13, maxLines = 1)
     }
 }
 
@@ -458,11 +458,11 @@ private fun PickRow(onClick: () -> Unit) {
             .clickable(onClick = onClick).padding(horizontal = DuskTheme.space3_5, vertical = 11.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Box(Modifier.size(36.dp).clip(CircleShape).background(DuskTheme.white.copy(alpha = 0.14f)), contentAlignment = Alignment.Center) { Text("⚡", fontSize = 19.sp) }
+        Box(Modifier.size(36.dp).clip(CircleShape).background(DuskTheme.white.copy(alpha = 0.14f)), contentAlignment = Alignment.Center) { Text("⚡", fontSize = DuskTheme.textSize19) }
         Spacer(Modifier.width(DuskTheme.space3))
         Column(Modifier.weight(1f)) {
-            Text(tr("اتصال به سریع‌ترین", "Connect to the fastest"), color = DuskTheme.onSurface, fontSize = 15.sp, fontWeight = FontWeight.SemiBold, maxLines = 1)
-            Text(tr("سالم‌ترین سرور همین شبکه؛ اگر داده رد نکرد، بعدی", "The best server on this network; the next if it carries nothing"), color = DuskTheme.muted, fontSize = 12.sp, maxLines = 1)
+            Text(tr("اتصال به سریع‌ترین", "Connect to the fastest"), color = DuskTheme.onSurface, fontSize = DuskTheme.textSize15, fontWeight = FontWeight.SemiBold, maxLines = 1)
+            Text(tr("سالم‌ترین سرور همین شبکه؛ اگر داده رد نکرد، بعدی", "The best server on this network; the next if it carries nothing"), color = DuskTheme.muted, fontSize = DuskTheme.textSize12, maxLines = 1)
         }
         Icon(Icons.Default.PowerSettingsNew, contentDescription = null, tint = DuskTheme.onSurface, modifier = Modifier.size(20.dp))
     }
@@ -508,11 +508,11 @@ private fun ServerRow(m: RowModel, onClick: () -> Unit, onLongClick: () -> Unit,
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Box(Modifier.size(38.dp).clip(CircleShape).background(DuskTheme.white.copy(alpha = 0.10f)), contentAlignment = Alignment.Center) {
-            Text(flagOf(m.country), fontSize = 20.sp)
+            Text(flagOf(m.country), fontSize = DuskTheme.textSize20)
         }
         Spacer(Modifier.width(DuskTheme.space2_5))
         Column(Modifier.weight(1f)) {
-            Text(m.name, color = DuskTheme.onSurface, fontSize = 15.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            Text(m.name, color = DuskTheme.onSurface, fontSize = DuskTheme.textSize15, maxLines = 1, overflow = TextOverflow.Ellipsis)
             Spacer(Modifier.height(3.dp))
             Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(5.dp)) {
                 Tag(countryName(m.country), DuskTheme.secondary)
@@ -532,7 +532,7 @@ private fun ServerRow(m: RowModel, onClick: () -> Unit, onLongClick: () -> Unit,
                     m.speedBps?.let { speedText(it) },
                     m.testedAt.takeIf { it > 0 }?.let { tr("تست: ${ago(it)}", "tested ${ago(it)}") },
                 ).joinToString(" · "),
-                color = DuskTheme.muted, fontSize = 11.sp, maxLines = 1, overflow = TextOverflow.Ellipsis,
+                color = DuskTheme.muted, fontSize = DuskTheme.textSize11, maxLines = 1, overflow = TextOverflow.Ellipsis,
             )
         }
         Spacer(Modifier.width(DuskTheme.space1_5))
@@ -540,9 +540,9 @@ private fun ServerRow(m: RowModel, onClick: () -> Unit, onLongClick: () -> Unit,
             when {
                 m.pending -> CircularProgressIndicator(Modifier.size(DuskTheme.space4), color = DuskTheme.muted, strokeWidth = 2.dp)
                 m.status == 1 && m.ms != null -> DelayCapsule(m.ms)
-                m.status == 2 -> Text(tr("قطع", "Dead"), color = DuskTheme.error, fontSize = 12.sp,
+                m.status == 2 -> Text(tr("قطع", "Dead"), color = DuskTheme.error, fontSize = DuskTheme.textSize12,
                     modifier = Modifier.clip(RoundedCornerShape(50)).background(DuskTheme.error.copy(alpha = 0.14f)).padding(horizontal = 9.dp, vertical = DuskTheme.space1))
-                else -> Text("—", color = DuskTheme.muted, fontSize = 14.sp)
+                else -> Text("—", color = DuskTheme.muted, fontSize = DuskTheme.textSize14)
             }
         }
         Icon(

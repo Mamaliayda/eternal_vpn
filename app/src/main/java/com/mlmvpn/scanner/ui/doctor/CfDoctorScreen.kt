@@ -317,8 +317,8 @@ private fun Hero(state: DoctorEngine.State, onStart: () -> Unit, onStop: () -> U
             Image(painterResource(R.drawable.ic_app_doctor), contentDescription = null, contentScale = ContentScale.Fit, modifier = Modifier.size(52.dp))
             Spacer(Modifier.width(12.dp))
             Column(Modifier.weight(1f)) {
-                Text(stringResource(R.string.cf_doctor_title), color = DuskTheme.onSurface, fontSize = 19.sp, fontWeight = FontWeight.Bold)
-                Text(stringResource(R.string.doc_subtitle), color = DuskTheme.muted, fontSize = 13.sp)
+                Text(stringResource(R.string.cf_doctor_title), color = DuskTheme.onSurface, fontSize = DuskTheme.textSize19, fontWeight = FontWeight.Bold)
+                Text(stringResource(R.string.doc_subtitle), color = DuskTheme.muted, fontSize = DuskTheme.textSize13)
             }
         }
         Spacer(Modifier.height(18.dp))
@@ -330,21 +330,21 @@ private fun Hero(state: DoctorEngine.State, onStart: () -> Unit, onStop: () -> U
                     CircularProgressIndicator(progress = 1f, color = Color.White.copy(alpha = 0.12f), strokeWidth = 8.dp, modifier = Modifier.size(132.dp))
                     CircularProgressIndicator(progress = shown, color = tone, strokeWidth = 8.dp, modifier = Modifier.size(132.dp))
                     Text("${fa((shown * 100).toInt())}٪".let { if (Locale.getDefault().language == "fa") it else "${(shown * 100).toInt()}%" },
-                        color = DuskTheme.onSurface, fontSize = 26.sp, fontWeight = FontWeight.Bold)
+                        color = DuskTheme.onSurface, fontSize = DuskTheme.textSize26, fontWeight = FontWeight.Bold)
                 }
                 Spacer(Modifier.height(14.dp))
-                Text(stepText(state.step), color = DuskTheme.onSurface, fontSize = 16.sp, fontWeight = FontWeight.SemiBold, textAlign = TextAlign.Center)
+                Text(stepText(state.step), color = DuskTheme.onSurface, fontSize = DuskTheme.textSize16, fontWeight = FontWeight.SemiBold, textAlign = TextAlign.Center)
                 var now by remember { mutableLongStateOf(0L) }
                 LaunchedEffect(Unit) { while (true) { now = System.currentTimeMillis(); delay(1_000) } }
                 val secs = (state.progress.elapsedMs / 1000).coerceAtLeast(0)
                 Text(
                     stringResource(R.string.doc_tests_done, fa(state.progress.rows.size), fa("%02d:%02d".format(Locale.US, secs / 60, secs % 60))),
-                    color = DuskTheme.muted, fontSize = 13.sp,
+                    color = DuskTheme.muted, fontSize = DuskTheme.textSize13,
                 )
                 Spacer(Modifier.height(16.dp))
                 Capsule(stringResource(R.string.doc_stop), Color.White.copy(alpha = 0.14f), DuskTheme.error, onStop)
                 Spacer(Modifier.height(8.dp))
-                Text(stringResource(R.string.doc_running_note), color = DuskTheme.muted, fontSize = 12.sp, textAlign = TextAlign.Center)
+                Text(stringResource(R.string.doc_running_note), color = DuskTheme.muted, fontSize = DuskTheme.textSize12, textAlign = TextAlign.Center)
             }
             advice != null -> {
                 val (icon, text) = when (advice.overall) {
@@ -358,10 +358,10 @@ private fun Hero(state: DoctorEngine.State, onStart: () -> Unit, onStop: () -> U
                     Icon(icon, contentDescription = null, tint = tone, modifier = Modifier.size(46.dp))
                 }
                 Spacer(Modifier.height(12.dp))
-                Text(text, color = DuskTheme.onSurface, fontSize = 17.sp, fontWeight = FontWeight.SemiBold, textAlign = TextAlign.Center)
+                Text(text, color = DuskTheme.onSurface, fontSize = DuskTheme.textSize17, fontWeight = FontWeight.SemiBold, textAlign = TextAlign.Center)
                 if (state.failed) {
                     Spacer(Modifier.height(6.dp))
-                    Text(stringResource(R.string.doc_failed), color = DuskTheme.accent, fontSize = 13.sp, textAlign = TextAlign.Center)
+                    Text(stringResource(R.string.doc_failed), color = DuskTheme.accent, fontSize = DuskTheme.textSize13, textAlign = TextAlign.Center)
                 }
                 Spacer(Modifier.height(16.dp))
                 // Every finished run has a report, good or bad: sending it is the point of the run.
@@ -372,7 +372,7 @@ private fun Hero(state: DoctorEngine.State, onStart: () -> Unit, onStop: () -> U
                 Capsule(stringResource(R.string.doc_again), DuskTheme.primary, Color.White, onStart)
             }
             else -> {
-                Text(stringResource(R.string.doc_intro), color = DuskTheme.muted, fontSize = 14.sp, lineHeight = 22.sp, textAlign = TextAlign.Center)
+                Text(stringResource(R.string.doc_intro), color = DuskTheme.muted, fontSize = DuskTheme.textSize14, lineHeight = DuskTheme.textSize22, textAlign = TextAlign.Center)
                 Spacer(Modifier.height(18.dp))
                 Capsule(stringResource(R.string.doc_start), DuskTheme.primary, Color.White, onStart)
             }
@@ -386,7 +386,7 @@ private fun Capsule(text: String, bg: Color, fg: Color, onClick: () -> Unit) {
         Modifier.fillMaxWidth().heightIn(min = 50.dp).clip(DuskTheme.controlShape).background(bg)
             .clickable(role = Role.Button, onClick = onClick),
         contentAlignment = Alignment.Center,
-    ) { Text(text, color = fg, fontSize = 17.sp, fontWeight = FontWeight.SemiBold) }
+    ) { Text(text, color = fg, fontSize = DuskTheme.textSize17, fontWeight = FontWeight.SemiBold) }
 }
 
 // ------------------------------------------------------------------------------ stage rows
@@ -437,14 +437,14 @@ private fun StageRow(icon: ImageVector, tint: Color, title: String, s: StageUi) 
         SettingsGlyph(icon, tint)
         Spacer(Modifier.width(12.dp))
         Column(Modifier.weight(1f)) {
-            Text(title, color = DuskTheme.onSurface, fontSize = 16.sp)
-            if (!detail.isNullOrBlank()) Text(detail, color = DuskTheme.muted, fontSize = 12.sp, lineHeight = 17.sp)
+            Text(title, color = DuskTheme.onSurface, fontSize = DuskTheme.textSize16)
+            if (!detail.isNullOrBlank()) Text(detail, color = DuskTheme.muted, fontSize = DuskTheme.textSize12, lineHeight = DuskTheme.textSize17)
         }
         Spacer(Modifier.width(8.dp))
         if (s == StageUi.Running) {
             CircularProgressIndicator(Modifier.size(16.dp), color = DuskTheme.primary, strokeWidth = 2.dp)
         } else {
-            Text(value, color = color, fontSize = 13.sp, fontWeight = FontWeight.SemiBold,
+            Text(value, color = color, fontSize = DuskTheme.textSize13, fontWeight = FontWeight.SemiBold,
                 modifier = Modifier.clip(DuskTheme.controlShape).background(color.copy(alpha = 0.15f)).padding(horizontal = 10.dp, vertical = 4.dp))
         }
     }
@@ -469,7 +469,7 @@ private fun TextRow(icon: ImageVector, tint: Color, text: String) {
     Row(Modifier.fillMaxWidth().heightIn(min = 46.dp).padding(horizontal = 16.dp, vertical = 9.dp), verticalAlignment = Alignment.CenterVertically) {
         Icon(icon, contentDescription = null, tint = tint, modifier = Modifier.size(20.dp))
         Spacer(Modifier.width(12.dp))
-        Text(text, color = DuskTheme.onSurface, fontSize = 15.sp, lineHeight = 21.sp, modifier = Modifier.weight(1f))
+        Text(text, color = DuskTheme.onSurface, fontSize = DuskTheme.textSize15, lineHeight = DuskTheme.textSize21, modifier = Modifier.weight(1f))
     }
 }
 
@@ -564,10 +564,10 @@ private fun AccountPage(token: String, email: String, onToken: (String) -> Unit,
 @Composable
 private fun Field(placeholder: String, value: String, onChange: (String) -> Unit, secret: Boolean) {
     Box(Modifier.fillMaxWidth().heightIn(min = 48.dp).padding(horizontal = 16.dp, vertical = 12.dp), contentAlignment = Alignment.CenterStart) {
-        if (value.isEmpty()) Text(placeholder, color = DuskTheme.muted.copy(alpha = 0.7f), fontSize = 16.sp)
+        if (value.isEmpty()) Text(placeholder, color = DuskTheme.muted.copy(alpha = 0.7f), fontSize = DuskTheme.textSize16)
         BasicTextField(
             value = value, onValueChange = { onChange(it.trim().take(200)) }, singleLine = true,
-            textStyle = TextStyle(color = DuskTheme.onSurface, fontSize = 16.sp), cursorBrush = SolidColor(DuskTheme.primary),
+            textStyle = TextStyle(color = DuskTheme.onSurface, fontSize = DuskTheme.textSize16), cursorBrush = SolidColor(DuskTheme.primary),
             visualTransformation = if (secret) PasswordVisualTransformation() else VisualTransformation.None,
             modifier = Modifier.fillMaxWidth(),
         )
@@ -584,7 +584,7 @@ private fun ReportPage(onBack: () -> Unit) {
                 Modifier.fillMaxWidth().padding(horizontal = 16.dp).clip(DuskTheme.chartShape).background(DuskTheme.surface),
                 contentPadding = androidx.compose.foundation.layout.PaddingValues(12.dp),
             ) {
-                items(lines) { Text(it, color = DuskTheme.onSurface, fontFamily = FontFamily.Monospace, fontSize = 10.sp, lineHeight = 14.sp) }
+                items(lines) { Text(it, color = DuskTheme.onSurface, fontFamily = FontFamily.Monospace, fontSize = DuskTheme.textSize10, lineHeight = DuskTheme.textSize14) }
             }
         }
         Spacer(Modifier.height(16.dp))

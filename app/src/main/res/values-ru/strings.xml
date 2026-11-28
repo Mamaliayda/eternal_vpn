@@ -124,7 +124,7 @@
     <string name="scanner_copy_ips_button">Копировать IP</string>
     <string name="scanner_vpn_active_warning">Обнаружен активный VPN</string>
     <string name="scanner_vpn_active_desc">В системе обнаружен активный VPN. Для точных тестов (Real Delay) трафик должен идти мимо VPN.\nОтключите текущий VPN, чтобы продолжить проверку.</string>
-    <string name="scanner_turn_off_vpn_and_scan">Отключить MLMVPN и сканировать</string>
+    <string name="scanner_turn_off_vpn_and_scan">Отключить Eternal VPN и сканировать</string>
     <string name="scanner_understood">Понятно</string>
     <string name="scanner_cancel">Отмена</string>
     <string name="scanner_test_archive_ips_health">Проверить IP из архива</string>
@@ -540,7 +540,7 @@
     <string name="home_quick">Быстрое подключение</string>
     <string name="home_freeconfig">Бесплатные конфиги</string>
     <string name="home_game">Ускорение игр</string>
-    <string name="home_gateway">MLM Gateway</string>
+    <string name="home_gateway">Eternal VPN Gateway</string>
     <string name="home_fixed_ip">Фиксированный IP</string>
     <string name="home_sublink">Ссылка подписки</string>
     <string name="home_workers">Воркеры</string>
@@ -592,7 +592,7 @@
     <string name="vpn_selected_apps">Выбранные приложения</string>
     <string name="vpn_apps_count">Приложений: %d</string>
     <string name="vpn_quick_tile_count">Серверы быстрого подключения</string>
-    <string name="vpn_quick_tile_desc">Добавьте кнопку mlmvpn в панель быстрых настроек телефона. Одно нажатие выбирает самый быстрый сервер из стольких последних серверов и подключается.</string>
+    <string name="vpn_quick_tile_desc">Добавьте кнопку Eternal VPN в панель быстрых настроек телефона. Одно нажатие выбирает самый быстрый сервер из стольких последних серверов и подключается.</string>
     <string name="vpn_mtu_footer">Размер пакетов, которые отправляет этот телефон, для всех методов: V2Ray, MASQUE, WireGuard, WARP-in-WARP, Psiphon, Tor и VPN Gate. У каждого своё значение по умолчанию — измеренное, а не угаданное. Нажмите «Найти лучшее значение» у любого из них, чтобы измерить эту линию. Уменьшите, если соединение есть, но большие страницы зависают; 1280 проходит почти по любому пути. Допустимо 576–1500.</string>
     <string name="settings_icon_size">Размер значков</string>
     <string name="settings_icon_size_desc">Масштабирует значки главного экрана. Подписи и отступы не меняются.</string>
@@ -764,7 +764,7 @@
     <string name="vpn_kill_switch">Kill switch</string>
     <string name="vpn_reconnect">Переподключить</string>
     <string name="tile_label_vpn">Eternal VPN</string>
-    <string name="tile_label_tunnel">Mlm Tunnel</string>
+    <string name="tile_label_tunnel">Eternal VPN Tunnel</string>
     <string name="wg_data_check">Проверять, что данные действительно идут</string>
     <string name="wg_data_check_hint">Ждёт, пока пройдёт реальный трафик, прежде чем сообщить об успехе. У некоторых операторов рукопожатие WireGuard проходит, а затем все пакеты данных отбрасываются, поэтому одно рукопожатие ничего не доказывает. Без этой проверки подключение быстрее, но «подключено» значит меньше.</string>
     <string name="wg_section_verify">Проверка подключения</string>
@@ -793,7 +793,7 @@
     <string name="cf_resources_workers_empty_body">В этом аккаунте ещё не развёрнут ни один воркер. Установите панель на экране «Облако».</string>
     <string name="cf_resources_workers_footer">Воркер — это сервер в вашем аккаунте Cloudflare. Его удаление ломает созданные на нём конфиги.</string>
     <string name="cf_resources_d1_empty">Нет базы D1</string>
-    <string name="cf_resources_d1_empty_body">Панели MLM и Nahan создают её при развёртывании.</string>
+    <string name="cf_resources_d1_empty_body">Панели Eternal VPN и Nahan создают её при развёртывании.</string>
     <string name="cf_resources_d1_failed">Не удалось прочитать список D1</string>
     <string name="cf_resources_d1_footer">Cloudflare ограничивает число баз данных в бесплатном аккаунте. Удалите одну в панели Cloudflare.</string>
     <string name="cf_resources_kv_empty">Нет пространства имён KV</string>
@@ -1141,9 +1141,9 @@
     <string name="measuring_of">Измерение %1$s из %2$s</string>
     <string name="minutes">%1$s мин</string>
     <string name="minutes_ago"> мин назад</string>
-    <string name="mlm_account_not_found">Аккаунт MLM не найден!</string>
-    <string name="mlm_gateway">MLM Gateway</string>
-    <string name="mlmvpn_private_list">Приватный список MLMVPN · </string>
+    <string name="mlm_account_not_found">Аккаунт Eternal VPN не найден!</string>
+    <string name="mlm_gateway">Eternal VPN Gateway</string>
+    <string name="mlmvpn_private_list">Приватный список Eternal VPN · </string>
     <string name="months_ago"> мес. назад</string>
     <string name="move_configs_to_the_connection_page">Перенести конфиги на страницу подключения: %1$s</string>
     <string name="my_list">Мой список</string>
@@ -1203,7 +1203,7 @@
     <string name="panel_installed_now_i_will_fetch_the">Панель установлена. Теперь я получу из неё конфиги, а затем мы перейдём </string>
     <string name="panels_have_configs">Панелей с конфигами: %1$s</string>
     <string name="pick_a_country_and_tap_quick_scan">Выберите страну и нажмите «Быстрое сканирование». «Сканировать все серверы» проверяет каждый сервер в этой </string>
-    <string name="pick_a_server_in_mlm_gateway_first">Сначала выберите сервер в «MLM Gateway»</string>
+    <string name="pick_a_server_in_mlm_gateway_first">Сначала выберите сервер в «Eternal VPN Gateway»</string>
     <string name="pick_a_server_in_the_gateway_first">Сначала выберите сервер в шлюзе</string>
     <string name="pick_the_region_you_usually_play_on">Выберите регион, где вы обычно играете. Ускоритель измеряет маршрут до серверов этого региона </string>
     <string name="ping">Пинг</string>
@@ -1459,7 +1459,7 @@
     <string name="used_so_far_usedmb_mb_of_limitstr">Использовано: %1$s МБ из %2$s</string>
     <string name="user_created_successfully">Пользователь успешно создан</string>
     <string name="user_edited_successfully">Пользователь успешно изменён</string>
-    <string name="user_management_mlm">Управление пользователями (MLM)</string>
+    <string name="user_management_mlm">Управление пользователями (Eternal VPN)</string>
     <string name="user_not_found">Пользователь не найден!</string>
     <string name="username">Имя пользователя</string>
     <string name="users">Пользователи</string>
@@ -1709,7 +1709,7 @@
     <string name="save_and_fetch">Сохранить и получить</string>
     <string name="save_as_a_file">Сохранить в файл</string>
     <string name="save_as_a_file_the_file_is">«Сохранить в файл» — файл записывается точно и полностью. </string>
-    <string name="saved_to_your_downloads_folder_mlmvpn_relay">Сохранено в папку «Загрузки»: MLMVPN_relay.gs</string>
+    <string name="saved_to_your_downloads_folder_mlmvpn_relay">Сохранено в папку «Загрузки»: EternalVPN_relay.gs</string>
     <string name="scan_qr">Сканировать QR</string>
     <string name="scan_the_config_s_qr_code">Сканировать QR-код конфига</string>
     <string name="scanner">Сканер · </string>
@@ -2455,7 +2455,7 @@
     <string name="manual_2">Вручную</string>
     <string name="means_throwing_away_the_very_thing_that">означает выбросить именно то, что показывает проблему.</string>
     <string name="medium_2">Средне</string>
-    <string name="mlmvpn_private_list_2">Приватный список MLMVPN</string>
+    <string name="mlmvpn_private_list_2">Приватный список Eternal VPN</string>
     <string name="myself_you_can_leave_it_at_any">сам; выйти из него можно в любой момент.</string>
     <string name="network_filtering_a_job_for_the_vpn">Сетевая фильтрация (задача VPN, а не этого раздела)</string>
     <string name="no_bridge_straight_to_the_tor_network">Без моста, напрямую в сеть Tor. Для сети, которая не заблокировала Tor</string>
@@ -2616,7 +2616,7 @@
     <string name="wireguard_game_trial">WireGuard (пробная игровая)</string>
     <string name="wireguard_is_active">WireGuard активен</string>
     <string name="wireguard_scan">Сканирование WireGuard</string>
-    <string name="with_mlmvpn_stay_connected_always_whatever_the">С MLMVPN всегда оставайтесь на связи, в любых условиях</string>
+    <string name="with_mlmvpn_stay_connected_always_whatever_the">С Eternal VPN всегда оставайтесь на связи, в любых условиях</string>
     <string name="with_no_filter_every_server_in_this">Без фильтра показываются все серверы этого списка. Можно выбрать несколько стран </string>
     <string name="word_processing">Обработка текста</string>
     <string name="working_ips_were_found_but_no_combination">Рабочие IP найдены, но ни одной комбинации не создано. Группа, выбранная для объединения, </string>
@@ -2736,18 +2736,18 @@
     <string name="in_quick_connect_i_get_no_responding">В быстром подключении я получаю «не найден отвечающий сервер». Что делать?</string>
     <string name="in_quick_connect_what_does_the_green">Что означает зелёная галочка рядом с именем сервера в быстром подключении?</string>
     <string name="in_the_nhn_section_when_i_create">Почему в разделе NHN, когда я создаю пользователя с ограничением трафика и времени, полученный конфиг не работает?</string>
-    <string name="in_your_phone_s_settings_search_type">В поиске настроек телефона введите «надёжные учётные данные» или «сертификат», затем выберите вкладку «Пользователь». Наш сертификат там называется «MLM VPN Local CA …»; нажмите на него и выберите «Удалить». Точный путь для Samsung, Xiaomi, Pixel, Huawei, Oppo/Realme и Vivo отдельно расписан в уроке 17. Если хотите удалить сразу все установленные сертификаты, на той же странице есть «Очистить учётные данные» — но учтите, что это удалит их все, а не только наш. После удаления галочка второго шага в папке domain fronting снимется сама.</string>
+    <string name="in_your_phone_s_settings_search_type">В поиске настроек телефона введите «надёжные учётные данные» или «сертификат», затем выберите вкладку «Пользователь». Наш сертификат там называется «Eternal VPN Local CA …»; нажмите на него и выберите «Удалить». Точный путь для Samsung, Xiaomi, Pixel, Huawei, Oppo/Realme и Vivo отдельно расписан в уроке 17. Если хотите удалить сразу все установленные сертификаты, на той же странице есть «Очистить учётные данные» — но учтите, что это удалит их все, а не только наш. После удаления галочка второго шага в папке domain fronting снимется сама.</string>
     <string name="iran_configs_1_to_8_no_server">• **Иранские конфиги (1–8):** без сервера, для обычных сайтов и приложений. Первое, что стоит попробовать.\n• **Облачная панель (BPB / EDG / Nahan):** ваш собственный частный сервер в вашем аккаунте Cloudflare; самый надёжный вариант для любых приложений, но его нужно один раз развернуть.\n• **Domain fronting:** без сервера и бесплатно, но только для браузера и требует установки сертификата.\n• **Вкладка «Игры»:** для снижения пинга в играх, а не для открытия сайтов.\n• **Экстренный режим:** когда заблокировано всё и вы не можете даже получить конфиг.</string>
     <string name="is_installing_this_certificate_dangerous_for_my">Опасна ли установка этого сертификата для телефона? Можно ли установить сертификат друга?</string>
     <string name="is_there_a_per_app_setting_choosing">Есть ли «настройка по приложениям» (выбор, какие приложения идут через VPN)?</string>
     <string name="it_is_the_port_the_app_opens">Это порт, который приложение открывает на самом телефоне для передачи трафика. По умолчанию 10808, и если нет особой причины, не меняйте его. Важно, что кроме введённого числа приложение использует ещё и «это число + 10000» (для проверки состояния подключения и страны). Поэтому некоторые числа вызывают проблемы, хотя выглядят допустимыми — например, 21000 конфликтует с диапазоном, который приложение использует для проверки серверов. Если вы введёте неподходящее число, проблема будет написана под полем, и кнопка сохранения не сработает, пока вы её не исправите.</string>
-    <string name="it_means_android_has_not_accepted_the">Это значит, что Android ещё не принял сертификат. Есть три частые причины: 1) на шаге выбора типа сертификата вы выбрали не «Сертификат ЦС» (выбор VPN или Wi-Fi установит его, но нам это бесполезно); 2) вы выбрали не тот файл — нужен MLM-VPN-Certificate.crt; 3) на телефоне нет блокировки экрана (PIN, графический ключ или отпечаток) — Android не установит сертификат, пока вы её не зададите. Закрывать и заново открывать приложение не нужно; оно постоянно проверяет и ставит галочку, как только сертификат установлен.</string>
+    <string name="it_means_android_has_not_accepted_the">Это значит, что Android ещё не принял сертификат. Есть три частые причины: 1) на шаге выбора типа сертификата вы выбрали не «Сертификат ЦС» (выбор VPN или Wi-Fi установит его, но нам это бесполезно); 2) вы выбрали не тот файл — нужен eternal-VPN-Certificate.crt; 3) на телефоне нет блокировки экрана (PIN, графический ключ или отпечаток) — Android не установит сертификат, пока вы её не зададите. Закрывать и заново открывать приложение не нужно; оно постоянно проверяет и ставит галочку, как только сертификат установлен.</string>
     <string name="it_means_that_server_s_country_is">Это значит, что страна этого сервера — уже не заявление списка, а результат измерения. После того как вы действительно подключились к серверу, приложение спрашивает Cloudflare изнутри туннеля, где вышел трафик. Если ответ отличается от старого флага, сервер навсегда переносится в его реальную страну, и вам об этом сообщается. Причина в том, что когда кто-то выбирает страну, смысл в том, чтобы выйти именно в ней.</string>
     <string name="managing_nahan_users_making_configs_for_friends">Управление пользователями Nahan (создание конфигов для друзей)</string>
     <string name="no_tutorial_matched_that_phrase_the_search">Ни один урок не подошёл под эту фразу. Поиск идёт и по заголовкам, и по тексту уроков, </string>
     <string name="nothing_is_wrong_this_method_was_only">Ничего не сломано; этот метод всегда был только для браузера. Начиная с Android 7, Android не позволяет обычным приложениям доверять сертификатам, установленным пользователем — поэтому YouTube, Instagram и остальные никогда не видят этот сертификат и не будут работать. Это ограничение самого Android, и ни одно приложение не может обойти его без root. Открывайте сайты в Chrome; если нужно, чтобы работали сами приложения, используйте конфиги облачной панели или иранские конфиги.</string>
     <string name="numbers_1_to_6_are_built_on">Номера 1–6 построены на старой версии проекта Serverless, а 7 и 8 — на новой (v48) и добавлены совершенно без изменений. Единственное различие между 7 и 8 — интервал между отправляемыми фрагментами (8 — для сетей, которые не терпят коротких интервалов). Если они не подключаются, сначала проверьте локальный порт: эти конфиги работают только на порту `10808`, и мы намеренно оставили их нетронутыми. Если порт неверный, внутри папки иранских конфигов показывается красное предупреждение.</string>
-    <string name="on_the_home_screen_an_icon_named">На главном экране — значок с названием «MLM Gateway». Он совсем не изменился, и всё, что он умеет, на месте. Если не можете его найти, возможно, вы сами его переместили.</string>
+    <string name="on_the_home_screen_an_icon_named">На главном экране — значок с названием «Eternal VPN Gateway». Он совсем не изменился, и всё, что он умеет, на месте. Если не можете его найти, возможно, вы сами его переместили.</string>
     <string name="quick_connect_is_one_of_the_home">Быстрое подключение — один из значков главного экрана: готовый список из тысяч публичных серверов, который приложение скачивает само. Не нужны ни аккаунт, ни создание панели, ни ввод конфига. От облачной панели он отличается тем, что там сервер ваш собственный, в вашем аккаунте Cloudflare (стабильнее, но его нужно один раз развернуть), а здесь серверы публичные и общие (мгновенно, но качество не гарантировано). Полное руководство — в уроках, номер 18.</string>
     <string name="quick_connect_the_ready_made_server_list">Быстрое подключение — готовый список серверов и выбор страны</string>
     <string name="s_0_9_s">^\\s*([۰-۹0-9]+)[.)\\-]\\s*(.*)$</string>
@@ -2757,7 +2757,7 @@
     <string name="that_error_means_your_cloudflare_token_is">Эта ошибка означает, что ваш токен Cloudflare неверен или истёк. Создайте токен заново точно так, как показано в видеоуроках, и снова введите его в приложение.</string>
     <string name="that_is_usually_a_clash_with_the">Обычно это конфликт с предыдущей версией. Сначала полностью удалите старую версию, затем установите новую.</string>
     <string name="that_is_usually_down_to_dns_or">Обычно дело в настройках DNS или MTU. Новые версии стараются это улучшить, но может помочь смена протокола (с BPB на Edge или наоборот).</string>
-    <string name="that_message_means_you_took_the_wrong">Это сообщение значит, что вы пошли не тем путём. Android 11 и новее полностью запрещает установку сертификатов изнутри приложений. Правильный путь — тот, что говорит само приложение: сначала нажмите «Сохранить сертификат в Загрузки», затем в настройках Android → Установить сертификат → Сертификат ЦС выберите MLM-VPN-Certificate.crt из папки Download.</string>
+    <string name="that_message_means_you_took_the_wrong">Это сообщение значит, что вы пошли не тем путём. Android 11 и новее полностью запрещает установку сертификатов изнутри приложений. Правильный путь — тот, что говорит само приложение: сначала нажмите «Сохранить сертификат в Загрузки», затем в настройках Android → Установить сертификат → Сертификат ЦС выберите eternal-VPN-Certificate.crt из папки Download.</string>
     <string name="that_usually_means_the_country_you_picked">Обычно это значит, что в выбранной стране мало рабочих серверов. Выберите в поле страны «Все страны» и поищите снова. Если же вы получаете «серверы не загружены», проблема другая: доступ к источнику списка заблокирован, поэтому сначала подключите один из вариантов обхода санкций или иранский конфиг, затем нажмите кнопку обновления рядом с выбором страны.</string>
     <string name="that_was_fixed_in_update_1_0">Это исправлено в обновлении 1.0.5.</string>
     <string name="the_app_is_tuned_for_most_android">Приложение настроено для большинства версий Android, но если какая-то версия ведёт себя странно, убедитесь, что у вас последнее обновление, или очистите кэш приложения.</string>
@@ -2771,7 +2771,7 @@
     <string name="what_is_quick_connect_and_how_does">Что такое «Быстрое подключение» и чем оно отличается от других разделов?</string>
     <string name="what_is_the_local_port_in_settings">Что такое «локальный порт» в настройках и какое число указать?</string>
     <string name="where_do_the_mythological_config_names_come">Откуда взялись мифологические имена конфигов?</string>
-    <string name="where_is_the_mlm_gateway_vpn_gate">Где MLM Gateway (VPN Gate)?</string>
+    <string name="where_is_the_mlm_gateway_vpn_gate">Где Eternal VPN Gateway (VPN Gate)?</string>
     <string name="which_mode_should_i_use_for_what">Какой режим для чего использовать?</string>
     <string name="while_installing_the_certificate_i_get_couldn">При установке сертификата я получаю «Couldn\'t install CA certificates … from null». Что делать?</string>
     <string name="why_are_videos_and_bots_slow_to">Почему видео и боты медленно загружаются в Telegram или Instagram, хотя я подключён?</string>
@@ -2783,7 +2783,7 @@
     <string name="why_will_the_new_version_not_install">Почему новая версия не устанавливается и я получаю ошибку «Package conflicts»?</string>
     <string name="yes_since_version_1_0_5_it">Да, начиная с версии 1.0.5 оно оптимизировано для Android-телевизоров.</string>
     <string name="yes_the_app_has_it_go_to">Да, в приложении это есть — откройте Настройки, затем Настройки VPN.</string>
-    <string name="you_can_add_the_mlmvpn_tile_to">Вы можете добавить плитку «mlmvpn» в панель быстрых настроек телефона (смахните сверху вниз → изменить/добавить плитки). Одно нажатие включает или выключает VPN; при включении измеряется задержка нескольких последних серверов, и вы подключаетесь к самому быстрому. Сколько серверов проверять (по умолчанию 20), можно изменить в Настройки → Настройки VPN. Примечание: в первый раз нужно один раз подключить VPN изнутри приложения, чтобы выдать разрешение.</string>
+    <string name="you_can_add_the_mlmvpn_tile_to">Вы можете добавить плитку «Eternal VPN» в панель быстрых настроек телефона (смахните сверху вниз → изменить/добавить плитки). Одно нажатие включает или выключает VPN; при включении измеряется задержка нескольких последних серверов, и вы подключаетесь к самому быстрому. Сколько серверов проверять (по умолчанию 20), можно изменить в Настройки → Настройки VPN. Примечание: в первый раз нужно один раз подключить VPN изнутри приложения, чтобы выдать разрешение.</string>
     <string name="vpn_permission_denied">Разрешение на VPN отклонено</string>
     <string name="checking_ping">Проверка пинга…</string>
     <string name="starting_real_delay_test">Запуск реальной проверки задержки…</string>
@@ -2879,13 +2879,13 @@
     <string name="sni_measuring_progress">Измерение… %1$s из %2$s</string>
     <string name="sni_trying_method">Пробуем способ подключения %1$s из %2$s…</string>
     <string name="sni_build_configs">Создать конфиги SNI</string>
-    <string name="sni_build_footer">Только конфиги облачных панелей — BPB, EDG, Nahan и MLM, включая объединённые. Движок SNI соединяется с узлом Cloudflare и позволяет узлу маршрутизировать остальное, поэтому конфиг, чей сервер не находится за этим узлом, так достичь нельзя, и он не предлагается. Ваши оригиналы остаются точно такими же: каждый копируется в новый конфиг, направленный на локальный движок SNI, и копии кладутся в отдельную папку. Уже существующие конфиги пропускаются, так что повторный запуск не создаёт дубликатов.</string>
+    <string name="sni_build_footer">Только конфиги облачных панелей — BPB, EDG, Nahan и Eternal VPN, включая объединённые. Движок SNI соединяется с узлом Cloudflare и позволяет узлу маршрутизировать остальное, поэтому конфиг, чей сервер не находится за этим узлом, так достичь нельзя, и он не предлагается. Ваши оригиналы остаются точно такими же: каждый копируется в новый конфиг, направленный на локальный движок SNI, и копии кладутся в отдельную папку. Уже существующие конфиги пропускаются, так что повторный запуск не создаёт дубликатов.</string>
     <string name="sni_picker_footer">Миллисекунды появятся здесь, когда вы выполните измерение. Конфиг без ответа не обязательно сломан — возможно, заблокирована только точка входа, для чего и служит сканирование под циферблатом.</string>
     <string name="sni_delete_selected">Удалить выбранный конфиг</string>
     <string name="sni_delete_all">Удалить все конфиги SNI (%1$s)</string>
     <string name="sni_delete_footer">Удаляются только копии SNI. Конфиги, из которых они созданы, остаются на месте, и вы можете создать копии снова в любое время.</string>
     <string name="sni_configs_deleted">Удалено конфигов SNI: %1$s</string>
-    <string name="sni_no_cloud_config">Нет облачного конфига для преобразования. Конфиги SNI создаются из панелей — BPB, EDG, Nahan и MLM, включая объединённые, — потому что движок SNI достигает сервера через узел Cloudflare, и так можно достичь только конфига, который находится за этим узлом.</string>
+    <string name="sni_no_cloud_config">Нет облачного конфига для преобразования. Конфиги SNI создаются из панелей — BPB, EDG, Nahan и Eternal VPN, включая объединённые, — потому что движок SNI достигает сервера через узел Cloudflare, и так можно достичь только конфига, который находится за этим узлом.</string>
     <string name="update_checking">Проверка…</string>
     <string name="lan_section_address">АДРЕС ДЛЯ ДРУГОГО УСТРОЙСТВА</string>
     <string name="lan_section_clients">ПОДКЛЮЧЁННЫЕ УСТРОЙСТВА</string>
@@ -3690,7 +3690,7 @@
     <string name="studio_bulk_new_title">Много пользователей сразу</string>
     <string name="studio_bulk_new_sub">Префикс и количество, и все получают одинаковые условия. Каждый создаётся, получает конфиг и ссылку — те же три шага, что и для одного человека, повторённые.</string>
     <string name="studio_bulk_new_prefix">Префикс имени</string>
-    <string name="studio_bulk_new_prefix_hint">mlm-</string>
+    <string name="studio_bulk_new_prefix_hint">eternal-</string>
     <string name="studio_bulk_new_count">Сколько</string>
     <string name="studio_bulk_new_start">Начать нумерацию с</string>
     <string name="studio_bulk_new_preview">%1$s … %2$s — %3$s человек</string>
@@ -4635,7 +4635,7 @@
     <string name="warp_ladder_skip">%1$s был закрыт в этом интернете; сразу переходим к %2$s</string>
     <string name="warp_ladder_none">Сейчас в этом интернете не проходит ни MASQUE, ни WireGuard, ни WARP-в-WARP; попробуйте быстрое подключение.</string>
     <string name="mae_short">MAE</string>
-    <string name="mae_title">MLM Adaptive Engine</string>
+    <string name="mae_title">Eternal VPN Adaptive Engine</string>
     <string name="mae_onboard_title">Какими приложениями и сайтами вы пользуетесь больше всего?</string>
     <string name="mae_onboard_subtitle">Выберите важное для вас. MAE найдёт самый быстрый рабочий путь для каждого в вашей сети.</string>
     <string name="mae_onboard_installed">На этом телефоне</string>
@@ -4783,7 +4783,7 @@
     <string name="mae_route_footer">«Автоматически» позволяет MAE выбирать лучший маршрут и переключаться, когда он перестаёт работать.</string>
     <string name="mae_remove_app">Удалить из MAE</string>
     <string name="flux_title_short">FLUX</string>
-    <string name="flux_title">MLM FLUX Engine</string>
+    <string name="flux_title">Eternal VPN FLUX Engine</string>
     <string name="flux_country">Страна</string>
     <string name="flux_country_auto">Автоматически</string>
     <string name="flux_country_here">Работает в этой сети</string>
@@ -4944,10 +4944,10 @@
     <string name="doc_works">Что работает в этом интернете</string>
     <string name="doc_stages">Результаты</string>
     <string name="doc_report">Отчёт</string>
-    <string name="doc_report_footer">Отправьте файл в группу mlmvpn, чтобы мы исправили это для всех. В нём нет личной информации.</string>
+    <string name="doc_report_footer">Отправьте файл в группу Eternal VPN, чтобы мы исправили это для всех. В нём нет личной информации.</string>
     <string name="doc_share">Отправить файл отчёта</string>
     <string name="doc_save">Сохранить файл</string>
-    <string name="doc_group">Открыть группу mlmvpn</string>
+    <string name="doc_group">Открыть группу Eternal VPN</string>
     <string name="doc_view">Показать текст отчёта</string>
     <string name="doc_saved">Файл сохранён</string>
     <string name="doc_save_failed">Не удалось сохранить файл</string>
@@ -5287,7 +5287,7 @@
     <string name="cfnet_panel_netra">Панель подписки на конфиги</string>
     <string name="cfnet_panel_gozargah">Панель управления подключениями</string>
     <string name="cfnet_panel_nova">Простая панель</string>
-    <string name="cfnet_panel_mlm">Config Studio / панель MLM</string>
+    <string name="cfnet_panel_mlm">Config Studio / панель Eternal VPN</string>
     <string name="cfnet_config_header">Получить конфиги из панелей</string>
     <string name="cfnet_config_footer">Перечислены только панели, установленные в этом аккаунте. Конфиги сохраняются как группа в «Облаке».</string>
     <string name="cfnet_config_go">Получить конфиги</string>
@@ -5316,7 +5316,7 @@
     <string name="mlm_get_xhttp">Получить конфиг XHTTP</string>
     <string name="mlm_xhttp_checking">Создание и проверка в этой сети…</string>
     <string name="mlm_xhttp_ready">Конфиг XHTTP передал реальные данные в этой сети и добавлен в ваши конфиги.</string>
-    <string name="mlm_xhttp_outdated">Сначала обновите панель MLM (строка «Обновить» ниже); XHTTP нужна её новая версия.</string>
+    <string name="mlm_xhttp_outdated">Сначала обновите панель Eternal VPN (строка «Обновить» ниже); XHTTP нужна её новая версия.</string>
     <string name="mlm_xhttp_not_working">Конфиг XHTTP не передал данные в этой сети, поэтому не добавлен.</string>
     <string name="mlm_xhttp_no_config">Панель не дала конфига, из которого можно сделать XHTTP.</string>
     <string name="mlm_xhttp_failed">Не удалось получить конфиг XHTTP; попробуйте снова.</string>
@@ -5409,7 +5409,7 @@
     <string name="proton_route_lost">Способ входа оборвался. Страница остаётся; она продолжит, когда способ входа вернётся.</string>
     <string name="proton_reload">Перезагрузить</string>
     <string name="proton_page_error">Ошибка страницы: %1$s</string>
-    <string name="scout_title">MLM Scout</string>
+    <string name="scout_title">Eternal VPN Scout</string>
     <string name="gst_relay_not_found">❌ У Google нет веб-приложения с этим ID (404). Возможно, вы вставили Script ID или тестовый (/dev) ID, или развёртывание архивировано. В Apps Script откройте Deploy › Manage deployments и скопируйте Deployment ID (он начинается с AKfy).</string>
     <string name="gst_relay_key_not_used">⚠️ Этот ретранслятор работает, но его пароль отличается от других ваших ретрансляторов, поэтому туннель его не использует. Создайте его заново с тем же паролем, что и у первого ретранслятора.</string>
     <string name="gst_front_blocked">⚠️ Ретранслятор работает, но маршрут Google к нему в этой сети закрыт, поэтому туннель не передавал бы данные. Попробуйте другую сеть или отметьте другие адреса в «Сетевой маршрут».</string>

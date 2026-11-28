@@ -244,7 +244,7 @@ private fun StepDots(current: Int, total: Int) {
                             i < current -> DuskTheme.primary.copy(alpha = 0.45f)
                             else -> Color.White.copy(alpha = 0.18f)
                         },
-                        RoundedCornerShape(3.dp),
+                        RoundedCornerShape(DuskTheme.corner3),
                     )
             )
         }
@@ -258,7 +258,7 @@ private fun StepHeader(title: String, subtitle: String) {
     Text(
         title,
         color = DuskTheme.onSurface,
-        fontSize = 22.sp,
+        fontSize = DuskTheme.textSize22,
         fontWeight = FontWeight.Bold,
         modifier = Modifier.padding(horizontal = 20.dp),
     )
@@ -266,8 +266,8 @@ private fun StepHeader(title: String, subtitle: String) {
     Text(
         subtitle,
         color = DuskTheme.muted,
-        fontSize = 14.sp,
-        lineHeight = 23.sp,
+        fontSize = DuskTheme.textSize14,
+        lineHeight = DuskTheme.textSize23,
         modifier = Modifier.padding(horizontal = 20.dp),
     )
     Spacer(Modifier.height(18.dp))
@@ -303,7 +303,7 @@ private fun WizardField(
                     singleLine = true,
                     textStyle = TextStyle(
                         color = DuskTheme.onSurface,
-                        fontSize = 17.sp,
+                        fontSize = DuskTheme.textSize17,
                         fontFamily = if (monospace) FontFamily.Monospace else FontFamily.Default,
                     ),
                     cursorBrush = SolidColor(DuskTheme.primary),
@@ -314,7 +314,7 @@ private fun WizardField(
                                 Text(
                                     placeholder,
                                     color = DuskTheme.muted.copy(alpha = 0.6f),
-                                    fontSize = 17.sp,
+                                    fontSize = DuskTheme.textSize17,
                                 )
                             }
                             inner()
@@ -340,7 +340,7 @@ private fun WizardPrimary(label: String, onClick: () -> Unit) {
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Text(label, color = Color.White, fontSize = 17.sp, fontWeight = FontWeight.SemiBold)
+        Text(label, color = Color.White, fontSize = DuskTheme.textSize17, fontWeight = FontWeight.SemiBold)
     }
 }
 
@@ -354,7 +354,7 @@ private fun InfoCard(text: String) {
             .frostedGlass(CardShape)
             .padding(16.dp),
     ) {
-        Text(text, color = DuskTheme.muted, fontSize = 13.sp, lineHeight = 22.sp)
+        Text(text, color = DuskTheme.muted, fontSize = DuskTheme.textSize13, lineHeight = DuskTheme.textSize22)
     }
 }
 
@@ -450,8 +450,8 @@ private fun StepScript(
             Text(
                 scriptCode,
                 color = DuskTheme.success,
-                fontSize = 11.sp,
-                lineHeight = 16.sp,
+                fontSize = DuskTheme.textSize11,
+                lineHeight = DuskTheme.textSize16,
                 fontFamily = FontFamily.Monospace,
             )
         }
@@ -535,11 +535,11 @@ private fun StepDeploymentId(deploymentId: String, authKey: String, onChange: (S
                     Text(
                         relayVerdict(r),
                         color = relayTone(r),
-                        fontSize = 16.sp,
+                        fontSize = DuskTheme.textSize16,
                         fontWeight = FontWeight.SemiBold,
                     )
                     Spacer(Modifier.height(4.dp))
-                    Text(r.message, color = DuskTheme.muted, fontSize = 13.sp, lineHeight = 21.sp)
+                    Text(r.message, color = DuskTheme.muted, fontSize = DuskTheme.textSize13, lineHeight = DuskTheme.textSize21)
                 }
             }
             if (needsAuth) {
@@ -581,15 +581,15 @@ private fun StepDone() {
             )
         }
         Spacer(Modifier.height(20.dp))
-        Text(S(R.string.the_relay_is_ready), color = DuskTheme.onSurface, fontSize = 22.sp, fontWeight = FontWeight.Bold)
+        Text(S(R.string.the_relay_is_ready), color = DuskTheme.onSurface, fontSize = DuskTheme.textSize22, fontWeight = FontWeight.Bold)
         Spacer(Modifier.height(10.dp))
         Text(
             S(R.string.your_relay_is_saved_to_get_around) +
                 S(R.string.as_well_the_tunnel_spreads_the_load) +
                 S(R.string.automatically_when_one_runs_out),
             color = DuskTheme.muted,
-            fontSize = 14.sp,
-            lineHeight = 23.sp,
+            fontSize = DuskTheme.textSize14,
+            lineHeight = DuskTheme.textSize23,
             textAlign = TextAlign.Center,
         )
     }
@@ -647,7 +647,7 @@ fun cleanAppsScript(rawIn: String, authKey: String): String {
 fun saveScriptToDownloads(context: android.content.Context, code: String): Boolean {
     return try {
         val bytes = code.toByteArray(Charsets.UTF_8)
-        val name = "MLMVPN_relay.gs"
+        val name = "EternalVPN_relay.gs"
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
             val resolver = context.contentResolver
             val values = android.content.ContentValues().apply {

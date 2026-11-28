@@ -115,11 +115,11 @@ fun CloudUsageModule(accounts: List<CloudAccount>) {
         Column(Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp, top = 14.dp, bottom = 12.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Column(Modifier.weight(1f)) {
-                    Text(longDay(keys[sel], sel == today), color = DuskTheme.muted, fontSize = 13.sp)
+                    Text(longDay(keys[sel], sel == today), color = DuskTheme.muted, fontSize = DuskTheme.textSize13)
                     Row(verticalAlignment = Alignment.Bottom) {
-                        Text(if (snap == null) "—" else grouped(totals[sel]), color = DuskTheme.onSurface, fontSize = 32.sp, fontWeight = FontWeight.Bold)
+                        Text(if (snap == null) "—" else grouped(totals[sel]), color = DuskTheme.onSurface, fontSize = DuskTheme.textSize32, fontWeight = FontWeight.Bold)
                         Spacer(Modifier.width(6.dp))
-                        Text(tr("درخواست", "requests"), color = DuskTheme.muted, fontSize = 15.sp, modifier = Modifier.padding(bottom = 6.dp))
+                        Text(tr("درخواست", "requests"), color = DuskTheme.muted, fontSize = DuskTheme.textSize15, modifier = Modifier.padding(bottom = 6.dp))
                     }
                 }
                 if (loading) CircularProgressIndicator(Modifier.size(20.dp), color = DuskTheme.muted, strokeWidth = 2.dp)
@@ -139,9 +139,9 @@ fun CloudUsageModule(accounts: List<CloudAccount>) {
                             verticalArrangement = Arrangement.Bottom,
                         ) {
                             if (totals[d] == 0L || snap == null) {
-                                Box(Modifier.fillMaxWidth().height(3.dp).clip(RoundedCornerShape(2.dp)).background(DuskTheme.disabled.copy(alpha = 0.3f)))
+                                Box(Modifier.fillMaxWidth().height(3.dp).clip(RoundedCornerShape(DuskTheme.corner2)).background(DuskTheme.disabled.copy(alpha = 0.3f)))
                             } else {
-                                Column(Modifier.fillMaxWidth().fillMaxHeight(frac.coerceAtLeast(0.02f)).clip(RoundedCornerShape(topStart = 5.dp, topEnd = 5.dp, bottomStart = 2.dp, bottomEnd = 2.dp))) {
+                                Column(Modifier.fillMaxWidth().fillMaxHeight(frac.coerceAtLeast(0.02f)).clip(RoundedCornerShape(topStart = DuskTheme.corner5, topEnd = DuskTheme.corner5, bottomStart = DuskTheme.corner2, bottomEnd = DuskTheme.corner2))) {
                                     // Top of the stack is the last account, so the first sits on the baseline.
                                     perAccount.indices.reversed().forEach { a ->
                                         val v = perAccount[a]?.days?.getOrNull(d) ?: 0L
@@ -166,7 +166,7 @@ fun CloudUsageModule(accounts: List<CloudAccount>) {
             Spacer(Modifier.height(6.dp))
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                 keys.indices.forEach { d ->
-                    Text(shortDay(keys[d]), color = when { d == sel -> DuskTheme.onSurface; d > today -> DuskTheme.muted.copy(alpha = 0.45f); else -> DuskTheme.muted }, fontSize = 11.sp,
+                    Text(shortDay(keys[d]), color = when { d == sel -> DuskTheme.onSurface; d > today -> DuskTheme.muted.copy(alpha = 0.45f); else -> DuskTheme.muted }, fontSize = DuskTheme.textSize11,
                         fontWeight = if (d == sel) FontWeight.SemiBold else FontWeight.Normal,
                         modifier = Modifier.weight(1f), textAlign = androidx.compose.ui.text.style.TextAlign.Center)
                 }
@@ -174,7 +174,7 @@ fun CloudUsageModule(accounts: List<CloudAccount>) {
             if (snap != null && average > 0) Row(Modifier.padding(top = 8.dp), verticalAlignment = Alignment.CenterVertically) {
                 Box(Modifier.width(14.dp).height(2.dp).background(DuskTheme.success))
                 Spacer(Modifier.width(6.dp))
-                Text(tr("میانگین روزانه ", "Daily average ") + grouped(average), color = DuskTheme.muted, fontSize = 12.sp)
+                Text(tr("میانگین روزانه ", "Daily average ") + grouped(average), color = DuskTheme.muted, fontSize = DuskTheme.textSize12)
             }
         }
         // One row per account: its colour, its address, the selected day's figure against its own 100,000.
@@ -189,13 +189,13 @@ fun CloudUsageModule(accounts: List<CloudAccount>) {
                 Spacer(Modifier.width(12.dp))
                 Column(Modifier.weight(1f)) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text(acc.email.ifBlank { acc.name }, color = DuskTheme.onSurface, fontSize = 15.sp, maxLines = 1, overflow = TextOverflow.Ellipsis, modifier = Modifier.weight(1f))
+                        Text(acc.email.ifBlank { acc.name }, color = DuskTheme.onSurface, fontSize = DuskTheme.textSize15, maxLines = 1, overflow = TextOverflow.Ellipsis, modifier = Modifier.weight(1f))
                         Spacer(Modifier.width(8.dp))
                         Text(when {
                             u == null -> "—"
                             u.failed != null -> tr("آمار در دسترس نیست", "No statistics")
                             else -> grouped(v)
-                        }, color = DuskTheme.muted, fontSize = 14.sp)
+                        }, color = DuskTheme.muted, fontSize = DuskTheme.textSize14)
                     }
                     if (u != null && u.failed == null) {
                         Spacer(Modifier.height(6.dp))

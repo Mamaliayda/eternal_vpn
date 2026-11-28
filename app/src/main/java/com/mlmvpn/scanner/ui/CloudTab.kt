@@ -1,5 +1,7 @@
 package com.mlmvpn.scanner.ui
 
+import com.mlmvpn.scanner.ui.theme.DuskTheme
+
 import androidx.compose.material3.TextButton
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material.icons.filled.Download
@@ -431,9 +433,9 @@ fun CloudTab(
                         ) {
                             Icon(Icons.Default.Cloud, contentDescription = null, tint = DuskTheme.muted.copy(alpha = 0.72f), modifier = Modifier.size(96.dp))
                             Spacer(modifier = Modifier.height(24.dp))
-                            Text(stringResource(R.string.cloud_no_account_connected), color = DuskTheme.onSurface, fontWeight = FontWeight.Bold, fontSize = 18.sp)
+                            Text(stringResource(R.string.cloud_no_account_connected), color = DuskTheme.onSurface, fontWeight = FontWeight.Bold, fontSize = DuskTheme.textSize18)
                             Spacer(modifier = Modifier.height(8.dp))
-                            Text(stringResource(R.string.cloud_press_add_button), color = DuskTheme.muted, fontSize = 14.sp)
+                            Text(stringResource(R.string.cloud_press_add_button), color = DuskTheme.muted, fontSize = DuskTheme.textSize14)
                         }
                     }
                 }
@@ -689,7 +691,7 @@ private fun CloudDetailPlaceholder() {
             Text(
                 S(R.string.cloud_pick_a_row),
                 color = DuskTheme.muted,
-                fontSize = 15.sp,
+                fontSize = DuskTheme.textSize15,
             )
         }
     }
@@ -1033,7 +1035,7 @@ fun AccountGroupCard(
                 Text(
                     account.email,
                     color = DuskTheme.onSurface,
-                    fontSize = 15.sp,
+                    fontSize = DuskTheme.textSize15,
                     fontWeight = FontWeight.SemiBold,
                     maxLines = 1,
                     overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis,
@@ -1048,7 +1050,7 @@ fun AccountGroupCard(
                         Text(
                             if (!isEmailVerified) S(R.string.email_not_verified) else S(R.string.subdomain_not_created),
                             color = DuskTheme.muted,
-                            fontSize = 12.sp,
+                            fontSize = DuskTheme.textSize12,
                         )
                     }
                 } else {
@@ -1159,7 +1161,7 @@ fun AccountGroupCard(
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clip(RoundedCornerShape(0.dp))
+                        .clip(RoundedCornerShape(DuskTheme.corner0))
                         .clickable(enabled = deployState != "deploying") {
                             if (deployState == "done") return@clickable
                             deployState = "deploying"
@@ -1195,7 +1197,7 @@ fun AccountGroupCard(
                         val color = if (deployState == "done") DuskTheme.success else DuskTheme.onSurface
                         Icon(if (deployState == "done") Icons.Default.CheckCircle else Icons.Default.PlayArrow, contentDescription = null, tint = color, modifier = Modifier.size(20.dp))
                         Spacer(modifier = Modifier.width(12.dp))
-                        Text(if (deployState == "deploying") stringResource(R.string.cloud_deploying) else if (deployState == "done") stringResource(R.string.cloud_deployed) else stringResource(R.string.cloud_deploy_bpb), color = color, fontSize = 15.sp, modifier = Modifier.weight(1f))
+                        Text(if (deployState == "deploying") stringResource(R.string.cloud_deploying) else if (deployState == "done") stringResource(R.string.cloud_deployed) else stringResource(R.string.cloud_deploy_bpb), color = color, fontSize = DuskTheme.textSize15, modifier = Modifier.weight(1f))
                     }
                 }
                 // The deploy really does report a percentage; this is that number, at the
@@ -1259,7 +1261,7 @@ fun AccountGroupCard(
                             Icon(Icons.Default.Refresh, contentDescription = null, tint = color, modifier = Modifier.size(20.dp))
                         }
                         Spacer(modifier = Modifier.width(12.dp))
-                        Text(if (isFetching) stringResource(R.string.cloud_fetching) else stringResource(R.string.cloud_fetch_bpb_node), color = color, fontSize = 15.sp, modifier = Modifier.weight(1f))
+                        Text(if (isFetching) stringResource(R.string.cloud_fetching) else stringResource(R.string.cloud_fetch_bpb_node), color = color, fontSize = DuskTheme.textSize15, modifier = Modifier.weight(1f))
                     }
                 }
                 // Deployed panels can be replaced or taken down; see PanelBuild.
@@ -1295,7 +1297,7 @@ fun AccountGroupCard(
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clip(RoundedCornerShape(0.dp))
+                        .clip(RoundedCornerShape(DuskTheme.corner0))
                         .clickable(enabled = edgDeployState != "deploying") { runEdgInstall(false) }
                 ) {
                     
@@ -1309,7 +1311,7 @@ fun AccountGroupCard(
                         val color = if (edgDeployState == "done") DuskTheme.success else DuskTheme.onSurface
                         Icon(if (edgDeployState == "done") Icons.Default.CheckCircle else Icons.Default.PlayArrow, contentDescription = null, tint = color, modifier = Modifier.size(20.dp))
                         Spacer(modifier = Modifier.width(12.dp))
-                        Text(if (edgDeployState == "deploying") stringResource(R.string.cloud_deploying) else if (edgDeployState == "done") stringResource(R.string.cloud_deployed) else stringResource(R.string.cloud_deploy_edg), color = color, fontSize = 15.sp, modifier = Modifier.weight(1f))
+                        Text(if (edgDeployState == "deploying") stringResource(R.string.cloud_deploying) else if (edgDeployState == "done") stringResource(R.string.cloud_deployed) else stringResource(R.string.cloud_deploy_edg), color = color, fontSize = DuskTheme.textSize15, modifier = Modifier.weight(1f))
                     }
                 }
                 // The deploy really does report a percentage; this is that number, at the
@@ -1357,7 +1359,7 @@ fun AccountGroupCard(
                             Icon(Icons.Default.Refresh, contentDescription = null, tint = color, modifier = Modifier.size(20.dp))
                         }
                         Spacer(modifier = Modifier.width(12.dp))
-                        Text(if (isEdgFetching) stringResource(R.string.cloud_fetching) else stringResource(R.string.cloud_fetch_edg_node), color = color, fontSize = 15.sp, modifier = Modifier.weight(1f))
+                        Text(if (isEdgFetching) stringResource(R.string.cloud_fetching) else stringResource(R.string.cloud_fetch_edg_node), color = color, fontSize = DuskTheme.textSize15, modifier = Modifier.weight(1f))
                     }
                 }
                 
@@ -1382,7 +1384,7 @@ fun AccountGroupCard(
                     ) {
                         Icon(Icons.Default.Settings, contentDescription = null, tint = color, modifier = Modifier.size(20.dp))
                         Spacer(modifier = Modifier.width(12.dp))
-                        Text(stringResource(R.string.cloud_edg_settings), color = color, fontSize = 15.sp, modifier = Modifier.weight(1f))
+                        Text(stringResource(R.string.cloud_edg_settings), color = color, fontSize = DuskTheme.textSize15, modifier = Modifier.weight(1f))
                     }
                 }
                 // Deployed panels can be replaced or taken down; see PanelBuild.
@@ -1453,7 +1455,7 @@ fun AccountGroupCard(
                         val color = if (nahanDeployState == "done") DuskTheme.success else DuskTheme.onSurface
                         Icon(if (nahanDeployState == "done") Icons.Default.CheckCircle else Icons.Default.PlayArrow, contentDescription = null, tint = color, modifier = Modifier.size(20.dp))
                         Spacer(modifier = Modifier.width(12.dp))
-                        Text(if (nahanDeployState == "deploying") stringResource(R.string.cloud_deploying_short) else if (nahanDeployState == "done") stringResource(R.string.cloud_deployed) else stringResource(R.string.cloud_deploy_nhn), color = color, fontSize = 15.sp, modifier = Modifier.weight(1f))
+                        Text(if (nahanDeployState == "deploying") stringResource(R.string.cloud_deploying_short) else if (nahanDeployState == "done") stringResource(R.string.cloud_deployed) else stringResource(R.string.cloud_deploy_nhn), color = color, fontSize = DuskTheme.textSize15, modifier = Modifier.weight(1f))
                     }
                 }
                 // The deploy really does report a percentage; this is that number, at the
@@ -1569,7 +1571,7 @@ fun AccountGroupCard(
                             Icon(Icons.Default.Refresh, contentDescription = null, tint = color, modifier = Modifier.size(20.dp))
                         }
                         Spacer(modifier = Modifier.width(12.dp))
-                        Text(if (isNahanFetching) stringResource(R.string.cloud_fetching_short) else stringResource(R.string.cloud_nhn_node), color = color, fontSize = 15.sp, modifier = Modifier.weight(1f))
+                        Text(if (isNahanFetching) stringResource(R.string.cloud_fetching_short) else stringResource(R.string.cloud_nhn_node), color = color, fontSize = DuskTheme.textSize15, modifier = Modifier.weight(1f))
                     }
                 }
 
@@ -1594,7 +1596,7 @@ fun AccountGroupCard(
                     ) {
                         Icon(Icons.Default.Settings, contentDescription = null, tint = color, modifier = Modifier.size(20.dp))
                         Spacer(modifier = Modifier.width(12.dp))
-                        Text(stringResource(R.string.cloud_settings), color = color, fontSize = 15.sp, modifier = Modifier.weight(1f))
+                        Text(stringResource(R.string.cloud_settings), color = color, fontSize = DuskTheme.textSize15, modifier = Modifier.weight(1f))
                     }
                 }
                 // Deployed panels can be replaced or taken down; see PanelBuild.
@@ -1733,7 +1735,7 @@ fun AccountGroupCard(
             
             // --- ROW 5: MLM Engine ---
             CloudPanelHeaderRow(
-                title = "MLM",
+                title = "Eternal VPN",
                 // The same engine as Config Studio's; said, so the two are not taken for two panels.
                 subtitle = if (account.isStudioManaged) S(R.string.cloud_mlm_studio_subtitle)
                 else S(R.string.our_own_panel_with_user_management),
@@ -1781,7 +1783,7 @@ fun AccountGroupCard(
                         val color = if (mlmDeployState == "done") DuskTheme.success else DuskTheme.onSurface
                         Icon(if (mlmDeployState == "done") Icons.Default.CheckCircle else Icons.Default.PlayArrow, contentDescription = null, tint = color, modifier = Modifier.size(20.dp))
                         Spacer(modifier = Modifier.width(12.dp))
-                        Text(if (mlmDeployState == "deploying") S(R.string.installing_2) else if (mlmDeployState == "done") S(R.string.installed) else S(R.string.install_on_account), color = color, fontSize = 15.sp, modifier = Modifier.weight(1f))
+                        Text(if (mlmDeployState == "deploying") S(R.string.installing_2) else if (mlmDeployState == "done") S(R.string.installed) else S(R.string.install_on_account), color = color, fontSize = DuskTheme.textSize15, modifier = Modifier.weight(1f))
                     }
                 }
                 // The deploy really does report a percentage; this is that number, at the
@@ -1849,8 +1851,8 @@ fun AccountGroupCard(
                         Icon(Icons.Default.SwapVert, contentDescription = null, tint = color, modifier = Modifier.size(20.dp))
                         Spacer(modifier = Modifier.width(12.dp))
                         Column(modifier = Modifier.weight(1f)) {
-                            Text(S(R.string.mlm_get_xhttp), color = color, fontSize = 15.sp)
-                            if (mlmXhttpBusy) Text(S(R.string.mlm_xhttp_checking), color = DuskTheme.muted.copy(alpha = 0.72f), fontSize = 12.sp)
+                            Text(S(R.string.mlm_get_xhttp), color = color, fontSize = DuskTheme.textSize15)
+                            if (mlmXhttpBusy) Text(S(R.string.mlm_xhttp_checking), color = DuskTheme.muted.copy(alpha = 0.72f), fontSize = DuskTheme.textSize12)
                         }
                         if (mlmXhttpBusy) CircularProgressIndicator(modifier = Modifier.size(16.dp), color = DuskTheme.primary, strokeWidth = 2.dp)
                     }
@@ -1887,7 +1889,7 @@ fun AccountGroupCard(
                         Spacer(modifier = Modifier.width(12.dp))
                         Text(
                             if (account.isStudioManaged) S(R.string.cloud_mlm_users_in_studio) else S(R.string.users),
-                            color = color, fontSize = 15.sp, modifier = Modifier.weight(1f),
+                            color = color, fontSize = DuskTheme.textSize15, modifier = Modifier.weight(1f),
                         )
                     }
                 }
@@ -1913,7 +1915,7 @@ fun AccountGroupCard(
                     ) {
                         Icon(Icons.Default.Settings, contentDescription = null, tint = color, modifier = Modifier.size(20.dp))
                         Spacer(modifier = Modifier.width(12.dp))
-                        Text(S(R.string.settings), color = color, fontSize = 15.sp, modifier = Modifier.weight(1f))
+                        Text(S(R.string.settings), color = color, fontSize = DuskTheme.textSize15, modifier = Modifier.weight(1f))
                     }
                 }
                 // Deployed panels can be replaced or taken down; see PanelBuild.
@@ -2049,7 +2051,7 @@ fun AccountGroupCard(
                                 Text(
                                     stringResource(R.string.cloud_subdomain_failed_reason, subdomainCreationError),
                                     color = DuskTheme.muted,
-                                    fontSize = 12.sp,
+                                    fontSize = DuskTheme.textSize12,
                                     textAlign = androidx.compose.ui.text.style.TextAlign.Center,
                                     modifier = Modifier.widthIn(max = 300.dp),
                                 )
@@ -2065,7 +2067,7 @@ fun AccountGroupCard(
                             Text(
                                 stringResource(R.string.cf_fix_open),
                                 color = DuskTheme.muted,
-                                fontSize = 12.sp,
+                                fontSize = DuskTheme.textSize12,
                             )
                         }
                     }
@@ -2125,7 +2127,7 @@ fun AccountGroupCard(
             Box(
                 modifier = Modifier
                     .size(30.dp)
-                    .clip(androidx.compose.foundation.shape.RoundedCornerShape(9.dp))
+                    .clip(androidx.compose.foundation.shape.RoundedCornerShape(DuskTheme.corner9))
                     .background(Color.White.copy(alpha = 0.09f)),
                 contentAlignment = Alignment.Center,
             ) {
@@ -2141,13 +2143,13 @@ fun AccountGroupCard(
                 Text(
                     stringResource(R.string.cloud_daily_usage),
                     color = DuskTheme.onSurface,
-                    fontSize = 15.sp,
+                    fontSize = DuskTheme.textSize15,
                 )
                 Spacer(modifier = Modifier.height(2.dp))
                 Text(
                     S(R.string.cloudflare_s_free_allowance_for_this_whole),
                     color = DuskTheme.muted,
-                    fontSize = 11.sp,
+                    fontSize = DuskTheme.textSize11,
                 )
             }
             when {
@@ -2159,10 +2161,10 @@ fun AccountGroupCard(
                 usageData > 0f -> Text(
                     S(R.string.str) + faCount((quotaFraction * 100).toInt()),
                     color = quotaTone,
-                    fontSize = 15.sp,
+                    fontSize = DuskTheme.textSize15,
                     fontWeight = FontWeight.Medium,
                 )
-                else -> Text(S(R.string.show), color = DuskTheme.muted, fontSize = 15.sp)
+                else -> Text(S(R.string.show), color = DuskTheme.muted, fontSize = DuskTheme.textSize15)
             }
             Spacer(modifier = Modifier.width(8.dp))
             Icon(
@@ -2193,13 +2195,13 @@ fun AccountGroupCard(
                     Text(
                         faGrouped(usageData.toInt()) + S(R.string.of) + faGrouped(100_000),
                         color = DuskTheme.onSurface,
-                        fontSize = 12.sp,
+                        fontSize = DuskTheme.textSize12,
                         fontWeight = FontWeight.Medium,
                     )
                     Text(
                         faGrouped((100_000 - usageData.toInt()).coerceAtLeast(0)) + S(R.string.left),
                         color = DuskTheme.muted,
-                        fontSize = 12.sp,
+                        fontSize = DuskTheme.textSize12,
                     )
                 }
                 Spacer(modifier = Modifier.height(10.dp))
@@ -2209,8 +2211,8 @@ fun AccountGroupCard(
                         S(R.string.request_and_nothing_is_added_while_you) +
                         S(R.string.every_disconnect_and_reconnect_and_every_switch),
                     color = DuskTheme.muted,
-                    fontSize = 11.sp,
-                    lineHeight = 18.sp,
+                    fontSize = DuskTheme.textSize11,
+                    lineHeight = DuskTheme.textSize18,
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
@@ -2219,8 +2221,8 @@ fun AccountGroupCard(
                         S(R.string.this_account_s_configs_will_not_connect) +
                         S(R.string.cloudflare_account_and_spread_the_load_across),
                     color = DuskTheme.muted,
-                    fontSize = 11.sp,
-                    lineHeight = 18.sp,
+                    fontSize = DuskTheme.textSize11,
+                    lineHeight = DuskTheme.textSize18,
                 )
                 Spacer(modifier = Modifier.height(11.dp))
                 Row(
@@ -2237,7 +2239,7 @@ fun AccountGroupCard(
                         modifier = Modifier.size(15.dp),
                     )
                     Spacer(modifier = Modifier.width(6.dp))
-                    Text(S(R.string.refresh), color = DuskTheme.onSurface, fontSize = 13.sp)
+                    Text(S(R.string.refresh), color = DuskTheme.onSurface, fontSize = DuskTheme.textSize13)
                 }
             }
         }
@@ -2429,7 +2431,7 @@ private fun CloudGroupHandoff(
             Text(
                 stringResource(R.string.cloud_group_in_v2ray),
                 color = DuskTheme.muted,
-                fontSize = 12.sp,
+                fontSize = DuskTheme.textSize12,
                 modifier = Modifier.weight(1f),
             )
         } else {
@@ -2462,7 +2464,7 @@ private fun CloudGroupHandoff(
                 Spacer(Modifier.width(6.dp))
                 Text(
                     stringResource(R.string.cloud_group_send_to_v2ray, pending),
-                    fontSize = 12.sp,
+                    fontSize = DuskTheme.textSize12,
                     fontWeight = FontWeight.Bold,
                     maxLines = 1,
                 )
@@ -2476,7 +2478,7 @@ private fun CloudGroupHandoff(
             colors = androidx.compose.material3.ButtonDefaults.textButtonColors(contentColor = DuskTheme.primary),
             contentPadding = PaddingValues(horizontal = 10.dp),
         ) {
-            Text(stringResource(R.string.cloud_open_v2ray), fontSize = 12.sp, fontWeight = FontWeight.Bold)
+            Text(stringResource(R.string.cloud_open_v2ray), fontSize = DuskTheme.textSize12, fontWeight = FontWeight.Bold)
             Icon(
                 Icons.Default.ChevronLeft,
                 contentDescription = null,

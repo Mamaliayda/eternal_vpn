@@ -80,8 +80,8 @@ internal fun delayColor(ms: Long) = when { ms < 300 -> DuskTheme.success; ms < 8
 @Composable
 internal fun Tag(text: String, color: Color) {
     Text(
-        text, color = color, fontSize = 10.sp, fontWeight = FontWeight.SemiBold, maxLines = 1,
-        modifier = Modifier.clip(RoundedCornerShape(5.dp)).background(color.copy(alpha = 0.16f)).padding(horizontal = 5.dp, vertical = 1.dp),
+        text, color = color, fontSize = DuskTheme.textSize10, fontWeight = FontWeight.SemiBold, maxLines = 1,
+        modifier = Modifier.clip(RoundedCornerShape(DuskTheme.corner5)).background(color.copy(alpha = 0.16f)).padding(horizontal = 5.dp, vertical = 1.dp),
     )
 }
 
@@ -89,7 +89,7 @@ internal fun Tag(text: String, color: Color) {
 internal fun DelayCapsule(ms: Long) {
     val c = delayColor(ms)
     Text(
-        stringResource(R.string.amz_ms, fa(ms.toInt())), color = c, fontSize = 13.sp, fontWeight = FontWeight.SemiBold,
+        stringResource(R.string.amz_ms, fa(ms.toInt())), color = c, fontSize = DuskTheme.textSize13, fontWeight = FontWeight.SemiBold,
         modifier = Modifier.clip(RoundedCornerShape(50)).background(c.copy(alpha = 0.15f)).padding(horizontal = 9.dp, vertical = DuskTheme.space1),
     )
 }
@@ -176,9 +176,9 @@ internal fun UndoBar(modifier: Modifier = Modifier) {
                 .padding(start = DuskTheme.space4, end = DuskTheme.space1_5, top = DuskTheme.space1_5, bottom = DuskTheme.space1_5),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Text(stringResource(R.string.amz_undo_deleted, fa(count)), color = DuskTheme.onSurface, fontSize = 14.sp, modifier = Modifier.weight(1f))
+            Text(stringResource(R.string.amz_undo_deleted, fa(count)), color = DuskTheme.onSurface, fontSize = DuskTheme.textSize14, modifier = Modifier.weight(1f))
             Text(
-                stringResource(R.string.amz_undo), color = DuskTheme.primary, fontSize = 15.sp, fontWeight = FontWeight.SemiBold,
+                stringResource(R.string.amz_undo), color = DuskTheme.primary, fontSize = DuskTheme.textSize15, fontWeight = FontWeight.SemiBold,
                 modifier = Modifier.clip(RoundedCornerShape(DuskTheme.space2_5))
                     .clickable { com.mlmvpn.scanner.engines.amnezia.AmzEngine.undoDelete() }
                     .padding(horizontal = DuskTheme.space3, vertical = DuskTheme.space2_5),

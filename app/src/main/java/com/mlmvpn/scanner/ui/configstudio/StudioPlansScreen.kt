@@ -78,7 +78,7 @@ fun StudioPlansScreen(
             Text(
                 S(R.string.studio_plan_new),
                 color = DuskTheme.primary,
-                fontSize = 16.sp,
+                fontSize = DuskTheme.textSize16,
                 modifier = Modifier
                     .clickable(enabled = !busy, onClick = onNewPlan)
                     .padding(horizontal = 4.dp, vertical = 6.dp),

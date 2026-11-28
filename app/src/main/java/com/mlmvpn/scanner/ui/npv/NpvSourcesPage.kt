@@ -147,7 +147,7 @@ internal fun NpvSourcesPage(
                         if (mine.isEmpty()) {
                             Text(
                                 tr("هنوز کانالی اضافه نکرده‌اید.", "You have not added a channel yet."),
-                                color = DuskTheme.muted, fontSize = 14.sp, modifier = Modifier.padding(16.dp),
+                                color = DuskTheme.muted, fontSize = DuskTheme.textSize14, modifier = Modifier.padding(16.dp),
                             )
                         }
                         mine.forEachIndexed { i, ch ->
@@ -215,7 +215,7 @@ internal fun NpvSourcesPage(
                     if (store.isEmpty()) {
                         Text(
                             tr("انبار خالی است. «بررسی کانفیگ‌های تازه» را بزنید.", "The store is empty. Tap «Check for new configs»."),
-                            color = DuskTheme.muted, fontSize = 14.sp, modifier = Modifier.fillMaxWidth().padding(horizontal = 32.dp, vertical = 16.dp),
+                            color = DuskTheme.muted, fontSize = DuskTheme.textSize14, modifier = Modifier.fillMaxWidth().padding(horizontal = 32.dp, vertical = 16.dp),
                         )
                     }
                 }
@@ -263,8 +263,8 @@ internal fun NpvSourcesPage(
                 }
                 item(key = "files-foot") {
                     SettingsFooter(tr(
-                        "تلگرام خود فایل را فقط به کسی می‌دهد که وارد حساب تلگرامش شده باشد، برای همین دریافت خودکار فایل‌ها به ورود به تلگرام در همین برنامه نیاز دارد که هنوز آماده نیست. فعلاً لمس هر فایل پستش را در تلگرام باز می‌کند؛ فایل را آنجا بگیرید و «باز کردن با MLMVPN» را بزنید: فایل متنی خوانده می‌شود و کانفیگ‌هایش می‌آیند. فایل‌های npvt و npvs با کلید برنامهٔ NPV Tunnel رمز شده‌اند و فقط در همان برنامه اجرا می‌شوند.",
-                        "Telegram gives the file itself only to someone signed in to Telegram, so fetching files on their own needs a Telegram sign-in inside this app, which is not ready yet. For now a tap opens the post in Telegram; get the file there and use «Open with MLMVPN»: a text file is read and its configs come in. npvt and npvs files are encrypted with NPV Tunnel's key and run only in that app.",
+                        "تلگرام خود فایل را فقط به کسی می‌دهد که وارد حساب تلگرامش شده باشد، برای همین دریافت خودکار فایل‌ها به ورود به تلگرام در همین برنامه نیاز دارد که هنوز آماده نیست. فعلاً لمس هر فایل پستش را در تلگرام باز می‌کند؛ فایل را آنجا بگیرید و «باز کردن با Eternal VPN» را بزنید: فایل متنی خوانده می‌شود و کانفیگ‌هایش می‌آیند. فایل‌های npvt و npvs با کلید برنامهٔ NPV Tunnel رمز شده‌اند و فقط در همان برنامه اجرا می‌شوند.",
+                        "Telegram gives the file itself only to someone signed in to Telegram, so fetching files on their own needs a Telegram sign-in inside this app, which is not ready yet. For now a tap opens the post in Telegram; get the file there and use «Open with Eternal VPN»: a text file is read and its configs come in. npvt and npvs files are encrypted with NPV Tunnel's key and run only in that app.",
                     ))
                 }
             }
@@ -400,10 +400,10 @@ private fun Steps(r: NpvEngine.Refresh) {
             },
         )
         when (r.outcome) {
-            NpvEngine.Outcome.NOTHING_NEW -> Text(tr("چیز تازه‌ای نبود.", "Nothing new."), color = DuskTheme.muted, fontSize = 13.sp)
-            NpvEngine.Outcome.STOPPED -> Text(tr("متوقف شد.", "Stopped."), color = DuskTheme.accent, fontSize = 13.sp)
-            NpvEngine.Outcome.FAILED -> Text(tr("خطا: ", "Error: ") + (r.note ?: ""), color = DuskTheme.error, fontSize = 13.sp)
-            NpvEngine.Outcome.TESTED, NpvEngine.Outcome.STORED -> Text(tr("تمام شد.", "Done."), color = DuskTheme.success, fontSize = 13.sp, fontWeight = FontWeight.SemiBold)
+            NpvEngine.Outcome.NOTHING_NEW -> Text(tr("چیز تازه‌ای نبود.", "Nothing new."), color = DuskTheme.muted, fontSize = DuskTheme.textSize13)
+            NpvEngine.Outcome.STOPPED -> Text(tr("متوقف شد.", "Stopped."), color = DuskTheme.accent, fontSize = DuskTheme.textSize13)
+            NpvEngine.Outcome.FAILED -> Text(tr("خطا: ", "Error: ") + (r.note ?: ""), color = DuskTheme.error, fontSize = DuskTheme.textSize13)
+            NpvEngine.Outcome.TESTED, NpvEngine.Outcome.STORED -> Text(tr("تمام شد.", "Done."), color = DuskTheme.success, fontSize = DuskTheme.textSize13, fontWeight = FontWeight.SemiBold)
             else -> Unit
         }
         if (r.running && r.ask == NpvEngine.Ask.NONE) {
@@ -424,24 +424,24 @@ private fun StepLine(n: Int, title: String, state: StepState, fraction: Float?, 
         Row(verticalAlignment = Alignment.CenterVertically) {
             Box(Modifier.size(22.dp).clip(CircleShape).background(color.copy(alpha = 0.2f)), contentAlignment = Alignment.Center) {
                 if (state == StepState.DONE) Icon(Icons.Default.Check, contentDescription = null, tint = color, modifier = Modifier.size(14.dp))
-                else Text(fa(n), color = color, fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                else Text(fa(n), color = color, fontSize = DuskTheme.textSize12, fontWeight = FontWeight.Bold)
             }
             Spacer(Modifier.width(8.dp))
             Text(
                 title, color = if (state == StepState.WAITING || state == StepState.SKIPPED) DuskTheme.muted else DuskTheme.onSurface,
-                fontSize = 14.sp, fontWeight = FontWeight.SemiBold, modifier = Modifier.weight(1f),
+                fontSize = DuskTheme.textSize14, fontWeight = FontWeight.SemiBold, modifier = Modifier.weight(1f),
             )
             val shownFraction = when (state) { StepState.DONE -> 1f; StepState.ACTIVE -> fraction; else -> null }
-            if (shownFraction != null) Text(fa("${(shownFraction * 100).toInt()}") + "٪", color = DuskTheme.muted, fontSize = 12.sp)
+            if (shownFraction != null) Text(fa("${(shownFraction * 100).toInt()}") + "٪", color = DuskTheme.muted, fontSize = DuskTheme.textSize12)
         }
         if (detail.isNotBlank()) {
             Text(
-                detail, color = if (state == StepState.FAILED) DuskTheme.error else DuskTheme.muted, fontSize = 12.sp, lineHeight = 18.sp,
+                detail, color = if (state == StepState.FAILED) DuskTheme.error else DuskTheme.muted, fontSize = DuskTheme.textSize12, lineHeight = DuskTheme.textSize18,
                 modifier = Modifier.padding(start = 30.dp, top = 2.dp),
             )
         }
         Spacer(Modifier.height(5.dp))
-        val bar = Modifier.fillMaxWidth().padding(start = 30.dp).height(5.dp).clip(RoundedCornerShape(3.dp))
+        val bar = Modifier.fillMaxWidth().padding(start = 30.dp).height(5.dp).clip(RoundedCornerShape(DuskTheme.corner3))
         val track = Color.White.copy(alpha = 0.15f)
         when {
             state == StepState.ACTIVE && fraction == null -> LinearProgressIndicator(modifier = bar, color = color, trackColor = track)
@@ -466,10 +466,10 @@ private fun AddChannel(onAdd: (String) -> Boolean) {
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Box(Modifier.weight(1f)) {
-                    if (text.isEmpty()) Text("t.me/channel  ·  @channel", color = DuskTheme.muted, fontSize = 16.sp)
+                    if (text.isEmpty()) Text("t.me/channel  ·  @channel", color = DuskTheme.muted, fontSize = DuskTheme.textSize16)
                     BasicTextField(
                         value = text, onValueChange = { text = it }, singleLine = true,
-                        textStyle = TextStyle(color = DuskTheme.onSurface, fontSize = 16.sp), cursorBrush = SolidColor(DuskTheme.primary),
+                        textStyle = TextStyle(color = DuskTheme.onSurface, fontSize = DuskTheme.textSize16), cursorBrush = SolidColor(DuskTheme.primary),
                         modifier = Modifier.fillMaxWidth(),
                     )
                 }
@@ -492,8 +492,8 @@ private fun ChannelRow(ch: String, st: NpvEngine.ChannelState?, onRemove: (() ->
         Icon(Icons.Default.Send, contentDescription = null, tint = DuskTheme.secondary, modifier = Modifier.size(18.dp))
         Spacer(Modifier.width(10.dp))
         Column(Modifier.weight(1f)) {
-            Text("@$ch", color = DuskTheme.onSurface, fontSize = 15.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
-            Text(channelLine(st), color = if (st?.error != null) DuskTheme.accent else DuskTheme.muted, fontSize = 12.sp, maxLines = 2, overflow = TextOverflow.Ellipsis)
+            Text("@$ch", color = DuskTheme.onSurface, fontSize = DuskTheme.textSize15, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            Text(channelLine(st), color = if (st?.error != null) DuskTheme.accent else DuskTheme.muted, fontSize = DuskTheme.textSize12, maxLines = 2, overflow = TextOverflow.Ellipsis)
         }
         if (onRemove != null) {
             IconButton(onClick = onRemove) { Icon(Icons.Default.Close, contentDescription = tr("برداشتن", "Remove"), tint = DuskTheme.muted) }
@@ -538,10 +538,10 @@ private fun FileRow(e: NpvLibrary.Entry, showNotice: (String) -> Unit) {
         Icon(Icons.Default.Description, contentDescription = null, tint = if (npv) DuskTheme.purple else DuskTheme.primary, modifier = Modifier.size(20.dp))
         Spacer(Modifier.width(10.dp))
         Column(Modifier.weight(1f)) {
-            Text(e.name, color = DuskTheme.onSurface, fontSize = 15.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            Text(e.name, color = DuskTheme.onSurface, fontSize = DuskTheme.textSize15, maxLines = 1, overflow = TextOverflow.Ellipsis)
             Text(
                 sourceLabel(e.source) + " · " + (if (npv) tr("فایل NPV Tunnel", "NPV Tunnel file") else tr("فایل متنی", "text file")) + tr(" · باز کردن در تلگرام", " · open in Telegram"),
-                color = DuskTheme.muted, fontSize = 12.sp, maxLines = 1, overflow = TextOverflow.Ellipsis,
+                color = DuskTheme.muted, fontSize = DuskTheme.textSize12, maxLines = 1, overflow = TextOverflow.Ellipsis,
             )
         }
     }

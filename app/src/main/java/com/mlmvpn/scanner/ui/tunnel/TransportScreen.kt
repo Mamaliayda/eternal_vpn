@@ -232,15 +232,15 @@ fun TransportScreen(
         Text(
             transport.label,
             color = DuskTheme.muted,
-            fontSize = 13.sp,
+            fontSize = DuskTheme.textSize13,
             modifier = Modifier.align(Alignment.CenterHorizontally),
         )
         Spacer(Modifier.height(4.dp))
         Text(
             transport.taglineFa,
             color = DuskTheme.muted,
-            fontSize = 13.sp,
-            lineHeight = 20.sp,
+            fontSize = DuskTheme.textSize13,
+            lineHeight = DuskTheme.textSize20,
             textAlign = TextAlign.Center,
             modifier = Modifier.padding(horizontal = 34.dp),
         )
@@ -397,8 +397,8 @@ fun TransportScreen(
                             S(R.string.one_it_is_slower_and_the_reason) +
                             S(R.string.layer_on_its_own),
                         color = DuskTheme.onSurface,
-                        fontSize = 14.sp,
-                        lineHeight = 24.sp,
+                        fontSize = DuskTheme.textSize14,
+                        lineHeight = DuskTheme.textSize24,
                     )
                     Spacer(Modifier.height(10.dp))
                     Text(
@@ -408,8 +408,8 @@ fun TransportScreen(
                             S(R.string.reused_and_what_gets_written_to_storage) +
                             S(R.string.here_would_only_have_changed_one_of),
                         color = DuskTheme.muted,
-                        fontSize = 13.sp,
-                        lineHeight = 22.sp,
+                        fontSize = DuskTheme.textSize13,
+                        lineHeight = DuskTheme.textSize22,
                     )
                 }
             }
@@ -532,16 +532,16 @@ private fun ExitCountryCard(code: String, fallbackName: String) {
             .padding(horizontal = 16.dp, vertical = 14.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Text(S(R.string.exit_from), color = DuskTheme.muted, fontSize = 13.sp)
+        Text(S(R.string.exit_from), color = DuskTheme.muted, fontSize = DuskTheme.textSize13)
         Spacer(Modifier.weight(1f))
         if (known != null) {
-            Text(IpFormatter.flag(known), fontSize = 20.sp)
+            Text(IpFormatter.flag(known), fontSize = DuskTheme.textSize20)
             Spacer(Modifier.width(8.dp))
         }
         Text(
             name.ifBlank { S(R.string.detecting) },
             color = if (name.isBlank()) DuskTheme.muted else DuskTheme.onSurface,
-            fontSize = 16.sp,
+            fontSize = DuskTheme.textSize16,
             fontWeight = if (name.isBlank()) FontWeight.Normal else FontWeight.Medium,
             maxLines = 1,
         )
@@ -554,8 +554,8 @@ private fun Footer(text: String) {
     Text(
         text,
         color = DuskTheme.muted,
-        fontSize = 13.sp,
-        lineHeight = 21.sp,
+        fontSize = DuskTheme.textSize13,
+        lineHeight = DuskTheme.textSize21,
         modifier = Modifier.padding(start = 32.dp, end = 32.dp, top = 8.dp),
     )
 }
@@ -725,7 +725,7 @@ internal fun DialCore(
                 Text(
                     label,
                     color = Color.White,
-                    fontSize = 15.sp,
+                    fontSize = DuskTheme.textSize15,
                     fontWeight = FontWeight.SemiBold,
                 )
             }
@@ -765,7 +765,7 @@ private fun StatusLine(
         modifier = modifier.padding(horizontal = 28.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Text(headline, color = tone, fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
+        Text(headline, color = tone, fontSize = DuskTheme.textSize16, fontWeight = FontWeight.SemiBold)
         val sub = when {
             takenBy != null ->
                 S(R.string.tapping_the_button_disconnects_it_and_brings, transport.labelFa)
@@ -777,8 +777,8 @@ private fun StatusLine(
             Text(
                 sub,
                 color = DuskTheme.muted,
-                fontSize = 13.sp,
-                lineHeight = 20.sp,
+                fontSize = DuskTheme.textSize13,
+                lineHeight = DuskTheme.textSize20,
                 textAlign = TextAlign.Center,
             )
         }
@@ -851,8 +851,8 @@ private fun LiveStats(state: TunnelUiState, transport: Transport) {
                     S(R.string.usually_stays_in_your_own_country_this) +
                     S(R.string.the_tunnel_to_change_the_apparent_country),
                 color = DuskTheme.muted,
-                fontSize = 12.sp,
-                lineHeight = 20.sp,
+                fontSize = DuskTheme.textSize12,
+                lineHeight = DuskTheme.textSize20,
                 modifier = Modifier.padding(horizontal = 6.dp),
             )
         }
@@ -861,7 +861,7 @@ private fun LiveStats(state: TunnelUiState, transport: Transport) {
         Text(
             S(R.string.this_session_s_total_down_up, bytes(state.rxBytes), bytes(state.txBytes)),
             color = DuskTheme.muted,
-            fontSize = 12.sp,
+            fontSize = DuskTheme.textSize12,
             modifier = Modifier.padding(start = 6.dp),
         )
     }
@@ -870,9 +870,9 @@ private fun LiveStats(state: TunnelUiState, transport: Transport) {
 @Composable
 private fun Metric(label: String, value: String) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Text(value, color = DuskTheme.onSurface, fontSize = 17.sp, fontWeight = FontWeight.SemiBold)
+        Text(value, color = DuskTheme.onSurface, fontSize = DuskTheme.textSize17, fontWeight = FontWeight.SemiBold)
         Spacer(Modifier.height(3.dp))
-        Text(label, color = DuskTheme.muted, fontSize = 11.sp)
+        Text(label, color = DuskTheme.muted, fontSize = DuskTheme.textSize11)
     }
 }
 

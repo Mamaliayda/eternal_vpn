@@ -35,6 +35,7 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.mlmvpn.scanner.R
 import com.mlmvpn.scanner.ui.home.Appearance
 import kotlinx.coroutines.CoroutineScope
@@ -122,6 +123,60 @@ object DuskTheme {
     val actionBorderStroke = 1.5.dp
     val neutralBorderStroke = 1.dp
     val menuInset = 4.dp
+
+    // Central typography dimensions used by legacy custom-rendered rows while they migrate to
+    // semantic Material styles. Keeping exact size values here prevents per-screen style drift.
+    val textSize9 = 9.sp
+    val textSize10 = 10.sp
+    val textSize11 = 11.sp
+    val textSize11_5 = 11.5.sp
+    val textSize12 = 12.sp
+    val textSize12_5 = 12.5.sp
+    val textSize13 = 13.sp
+    val textSize13_5 = 13.5.sp
+    val textSize14 = 14.sp
+    val textSize15 = 15.sp
+    val textSize16 = 16.sp
+    val textSize17 = 17.sp
+    val textSize18 = 18.sp
+    val textSize19 = 19.sp
+    val textSize20 = 20.sp
+    val textSize21 = 21.sp
+    val textSize22 = 22.sp
+    val textSize23 = 23.sp
+    val textSize24 = 24.sp
+    val textSize25 = 25.sp
+    val textSize26 = 26.sp
+    val textSize28 = 28.sp
+    val textSize30 = 30.sp
+    val textSize32 = 32.sp
+    val textSize34 = 34.sp
+    val textSize38 = 38.sp
+    val textSize40 = 40.sp
+    val textSize42 = 42.sp
+
+    // Corner-size tokens for the few visualizations that need exact geometry.
+    val corner0 = 0.dp
+    val corner1 = 1.dp
+    val corner2 = 2.dp
+    val corner3 = 3.dp
+    val corner5 = 5.dp
+    val corner6 = 6.dp
+    val corner7 = 7.dp
+    val corner8 = 8.dp
+    val corner9 = 9.dp
+    val corner10 = 10.dp
+    val corner11 = 11.dp
+    val corner12 = 12.dp
+    val corner14 = 14.dp
+    val corner15 = 15.dp
+    val corner16 = 16.dp
+    val corner18 = 18.dp
+    val corner20 = 20.dp
+    val corner22 = 22.dp
+    val corner24 = 24.dp
+    val corner28 = 28.dp
+    val corner30 = 30.dp
 
     val cardShape = RoundedCornerShape(28.dp)
     val controlShape = RoundedCornerShape(50)

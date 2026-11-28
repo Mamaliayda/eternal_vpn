@@ -136,16 +136,16 @@ fun ColumnScope.UrnetworkOnboarding(onCreated: () -> Unit) {
         modifier = Modifier.size(84.dp).align(Alignment.CenterHorizontally),
     )
     Spacer(Modifier.height(10.dp))
-    Text("URnetwork", color = DuskTheme.onSurface, fontSize = 22.sp, fontWeight = FontWeight.SemiBold, modifier = Modifier.align(Alignment.CenterHorizontally))
+    Text("URnetwork", color = DuskTheme.onSurface, fontSize = DuskTheme.textSize22, fontWeight = FontWeight.SemiBold, modifier = Modifier.align(Alignment.CenterHorizontally))
     Spacer(Modifier.height(4.dp))
     Text(
         tr("پذیرش قوانین URnetwork", "URnetwork's terms"),
-        color = DuskTheme.muted, fontSize = 14.sp, modifier = Modifier.align(Alignment.CenterHorizontally),
+        color = DuskTheme.muted, fontSize = DuskTheme.textSize14, modifier = Modifier.align(Alignment.CenterHorizontally),
     )
 
     SettingsSectionHeader(tr("قوانین استفاده از URnetwork", "URnetwork's terms of use"))
     Column(
-        Modifier.fillMaxWidth().padding(horizontal = 16.dp).frostedGlass(RoundedCornerShape(16.dp)).padding(16.dp),
+        Modifier.fillMaxWidth().padding(horizontal = 16.dp).frostedGlass(RoundedCornerShape(DuskTheme.corner16)).padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(9.dp),
     ) {
         val points = listOf(
@@ -159,13 +159,13 @@ fun ColumnScope.UrnetworkOnboarding(onCreated: () -> Unit) {
                 "A free account has a daily data allowance, granted again every day at 00:00 UTC; the usage, what is left and the time of the next grant are on the connect screen."),
             tr("حساب بی‌ایمیل و بی‌گذرواژه ساخته می‌شود و یک «عبارت بازیابی» دارد که تنها راه برگرداندن آن است.",
                 "The account is made with no email or password, and comes with a «recovery phrase», the only way back to it."),
-            tr("MLMVPN نمایندهٔ رسمی URnetwork نیست؛ از SDK متن‌باز و رسمی خود URnetwork استفاده می‌کند.",
-                "MLMVPN is not affiliated with URnetwork; it uses URnetwork's own official open-source SDK."),
+            tr("Eternal VPN نمایندهٔ رسمی URnetwork نیست؛ از SDK متن‌باز و رسمی خود URnetwork استفاده می‌کند.",
+                "Eternal VPN is not affiliated with URnetwork; it uses URnetwork's own official open-source SDK."),
         )
         points.forEach { p ->
             Row(verticalAlignment = Alignment.Top) {
-                Text("•", color = DuskTheme.primary, fontSize = 15.sp, modifier = Modifier.padding(end = 8.dp))
-                Text(p, color = DuskTheme.onSurface, fontSize = 14.sp, lineHeight = 22.sp)
+                Text("•", color = DuskTheme.primary, fontSize = DuskTheme.textSize15, modifier = Modifier.padding(end = 8.dp))
+                Text(p, color = DuskTheme.onSurface, fontSize = DuskTheme.textSize14, lineHeight = DuskTheme.textSize22)
             }
         }
     }
@@ -188,7 +188,7 @@ fun ColumnScope.UrnetworkOnboarding(onCreated: () -> Unit) {
         Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 14.dp)
-            .clip(RoundedCornerShape(12.dp))
+            .clip(RoundedCornerShape(DuskTheme.corner12))
             .clickable(enabled = !busy) { accepted = !accepted; error = null }
             .padding(horizontal = 8.dp, vertical = 8.dp),
         verticalAlignment = Alignment.CenterVertically,
@@ -202,7 +202,7 @@ fun ColumnScope.UrnetworkOnboarding(onCreated: () -> Unit) {
         Spacer(Modifier.width(10.dp))
         Text(
             tr("قوانین استفاده و حریم خصوصی URnetwork را خواندم و می‌پذیرم", "I have read and accept URnetwork's terms of use and privacy policy"),
-            color = DuskTheme.onSurface, fontSize = 15.sp, lineHeight = 22.sp,
+            color = DuskTheme.onSurface, fontSize = DuskTheme.textSize15, lineHeight = DuskTheme.textSize22,
         )
     }
 
@@ -212,7 +212,7 @@ fun ColumnScope.UrnetworkOnboarding(onCreated: () -> Unit) {
             .fillMaxWidth()
             .padding(horizontal = 16.dp)
             .heightIn(min = 54.dp)
-            .clip(RoundedCornerShape(14.dp))
+            .clip(RoundedCornerShape(DuskTheme.corner14))
             .background(if (enabled || busy) DuskTheme.primary else DuskTheme.disabled.copy(alpha = 0.35f))
             .clickable(enabled = enabled) {
                 busy = true
@@ -232,14 +232,14 @@ fun ColumnScope.UrnetworkOnboarding(onCreated: () -> Unit) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 CircularProgressIndicator(color = Color.White, strokeWidth = 2.dp, modifier = Modifier.size(18.dp))
                 Spacer(Modifier.width(10.dp))
-                Text(tr("در حال ساختن حساب…", "Making the account…"), color = Color.White, fontSize = 17.sp, fontWeight = FontWeight.SemiBold)
+                Text(tr("در حال ساختن حساب…", "Making the account…"), color = Color.White, fontSize = DuskTheme.textSize17, fontWeight = FontWeight.SemiBold)
             }
         } else {
-            Text(tr("ساخت حساب کاربری", "Create account"), color = Color.White, fontSize = 17.sp, fontWeight = FontWeight.SemiBold)
+            Text(tr("ساخت حساب کاربری", "Create account"), color = Color.White, fontSize = DuskTheme.textSize17, fontWeight = FontWeight.SemiBold)
         }
     }
     error?.let {
-        Text(it, color = DuskTheme.error, fontSize = 13.sp, lineHeight = 20.sp, modifier = Modifier.padding(start = 24.dp, end = 24.dp, top = 10.dp))
+        Text(it, color = DuskTheme.error, fontSize = DuskTheme.textSize13, lineHeight = DuskTheme.textSize20, modifier = Modifier.padding(start = 24.dp, end = 24.dp, top = 10.dp))
     }
     Spacer(Modifier.height(28.dp))
 }
@@ -260,7 +260,7 @@ fun UrnetworkLiveCard(ownsTunnel: Boolean) {
 
     Column(
         Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 6.dp)
-            .frostedGlass(RoundedCornerShape(16.dp)).padding(14.dp),
+            .frostedGlass(RoundedCornerShape(DuskTheme.corner16)).padding(14.dp),
         verticalArrangement = Arrangement.spacedBy(6.dp),
     ) {
         val failed = live.phase == Phase.FAILED
@@ -278,7 +278,7 @@ fun UrnetworkLiveCard(ownsTunnel: Boolean) {
                 connected -> DuskTheme.success
                 else -> DuskTheme.onSurface
             },
-            fontSize = 15.sp, fontWeight = FontWeight.SemiBold,
+            fontSize = DuskTheme.textSize15, fontWeight = FontWeight.SemiBold,
         )
 
         // The steps, as far as this session got.
@@ -315,7 +315,7 @@ fun UrnetworkLiveCard(ownsTunnel: Boolean) {
                     val flag = if (c.code.length == 2 && IpFormatter.isRealCountry(c.code)) IpFormatter.flag(c.code.uppercase()) else "🌐"
                     "$flag ${faDigits(c.count.toString())}"
                 },
-                color = DuskTheme.onSurface, fontSize = 14.sp,
+                color = DuskTheme.onSurface, fontSize = DuskTheme.textSize14,
             )
             // The SDK reports no place for a provider it kept from an earlier connection (a restored
             // exit skips the search that carries the place).
@@ -323,13 +323,13 @@ fun UrnetworkLiveCard(ownsTunnel: Boolean) {
                 Text(
                     tr("🌐 یعنی کشور آن ارائه‌دهنده گزارش نشده است (مثلاً ارائه‌دهنده‌ای که از اتصال قبلی نگه داشته شده).",
                         "🌐 means the provider's country was not reported (for example one kept from the previous connection)."),
-                    color = DuskTheme.muted, fontSize = 12.sp, lineHeight = 18.sp,
+                    color = DuskTheme.muted, fontSize = DuskTheme.textSize12, lineHeight = DuskTheme.textSize18,
                 )
             }
             Text(
                 tr("خروج هم‌زمان از چند ارائه‌دهنده است؛ هر اتصال ممکن است از یکی از این کشورها بیرون برود. ارائه‌دهنده‌ها دستگاه کاربران دیگرند و می‌آیند و می‌روند؛ URnetwork خاموش‌ها و کندها را مدام با تازه‌ها عوض می‌کند، پس کم و زیاد شدن این عدد عادی است.",
                     "Traffic leaves through several providers at once; each connection may exit in any of these countries. Providers are other users' devices and come and go; URnetwork keeps replacing the ones that went quiet or slow, so this number rising and falling is normal."),
-                color = DuskTheme.muted, fontSize = 12.sp, lineHeight = 18.sp,
+                color = DuskTheme.muted, fontSize = DuskTheme.textSize12, lineHeight = DuskTheme.textSize18,
             )
         }
         // The SDK's own count, as the official app shows it: packets stopped, not names (a name on
@@ -337,34 +337,34 @@ fun UrnetworkLiveCard(ownsTunnel: Boolean) {
         if (live.blocker && live.blocked > 0) {
             Text(
                 tr("بسته‌های مسدودشدهٔ تبلیغات و ردیاب‌ها: ${faDigits(live.blocked.toString())}", "Ad and tracker packets blocked: ${live.blocked}"),
-                color = DuskTheme.muted, fontSize = 12.sp,
+                color = DuskTheme.muted, fontSize = DuskTheme.textSize12,
             )
         }
         if (busy && connected && live.stalled) {
             Text(
                 tr("مسیر داده لحظه‌ای جواب نداد؛ اتصال به سرور URnetwork دوباره برقرار می‌شود و ارائه‌دهنده‌ها نگه داشته شده‌اند.",
                     "The data path stopped answering for a moment; URnetwork's server connection is being redialed and the providers are held."),
-                color = DuskTheme.accent, fontSize = 12.sp, lineHeight = 18.sp,
+                color = DuskTheme.accent, fontSize = DuskTheme.textSize12, lineHeight = DuskTheme.textSize18,
             )
         }
         if (busy && live.saving.isNotEmpty()) {
             Text(
                 tr("حالت کم‌مصرف (${live.saving.joinToString("، ")}): در بیکاری، ارائه‌دهنده‌ها سه برابر کمتر بررسی می‌شوند تا رادیوی گوشی کمتر بیدار شود.",
                     "Power saving (${live.saving.joinToString(", ")}): while idle, the providers are checked three times less often so the phone's radio wakes less."),
-                color = DuskTheme.muted, fontSize = 12.sp, lineHeight = 18.sp,
+                color = DuskTheme.muted, fontSize = DuskTheme.textSize12, lineHeight = DuskTheme.textSize18,
             )
         }
-        if (failed) live.error?.let { Text(it, color = DuskTheme.muted, fontSize = 13.sp, lineHeight = 20.sp) }
+        if (failed) live.error?.let { Text(it, color = DuskTheme.muted, fontSize = DuskTheme.textSize13, lineHeight = DuskTheme.textSize20) }
 
         val lines = if (all) live.log else live.log.takeLast(5)
         if (lines.isNotEmpty()) {
             Spacer(Modifier.height(2.dp))
-            lines.forEach { Text("· ${faDigits(it)}", color = DuskTheme.muted, fontSize = 11.sp, lineHeight = 16.sp) }
+            lines.forEach { Text("· ${faDigits(it)}", color = DuskTheme.muted, fontSize = DuskTheme.textSize11, lineHeight = DuskTheme.textSize16) }
         }
         if (live.log.size > 5) {
             Text(
                 if (all) tr("کوتاه‌تر", "Less") else tr("همهٔ گزارش (${faDigits(live.log.size.toString())} خط)", "The whole log (${live.log.size} lines)"),
-                color = DuskTheme.primary, fontSize = 13.sp, modifier = Modifier.clickable { all = !all }.padding(top = 2.dp),
+                color = DuskTheme.primary, fontSize = DuskTheme.textSize13, modifier = Modifier.clickable { all = !all }.padding(top = 2.dp),
             )
         }
     }
@@ -379,7 +379,7 @@ private fun StepRow(label: String, state: StepState, extra: @Composable () -> Un
             when (state) {
                 StepState.DONE -> Icon(Icons.Default.Check, contentDescription = null, tint = DuskTheme.success, modifier = Modifier.size(18.dp))
                 StepState.ACTIVE -> CircularProgressIndicator(color = DuskTheme.primary, strokeWidth = 2.dp, modifier = Modifier.size(14.dp))
-                StepState.FAILED -> Text("✕", color = DuskTheme.error, fontSize = 14.sp, fontWeight = FontWeight.Bold)
+                StepState.FAILED -> Text("✕", color = DuskTheme.error, fontSize = DuskTheme.textSize14, fontWeight = FontWeight.Bold)
                 StepState.WAITING -> Box(Modifier.size(7.dp).clip(CircleShape).background(DuskTheme.disabled.copy(alpha = 0.45f)))
             }
         }
@@ -392,7 +392,7 @@ private fun StepRow(label: String, state: StepState, extra: @Composable () -> Un
                     StepState.FAILED -> DuskTheme.error
                     else -> DuskTheme.onSurface
                 },
-                fontSize = 14.sp, lineHeight = 21.sp,
+                fontSize = DuskTheme.textSize14, lineHeight = DuskTheme.textSize21,
                 fontWeight = if (state == StepState.ACTIVE) FontWeight.Medium else FontWeight.Normal,
             )
             extra()
@@ -409,10 +409,10 @@ private fun WindowDetail(w: UrnetworkEngine.Window) {
             (if (w.evalFailed > 0) " · ${faDigits(w.evalFailed.toString())} رد شد" else ""),
         "${w.evaluating} being checked · ${w.added} of ${w.target} connected" + (if (w.evalFailed > 0) " · ${w.evalFailed} failed" else ""),
     )
-    Text(numbers, color = DuskTheme.muted, fontSize = 12.sp, lineHeight = 18.sp)
+    Text(numbers, color = DuskTheme.muted, fontSize = DuskTheme.textSize12, lineHeight = DuskTheme.textSize18)
     // The SDK's diagnosis is for a window still forming: once a provider joined, the providers
     // coming and going are its normal life, not a failure.
-    if (w.added == 0) UrnetworkEngine.stallText(w.stall)?.let { Text(it, color = DuskTheme.accent, fontSize = 12.sp, lineHeight = 18.sp) }
+    if (w.added == 0) UrnetworkEngine.stallText(w.stall)?.let { Text(it, color = DuskTheme.accent, fontSize = DuskTheme.textSize12, lineHeight = DuskTheme.textSize18) }
     val slots = maxOf(w.target, w.added + w.evaluating).coerceIn(0, 32)
     if (slots == 0) return
     val pulse by rememberInfiniteTransition(label = "urn-dots").animateFloat(
@@ -501,7 +501,7 @@ fun UrnetworkUsageCard(onRestore: () -> Unit) {
     val daily = u?.pro != true
     SettingsSectionHeader(if (daily) tr("حجم روزانهٔ حساب", "The account's daily data") else tr("حجم ماهانهٔ حساب", "The account's monthly data"))
     Column(
-        Modifier.fillMaxWidth().padding(horizontal = 16.dp).frostedGlass(RoundedCornerShape(16.dp)).padding(16.dp),
+        Modifier.fillMaxWidth().padding(horizontal = 16.dp).frostedGlass(RoundedCornerShape(DuskTheme.corner16)).padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
@@ -510,7 +510,7 @@ fun UrnetworkUsageCard(onRestore: () -> Unit) {
                 u.pro -> tr("طرح Pro", "Pro plan")
                 else -> tr("طرح رایگان", "Free plan")
             }
-            Text(plan, color = DuskTheme.onSurface, fontSize = 15.sp, fontWeight = FontWeight.SemiBold, modifier = Modifier.weight(1f))
+            Text(plan, color = DuskTheme.onSurface, fontSize = DuskTheme.textSize15, fontWeight = FontWeight.SemiBold, modifier = Modifier.weight(1f))
             if (loading) CircularProgressIndicator(color = DuskTheme.primary, strokeWidth = 2.dp, modifier = Modifier.size(16.dp))
             else Icon(
                 Icons.Default.Refresh, contentDescription = tr("به‌روزرسانی", "Refresh"), tint = DuskTheme.primary,
@@ -521,7 +521,7 @@ fun UrnetworkUsageCard(onRestore: () -> Unit) {
             Text(
                 if (error != null) tr("هنوز اطلاعات حجم گرفته نشده: ", "No data figures yet: ") + error
                 else tr("در حال گرفتن حجم حساب از URnetwork…", "Getting the account's data from URnetwork…"),
-                color = DuskTheme.muted, fontSize = 13.sp, lineHeight = 20.sp,
+                color = DuskTheme.muted, fontSize = DuskTheme.textSize13, lineHeight = DuskTheme.textSize20,
             )
         } else {
             val exhausted = live.insufficient || (u.total > 0 && u.remaining <= 0L)
@@ -529,7 +529,7 @@ fun UrnetworkUsageCard(onRestore: () -> Unit) {
             Text(
                 if (daily) tr("${bytes(u.used)} از ${bytes(u.total)} سهمیهٔ امروز مصرف شده", "${bytes(u.used)} of today's ${bytes(u.total)} used")
                 else tr("${bytes(u.used)} از ${bytes(u.total)} مصرف شده", "${bytes(u.used)} of ${bytes(u.total)} used"),
-                color = DuskTheme.onSurface, fontSize = 17.sp, fontWeight = FontWeight.Medium,
+                color = DuskTheme.onSurface, fontSize = DuskTheme.textSize17, fontWeight = FontWeight.Medium,
             )
             UsageBar(u.fraction, exhausted)
             Row(Modifier.fillMaxWidth()) {
@@ -559,14 +559,14 @@ fun UrnetworkUsageCard(onRestore: () -> Unit) {
                         tr("ریست بعدی: ", "Next reset: ") + dateLabel(refreshAt) +
                             (u.daysLeft(now)?.let { d -> if (d > 0) tr(" (${faDigits(d.toString())} روز دیگر)", " (in $d days)") else "" } ?: "")
                     },
-                    color = DuskTheme.muted, fontSize = 12.sp, lineHeight = 18.sp,
+                    color = DuskTheme.muted, fontSize = DuskTheme.textSize12, lineHeight = DuskTheme.textSize18,
                 )
             }
             if (u.pending > 0) {
                 Text(
                     tr("در حال تسویه: ${bytes(u.pending)} — حجمی که اتصال‌های باز گرفته‌اند و پس از بسته شدن آن‌ها حساب می‌شود.",
                         "Settling: ${bytes(u.pending)} -- held by open connections, counted once they close."),
-                    color = DuskTheme.muted, fontSize = 12.sp, lineHeight = 18.sp,
+                    color = DuskTheme.muted, fontSize = DuskTheme.textSize12, lineHeight = DuskTheme.textSize18,
                 )
             }
             if (exhausted) {
@@ -574,20 +574,20 @@ fun UrnetworkUsageCard(onRestore: () -> Unit) {
                     if (daily && refreshAt != null) tr("حجم امروز تمام شده است؛ URnetwork تا ساعت ${faDigits(clockLabel(refreshAt))} داده‌ای رد نمی‌کند.",
                         "Today's data is used up; URnetwork carries nothing until ${clockLabel(refreshAt)}.")
                     else tr("حجم این دوره تمام شده است؛ URnetwork تا ریست بعدی داده‌ای رد نمی‌کند.", "This period's data is used up; URnetwork carries nothing until the next reset."),
-                    color = DuskTheme.error, fontSize = 13.sp, lineHeight = 20.sp,
+                    color = DuskTheme.error, fontSize = DuskTheme.textSize13, lineHeight = DuskTheme.textSize20,
                 )
             }
             error?.let {
-                Text(tr("آخرین به‌روزرسانی نشد: ", "The last refresh failed: ") + it, color = DuskTheme.accent, fontSize = 12.sp, lineHeight = 18.sp)
+                Text(tr("آخرین به‌روزرسانی نشد: ", "The last refresh failed: ") + it, color = DuskTheme.accent, fontSize = DuskTheme.textSize12, lineHeight = DuskTheme.textSize18)
             }
-            Text(tr("به‌روز شده ", "Updated ") + ago(u.fetchedAt), color = DuskTheme.muted, fontSize = 11.sp)
+            Text(tr("به‌روز شده ", "Updated ") + ago(u.fetchedAt), color = DuskTheme.muted, fontSize = DuskTheme.textSize11)
         }
         if (signedOut) {
             Text(
                 tr("URnetwork ورود این حساب را دیگر نمی‌پذیرد. با عبارت بازیابی دوباره وارد شوید.", "URnetwork no longer accepts this account's sign-in. Sign in again with the recovery phrase."),
-                color = DuskTheme.error, fontSize = 13.sp, lineHeight = 20.sp,
+                color = DuskTheme.error, fontSize = DuskTheme.textSize13, lineHeight = DuskTheme.textSize20,
             )
-            Text(tr("ورود با عبارت بازیابی", "Sign in with the recovery phrase"), color = DuskTheme.primary, fontSize = 14.sp,
+            Text(tr("ورود با عبارت بازیابی", "Sign in with the recovery phrase"), color = DuskTheme.primary, fontSize = DuskTheme.textSize14,
                 modifier = Modifier.clickable { onRestore() })
         }
     }
@@ -613,8 +613,8 @@ private fun UsageBar(fraction: Float, exhausted: Boolean) {
 @Composable
 private fun Metric(label: String, value: String, modifier: Modifier, color: Color = DuskTheme.onSurface) {
     Column(modifier, horizontalAlignment = Alignment.CenterHorizontally) {
-        Text(value, color = color, fontSize = 15.sp, fontWeight = FontWeight.SemiBold, maxLines = 1)
-        Text(label, color = DuskTheme.muted, fontSize = 12.sp)
+        Text(value, color = color, fontSize = DuskTheme.textSize15, fontWeight = FontWeight.SemiBold, maxLines = 1)
+        Text(label, color = DuskTheme.muted, fontSize = DuskTheme.textSize12)
     }
 }
 
@@ -817,12 +817,12 @@ fun UrnetworkLocationsScreen(onBack: () -> Unit, backLabel: String) {
                     value = query,
                     onValueChange = { query = it },
                     singleLine = true,
-                    textStyle = TextStyle(color = DuskTheme.onSurface, fontSize = 16.sp),
+                    textStyle = TextStyle(color = DuskTheme.onSurface, fontSize = DuskTheme.textSize16),
                     cursorBrush = SolidColor(DuskTheme.primary),
                     modifier = Modifier.fillMaxWidth(),
                     decorationBox = { inner ->
                         Box {
-                            if (query.isEmpty()) Text(tr("جستجوی کشور", "Search countries"), color = DuskTheme.muted.copy(alpha = 0.6f), fontSize = 16.sp)
+                            if (query.isEmpty()) Text(tr("جستجوی کشور", "Search countries"), color = DuskTheme.muted.copy(alpha = 0.6f), fontSize = DuskTheme.textSize16)
                             inner()
                         }
                     },
@@ -842,9 +842,9 @@ fun UrnetworkLocationsScreen(onBack: () -> Unit, backLabel: String) {
         val all = list
         when {
             all == null && loading -> Text(tr("در حال گرفتن فهرست کشورها از URnetwork…", "Getting the country list from URnetwork…"),
-                color = DuskTheme.muted, fontSize = 13.sp, modifier = Modifier.padding(horizontal = 32.dp))
+                color = DuskTheme.muted, fontSize = DuskTheme.textSize13, modifier = Modifier.padding(horizontal = 32.dp))
             all == null -> Text(tr("فهرست کشورها گرفته نشد: ", "The country list did not come: ") + (error ?: ""),
-                color = DuskTheme.accent, fontSize = 13.sp, lineHeight = 20.sp, modifier = Modifier.padding(horizontal = 32.dp))
+                color = DuskTheme.accent, fontSize = DuskTheme.textSize13, lineHeight = DuskTheme.textSize20, modifier = Modifier.padding(horizontal = 32.dp))
             else -> {
                 val q = query.trim().lowercase()
                 val shown = all.filter { l ->
@@ -863,10 +863,10 @@ fun UrnetworkLocationsScreen(onBack: () -> Unit, backLabel: String) {
                         ) { choose(l) }
                     }
                 }
-                if (shown.isEmpty()) Text(tr("کشوری با این نام نیست.", "No country by that name."), color = DuskTheme.muted, fontSize = 13.sp,
+                if (shown.isEmpty()) Text(tr("کشوری با این نام نیست.", "No country by that name."), color = DuskTheme.muted, fontSize = DuskTheme.textSize13,
                     modifier = Modifier.padding(horizontal = 32.dp, vertical = 8.dp))
                 error?.let { Text(tr("فهرست تازه گرفته نشد؛ فهرست قبلی نشان داده می‌شود: ", "No fresh list; showing the last one: ") + it,
-                    color = DuskTheme.accent, fontSize = 12.sp, lineHeight = 18.sp, modifier = Modifier.padding(horizontal = 32.dp, vertical = 8.dp)) }
+                    color = DuskTheme.accent, fontSize = DuskTheme.textSize12, lineHeight = DuskTheme.textSize18, modifier = Modifier.padding(horizontal = 32.dp, vertical = 8.dp)) }
             }
         }
         SettingsFooter(tr(
@@ -883,11 +883,11 @@ private fun LocationRow(title: String, detail: String, flag: String, selected: B
         Modifier.fillMaxWidth().clickable(onClick = onClick).heightIn(min = 52.dp).padding(horizontal = 16.dp, vertical = 8.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Text(flag, fontSize = 20.sp)
+        Text(flag, fontSize = DuskTheme.textSize20)
         Spacer(Modifier.width(12.dp))
         Column(Modifier.weight(1f)) {
-            Text(title, color = DuskTheme.onSurface, fontSize = 16.sp)
-            Text(detail, color = DuskTheme.muted, fontSize = 12.sp)
+            Text(title, color = DuskTheme.onSurface, fontSize = DuskTheme.textSize16)
+            Text(detail, color = DuskTheme.muted, fontSize = DuskTheme.textSize12)
         }
         if (selected) Icon(Icons.Default.Check, contentDescription = null, tint = DuskTheme.primary, modifier = Modifier.size(20.dp))
     }
@@ -929,13 +929,13 @@ fun UrnetworkRestoreScreen(onBack: () -> Unit, backLabel: String) {
                 BasicTextField(
                     value = phrase,
                     onValueChange = { phrase = it; error = null },
-                    textStyle = TextStyle(color = DuskTheme.onSurface, fontSize = 16.sp, lineHeight = 24.sp),
+                    textStyle = TextStyle(color = DuskTheme.onSurface, fontSize = DuskTheme.textSize16, lineHeight = DuskTheme.textSize24),
                     cursorBrush = SolidColor(DuskTheme.primary),
                     modifier = Modifier.fillMaxWidth(),
                     decorationBox = { inner ->
                         Box {
                             if (phrase.isEmpty()) Text(tr("عبارت بازیابی حساب URnetwork (کلمه‌های انگلیسی با فاصله)", "The URnetwork account's recovery phrase (English words, space separated)"),
-                                color = DuskTheme.muted.copy(alpha = 0.6f), fontSize = 15.sp)
+                                color = DuskTheme.muted.copy(alpha = 0.6f), fontSize = DuskTheme.textSize15)
                             inner()
                         }
                     },
@@ -965,7 +965,7 @@ fun UrnetworkRestoreScreen(onBack: () -> Unit, backLabel: String) {
                 },
             )
         }
-        error?.let { Text(it, color = DuskTheme.error, fontSize = 13.sp, lineHeight = 20.sp, modifier = Modifier.padding(start = 32.dp, end = 32.dp, top = 8.dp)) }
+        error?.let { Text(it, color = DuskTheme.error, fontSize = DuskTheme.textSize13, lineHeight = DuskTheme.textSize20, modifier = Modifier.padding(start = 32.dp, end = 32.dp, top = 8.dp)) }
         Spacer(Modifier.height(28.dp))
     }
 }

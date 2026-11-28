@@ -165,7 +165,7 @@ fun StudioQrCard(value: String, tooLongNote: String) {
                 contentDescription = null,
                 modifier = Modifier
                     .size(220.dp)
-                    .background(Color.White, RoundedCornerShape(10.dp))
+                    .background(Color.White, RoundedCornerShape(DuskTheme.corner10))
                     .padding(8.dp),
             )
         } else {
@@ -176,8 +176,8 @@ fun StudioQrCard(value: String, tooLongNote: String) {
                 Text(
                     tooLongNote,
                     color = DuskTheme.muted,
-                    fontSize = 13.sp,
-                    lineHeight = 22.sp,
+                    fontSize = DuskTheme.textSize13,
+                    lineHeight = DuskTheme.textSize22,
                     textAlign = TextAlign.Center,
                     modifier = Modifier.fillMaxWidth(),
                 )

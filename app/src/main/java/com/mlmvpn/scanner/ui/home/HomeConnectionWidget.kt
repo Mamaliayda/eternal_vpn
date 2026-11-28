@@ -233,7 +233,7 @@ private fun Header(conn: WidgetLive.Conn, app: HomeApp?, compact: Boolean) {
         Spacer(Modifier.width(10.dp))
         Column(modifier = Modifier.weight(1f)) {
             Text(
-                app?.let { WidgetPainter.labelOf(it) } ?: "MLMVPN",
+                app?.let { WidgetPainter.labelOf(it) } ?: "Eternal VPN",
                 color = DuskTheme.onSurface,
                 style = (if (compact) MaterialTheme.typography.titleMedium else MaterialTheme.typography.titleLarge)
                     .copy(fontWeight = FontWeight.Bold),

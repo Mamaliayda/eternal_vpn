@@ -77,10 +77,10 @@ fun CloudReceivedModule(
                     Modifier.size(30.dp).clip(DuskTheme.glyphShape)
                         .background(Brush.verticalGradient(listOf(tint, tint.copy(alpha = 0.78f)))),
                     contentAlignment = Alignment.Center,
-                ) { Text(panelMonogram(engine), color = Color.White, fontSize = 13.sp, fontWeight = FontWeight.Bold) }
+                ) { Text(panelMonogram(engine), color = Color.White, fontSize = DuskTheme.textSize13, fontWeight = FontWeight.Bold) }
                 Spacer(Modifier.width(12.dp))
                 Column(Modifier.weight(1f)) {
-                    Text(g.title, color = DuskTheme.onSurface, fontSize = 15.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                    Text(g.title, color = DuskTheme.onSurface, fontSize = DuskTheme.textSize15, maxLines = 1, overflow = TextOverflow.Ellipsis)
                     Spacer(Modifier.height(3.dp))
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         PanelBadge(engine)
@@ -91,11 +91,11 @@ fun CloudReceivedModule(
                         Spacer(Modifier.width(6.dp))
                         // "2026-09-02 20:49" is Latin content; in an RTL line the clock would walk in front of the date.
                         CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
-                            Text(g.date, color = DuskTheme.muted, fontSize = 11.sp)
+                            Text(g.date, color = DuskTheme.muted, fontSize = DuskTheme.textSize11)
                         }
                     }
                 }
-                Text(faCount(g.nodes.size), color = DuskTheme.muted, fontSize = 14.sp)
+                Text(faCount(g.nodes.size), color = DuskTheme.muted, fontSize = DuskTheme.textSize14)
                 Spacer(Modifier.width(6.dp))
                 val rtl = LocalLayoutDirection.current == LayoutDirection.Rtl
                 Icon(Icons.Default.ChevronRight, null, tint = DuskTheme.muted, modifier = Modifier.size(17.dp).scale(if (rtl) -1f else 1f, 1f))
@@ -105,7 +105,7 @@ fun CloudReceivedModule(
             Separator()
             Text(
                 if (showAll) tr("کمتر", "Show less") else tr("همه (${faCount(groups.size)})", "All (${groups.size})"),
-                color = DuskTheme.primary, fontSize = 15.sp,
+                color = DuskTheme.primary, fontSize = DuskTheme.textSize15,
                 modifier = Modifier.fillMaxWidth().clickable { showAll = !showAll }.padding(horizontal = 16.dp, vertical = 12.dp),
             )
         }

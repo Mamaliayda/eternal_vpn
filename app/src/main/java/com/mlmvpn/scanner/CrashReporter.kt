@@ -38,7 +38,7 @@ import java.util.Locale
  */
 object CrashReporter {
 
-    const val TAG = "MLMCrash"
+    const val TAG = "Eternal VPNCrash"
 
     private val stamp = SimpleDateFormat("yyyy-MM-dd_HH-mm-ss", Locale.US)
 
@@ -251,7 +251,7 @@ object CrashReporter {
         )
         if (files.isEmpty()) return ""
         val body = buildString {
-            appendLine("MLM VPN crash reports")
+            appendLine("Eternal VPN crash reports")
             appendLine("app     : $appVersion")
             appendLine("device  : ${android.os.Build.MANUFACTURER} ${android.os.Build.MODEL}, " +
                 "Android ${android.os.Build.VERSION.RELEASE} (API ${android.os.Build.VERSION.SDK_INT})")
@@ -282,7 +282,7 @@ object CrashReporter {
         if (text.isBlank()) return
         val send = android.content.Intent(android.content.Intent.ACTION_SEND).apply {
             type = "text/plain"
-            putExtra(android.content.Intent.EXTRA_SUBJECT, "MLM VPN crash report")
+            putExtra(android.content.Intent.EXTRA_SUBJECT, "Eternal VPN crash report")
             putExtra(android.content.Intent.EXTRA_TEXT, text)
         }
         runCatching {

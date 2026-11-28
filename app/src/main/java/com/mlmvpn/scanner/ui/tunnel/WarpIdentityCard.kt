@@ -99,7 +99,7 @@ internal fun IdentityBlockedCard(onRetry: () -> Unit, modifier: Modifier = Modif
         modifier
             .fillMaxWidth()
             .padding(horizontal = 20.dp)
-            .clip(RoundedCornerShape(20.dp))
+            .clip(RoundedCornerShape(DuskTheme.corner20))
             .background(DuskTheme.cloudflareOrange.copy(alpha = 0.16f))
             .padding(16.dp),
     ) {
@@ -108,7 +108,7 @@ internal fun IdentityBlockedCard(onRetry: () -> Unit, modifier: Modifier = Modif
             Spacer(Modifier.width(8.dp))
             Text(
                 tr("هویت وارپ ساخته نشد", "No WARP identity could be made"),
-                color = DuskTheme.onSurface, fontSize = 16.sp, fontWeight = FontWeight.Bold,
+                color = DuskTheme.onSurface, fontSize = DuskTheme.textSize16, fontWeight = FontWeight.Bold,
             )
         }
         Spacer(Modifier.height(6.dp))
@@ -120,7 +120,7 @@ internal fun IdentityBlockedCard(onRetry: () -> Unit, modifier: Modifier = Modif
                 tr("سرور صدور هویت وارپ روی این اینترنت فیلتر است. با یک لمس، هویت از راه یک ورکر روی حساب کلادفلر خودتان ساخته می‌شود — مثل ترفند جمنای — و دوباره وصل می‌شویم.",
                     "The WARP identity server is filtered on this network. One tap makes the identity through a worker on your own Cloudflare account — like the Gemini trick — and connects again.")
             },
-            color = DuskTheme.muted, fontSize = 13.sp, lineHeight = 20.sp,
+            color = DuskTheme.muted, fontSize = DuskTheme.textSize13, lineHeight = DuskTheme.textSize20,
         )
         Spacer(Modifier.height(12.dp))
         Row(
@@ -139,7 +139,7 @@ internal fun IdentityBlockedCard(onRetry: () -> Unit, modifier: Modifier = Modif
             }
             Text(
                 step ?: if (ready) tr("دوباره وصل شو", "Connect again") else tr("ساخت هویت از راه ورکر و اتصال", "Make it through a worker and connect"),
-                color = Color.White, fontSize = 14.sp, fontWeight = FontWeight.Bold,
+                color = Color.White, fontSize = DuskTheme.textSize14, fontWeight = FontWeight.Bold,
             )
         }
     }

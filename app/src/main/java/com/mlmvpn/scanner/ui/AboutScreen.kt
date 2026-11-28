@@ -154,7 +154,7 @@ fun AboutScreen(
                 )
             }
             Spacer(Modifier.height(16.dp))
-            Text("MLMVPN", color = DuskTheme.onSurface, style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold)
+            Text("Eternal VPN", color = DuskTheme.onSurface, style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold)
             Spacer(Modifier.height(4.dp))
             // The version stays in Latin digits. It is an identifier people read back to us in a
             // bug report, not a measurement.
@@ -231,7 +231,7 @@ fun AboutScreen(
         SettingsGroup {
             SettingsRow(
                 title = stringResource(R.string.about_telegram),
-                subtitle = "t.me/mlmvpn",
+                subtitle = if (isFa) "تلگرام" else "Telegram",
                 icon = Icons.Default.Send,
                 tint = DuskTheme.blueGray,
                 onClick = { openUrl("https://t.me/mlmvpn") },
@@ -239,7 +239,7 @@ fun AboutScreen(
             Separator()
             SettingsRow(
                 title = stringResource(R.string.about_github),
-                subtitle = "github.com/mlmvpn",
+                subtitle = "GitHub",
                 icon = Icons.Default.Code,
                 tint = DuskTheme.disabled,
                 onClick = { openUrl("https://github.com/mlmvpn") },

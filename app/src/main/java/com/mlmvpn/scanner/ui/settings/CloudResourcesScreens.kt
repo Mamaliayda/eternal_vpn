@@ -168,7 +168,7 @@ fun CloudResourcesHub(
                     else -> stringResource(R.string.settings_cf_accounts, accounts.size)
                 },
                 color = DuskTheme.onSurface,
-                fontSize = 22.sp,
+                fontSize = DuskTheme.textSize22,
                 fontWeight = FontWeight.Bold,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
@@ -186,7 +186,7 @@ fun CloudResourcesHub(
                     else -> stringResource(R.string.cf_resources_subtitle)
                 },
                 color = DuskTheme.muted,
-                fontSize = 14.sp,
+                fontSize = DuskTheme.textSize14,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 textAlign = TextAlign.Center,
@@ -311,7 +311,7 @@ private fun HubRow(
         Text(
             title,
             color = DuskTheme.onSurface,
-            fontSize = 16.sp,
+            fontSize = DuskTheme.textSize16,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
             modifier = Modifier.weight(1f),
@@ -322,8 +322,8 @@ private fun HubRow(
                 color = DuskTheme.muted,
                 strokeWidth = 1.5.dp,
             )
-            count < 0 -> Text("—", color = DuskTheme.muted, fontSize = 16.sp)
-            else -> Text(count.toString(), color = DuskTheme.muted, fontSize = 16.sp)
+            count < 0 -> Text("—", color = DuskTheme.muted, fontSize = DuskTheme.textSize16)
+            else -> Text(count.toString(), color = DuskTheme.muted, fontSize = DuskTheme.textSize16)
         }
         Spacer(Modifier.width(6.dp))
         HubChevron()
@@ -742,7 +742,7 @@ private fun SelectableResourcePage(
                 if (selectionMode) stringResource(R.string.common_cancel)
                 else stringResource(R.string.cf_resources_select),
                 color = DuskTheme.onSurface,
-                fontSize = 16.sp,
+                fontSize = DuskTheme.textSize16,
                 fontWeight = if (selectionMode) FontWeight.SemiBold else FontWeight.Normal,
                 modifier = Modifier
                     .clickable(enabled = !busy) {
@@ -944,9 +944,9 @@ private fun ItemRow(
         }
         Spacer(Modifier.width(12.dp))
         Column(modifier = Modifier.weight(1f)) {
-            LtrText(name, color = DuskTheme.onSurface, fontSize = 15.sp, weight = FontWeight.SemiBold)
+            LtrText(name, color = DuskTheme.onSurface, fontSize = DuskTheme.textSize15, weight = FontWeight.SemiBold)
             if (secondary.isNotEmpty()) {
-                LtrText(secondary, color = DuskTheme.muted, fontSize = 11.sp)
+                LtrText(secondary, color = DuskTheme.muted, fontSize = DuskTheme.textSize11)
             }
             if (stats.isNotEmpty()) {
                 Spacer(Modifier.height(5.dp))
@@ -1010,10 +1010,10 @@ private fun StatChip(spec: StatSpec) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         Icon(spec.icon, contentDescription = null, tint = spec.tint, modifier = Modifier.size(12.dp))
         Spacer(Modifier.width(3.dp))
-        LtrText(spec.value, color = spec.tint, fontSize = 11.sp)
+        LtrText(spec.value, color = spec.tint, fontSize = DuskTheme.textSize11)
         if (spec.unit.isNotEmpty()) {
             Spacer(Modifier.width(3.dp))
-            Text(spec.unit, color = DuskTheme.muted, fontSize = 11.sp, maxLines = 1)
+            Text(spec.unit, color = DuskTheme.muted, fontSize = DuskTheme.textSize11, maxLines = 1)
         }
     }
 }
@@ -1072,13 +1072,13 @@ private fun AccountTotals(
                 Text(
                     stringResource(R.string.cf_resources_subdomain),
                     color = DuskTheme.onSurface,
-                    fontSize = 15.sp,
+                    fontSize = DuskTheme.textSize15,
                     modifier = Modifier.weight(1f),
                 )
                 LtrText(
                     "$subdomain.workers.dev",
                     color = DuskTheme.muted,
-                    fontSize = 14.sp,
+                    fontSize = DuskTheme.textSize14,
                 )
             }
         }
@@ -1088,9 +1088,9 @@ private fun AccountTotals(
 @Composable
 private fun TotalCell(label: String, value: String, valueColor: Color, modifier: Modifier) {
     Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
-        LtrText(value, color = valueColor, fontSize = 17.sp, weight = FontWeight.SemiBold)
+        LtrText(value, color = valueColor, fontSize = DuskTheme.textSize17, weight = FontWeight.SemiBold)
         Spacer(Modifier.height(1.dp))
-        Text(label, color = DuskTheme.muted, fontSize = 11.sp, maxLines = 1)
+        Text(label, color = DuskTheme.muted, fontSize = DuskTheme.textSize11, maxLines = 1)
     }
 }
 

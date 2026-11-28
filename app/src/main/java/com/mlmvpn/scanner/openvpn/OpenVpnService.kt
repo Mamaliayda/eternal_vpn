@@ -296,7 +296,7 @@ class OpenVpnService : VpnService() {
 
         @Keep fun configureTun(operation: String, value: Int): Boolean = runCatching {
             when (operation) {
-                "new" -> { builder = Builder().setSession("MLMVPN OpenVPN").setBlocking(false); true }
+                "new" -> { builder = Builder().setSession("Eternal VPN OpenVPN").setBlocking(false); true }
                 // The server's value, unless the user set OpenVPN's MTU (or the app-wide one) in Settings.
                 "mtu" -> {
                     val ns = com.mlmvpn.scanner.utils.NetworkSettings
@@ -428,7 +428,7 @@ class OpenVpnService : VpnService() {
         val stop = PendingIntent.getService(this, 611, Intent(this, OpenVpnService::class.java).setAction(DISCONNECT), PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
         return NotificationCompat.Builder(this, CHANNEL).setSmallIcon(R.drawable.ic_notification)
             .setColor(androidx.core.content.ContextCompat.getColor(this, R.color.dusk_primary))
-            .setContentTitle("MLMVPN · OpenVPN").setContentText(status).setContentIntent(open)
+            .setContentTitle("Eternal VPN · OpenVPN").setContentText(status).setContentIntent(open)
             .setOnlyAlertOnce(true).setOngoing(OpenVpnRuntime.connection.value.active)
             .addAction(0, "Disconnect", stop).build()
     }

@@ -98,7 +98,7 @@ private val DEPLOY_PANELS = listOf(
     PanelOption("NTR", "Netra", R.string.cfnet_panel_netra),
     PanelOption("GZG", "Gozargah", R.string.cfnet_panel_gozargah),
     PanelOption("NVA", "Nova", R.string.cfnet_panel_nova),
-    PanelOption("MLM", "MLM", R.string.cfnet_panel_mlm),
+    PanelOption("MLM", "Eternal VPN", R.string.cfnet_panel_mlm),
 )
 
 private suspend fun deployPanel(context: Context, cloud: CloudManager, account: CloudAccount, key: String): Boolean =
@@ -493,7 +493,7 @@ fun CloudDoctorScreen(
                 Spacer(Modifier.height(16.dp))
                 // Quiet on purpose: the setup is the thing on screen, leaving it is the side door.
                 Text(
-                    stringResource(R.string.cfnet_skip), color = DuskTheme.muted, fontSize = 15.sp,
+                    stringResource(R.string.cfnet_skip), color = DuskTheme.muted, fontSize = DuskTheme.textSize15,
                     modifier = Modifier.align(Alignment.CenterHorizontally).clip(DuskTheme.controlShape)
                         .clickable(role = Role.Button) { job?.cancel(); onContinue() }
                         .padding(horizontal = 20.dp, vertical = 12.dp),
@@ -549,8 +549,8 @@ private fun HubHero(running: Step?, tried: Int) {
             Row(Modifier.fillMaxWidth().padding(top = 16.dp), verticalAlignment = Alignment.CenterVertically) {
                 CircularProgressIndicator(Modifier.size(16.dp), color = DuskTheme.primary, strokeWidth = 2.dp)
                 Spacer(Modifier.width(10.dp))
-                Text(stringResource(R.string.cfnet_trying), color = DuskTheme.onSurface, fontSize = 14.sp, modifier = Modifier.weight(1f))
-                if (tried > 0) Text(stringResource(R.string.cfnet_tried_n, tried), color = DuskTheme.muted, fontSize = 12.sp)
+                Text(stringResource(R.string.cfnet_trying), color = DuskTheme.onSurface, fontSize = DuskTheme.textSize14, modifier = Modifier.weight(1f))
+                if (tried > 0) Text(stringResource(R.string.cfnet_tried_n, tried), color = DuskTheme.muted, fontSize = DuskTheme.textSize12)
             }
         }
     }
@@ -570,11 +570,11 @@ private fun SetupHero(states: Map<Step, StepState>, running: Boolean, finished: 
                 }
                 Spacer(Modifier.height(12.dp))
                 Text(stringResource(when { ready -> R.string.cfnet_setup_ready; finished -> R.string.cfnet_setup_partial; else -> R.string.cfnet_stopped }),
-                    color = DuskTheme.onSurface, fontSize = 19.sp, fontWeight = FontWeight.Bold, textAlign = TextAlign.Center)
+                    color = DuskTheme.onSurface, fontSize = DuskTheme.textSize19, fontWeight = FontWeight.Bold, textAlign = TextAlign.Center)
                 if (finished) {
                     Spacer(Modifier.height(6.dp))
                     Text(stringResource(if (ready) R.string.cfnet_setup_ready_sub else R.string.cfnet_setup_partial_sub),
-                        color = DuskTheme.muted, fontSize = 14.sp, lineHeight = 21.sp, textAlign = TextAlign.Center)
+                        color = DuskTheme.muted, fontSize = DuskTheme.textSize14, lineHeight = DuskTheme.textSize21, textAlign = TextAlign.Center)
                 }
                 Spacer(Modifier.height(18.dp))
                 DoctorCapsule(stringResource(R.string.cfnet_go_cloud), DuskTheme.primary, Color.White, onClick = onContinue)
@@ -591,9 +591,9 @@ private fun SetupHero(states: Map<Step, StepState>, running: Boolean, finished: 
                     Image(painterResource(R.drawable.ic_app_doctor), contentDescription = null, modifier = Modifier.size(52.dp))
                 }
                 Spacer(Modifier.height(14.dp))
-                Text(stringResource(R.string.cfnet_checking_you), color = DuskTheme.onSurface, fontSize = 17.sp, fontWeight = FontWeight.SemiBold, textAlign = TextAlign.Center)
+                Text(stringResource(R.string.cfnet_checking_you), color = DuskTheme.onSurface, fontSize = DuskTheme.textSize17, fontWeight = FontWeight.SemiBold, textAlign = TextAlign.Center)
                 Spacer(Modifier.height(4.dp))
-                Text(stringResource(R.string.cfnet_checking_sub), color = DuskTheme.muted, fontSize = 13.sp, textAlign = TextAlign.Center)
+                Text(stringResource(R.string.cfnet_checking_sub), color = DuskTheme.muted, fontSize = DuskTheme.textSize13, textAlign = TextAlign.Center)
             }
         }
     }
@@ -616,8 +616,8 @@ private fun StepPage(
                 }
                 Spacer(Modifier.width(12.dp))
                 Column(Modifier.weight(1f)) {
-                    Text(stringResource(step.title), color = DuskTheme.onSurface, fontSize = 19.sp, fontWeight = FontWeight.Bold)
-                    Text(stringResource(step.desc), color = DuskTheme.muted, fontSize = 13.sp, lineHeight = 19.sp)
+                    Text(stringResource(step.title), color = DuskTheme.onSurface, fontSize = DuskTheme.textSize19, fontWeight = FontWeight.Bold)
+                    Text(stringResource(step.desc), color = DuskTheme.muted, fontSize = DuskTheme.textSize13, lineHeight = DuskTheme.textSize19)
                 }
             }
             Spacer(Modifier.height(18.dp))
@@ -627,8 +627,8 @@ private fun StepPage(
                         StepState.Running -> {
                             CircularProgressIndicator(Modifier.size(40.dp), color = DuskTheme.primary, strokeWidth = 3.dp)
                             Spacer(Modifier.height(12.dp))
-                            Text(stringResource(R.string.cfnet_trying), color = DuskTheme.onSurface, fontSize = 16.sp, fontWeight = FontWeight.SemiBold, textAlign = TextAlign.Center)
-                            if (tried > 0) Text(stringResource(R.string.cfnet_tried_n, tried), color = DuskTheme.muted, fontSize = 13.sp)
+                            Text(stringResource(R.string.cfnet_trying), color = DuskTheme.onSurface, fontSize = DuskTheme.textSize16, fontWeight = FontWeight.SemiBold, textAlign = TextAlign.Center)
+                            if (tried > 0) Text(stringResource(R.string.cfnet_tried_n, tried), color = DuskTheme.muted, fontSize = DuskTheme.textSize13)
                             Spacer(Modifier.height(16.dp))
                             DoctorCapsule(stringResource(R.string.cfnet_stop), Color.White.copy(alpha = 0.14f), DuskTheme.error, onClick = onStop)
                         }
@@ -665,10 +665,10 @@ private fun Verdict(icon: ImageVector, tone: Color, title: String, subtitle: Str
         Icon(icon, contentDescription = null, tint = tone, modifier = Modifier.size(40.dp))
     }
     Spacer(Modifier.height(12.dp))
-    Text(title, color = DuskTheme.onSurface, fontSize = 17.sp, fontWeight = FontWeight.SemiBold, lineHeight = 24.sp, textAlign = TextAlign.Center)
+    Text(title, color = DuskTheme.onSurface, fontSize = DuskTheme.textSize17, fontWeight = FontWeight.SemiBold, lineHeight = DuskTheme.textSize24, textAlign = TextAlign.Center)
     if (subtitle != null) {
         Spacer(Modifier.height(4.dp))
-        Text(subtitle, color = DuskTheme.muted, fontSize = 14.sp, lineHeight = 20.sp, textAlign = TextAlign.Center)
+        Text(subtitle, color = DuskTheme.muted, fontSize = DuskTheme.textSize14, lineHeight = DuskTheme.textSize20, textAlign = TextAlign.Center)
     }
 }
 
@@ -707,8 +707,8 @@ private fun StepRow(step: Step, state: StepState, clickable: Boolean, onClick: (
         SettingsGlyph(step.icon, step.tint())
         Spacer(Modifier.width(12.dp))
         Column(Modifier.weight(1f)) {
-            Text(stringResource(step.title), color = DuskTheme.onSurface, fontSize = 16.sp)
-            Text(detail, color = detailColor, fontSize = 12.sp, lineHeight = 17.sp, maxLines = 2, overflow = TextOverflow.Ellipsis)
+            Text(stringResource(step.title), color = DuskTheme.onSurface, fontSize = DuskTheme.textSize16)
+            Text(detail, color = detailColor, fontSize = DuskTheme.textSize12, lineHeight = DuskTheme.textSize17, maxLines = 2, overflow = TextOverflow.Ellipsis)
         }
         Spacer(Modifier.width(8.dp))
         AnimatedContent(targetState = state, transitionSpec = {
@@ -727,7 +727,7 @@ private fun StepRow(step: Step, state: StepState, clickable: Boolean, onClick: (
 
 @Composable
 private fun Pill(text: String, color: Color) {
-    Text(text, color = color, fontSize = 13.sp, fontWeight = FontWeight.SemiBold,
+    Text(text, color = color, fontSize = DuskTheme.textSize13, fontWeight = FontWeight.SemiBold,
         modifier = Modifier.clip(CircleShape).background(color.copy(alpha = 0.15f)).padding(horizontal = 10.dp, vertical = 4.dp))
 }
 
@@ -746,9 +746,9 @@ private fun SelectRow(title: String, detail: String, selected: Boolean, result: 
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Column(Modifier.weight(1f)) {
-            Text(title, color = DuskTheme.onSurface, fontSize = 16.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            Text(title, color = DuskTheme.onSurface, fontSize = DuskTheme.textSize16, maxLines = 1, overflow = TextOverflow.Ellipsis)
             Text(result ?: detail, color = when (resultOk) { true -> DuskTheme.success; false -> DuskTheme.accent; null -> DuskTheme.muted },
-                fontSize = 12.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                fontSize = DuskTheme.textSize12, maxLines = 1, overflow = TextOverflow.Ellipsis)
         }
         Spacer(Modifier.width(10.dp))
         Box(
@@ -778,10 +778,10 @@ private fun CredentialSection(email: String, token: String, onEmail: (String) ->
 @Composable
 private fun DoctorField(placeholder: String, value: String, onChange: (String) -> Unit, secret: Boolean) {
     Box(Modifier.fillMaxWidth().heightIn(min = 48.dp).padding(horizontal = 16.dp, vertical = 12.dp), contentAlignment = Alignment.CenterStart) {
-        if (value.isEmpty()) Text(placeholder, color = DuskTheme.muted.copy(alpha = 0.7f), fontSize = 16.sp)
+        if (value.isEmpty()) Text(placeholder, color = DuskTheme.muted.copy(alpha = 0.7f), fontSize = DuskTheme.textSize16)
         BasicTextField(
             value = value, onValueChange = { onChange(it.trim().take(200)) }, singleLine = true,
-            textStyle = TextStyle(color = DuskTheme.onSurface, fontSize = 16.sp), cursorBrush = SolidColor(DuskTheme.primary),
+            textStyle = TextStyle(color = DuskTheme.onSurface, fontSize = DuskTheme.textSize16), cursorBrush = SolidColor(DuskTheme.primary),
             visualTransformation = if (secret) PasswordVisualTransformation() else VisualTransformation.None,
             modifier = Modifier.fillMaxWidth(),
         )
@@ -806,7 +806,7 @@ private fun DoctorCapsule(text: String, bg: Color, fg: Color, enabled: Boolean =
                 CircularProgressIndicator(Modifier.size(16.dp), color = fg, strokeWidth = 2.dp)
                 Spacer(Modifier.width(8.dp))
             }
-            Text(text, color = if (live) fg else fg.copy(alpha = 0.6f), fontSize = 17.sp, fontWeight = FontWeight.SemiBold)
+            Text(text, color = if (live) fg else fg.copy(alpha = 0.6f), fontSize = DuskTheme.textSize17, fontWeight = FontWeight.SemiBold)
         }
     }
 }
@@ -851,7 +851,7 @@ private fun DeveloperSection(manager: CfNetManager, outcomes: List<StrategyEngin
 @Composable
 private fun DevLine(label: String, value: String) {
     Column(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 10.dp)) {
-        Text(label, color = DuskTheme.onSurface, fontSize = 13.sp, fontWeight = FontWeight.SemiBold)
-        Text(value, color = DuskTheme.muted, fontSize = 11.sp, lineHeight = 16.sp, fontFamily = androidx.compose.ui.text.font.FontFamily.Monospace)
+        Text(label, color = DuskTheme.onSurface, fontSize = DuskTheme.textSize13, fontWeight = FontWeight.SemiBold)
+        Text(value, color = DuskTheme.muted, fontSize = DuskTheme.textSize11, lineHeight = DuskTheme.textSize16, fontFamily = androidx.compose.ui.text.font.FontFamily.Monospace)
     }
 }

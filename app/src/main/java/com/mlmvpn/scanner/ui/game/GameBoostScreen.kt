@@ -275,7 +275,7 @@ fun GameBoostScreen(onBack: () -> Unit, onOpenClassic: () -> Unit) {
         title = stringResource(R.string.gb_title),
         onBack = onBack,
         trailing = {
-            Text(stringResource(R.string.gb_classic), color = DuskTheme.primary, fontSize = 15.sp,
+            Text(stringResource(R.string.gb_classic), color = DuskTheme.primary, fontSize = DuskTheme.textSize15,
                 modifier = Modifier.clickable(onClick = onOpenClassic).padding(8.dp))
         },
     ) {
@@ -450,9 +450,9 @@ private fun GameRow(game: GameProfile?, installed: Boolean, onClick: () -> Unit)
         if (game != null) GameIcon(game, 36)
         Spacer(Modifier.width(12.dp))
         Column(Modifier.weight(1f)) {
-            Text(game?.name ?: stringResource(R.string.gb_game), color = DuskTheme.onSurface, fontSize = 17.sp, fontWeight = FontWeight.SemiBold)
+            Text(game?.name ?: stringResource(R.string.gb_game), color = DuskTheme.onSurface, fontSize = DuskTheme.textSize17, fontWeight = FontWeight.SemiBold)
             if (game != null && !installed) {
-                Text(stringResource(R.string.gb_not_installed), color = DuskTheme.muted, fontSize = 12.sp)
+                Text(stringResource(R.string.gb_not_installed), color = DuskTheme.muted, fontSize = DuskTheme.textSize12)
             }
         }
         Chevron(20)
@@ -469,8 +469,8 @@ private fun ValueRow(title: String, value: String, icon: androidx.compose.ui.gra
             Icon(icon, contentDescription = null, tint = DuskTheme.primary, modifier = Modifier.size(20.dp))
             Spacer(Modifier.width(10.dp))
         }
-        Text(title, color = DuskTheme.onSurface, fontSize = 16.sp, modifier = Modifier.weight(1f))
-        if (value.isNotEmpty()) Text(value, color = DuskTheme.muted, fontSize = 14.sp)
+        Text(title, color = DuskTheme.onSurface, fontSize = DuskTheme.textSize16, modifier = Modifier.weight(1f))
+        if (value.isNotEmpty()) Text(value, color = DuskTheme.muted, fontSize = DuskTheme.textSize14)
         Spacer(Modifier.width(6.dp))
         Chevron(18)
     }
@@ -514,9 +514,9 @@ private fun StageList(stages: List<Stage>, game: GameProfile?) {
                 }
                 Spacer(Modifier.width(12.dp))
                 Column(Modifier.weight(1f)) {
-                    Text(stageTitle(st.id, anchorName), color = if (st.status == StageStatus.PENDING) DuskTheme.muted else DuskTheme.onSurface, fontSize = 15.sp)
+                    Text(stageTitle(st.id, anchorName), color = if (st.status == StageStatus.PENDING) DuskTheme.muted else DuskTheme.onSurface, fontSize = DuskTheme.textSize15)
                     st.stats?.takeIf { it.answered }?.let {
-                        Text(evidence(it), color = DuskTheme.muted, fontSize = 12.sp)
+                        Text(evidence(it), color = DuskTheme.muted, fontSize = DuskTheme.textSize12)
                     }
                 }
             }
@@ -552,25 +552,25 @@ private fun lossText(s: PathStats): String {
 private fun ResultCard(o: BoostOutcome) {
     val fa = isFa()
     Column(Modifier.fillMaxWidth().padding(horizontal = 16.dp).frostedGlass(DuskTheme.cardShape).padding(16.dp)) {
-        Text(verdictTitle(o), color = DuskTheme.onSurface, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+        Text(verdictTitle(o), color = DuskTheme.onSurface, fontSize = DuskTheme.textSize18, fontWeight = FontWeight.Bold)
         Spacer(Modifier.height(4.dp))
-        verdictDetail(o)?.let { Text(it, color = DuskTheme.muted, fontSize = 13.sp) }
+        verdictDetail(o)?.let { Text(it, color = DuskTheme.muted, fontSize = DuskTheme.textSize13) }
 
         o.symptom?.let { s ->
             Spacer(Modifier.height(8.dp))
-            Text(symptomDone(s), color = DuskTheme.primary, fontSize = 13.sp)
+            Text(symptomDone(s), color = DuskTheme.primary, fontSize = DuskTheme.textSize13)
         }
         // What kind of game this is on this line, and each part that is not simply open.
         o.kind?.let { k ->
             Spacer(Modifier.height(10.dp))
-            Text(kindLine(k), color = if (k == GameKind.DIRECT) DuskTheme.success else DuskTheme.accent, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
+            Text(kindLine(k), color = if (k == GameKind.DIRECT) DuskTheme.success else DuskTheme.accent, fontSize = DuskTheme.textSize14, fontWeight = FontWeight.SemiBold)
         }
         o.classLines.forEach { line ->
-            Text("• ${classLineText(line, o)}", color = if (line.fixed) DuskTheme.success else DuskTheme.muted, fontSize = 13.sp)
+            Text("• ${classLineText(line, o)}", color = if (line.fixed) DuskTheme.success else DuskTheme.muted, fontSize = DuskTheme.textSize13)
         }
         (if (fa) o.noteFa else o.noteEn)?.let {
             Spacer(Modifier.height(6.dp))
-            Text(it, color = DuskTheme.muted, fontSize = 12.sp)
+            Text(it, color = DuskTheme.muted, fontSize = DuskTheme.textSize12)
         }
         Spacer(Modifier.height(12.dp))
 
@@ -578,7 +578,7 @@ private fun ResultCard(o: BoostOutcome) {
         Row(Modifier.fillMaxWidth()) {
             Text("", modifier = Modifier.weight(1.3f))
             listOf(R.string.gb_col_ping, R.string.gb_col_jitter, R.string.gb_col_loss).forEach {
-                Text(stringResource(it), color = DuskTheme.muted, fontSize = 12.sp, modifier = Modifier.weight(1f), textAlign = TextAlign.Center)
+                Text(stringResource(it), color = DuskTheme.muted, fontSize = DuskTheme.textSize12, modifier = Modifier.weight(1f), textAlign = TextAlign.Center)
             }
         }
         val tunnelled = o.route.isWarp() || o.route == RouteKind.AMNEZIA || o.route == RouteKind.FENIX
@@ -602,7 +602,7 @@ private fun ResultCard(o: BoostOutcome) {
                 o.echoAvailable -> stringResource(R.string.gb_target_tcp, anchor)
                 else -> stringResource(R.string.gb_target_tcp_no_echo, anchor)
             },
-            color = DuskTheme.muted, fontSize = 12.sp,
+            color = DuskTheme.muted, fontSize = DuskTheme.textSize12,
         )
 
         val claims = buildList {
@@ -612,7 +612,7 @@ private fun ResultCard(o: BoostOutcome) {
         }
         if (claims.isNotEmpty()) {
             Spacer(Modifier.height(10.dp))
-            claims.forEach { Text("✓ $it", color = DuskTheme.success, fontSize = 14.sp, fontWeight = FontWeight.Medium) }
+            claims.forEach { Text("✓ $it", color = DuskTheme.success, fontSize = DuskTheme.textSize14, fontWeight = FontWeight.Medium) }
         }
 
         Spacer(Modifier.height(10.dp))
@@ -658,7 +658,7 @@ private fun ResultCard(o: BoostOutcome) {
             if (o.applyFellBack) add(stringResource(R.string.gb_fell_back))
             if (o.fromMemory) add(stringResource(R.string.gb_from_memory))
         }
-        notes.forEach { Text("• $it", color = DuskTheme.muted, fontSize = 13.sp) }
+        notes.forEach { Text("• $it", color = DuskTheme.muted, fontSize = DuskTheme.textSize13) }
     }
 }
 
@@ -760,7 +760,7 @@ private fun HelpPage(onPick: (Symptom) -> Unit, onBack: () -> Unit) {
                 if (i > 0) Separator()
                 Row(Modifier.fillMaxWidth().clickable { onPick(s) }.padding(horizontal = 16.dp, vertical = 13.dp),
                     verticalAlignment = Alignment.CenterVertically) {
-                    Text(stringResource(label), color = DuskTheme.onSurface, fontSize = 16.sp, modifier = Modifier.weight(1f))
+                    Text(stringResource(label), color = DuskTheme.onSurface, fontSize = DuskTheme.textSize16, modifier = Modifier.weight(1f))
                     Chevron(18)
                 }
             }
@@ -783,23 +783,23 @@ private fun LastSessionCard(gameName: String, s: LastSession.Summary, onDismiss:
     val minutes = (s.durationMs / 60_000L).toInt().coerceAtLeast(1)
     Column(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 6.dp).frostedGlass(DuskTheme.cardShape).padding(16.dp)) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Text(stringResource(R.string.gb_last_session_title, gameName), color = DuskTheme.onSurface, fontSize = 16.sp,
+            Text(stringResource(R.string.gb_last_session_title, gameName), color = DuskTheme.onSurface, fontSize = DuskTheme.textSize16,
                 fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
             Icon(Icons.Default.Close, null, tint = DuskTheme.muted, modifier = Modifier.size(20.dp).clickable(onClick = onDismiss))
         }
         Spacer(Modifier.height(4.dp))
         if (s.spikes == 0) {
-            Text(stringResource(R.string.gb_last_session_clean, minutes), color = DuskTheme.success, fontSize = 14.sp)
+            Text(stringResource(R.string.gb_last_session_clean, minutes), color = DuskTheme.success, fontSize = DuskTheme.textSize14)
         } else {
-            Text(stringResource(R.string.gb_last_session_line, s.spikes, minutes), color = DuskTheme.onSurface, fontSize = 14.sp)
+            Text(stringResource(R.string.gb_last_session_line, s.spikes, minutes), color = DuskTheme.onSurface, fontSize = DuskTheme.textSize14)
             s.mainCause?.let { c ->
-                Text(stringResource(R.string.gb_last_session_cause, causeText(c)), color = DuskTheme.accent, fontSize = 14.sp)
+                Text(stringResource(R.string.gb_last_session_cause, causeText(c)), color = DuskTheme.accent, fontSize = DuskTheme.textSize14)
                 Text(stringResource(when (c) {
                     SpikeWatch.Cause.BACKGROUND -> R.string.gb_fix_background
                     SpikeWatch.Cause.WIFI_SIGNAL, SpikeWatch.Cause.WIFI_RATE -> R.string.gb_fix_wifi
                     SpikeWatch.Cause.HEAT -> R.string.gb_fix_heat
                     SpikeWatch.Cause.LINE -> R.string.gb_fix_line
-                }), color = DuskTheme.muted, fontSize = 12.sp)
+                }), color = DuskTheme.muted, fontSize = DuskTheme.textSize12)
             }
         }
     }
@@ -809,22 +809,22 @@ private fun LastSessionCard(gameName: String, s: LastSession.Summary, onDismiss:
 private fun FeedbackCard(gameName: String, onAnswer: (Boolean) -> Unit, onDismiss: () -> Unit) {
     Column(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 6.dp).frostedGlass(DuskTheme.cardShape).padding(16.dp)) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Text(stringResource(R.string.gb_feedback_title, gameName), color = DuskTheme.onSurface, fontSize = 16.sp,
+            Text(stringResource(R.string.gb_feedback_title, gameName), color = DuskTheme.onSurface, fontSize = DuskTheme.textSize16,
                 fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
             Icon(Icons.Default.Close, null, tint = DuskTheme.muted,
                 modifier = Modifier.size(20.dp).clickable(onClick = onDismiss))
         }
         Spacer(Modifier.height(4.dp))
-        Text(stringResource(R.string.gb_feedback_detail), color = DuskTheme.muted, fontSize = 12.sp)
+        Text(stringResource(R.string.gb_feedback_detail), color = DuskTheme.muted, fontSize = DuskTheme.textSize12)
         Spacer(Modifier.height(10.dp))
         Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
             Box(Modifier.weight(1f).clip(DuskTheme.cardShape).background(DuskTheme.success).clickable { onAnswer(true) }.padding(vertical = 11.dp),
                 contentAlignment = Alignment.Center) {
-                Text(stringResource(R.string.gb_feedback_yes), color = DuskTheme.onSuccess, fontSize = 15.sp, fontWeight = FontWeight.Bold)
+                Text(stringResource(R.string.gb_feedback_yes), color = DuskTheme.onSuccess, fontSize = DuskTheme.textSize15, fontWeight = FontWeight.Bold)
             }
             Box(Modifier.weight(1f).clip(DuskTheme.cardShape).frostedGlass(DuskTheme.cardShape).clickable { onAnswer(false) }.padding(vertical = 11.dp),
                 contentAlignment = Alignment.Center) {
-                Text(stringResource(R.string.gb_feedback_no), color = DuskTheme.error, fontSize = 15.sp, fontWeight = FontWeight.SemiBold)
+                Text(stringResource(R.string.gb_feedback_no), color = DuskTheme.error, fontSize = DuskTheme.textSize15, fontWeight = FontWeight.SemiBold)
             }
         }
     }
@@ -842,7 +842,7 @@ private fun RegionCard(o: BoostOutcome) {
         return r?.let { if (fa) it.labelFa else it.labelEn } ?: (key ?: "")
     }
     Column(Modifier.fillMaxWidth().padding(horizontal = 16.dp).frostedGlass(DuskTheme.cardShape).padding(16.dp)) {
-        Text(stringResource(R.string.gb_region_title), color = DuskTheme.onSurface, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+        Text(stringResource(R.string.gb_region_title), color = DuskTheme.onSurface, fontSize = DuskTheme.textSize16, fontWeight = FontWeight.Bold)
         Spacer(Modifier.height(6.dp))
         o.regionAdvice?.let { a ->
             val text = when {
@@ -851,19 +851,19 @@ private fun RegionCard(o: BoostOutcome) {
                 a.switch -> stringResource(R.string.gb_region_advice, label(a.best), a.gainMs ?: 0, label(a.current))
                 else -> stringResource(R.string.gb_region_ok, label(a.best))
             }
-            Text(text, color = if (a.switch) DuskTheme.accent else DuskTheme.success, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
+            Text(text, color = if (a.switch) DuskTheme.accent else DuskTheme.success, fontSize = DuskTheme.textSize14, fontWeight = FontWeight.SemiBold)
             Spacer(Modifier.height(8.dp))
         }
         o.regions.forEach { r ->
             Row(Modifier.fillMaxWidth().padding(vertical = 3.dp), verticalAlignment = Alignment.CenterVertically) {
-                Text(if (fa) r.labelFa else r.labelEn, color = DuskTheme.onSurface, fontSize = 14.sp, modifier = Modifier.weight(1f))
+                Text(if (fa) r.labelFa else r.labelEn, color = DuskTheme.onSurface, fontSize = DuskTheme.textSize14, modifier = Modifier.weight(1f))
                 Text(
                     when {
                         r.answered && r.p50 != null -> stringResource(R.string.gb_ms, r.p50)
                         r.status == RegionCatalog.Status.DOWN -> stringResource(R.string.gb_region_status_down)
                         else -> stringResource(R.string.gb_region_no_answer)
                     },
-                    color = if (r.answered) DuskTheme.muted else DuskTheme.error, fontSize = 14.sp,
+                    color = if (r.answered) DuskTheme.muted else DuskTheme.error, fontSize = DuskTheme.textSize14,
                 )
             }
         }
@@ -883,14 +883,14 @@ private fun ActionsRow(o: BoostOutcome, onStop: () -> Unit, onTryWarp: () -> Uni
                     launch?.let { context.startActivity(it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)) }
                 }.padding(vertical = 13.dp),
                 contentAlignment = Alignment.Center,
-            ) { Text(stringResource(R.string.gb_launch_game), color = DuskTheme.onSuccess, fontSize = 16.sp, fontWeight = FontWeight.Bold) }
+            ) { Text(stringResource(R.string.gb_launch_game), color = DuskTheme.onSuccess, fontSize = DuskTheme.textSize16, fontWeight = FontWeight.Bold) }
         }
         Box(
             Modifier.weight(1f).clip(DuskTheme.cardShape).frostedGlass(DuskTheme.cardShape).clickable(onClick = onStop).padding(vertical = 13.dp),
             contentAlignment = Alignment.Center,
         ) {
             Text(stringResource(if (o.measureOnly) R.string.gb_close else R.string.gb_stop),
-                color = if (o.measureOnly) DuskTheme.primary else DuskTheme.error, fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
+                color = if (o.measureOnly) DuskTheme.primary else DuskTheme.error, fontSize = DuskTheme.textSize16, fontWeight = FontWeight.SemiBold)
         }
     }
     // The test points were silent, or only WARP answered: the direct line was kept on purpose,
@@ -901,7 +901,7 @@ private fun ActionsRow(o: BoostOutcome, onStop: () -> Unit, onTryWarp: () -> Uni
             Modifier.fillMaxWidth().padding(horizontal = 16.dp).clip(DuskTheme.cardShape).frostedGlass(DuskTheme.cardShape)
                 .clickable(onClick = onTryWarp).padding(vertical = 12.dp),
             contentAlignment = Alignment.Center,
-        ) { Text(stringResource(R.string.gb_try_warp), color = DuskTheme.primary, fontSize = 15.sp, fontWeight = FontWeight.SemiBold) }
+        ) { Text(stringResource(R.string.gb_try_warp), color = DuskTheme.primary, fontSize = DuskTheme.textSize15, fontWeight = FontWeight.SemiBold) }
     }
     Spacer(Modifier.height(12.dp))
 }
@@ -915,13 +915,13 @@ private fun TipsCard(tips: List<Preflight.Tip>) {
             if (i > 0) Separator()
             Row(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 10.dp), verticalAlignment = Alignment.CenterVertically) {
                 Column(Modifier.weight(1f)) {
-                    Text(stringResource(t.titleRes), color = if (t.severity == Preflight.Severity.BAD) DuskTheme.error else DuskTheme.onSurface, fontSize = 15.sp)
-                    Text(stringResource(t.detailRes, *t.detailArgs.toTypedArray()), color = DuskTheme.muted, fontSize = 12.sp)
+                    Text(stringResource(t.titleRes), color = if (t.severity == Preflight.Severity.BAD) DuskTheme.error else DuskTheme.onSurface, fontSize = DuskTheme.textSize15)
+                    Text(stringResource(t.detailRes, *t.detailArgs.toTypedArray()), color = DuskTheme.muted, fontSize = DuskTheme.textSize12)
                 }
                 val fix = Preflight.intentFor(t)
                 if (fix != null) {
                     Spacer(Modifier.width(8.dp))
-                    Text(stringResource(R.string.gb_fix), color = DuskTheme.primary, fontSize = 14.sp,
+                    Text(stringResource(R.string.gb_fix), color = DuskTheme.primary, fontSize = DuskTheme.textSize14,
                         modifier = Modifier.clickable { try { context.startActivity(fix) } catch (_: Exception) {} }.padding(6.dp))
                 }
             }
@@ -941,9 +941,9 @@ private fun LiveCard(live: LiveReading) {
     }
     Column(Modifier.fillMaxWidth().padding(horizontal = 16.dp).frostedGlass(DuskTheme.cardShape).padding(16.dp)) {
         Row(verticalAlignment = Alignment.Bottom) {
-            Text(live.p50?.toString() ?: "—", color = color, fontSize = 40.sp, fontWeight = FontWeight.Bold)
+            Text(live.p50?.toString() ?: "—", color = color, fontSize = DuskTheme.textSize40, fontWeight = FontWeight.Bold)
             Spacer(Modifier.width(6.dp))
-            Text("ms", color = DuskTheme.muted, fontSize = 16.sp, modifier = Modifier.padding(bottom = 8.dp))
+            Text("ms", color = DuskTheme.muted, fontSize = DuskTheme.textSize16, modifier = Modifier.padding(bottom = 8.dp))
             Spacer(Modifier.weight(1f))
             Text(stringResource(when (live.status) {
                 LiveStatus.GOOD -> R.string.gb_live_good
@@ -951,13 +951,13 @@ private fun LiveCard(live: LiveReading) {
                 LiveStatus.UNSTABLE -> R.string.gb_live_unstable
                 LiveStatus.LOSSY -> R.string.gb_live_lossy
                 LiveStatus.DOWN -> R.string.gb_live_down
-            }), color = color, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
+            }), color = color, fontSize = DuskTheme.textSize14, fontWeight = FontWeight.SemiBold)
         }
         Text("${stringResource(R.string.gb_col_jitter)} ${ProbeStats.display(live.jitter)} · " +
             "${stringResource(R.string.gb_col_loss)} ${ProbeStats.display(live.loss)}${if (live.lossMeaningful) "" else "≈"}%",
-            color = DuskTheme.muted, fontSize = 13.sp)
+            color = DuskTheme.muted, fontSize = DuskTheme.textSize13)
         live.lastCause?.let { cause ->
-            Text(stringResource(R.string.gb_live_last_spike, causeText(cause)), color = DuskTheme.accent, fontSize = 13.sp)
+            Text(stringResource(R.string.gb_live_last_spike, causeText(cause)), color = DuskTheme.accent, fontSize = DuskTheme.textSize13)
         }
         Spacer(Modifier.height(10.dp))
         Sparkline(live.series, color)
@@ -997,7 +997,7 @@ private fun GamePickerPage(
                 verticalAlignment = Alignment.CenterVertically) {
                 Icon(Icons.Default.Add, null, tint = DuskTheme.primary, modifier = Modifier.size(24.dp))
                 Spacer(Modifier.width(12.dp))
-                Text(stringResource(R.string.gb_add_game), color = DuskTheme.primary, fontSize = 16.sp)
+                Text(stringResource(R.string.gb_add_game), color = DuskTheme.primary, fontSize = DuskTheme.textSize16)
             }
         }
         listOf(true to R.string.gb_installed, false to R.string.gb_not_installed).forEach { (inst, header) ->
@@ -1011,7 +1011,7 @@ private fun GamePickerPage(
                         verticalAlignment = Alignment.CenterVertically) {
                         GameIcon(g, 28)
                         Spacer(Modifier.width(12.dp))
-                        Text(g.name, color = DuskTheme.onSurface, fontSize = 16.sp, modifier = Modifier.weight(1f))
+                        Text(g.name, color = DuskTheme.onSurface, fontSize = DuskTheme.textSize16, modifier = Modifier.weight(1f))
                         if (g.id == selectedId) Icon(Icons.Default.Check, null, tint = DuskTheme.primary, modifier = Modifier.size(19.dp))
                     }
                 }
@@ -1032,10 +1032,10 @@ private fun RegionPickerPage(game: GameProfile, onPick: (String) -> Unit, onBack
                 Row(Modifier.fillMaxWidth().clickable { onPick(r.key) }.padding(horizontal = 16.dp, vertical = 12.dp),
                     verticalAlignment = Alignment.CenterVertically) {
                     Column(Modifier.weight(1f)) {
-                        Text(if (fa) r.labelFa else r.labelEn, color = DuskTheme.onSurface, fontSize = 16.sp)
+                        Text(if (fa) r.labelFa else r.labelEn, color = DuskTheme.onSurface, fontSize = DuskTheme.textSize16)
                         // Known outages are said up front: in 2026 the Gulf datacentres went dark.
                         if (RegionCatalog.find(r.anchorRegion)?.status == RegionCatalog.Status.DOWN) {
-                            Text(stringResource(R.string.gb_region_status_down), color = DuskTheme.error, fontSize = 12.sp)
+                            Text(stringResource(R.string.gb_region_status_down), color = DuskTheme.error, fontSize = DuskTheme.textSize12)
                         }
                     }
                     if (r.key == game.defaultRegion) Icon(Icons.Default.Check, null, tint = DuskTheme.primary, modifier = Modifier.size(19.dp))
@@ -1155,12 +1155,12 @@ private fun AdvancedPage(
                 com.mlmvpn.scanner.engines.game.booster.paths.SanctionDns.forget()
                 showNotice(S(R.string.gb_adv_forget_done))
             }.padding(horizontal = 16.dp, vertical = 12.dp)) {
-                Text(stringResource(R.string.gb_adv_forget), color = DuskTheme.primary, fontSize = 16.sp)
+                Text(stringResource(R.string.gb_adv_forget), color = DuskTheme.primary, fontSize = DuskTheme.textSize16)
             }
             if (game.isCustom) {
                 Separator()
                 Row(Modifier.fillMaxWidth().clickable(onClick = onRemove).padding(horizontal = 16.dp, vertical = 12.dp)) {
-                    Text(stringResource(R.string.gb_adv_remove_game), color = DuskTheme.error, fontSize = 16.sp)
+                    Text(stringResource(R.string.gb_adv_remove_game), color = DuskTheme.error, fontSize = DuskTheme.textSize16)
                 }
             }
         }
@@ -1172,7 +1172,7 @@ private fun AdvancedPage(
 private fun CheckRow(title: String, checked: Boolean, onClick: () -> Unit) {
     Row(Modifier.fillMaxWidth().clickable(onClick = onClick).heightIn(min = 46.dp).padding(horizontal = 16.dp, vertical = 10.dp),
         verticalAlignment = Alignment.CenterVertically) {
-        Text(title, color = DuskTheme.onSurface, fontSize = 16.sp, modifier = Modifier.weight(1f))
+        Text(title, color = DuskTheme.onSurface, fontSize = DuskTheme.textSize16, modifier = Modifier.weight(1f))
         if (checked) Icon(Icons.Default.Check, null, tint = DuskTheme.primary, modifier = Modifier.size(19.dp))
     }
 }

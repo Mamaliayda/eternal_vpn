@@ -243,7 +243,7 @@ internal fun AmzServersScreen(
                 item(key = "empty", contentType = "empty") {
                     Text(
                         stringResource(if (state.servers.isEmpty()) R.string.amz_empty else R.string.amz_empty_filter),
-                        color = DuskTheme.muted, fontSize = 14.sp, textAlign = TextAlign.Center, lineHeight = 22.sp,
+                        color = DuskTheme.muted, fontSize = DuskTheme.textSize14, textAlign = TextAlign.Center, lineHeight = DuskTheme.textSize22,
                         modifier = Modifier.fillMaxWidth().padding(horizontal = DuskTheme.space6, vertical = 40.dp),
                     )
                 }
@@ -373,10 +373,10 @@ private fun SearchBar(query: String, onChange: (String) -> Unit) {
         Icon(Icons.Default.Search, contentDescription = null, tint = DuskTheme.muted, modifier = Modifier.size(18.dp))
         Spacer(Modifier.width(DuskTheme.space2))
         Box(Modifier.weight(1f)) {
-            if (query.isEmpty()) Text(stringResource(R.string.amz_search), color = DuskTheme.muted, fontSize = 16.sp)
+            if (query.isEmpty()) Text(stringResource(R.string.amz_search), color = DuskTheme.muted, fontSize = DuskTheme.textSize16)
             BasicTextField(
                 value = query, onValueChange = onChange, singleLine = true,
-                textStyle = TextStyle(color = DuskTheme.onSurface, fontSize = 16.sp), cursorBrush = SolidColor(DuskTheme.primary),
+                textStyle = TextStyle(color = DuskTheme.onSurface, fontSize = DuskTheme.textSize16), cursorBrush = SolidColor(DuskTheme.primary),
                 modifier = Modifier.fillMaxWidth(),
             )
         }
@@ -397,19 +397,19 @@ private fun Segmented(seg: Seg, onSelect: (Seg) -> Unit) {
     )
     Row(
         Modifier.fillMaxWidth().padding(horizontal = DuskTheme.space4, vertical = DuskTheme.space1_5)
-            .clip(RoundedCornerShape(11.dp)).background(DuskTheme.raisedSurface).padding(3.dp),
+            .clip(RoundedCornerShape(DuskTheme.corner11)).background(DuskTheme.raisedSurface).padding(3.dp),
         horizontalArrangement = Arrangement.spacedBy(3.dp),
     ) {
         options.forEach { (s, label) ->
             val sel = s == seg
             val bg by animateColorAsState(if (sel) DuskTheme.white.copy(alpha = 0.22f) else Color.Transparent, label = "seg")
             Box(
-                Modifier.weight(1f).clip(RoundedCornerShape(9.dp)).background(bg)
+                Modifier.weight(1f).clip(RoundedCornerShape(DuskTheme.corner9)).background(bg)
                     .clickable(role = Role.RadioButton) { onSelect(s) }
                     .padding(vertical = DuskTheme.space2),
                 contentAlignment = Alignment.Center,
             ) {
-                Text(label, color = DuskTheme.onSurface, fontSize = 13.sp, fontWeight = if (sel) FontWeight.SemiBold else FontWeight.Normal, maxLines = 1)
+                Text(label, color = DuskTheme.onSurface, fontSize = DuskTheme.textSize13, fontWeight = if (sel) FontWeight.SemiBold else FontWeight.Normal, maxLines = 1)
             }
         }
     }
@@ -436,7 +436,7 @@ private fun Chip(text: String, selected: Boolean, onClick: () -> Unit) {
         Modifier.clip(RoundedCornerShape(50)).background(bg).clickable(onClick = onClick)
             .padding(horizontal = DuskTheme.space3_5, vertical = DuskTheme.space2),
     ) {
-        Text(text, color = if (selected) DuskTheme.onAccent else DuskTheme.onSurface, fontSize = 13.sp, fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Normal, maxLines = 1)
+        Text(text, color = if (selected) DuskTheme.onAccent else DuskTheme.onSurface, fontSize = DuskTheme.textSize13, fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Normal, maxLines = 1)
     }
 }
 
@@ -454,11 +454,11 @@ private fun TestBar(
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Column(Modifier.weight(1f)) {
-                        Text(stringResource(R.string.amz_testing, fa(done), fa(total), fa(alive)), color = DuskTheme.onSurface, fontSize = 13.sp)
-                        if (cf) Text(stringResource(R.string.amz_testing_cf), color = DuskTheme.muted, fontSize = 12.sp)
+                        Text(stringResource(R.string.amz_testing, fa(done), fa(total), fa(alive)), color = DuskTheme.onSurface, fontSize = DuskTheme.textSize13)
+                        if (cf) Text(stringResource(R.string.amz_testing_cf), color = DuskTheme.muted, fontSize = DuskTheme.textSize12)
                     }
                     Text(
-                        stringResource(R.string.amz_stop), color = DuskTheme.error, fontSize = 14.sp, fontWeight = FontWeight.SemiBold,
+                        stringResource(R.string.amz_stop), color = DuskTheme.error, fontSize = DuskTheme.textSize14, fontWeight = FontWeight.SemiBold,
                         modifier = Modifier.clip(RoundedCornerShape(DuskTheme.space2)).clickable(onClick = onStop).padding(horizontal = DuskTheme.space2, vertical = DuskTheme.space1),
                     )
                 }
@@ -466,7 +466,7 @@ private fun TestBar(
                 LinearProgressIndicator(
                     progress = if (total > 0) done.toFloat() / total else 0f,
                     color = DuskTheme.success, trackColor = DuskTheme.white.copy(alpha = 0.15f),
-                    modifier = Modifier.fillMaxWidth().height(DuskTheme.space1).clip(RoundedCornerShape(2.dp)),
+                    modifier = Modifier.fillMaxWidth().height(DuskTheme.space1).clip(RoundedCornerShape(DuskTheme.corner2)),
                 )
             }
         }
@@ -474,7 +474,7 @@ private fun TestBar(
             Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(horizontal = 20.dp, vertical = DuskTheme.space1)) {
                 CircularProgressIndicator(Modifier.size(DuskTheme.space3_5), color = DuskTheme.muted, strokeWidth = 2.dp)
                 Spacer(Modifier.width(DuskTheme.space2))
-                Text(stringResource(R.string.amz_refreshing), color = DuskTheme.muted, fontSize = 13.sp)
+                Text(stringResource(R.string.amz_refreshing), color = DuskTheme.muted, fontSize = DuskTheme.textSize13)
             }
         }
         if (!running) {
@@ -497,7 +497,7 @@ private fun Pill(text: String, icon: androidx.compose.ui.graphics.vector.ImageVe
     ) {
         Icon(icon, contentDescription = null, tint = tint, modifier = Modifier.size(DuskTheme.space4))
         Spacer(Modifier.width(DuskTheme.space1_5))
-        Text(text, color = DuskTheme.onSurface, fontSize = 13.sp, maxLines = 1)
+        Text(text, color = DuskTheme.onSurface, fontSize = DuskTheme.textSize13, maxLines = 1)
     }
 }
 
@@ -509,11 +509,11 @@ private fun PickRow(mark: String, title: String, sub: String, onClick: () -> Uni
             .clickable(onClick = onClick).padding(horizontal = DuskTheme.space3_5, vertical = 11.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Box(Modifier.size(36.dp).clip(CircleShape).background(DuskTheme.white.copy(alpha = 0.14f)), contentAlignment = Alignment.Center) { Text(mark, fontSize = 19.sp) }
+        Box(Modifier.size(36.dp).clip(CircleShape).background(DuskTheme.white.copy(alpha = 0.14f)), contentAlignment = Alignment.Center) { Text(mark, fontSize = DuskTheme.textSize19) }
         Spacer(Modifier.width(DuskTheme.space3))
         Column(Modifier.weight(1f)) {
-            Text(title, color = DuskTheme.onSurface, fontSize = 15.sp, fontWeight = FontWeight.SemiBold, maxLines = 1)
-            Text(sub, color = DuskTheme.muted, fontSize = 12.sp, maxLines = 1)
+            Text(title, color = DuskTheme.onSurface, fontSize = DuskTheme.textSize15, fontWeight = FontWeight.SemiBold, maxLines = 1)
+            Text(sub, color = DuskTheme.muted, fontSize = DuskTheme.textSize12, maxLines = 1)
         }
         Icon(Icons.Default.PowerSettingsNew, contentDescription = null, tint = DuskTheme.onSurface, modifier = Modifier.size(20.dp))
     }
@@ -528,8 +528,8 @@ private fun GroupHeader(key: String, count: Int, alive: Int) {
             .padding(start = 22.dp, end = 22.dp, top = DuskTheme.space3, bottom = DuskTheme.space1_5),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Text("${groupFlag(key)}  ${groupName(key)}", color = DuskTheme.onSurface, fontSize = 15.sp, fontWeight = FontWeight.SemiBold, modifier = Modifier.weight(1f))
-        Text(stringResource(R.string.amz_servers_count, fa(count), fa(alive)), color = DuskTheme.muted, fontSize = 12.sp)
+        Text("${groupFlag(key)}  ${groupName(key)}", color = DuskTheme.onSurface, fontSize = DuskTheme.textSize15, fontWeight = FontWeight.SemiBold, modifier = Modifier.weight(1f))
+        Text(stringResource(R.string.amz_servers_count, fa(count), fa(alive)), color = DuskTheme.muted, fontSize = DuskTheme.textSize12)
     }
 }
 
@@ -584,11 +584,11 @@ private fun ServerRow(m: RowModel, onClick: () -> Unit, onLongClick: () -> Unit)
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Box(Modifier.size(36.dp).clip(CircleShape).background(DuskTheme.white.copy(alpha = 0.10f)), contentAlignment = Alignment.Center) {
-            Text(groupFlag(m.group), fontSize = 19.sp)
+            Text(groupFlag(m.group), fontSize = DuskTheme.textSize19)
         }
         Spacer(Modifier.width(DuskTheme.space3))
         Column(Modifier.weight(1f)) {
-            Text(m.name, color = DuskTheme.onSurface, fontSize = 15.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            Text(m.name, color = DuskTheme.onSurface, fontSize = DuskTheme.textSize15, maxLines = 1, overflow = TextOverflow.Ellipsis)
             Spacer(Modifier.height(3.dp))
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Tag(kindLabel(m.kind), kindColor(m.kind))
@@ -602,9 +602,9 @@ private fun ServerRow(m: RowModel, onClick: () -> Unit, onLongClick: () -> Unit)
             when {
                 m.pending -> CircularProgressIndicator(Modifier.size(DuskTheme.space4), color = DuskTheme.muted, strokeWidth = 2.dp)
                 m.status == 1 && m.ms != null -> DelayCapsule(m.ms)
-                m.status == 2 -> Text(stringResource(R.string.amz_dead), color = DuskTheme.error, fontSize = 12.sp,
+                m.status == 2 -> Text(stringResource(R.string.amz_dead), color = DuskTheme.error, fontSize = DuskTheme.textSize12,
                     modifier = Modifier.clip(RoundedCornerShape(50)).background(DuskTheme.error.copy(alpha = 0.14f)).padding(horizontal = 9.dp, vertical = DuskTheme.space1))
-                else -> Text("—", color = DuskTheme.muted, fontSize = 14.sp)
+                else -> Text("—", color = DuskTheme.muted, fontSize = DuskTheme.textSize14)
             }
         }
     }

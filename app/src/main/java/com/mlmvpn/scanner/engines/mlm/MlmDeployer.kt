@@ -179,7 +179,7 @@ class MlmDeployer(private val context: Context) {
                 val quotaHit = createErrorInfo.contains("System limit reached", ignoreCase = true) ||
                     createErrorInfo.contains("databases per account", ignoreCase = true)
                 val msg = if (quotaHit) {
-                    "Your Cloudflare account has reached its D1 database limit (max 10 on the Free plan), and none of the existing ones belong to MLM VPN, so a new one can't be created.\n\n" +
+                    "Your Cloudflare account has reached its D1 database limit (max 10 on the Free plan), and none of the existing ones belong to Eternal VPN, so a new one can't be created.\n\n" +
                         "Existing databases on this account:\n" + existingDbNames.joinToString("\n") { "- $it" } + "\n\n" +
                         "Delete one you don't need at dash.cloudflare.com -> Workers & Pages -> D1, then try deploying again."
                 } else {
@@ -189,7 +189,7 @@ class MlmDeployer(private val context: Context) {
             }
 
             // 3. Upload Worker
-            onProgress(60, "Uploading MLM Worker...")
+            onProgress(60, "Uploading Eternal VPN worker...")
             var workerScript = ""
             try {
                 com.mlmvpn.scanner.store.StoreFiles.open(context, "mlm_worker.js").bufferedReader().use {
@@ -274,7 +274,7 @@ class MlmDeployer(private val context: Context) {
                 detail = r.second
                 if (uploaded) android.util.Log.w("MlmDeployer", "deployed without SESSIONS: XHTTP will not work on workers.dev")
             }
-            if (!uploaded) return@withContext Pair(false, "Failed to upload MLM worker: $detail")
+            if (!uploaded) return@withContext Pair(false, "Failed to upload Eternal VPN worker: $detail")
 
             // 4. Enable Subdomain
             onProgress(80, "Enabling subdomain routing...")

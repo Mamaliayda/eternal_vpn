@@ -74,7 +74,7 @@ fun StudioTemplatesScreen(
             Text(
                 S(R.string.studio_template_new),
                 color = DuskTheme.primary,
-                fontSize = 16.sp,
+                fontSize = DuskTheme.textSize16,
                 modifier = Modifier.clickable(onClick = onNewTemplate)
                     .padding(horizontal = 4.dp, vertical = 6.dp),
             )

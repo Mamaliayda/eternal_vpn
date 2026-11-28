@@ -293,10 +293,10 @@ private fun OutlineHome(
                 Text(
                     tr("این سرورها عمومی‌اند و صاحبشان ناشناس است. برای بانک، رمز و حساب‌های مهم از آن‌ها استفاده نکنید.",
                         "These are public servers run by strangers. Don't use them for banking, passwords or important accounts."),
-                    color = DuskTheme.onSurface, fontSize = 13.sp, lineHeight = 20.sp, modifier = Modifier.weight(1f),
+                    color = DuskTheme.onSurface, fontSize = DuskTheme.textSize13, lineHeight = DuskTheme.textSize20, modifier = Modifier.weight(1f),
                 )
                 Spacer(Modifier.width(DuskTheme.space2))
-                Text(tr("متوجه شدم", "Got it"), color = DuskTheme.primary, fontSize = 14.sp, fontWeight = FontWeight.SemiBold,
+                Text(tr("متوجه شدم", "Got it"), color = DuskTheme.primary, fontSize = DuskTheme.textSize14, fontWeight = FontWeight.SemiBold,
                     modifier = Modifier.clip(RoundedCornerShape(DuskTheme.space2)).clickable { OutlineEngine.setPrefs { it.copy(warned = true) } }.padding(DuskTheme.space1_5))
             }
         }
@@ -308,10 +308,10 @@ private fun OutlineHome(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(tr("یک کلید Outline در کلیپ‌بورد هست. اضافه شود؟", "There's an Outline key on the clipboard. Add it?"),
-                    color = DuskTheme.onSurface, fontSize = 13.sp, modifier = Modifier.weight(1f))
-                Text(tr("نه", "No"), color = DuskTheme.muted, fontSize = 14.sp,
+                    color = DuskTheme.onSurface, fontSize = DuskTheme.textSize13, modifier = Modifier.weight(1f))
+                Text(tr("نه", "No"), color = DuskTheme.muted, fontSize = DuskTheme.textSize14,
                     modifier = Modifier.clip(RoundedCornerShape(DuskTheme.space2)).clickable { onClipKey(false) }.padding(DuskTheme.space2))
-                Text(tr("افزودن", "Add"), color = DuskTheme.primary, fontSize = 14.sp, fontWeight = FontWeight.SemiBold,
+                Text(tr("افزودن", "Add"), color = DuskTheme.primary, fontSize = DuskTheme.textSize14, fontWeight = FontWeight.SemiBold,
                     modifier = Modifier.clip(RoundedCornerShape(DuskTheme.space2)).clickable { onClipKey(true) }.padding(DuskTheme.space2))
             }
         }
@@ -408,17 +408,17 @@ internal fun TestProgress(p: OutlineTestProgress) {
             Text(
                 if (warp) tr("از داخل وارپ: ${fa(p.done)} از ${fa(p.total)} · ${fa(p.alive)} سالم", "Through WARP: ${p.done} of ${p.total} · ${p.alive} working")
                 else tr("سنجش مستقیم: ${fa(p.done)} از ${fa(p.total)} · ${fa(p.alive)} سالم", "Direct: ${p.done} of ${p.total} · ${p.alive} working"),
-                color = DuskTheme.onSurface, fontSize = 15.sp, modifier = Modifier.weight(1f),
+                color = DuskTheme.onSurface, fontSize = DuskTheme.textSize15, modifier = Modifier.weight(1f),
             )
-            Text(fa(clock), color = DuskTheme.muted, fontSize = 13.sp, modifier = Modifier.padding(horizontal = DuskTheme.space1_5))
-            Text(tr("توقف", "Stop"), color = DuskTheme.error, fontSize = 15.sp, fontWeight = FontWeight.SemiBold,
+            Text(fa(clock), color = DuskTheme.muted, fontSize = DuskTheme.textSize13, modifier = Modifier.padding(horizontal = DuskTheme.space1_5))
+            Text(tr("توقف", "Stop"), color = DuskTheme.error, fontSize = DuskTheme.textSize15, fontWeight = FontWeight.SemiBold,
                 modifier = Modifier.clip(RoundedCornerShape(DuskTheme.space2)).clickable { OutlineEngine.stopTest() }.padding(horizontal = DuskTheme.space2, vertical = DuskTheme.space1))
         }
         Spacer(Modifier.height(DuskTheme.space2_5))
         LinearProgressIndicator(
             progress = if (p.total > 0) p.done.toFloat() / p.total else 0f,
             color = if (warp) DuskTheme.accent else DuskTheme.success, trackColor = DuskTheme.white.copy(alpha = 0.15f),
-            modifier = Modifier.fillMaxWidth().height(DuskTheme.space1).clip(RoundedCornerShape(2.dp)),
+            modifier = Modifier.fillMaxWidth().height(DuskTheme.space1).clip(RoundedCornerShape(DuskTheme.corner2)),
         )
         val note = when {
             warp && p.warpStarting -> tr("در حال روشن کردن وارپِ برنامه برای مرحلهٔ دوم؛ روی بعضی خط‌ها تا یک دقیقه طول می‌کشد.",
@@ -433,7 +433,7 @@ internal fun TestProgress(p: OutlineTestProgress) {
         }
         if (note != null) {
             Spacer(Modifier.height(DuskTheme.space2))
-            Text(note, color = DuskTheme.muted, fontSize = 12.sp, lineHeight = 18.sp)
+            Text(note, color = DuskTheme.muted, fontSize = DuskTheme.textSize12, lineHeight = DuskTheme.textSize18)
         }
     }
 }
@@ -450,7 +450,7 @@ private fun HeroCard(conn: OutlineConnect, server: OutlineServer?, speed: Outlin
     )
     Column(
         Modifier.fillMaxWidth().padding(horizontal = DuskTheme.space4)
-            .frostedGlass(RoundedCornerShape(30.dp)).padding(horizontal = 20.dp, vertical = 18.dp),
+            .frostedGlass(RoundedCornerShape(DuskTheme.corner30)).padding(horizontal = 20.dp, vertical = 18.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
@@ -460,7 +460,7 @@ private fun HeroCard(conn: OutlineConnect, server: OutlineServer?, speed: Outlin
             ) {
                 Box(Modifier.size(7.dp).clip(CircleShape).background(tone))
                 Spacer(Modifier.width(DuskTheme.space1_5))
-                Text(statusWord(conn), color = DuskTheme.onSurface, fontSize = 12.sp, fontWeight = FontWeight.SemiBold, maxLines = 1)
+                Text(statusWord(conn), color = DuskTheme.onSurface, fontSize = DuskTheme.textSize12, fontWeight = FontWeight.SemiBold, maxLines = 1)
             }
             Spacer(Modifier.weight(1f))
             Image(painterResource(R.drawable.ic_app_outline), contentDescription = null, contentScale = ContentScale.Fit, modifier = Modifier.size(30.dp))
@@ -476,12 +476,12 @@ private fun HeroCard(conn: OutlineConnect, server: OutlineServer?, speed: Outlin
                 is OutlineConnect.Connecting -> stepLine(conn)
                 else -> tr("آمادهٔ اتصال", "Ready to connect")
             },
-            color = DuskTheme.onSurface, fontSize = 20.sp, fontWeight = FontWeight.Bold, textAlign = TextAlign.Center,
+            color = DuskTheme.onSurface, fontSize = DuskTheme.textSize20, fontWeight = FontWeight.Bold, textAlign = TextAlign.Center,
         )
         Spacer(Modifier.height(DuskTheme.space1))
         Text(
             subLine(conn, server), color = if (conn is OutlineConnect.Failed) DuskTheme.accent else DuskTheme.muted,
-            fontSize = 13.sp, textAlign = TextAlign.Center, maxLines = 2, overflow = TextOverflow.Ellipsis,
+            fontSize = DuskTheme.textSize13, textAlign = TextAlign.Center, maxLines = 2, overflow = TextOverflow.Ellipsis,
         )
 
         Spacer(Modifier.height(DuskTheme.space4))
@@ -491,7 +491,7 @@ private fun HeroCard(conn: OutlineConnect, server: OutlineServer?, speed: Outlin
                 .background(if (connected || connecting) DuskTheme.white.copy(alpha = 0.14f) else DuskTheme.success.copy(alpha = 0.22f))
                 .clickable(role = Role.Button, onClick = onButton),
             contentAlignment = Alignment.Center,
-        ) { Text(label, color = if (connecting) DuskTheme.accent else if (connected) DuskTheme.error else DuskTheme.onSurface, fontSize = 17.sp, fontWeight = FontWeight.SemiBold) }
+        ) { Text(label, color = if (connecting) DuskTheme.accent else if (connected) DuskTheme.error else DuskTheme.onSurface, fontSize = DuskTheme.textSize17, fontWeight = FontWeight.SemiBold) }
 
         AnimatedVisibility(connected, enter = expandVertically() + fadeIn(), exit = shrinkVertically() + fadeOut()) {
             val c = conn as? OutlineConnect.Connected
@@ -556,9 +556,9 @@ private fun StatTile(label: String, value: String, modifier: Modifier = Modifier
         modifier.clip(RoundedCornerShape(DuskTheme.space4)).background(DuskTheme.white.copy(alpha = 0.08f)).padding(vertical = DuskTheme.space2_5, horizontal = DuskTheme.space2),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Text(label, color = DuskTheme.muted, fontSize = 11.sp)
+        Text(label, color = DuskTheme.muted, fontSize = DuskTheme.textSize11)
         Spacer(Modifier.height(3.dp))
-        Text(value, color = DuskTheme.onSurface, fontSize = 14.sp, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
+        Text(value, color = DuskTheme.onSurface, fontSize = DuskTheme.textSize14, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
     }
 }
 

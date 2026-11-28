@@ -200,7 +200,7 @@ class WidgetConnectService : Service() {
         return NotificationCompat.Builder(this, CHANNEL_ID)
             .setColor(androidx.core.content.ContextCompat.getColor(this, R.color.dusk_primary))
             .setSmallIcon(R.drawable.ic_notification)
-            .setContentTitle("MLMVPN")
+            .setContentTitle("Eternal VPN")
             .setContentText(text)
             .setOngoing(true)
             .setOnlyAlertOnce(true)

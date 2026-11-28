@@ -421,7 +421,7 @@ internal fun MaeManageScreen(onBack: () -> Unit, openPicker: Boolean = false, on
                         Spacer(Modifier.width(12.dp))
                         MaeAppIcon(s, name, 30.dp)
                         Spacer(Modifier.width(12.dp))
-                        Text(name, color = DuskTheme.onSurface, fontSize = 16.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                        Text(name, color = DuskTheme.onSurface, fontSize = DuskTheme.textSize16, maxLines = 1, overflow = TextOverflow.Ellipsis)
                     }
                 }
             }
@@ -524,8 +524,8 @@ private fun ManageAppRow(v: MaeEngine.ServiceView, name: String, subtitle: Strin
         Box(Modifier.alpha(if (v.paused) 0.45f else 1f)) { MaeAppIcon(v.def, name, 36.dp) }
         Spacer(Modifier.width(12.dp))
         Column(Modifier.weight(1f)) {
-            Text(name, color = if (v.paused) DuskTheme.muted else DuskTheme.onSurface, fontSize = 16.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
-            Text(subtitle, color = DuskTheme.muted, fontSize = 12.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            Text(name, color = if (v.paused) DuskTheme.muted else DuskTheme.onSurface, fontSize = DuskTheme.textSize16, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            Text(subtitle, color = DuskTheme.muted, fontSize = DuskTheme.textSize12, maxLines = 1, overflow = TextOverflow.Ellipsis)
         }
         Icon(
             Icons.Default.ChevronRight, contentDescription = null, tint = DuskTheme.disabled,
@@ -542,7 +542,7 @@ private fun DestructiveRow(label: String, enabled: Boolean = true, onClick: () -
             .heightIn(min = 48.dp).padding(horizontal = 16.dp, vertical = 12.dp),
         contentAlignment = Alignment.Center,
     ) {
-        Text(label, color = if (enabled) DuskTheme.error else DuskTheme.muted, fontSize = 16.sp, fontWeight = FontWeight.Medium)
+        Text(label, color = if (enabled) DuskTheme.error else DuskTheme.muted, fontSize = DuskTheme.textSize16, fontWeight = FontWeight.Medium)
     }
 }
 
@@ -572,14 +572,14 @@ private fun MaeAppDetail(
         Column(Modifier.fillMaxWidth().padding(top = 20.dp, bottom = 6.dp), horizontalAlignment = Alignment.CenterHorizontally) {
             MaeAppIcon(v.def, name, 72.dp)
             Spacer(Modifier.height(10.dp))
-            Text(name, color = DuskTheme.onSurface, fontSize = 22.sp, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            Text(name, color = DuskTheme.onSurface, fontSize = DuskTheme.textSize22, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
             val now = when {
                 v.def.id in testing -> stringResource(R.string.mae_phase_testing)
                 v.paused -> stringResource(R.string.mae_phase_paused)
                 v.routeId != null -> routeName(context, v.routeId, v.family, v.country)
                 else -> stringResource(R.string.mae_phase_waiting)
             }
-            Text(now, color = DuskTheme.muted, fontSize = 14.sp)
+            Text(now, color = DuskTheme.muted, fontSize = DuskTheme.textSize14)
         }
 
         SettingsGroup(modifier = Modifier.padding(top = 14.dp)) {
@@ -643,8 +643,8 @@ private fun CheckRow(label: String, detail: String?, checked: Boolean, onClick: 
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Column(Modifier.weight(1f)) {
-            Text(label, color = DuskTheme.onSurface, fontSize = 16.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
-            if (detail != null) Text(detail, color = DuskTheme.muted, fontSize = 12.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            Text(label, color = DuskTheme.onSurface, fontSize = DuskTheme.textSize16, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            if (detail != null) Text(detail, color = DuskTheme.muted, fontSize = DuskTheme.textSize12, maxLines = 1, overflow = TextOverflow.Ellipsis)
         }
         if (checked) Icon(Icons.Default.Check, contentDescription = null, tint = DuskTheme.primary, modifier = Modifier.size(20.dp))
     }
@@ -658,8 +658,8 @@ private fun SetupRow(label: String, detail: String, onClick: () -> Unit) {
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Column(Modifier.weight(1f)) {
-            Text(label, color = DuskTheme.onSurface, fontSize = 16.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
-            Text(detail, color = DuskTheme.accent, fontSize = 12.sp, maxLines = 2, overflow = TextOverflow.Ellipsis)
+            Text(label, color = DuskTheme.onSurface, fontSize = DuskTheme.textSize16, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            Text(detail, color = DuskTheme.accent, fontSize = DuskTheme.textSize12, maxLines = 2, overflow = TextOverflow.Ellipsis)
         }
         Icon(
             Icons.Default.ChevronRight, contentDescription = null, tint = DuskTheme.disabled,

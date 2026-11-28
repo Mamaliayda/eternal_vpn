@@ -60,7 +60,7 @@ object MlmXhttp {
             if (e is kotlinx.coroutines.CancellationException) throw e
             return@withContext Outcome.Failed(Reason.PANEL_ERROR)
         }
-        val link = links.firstNotNullOfOrNull { fromWebSocket(it, "MLM · XHTTP") }
+        val link = links.firstNotNullOfOrNull { fromWebSocket(it, "Eternal VPN · XHTTP") }
             ?: return@withContext Outcome.Failed(Reason.NO_PANEL_CONFIG)
         val config = VpnConfig.parseUri(link) ?: return@withContext Outcome.Failed(Reason.NO_PANEL_CONFIG)
         // Real data through a real core, on this network, before anything is saved.

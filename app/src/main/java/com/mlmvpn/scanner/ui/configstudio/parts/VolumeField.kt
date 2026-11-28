@@ -93,13 +93,13 @@ fun VolumeField(
                     onValueChange = onValueChange,
                     singleLine = true,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-                    textStyle = TextStyle(color = DuskTheme.onSurface, fontSize = 17.sp),
+                    textStyle = TextStyle(color = DuskTheme.onSurface, fontSize = DuskTheme.textSize17),
                     cursorBrush = SolidColor(DuskTheme.primary),
                     modifier = Modifier.weight(1f),
                     decorationBox = { inner ->
                         Box {
                             if (value.isEmpty()) {
-                                Text(placeholder, color = DuskTheme.muted.copy(alpha = 0.6f), fontSize = 17.sp)
+                                Text(placeholder, color = DuskTheme.muted.copy(alpha = 0.6f), fontSize = DuskTheme.textSize17)
                             }
                             inner()
                         }
@@ -111,7 +111,7 @@ fun VolumeField(
                     Box(
                         modifier = Modifier
                             .padding(start = 4.dp)
-                            .background(if (sel) DuskTheme.primary else Color.Transparent, RoundedCornerShape(8.dp))
+                            .background(if (sel) DuskTheme.primary else Color.Transparent, RoundedCornerShape(DuskTheme.corner8))
                             .clickable { onUnitChange(u) }
                             .padding(horizontal = 12.dp, vertical = 6.dp),
                         contentAlignment = Alignment.Center,
@@ -119,7 +119,7 @@ fun VolumeField(
                         Text(
                             u.label,
                             color = if (sel) Color.White else DuskTheme.muted,
-                            fontSize = 14.sp,
+                            fontSize = DuskTheme.textSize14,
                             fontWeight = if (sel) FontWeight.SemiBold else FontWeight.Normal,
                         )
                     }

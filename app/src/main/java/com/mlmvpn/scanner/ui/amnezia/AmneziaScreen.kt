@@ -249,12 +249,12 @@ private fun AmzHome(
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Column(Modifier.weight(1f)) {
                             Text(stringResource(R.string.amz_testing, fa(progress.done), fa(progress.total), fa(progress.alive)),
-                                color = DuskTheme.onSurface, fontSize = 15.sp)
+                                color = DuskTheme.onSurface, fontSize = DuskTheme.textSize15)
                             if (progress.via == com.mlmvpn.scanner.engines.amnezia.AmzStat.VIA_CF) {
-                                Text(stringResource(R.string.amz_testing_cf), color = DuskTheme.muted, fontSize = 13.sp)
+                                Text(stringResource(R.string.amz_testing_cf), color = DuskTheme.muted, fontSize = DuskTheme.textSize13)
                             }
                         }
-                        Text(stringResource(R.string.amz_stop), color = DuskTheme.error, fontSize = 15.sp, fontWeight = FontWeight.SemiBold,
+                        Text(stringResource(R.string.amz_stop), color = DuskTheme.error, fontSize = DuskTheme.textSize15, fontWeight = FontWeight.SemiBold,
                             modifier = Modifier.clip(DuskTheme.glyphShape).clickable { AmzEngine.stopTest() }.padding(horizontal = 8.dp, vertical = 4.dp))
                     }
                     Spacer(Modifier.height(10.dp))
@@ -311,7 +311,7 @@ private fun HeroCard(conn: AmzConnect, server: AmzServer?, onButton: () -> Unit)
             ) {
                 Box(Modifier.size(7.dp).clip(CircleShape).background(tone))
                 Spacer(Modifier.width(6.dp))
-                Text(statusLine(conn), color = DuskTheme.onSurface, fontSize = 12.sp, fontWeight = FontWeight.SemiBold, maxLines = 1)
+                Text(statusLine(conn), color = DuskTheme.onSurface, fontSize = DuskTheme.textSize12, fontWeight = FontWeight.SemiBold, maxLines = 1)
             }
             Spacer(Modifier.weight(1f))
             Image(painterResource(R.drawable.ic_app_amnezia), contentDescription = null, contentScale = ContentScale.Fit, modifier = Modifier.size(30.dp))
@@ -327,12 +327,12 @@ private fun HeroCard(conn: AmzConnect, server: AmzServer?, onButton: () -> Unit)
                 is AmzConnect.Connecting -> stepLine(conn.step)
                 else -> stringResource(R.string.amz_status_idle)
             },
-            color = DuskTheme.onSurface, fontSize = 20.sp, fontWeight = FontWeight.Bold, textAlign = TextAlign.Center,
+            color = DuskTheme.onSurface, fontSize = DuskTheme.textSize20, fontWeight = FontWeight.Bold, textAlign = TextAlign.Center,
         )
         Spacer(Modifier.height(4.dp))
         Text(
             subLine(conn, server), color = if (conn is AmzConnect.Failed) DuskTheme.accent else DuskTheme.muted,
-            fontSize = 13.sp, textAlign = TextAlign.Center, maxLines = 2, overflow = TextOverflow.Ellipsis,
+            fontSize = DuskTheme.textSize13, textAlign = TextAlign.Center, maxLines = 2, overflow = TextOverflow.Ellipsis,
         )
 
         Spacer(Modifier.height(16.dp))
@@ -343,7 +343,7 @@ private fun HeroCard(conn: AmzConnect, server: AmzServer?, onButton: () -> Unit)
                 .background(if (connected || connecting) Color.White.copy(alpha = 0.14f) else DuskTheme.primary)
                 .clickable(role = Role.Button, onClick = onButton),
             contentAlignment = Alignment.Center,
-        ) { Text(label, color = if (connecting) DuskTheme.accent else if (connected) DuskTheme.error else Color.White, fontSize = 17.sp, fontWeight = FontWeight.SemiBold) }
+        ) { Text(label, color = if (connecting) DuskTheme.accent else if (connected) DuskTheme.error else Color.White, fontSize = DuskTheme.textSize17, fontWeight = FontWeight.SemiBold) }
 
         AnimatedVisibility(connected, enter = expandVertically() + fadeIn(), exit = shrinkVertically() + fadeOut()) {
             val c = conn as? AmzConnect.Connected
@@ -402,9 +402,9 @@ private fun StatTile(label: String, value: String, modifier: Modifier = Modifier
         modifier.clip(DuskTheme.chartShape).background(Color.White.copy(alpha = 0.08f)).padding(vertical = 10.dp, horizontal = 8.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Text(label, color = DuskTheme.muted, fontSize = 11.sp)
+        Text(label, color = DuskTheme.muted, fontSize = DuskTheme.textSize11)
         Spacer(Modifier.height(3.dp))
-        Text(value, color = DuskTheme.onSurface, fontSize = 14.sp, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
+        Text(value, color = DuskTheme.onSurface, fontSize = DuskTheme.textSize14, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
     }
 }
 
@@ -471,12 +471,12 @@ private fun LocationRow(
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Box(Modifier.size(40.dp).clip(CircleShape).background(Color.White.copy(alpha = 0.12f)), contentAlignment = Alignment.Center) {
-            Text(mark, fontSize = 21.sp)
+            Text(mark, fontSize = DuskTheme.textSize21)
         }
         Spacer(Modifier.width(12.dp))
         Column(Modifier.weight(1f)) {
-            Text(title, color = DuskTheme.onSurface, fontSize = 16.sp, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
-            Text(sub, color = DuskTheme.muted, fontSize = 12.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            Text(title, color = DuskTheme.onSurface, fontSize = DuskTheme.textSize16, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            Text(sub, color = DuskTheme.muted, fontSize = DuskTheme.textSize12, maxLines = 1, overflow = TextOverflow.Ellipsis)
         }
         if (ms != null) { DelayCapsule(ms); Spacer(Modifier.width(6.dp)) }
         Icon(

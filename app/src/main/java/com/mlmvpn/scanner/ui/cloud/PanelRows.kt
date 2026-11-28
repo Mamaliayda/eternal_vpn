@@ -177,7 +177,7 @@ fun ActionRow(icon: ImageVector, label: String, busy: Boolean, tint: Color = Dus
     ) {
         Icon(icon, contentDescription = null, tint = tint, modifier = Modifier.size(20.dp))
         Spacer(Modifier.width(12.dp))
-        Text(label, color = tint, fontSize = 15.sp, modifier = Modifier.weight(1f))
+        Text(label, color = tint, fontSize = DuskTheme.textSize15, modifier = Modifier.weight(1f))
         if (busy) CircularProgressIndicator(Modifier.size(16.dp), color = DuskTheme.primary, strokeWidth = 2.dp)
     }
 }

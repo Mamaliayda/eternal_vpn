@@ -371,14 +371,14 @@ private fun SniConfigRow(
             Text(
                 node.name.ifBlank { node.type },
                 color = DuskTheme.onSurface,
-                fontSize = 16.sp,
+                fontSize = DuskTheme.textSize16,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
             Text(
                 node.groupTitle?.takeIf { it.isNotBlank() } ?: node.type,
                 color = DuskTheme.muted,
-                fontSize = 12.sp,
+                fontSize = DuskTheme.textSize12,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
@@ -389,7 +389,7 @@ private fun SniConfigRow(
                 if (delay > 0) faDigits(delay.toString()) + "ms"
                 else stringResource(R.string.emergency_3_no_ping),
                 color = if (delay > 0) pingTone(delay.toInt()) else DuskTheme.error,
-                fontSize = 14.sp,
+                fontSize = DuskTheme.textSize14,
                 fontWeight = FontWeight.Medium,
             )
             Spacer(Modifier.width(10.dp))

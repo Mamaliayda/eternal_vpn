@@ -143,11 +143,11 @@ fun FenixScreen(onBack: () -> Unit) {
         }
         Spacer(Modifier.height(8.dp))
         Text(
-            stringResource(R.string.fenix_title), color = DuskTheme.onSurface, fontSize = 32.sp, fontWeight = FontWeight.Bold,
+            stringResource(R.string.fenix_title), color = DuskTheme.onSurface, fontSize = DuskTheme.textSize32, fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth(),
         )
         Text(
-            stringResource(R.string.fenix_tagline), color = DuskTheme.muted, fontSize = 13.sp,
+            stringResource(R.string.fenix_tagline), color = DuskTheme.muted, fontSize = DuskTheme.textSize13,
             textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp, vertical = 4.dp),
         )
         Spacer(Modifier.height(14.dp))
@@ -214,7 +214,7 @@ private fun Ready(accounts: List<AccountView>, onCountry: () -> Unit, onAccounts
     Text(
         statusText(conn),
         color = if (conn is Conn.Failed) DuskTheme.accent else DuskTheme.muted,
-        fontSize = 14.sp, textAlign = TextAlign.Center,
+        fontSize = DuskTheme.textSize14, textAlign = TextAlign.Center,
         modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp),
     )
     com.mlmvpn.scanner.ui.RouteChips()
@@ -282,9 +282,9 @@ private fun AccountsPage(onBack: () -> Unit, onAdd: () -> Unit) {
 
 @Composable
 private fun AccountCard(a: AccountView, onRemove: () -> Unit) {
-    Column(Modifier.fillMaxWidth().frostedGlass(RoundedCornerShape(14.dp)).padding(14.dp)) {
+    Column(Modifier.fillMaxWidth().frostedGlass(RoundedCornerShape(DuskTheme.corner14)).padding(14.dp)) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Text(a.email.ifBlank { "—" }, color = DuskTheme.onSurface, fontSize = 15.sp, fontWeight = FontWeight.SemiBold, maxLines = 1, modifier = Modifier.weight(1f))
+            Text(a.email.ifBlank { "—" }, color = DuskTheme.onSurface, fontSize = DuskTheme.textSize15, fontWeight = FontWeight.SemiBold, maxLines = 1, modifier = Modifier.weight(1f))
             val badge = when {
                 a.signedOut -> stringResource(R.string.fenix_badge_signed_out) to DuskTheme.error
                 a.exhausted -> stringResource(R.string.fenix_badge_used_up) to DuskTheme.accent
@@ -292,8 +292,8 @@ private fun AccountCard(a: AccountView, onRemove: () -> Unit) {
                 else -> null
             }
             badge?.let { (t, c) ->
-                Text(t, color = c, fontSize = 11.sp, fontWeight = FontWeight.SemiBold,
-                    modifier = Modifier.clip(RoundedCornerShape(6.dp)).background(c.copy(alpha = 0.15f)).padding(horizontal = 7.dp, vertical = 2.dp))
+                Text(t, color = c, fontSize = DuskTheme.textSize11, fontWeight = FontWeight.SemiBold,
+                    modifier = Modifier.clip(RoundedCornerShape(DuskTheme.corner6)).background(c.copy(alpha = 0.15f)).padding(horizontal = 7.dp, vertical = 2.dp))
             }
         }
         Spacer(Modifier.height(8.dp))
@@ -302,21 +302,21 @@ private fun AccountCard(a: AccountView, onRemove: () -> Unit) {
         if (left != null && limit != null && limit > 0) {
             LinearProgressIndicator(
                 progress = (left.toFloat() / limit).coerceIn(0f, 1f),
-                modifier = Modifier.fillMaxWidth().height(6.dp).clip(RoundedCornerShape(3.dp)),
+                modifier = Modifier.fillMaxWidth().height(6.dp).clip(RoundedCornerShape(DuskTheme.corner3)),
                 color = if (a.exhausted) DuskTheme.accent else DuskTheme.success,
                 trackColor = DuskTheme.disabled.copy(alpha = 0.25f),
             )
             Spacer(Modifier.height(6.dp))
-            Text(stringResource(R.string.fenix_card_left, gb(left), gb(limit)), color = DuskTheme.onSurface, fontSize = 13.sp)
+            Text(stringResource(R.string.fenix_card_left, gb(left), gb(limit)), color = DuskTheme.onSurface, fontSize = DuskTheme.textSize13)
         } else {
-            Text(stringResource(R.string.fenix_card_unknown), color = DuskTheme.muted, fontSize = 13.sp)
+            Text(stringResource(R.string.fenix_card_unknown), color = DuskTheme.muted, fontSize = DuskTheme.textSize13)
         }
-        a.resetAt?.let { r -> Text(resetLine(r), color = DuskTheme.muted, fontSize = 12.sp) }
+        a.resetAt?.let { r -> Text(resetLine(r), color = DuskTheme.muted, fontSize = DuskTheme.textSize12) }
         if (a.quotaAt > 0) {
-            Text(stringResource(R.string.fenix_card_checked, agoText(a.quotaAt)), color = DuskTheme.muted, fontSize = 11.sp)
+            Text(stringResource(R.string.fenix_card_checked, agoText(a.quotaAt)), color = DuskTheme.muted, fontSize = DuskTheme.textSize11)
         }
         Text(
-            stringResource(R.string.fenix_remove), color = DuskTheme.error, fontSize = 13.sp,
+            stringResource(R.string.fenix_remove), color = DuskTheme.error, fontSize = DuskTheme.textSize13,
             modifier = Modifier.padding(top = 6.dp).clickable(role = Role.Button, onClick = onRemove),
         )
     }
@@ -366,7 +366,7 @@ private fun MozillaSignInPage(onBack: () -> Unit) {
     IosScreen(title = stringResource(R.string.fenix_add_web_title), onBack = onBack, backLabel = stringResource(R.string.fenix_title), scrollable = false) {
         Text(
             if (busy) stringResource(R.string.fenix_adding) else stringResource(R.string.fenix_add_web_hint),
-            color = if (busy) DuskTheme.success else DuskTheme.muted, fontSize = 13.sp, textAlign = TextAlign.Center,
+            color = if (busy) DuskTheme.success else DuskTheme.muted, fontSize = DuskTheme.textSize13, textAlign = TextAlign.Center,
             modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 6.dp),
         )
         error?.let { ErrorText(it) }
@@ -528,7 +528,7 @@ private fun ConnectButton(connected: Boolean, busy: Boolean, onClick: () -> Unit
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Icon(Icons.Default.PowerSettingsNew, contentDescription = null, tint = ring, modifier = Modifier.size(44.dp))
                 Spacer(Modifier.height(4.dp))
-                Text(label, color = DuskTheme.onSurface, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
+                Text(label, color = DuskTheme.onSurface, fontSize = DuskTheme.textSize14, fontWeight = FontWeight.SemiBold)
             }
         }
     }
@@ -627,17 +627,17 @@ private fun FenixCountryPicker(onBack: () -> Unit) {
 @Composable
 private fun CountryRow(flag: String, name: String, detail: String, selected: Boolean, detailColor: Color = DuskTheme.muted, onClick: () -> Unit) {
     Row(
-        Modifier.fillMaxWidth().frostedGlass(RoundedCornerShape(14.dp)).clickable(onClick = onClick)
+        Modifier.fillMaxWidth().frostedGlass(RoundedCornerShape(DuskTheme.corner14)).clickable(onClick = onClick)
             .heightIn(min = 52.dp).padding(horizontal = 14.dp, vertical = 9.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Text(flag, fontSize = 22.sp)
+        Text(flag, fontSize = DuskTheme.textSize22)
         Spacer(Modifier.width(12.dp))
         Column(Modifier.weight(1f)) {
-            Text(name, color = DuskTheme.onSurface, fontSize = 16.sp, maxLines = 1)
-            if (detail.isNotBlank()) Text(detail, color = detailColor, fontSize = 11.sp, maxLines = 2)
+            Text(name, color = DuskTheme.onSurface, fontSize = DuskTheme.textSize16, maxLines = 1)
+            if (detail.isNotBlank()) Text(detail, color = detailColor, fontSize = DuskTheme.textSize11, maxLines = 2)
         }
-        if (selected) Text("✓", color = DuskTheme.primary, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+        if (selected) Text("✓", color = DuskTheme.primary, fontSize = DuskTheme.textSize18, fontWeight = FontWeight.Bold)
     }
 }
 

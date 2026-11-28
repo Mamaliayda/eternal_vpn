@@ -596,7 +596,7 @@ suspend fun installCaCertificate(context: android.content.Context, showNotice: (
         if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.R) {
             val intent = android.security.KeyChain.createInstallIntent().apply {
                 putExtra(android.security.KeyChain.EXTRA_CERTIFICATE, caFile.readBytes())
-                putExtra(android.security.KeyChain.EXTRA_NAME, "MLM VPN Google Script CA")
+                putExtra(android.security.KeyChain.EXTRA_NAME, "Eternal VPN Google Script CA")
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             }
             context.startActivity(intent)
@@ -608,19 +608,19 @@ suspend fun installCaCertificate(context: android.content.Context, showNotice: (
         val resolver = context.contentResolver
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
             val values = android.content.ContentValues().apply {
-                put(android.provider.MediaStore.MediaColumns.DISPLAY_NAME, "MLMVPN_CA.crt")
+                put(android.provider.MediaStore.MediaColumns.DISPLAY_NAME, "EternalVPN_CA.crt")
                 put(android.provider.MediaStore.MediaColumns.MIME_TYPE, "application/x-x509-ca-cert")
                 put(android.provider.MediaStore.MediaColumns.RELATIVE_PATH, android.os.Environment.DIRECTORY_DOWNLOADS)
             }
             val sel = "${android.provider.MediaStore.MediaColumns.DISPLAY_NAME}=?"
-            resolver.delete(android.provider.MediaStore.Downloads.EXTERNAL_CONTENT_URI, sel, arrayOf("MLMVPN_CA.crt"))
+            resolver.delete(android.provider.MediaStore.Downloads.EXTERNAL_CONTENT_URI, sel, arrayOf("EternalVPN_CA.crt"))
             val uri = resolver.insert(android.provider.MediaStore.Downloads.EXTERNAL_CONTENT_URI, values)
             uri?.let { u ->
                 resolver.openOutputStream(u)?.use { out -> out.write(caFile.readBytes()) }
             }
         } else {
             val downloadsDir = android.os.Environment.getExternalStoragePublicDirectory(android.os.Environment.DIRECTORY_DOWNLOADS)
-            val exportedCert = java.io.File(downloadsDir, "MLMVPN_CA.crt")
+            val exportedCert = java.io.File(downloadsDir, "EternalVPN_CA.crt")
             caFile.copyTo(exportedCert, overwrite = true)
             android.media.MediaScannerConnection.scanFile(context, arrayOf(exportedCert.absolutePath), arrayOf("application/x-x509-ca-cert"), null)
         }

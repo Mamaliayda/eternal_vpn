@@ -158,7 +158,7 @@ fun PreviewStateChips(state: PreviewState, onChange: (PreviewState) -> Unit, mod
                     .padding(horizontal = 12.dp, vertical = 6.dp),
                 contentAlignment = Alignment.Center,
             ) {
-                Text(label, color = if (on) DuskTheme.onSurface else DuskTheme.muted, fontSize = 12.5.sp, fontWeight = if (on) FontWeight.SemiBold else FontWeight.Normal)
+                Text(label, color = if (on) DuskTheme.onSurface else DuskTheme.muted, fontSize = DuskTheme.textSize12_5, fontWeight = if (on) FontWeight.SemiBold else FontWeight.Normal)
             }
         }
     }
@@ -191,7 +191,7 @@ fun PresetCard(template: WidgetTemplate, title: String, onClick: () -> Unit, car
     Column(
         modifier = Modifier
             .width(cardWidth)
-            .clip(RoundedCornerShape(18.dp))
+            .clip(RoundedCornerShape(DuskTheme.corner18))
             .clickable(onClick = onClick)
             .padding(4.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -200,7 +200,7 @@ fun PresetCard(template: WidgetTemplate, title: String, onClick: () -> Unit, car
             TemplatePreview(template, PreviewState.CONNECTED, width = cardWidth - 30.dp)
         }
         Spacer(Modifier.height(6.dp))
-        Text(title, color = DuskTheme.onSurface, fontSize = 13.sp, fontWeight = FontWeight.Medium, textAlign = TextAlign.Center,
+        Text(title, color = DuskTheme.onSurface, fontSize = DuskTheme.textSize13, fontWeight = FontWeight.Medium, textAlign = TextAlign.Center,
             maxLines = 1, overflow = TextOverflow.Ellipsis)
     }
 }

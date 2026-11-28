@@ -421,14 +421,14 @@ private fun androidx.compose.foundation.layout.ColumnScope.TimeChart(
         Text(
             chartStamp(stamps.first(), daily),
             color = DuskTheme.muted,
-            fontSize = 11.sp,
+            fontSize = DuskTheme.textSize11,
             modifier = Modifier.weight(1f),
             textAlign = TextAlign.Start,
         )
         Text(
             chartStamp(stamps.last(), daily),
             color = DuskTheme.muted,
-            fontSize = 11.sp,
+            fontSize = DuskTheme.textSize11,
             modifier = Modifier.weight(1f),
             textAlign = TextAlign.End,
         )

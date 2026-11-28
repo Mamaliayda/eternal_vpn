@@ -178,7 +178,7 @@ internal object QuickConnectAdapter : XrayAdapter() {
     override fun readiness(ctx: Context): Readiness = Readiness.Ready
 
     override fun variants(ctx: Context, line: LineSnapshot) =
-        listOf(Variant("pool", tr("سرورهای مشترک MLM", "Shared MLM servers"), quick = true, budgetMs = 80_000))
+        listOf(Variant("pool", tr("سرورهای مشترک Eternal VPN", "Shared Eternal VPN servers"), quick = true, budgetMs = 80_000))
 
     override suspend fun prepare(kit: ScoutKit, v: Variant): Prepared {
         kit.step(Step.PREPARING, tr("گرفتن سرورهای مشترک…", "Fetching shared servers…"))

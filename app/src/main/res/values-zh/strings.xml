@@ -124,7 +124,7 @@
     <string name="scanner_copy_ips_button">复制 IP</string>
     <string name="scanner_vpn_active_warning">VPN 运行提醒</string>
     <string name="scanner_vpn_active_desc">检测到系统中有正在运行的 VPN。为了准确测试（Real Delay），流量必须绕过 VPN。\n请关闭当前 VPN 以继续测试。</string>
-    <string name="scanner_turn_off_vpn_and_scan">关闭 MLMVPN 并扫描</string>
+    <string name="scanner_turn_off_vpn_and_scan">关闭 Eternal VPN 并扫描</string>
     <string name="scanner_understood">知道了</string>
     <string name="scanner_cancel">取消</string>
     <string name="scanner_test_archive_ips_health">测试存档 IP 的健康状况</string>
@@ -540,7 +540,7 @@
     <string name="home_quick">快速连接</string>
     <string name="home_freeconfig">免费配置</string>
     <string name="home_game">游戏加速</string>
-    <string name="home_gateway">MLM Gateway</string>
+    <string name="home_gateway">Eternal VPN Gateway</string>
     <string name="home_fixed_ip">固定 IP</string>
     <string name="home_sublink">订阅链接</string>
     <string name="home_workers">Worker</string>
@@ -592,7 +592,7 @@
     <string name="vpn_selected_apps">已选应用</string>
     <string name="vpn_apps_count">%d 个应用</string>
     <string name="vpn_quick_tile_count">快速连接服务器</string>
-    <string name="vpn_quick_tile_desc">将 mlmvpn 按钮添加到手机的快捷设置面板。轻点一下即可从这么多个最近使用的服务器中选出最快的并连接。</string>
+    <string name="vpn_quick_tile_desc">将 Eternal VPN 按钮添加到手机的快捷设置面板。轻点一下即可从这么多个最近使用的服务器中选出最快的并连接。</string>
     <string name="vpn_mtu_footer">此手机发送的数据包大小，应用于所有方式：V2Ray、MASQUE、WireGuard、WARP-in-WARP、Psiphon、Tor 和 VPN Gate。每种方式都有自己的默认值，是测量得出而非猜测。在任一方式上使用“找到最佳值”即可测量这条线路。如果显示已连接但大页面卡住，请调低；1280 几乎能通过任何路径。允许范围 576–1500。</string>
     <string name="settings_icon_size">图标大小</string>
     <string name="settings_icon_size_desc">缩放主屏幕图标。标签和间距保持不变。</string>
@@ -764,7 +764,7 @@
     <string name="vpn_kill_switch">断网保护</string>
     <string name="vpn_reconnect">重新连接</string>
     <string name="tile_label_vpn">Eternal VPN</string>
-    <string name="tile_label_tunnel">Mlm Tunnel</string>
+    <string name="tile_label_tunnel">Eternal VPN Tunnel</string>
     <string name="wg_data_check">验证数据确实在传输</string>
     <string name="wg_data_check_hint">在报告成功之前等待真实流量通过。有些运营商上 WireGuard 握手能完成，但之后会丢弃所有数据包，所以仅凭握手什么也证明不了。关闭此项连接更快，但“已连接”的含义会打折扣。</string>
     <string name="wg_section_verify">连接检查</string>
@@ -793,7 +793,7 @@
     <string name="cf_resources_workers_empty_body">此账户尚未部署任何 Worker。请在“云端”页面安装一个面板。</string>
     <string name="cf_resources_workers_footer">Worker 是您 Cloudflare 账户上的服务器。删除它会使基于它生成的配置失效。</string>
     <string name="cf_resources_d1_empty">没有 D1 数据库</string>
-    <string name="cf_resources_d1_empty_body">MLM 和 Nahan 面板在部署时会创建一个。</string>
+    <string name="cf_resources_d1_empty_body">Eternal VPN 和 Nahan 面板在部署时会创建一个。</string>
     <string name="cf_resources_d1_failed">无法读取 D1 列表</string>
     <string name="cf_resources_d1_footer">Cloudflare 限制了免费账户可拥有的数据库数量。请在 Cloudflare 控制台中删除一个。</string>
     <string name="cf_resources_kv_empty">没有 KV 命名空间</string>
@@ -1141,9 +1141,9 @@
     <string name="measuring_of">正在测量第 %1$s / %2$s 个</string>
     <string name="minutes">%1$s 分钟</string>
     <string name="minutes_ago"> 分钟前</string>
-    <string name="mlm_account_not_found">未找到 MLM 账户！</string>
-    <string name="mlm_gateway">MLM Gateway</string>
-    <string name="mlmvpn_private_list">MLMVPN 私有列表 · </string>
+    <string name="mlm_account_not_found">未找到 Eternal VPN 账户！</string>
+    <string name="mlm_gateway">Eternal VPN Gateway</string>
+    <string name="mlmvpn_private_list">Eternal VPN 私有列表 · </string>
     <string name="months_ago"> 个月前</string>
     <string name="move_configs_to_the_connection_page">将 %1$s 个配置移到连接页面</string>
     <string name="my_list">我的列表</string>
@@ -1203,7 +1203,7 @@
     <string name="panel_installed_now_i_will_fetch_the">面板已安装。现在我会从中获取配置，然后我们 </string>
     <string name="panels_have_configs">%1$s 个面板有配置</string>
     <string name="pick_a_country_and_tap_quick_scan">选择一个国家并点击“快速扫描”。“扫描所有服务器”会测试该 </string>
-    <string name="pick_a_server_in_mlm_gateway_first">请先在“MLM Gateway”中选择服务器</string>
+    <string name="pick_a_server_in_mlm_gateway_first">请先在“Eternal VPN Gateway”中选择服务器</string>
     <string name="pick_a_server_in_the_gateway_first">请先在网关中选择服务器</string>
     <string name="pick_the_region_you_usually_play_on">选择您通常游戏的区域。加速功能会测量到该区域 </string>
     <string name="ping">Ping</string>
@@ -1459,7 +1459,7 @@
     <string name="used_so_far_usedmb_mb_of_limitstr">已使用：%1$s MB / %2$s</string>
     <string name="user_created_successfully">用户创建成功</string>
     <string name="user_edited_successfully">用户编辑成功</string>
-    <string name="user_management_mlm">用户管理（MLM）</string>
+    <string name="user_management_mlm">用户管理（Eternal VPN）</string>
     <string name="user_not_found">未找到用户！</string>
     <string name="username">用户名</string>
     <string name="users">用户</string>
@@ -1709,7 +1709,7 @@
     <string name="save_and_fetch">保存并获取</string>
     <string name="save_as_a_file">另存为文件</string>
     <string name="save_as_a_file_the_file_is">“另存为文件”——文件会被准确完整地写出。 </string>
-    <string name="saved_to_your_downloads_folder_mlmvpn_relay">已保存到“下载”文件夹：MLMVPN_relay.gs</string>
+    <string name="saved_to_your_downloads_folder_mlmvpn_relay">已保存到“下载”文件夹：EternalVPN_relay.gs</string>
     <string name="scan_qr">扫描二维码</string>
     <string name="scan_the_config_s_qr_code">扫描配置的二维码</string>
     <string name="scanner">扫描器 · </string>
@@ -2455,7 +2455,7 @@
     <string name="manual_2">手动</string>
     <string name="means_throwing_away_the_very_thing_that">意味着丢掉恰恰能显示问题的东西。</string>
     <string name="medium_2">中等</string>
-    <string name="mlmvpn_private_list_2">MLMVPN 私有列表</string>
+    <string name="mlmvpn_private_list_2">Eternal VPN 私有列表</string>
     <string name="myself_you_can_leave_it_at_any">完成；你可以随时退出。</string>
     <string name="network_filtering_a_job_for_the_vpn">网络过滤（这是 VPN 的工作，不是本部分的）</string>
     <string name="no_bridge_straight_to_the_tor_network">无网桥，直接连接 Tor 网络。适用于没有封锁 Tor 的网络</string>
@@ -2616,7 +2616,7 @@
     <string name="wireguard_game_trial">WireGuard（游戏试用）</string>
     <string name="wireguard_is_active">WireGuard 已启用</string>
     <string name="wireguard_scan">WireGuard 扫描</string>
-    <string name="with_mlmvpn_stay_connected_always_whatever_the">有了 MLMVPN，无论什么情况都能始终保持连接</string>
+    <string name="with_mlmvpn_stay_connected_always_whatever_the">有了 Eternal VPN，无论什么情况都能始终保持连接</string>
     <string name="with_no_filter_every_server_in_this">不加筛选时，会显示该列表中的所有服务器。你可以选择多个国家 </string>
     <string name="word_processing">文字处理</string>
     <string name="working_ips_were_found_but_no_combination">找到了可用的 IP，但没有生成任何组合。为组合选择的分组 </string>
@@ -2736,18 +2736,18 @@
     <string name="in_quick_connect_i_get_no_responding">在快速连接中我收到“未找到有响应的服务器”。怎么办？</string>
     <string name="in_quick_connect_what_does_the_green">在快速连接中，服务器名称旁的绿色对勾是什么意思？</string>
     <string name="in_the_nhn_section_when_i_create">在 NHN 部分，我创建了带流量和时间限制的用户，为什么生成的配置不能用？</string>
-    <string name="in_your_phone_s_settings_search_type">在手机设置的搜索中输入“受信任的凭据”或“证书”，然后选择“用户”标签页。我们的证书在那里名为“MLM VPN Local CA …”；点击它并选择“移除”。Samsung、Xiaomi、Pixel、Huawei、Oppo/Realme 和 Vivo 的具体路径在第 17 篇教程中单独列出。如果你想一次清除所有已安装的证书，同一页面有“清除凭据”——但请注意，它会清除所有证书，而不只是我们的。移除后，域前置文件夹中第二步的对勾会自动取消。</string>
+    <string name="in_your_phone_s_settings_search_type">在手机设置的搜索中输入“受信任的凭据”或“证书”，然后选择“用户”标签页。我们的证书在那里名为“Eternal VPN Local CA …”；点击它并选择“移除”。Samsung、Xiaomi、Pixel、Huawei、Oppo/Realme 和 Vivo 的具体路径在第 17 篇教程中单独列出。如果你想一次清除所有已安装的证书，同一页面有“清除凭据”——但请注意，它会清除所有证书，而不只是我们的。移除后，域前置文件夹中第二步的对勾会自动取消。</string>
     <string name="iran_configs_1_to_8_no_server">• **伊朗配置（1 到 8）：**无需服务器，用于打开普通网站和应用。首先应尝试的选项。\n• **云面板（BPB / EDG / Nahan）：**你自己 Cloudflare 账户上的私人服务器；对所有应用最可靠的选项，但需要部署一次。\n• **域前置：**无需服务器、不花钱，但仅限浏览器，并且需要安装证书。\n• **游戏标签页：**用于降低游戏 ping，而不是打开网站。\n• **紧急：**当一切都被封锁、连配置都获取不到时使用。</string>
     <string name="is_installing_this_certificate_dangerous_for_my">安装这个证书对手机危险吗？可以安装朋友的证书吗？</string>
     <string name="is_there_a_per_app_setting_choosing">有没有“按应用设置”（选择哪些应用走 VPN）？</string>
     <string name="it_is_the_port_the_app_opens">这是应用在手机本机上打开、用于传输流量的端口。默认是 10808，除非有特别原因，否则不要改动。重要的是，除了你输入的数字，应用还会使用“该数字 + 10000”（用于检查连接状态和国家）。所以有些数字看似有效却会出问题——例如 21000 会与应用测试服务器所用的范围冲突。如果你输入了不合适的数字，问题会写在字段下方，在你改正之前保存按钮不会生效。</string>
-    <string name="it_means_android_has_not_accepted_the">这说明 Android 还没有接受该证书。常见原因有三个：1）在证书类型这一步你没有选择“CA 证书”（选择 VPN 或 Wi-Fi 也能安装，但对我们没用）；2）你选错了文件——必须是 MLM-VPN-Certificate.crt；3）你的手机没有设置屏幕锁（PIN、图案或指纹）——在你设置之前 Android 不会安装证书。不需要关闭再重新打开应用；它会持续检查，证书一装好就会打勾。</string>
+    <string name="it_means_android_has_not_accepted_the">这说明 Android 还没有接受该证书。常见原因有三个：1）在证书类型这一步你没有选择“CA 证书”（选择 VPN 或 Wi-Fi 也能安装，但对我们没用）；2）你选错了文件——必须是 eternal-VPN-Certificate.crt；3）你的手机没有设置屏幕锁（PIN、图案或指纹）——在你设置之前 Android 不会安装证书。不需要关闭再重新打开应用；它会持续检查，证书一装好就会打勾。</string>
     <string name="it_means_that_server_s_country_is">这表示该服务器的国家不再是列表的声称，而是测量结果。你实际连接到服务器后，应用会从隧道内部询问 Cloudflare 流量从哪里出去。如果答案与原来的旗帜不同，该服务器会被永久移到它真实的国家，并通知你。原因是，有人选择某个国家时，目的就是从那个国家出去。</string>
     <string name="managing_nahan_users_making_configs_for_friends">管理 Nahan 用户（为朋友生成配置）</string>
     <string name="no_tutorial_matched_that_phrase_the_search">没有教程匹配该短语。搜索同时覆盖标题和教程正文， </string>
     <string name="nothing_is_wrong_this_method_was_only">没有任何问题；这个方法本来就只适用于浏览器。从 Android 7 开始，Android 不允许普通应用信任用户安装的证书——所以 YouTube、Instagram 等永远看不到这个证书，也就无法工作。这是 Android 本身的限制，没有 root 任何应用都无法绕过。请在 Chrome 中打开网站；如果你希望应用本身也能用，请使用云面板配置或伊朗配置。</string>
     <string name="numbers_1_to_6_are_built_on">1 到 6 号基于 Serverless 项目的旧版本，7 和 8 是新版本（v48），完全未经修改地加入。7 和 8 唯一的区别是发送分片之间的间隔（8 适用于不接受短间隔的网络）。如果连不上，请先检查本地端口：这些配置只能在 `10808` 端口工作，我们特意没有改动它们。如果你的端口不对，伊朗配置文件夹内会显示红色警告。</string>
-    <string name="on_the_home_screen_an_icon_named">在主屏幕上，一个名为“MLM Gateway”的图标。它完全没有变化，所有功能都还在。如果找不到，可能是你自己移动了它。</string>
+    <string name="on_the_home_screen_an_icon_named">在主屏幕上，一个名为“Eternal VPN Gateway”的图标。它完全没有变化，所有功能都还在。如果找不到，可能是你自己移动了它。</string>
     <string name="quick_connect_is_one_of_the_home">快速连接是主屏幕上的一个图标：应用自己下载的、包含数千台公共服务器的现成列表。不需要账户、不需要搭建面板、也不需要输入配置。它与云面板的区别在于，云面板的服务器是你自己的，在你自己的 Cloudflare 账户上（更稳定，但需要部署一次），而这里的服务器是公共共享的（即时可用，但质量不保证）。完整指南在教程第 18 篇。</string>
     <string name="quick_connect_the_ready_made_server_list">快速连接——现成的服务器列表与选择国家</string>
     <string name="s_0_9_s">^\\s*([۰-۹0-9]+)[.)\\-]\\s*(.*)$</string>
@@ -2757,7 +2757,7 @@
     <string name="that_error_means_your_cloudflare_token_is">这个错误表示你的 Cloudflare 令牌不正确或已过期。请完全按照视频指南重新创建令牌，并再次输入到应用中。</string>
     <string name="that_is_usually_a_clash_with_the">这通常是与旧版本冲突。请先彻底卸载旧版本，再安装新版本。</string>
     <string name="that_is_usually_down_to_dns_or">这通常与 DNS 或 MTU 设置有关。新版本会尽量改善，但切换协议（从 BPB 换到 Edge 或反过来）可能有帮助。</string>
-    <string name="that_message_means_you_took_the_wrong">这条消息说明你走错了路。Android 11 及以上版本完全禁止从应用内部安装证书。正确的方法是应用自己提示的：先点“将证书保存到下载”，然后在 Android 设置 → 安装证书 → CA 证书 中，从 Download 文件夹选择 MLM-VPN-Certificate.crt。</string>
+    <string name="that_message_means_you_took_the_wrong">这条消息说明你走错了路。Android 11 及以上版本完全禁止从应用内部安装证书。正确的方法是应用自己提示的：先点“将证书保存到下载”，然后在 Android 设置 → 安装证书 → CA 证书 中，从 Download 文件夹选择 eternal-VPN-Certificate.crt。</string>
     <string name="that_usually_means_the_country_you_picked">这通常意味着你选的国家可用服务器很少。把国家框设为“所有国家”再搜索一次。如果你收到的是“未获取到服务器”，问题就不同了：列表来源被封锁了，所以请先连接一个反制裁选项或伊朗配置，然后点击国家选择器旁边的刷新按钮。</string>
     <string name="that_was_fixed_in_update_1_0">已在 1.0.5 更新中修复。</string>
     <string name="the_app_is_tuned_for_most_android">应用已针对大多数 Android 版本进行了调整，但如果某个版本表现异常，请确认你使用的是最新更新，或清除应用缓存。</string>
@@ -2771,7 +2771,7 @@
     <string name="what_is_quick_connect_and_how_does">什么是“快速连接”，它与其他部分有什么不同？</string>
     <string name="what_is_the_local_port_in_settings">设置中的“本地端口”是什么，应该用哪个数字？</string>
     <string name="where_do_the_mythological_config_names_come">神话风格的配置名称从何而来？</string>
-    <string name="where_is_the_mlm_gateway_vpn_gate">MLM Gateway（VPN Gate）在哪里？</string>
+    <string name="where_is_the_mlm_gateway_vpn_gate">Eternal VPN Gateway（VPN Gate）在哪里？</string>
     <string name="which_mode_should_i_use_for_what">什么情况下用哪种模式？</string>
     <string name="while_installing_the_certificate_i_get_couldn">安装证书时我收到“Couldn\'t install CA certificates … from null”。怎么办？</string>
     <string name="why_are_videos_and_bots_slow_to">为什么已经连接了，Telegram 或 Instagram 里的视频和机器人加载还是很慢？</string>
@@ -2783,7 +2783,7 @@
     <string name="why_will_the_new_version_not_install">为什么新版本装不上，还出现“Package conflicts”错误？</string>
     <string name="yes_since_version_1_0_5_it">是的，从 1.0.5 版本起已针对 Android 智能电视进行了优化。</string>
     <string name="yes_the_app_has_it_go_to">有的，应用里有——进入设置，然后 VPN 设置。</string>
-    <string name="you_can_add_the_mlmvpn_tile_to">你可以把“mlmvpn”图块添加到手机的快速设置面板（从顶部下滑 → 编辑/添加图块）。点一下即可开启或关闭 VPN；开启时会测量你最近几台服务器的延迟并连接最快的那台。测试多少台服务器（默认 20 台）可以在 设置 → VPN 设置 中更改。注意：第一次需要先在应用内连接一次 VPN，以授予权限。</string>
+    <string name="you_can_add_the_mlmvpn_tile_to">你可以把“Eternal VPN”图块添加到手机的快速设置面板（从顶部下滑 → 编辑/添加图块）。点一下即可开启或关闭 VPN；开启时会测量你最近几台服务器的延迟并连接最快的那台。测试多少台服务器（默认 20 台）可以在 设置 → VPN 设置 中更改。注意：第一次需要先在应用内连接一次 VPN，以授予权限。</string>
     <string name="vpn_permission_denied">VPN 权限被拒绝</string>
     <string name="checking_ping">正在检查 ping…</string>
     <string name="starting_real_delay_test">正在开始真实延迟测试…</string>
@@ -2879,13 +2879,13 @@
     <string name="sni_measuring_progress">正在测量… %1$s / %2$s</string>
     <string name="sni_trying_method">正在尝试连接方式 %1$s / %2$s…</string>
     <string name="sni_build_configs">生成 SNI 配置</string>
-    <string name="sni_build_footer">仅限云面板配置——BPB、EDG、Nahan 和 MLM，包括组合配置。SNI 引擎会拨号到 Cloudflare 边缘节点，由边缘节点完成其余路由，所以如果配置本身的服务器不在该边缘节点后面，就无法通过这种方式到达，也不会提供。你的原始配置保持原样：每个都会复制成一个指向本地 SNI 引擎的新配置，副本放进单独的文件夹。已存在的配置会被跳过，所以运行两次不会产生重复。</string>
+    <string name="sni_build_footer">仅限云面板配置——BPB、EDG、Nahan 和 Eternal VPN，包括组合配置。SNI 引擎会拨号到 Cloudflare 边缘节点，由边缘节点完成其余路由，所以如果配置本身的服务器不在该边缘节点后面，就无法通过这种方式到达，也不会提供。你的原始配置保持原样：每个都会复制成一个指向本地 SNI 引擎的新配置，副本放进单独的文件夹。已存在的配置会被跳过，所以运行两次不会产生重复。</string>
     <string name="sni_picker_footer">运行测量后，毫秒数会显示在这里。没有响应的配置不一定坏了——可能只是入口点被封锁，表盘下方的扫描正是为此准备的。</string>
     <string name="sni_delete_selected">删除所选配置</string>
     <string name="sni_delete_all">删除所有 SNI 配置（%1$s）</string>
     <string name="sni_delete_footer">这只会删除 SNI 副本。生成它们的原始配置保持不变，你随时可以重新生成。</string>
     <string name="sni_configs_deleted">已删除 %1$s 个 SNI 配置</string>
-    <string name="sni_no_cloud_config">没有可转换的云配置。SNI 配置是从面板生成的——BPB、EDG、Nahan 和 MLM，包括组合配置——因为 SNI 引擎通过 Cloudflare 边缘节点到达服务器，只有位于该边缘节点后面的配置才能这样到达。</string>
+    <string name="sni_no_cloud_config">没有可转换的云配置。SNI 配置是从面板生成的——BPB、EDG、Nahan 和 Eternal VPN，包括组合配置——因为 SNI 引擎通过 Cloudflare 边缘节点到达服务器，只有位于该边缘节点后面的配置才能这样到达。</string>
     <string name="update_checking">正在检查…</string>
     <string name="lan_section_address">供其他设备使用的地址</string>
     <string name="lan_section_clients">已连接的设备</string>
@@ -3690,7 +3690,7 @@
     <string name="studio_bulk_new_title">批量创建用户</string>
     <string name="studio_bulk_new_sub">一个前缀和一个数量，所有人得到相同的条件。每个人都会被创建、分配配置并获得链接——和单个用户相同的三个步骤，重复执行。</string>
     <string name="studio_bulk_new_prefix">名称前缀</string>
-    <string name="studio_bulk_new_prefix_hint">mlm-</string>
+    <string name="studio_bulk_new_prefix_hint">eternal-</string>
     <string name="studio_bulk_new_count">数量</string>
     <string name="studio_bulk_new_start">编号起始值</string>
     <string name="studio_bulk_new_preview">%1$s … %2$s——%3$s 人</string>
@@ -4635,7 +4635,7 @@
     <string name="warp_ladder_skip">%1$s 在此网络上被封锁；直接切换到 %2$s</string>
     <string name="warp_ladder_none">目前在此网络上 MASQUE、WireGuard 和 WARP-in-WARP 都无法通过；请尝试快速连接。</string>
     <string name="mae_short">MAE</string>
-    <string name="mae_title">MLM Adaptive Engine</string>
+    <string name="mae_title">Eternal VPN Adaptive Engine</string>
     <string name="mae_onboard_title">你最常用哪些应用和网站？</string>
     <string name="mae_onboard_subtitle">选择对你重要的。MAE 会在你的网络上为每一个找到最快的可用路径。</string>
     <string name="mae_onboard_installed">这台手机上的</string>
@@ -4783,7 +4783,7 @@
     <string name="mae_route_footer">“自动”让 MAE 选择最佳路由，并在失效时切换。</string>
     <string name="mae_remove_app">从 MAE 中移除</string>
     <string name="flux_title_short">FLUX</string>
-    <string name="flux_title">MLM FLUX Engine</string>
+    <string name="flux_title">Eternal VPN FLUX Engine</string>
     <string name="flux_country">国家</string>
     <string name="flux_country_auto">自动</string>
     <string name="flux_country_here">在此网络上可用</string>
@@ -4944,10 +4944,10 @@
     <string name="doc_works">在此网络上可用的</string>
     <string name="doc_stages">结果</string>
     <string name="doc_report">报告</string>
-    <string name="doc_report_footer">请把文件发到 mlmvpn 群组，以便我们为所有人修复。其中不含个人信息。</string>
+    <string name="doc_report_footer">请把文件发到 Eternal VPN 群组，以便我们为所有人修复。其中不含个人信息。</string>
     <string name="doc_share">发送报告文件</string>
     <string name="doc_save">保存文件</string>
-    <string name="doc_group">打开 mlmvpn 群组</string>
+    <string name="doc_group">打开 Eternal VPN 群组</string>
     <string name="doc_view">查看报告文本</string>
     <string name="doc_saved">文件已保存</string>
     <string name="doc_save_failed">无法保存文件</string>
@@ -5287,7 +5287,7 @@
     <string name="cfnet_panel_netra">配置订阅面板</string>
     <string name="cfnet_panel_gozargah">连接管理面板</string>
     <string name="cfnet_panel_nova">简易面板</string>
-    <string name="cfnet_panel_mlm">Config Studio / MLM 面板</string>
+    <string name="cfnet_panel_mlm">Config Studio / Eternal VPN 面板</string>
     <string name="cfnet_config_header">从面板获取配置</string>
     <string name="cfnet_config_footer">只列出此账户上已安装的面板。配置会保存为“云”中的一个分组。</string>
     <string name="cfnet_config_go">获取配置</string>
@@ -5316,7 +5316,7 @@
     <string name="mlm_get_xhttp">获取 XHTTP 配置</string>
     <string name="mlm_xhttp_checking">正在生成并在此网络上测试…</string>
     <string name="mlm_xhttp_ready">XHTTP 配置在此网络上传输了真实数据，已添加到你的配置中。</string>
-    <string name="mlm_xhttp_outdated">请先更新 MLM 面板（下面的“更新”一行）；XHTTP 需要它的新版本。</string>
+    <string name="mlm_xhttp_outdated">请先更新 Eternal VPN 面板（下面的“更新”一行）；XHTTP 需要它的新版本。</string>
     <string name="mlm_xhttp_not_working">XHTTP 配置在此网络上没有传输数据，所以未添加。</string>
     <string name="mlm_xhttp_no_config">面板没有提供可用于生成 XHTTP 的配置。</string>
     <string name="mlm_xhttp_failed">获取 XHTTP 配置失败；请重试。</string>
@@ -5409,7 +5409,7 @@
     <string name="proton_route_lost">入口方式断开了。页面会保留；入口方式恢复后会继续。</string>
     <string name="proton_reload">重新加载</string>
     <string name="proton_page_error">页面错误：%1$s</string>
-    <string name="scout_title">MLM Scout</string>
+    <string name="scout_title">Eternal VPN Scout</string>
     <string name="gst_relay_not_found">❌ Google 上没有此 ID 对应的网络应用（404）。你可能粘贴了 Script ID 或测试（/dev）ID，或者该部署已被归档。在 Apps Script 中打开 Deploy › Manage deployments，复制 Deployment ID（以 AKfy 开头）。</string>
     <string name="gst_relay_key_not_used">⚠️ 此中继可用，但它的密码与你的其他中继不同，所以隧道不会使用它。请用与第一个中继相同的密码重新创建。</string>
     <string name="gst_front_blocked">⚠️ 中继可用，但在此网络上 Google 到它的路由被封锁，所以隧道无法传输数据。请换个网络，或在“网络路由”下勾选其他地址。</string>

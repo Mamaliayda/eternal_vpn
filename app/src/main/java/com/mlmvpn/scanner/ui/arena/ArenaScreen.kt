@@ -183,8 +183,8 @@ private fun TeamRow(
         TeamTile(id, 30.dp, dim = dim)
         Spacer(Modifier.width(12.dp))
         Column(Modifier.weight(1f)) {
-            Text(title, color = if (dim) DuskTheme.muted else DuskTheme.onSurface, fontSize = 16.sp)
-            subtitle?.let { Text(it, color = DuskTheme.muted, fontSize = 12.sp, lineHeight = 16.sp, maxLines = 2) }
+            Text(title, color = if (dim) DuskTheme.muted else DuskTheme.onSurface, fontSize = DuskTheme.textSize16)
+            subtitle?.let { Text(it, color = DuskTheme.muted, fontSize = DuskTheme.textSize12, lineHeight = DuskTheme.textSize16, maxLines = 2) }
         }
         trailing()
     }
@@ -193,11 +193,11 @@ private fun TeamRow(
 @Composable
 private fun PrimaryButton(label: String, enabled: Boolean = true, onClick: () -> Unit) {
     Box(
-        Modifier.fillMaxWidth().padding(horizontal = 16.dp).clip(RoundedCornerShape(14.dp))
+        Modifier.fillMaxWidth().padding(horizontal = 16.dp).clip(RoundedCornerShape(DuskTheme.corner14))
             .background(if (enabled) DuskTheme.primary else DuskTheme.disabled.copy(alpha = 0.4f))
             .clickable(enabled = enabled, onClick = onClick).padding(vertical = 15.dp),
         contentAlignment = Alignment.Center,
-    ) { Text(label, color = DuskTheme.onAccent, fontSize = 17.sp, fontWeight = FontWeight.SemiBold) }
+    ) { Text(label, color = DuskTheme.onAccent, fontSize = DuskTheme.textSize17, fontWeight = FontWeight.SemiBold) }
 }
 
 /** A thin value bar, the way Settings draws storage: grey track, one colour. */
@@ -250,7 +250,7 @@ private fun Lobby(
                             modifier = Modifier.graphicsLayer { alpha = t; translationY = (1 - t) * 16f }) {
                             TeamTile(p.id, 48.dp)
                             Spacer(Modifier.height(5.dp))
-                            Text(p.name, color = DuskTheme.onSurface, fontSize = 12.sp)
+                            Text(p.name, color = DuskTheme.onSurface, fontSize = DuskTheme.textSize12)
                         }
                     }
                 }
@@ -259,7 +259,7 @@ private fun Lobby(
             val last = history.firstOrNull()?.board?.winner
             Text(
                 if (last != null) tr("آخرین برنده: ", "Last winner: ") + nameOf(last) else tr("پنل‌های ابری شما، با اندازه‌گیری واقعی", "Your cloud panels, measured for real"),
-                color = DuskTheme.muted, fontSize = 13.sp,
+                color = DuskTheme.muted, fontSize = DuskTheme.textSize13,
             )
         }
 
@@ -288,7 +288,7 @@ private fun Lobby(
                 val installed = p.installed(context, account)
                 TeamRow(p.id, p.name) {
                     Text(if (installed) tr("نصب‌شده", "Installed") else tr("در مسابقه نصب می‌شود", "Installed at race time"),
-                        color = if (installed) DuskTheme.muted else DuskTheme.accent, fontSize = 14.sp)
+                        color = if (installed) DuskTheme.muted else DuskTheme.accent, fontSize = DuskTheme.textSize14)
                 }
             }
         }
@@ -332,7 +332,7 @@ private fun Confirm(account: CloudAccount, preps: List<ArenaEngine.Prep>, onCanc
                         ArenaEngine.Action.UPDATE -> tr("به‌روزرسانی", "Update") to DuskTheme.primary
                         ArenaEngine.Action.NONE -> tr("آماده", "Ready") to DuskTheme.success
                     }
-                    Text(text, color = tint, fontSize = 15.sp)
+                    Text(text, color = tint, fontSize = DuskTheme.textSize15)
                 }
             }
         }
@@ -388,7 +388,7 @@ private fun PrepList(st: ArenaEngine.State, sound: Boolean, setSound: (Boolean) 
                 val ready = l.lane == ArenaEngine.Lane.READY || l.lane == ArenaEngine.Lane.RACING
                 TeamRow(l.panelId, l.name, subtitle = l.note, dim = out) {
                     when {
-                        out -> Text(tr("کنار رفت", "Out"), color = DuskTheme.error, fontSize = 14.sp)
+                        out -> Text(tr("کنار رفت", "Out"), color = DuskTheme.error, fontSize = DuskTheme.textSize14)
                         ready && l.note?.contains("…") != true -> Icon(Icons.Default.CheckCircle, null, tint = DuskTheme.success, modifier = Modifier.size(20.dp))
                         else -> CircularProgressIndicator(Modifier.size(18.dp), color = DuskTheme.muted, strokeWidth = 2.dp)
                     }
@@ -414,12 +414,12 @@ private fun CleanIpGroup(st: ArenaEngine.State) {
             com.mlmvpn.scanner.ui.settings.SettingsGlyph(Icons.Default.Language, DuskTheme.secondary)
             Spacer(Modifier.width(12.dp))
             Column(Modifier.weight(1f)) {
-                Text(pick?.let { "⁦${it.ip}⁩" } ?: tr("آی‌پی تمیز", "Clean IP"), color = DuskTheme.onSurface, fontSize = 16.sp)
+                Text(pick?.let { "⁦${it.ip}⁩" } ?: tr("آی‌پی تمیز", "Clean IP"), color = DuskTheme.onSurface, fontSize = DuskTheme.textSize16)
                 val sub = pick?.let {
                     tr("تأخیر واقعی ", "real delay ") + "⁦${it.tlsMedianMs} ms" + (it.mbps?.let { m -> String.format(java.util.Locale.US, " · %.1f Mbps", m) } ?: "") + "⁩" +
                         tr(" · از ${it.tried} آی‌پی", " · of ${it.tried} IPs")
                 } ?: st.cleanNote
-                if (sub != null) Text(sub, color = DuskTheme.muted, fontSize = 13.sp)
+                if (sub != null) Text(sub, color = DuskTheme.muted, fontSize = DuskTheme.textSize13)
             }
             when {
                 pick != null -> Icon(Icons.Default.CheckCircle, null, tint = DuskTheme.success, modifier = Modifier.size(20.dp))
@@ -449,8 +449,8 @@ private fun ScoreRing(score: Int, color: Color) {
             drawArc(color, -90f, 360f * sweep.value, false, Offset(inset, inset), Size(size.width - w, size.height - w), style = Stroke(w, cap = StrokeCap.Round))
         }
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            Text("$shown", color = DuskTheme.onSurface, fontSize = 38.sp, fontWeight = FontWeight.Bold)
-            Text(tr("از ۱۰۰", "of 100"), color = DuskTheme.muted, fontSize = 12.sp)
+            Text("$shown", color = DuskTheme.onSurface, fontSize = DuskTheme.textSize38, fontWeight = FontWeight.Bold)
+            Text(tr("از ۱۰۰", "of 100"), color = DuskTheme.muted, fontSize = DuskTheme.textSize12)
         }
     }
 }
@@ -516,11 +516,11 @@ private fun Result(
             if (winner != null) {
                 ResultPodium(board, animate = false, modifier = Modifier.padding(horizontal = 16.dp))
             } else {
-                Text(tr("هیچ پنلی به خط پایان نرسید", "No panel reached the finish"), color = DuskTheme.onSurface, fontSize = 20.sp, fontWeight = FontWeight.SemiBold)
+                Text(tr("هیچ پنلی به خط پایان نرسید", "No panel reached the finish"), color = DuskTheme.onSurface, fontSize = DuskTheme.textSize20, fontWeight = FontWeight.SemiBold)
             }
             Spacer(Modifier.height(10.dp))
             Text(listOf(timeOf(session.startedAt), session.network.label, modeName(session.mode), session.cleanIp?.let { tr("آی‌پی ", "IP ") + "⁦$it⁩" }.orEmpty()).filter { it.isNotBlank() }.joinToString(" · "),
-                color = DuskTheme.muted, fontSize = 12.sp)
+                color = DuskTheme.muted, fontSize = DuskTheme.textSize12)
         }
 
         if (winner != null) {
@@ -548,7 +548,7 @@ private fun Result(
                 SettingsActionRow(tr("اشتراک نتیجه", "Share the result"), Icons.Default.Share, onClick = {
                     // Names and scores only: no address, host or key ever leaves in a share.
                     val text = buildString {
-                        append(tr("میدان کانفیگ MLMVPN", "MLMVPN Config Arena")).append(" — ").append(timeOf(session.startedAt)).append('\n')
+                        append(tr("میدان کانفیگ Eternal VPN", "Eternal VPN Config Arena")).append(" — ").append(timeOf(session.startedAt)).append('\n')
                         board.standings.forEachIndexed { i, s -> append("${i + 1}. ${nameOf(s.panelId)} — ${s.total.toInt()}\n") }
                     }
                     context.startActivity(Intent.createChooser(Intent(Intent.ACTION_SEND).setType("text/plain").putExtra(Intent.EXTRA_TEXT, text), null)
@@ -566,8 +566,8 @@ private fun Result(
                     Row(Modifier.fillMaxWidth().heightIn(min = 48.dp).padding(horizontal = 16.dp, vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
                         SettingsGlyph(icon, tintOf(tint))
                         Spacer(Modifier.width(12.dp))
-                        Text(tr(cat.fa, cat.en), color = DuskTheme.onSurface, fontSize = 16.sp, modifier = Modifier.weight(1f))
-                        Text(nameOf(id), color = DuskTheme.muted, fontSize = 15.sp)
+                        Text(tr(cat.fa, cat.en), color = DuskTheme.onSurface, fontSize = DuskTheme.textSize16, modifier = Modifier.weight(1f))
+                        Text(nameOf(id), color = DuskTheme.muted, fontSize = DuskTheme.textSize15)
                     }
                 }
             }
@@ -579,20 +579,20 @@ private fun Result(
                 if (i > 0) Separator()
                 val e = session.entries.first { it.panelId == s.panelId }
                 TeamRow(s.panelId, e.name, subtitle = metrics(e),
-                    leading = { Text("${i + 1}", color = if (i == 0) DuskTheme.accent else DuskTheme.muted, fontSize = 15.sp, fontWeight = FontWeight.SemiBold, modifier = Modifier.width(22.dp)) },
+                    leading = { Text("${i + 1}", color = if (i == 0) DuskTheme.accent else DuskTheme.muted, fontSize = DuskTheme.textSize15, fontWeight = FontWeight.SemiBold, modifier = Modifier.width(22.dp)) },
                     onClick = { open = if (open == s.panelId) null else s.panelId }) {
-                    Text("${s.total.toInt()}", color = DuskTheme.onSurface, fontSize = 17.sp, fontWeight = FontWeight.SemiBold)
+                    Text("${s.total.toInt()}", color = DuskTheme.onSurface, fontSize = DuskTheme.textSize17, fontWeight = FontWeight.SemiBold)
                 }
                 if (open == s.panelId) {
                     Column(Modifier.fillMaxWidth().padding(start = 96.dp, end = 16.dp, bottom = 12.dp)) {
                         board.weights.keys.forEach { r ->
                             Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(vertical = 3.dp)) {
-                                Text(roundName(r), color = DuskTheme.muted, fontSize = 12.sp, modifier = Modifier.width(64.dp))
+                                Text(roundName(r), color = DuskTheme.muted, fontSize = DuskTheme.textSize12, modifier = Modifier.width(64.dp))
                                 ThinBar(((s.parts[r] ?: 0.0) / 100).toFloat(), DuskTheme.primary, Modifier.weight(1f))
-                                Text("${(s.parts[r] ?: 0.0).toInt()}", color = DuskTheme.muted, fontSize = 12.sp, modifier = Modifier.width(32.dp), textAlign = TextAlign.End)
+                                Text("${(s.parts[r] ?: 0.0).toInt()}", color = DuskTheme.muted, fontSize = DuskTheme.textSize12, modifier = Modifier.width(32.dp), textAlign = TextAlign.End)
                             }
                         }
-                        Text(detailLine(e), color = DuskTheme.muted, fontSize = 11.sp, lineHeight = 16.sp, modifier = Modifier.padding(top = 4.dp))
+                        Text(detailLine(e), color = DuskTheme.muted, fontSize = DuskTheme.textSize11, lineHeight = DuskTheme.textSize16, modifier = Modifier.padding(top = 4.dp))
                     }
                 }
             }
