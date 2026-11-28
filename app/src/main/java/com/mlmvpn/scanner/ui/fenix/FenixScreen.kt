@@ -448,6 +448,7 @@ private fun cookies(host: String? = null): Map<String, String?> {
 @SuppressLint("SetJavaScriptEnabled")
 @Composable
 private fun MozillaCheckPage(host: String, onDone: (Map<String, String?>, String?) -> Unit) {
+    val webViewNoticeColor = DuskTheme.muted
     val context = androidx.compose.ui.platform.LocalContext.current
     // the page's own browser name: Fastly may hold its pass to it (FenixHttp.execute)
     val agent = remember { runCatching { android.webkit.WebSettings.getDefaultUserAgent(context) }.getOrNull() }
