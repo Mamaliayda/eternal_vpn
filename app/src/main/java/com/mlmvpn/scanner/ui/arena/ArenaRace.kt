@@ -78,6 +78,7 @@ import com.mlmvpn.scanner.engines.arena.ArenaPanels
 import com.mlmvpn.scanner.engines.arena.ArenaScore
 import com.mlmvpn.scanner.engines.arena.Entry
 import com.mlmvpn.scanner.store.tr
+import com.mlmvpn.scanner.ui.theme.DuskTheme
 import kotlinx.coroutines.delay
 import kotlin.random.Random
 
