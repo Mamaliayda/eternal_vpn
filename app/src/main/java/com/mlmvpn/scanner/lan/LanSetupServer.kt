@@ -509,10 +509,8 @@ object LanSetupServer {
 
     private val STYLE = """
         <style>
-        :root{--bg:#0f1513;--card:#18211f;--ink:#e8efed;--dim:#9aa8a5;--accent:#4ecdc4;
-        --ok:#63c795;--warn:#d6a544;--line:#26332f}
-        @media(prefers-color-scheme:light){:root{--bg:#f3f6f6;--card:#fff;--ink:#16211f;
-        --dim:#5b6a68;--accent:#0e7c7b;--ok:#2e7d5b;--warn:#8a5a06;--line:#dde5e4}}
+        :root{color-scheme:light dark;--bg:Canvas;--card:ButtonFace;--ink:CanvasText;--dim:GrayText;
+        --accent:AccentColor;--ok:Highlight;--warn:Mark;--line:GrayText}
         *{box-sizing:border-box}
         body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.7 system-ui,
         -apple-system,"Segoe UI",Tahoma,sans-serif}
@@ -531,7 +529,7 @@ object LanSetupServer {
         .row{display:flex;gap:10px;align-items:center}
         code{flex:1;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:14px;
         word-break:break-all;text-align:left}
-        button{flex:none;border:0;border-radius:8px;background:var(--accent);color:#03211f;
+        button{flex:none;border:0;border-radius:8px;background:var(--accent);color:ButtonText;
         font-weight:700;font-size:13px;padding:8px 14px;cursor:pointer;font-family:inherit}
         ol{padding-inline-start:22px;margin:0 0 18px}
         li{margin-bottom:7px}

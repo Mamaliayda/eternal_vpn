@@ -387,7 +387,6 @@ private fun SearchField(
     val hint = tr("جستجو", "Search")
     val clearLabel = tr("پاک کردن", "Clear")
     val liveQuery by rememberUpdatedState(onQuery)
-    val rtl = LocalLayoutDirection.current == LayoutDirection.Rtl
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -420,7 +419,7 @@ private fun SearchField(
                 textStyle = MaterialTheme.typography.bodyLarge.copy(
                     color = DuskTheme.nightText,
                     textDirection = TextDirection.Content,
-                    textAlign = if (rtl) TextAlign.Right else TextAlign.Left,
+                    textAlign = TextAlign.Start,
                 ),
                 cursorBrush = SolidColor(DuskTheme.nightText),
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search, autoCorrect = false),

@@ -1083,7 +1083,7 @@ class TunnelVpnService : VpnService(), TunnelEngine.CoreCallback, PsiphonTunnel.
         /**
          * Accent used for the notification's icon tint and header text.
          *
-         * Sampled from the launcher artwork's neon ring (#70E0B0 region), so the
+         * Sampled from the launcher artwork's neon ring, so the
          * shade row and the app icon read as the same brand.
          */
         private const val NOTIFICATION_ACCENT = 0xFF9BCFB4.toInt()

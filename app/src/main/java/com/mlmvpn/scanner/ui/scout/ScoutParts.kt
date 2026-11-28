@@ -35,6 +35,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -371,8 +372,8 @@ private fun LineChip(c: Chip) {
 @Composable
 internal fun Stat(value: String, label: String, modifier: Modifier = Modifier) {
     Column(modifier, horizontalAlignment = Alignment.CenterHorizontally) {
-        Text(value, color = DuskTheme.onSurface, fontSize = 18.sp, fontWeight = FontWeight.SemiBold, maxLines = 1)
-        Text(label, color = DuskTheme.muted, fontSize = 11.sp, textAlign = TextAlign.Center, maxLines = 2)
+        Text(value, color = DuskTheme.onSurface, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold, maxLines = 1)
+        Text(label, color = DuskTheme.muted, style = MaterialTheme.typography.labelSmall, textAlign = TextAlign.Center, maxLines = 2)
     }
 }
 

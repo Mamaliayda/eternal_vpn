@@ -41,6 +41,7 @@ import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material.icons.filled.Wifi
 import androidx.compose.material.icons.filled.WifiTethering
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -877,14 +878,14 @@ private fun SetupCard(
 private fun SmallAction(label: String, icon: ImageVector, tint: Color, onClick: () -> Unit) {
     Row(
         modifier = Modifier
-            .background(tint.copy(alpha = 0.20f), RoundedCornerShape(12.dp))
+            .background(tint.copy(alpha = 0.20f), DuskTheme.controlShape)
             .clickable(onClick = onClick)
             .padding(horizontal = 16.dp, vertical = 10.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Icon(icon, contentDescription = null, tint = tint, modifier = Modifier.size(16.dp))
         Spacer(Modifier.width(7.dp))
-        Text(label, color = tint, fontSize = 14.sp, fontWeight = FontWeight.Bold)
+        Text(label, color = tint, style = MaterialTheme.typography.labelMedium, fontWeight = FontWeight.Bold)
     }
 }
 

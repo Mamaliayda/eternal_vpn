@@ -24,6 +24,18 @@
     <color name="dusk_on_surface_dim">#C1BED0</color>
     <!-- Generated QR modules require a stable neutral backing for reliable scanning. -->
     <color name="dusk_qr_surface">#FFFFFF</color>
+    <!-- The fixed illustrated preview is authored artwork; all paint values are named here. -->
+    <color name="dusk_studio_preview_gradient_start">#E6223A57</color>
+    <color name="dusk_studio_preview_gradient_end">#F00A1626</color>
+    <color name="dusk_studio_preview_frame">#40FFFFFF</color>
+    <color name="dusk_studio_preview_glow">#2A39E58C</color>
+    <color name="dusk_studio_preview_accent">#FF39E58C</color>
+    <color name="dusk_studio_preview_status">#FF34C759</color>
+    <color name="dusk_studio_preview_title">#E6FFFFFF</color>
+    <color name="dusk_studio_preview_subtitle">#99FFFFFF</color>
+    <color name="dusk_studio_preview_value">#99FFFFFF</color>
+    <color name="dusk_studio_preview_hint">#26FFFFFF</color>
+    <color name="cloudflare_brand_orange">#F38020</color>
     <!-- Shared native brand/status accents used by XML widget previews and selector surfaces. -->
     <color name="dusk_widget_warp_start">#FFFFA82E</color>
     <color name="dusk_widget_warp_end">#FFDB8000</color>

@@ -356,13 +356,13 @@ fun AetherScreen() {
             Spacer(modifier = Modifier.height(10.dp))
             Text(
                 text = note,
-                color = MaterialTheme.colorScheme.primary,
+                color = DuskTheme.primary,
                 fontSize = 11.sp,
                 lineHeight = 16.sp,
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
                     .clip(ControlShape)
-                    .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.10f))
+                    .background(DuskTheme.primary.copy(alpha = 0.10f))
                     .padding(horizontal = 12.dp, vertical = 8.dp),
             )
         }
@@ -427,7 +427,7 @@ private fun AetherPowerButton(
     val accent = when (state.stage) {
         AetherStage.CONNECTED -> DuskTheme.success
         AetherStage.FAILED, AetherStage.CRASHED -> DuskTheme.error
-        AetherStage.STOPPED, AetherStage.IDLE -> MaterialTheme.colorScheme.primary
+        AetherStage.STOPPED, AetherStage.IDLE -> DuskTheme.primary
         else -> DuskTheme.accent
     }
     val working = state.running && state.stage != AetherStage.CONNECTED
@@ -609,7 +609,7 @@ private fun MiniSegmented(
                 modifier = Modifier
                     .weight(1f)
                     .clip(DuskTheme.glyphShape)
-                    .background(if (on) MaterialTheme.colorScheme.primary else Color.Transparent)
+                    .background(if (on) DuskTheme.primary else Color.Transparent)
                     .clickable(enabled = enabled) { onSelected(value) }
                     .padding(vertical = 9.dp),
                 contentAlignment = Alignment.Center,
@@ -654,7 +654,7 @@ private fun AetherProgressStrip(state: AetherState, protocol: AetherProtocol) {
                         .background(
                             when {
                                 activeIdx > idx -> DuskTheme.success
-                                activeIdx == idx -> MaterialTheme.colorScheme.primary
+                                activeIdx == idx -> DuskTheme.primary
                                 else -> DuskTheme.surface
                             }
                         )
@@ -781,7 +781,7 @@ private fun HeaderCard() {
     ) {
         Column(modifier = Modifier.padding(14.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(Icons.Default.Bolt, null, tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.7f))
+                Icon(Icons.Default.Bolt, null, tint = DuskTheme.primary.copy(alpha = 0.7f))
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(S(R.string.wireguard_engine), fontWeight = FontWeight.Bold, fontSize = 16.sp)
             }
@@ -812,7 +812,7 @@ private fun TabRow(active: AetherProtocol, onSelect: (AetherProtocol) -> Unit) {
                 onClick = { onSelect(proto) },
                 label = { Text(proto.displayFa, fontSize = 12.sp) },
                 colors = AssistChipDefaults.assistChipColors(
-                    containerColor = if (selected) MaterialTheme.colorScheme.primary else DuskTheme.navyNight,
+                    containerColor = if (selected) DuskTheme.primary else DuskTheme.navyNight,
                     labelColor = if (selected) Color.White else DuskTheme.muted
                 ),
                 modifier = Modifier.weight(1f)
@@ -839,7 +839,7 @@ private fun MasquePane(
         SectionTitle(S(R.string.clienthello_fragmentation_http_2_only))
         Row(verticalAlignment = Alignment.CenterVertically) {
             Switch(checked = fragment, onCheckedChange = onFragment,
-                colors = SwitchDefaults.colors(checkedThumbColor = MaterialTheme.colorScheme.primary))
+                colors = SwitchDefaults.colors(checkedThumbColor = DuskTheme.primary))
             Spacer(modifier = Modifier.width(6.dp))
             Text(if (fragment) S(R.string.on_3) else S(R.string.off_3), fontSize = 12.sp)
         }
@@ -926,7 +926,7 @@ private fun MasqueAdvancedPane(
         SectionTitle(S(R.string.clienthello_fragmentation_http_2_only))
         Row(verticalAlignment = Alignment.CenterVertically) {
             Switch(checked = fragment, onCheckedChange = onFragment,
-                colors = SwitchDefaults.colors(checkedThumbColor = MaterialTheme.colorScheme.primary))
+                colors = SwitchDefaults.colors(checkedThumbColor = DuskTheme.primary))
             Spacer(modifier = Modifier.width(6.dp))
             Text(if (fragment) S(R.string.on_3) else S(R.string.off_3), style = MaterialTheme.typography.bodySmall)
         }
@@ -1177,7 +1177,7 @@ private fun StatusCard(state: AetherState, @Suppress("UNUSED_PARAMETER") protoco
                 color = when (state.stage) {
                     AetherStage.CONNECTED -> DuskTheme.success
                     AetherStage.FAILED, AetherStage.CRASHED -> DuskTheme.error
-                    else -> MaterialTheme.colorScheme.onSurface
+                    else -> DuskTheme.onSurface
                 })
             Spacer(modifier = Modifier.weight(1f))
             val badgeColor = when (state.stage) {
@@ -1235,7 +1235,7 @@ private fun StatusCard(state: AetherState, @Suppress("UNUSED_PARAMETER") protoco
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(fa, fontSize = 12.sp,
                     color = if (done) DuskTheme.success
-                    else if (active) MaterialTheme.colorScheme.primary.copy(alpha = 0.7f) else DuskTheme.muted)
+                    else if (active) DuskTheme.primary.copy(alpha = 0.7f) else DuskTheme.muted)
                 if (key == "scan" && active && scanElapsedSec > 0) {
                     Spacer(modifier = Modifier.width(6.dp))
                     Text("${scanElapsedSec}s", fontSize = 11.sp, color = DuskTheme.muted)

@@ -30,6 +30,7 @@ import androidx.compose.material.icons.filled.Remove
 import androidx.compose.material.icons.filled.Tune
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -665,10 +666,10 @@ private fun ResultCard(o: BoostOutcome) {
 private fun StatsRow(label: String, s: PathStats?, chosen: Boolean) {
     val c = if (chosen) DuskTheme.success else DuskTheme.onSurface
     Row(Modifier.fillMaxWidth().padding(vertical = 5.dp), verticalAlignment = Alignment.CenterVertically) {
-        Text(label, color = c, fontSize = 15.sp, fontWeight = if (chosen) FontWeight.Bold else FontWeight.Normal, modifier = Modifier.weight(1.3f))
-        Text(s?.p50?.let { "$it" } ?: "—", color = c, fontSize = 15.sp, modifier = Modifier.weight(1f), textAlign = TextAlign.Center)
-        Text(s?.jitter?.let { ProbeStats.display(it) } ?: "—", color = c, fontSize = 15.sp, modifier = Modifier.weight(1f), textAlign = TextAlign.Center)
-        Text(s?.let { lossText(it) + "%" } ?: "—", color = c, fontSize = 15.sp, modifier = Modifier.weight(1f), textAlign = TextAlign.Center)
+        Text(label, color = c, style = MaterialTheme.typography.bodyLarge, fontWeight = if (chosen) FontWeight.Bold else FontWeight.Normal, modifier = Modifier.weight(1.3f))
+        Text(s?.p50?.let { "$it" } ?: "—", color = c, style = MaterialTheme.typography.bodyLarge, modifier = Modifier.weight(1f), textAlign = TextAlign.Center)
+        Text(s?.jitter?.let { ProbeStats.display(it) } ?: "—", color = c, style = MaterialTheme.typography.bodyLarge, modifier = Modifier.weight(1f), textAlign = TextAlign.Center)
+        Text(s?.let { lossText(it) + "%" } ?: "—", color = c, style = MaterialTheme.typography.bodyLarge, modifier = Modifier.weight(1f), textAlign = TextAlign.Center)
     }
 }
 

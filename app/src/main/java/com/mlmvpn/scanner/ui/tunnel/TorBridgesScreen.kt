@@ -33,6 +33,7 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Speed
 import androidx.compose.material.icons.filled.Sort
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -373,31 +374,31 @@ private fun BridgeRow(e: Entry, pinned: Boolean, onClick: () -> Unit) {
     // A plain card, not frostedGlass: the glass redraws the wallpaper under every row, and
     // hundreds of those were what froze the list.
     Row(
-        Modifier.fillMaxWidth().clip(RoundedCornerShape(14.dp)).background(DuskTheme.surface).clickable(onClick = onClick)
+        Modifier.fillMaxWidth().clip(DuskTheme.chartShape).background(DuskTheme.surface).clickable(onClick = onClick)
             .heightIn(min = 54.dp).padding(horizontal = 14.dp, vertical = 9.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Text(e.country?.let { IpFormatter.flag(it) } ?: "🌐", fontSize = 22.sp)
+        Text(e.country?.let { IpFormatter.flag(it) } ?: "🌐", style = MaterialTheme.typography.titleLarge)
         Spacer(Modifier.width(12.dp))
         Column(Modifier.weight(1f)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(e.country?.let { CountryLabel.localized(it) } ?: stringResource(R.string.tor_br_country_unknown),
-                    color = DuskTheme.onSurface, fontSize = 15.sp, maxLines = 1, modifier = Modifier.weight(1f, fill = false))
+                    color = DuskTheme.onSurface, style = MaterialTheme.typography.bodyLarge, maxLines = 1, modifier = Modifier.weight(1f, fill = false))
                 Spacer(Modifier.width(6.dp))
                 Tag(e.bridge.transport.label, DuskTheme.indigo)
                 if (pinned) { Spacer(Modifier.width(4.dp)); Tag(stringResource(R.string.tor_br_pinned_tag), DuskTheme.accent) }
                 if (e.custom) { Spacer(Modifier.width(4.dp)); Tag(stringResource(R.string.tor_br_mine_tag), DuskTheme.purple) }
                 else if (e.official) { Spacer(Modifier.width(4.dp)); Tag(stringResource(R.string.tor_br_official), DuskTheme.secondary) }
             }
-            Text(statusLine(e), color = statusColor(e.status), fontSize = 12.sp, maxLines = 1)
+            Text(statusLine(e), color = statusColor(e.status), style = MaterialTheme.typography.bodySmall, maxLines = 1)
         }
     }
 }
 
 @Composable
 private fun Tag(text: String, color: Color) {
-    Text(text, color = color, fontSize = 10.sp, fontWeight = FontWeight.SemiBold,
-        modifier = Modifier.clip(RoundedCornerShape(5.dp)).background(color.copy(alpha = 0.15f)).padding(horizontal = 6.dp, vertical = 1.dp))
+    Text(text, color = color, style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.SemiBold,
+        modifier = Modifier.clip(DuskTheme.controlShape).background(color.copy(alpha = 0.15f)).padding(horizontal = 6.dp, vertical = 1.dp))
 }
 
 /** «فعال · ۱۸۷ ms · ۵ دقیقه پیش», and the like. */

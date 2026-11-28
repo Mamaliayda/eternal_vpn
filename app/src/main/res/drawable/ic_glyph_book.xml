@@ -12,12 +12,12 @@
     android:viewportHeight="24">
     <path
         android:pathData="M12 6.5 c-2 -1.6 -4.6 -2 -7.5 -1.8 v12.6 c2.9 -0.2 5.5 0.2 7.5 1.8 c2 -1.6 4.6 -2 7.5 -1.8 V4.7 c-2.9 -0.2 -5.5 0.2 -7.5 1.8 z"
-        android:strokeColor="#FFFFFFFF"
+        android:strokeColor="@color/white"
         android:strokeWidth="1.8"
         android:strokeLineJoin="round" />
     <path
         android:pathData="M12 6.5 v12.6"
-        android:strokeColor="#FFFFFFFF"
+        android:strokeColor="@color/white"
         android:strokeWidth="1.8"
         android:strokeLineJoin="round" />
 </vector>

@@ -807,7 +807,7 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 - [x] `Field` — `com/mlmvpn/scanner/ui/doctor/CfDoctorScreen.kt`
 - [x] `Step` — `com/mlmvpn/scanner/ui/doctor/CloudDoctorScreen.kt`
 - [x] `HeroFrame` — `com/mlmvpn/scanner/ui/doctor/CloudDoctorScreen.kt`
-- [x] `HeroTitle` — `com/mlmvpn/scanner/ui/doctor/CloudDoctorScreen.kt`
+- [x] `HeroTitle` — `com/mlmvpn/scanner/ui/doctor/CloudDoctorScreen.kt` (Dusk semantic colors and Material title/body typography)
 - [x] `HubHero` — `com/mlmvpn/scanner/ui/doctor/CloudDoctorScreen.kt`
 - [x] `SetupHero` — `com/mlmvpn/scanner/ui/doctor/CloudDoctorScreen.kt`
 - [x] `Verdict` — `com/mlmvpn/scanner/ui/doctor/CloudDoctorScreen.kt`
@@ -878,7 +878,7 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 - [x] `stageTitle` — `com/mlmvpn/scanner/ui/game/GameBoostScreen.kt` (localized state label rendered by Dusk stage row)
 - [ ] `evidence` — `com/mlmvpn/scanner/ui/game/GameBoostScreen.kt` (deferred: diagnostic text formatter rendered with Dusk secondary typography)
 - [x] `ResultCard` — `com/mlmvpn/scanner/ui/game/GameBoostScreen.kt` (Dusk outcome and severity colors)
-- [x] `StatsRow` — `com/mlmvpn/scanner/ui/game/GameBoostScreen.kt` (Dusk ping/data states; values remain diagnostic data)
+- [x] `StatsRow` — `com/mlmvpn/scanner/ui/game/GameBoostScreen.kt` (Dusk ping/data states and shared Material metric typography; values remain diagnostic data)
 - [x] `verdictTitle` — `com/mlmvpn/scanner/ui/game/GameBoostScreen.kt` (localized outcome title rendered with Dusk typography)
 - [x] `verdictDetail` — `com/mlmvpn/scanner/ui/game/GameBoostScreen.kt` (localized outcome explanation rendered with Dusk typography)
 - [x] `kindLine` — `com/mlmvpn/scanner/ui/game/GameBoostScreen.kt` (localized mode label rendered with Dusk typography)
@@ -911,7 +911,7 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 - [x] `StepRow` — `com/mlmvpn/scanner/ui/github/GithubTunnelScreen.kt` (Dusk setup completion semantics)
 - [x] `LogBlock` — `com/mlmvpn/scanner/ui/github/GithubTunnelScreen.kt` (Dusk muted diagnostics text)
 - [x] `SitesField` — `com/mlmvpn/scanner/ui/github/GithubTunnelScreen.kt` (Dusk input text and hint colors)
-- [x] `SelectedAppRow` — `com/mlmvpn/scanner/ui/github/GithubTunnelScreen.kt` (Dusk selected-app surface and text)
+- [x] `SelectedAppRow` — `com/mlmvpn/scanner/ui/github/GithubTunnelScreen.kt` (shared Dusk glyph shape, semantic colors and Material text styles)
 - [x] `countryName` — `com/mlmvpn/scanner/ui/github/GithubTunnelScreen.kt` (localized country label rendered by shared region picker)
 ### home
 
@@ -980,7 +980,7 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 - [x] `HotspotCard` — `com/mlmvpn/scanner/ui/lan/LanScreen.kt` (Dusk hotspot state and QR plate token)
 - [x] `LabelledValue` — `com/mlmvpn/scanner/ui/lan/LanScreen.kt` (Dusk label/value hierarchy and direction-aware numeric output)
 - [x] `SetupCard` — `com/mlmvpn/scanner/ui/lan/LanScreen.kt` (Dusk setup surface and neutral QR backing)
-- [x] `SmallAction` — `com/mlmvpn/scanner/ui/lan/LanScreen.kt` (Dusk compact action states)
+- [x] `SmallAction` — `com/mlmvpn/scanner/ui/lan/LanScreen.kt` (shared Dusk pill shape, compact action color and Material label style)
 - [x] `AddressCard` — `com/mlmvpn/scanner/ui/lan/LanScreen.kt` (Dusk sharing endpoint surface)
 - [x] `CopyRow` — `com/mlmvpn/scanner/ui/lan/LanScreen.kt` (Dusk action tile and on-success contrast)
 - [x] `SecurityBar` — `com/mlmvpn/scanner/ui/lan/LanScreen.kt` (Dusk security indicator semantics)
@@ -1081,7 +1081,7 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 - [x] `SectionTitle` — `com/mlmvpn/scanner/ui/scout/ScoutParts.kt` (Dusk secondary text and spacing)
 - [x] `LineCard` — `com/mlmvpn/scanner/ui/scout/ScoutParts.kt` (Dusk network status card)
 - [x] `LineChip` — `com/mlmvpn/scanner/ui/scout/ScoutParts.kt` (Dusk network state colors)
-- [x] `Stat` — `com/mlmvpn/scanner/ui/scout/ScoutParts.kt` (Dusk metric text hierarchy)
+- [x] `Stat` — `com/mlmvpn/scanner/ui/scout/ScoutParts.kt` (Dusk semantic colors and shared Material metric hierarchy)
 - [x] `PillButton` — `com/mlmvpn/scanner/ui/scout/ScoutParts.kt` (Dusk action states)
 - [x] `Dot` — `com/mlmvpn/scanner/ui/scout/ScoutParts.kt` (Dusk semantic network-state indicator)
 ### settings
@@ -1191,7 +1191,7 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 - [x] `ColumnScope` — `com/mlmvpn/scanner/ui/tunnel/PsiphonPages.kt`
 - [x] `PsiphonLiveCard` — `com/mlmvpn/scanner/ui/tunnel/PsiphonPages.kt`
 - [x] `MethodRow` — `com/mlmvpn/scanner/ui/tunnel/PsiphonPages.kt`
-- [x] `IpRow` — `com/mlmvpn/scanner/ui/tunnel/PsiphonPages.kt`
+- [x] `IpRow` — `com/mlmvpn/scanner/ui/tunnel/PsiphonPages.kt` (Dusk card shape/colors, Material type scale and shared technical monospace token)
 - [x] `RunSummary` — `com/mlmvpn/scanner/ui/tunnel/PsiphonPages.kt`
 - [x] `ActionLine` — `com/mlmvpn/scanner/ui/tunnel/PsiphonPages.kt`
 - [ ] `rememberTicker` — `com/mlmvpn/scanner/ui/tunnel/PsiphonPages.kt`
@@ -1204,14 +1204,14 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 - [x] `Note` — `com/mlmvpn/scanner/ui/tunnel/PsiphonPages.kt`
 - [x] `Chip` — `com/mlmvpn/scanner/ui/tunnel/PsiphonPages.kt`
 - [x] `OptionRow` — `com/mlmvpn/scanner/ui/tunnel/PsiphonPages.kt`
-- [x] `CountryRow` — `com/mlmvpn/scanner/ui/tunnel/PsiphonPages.kt`
+- [x] `CountryRow` — `com/mlmvpn/scanner/ui/tunnel/PsiphonPages.kt` (Dusk surface and shared typography/shape tokens)
 - [ ] `RegionRow` — `com/mlmvpn/scanner/ui/tunnel/RegionPickerScreen.kt`
 - [x] `torBridgesValue` — `com/mlmvpn/scanner/ui/tunnel/TorBridgesScreen.kt` (localized bridge preference value rendered by Dusk settings row)
 - [x] `sortLabel` — `com/mlmvpn/scanner/ui/tunnel/TorBridgesScreen.kt` (localized sorting label rendered in Dusk control)
 - [x] `ChoiceRow` — `com/mlmvpn/scanner/ui/tunnel/TorBridgesScreen.kt` (Dusk source selection states)
 - [x] `Chip` — `com/mlmvpn/scanner/ui/tunnel/TorBridgesScreen.kt` (Dusk selection chip and contrast)
 - [x] `Note` — `com/mlmvpn/scanner/ui/tunnel/TorBridgesScreen.kt` (Dusk warning/info notice)
-- [x] `BridgeRow` — `com/mlmvpn/scanner/ui/tunnel/TorBridgesScreen.kt` (Dusk bridge card and source/status labels)
+- [x] `BridgeRow` — `com/mlmvpn/scanner/ui/tunnel/TorBridgesScreen.kt` (shared Dusk card/tag shapes, semantic tones and Material type scale)
 - [x] `Tag` — `com/mlmvpn/scanner/ui/tunnel/TorBridgesScreen.kt` (Dusk semantic tag colors)
 - [x] `statusLine` — `com/mlmvpn/scanner/ui/tunnel/TorBridgesScreen.kt` (localized bridge state label rendered in Dusk typography)
 - [x] `statusColor` — `com/mlmvpn/scanner/ui/tunnel/TorBridgesScreen.kt` (Dusk semantic bridge status mapping)
@@ -1258,7 +1258,7 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 - [x] `StudioEditor` — `com/mlmvpn/scanner/ui/widgetstudio/WidgetStudioScreen.kt` (Dusk preview, editor controls and content hierarchy)
 - [x] `SwatchRow` — `com/mlmvpn/scanner/ui/widgetstudio/WidgetStudioScreen.kt` (custom widget colors are data; selection UI uses Dusk)
 - [x] `HueSlider` — `com/mlmvpn/scanner/ui/widgetstudio/WidgetStudioScreen.kt` (custom accent editing remains data; control state uses shared Dusk slider)
-- [x] `CountryRow` — `com/mlmvpn/scanner/ui/widgetstudio/WidgetStudioScreen.kt` (Dusk country row and selected marker)
+- [x] `CountryRow` — `com/mlmvpn/scanner/ui/widgetstudio/WidgetStudioScreen.kt` (shared Dusk spacing, semantic selected marker and Material type scale)
 - [x] `AddMethodWidget` — `com/mlmvpn/scanner/ui/widgetstudio/WidgetStudioScreen.kt` (Dusk method list and widget-placement explanation)
 ### windscribe
 
@@ -1274,7 +1274,7 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 - [x] `CaptchaArt` — `com/mlmvpn/scanner/ui/windscribe/WindscribeScreen.kt`
 ### com
 
-- [ ] `LocaleProvider` — `com/mlmvpn/scanner/utils/AppLocaleManager.kt`
+- [ ] `LocaleProvider` — `com/mlmvpn/scanner/utils/AppLocaleManager.kt` (deferred: locale state/provider only; visible selection is rendered by the Dusk settings surface)
 - [x] `Heading` — `com/mlmvpn/scanner/widget/studio/StudioConfigureActivity.kt` (semantic Dusk colors, shared shapes, typography and spacing tokens)
 
 ## Android activities and fragments
@@ -1325,15 +1325,15 @@ Source inventory of Compose overlay hosts/call sites. Review each listed occurre
 - [x] Runtime notifications, ongoing VPN foreground notification, channels and quick-settings tiles — VPN notification accent follows Soft Dusk; tile and notification chrome are OS-rendered and cannot be branded by the app.
 - [x] Home-screen widgets and widget configuration/preview states — shared method/status palette migrated; Widget Studio configuration and previews use Dusk, while custom template choices remain user-controlled.
 - [x] Native XML dialogs/layouts and standalone import/configuration activities — owned UI migrated; import dispatchers are explicitly deferred above.
-- [ ] Loading, empty, offline, connected, connecting, failure, retry and permission-denied states across every destination.
+- [ ] Loading, empty, offline, connected, connecting, failure, retry and permission-denied states across every destination. (deferred: exhaustive device/emulator state walk required; source components were audited, but no runtime device is available here)
 
 ## Audit criteria
 
-- [ ] Light palette uses the Soft Dusk tokens.
-- [ ] Dark palette uses the corresponding night tokens.
-- [ ] RTL checked in Persian for layout direction, icon direction, text alignment and number/address spans.
+- [ ] Light palette uses the Soft Dusk tokens. (deferred: device visual verification required)
+- [ ] Dark palette uses the corresponding night tokens. (deferred: device visual verification required)
+- [ ] RTL checked in Persian for layout direction, icon direction, text alignment and number/address spans. (deferred: device visual verification required; source-level directional grep is recorded)
 - [ ] No legacy hardcoded UI colors, radii, typography or default Material surfaces remain outside documented brand/data visualizations.
-- [ ] Release build and visual smoke test completed.
+- [ ] Release build and visual smoke test completed. (deferred: CI must verify the post-audit-fix push; device visual smoke test unavailable here)
 
 
 ## Manifest-registered native entry points

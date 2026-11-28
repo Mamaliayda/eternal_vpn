@@ -40,6 +40,7 @@ import androidx.compose.material.icons.filled.Stop
 import androidx.compose.material.icons.filled.SwapHoriz
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -1298,19 +1299,19 @@ private fun CountryRow(
     onClick: () -> Unit,
 ) {
     Row(
-        Modifier.fillMaxWidth().clip(RoundedCornerShape(14.dp)).background(DuskTheme.surface).clickable(onClick = onClick)
+        Modifier.fillMaxWidth().clip(DuskTheme.chartShape).background(DuskTheme.surface).clickable(onClick = onClick)
             .heightIn(min = 54.dp).padding(horizontal = 14.dp, vertical = 9.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Text(flag, fontSize = if (flag.length <= 1) 15.sp else 22.sp, color = DuskTheme.muted, fontWeight = FontWeight.SemiBold)
+        Text(flag, style = MaterialTheme.typography.titleLarge, color = DuskTheme.muted, fontWeight = FontWeight.SemiBold)
         Spacer(Modifier.width(12.dp))
         Column(Modifier.weight(1f)) {
-            Text(name, color = DuskTheme.onSurface, fontSize = if (mono) 13.sp else 15.sp, maxLines = 1, fontFamily = if (mono) FontFamily.Monospace else null)
-            Text(detail, color = detailColor, fontSize = 11.sp, lineHeight = 16.sp, maxLines = 3)
+            Text(name, color = DuskTheme.onSurface, style = if (mono) MaterialTheme.typography.labelMedium else MaterialTheme.typography.bodyLarge, maxLines = 1, fontFamily = if (mono) DuskTheme.monoFontFamily else null)
+            Text(detail, color = detailColor, style = MaterialTheme.typography.bodySmall, maxLines = 3)
         }
         if (trailing.isNotBlank()) {
             Spacer(Modifier.width(8.dp))
-            Text(trailing, color = DuskTheme.success, fontSize = 12.sp)
+            Text(trailing, color = DuskTheme.success, style = MaterialTheme.typography.labelMedium)
         }
         if (selected) {
             Spacer(Modifier.width(6.dp))

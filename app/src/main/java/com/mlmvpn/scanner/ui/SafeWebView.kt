@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.mlmvpn.scanner.store.tr
+import com.mlmvpn.scanner.ui.theme.DuskTheme
+import androidx.compose.ui.graphics.toArgb
 
 /**
  * A WebView for an AndroidView factory, or a short notice in its place when the phone has none to
@@ -24,7 +26,7 @@ internal fun webViewOrNotice(ctx: Context, build: (Context) -> View): View = try
         layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
         gravity = Gravity.CENTER
         setPadding(48, 48, 48, 48)
-        setTextColor(0xFFB0B0B5.toInt())
+        setTextColor((if (com.mlmvpn.scanner.ui.home.Appearance.isDark()) DuskTheme.nightMuted else DuskTheme.lightMuted).toArgb())
         textSize = 15f
         text = tr(
             "مرورگر داخلی اندروید (Android System WebView) روی این گوشی در دسترس نیست — شاید در حال به‌روزرسانی یا غیرفعال است. آن را از گوگل‌پلی به‌روز یا فعال کنید و دوباره امتحان کنید.",

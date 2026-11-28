@@ -12,10 +12,10 @@
     android:viewportHeight="24">
     <path
         android:pathData="M12 3.5 L3.5 8 L12 12.5 L20.5 8 z"
-        android:fillColor="#FFFFFFFF" />
+        android:fillColor="@color/white" />
     <path
         android:pathData="m3.5 12 l8.5 4.5 l8.5 -4.5 M3.5 16 l8.5 4.5 l8.5 -4.5"
-        android:strokeColor="#FFFFFFFF"
+        android:strokeColor="@color/white"
         android:strokeWidth="1.8"
         android:strokeLineCap="round"
         android:strokeLineJoin="round" />

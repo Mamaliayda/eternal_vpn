@@ -401,7 +401,7 @@ fun StudioChip(
  * The frame for one item in a list this feature scrolls itself.
  *
  * Glass, like every other card in the app. Both list screens were filling theirs with [DuskTheme.surface] —
- * the OPAQUE #1C1C1E the palette keeps only as the no-wallpaper fallback — so a row of users sat as
+ * the opaque near-black the palette keeps only as the no-wallpaper fallback — so a row of users sat as
  * a flat black slab among translucent cards above and below it. These were the only two places in
  * the app that drew a card that way.
  */

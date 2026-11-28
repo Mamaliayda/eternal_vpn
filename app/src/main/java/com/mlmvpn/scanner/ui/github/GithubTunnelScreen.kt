@@ -60,6 +60,7 @@ import androidx.compose.material.icons.filled.StopCircle
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -1033,15 +1034,15 @@ private fun SelectedAppRow(context: Context, pkg: String, onRemove: () -> Unit) 
             androidx.compose.foundation.Image(
                 bitmap = icon.toBitmap(64, 64).asImageBitmap(),
                 contentDescription = null,
-                modifier = Modifier.size(30.dp).clip(RoundedCornerShape(7.dp)),
+                modifier = Modifier.size(30.dp).clip(DuskTheme.glyphShape),
             )
         } else {
-            Box(Modifier.size(30.dp).clip(RoundedCornerShape(7.dp)).background(DuskTheme.disabled.copy(alpha = 0.4f)))
+            Box(Modifier.size(30.dp).clip(DuskTheme.glyphShape).background(DuskTheme.disabled.copy(alpha = 0.4f)))
         }
         Spacer(Modifier.width(12.dp))
         Column(Modifier.weight(1f)) {
-            Text(label, color = DuskTheme.onSurface, fontSize = 15.sp, maxLines = 1)
-            Text(pkg, color = DuskTheme.muted, fontSize = 11.sp, maxLines = 1)
+            Text(label, color = DuskTheme.onSurface, style = MaterialTheme.typography.bodyLarge, maxLines = 1)
+            Text(pkg, color = DuskTheme.muted, style = MaterialTheme.typography.labelSmall, maxLines = 1)
         }
         Icon(Icons.Default.Close, contentDescription = stringResource(R.string.gt_rule_app_remove),
             tint = DuskTheme.muted,

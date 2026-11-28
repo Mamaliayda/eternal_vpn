@@ -269,7 +269,7 @@ fun AppScreen() {
                         // flat, high-contrast sheet for anyone who finds content over a backdrop
                         // hard to read.
                         !com.mlmvpn.scanner.ui.home.Appearance.wallpaperEverywhere ->
-                            Modifier.background(if (darkTheme) Color(0xFF000000) else Color(0xFF1C1C1E))
+                            Modifier.background(DuskTheme.background)
                         // A scrim rather than a sheet: the wallpaper stays visible but stops
                         // competing with the content on top of it. Light mode washes it out
                         // instead of dimming it, for the same reason.

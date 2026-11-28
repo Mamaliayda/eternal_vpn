@@ -31,6 +31,7 @@ import androidx.compose.material.icons.filled.Lightbulb
 import androidx.compose.material.icons.filled.CropSquare
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Text
@@ -859,12 +860,12 @@ private fun CountryPicker(method: String, selected: String?, onPick: (String?) -
 @Composable
 private fun CountryRow(name: String, flag: String, selected: Boolean, onClick: () -> Unit) {
     Row(
-        modifier = Modifier.fillMaxWidth().clickable(onClick = onClick).heightIn(min = 46.dp).padding(horizontal = 16.dp, vertical = 8.dp),
+        modifier = Modifier.fillMaxWidth().clickable(onClick = onClick).heightIn(min = 46.dp).padding(horizontal = DuskTheme.space4, vertical = DuskTheme.space2),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Text(flag, fontSize = 20.sp)
+        Text(flag, style = MaterialTheme.typography.titleLarge)
         Spacer(Modifier.width(12.dp))
-        Text(name, color = DuskTheme.onSurface, fontSize = 16.sp, modifier = Modifier.weight(1f))
+        Text(name, color = DuskTheme.onSurface, style = MaterialTheme.typography.bodyLarge, modifier = Modifier.weight(1f))
         if (selected) Icon(Icons.Default.Check, contentDescription = null, tint = DuskTheme.primary, modifier = Modifier.size(20.dp))
     }
 }
