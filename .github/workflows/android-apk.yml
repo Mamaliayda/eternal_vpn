@@ -115,7 +115,11 @@ jobs:
           output_dir="app/build/outputs/apk/release"
           echo "### Release APK files (name and size in bytes)" >> "$GITHUB_STEP_SUMMARY"
           ls -l "$output_dir"
-          find "$output_dir" -maxdepth 1 -type f -name '*.apk' -printf '%f\t%s bytes\n' | sort | tee -a "$GITHUB_STEP_SUMMARY"
+          while IFS=$'\t' read -r name bytes; do
+            [[ -n "$name" ]] || continue
+            printf '%s\t%s bytes\n' "$name" "$bytes" | tee -a "$GITHUB_STEP_SUMMARY"
+            echo "::notice title=APK output,file=${output_dir}/${name}::${name} (${bytes} bytes)"
+          done < <(find "$output_dir" -maxdepth 1 -type f -name '*.apk' -printf '%f\t%s\n' | sort)
           test -n "$(find "$output_dir" -maxdepth 1 -type f -name '*.apk' -print -quit)"
 
       - name: Annotate build errors
