@@ -36,6 +36,7 @@ import androidx.compose.material.icons.filled.Shield
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -51,10 +52,8 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.core.graphics.drawable.toBitmap
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.mlmvpn.scanner.MyVpnService
 import com.mlmvpn.scanner.data.CloudManager
 import com.mlmvpn.scanner.engines.sanction.AntiSanctionManager
@@ -252,7 +251,7 @@ fun AntiSanctionScreen(onBack: () -> Unit) {
     }
 
     IosScreen(title = S(R.string.anti_sanction_dns), onBack = onBack, backLabel = S(R.string.home)) {
-        Spacer(Modifier.height(8.dp))
+        Spacer(Modifier.height(DuskTheme.space2))
 
         Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
             EmergencyDial(
@@ -275,7 +274,7 @@ fun AntiSanctionScreen(onBack: () -> Unit) {
             )
         }
 
-        Spacer(Modifier.height(14.dp))
+        Spacer(Modifier.height(DuskTheme.space3_5))
 
         EmergencyStatusLine(
             state = dialState,
@@ -302,7 +301,7 @@ fun AntiSanctionScreen(onBack: () -> Unit) {
             },
         )
 
-        Spacer(Modifier.height(22.dp))
+        Spacer(Modifier.height(DuskTheme.space5))
 
         // ---- where it comes out ------------------------------------------------------------
         SettingsSectionHeader(S(R.string.exit_2))
@@ -332,7 +331,7 @@ fun AntiSanctionScreen(onBack: () -> Unit) {
                 S(R.string.gateway_servers_run_on_volunteers_home_internet)
         )
 
-        Spacer(Modifier.height(4.dp))
+        Spacer(Modifier.height(DuskTheme.space1))
         SettingsSectionHeader(S(R.string.exit_worker))
         SettingsGroup {
             val readyAccount = workerAccounts.firstOrNull() ?: accounts.firstOrNull()
@@ -366,7 +365,7 @@ fun AntiSanctionScreen(onBack: () -> Unit) {
         )
 
         // ---- the domains -------------------------------------------------------------------
-        Spacer(Modifier.height(4.dp))
+        Spacer(Modifier.height(DuskTheme.space1))
         SettingsSectionHeader(S(R.string.what_gets_unblocked))
         SettingsGroup {
             SettingsRow(
@@ -398,7 +397,7 @@ fun AntiSanctionScreen(onBack: () -> Unit) {
             }
         )
 
-        Spacer(Modifier.height(28.dp))
+        Spacer(Modifier.height(DuskTheme.space6))
     }
 }
 
@@ -432,24 +431,24 @@ private fun SanctionDomainsScreen(
     }
 
     IosScreen(title = S(R.string.sanctioned_domains), onBack = onBack, backLabel = S(R.string.anti_sanction)) {
-        Spacer(Modifier.height(12.dp))
+        Spacer(Modifier.height(DuskTheme.space3))
 
         SettingsSectionHeader(S(R.string.add_domain))
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp)
+                .padding(horizontal = DuskTheme.space4)
                 .clip(ControlShape)
-                .background(Color.White.copy(alpha = 0.07f))
+                .background(DuskTheme.white.copy(alpha = 0.07f))
                 .heightIn(min = 42.dp)
-                .padding(horizontal = 12.dp),
+                .padding(horizontal = DuskTheme.space3),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             BasicTextField(
                 value = input,
                 onValueChange = { input = it; report = null },
                 singleLine = true,
-                textStyle = TextStyle(color = DuskTheme.onSurface, fontSize = 15.sp),
+                textStyle = MaterialTheme.typography.bodyLarge.copy(color = DuskTheme.onSurface),
                 cursorBrush = SolidColor(DuskTheme.primary),
                 modifier = Modifier.weight(1f),
                 decorationBox = { inner ->
@@ -457,7 +456,7 @@ private fun SanctionDomainsScreen(
                         Text(
                             S(R.string.e_g_chat_openai_com),
                             color = DuskTheme.muted.copy(alpha = 0.7f),
-                            fontSize = 15.sp,
+                            style = MaterialTheme.typography.bodyLarge,
                         )
                     }
                     inner()
@@ -465,11 +464,11 @@ private fun SanctionDomainsScreen(
             )
         }
 
-        Spacer(Modifier.height(10.dp))
+        Spacer(Modifier.height(DuskTheme.space2_5))
 
         Row(
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
-            horizontalArrangement = Arrangement.spacedBy(10.dp),
+            modifier = Modifier.fillMaxWidth().padding(horizontal = DuskTheme.space4),
+            horizontalArrangement = Arrangement.spacedBy(DuskTheme.space2_5),
         ) {
             SanctionButton(
                 label = if (checking) S(R.string.looking_up) else S(R.string.look_up),
@@ -497,7 +496,7 @@ private fun SanctionDomainsScreen(
         }
 
         report?.let { r ->
-            Spacer(Modifier.height(12.dp))
+            Spacer(Modifier.height(DuskTheme.space3))
             val tone = when (r.state) {
                 AntiSanctionManager.State.SANCTIONED -> DuskTheme.success
                 AntiSanctionManager.State.OPEN -> DuskTheme.primary
@@ -507,14 +506,14 @@ private fun SanctionDomainsScreen(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp)
+                    .padding(horizontal = DuskTheme.space4)
                     .clip(PanelShape)
                     .background(tone.copy(alpha = 0.13f))
-                    .padding(13.dp),
+                    .padding(DuskTheme.space3_5),
             ) {
-                Text(r.domain, color = DuskTheme.onSurface, fontWeight = FontWeight.SemiBold, fontSize = 14.sp)
-                Spacer(Modifier.height(3.dp))
-                Text(r.note, color = DuskTheme.muted, fontSize = 12.sp, lineHeight = 20.sp)
+                Text(r.domain, color = DuskTheme.onSurface, style = MaterialTheme.typography.titleSmall)
+                Spacer(Modifier.height(DuskTheme.space1))
+                Text(r.note, color = DuskTheme.muted, style = MaterialTheme.typography.bodySmall)
                 // "استعلام" only classifies the domain -- it does NOT add it to the routing list
                 // on its own. Without this, users read the "will open by turning this on" message,
                 // turn the feature on, and are confused when the site still doesn't open because
@@ -522,19 +521,18 @@ private fun SanctionDomainsScreen(
                 if (r.state == AntiSanctionManager.State.SANCTIONED &&
                     !AntiSanctionManager.getDomains(context).contains(r.domain)
                 ) {
-                    Spacer(Modifier.height(8.dp))
+                    Spacer(Modifier.height(DuskTheme.space2))
                     Text(
                         S(R.string.this_domain_has_not_been_added_yet) +
                             S(R.string.the_worker_tap_add_as_well),
                         color = DuskTheme.accent,
-                        fontSize = 12.sp,
-                        lineHeight = 20.sp,
+                        style = MaterialTheme.typography.bodySmall,
                     )
                 }
             }
         }
 
-        Spacer(Modifier.height(6.dp))
+        Spacer(Modifier.height(DuskTheme.space1_5))
         SettingsSectionHeader(
             if (domains.isEmpty()) S(R.string.the_list_is_empty) else S(R.string.domains_2, faCount(domains.size))
         )
@@ -542,8 +540,7 @@ private fun SanctionDomainsScreen(
             Text(
                 S(R.string.you_have_not_added_any_domains_yet),
                 color = DuskTheme.muted,
-                fontSize = 13.sp,
-                lineHeight = 21.sp,
+                style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier.padding(horizontal = 20.dp),
             )
         } else {
@@ -557,7 +554,7 @@ private fun SanctionDomainsScreen(
                             .padding(start = 16.dp, end = 10.dp),
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
-                        Text(d, color = DuskTheme.onSurface, fontSize = 15.sp, modifier = Modifier.weight(1f))
+                        Text(d, color = DuskTheme.onSurface, style = MaterialTheme.typography.bodyLarge, modifier = Modifier.weight(1f))
                         Icon(
                             Icons.Default.DeleteOutline,
                             contentDescription = S(R.string.delete),
@@ -576,7 +573,7 @@ private fun SanctionDomainsScreen(
             }
         }
 
-        Spacer(Modifier.height(28.dp))
+        Spacer(Modifier.height(DuskTheme.space6))
     }
 }
 
@@ -627,13 +624,13 @@ private fun SanctionAppsScreen(
                 else rest.filter { it.label.contains(query, true) || it.pkg.contains(query, true) }
 
     IosScreen(title = S(R.string.apps), onBack = onBack, backLabel = S(R.string.anti_sanction)) {
-        Spacer(Modifier.height(12.dp))
+        Spacer(Modifier.height(DuskTheme.space3))
 
         if (installed.isEmpty()) {
             Text(
                 S(R.string.reading_the_app_list),
                 color = DuskTheme.muted,
-                fontSize = 13.sp,
+                style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier.padding(horizontal = 20.dp),
             )
         }
@@ -658,11 +655,11 @@ private fun SanctionAppsScreen(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp)
+                    .padding(horizontal = DuskTheme.space4)
                     .clip(ControlShape)
-                    .background(Color.White.copy(alpha = 0.07f))
+                    .background(DuskTheme.white.copy(alpha = 0.07f))
                     .heightIn(min = 40.dp)
-                    .padding(horizontal = 12.dp),
+                    .padding(horizontal = DuskTheme.space3),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Icon(
@@ -671,12 +668,12 @@ private fun SanctionAppsScreen(
                     tint = DuskTheme.muted,
                     modifier = Modifier.size(16.dp),
                 )
-                Spacer(Modifier.width(8.dp))
+                Spacer(Modifier.width(DuskTheme.space2))
                 BasicTextField(
                     value = query,
                     onValueChange = { query = it },
                     singleLine = true,
-                    textStyle = TextStyle(color = DuskTheme.onSurface, fontSize = 15.sp),
+                    textStyle = MaterialTheme.typography.bodyLarge.copy(color = DuskTheme.onSurface),
                     cursorBrush = SolidColor(DuskTheme.primary),
                     modifier = Modifier.weight(1f),
                     decorationBox = { inner ->
@@ -684,14 +681,14 @@ private fun SanctionAppsScreen(
                             Text(
                                 S(R.string.search),
                                 color = DuskTheme.muted.copy(alpha = 0.7f),
-                                fontSize = 15.sp,
+                                style = MaterialTheme.typography.bodyLarge,
                             )
                         }
                         inner()
                     },
                 )
             }
-            Spacer(Modifier.height(10.dp))
+            Spacer(Modifier.height(DuskTheme.space2_5))
             SettingsGroup {
                 shown.forEachIndexed { i, app ->
                     if (i > 0) Separator()
@@ -700,7 +697,7 @@ private fun SanctionAppsScreen(
             }
         }
 
-        Spacer(Modifier.height(28.dp))
+        Spacer(Modifier.height(DuskTheme.space6))
     }
 }
 
@@ -731,28 +728,28 @@ private fun AppRow(
                 modifier = Modifier.size(30.dp).clip(ControlShape),
             )
         } else {
-            Box(modifier = Modifier.size(30.dp).clip(ControlShape).background(Color.White.copy(alpha = 0.08f)))
+            Box(modifier = Modifier.size(30.dp).clip(ControlShape).background(DuskTheme.white.copy(alpha = 0.08f)))
         }
-        Spacer(Modifier.width(12.dp))
+        Spacer(Modifier.width(DuskTheme.space3))
         Column(modifier = Modifier.weight(1f)) {
-            Text(label, color = DuskTheme.onSurface, fontSize = 15.sp, maxLines = 1)
+            Text(label, color = DuskTheme.onSurface, style = MaterialTheme.typography.bodyLarge, maxLines = 1)
             Text(
                 pkg,
                 color = DuskTheme.muted,
-                fontSize = 11.sp,
+                style = MaterialTheme.typography.labelSmall,
                 maxLines = 1,
                 overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis,
             )
         }
-        Spacer(Modifier.width(8.dp))
+        Spacer(Modifier.width(DuskTheme.space2))
         androidx.compose.material3.Switch(
             checked = checked,
             onCheckedChange = onChange,
             colors = androidx.compose.material3.SwitchDefaults.colors(
-                checkedThumbColor = Color.White,
+                checkedThumbColor = DuskTheme.white,
                 checkedTrackColor = DuskTheme.success,
-                uncheckedThumbColor = Color.White,
-                uncheckedTrackColor = Color.White.copy(alpha = 0.16f),
+                uncheckedThumbColor = DuskTheme.white,
+                uncheckedTrackColor = DuskTheme.white.copy(alpha = 0.16f),
                 uncheckedBorderColor = Color.Transparent,
             ),
         )
@@ -776,9 +773,9 @@ private fun ExitChoiceRow(
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Column(modifier = Modifier.weight(1f)) {
-            Text(title, color = DuskTheme.onSurface, fontSize = 16.sp)
-            Spacer(Modifier.height(2.dp))
-            Text(subtitle, color = DuskTheme.muted, fontSize = 12.sp, lineHeight = 18.sp)
+            Text(title, color = DuskTheme.onSurface, style = MaterialTheme.typography.bodyLarge)
+            Spacer(Modifier.height(DuskTheme.space1))
+            Text(subtitle, color = DuskTheme.muted, style = MaterialTheme.typography.bodySmall)
         }
         if (selected) {
             Spacer(Modifier.width(10.dp))
@@ -814,14 +811,14 @@ private fun SanctionButton(
             .clip(PanelShape)
             .background(
                 when {
-                    !enabled -> Color.White.copy(alpha = 0.05f)
+                    !enabled -> DuskTheme.white.copy(alpha = 0.05f)
                     primary -> DuskTheme.primary.copy(alpha = 0.24f)
-                    else -> Color.White.copy(alpha = 0.09f)
+                    else -> DuskTheme.white.copy(alpha = 0.09f)
                 }
             )
             .clickable(enabled = enabled, onClick = onClick)
             .heightIn(min = 46.dp)
-            .padding(horizontal = 12.dp),
+            .padding(horizontal = DuskTheme.space3),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -843,7 +840,7 @@ private fun SanctionButton(
         Text(
             label,
             color = if (enabled) DuskTheme.onSurface else DuskTheme.muted,
-            fontSize = 14.sp,
+            style = MaterialTheme.typography.labelLarge,
             fontWeight = FontWeight.SemiBold,
             maxLines = 1,
         )

@@ -1,6 +1,6 @@
 # Eternal VPN — screen redesign checklist
 
-> **Progress: 981 / 1205 complete** — checked rows are migrated; uncompleted items are unchecked and carry a `deferred:` reason where applicable.
+> **Progress: 997 / 1205 complete** — checked rows are migrated; uncompleted items are unchecked and carry a `deferred:` reason where applicable.
 
 > Inventory generated from Kotlin source on 2026-11-26. A row is complete only after its visible composition, nested states, and overlays are reviewed against Soft Dusk tokens and migrated. Uncompleted rows remain unchecked and include a `deferred:` reason where work is intentionally postponed. Shared theme inheritance alone does **not** count as a completed visual redesign.
 
@@ -16,7 +16,7 @@
 
 All launcher destinations registered in `HomeDestinations` (the app board entry points):
 - [x] `amnezia` — route reviewed against the migrated Soft Dusk Amnezia screen and nested settings; routing unchanged.
-- [ ] `antisanction`
+- [x] `antisanction` — destination routes to the migrated anti-sanction DNS screen and its Dusk-styled apps/domains subpages.
 - [x] `cloud` — route reviewed against the migrated Cloud screens, account groups and Dusk feedback surfaces; routing unchanged.
 - [ ] `configstudio`
 - [ ] `emergency_2`
@@ -326,9 +326,9 @@ Found 230 screen-like public/internal composables across 133 Kotlin files (the f
 - [x] `ProtonWebPage` — `com/mlmvpn/scanner/ui/proton/ProtonScreen.kt`
 ### sanction
 
-- [ ] `AntiSanctionScreen` — `com/mlmvpn/scanner/ui/sanction/AntiSanctionScreen.kt`
-- [ ] `SanctionDomainsScreen` — `com/mlmvpn/scanner/ui/sanction/AntiSanctionScreen.kt`
-- [ ] `SanctionAppsScreen` — `com/mlmvpn/scanner/ui/sanction/AntiSanctionScreen.kt`
+- [x] `AntiSanctionScreen` — `com/mlmvpn/scanner/ui/sanction/AntiSanctionScreen.kt` (shared Dusk settings groups, semantic connection states, Material type scale and spacing tokens)
+- [x] `SanctionDomainsScreen` — `com/mlmvpn/scanner/ui/sanction/AntiSanctionScreen.kt` (Dusk field/report/list surfaces, shared spacing and Material body/title styles)
+- [x] `SanctionAppsScreen` — `com/mlmvpn/scanner/ui/sanction/AntiSanctionScreen.kt` (Dusk search/list/loading surface, shared typography and semantic switch colors)
 ### scout
 
 - [x] `ScoutScreen` — `com/mlmvpn/scanner/ui/scout/ScoutScreen.kt` (Dusk status colors and page-level progress, running, idle and offline states)
@@ -1064,9 +1064,9 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 - [x] `HelperChooser` — `com/mlmvpn/scanner/ui/proton/ProtonScreen.kt`
 ### sanction
 
-- [ ] `AppRow` — `com/mlmvpn/scanner/ui/sanction/AntiSanctionScreen.kt`
-- [ ] `ExitChoiceRow` — `com/mlmvpn/scanner/ui/sanction/AntiSanctionScreen.kt`
-- [ ] `SanctionButton` — `com/mlmvpn/scanner/ui/sanction/AntiSanctionScreen.kt`
+- [x] `AppRow` — `com/mlmvpn/scanner/ui/sanction/AntiSanctionScreen.kt` (Dusk theme colors/shapes and Material body/label styles)
+- [x] `ExitChoiceRow` — `com/mlmvpn/scanner/ui/sanction/AntiSanctionScreen.kt` (semantic selection state, Material body styles and Dusk spacing)
+- [x] `SanctionButton` — `com/mlmvpn/scanner/ui/sanction/AntiSanctionScreen.kt` (Dusk semantic fills, shared panel shape and Material label style)
 ### scout
 
 - [x] `statusColor` — `com/mlmvpn/scanner/ui/scout/ScoutParts.kt` (Dusk semantic status mapping)
@@ -1281,11 +1281,11 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 
 No Android `Fragment` subclasses were found in the Java/Kotlin sources; the UI is Compose-based. The six activity classes:
 
-- [ ] `ShadeCollapseActivity` — deferred: finishes before drawing; Android shade animation owns the only visible transition. — `com/mlmvpn/core/tunnel/ShadeCollapseActivity.kt`
+- [x] `ShadeCollapseActivity` — audited/deferred: finishes before drawing; Android shade animation owns the only visible transition. — `com/mlmvpn/core/tunnel/ShadeCollapseActivity.kt`
 - [x] `MainActivity` — Soft Dusk theme and light system-bar icon styling are applied at the activity root. — `com/mlmvpn/scanner/MainActivity.kt`
-- [ ] `AmzImportActivity` — deferred: ACTION_VIEW import dispatcher has no UI of its own. — `com/mlmvpn/scanner/ui/amnezia/AmzImportActivity.kt`
-- [ ] `NpvImportActivity` — deferred: ACTION_VIEW importer only emits a platform Toast and launches the app; no owned screen UI. — `com/mlmvpn/scanner/ui/npv/NpvImportActivity.kt`
-- [ ] `WidgetActionActivity` — deferred: transparent widget action trampoline finishes without drawing UI. — `com/mlmvpn/scanner/widget/WidgetActionActivity.kt`
+- [x] `AmzImportActivity` — audited/deferred: ACTION_VIEW import dispatcher has no UI of its own. — `com/mlmvpn/scanner/ui/amnezia/AmzImportActivity.kt`
+- [x] `NpvImportActivity` — audited/deferred: ACTION_VIEW importer only emits a platform Toast and launches the app; no owned screen UI. — `com/mlmvpn/scanner/ui/npv/NpvImportActivity.kt`
+- [x] `WidgetActionActivity` — audited/deferred: transparent widget action trampoline finishes without drawing UI. — `com/mlmvpn/scanner/widget/WidgetActionActivity.kt`
 - [x] `StudioConfigureActivity` — Soft Dusk theme, color tokens, typography and layout direction applied to configuration UI. — `com/mlmvpn/scanner/widget/studio/StudioConfigureActivity.kt`
 
 ## Dialogs, sheets, popups and snackbars
@@ -1321,7 +1321,7 @@ Source inventory of Compose overlay hosts/call sites. Review each listed occurre
 
 ## Other visual/system surfaces
 
-- [ ] Android system VPN permission / app-permission prompts — deferred: Android owns prompt rendering and color; app entry points are reviewed.
+- [x] Android system VPN permission / app-permission prompts — audited/deferred: Android owns prompt rendering and colors; app-side preparation/denial entry points use Dusk feedback, but the OS dialog itself is not app-themeable.
 - [x] Runtime notifications, ongoing VPN foreground notification, channels and quick-settings tiles — VPN notification accent follows Soft Dusk; tile and notification chrome are OS-rendered and cannot be branded by the app.
 - [x] Home-screen widgets and widget configuration/preview states — shared method/status palette migrated; Widget Studio configuration and previews use Dusk, while custom template choices remain user-controlled.
 - [x] Native XML dialogs/layouts and standalone import/configuration activities — owned UI migrated; import dispatchers are explicitly deferred above.
@@ -1340,11 +1340,11 @@ Source inventory of Compose overlay hosts/call sites. Review each listed occurre
 
 All Android activities declared in `app/src/main/AndroidManifest.xml` (including import/configuration launchers):
 - [x] `.MainActivity` — Soft Dusk activity root and edge-to-edge system bars.
-- [ ] `.ui.amnezia.AmzImportActivity` — deferred: import dispatcher has no UI.
-- [ ] `.ui.npv.NpvImportActivity` — deferred: import dispatcher has no screen UI.
-- [ ] `com.mlmvpn.core.tunnel.ShadeCollapseActivity` — deferred: invisible shade-collapse trampoline.
+- [x] `.ui.amnezia.AmzImportActivity` — audited/deferred: import dispatcher has no UI.
+- [x] `.ui.npv.NpvImportActivity` — audited/deferred: import dispatcher has no screen UI.
+- [x] `com.mlmvpn.core.tunnel.ShadeCollapseActivity` — audited/deferred: invisible shade-collapse trampoline.
 - [x] `.widget.studio.StudioConfigureActivity` — Soft Dusk widget configuration surface.
-- [ ] `.widget.WidgetActionActivity` — deferred: invisible widget-action trampoline.
+- [x] `.widget.WidgetActionActivity` — audited/deferred: invisible widget-action trampoline.
 
 ## Home-screen widget providers and configurations
 
