@@ -372,7 +372,7 @@ private fun MozillaSignInPage(onBack: () -> Unit) {
         Box(Modifier.fillMaxWidth().weight(1f)) {
             AndroidView(
                 modifier = Modifier.fillMaxSize(),
-                factory = { ctx -> com.mlmvpn.scanner.ui.webViewOrNotice(ctx) { ctx ->
+                factory = { ctx -> com.mlmvpn.scanner.ui.webViewOrNotice(ctx, DuskTheme.muted) { ctx ->
                     WebStorage.getInstance().deleteAllData()
                     CookieManager.getInstance().removeSessionCookies(null)
                     WebView(ctx).apply {
@@ -456,7 +456,7 @@ private fun MozillaCheckPage(host: String, onDone: (Map<String, String?>, String
         Box(Modifier.fillMaxWidth().weight(1f)) {
             AndroidView(
                 modifier = Modifier.fillMaxSize(),
-                factory = { ctx -> com.mlmvpn.scanner.ui.webViewOrNotice(ctx) { ctx ->
+                factory = { ctx -> com.mlmvpn.scanner.ui.webViewOrNotice(ctx, DuskTheme.muted) { ctx ->
                     WebView(ctx).apply {
                         // MATCH_PARENT, not AndroidView's WRAP_CONTENT: a WebView that is WRAP_CONTENT
                         // high gives the page a 0 px viewport height (`100vh` = 0), which left

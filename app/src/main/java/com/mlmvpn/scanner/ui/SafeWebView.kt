@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.mlmvpn.scanner.store.tr
-import com.mlmvpn.scanner.ui.theme.DuskTheme
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 
 /**
@@ -18,7 +18,7 @@ import androidx.compose.ui.graphics.toArgb
  * WebStorage / CookieManager call) throws, and inside a composition that closed the app -- FENIX's
  * sign-in page on an Android 12 TV box (AndroidRuntimeException: InvocationTargetException, 1.2.41).
  */
-internal fun webViewOrNotice(ctx: Context, build: (Context) -> View): View = try {
+internal fun webViewOrNotice(ctx: Context, noticeTextColor: Color, build: (Context) -> View): View = try {
     build(ctx)
 } catch (t: Throwable) {
     android.util.Log.w("SafeWebView", "no WebView on this phone right now: ${t.javaClass.simpleName} ${t.message}")
@@ -26,7 +26,7 @@ internal fun webViewOrNotice(ctx: Context, build: (Context) -> View): View = try
         layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
         gravity = Gravity.CENTER
         setPadding(48, 48, 48, 48)
-        setTextColor((if (com.mlmvpn.scanner.ui.home.Appearance.isDark()) DuskTheme.nightMuted else DuskTheme.lightMuted).toArgb())
+        setTextColor(noticeTextColor.toArgb())
         textSize = 15f
         text = tr(
             "مرورگر داخلی اندروید (Android System WebView) روی این گوشی در دسترس نیست — شاید در حال به‌روزرسانی یا غیرفعال است. آن را از گوگل‌پلی به‌روز یا فعال کنید و دوباره امتحان کنید.",

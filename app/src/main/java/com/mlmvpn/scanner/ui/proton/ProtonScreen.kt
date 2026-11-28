@@ -711,7 +711,7 @@ private fun ProtonWebPage(url: String, notify: (String) -> Unit, onBack: () -> U
                         Box(Modifier.fillMaxWidth().weight(1f)) {
                             AndroidView(
                                 modifier = Modifier.fillMaxSize(),
-                                factory = { ctx -> com.mlmvpn.scanner.ui.webViewOrNotice(ctx) { ctx ->
+                                factory = { ctx -> com.mlmvpn.scanner.ui.webViewOrNotice(ctx, DuskTheme.muted) { ctx ->
                                     WebView(ctx).apply {
                                         web[0] = this
                                         // AndroidView leaves a view WRAP_CONTENT, and a WebView that
