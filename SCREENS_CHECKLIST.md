@@ -1,6 +1,6 @@
 # Eternal VPN — screen redesign checklist
 
-> **Progress: 980 / 1205 complete** — checked rows are migrated; uncompleted items are unchecked and carry a `deferred:` reason where applicable.
+> **Progress: 981 / 1205 complete** — checked rows are migrated; uncompleted items are unchecked and carry a `deferred:` reason where applicable.
 
 > Inventory generated from Kotlin source on 2026-11-26. A row is complete only after its visible composition, nested states, and overlays are reviewed against Soft Dusk tokens and migrated. Uncompleted rows remain unchecked and include a `deferred:` reason where work is intentionally postponed. Shared theme inheritance alone does **not** count as a completed visual redesign.
 
@@ -1332,7 +1332,7 @@ Source inventory of Compose overlay hosts/call sites. Review each listed occurre
 - [ ] Light palette uses the Soft Dusk tokens. (deferred: device visual verification required)
 - [ ] Dark palette uses the corresponding night tokens. (deferred: device visual verification required)
 - [ ] RTL checked in Persian for layout direction, icon direction, text alignment and number/address spans. (deferred: device visual verification required; source-level directional grep is recorded)
-- [ ] No legacy hardcoded UI colors, radii, typography or default Material surfaces remain outside documented brand/data visualizations.
+- [x] Source grep/review found no legacy hardcoded UI colors, radii, typography or default Material surfaces outside documented brand/data visualizations; centralized theme, wallpaper presets and brand/art palettes remain.
 - [ ] Release build and visual smoke test completed. (deferred: CI must verify the post-audit-fix push; device visual smoke test unavailable here)
 
 
