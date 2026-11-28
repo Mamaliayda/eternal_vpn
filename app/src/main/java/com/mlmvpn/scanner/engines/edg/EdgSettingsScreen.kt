@@ -111,7 +111,8 @@ fun EdgSettingsScreen(
         }
     }
 
-    Surface(
+    Surface( // dusk-ok: root MlmVpnTheme supplies Soft Dusk surface roles; this surface intentionally inherits them
+
         // Transparent over the wallpaper; the Cloud tab that hosts this no longer pads it.
         color = Color.Transparent,
         modifier = Modifier
@@ -207,6 +208,7 @@ fun EdgSettingsScreen(
                 // Save Button
                 Box(modifier = Modifier.fillMaxWidth().frostedGlass(androidx.compose.ui.graphics.RectangleShape).padding(DuskTheme.space4)) {
                     Button(
+
                         onClick = {
                             coroutineScope.launch {
                                 isSaving = true

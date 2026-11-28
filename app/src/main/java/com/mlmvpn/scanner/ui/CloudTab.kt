@@ -400,9 +400,9 @@ fun CloudTab(
                         onShowMlmUsers = { showMlmUsersFor = it },
                         onShowMlmSettings = { showMlmSettingsFor = it },
                         onOpenConfigStudio = onOpenConfigStudio,
-                        onShowBpbSettings = { settings, acc -> 
+                        onShowBpbSettings = { settings, acc ->
                             bpbInitialSettings = settings
-                            showBpbSettingsFor = acc 
+                            showBpbSettingsFor = acc
                         },
                         onShowEdgSettings = { showEdgSettingsFor = it },
                         onShowGatewaySettings = { showGatewaySettingsFor = it },
@@ -570,7 +570,7 @@ fun CloudTab(
                 )
             }
         }
-        
+
         if (showBpbSettingsFor != null) {
             com.mlmvpn.scanner.ui.home.IosModalHost(modifier = Modifier.fillMaxSize()) {
                 BpbSettingsModal(
@@ -581,7 +581,7 @@ fun CloudTab(
                         showBpbSettingsFor = null
                         scope.launch {
                             notify(context.getString(R.string.cloud_updating_settings_and_fetching))
-                        
+
                             val updateResult = cloudManager.updateWorkerSettings(acc, settingsJson)
                             if (!updateResult.first) {
                                 notify(updateResult.second)
@@ -762,12 +762,12 @@ fun AccountGroupCard(
 
     var isExpanded by remember { mutableStateOf(false) }
     var showSubdomainError by remember { mutableStateOf(false) }
-    
+
     // Smart Verification States
     var isEmailVerified by remember { mutableStateOf(account.isEmailVerified) }
     var hasSubdomain by remember { mutableStateOf(account.hasSubdomain) }
     var showEmailModal by remember { mutableStateOf(false) }
-    
+
     val context = LocalContext.current
     val notify = rememberDuskSnackbarAction()
     // Which panels are installed as FULL panels on this account. A full panel keeps its own row below; a panel that is not
@@ -796,7 +796,7 @@ fun AccountGroupCard(
     var subdomainTimer by remember { mutableStateOf(0) }
     var showSubdomainCheck by remember { mutableStateOf(false) }
     var subdomainCreationError by remember { mutableStateOf("") }
-    
+
     val scope = rememberCoroutineScope()
 
     // A redeploy is the same upload the deploy button runs -- but onto the script name already
@@ -999,7 +999,7 @@ fun AccountGroupCard(
             else -> Unit
         }
     }
-    
+
     LaunchedEffect(subdomainTimer) {
         if (subdomainTimer > 0) {
             kotlinx.coroutines.delay(1000)
@@ -1186,7 +1186,7 @@ fun AccountGroupCard(
                         }
                 ) {
                     // Progress Bar Background
-                    
+
                     Row(
                         modifier = Modifier
                             .align(Alignment.CenterStart)
@@ -1215,7 +1215,7 @@ fun AccountGroupCard(
                     )
                 }
                 Box(modifier = Modifier.fillMaxWidth().padding(start = 52.dp).height(0.5.dp).background(DuskTheme.outline.copy(alpha = 0.22f)))
-                
+
                 // Get Nodes Button
                 Box(
                     modifier = Modifier
@@ -1300,7 +1300,7 @@ fun AccountGroupCard(
                         .clip(RoundedCornerShape(DuskTheme.corner0))
                         .clickable(enabled = edgDeployState != "deploying") { runEdgInstall(false) }
                 ) {
-                    
+
                     Row(
                         modifier = Modifier
                             .align(Alignment.CenterStart)
@@ -1328,9 +1328,9 @@ fun AccountGroupCard(
                         trackColor = Color.White.copy(alpha = 0.12f),
                     )
                 }
-                
+
                 Box(modifier = Modifier.fillMaxWidth().padding(start = 52.dp).height(0.5.dp).background(DuskTheme.outline.copy(alpha = 0.22f)))
-                
+
                 // EDG Get Nodes Button
                 Box(
                     modifier = Modifier
@@ -1362,9 +1362,9 @@ fun AccountGroupCard(
                         Text(if (isEdgFetching) stringResource(R.string.cloud_fetching) else stringResource(R.string.cloud_fetch_edg_node), color = color, fontSize = DuskTheme.textSize15, modifier = Modifier.weight(1f))
                     }
                 }
-                
+
                 Box(modifier = Modifier.fillMaxWidth().padding(start = 52.dp).height(0.5.dp).background(DuskTheme.outline.copy(alpha = 0.22f)))
-                
+
                 // EDG Settings Button
                 Box(
                     modifier = Modifier
@@ -1399,7 +1399,7 @@ fun AccountGroupCard(
                 }
             }
             }
-            
+
             Box(modifier = Modifier.fillMaxWidth().padding(start = 52.dp).height(0.5.dp).background(DuskTheme.outline.copy(alpha = 0.22f)))
             }
 
@@ -1444,7 +1444,7 @@ fun AccountGroupCard(
                             }
                         }
                 ) {
-                    
+
                     Row(
                         modifier = Modifier
                             .align(Alignment.CenterStart)
@@ -1472,9 +1472,9 @@ fun AccountGroupCard(
                         trackColor = Color.White.copy(alpha = 0.12f),
                     )
                 }
-                
+
                 Box(modifier = Modifier.fillMaxWidth().padding(start = 52.dp).height(0.5.dp).background(DuskTheme.outline.copy(alpha = 0.22f)))
-                
+
                 // Nahan Get Nodes Button
                 Box(
                     modifier = Modifier
@@ -1493,16 +1493,16 @@ fun AccountGroupCard(
                                             isNahanFetching = false
                                             return@launch
                                         }
-                                        
+
                                         // Fetch default admin configs (no ?sub= param)
                                         val baseUrl = account.nahanWorkerUrl?.trimEnd('/') ?: ""
                                         val apiRoute = (account.nahanApiRoute ?: "sync").trim('/')
                                         val subUrl = "$baseUrl/$apiRoute?flag=a"
                                         val configs = mutableListOf<String>()
-                                        
+
                                         var isSuccess = false
                                         var errorMessage = ""
-                                        
+
                                         val fetchedConfigs = nahanDeployer.fetchNahanNodes(account)
                                         if (fetchedConfigs.isNotEmpty()) {
                                             configs.addAll(fetchedConfigs)
@@ -1510,11 +1510,11 @@ fun AccountGroupCard(
                                         } else {
                                             errorMessage = context.getString(R.string.cloud_no_configs_received)
                                         }
-                                        
+
                                         if (!isSuccess && errorMessage.isNotEmpty()) {
                                             notify(errorMessage)
                                         }
-                                        
+
                                         if (configs.isNotEmpty()) {
                                             val engineNodes = configs.mapIndexed { index, uri ->
                                                 com.mlmvpn.scanner.models.VpnNode(
@@ -1576,7 +1576,7 @@ fun AccountGroupCard(
                 }
 
                 Box(modifier = Modifier.fillMaxWidth().padding(start = 52.dp).height(0.5.dp).background(DuskTheme.outline.copy(alpha = 0.22f)))
-                
+
                 // Nahan Settings Button
                 Box(
                     modifier = Modifier
@@ -1732,7 +1732,7 @@ fun AccountGroupCard(
 
             if (mlmDeployState != "idle") {
             Box(modifier = Modifier.fillMaxWidth().padding(start = 52.dp).height(0.5.dp).background(DuskTheme.outline.copy(alpha = 0.22f)))
-            
+
             // --- ROW 5: MLM Engine ---
             CloudPanelHeaderRow(
                 title = "Eternal VPN",
@@ -1772,7 +1772,7 @@ fun AccountGroupCard(
                             }
                         }
                 ) {
-                    
+
                     Row(
                         modifier = Modifier
                             .align(Alignment.CenterStart)
@@ -1800,7 +1800,7 @@ fun AccountGroupCard(
                         trackColor = Color.White.copy(alpha = 0.12f),
                     )
                 }
-                
+
                 Box(modifier = Modifier.fillMaxWidth().padding(start = 52.dp).height(0.5.dp).background(DuskTheme.outline.copy(alpha = 0.22f)))
 
                 // «دریافت کانفیگ xhttp»: the panel's own XHTTP config (packet-up over HTTP/2), saved only
@@ -1859,7 +1859,7 @@ fun AccountGroupCard(
                 }
 
                 Box(modifier = Modifier.fillMaxWidth().padding(start = 52.dp).height(0.5.dp).background(DuskTheme.outline.copy(alpha = 0.22f)))
-                
+
                 // MLM Users Button
                 Box(
                     modifier = Modifier
@@ -1895,7 +1895,7 @@ fun AccountGroupCard(
                 }
 
                 Box(modifier = Modifier.fillMaxWidth().padding(start = 52.dp).height(0.5.dp).background(DuskTheme.outline.copy(alpha = 0.22f)))
-                
+
                 // MLM Settings Button
                 Box(
                     modifier = Modifier
@@ -2063,7 +2063,8 @@ fun AccountGroupCard(
                         // genuinely blocked or blocked by us, and only what Cloudflare actually
                         // answered can tell those apart. Opening it re-probes, so an account that
                         // is in fact fine is unlocked by the same tap.
-                        TextButton(onClick = onTroubleshoot) {
+                        TextButton( // dusk-ok: transparent text action intentionally inherits Soft Dusk primary; nested label may set its own token
+                            onClick = onTroubleshoot) {
                             Text(
                                 stringResource(R.string.cf_fix_open),
                                 color = DuskTheme.muted,

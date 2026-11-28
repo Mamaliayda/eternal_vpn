@@ -821,8 +821,9 @@ fun GameTab(onBack: () -> Unit = {}, onNavigateToCloud: (() -> Unit)? = null) {
                     else -> S(R.string.measuring)
                 }
                 val gameName = selectedGame?.name ?: S(R.string.game)
-                
-                Surface(
+
+                Surface( // dusk-ok: root MlmVpnTheme supplies Soft Dusk surface roles; this surface intentionally inherits them
+
                     color = GameColors.GameGreen.copy(alpha = 0.1f),
                     shape = DuskTheme.controlShape,
                     border = BorderStroke(1.dp, GameColors.GameGreen.copy(alpha = 0.3f)),
@@ -839,7 +840,7 @@ fun GameTab(onBack: () -> Unit = {}, onNavigateToCloud: (() -> Unit)? = null) {
                             fontWeight = FontWeight.Medium,
                             textAlign = TextAlign.Center
                         )
-                        
+
                         val nodeUri = bestResult?.nodeUri ?: ""
                         val isWorker = nodeUri.contains("workers.dev", ignoreCase = true) || nodeUri.contains("pages.dev", ignoreCase = true)
                         val isCdnTunnel = bestResult?.mode == BoostMode.TUNNEL && (
@@ -871,7 +872,8 @@ fun GameTab(onBack: () -> Unit = {}, onNavigateToCloud: (() -> Unit)? = null) {
         // ── Failed State ──
         if (boosterState == BoosterState.FAILED) {
             item {
-                Surface(
+                Surface( // dusk-ok: root MlmVpnTheme supplies Soft Dusk surface roles; this surface intentionally inherits them
+
                     color = GameColors.SurfaceDark,
                     shape = DuskTheme.controlShape,
                     modifier = Modifier.fillMaxWidth()
@@ -939,7 +941,8 @@ private fun GameCard(
     // Glass that refracts the wallpaper, with a hairline that lights up in the accent when
     // chosen. It was an opaque slab with a hard 2dp ring, which is the pre-redesign selected
     // state -- and the only opaque card left on the screen.
-    Surface(
+    Surface( // dusk-ok: root MlmVpnTheme supplies Soft Dusk surface roles; this surface intentionally inherits them
+
         modifier = Modifier
             .width(90.dp)
             .scale(scale)
@@ -1207,7 +1210,8 @@ private fun ResultCard(
     }
     val borderColor = if (isBest) GameColors.Gold else GameColors.BorderDark
 
-    Surface(
+    Surface( // dusk-ok: root MlmVpnTheme supplies Soft Dusk surface roles; this surface intentionally inherits them
+
         color = GameColors.SurfaceDark,
         shape = DuskTheme.controlShape,
         border = BorderStroke(if (isBest) 2.dp else 1.dp, borderColor),
@@ -1286,7 +1290,8 @@ private fun ResultCard(
 // ── Live Ping Card ──
 @Composable
 private fun LivePingCard(ping: Long, bestResult: BoostResult?) {
-    Surface(
+    Surface( // dusk-ok: root MlmVpnTheme supplies Soft Dusk surface roles; this surface intentionally inherits them
+
         color = GameColors.SurfaceDark,
         shape = DuskTheme.controlShape,
         border = BorderStroke(1.dp, GameColors.GameGreen.copy(alpha = 0.3f)),

@@ -573,7 +573,8 @@ internal fun MeasureRow(shelf: Shelf, count: Int, m: NpvEngine.Measure, onMeasur
                     tr("در حال سنجش… ${fa(m.done)} از ${fa(m.total)} · ${fa(m.working)} سالم", "Measuring… ${m.done} of ${m.total} · ${m.working} working"),
                     color = DuskTheme.onSurface, fontSize = DuskTheme.textSize15, modifier = Modifier.weight(1f),
                 )
-                TextButton(onClick = { NpvEngine.stopMeasure() }) { Text(tr("توقف", "Stop"), color = DuskTheme.accent) }
+                TextButton( // dusk-ok: transparent text action intentionally inherits Soft Dusk primary; nested label may set its own token
+                    onClick = { NpvEngine.stopMeasure() }) { Text(tr("توقف", "Stop"), color = DuskTheme.accent) }
             }
             LinearProgressIndicator(
                 progress = if (m.total > 0) m.done.toFloat() / m.total else 0f, color = DuskTheme.success, trackColor = Color.White.copy(alpha = 0.15f),

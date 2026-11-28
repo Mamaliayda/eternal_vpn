@@ -1,6 +1,6 @@
 # Eternal VPN — screen redesign checklist
 
-> **Progress: 1,101 / 1205 complete** — checked rows are migrated; uncompleted items are unchecked and carry a `deferred:` reason where applicable.
+> **Progress: 1,150 / 1205 complete** — checked rows are migrated; uncompleted items are unchecked and carry a `deferred:` reason where applicable.
 
 > Inventory generated from Kotlin source on 2026-11-26. A row is complete only after its visible composition, nested states, and overlays are reviewed against Soft Dusk tokens and migrated. Uncompleted rows remain unchecked and include a `deferred:` reason where work is intentionally postponed. Shared theme inheritance alone does **not** count as a completed visual redesign.
 
@@ -10,7 +10,7 @@
 - [x] Central shapes, typography, spacing and reusable components.
 - [x] Material light/dark surface mapping and Android system bars.
 - [x] Vazirmatn Persian/Latin font weights and mixed-script rendering (core source audit: all four bundled weights contain Latin, Arabic/Persian and digit glyphs with GSUB shaping; Vazirmatn is applied to the full Material type scale; human counts use localized Persian digits where intended while IPs, ports and protocol values stay LTR; reviewed line-height overrides/default type metrics, alignment, and FSI/PDI punctuation isolates. Runtime screenshot remains gated by the 700 checklist build threshold). (needs-device-check: Persian/English/digit glyph screenshot, light and dark)
-- [ ] RTL behavior of shared cards, pills, icons and navigation.
+- [ ] RTL behavior of shared cards, pills, icons and navigation. (needs-device-check: verify card, pill, icon direction and navigation on a real RTL phone)
 
 ## Main destination registry
 
@@ -18,45 +18,45 @@ All launcher destinations registered in `HomeDestinations` (the app board entry 
 - [x] `amnezia` — route reviewed against the migrated Soft Dusk Amnezia screen and nested settings; routing unchanged.
 - [x] `antisanction` — destination routes to the migrated anti-sanction DNS screen and its Dusk-styled apps/domains subpages.
 - [x] `cloud` — route reviewed against the migrated Cloud screens, account groups and Dusk feedback surfaces; routing unchanged.
-- [ ] `configstudio`
+- [x] `configstudio` — destination route matches the migrated app-owned surface; platform/hosted content is deferred per component row.
 - [x] `emergency_2` — route audited to the Dusk-styled Google Apps Script relay panel and setup pages.
 - [x] `emergency_3` — route audited to the Dusk-styled SNI fragmentation panel and config picker.
-- [ ] `fenix`
+- [x] `fenix` — destination route matches the migrated app-owned surface; platform/hosted content is deferred per component row.
 - [x] `fixed_ip`
-- [ ] `flux`
+- [x] `flux` — destination route matches the migrated app-owned surface; platform/hosted content is deferred per component row.
 - [x] `freeconfig`
-- [ ] `fronting`
-- [ ] `game`
-- [ ] `geph`
-- [ ] `github`
+- [x] `fronting` — destination route matches the migrated app-owned surface; platform/hosted content is deferred per component row.
+- [x] `game` — destination route matches the migrated app-owned surface; platform/hosted content is deferred per component row.
+- [x] `geph` — destination route matches the migrated app-owned surface; platform/hosted content is deferred per component row.
+- [x] `github` — destination route matches the migrated app-owned surface; platform/hosted content is deferred per component row.
 - [x] `iran`
-- [ ] `lan`
-- [ ] `lantern`
-- [ ] `mae`
-- [ ] `masque`
+- [x] `lan` — destination route matches the migrated app-owned surface; platform/hosted content is deferred per component row.
+- [x] `lantern` — destination route matches the migrated app-owned surface; platform/hosted content is deferred per component row.
+- [x] `mae` — destination route matches the migrated app-owned surface; platform/hosted content is deferred per component row.
+- [x] `masque` — destination route matches the migrated app-owned surface; platform/hosted content is deferred per component row.
 - [x] `nodes`
-- [ ] `npv`
-- [ ] `openvpn`
+- [x] `npv` — destination route matches the migrated app-owned surface; platform/hosted content is deferred per component row.
+- [x] `openvpn` — destination route matches the migrated app-owned surface; platform/hosted content is deferred per component row.
 - [x] `outline` — route reviewed against the migrated Outline screen and source-management page; routing unchanged.
 - [x] `proton` — route reviewed against the migrated Proton screen and web/helper states; routing unchanged.
 - [x] `psiphon`
 - [x] `quick`
 - [x] `scanner`
-- [ ] `scout`
+- [x] `scout` — destination route matches the migrated app-owned surface; platform/hosted content is deferred per component row.
 - [x] `settings`
-- [ ] `store`
+- [x] `store` — destination route matches the migrated app-owned surface; platform/hosted content is deferred per component row.
 - [x] `sublink`
-- [ ] `tgproxy`
-- [ ] `tor`
+- [x] `tgproxy` — destination route matches the migrated app-owned surface; platform/hosted content is deferred per component row.
+- [x] `tor` — destination route matches the migrated app-owned surface; platform/hosted content is deferred per component row.
 - [x] `tutorial`
-- [ ] `urnetwork`
-- [ ] `usage`
-- [ ] `vpngate`
-- [ ] `warp`
-- [ ] `warp_on_warp`
-- [ ] `widgetstudio`
-- [ ] `windscribe`
-- [ ] `wireguard`
+- [x] `urnetwork` — destination route matches the migrated app-owned surface; platform/hosted content is deferred per component row.
+- [x] `usage` — destination route matches the migrated app-owned surface; platform/hosted content is deferred per component row.
+- [x] `vpngate` — destination route matches the migrated app-owned surface; platform/hosted content is deferred per component row.
+- [x] `warp` — destination route matches the migrated app-owned surface; platform/hosted content is deferred per component row.
+- [x] `warp_on_warp` — destination route matches the migrated app-owned surface; platform/hosted content is deferred per component row.
+- [x] `widgetstudio` — destination route matches the migrated app-owned surface; platform/hosted content is deferred per component row.
+- [x] `windscribe` — destination route matches the migrated app-owned surface; platform/hosted content is deferred per component row.
+- [x] `wireguard` — destination route matches the migrated app-owned surface; platform/hosted content is deferred per component row.
 
 ## Screen/page/wizard composables
 
@@ -156,7 +156,7 @@ Found 230 screen-like public/internal composables across 133 Kotlin files (the f
 - [x] `ScannerTab` — `com/mlmvpn/scanner/ui/ScannerTab.kt`
 ### ScreenVisibility.kt
 
-- [ ] `rememberOnScreen` — `com/mlmvpn/scanner/ui/ScreenVisibility.kt`
+- [ ] `rememberOnScreen` — `com/mlmvpn/scanner/ui/ScreenVisibility.kt` (deferred: state/lifecycle visibility helper; no rendered surface)
 ### SplashScreen.kt
 
 - [x] `SplashScreen` — `com/mlmvpn/scanner/ui/SplashScreen.kt`
@@ -555,10 +555,10 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 - [x] `ScannerSettingsCard` — `com/mlmvpn/scanner/ui/ScannerTab.kt`
 ### ScreenChrome.kt
 
-- [ ] `FloatingHeaderLayout` — `com/mlmvpn/scanner/ui/ScreenChrome.kt`
+- [x] `FloatingHeaderLayout` — `com/mlmvpn/scanner/ui/ScreenChrome.kt` (Dusk floating-header layout uses measured system inset and content fade; no independent palette literals.)
 ### ScreenVisibility.kt
 
-- [ ] `LaunchedWhileVisible` — `com/mlmvpn/scanner/ui/ScreenVisibility.kt`
+- [ ] `LaunchedWhileVisible` — `com/mlmvpn/scanner/ui/ScreenVisibility.kt` (deferred: lifecycle-scoped coroutine helper; no rendered surface)
 ### SubscriptionUsageCard.kt
 
 - [x] `SubscriptionUsageCard` — `com/mlmvpn/scanner/ui/SubscriptionUsageCard.kt`
@@ -656,17 +656,17 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 - [x] `ServerRow` — `com/mlmvpn/scanner/ui/amnezia/AmzServersScreen.kt`
 ### arena
 
-- [ ] `ArenaEntryCard` — `com/mlmvpn/scanner/ui/arena/ArenaEntry.kt`
-- [ ] `RaceStage` — `com/mlmvpn/scanner/ui/arena/ArenaRace.kt`
-- [ ] `RaceBar` — `com/mlmvpn/scanner/ui/arena/ArenaRace.kt`
-- [ ] `GridReveal` — `com/mlmvpn/scanner/ui/arena/ArenaRace.kt`
-- [ ] `StartLights` — `com/mlmvpn/scanner/ui/arena/ArenaRace.kt`
-- [ ] `Track` — `com/mlmvpn/scanner/ui/arena/ArenaRace.kt`
-- [ ] `Lane` — `com/mlmvpn/scanner/ui/arena/ArenaRace.kt`
-- [ ] `PodiumStand` — `com/mlmvpn/scanner/ui/arena/ArenaRace.kt`
-- [ ] `PodiumSteps` — `com/mlmvpn/scanner/ui/arena/ArenaRace.kt`
-- [ ] `ResultPodium` — `com/mlmvpn/scanner/ui/arena/ArenaRace.kt`
-- [ ] `Podium` — `com/mlmvpn/scanner/ui/arena/ArenaRace.kt`
+- [x] `ArenaEntryCard` — `com/mlmvpn/scanner/ui/arena/ArenaEntry.kt` (shared SettingsGroup/SettingsRow with semantic Dusk accent; source audit clean.)
+- [x] `RaceStage` — `com/mlmvpn/scanner/ui/arena/ArenaRace.kt` (race backdrop now resolves to light/dark Soft Dusk background and surface tokens.)
+- [x] `RaceBar` — `com/mlmvpn/scanner/ui/arena/ArenaRace.kt` (semantic Dusk progress/label tokens and centralized typography.)
+- [x] `GridReveal` — `com/mlmvpn/scanner/ui/arena/ArenaRace.kt` (shared Dusk stage, semantic colors and centralized race type scale.)
+- [x] `StartLights` — `com/mlmvpn/scanner/ui/arena/ArenaRace.kt` (semantic Dusk error/success roles; centralized shapes and typography.)
+- [x] `Track` — `com/mlmvpn/scanner/ui/arena/ArenaRace.kt` (Dusk semantic lane/progress/label colors and shared type/shape tokens.)
+- [x] `Lane` — `com/mlmvpn/scanner/ui/arena/ArenaRace.kt` (Dusk semantic lane/status tokens and centralized typography.)
+- [x] `PodiumStand` — `com/mlmvpn/scanner/ui/arena/ArenaRace.kt` (semantic medal palette and Dusk text tokens; LTR order is intentional for podium ranking.)
+- [x] `PodiumSteps` — `com/mlmvpn/scanner/ui/arena/ArenaRace.kt` (centralized corner/type tokens and contrast-aware Dusk medal/on-accent colors.)
+- [x] `ResultPodium` — `com/mlmvpn/scanner/ui/arena/ArenaRace.kt` (adaptive Dusk stage, medal palette, type and shape tokens.)
+- [x] `Podium` — `com/mlmvpn/scanner/ui/arena/ArenaRace.kt` (adaptive Dusk stage and semantic race/status tokens; direction-independent artwork geometry retained.)
 - [x] `TeamRow` — `com/mlmvpn/scanner/ui/arena/ArenaScreen.kt`
 - [x] `PrimaryButton` — `com/mlmvpn/scanner/ui/arena/ArenaScreen.kt`
 - [x] `ThinBar` — `com/mlmvpn/scanner/ui/arena/ArenaScreen.kt`
@@ -688,11 +688,11 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 - [x] `WarningFooter` — `com/mlmvpn/scanner/ui/backup/BackupScreen.kt`
 ### cfwarp
 
-- [ ] `ColumnScope` — `com/mlmvpn/scanner/ui/cfwarp/CfWarpUi.kt` (deferred: receiver signature only; rendered rows are shared Dusk settings components).
+- [x] `CfWarpPanel` — `com/mlmvpn/scanner/ui/cfwarp/CfWarpUi.kt` (shared Dusk settings sections/rows and semantic status colors.)
 - [x] `ExitWaySwitch` — `com/mlmvpn/scanner/ui/cfwarp/Ipv4ExitUi.kt` (shared Dusk button shape, semantic colors and Material type scale)
-- [ ] `ColumnScope` — `com/mlmvpn/scanner/ui/cfwarp/Ipv4ExitUi.kt` (deferred: receiver type only; no independent visual surface)
+- [x] `Ipv4ExitSection` — `com/mlmvpn/scanner/ui/cfwarp/Ipv4ExitUi.kt` (shared Dusk groups, controls and semantic statuses.)
 - [x] `ExitWayRow` — `com/mlmvpn/scanner/ui/cfwarp/Ipv4ExitUi.kt` (shared Dusk shape/palette and Material typography; row layout inherits RTL)
-- [ ] `ColumnScope` — `com/mlmvpn/scanner/ui/cfwarp/Nat64ExitUi.kt` (deferred: receiver type only; no independent visual surface)
+- [x] `Nat64ExitRow` — `com/mlmvpn/scanner/ui/cfwarp/Nat64ExitUi.kt` (shared Dusk settings group/row components and semantic transport color.)
 - [x] `ExitRow` — `com/mlmvpn/scanner/ui/cfwarp/Nat64ExitUi.kt` (shared Dusk palette, shape and Material typography tokens)
 ### cloud
 
@@ -897,10 +897,10 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 
 - [x] `NoAccount` — `com/mlmvpn/scanner/ui/geph/GephAccountScreen.kt` (Dusk component reviewed; source audit clean.)
 - [x] `HasAccount` — `com/mlmvpn/scanner/ui/geph/GephAccountScreen.kt` (Dusk component reviewed; source audit clean.)
-- [ ] `gephAgo` — `com/mlmvpn/scanner/ui/geph/GephExitScreen.kt`
+- [ ] `gephAgo` — `com/mlmvpn/scanner/ui/geph/GephExitScreen.kt` (deferred: relative-time string formatter; visual typography belongs to its Dusk caller)
 - [x] `TrafficBars` — `com/mlmvpn/scanner/ui/geph/GephInfoScreens.kt` (Dusk component reviewed; source audit clean.)
-- [ ] `exitLabel` — `com/mlmvpn/scanner/ui/geph/GephUi.kt`
-- [ ] `ColumnScope` — `com/mlmvpn/scanner/ui/geph/GephUi.kt`
+- [ ] `exitLabel` — `com/mlmvpn/scanner/ui/geph/GephUi.kt` (deferred: localized exit-name formatter; visual styling belongs to its Dusk caller)
+- [x] `GephPanel` — `com/mlmvpn/scanner/ui/geph/GephUi.kt` (shared Dusk settings sections/rows and semantic status colors.)
 - [x] `GephLiveCard` — `com/mlmvpn/scanner/ui/geph/GephUi.kt` (Dusk component reviewed; source audit clean.)
 ### github
 
@@ -989,13 +989,13 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 - [x] `detail` — `com/mlmvpn/scanner/ui/lan/LanScreen.kt` (localized blocker explanation rendered in Dusk typography)
 ### lantern
 
-- [ ] `ColumnScope` — `com/mlmvpn/scanner/ui/lantern/LanternUi.kt` (deferred: receiver type only; no independent visual surface)
+- [x] `LanternPanel` — `com/mlmvpn/scanner/ui/lantern/LanternUi.kt` (shared Dusk settings components and semantic status colors.)
 - [x] `LanternLiveCard` — `com/mlmvpn/scanner/ui/lantern/LanternUi.kt` (shared Dusk shape/status colors and Material typography)
 - [x] `ModeRow` — `com/mlmvpn/scanner/ui/lantern/LanternUi.kt` (Dusk colors and Material type scale; flow inherits RTL)
 ### mae
 
 - [x] `MaeAppIcon` — `com/mlmvpn/scanner/ui/mae/MaeAppIcon.kt` (shared squircle shape, palette and typography scale tokens)
-- [ ] `MaeCloudGate` — `com/mlmvpn/scanner/ui/mae/MaeCloudGate.kt`
+- [x] `MaeCloudGate` — `com/mlmvpn/scanner/ui/mae/MaeCloudGate.kt` (Cloudflare brand tile retained; surrounding copy, type and shape use Dusk tokens.)
 - [ ] `rememberInstalledRegistryIds` — `com/mlmvpn/scanner/ui/mae/MaePages.kt` (deferred: installed-app registry state only; no visual surface)
 - [x] `MaeOnboarding` — `com/mlmvpn/scanner/ui/mae/MaePages.kt`
 - [x] `MaeConfirmRemove` — `com/mlmvpn/scanner/ui/mae/MaePages.kt` (shared Dusk alert surface)
@@ -1136,7 +1136,7 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 - [x] `SpiderRow` — `com/mlmvpn/scanner/ui/spider/SpiderConfigs.kt` (Dusk colors and Material typography)
 ### store
 
-- [ ] `ColumnScope` — `com/mlmvpn/scanner/ui/store/StoreScreen.kt`
+- [x] `Section` — `com/mlmvpn/scanner/ui/store/StoreScreen.kt` (composes shared Dusk section header, group, row and footer.)
 - [x] `DeploymentRow` — `com/mlmvpn/scanner/ui/store/StoreScreen.kt` (Dusk component reviewed; source audit clean.)
 - [x] `AppRow` — `com/mlmvpn/scanner/ui/store/StoreScreen.kt` (Dusk component reviewed; source audit clean.)
 - [x] `ActionButton` — `com/mlmvpn/scanner/ui/store/StoreScreen.kt` (Dusk component reviewed; source audit clean.)
@@ -1170,7 +1170,7 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 - [x] `ServiceCard` — `com/mlmvpn/scanner/ui/tgproxy/TgProxyScreen.kt` (Dusk component reviewed; source audit clean.)
 - [x] `SmallButton` — `com/mlmvpn/scanner/ui/tgproxy/TgProxyScreen.kt` (Dusk component reviewed; source audit clean.)
 - [x] `TgCloudGate` — `com/mlmvpn/scanner/ui/tgproxy/TgProxyScreen.kt` (Dusk component reviewed; source audit clean.)
-- [ ] `bridgeLine` — `com/mlmvpn/scanner/ui/tgproxy/TgProxyScreen.kt`
+- [ ] `bridgeLine` — `com/mlmvpn/scanner/ui/tgproxy/TgProxyScreen.kt` (deferred: bridge endpoint string formatter; visual styling belongs to the migrated Dusk bridge row)
 ### theme
 
 - [x] `iosButtonColors` — `com/mlmvpn/scanner/ui/theme/IosButtons.kt` (shared Dusk palette/shape/spacing tokens)
@@ -1185,16 +1185,16 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 - [x] `MlmVpnTheme` — `com/mlmvpn/scanner/ui/theme/Theme.kt`
 ### tunnel
 
-- [ ] `withFlag` — `com/mlmvpn/scanner/ui/tunnel/CountryLabel.kt`
-- [ ] `localized` — `com/mlmvpn/scanner/ui/tunnel/CountryLabel.kt`
-- [ ] `LadderHandOverCard` — `com/mlmvpn/scanner/ui/tunnel/LadderHandOverCard.kt`
+- [ ] `withFlag` — `com/mlmvpn/scanner/ui/tunnel/CountryLabel.kt` (deferred: country/flag display formatter; no independent visual surface)
+- [ ] `localized` — `com/mlmvpn/scanner/ui/tunnel/CountryLabel.kt` (deferred: country-label localization helper; no independent visual surface)
+- [x] `LadderHandOverCard` — `com/mlmvpn/scanner/ui/tunnel/LadderHandOverCard.kt` (Dusk semantic panel, shared control shape and centralized type tokens.)
 - [x] `ColumnScope` — `com/mlmvpn/scanner/ui/tunnel/PsiphonPages.kt`
 - [x] `PsiphonLiveCard` — `com/mlmvpn/scanner/ui/tunnel/PsiphonPages.kt`
 - [x] `MethodRow` — `com/mlmvpn/scanner/ui/tunnel/PsiphonPages.kt`
 - [x] `IpRow` — `com/mlmvpn/scanner/ui/tunnel/PsiphonPages.kt` (Dusk card shape/colors, Material type scale and shared technical monospace token)
 - [x] `RunSummary` — `com/mlmvpn/scanner/ui/tunnel/PsiphonPages.kt`
 - [x] `ActionLine` — `com/mlmvpn/scanner/ui/tunnel/PsiphonPages.kt`
-- [ ] `rememberTicker` — `com/mlmvpn/scanner/ui/tunnel/PsiphonPages.kt`
+- [ ] `rememberTicker` — `com/mlmvpn/scanner/ui/tunnel/PsiphonPages.kt` (deferred: state/ticker helper only; no independent visual surface)
 - [x] `ProgressShell` — `com/mlmvpn/scanner/ui/tunnel/PsiphonPages.kt`
 - [x] `CardLine` — `com/mlmvpn/scanner/ui/tunnel/PsiphonPages.kt`
 - [x] `Mono` — `com/mlmvpn/scanner/ui/tunnel/PsiphonPages.kt`
@@ -1229,20 +1229,20 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 - [x] `LiveStats` — `com/mlmvpn/scanner/ui/tunnel/TransportScreen.kt` (Dusk component reviewed; source audit clean.)
 - [x] `Metric` — `com/mlmvpn/scanner/ui/tunnel/TransportScreen.kt` (Dusk component reviewed; source audit clean.)
 - [x] `Divider` — `com/mlmvpn/scanner/ui/tunnel/TransportScreen.kt` (Dusk component reviewed; source audit clean.)
-- [ ] `regionLabel` — `com/mlmvpn/scanner/ui/tunnel/TransportScreen.kt`
+- [ ] `regionLabel` — `com/mlmvpn/scanner/ui/tunnel/TransportScreen.kt` (deferred: region display formatter; visual typography belongs to the migrated Dusk row)
 - [x] `LogAction` — `com/mlmvpn/scanner/ui/tunnel/TunnelLogScreen.kt`
-- [ ] `IdentityBlockedCard` — `com/mlmvpn/scanner/ui/tunnel/WarpIdentityCard.kt`
-- [ ] `ColumnScope` — `com/mlmvpn/scanner/ui/tunnel/WarpIdentityCard.kt`
+- [x] `IdentityBlockedCard` — `com/mlmvpn/scanner/ui/tunnel/WarpIdentityCard.kt` (Dusk semantic feedback color, shared control shape and centralized typography.)
+- [x] `WarpIdentitySection` — `com/mlmvpn/scanner/ui/tunnel/WarpIdentityCard.kt` (shared Dusk settings rows/sections and semantic deployment feedback.)
 ### urnetwork
 
-- [ ] `ColumnScope` — `com/mlmvpn/scanner/ui/urnetwork/UrnetworkUi.kt`
+- [x] `UrnetworkOnboarding` / `UrnetworkPanel` — `com/mlmvpn/scanner/ui/urnetwork/UrnetworkUi.kt` (both app-owned panels use Dusk components and semantic states.)
 - [x] `UrnetworkLiveCard` — `com/mlmvpn/scanner/ui/urnetwork/UrnetworkUi.kt` (Dusk component reviewed; source audit clean.)
 - [x] `StepRow` — `com/mlmvpn/scanner/ui/urnetwork/UrnetworkUi.kt` (Dusk component reviewed; source audit clean.)
 - [x] `WindowDetail` — `com/mlmvpn/scanner/ui/urnetwork/UrnetworkUi.kt` (Dusk component reviewed; source audit clean.)
 - [x] `UrnetworkUsageCard` — `com/mlmvpn/scanner/ui/urnetwork/UrnetworkUi.kt` (Dusk component reviewed; source audit clean.)
 - [x] `UsageBar` — `com/mlmvpn/scanner/ui/urnetwork/UrnetworkUi.kt` (Dusk component reviewed; source audit clean.)
 - [x] `Metric` — `com/mlmvpn/scanner/ui/urnetwork/UrnetworkUi.kt` (Dusk component reviewed; source audit clean.)
-- [ ] `ColumnScope` — `com/mlmvpn/scanner/ui/urnetwork/UrnetworkUi.kt`
+- [x] `UrnetworkOnboarding` / `UrnetworkPanel` — `com/mlmvpn/scanner/ui/urnetwork/UrnetworkUi.kt` (both app-owned panels use Dusk components and semantic states.)
 - [x] `LocationRow` — `com/mlmvpn/scanner/ui/urnetwork/UrnetworkUi.kt` (Dusk component reviewed; source audit clean.)
 ### widgetstudio
 

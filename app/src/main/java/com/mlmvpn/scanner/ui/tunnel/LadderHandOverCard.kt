@@ -24,7 +24,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.mlmvpn.core.warp.Ipv4Exits
 import com.mlmvpn.core.warp.Nat64Exits
 import com.mlmvpn.scanner.store.tr
@@ -48,7 +47,7 @@ internal fun LadderHandOverCard(from: Transport, to: Transport, modifier: Modifi
         modifier
             .fillMaxWidth()
             .padding(horizontal = 20.dp)
-            .clip(RoundedCornerShape(20.dp))
+            .clip(RoundedCornerShape(DuskTheme.corner20))
             .background(DuskTheme.primary.copy(alpha = 0.14f))
             .padding(16.dp),
     ) {
@@ -57,7 +56,7 @@ internal fun LadderHandOverCard(from: Transport, to: Transport, modifier: Modifi
             Spacer(Modifier.width(8.dp))
             Text(
                 tr("وصل شد با «${to.labelFa}»", "Connected with ${to.label}"),
-                color = DuskTheme.onSurface, fontSize = 16.sp, fontWeight = FontWeight.Bold,
+                color = DuskTheme.onSurface, fontSize = DuskTheme.textSize16, fontWeight = FontWeight.Bold,
             )
         }
         Spacer(Modifier.height(6.dp))
@@ -69,7 +68,7 @@ internal fun LadderHandOverCard(from: Transport, to: Transport, modifier: Modifi
                 tr("«${from.labelFa}» روی این اینترنت به‌موقع بالا نیامد؛ برنامه خودش با «${to.labelFa}» وصل کرد. هر دو از شبکهٔ وارپ کلادفلرند و دفعهٔ بعد روی همین اینترنت مستقیم «${to.labelFa}» امتحان می‌شود.",
                     "${from.label} did not come up on this internet in time, so the app connected with ${to.label}. Both are Cloudflare WARP, and next time on this internet ${to.label} is tried first.")
             },
-            color = DuskTheme.muted, fontSize = 13.sp, lineHeight = 20.sp,
+            color = DuskTheme.muted, fontSize = DuskTheme.textSize13, lineHeight = DuskTheme.textSize20,
         )
     }
 }

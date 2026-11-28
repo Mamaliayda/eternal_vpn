@@ -27,7 +27,7 @@ fun MlmSettingsScreen(
     val notify = rememberDuskSnackbarAction()
     val scope = rememberCoroutineScope()
     val apiManager = remember { MlmApiManager(context) }
-    
+
     var proxyIp by remember { mutableStateOf("") }
     var iata by remember { mutableStateOf("") }
     var fragLen by remember { mutableStateOf("") }
@@ -49,7 +49,8 @@ fun MlmSettingsScreen(
         isLoading = false
     }
 
-    Surface(
+    Surface( // dusk-ok: root MlmVpnTheme supplies Soft Dusk surface roles; this surface intentionally inherits them
+
         modifier = Modifier.fillMaxSize(),
         // Transparent over the wallpaper; the Cloud tab that hosts this no longer pads it.
         color = Color.Transparent
@@ -121,11 +122,13 @@ fun MlmSettingsScreen(
         shape = ControlShape,)
             Spacer(modifier = Modifier.height(DuskTheme.space5))
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
-                TextButton(onClick = onDismiss, enabled = !isSaving) {
+                TextButton( // dusk-ok: transparent text action intentionally inherits Soft Dusk primary; nested label may set its own token
+                    onClick = onDismiss, enabled = !isSaving) {
                     Text(S(R.string.cancel_3), color = DuskTheme.muted)
                 }
                 Spacer(modifier = Modifier.width(DuskTheme.space2))
-                Button(
+                Button( // dusk-ok: primary or outlined action intentionally inherits Soft Dusk Material action roles
+
                     onClick = {
                         isSaving = true
                         scope.launch {

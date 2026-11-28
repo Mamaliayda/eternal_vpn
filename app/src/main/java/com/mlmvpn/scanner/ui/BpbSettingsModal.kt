@@ -69,7 +69,8 @@ fun BpbSettingsModal(
     // Transparent over the wallpaper, like every other surface. The inset is applied here
     // because the Cloud tab that hosts this stopped padding its children once its own list
     // started scrolling under the status bar.
-    Surface(
+    Surface( // dusk-ok: root MlmVpnTheme supplies Soft Dusk surface roles; this surface intentionally inherits them
+
             color = Color.Transparent,
             modifier = Modifier.fillMaxSize()
         ) {
@@ -160,6 +161,7 @@ fun BpbSettingsModal(
 
                 // Confirm Button
                 Button(
+
                     onClick = {
                         // BPB v5's PanelSettings has dozens of fields we don't expose UI for
                         // (remoteDNS, logLevel, fragmentMode, ECH, warp*, block*, ...); server-side

@@ -1,10 +1,10 @@
 {
-  "checked_rows": 1101,
-  "rows_with_references": 1100,
-  "files_scanned": 213,
+  "checked_rows": 1150,
+  "rows_with_references": 1149,
+  "files_scanned": 218,
   "unresolved_references": [],
   "unresolved_findings": 0,
-  "reviewed_material_defaults": 41,
+  "reviewed_material_defaults": 38,
   "reviewed_toast_deferrals": 6,
   "finding_counts": {},
   "findings": [
@@ -44,57 +44,51 @@
       "category": "material_default_colors_review",
       "file": "app/src/main/java/com/mlmvpn/scanner/engines/edg/EdgSettingsScreen.kt",
       "line": 114,
-      "text": "Surface(",
+      "text": "Surface( // dusk-ok: root MlmVpnTheme supplies Soft Dusk surface roles; this surface intentionally inherits them",
       "checked_rows": [
         67,
         1447
-      ]
-    },
-    {
-      "category": "material_default_colors_review",
-      "file": "app/src/main/java/com/mlmvpn/scanner/engines/edg/EdgSettingsScreen.kt",
-      "line": 209,
-      "text": "Button(",
-      "checked_rows": [
-        67,
-        1447
-      ]
+      ],
+      "rationale": "root MlmVpnTheme supplies Soft Dusk surface roles; this surface intentionally inherits them"
     },
     {
       "category": "material_default_colors_review",
       "file": "app/src/main/java/com/mlmvpn/scanner/engines/mlm/MlmSettingsScreen.kt",
       "line": 52,
-      "text": "Surface(",
+      "text": "Surface( // dusk-ok: root MlmVpnTheme supplies Soft Dusk surface roles; this surface intentionally inherits them",
       "checked_rows": [
         68,
         1449
-      ]
+      ],
+      "rationale": "root MlmVpnTheme supplies Soft Dusk surface roles; this surface intentionally inherits them"
     },
     {
       "category": "material_default_colors_review",
       "file": "app/src/main/java/com/mlmvpn/scanner/engines/mlm/MlmSettingsScreen.kt",
-      "line": 124,
-      "text": "TextButton(onClick = onDismiss, enabled = !isSaving) {",
+      "line": 125,
+      "text": "TextButton( // dusk-ok: transparent text action intentionally inherits Soft Dusk primary; nested label may set its own token",
       "checked_rows": [
         68,
         1449
-      ]
+      ],
+      "rationale": "transparent text action intentionally inherits Soft Dusk primary; nested label may set its own token"
     },
     {
       "category": "material_default_colors_review",
       "file": "app/src/main/java/com/mlmvpn/scanner/engines/mlm/MlmSettingsScreen.kt",
-      "line": 128,
-      "text": "Button(",
+      "line": 130,
+      "text": "Button( // dusk-ok: primary or outlined action intentionally inherits Soft Dusk Material action roles",
       "checked_rows": [
         68,
         1449
-      ]
+      ],
+      "rationale": "primary or outlined action intentionally inherits Soft Dusk Material action roles"
     },
     {
       "category": "material_default_colors_review",
       "file": "app/src/main/java/com/mlmvpn/scanner/engines/mlm/MlmUsersScreen.kt",
       "line": 85,
-      "text": "Surface(",
+      "text": "Surface( // dusk-ok: root MlmVpnTheme supplies Soft Dusk surface roles; this surface intentionally inherits them",
       "checked_rows": [
         69,
         70,
@@ -103,13 +97,14 @@
         430,
         1295,
         1450
-      ]
+      ],
+      "rationale": "root MlmVpnTheme supplies Soft Dusk surface roles; this surface intentionally inherits them"
     },
     {
       "category": "material_default_colors_review",
       "file": "app/src/main/java/com/mlmvpn/scanner/engines/nahan/NahanSettingsScreen.kt",
       "line": 105,
-      "text": "Surface(",
+      "text": "Surface( // dusk-ok: root MlmVpnTheme supplies Soft Dusk surface roles; this surface intentionally inherits them",
       "checked_rows": [
         71,
         72,
@@ -118,22 +113,8 @@
         433,
         1296,
         1451
-      ]
-    },
-    {
-      "category": "material_default_colors_review",
-      "file": "app/src/main/java/com/mlmvpn/scanner/engines/nahan/NahanSettingsScreen.kt",
-      "line": 510,
-      "text": "Button(",
-      "checked_rows": [
-        71,
-        72,
-        431,
-        432,
-        433,
-        1296,
-        1451
-      ]
+      ],
+      "rationale": "root MlmVpnTheme supplies Soft Dusk surface roles; this surface intentionally inherits them"
     },
     {
       "category": "reviewed_toast_deferral",
@@ -150,29 +131,19 @@
       "category": "material_default_colors_review",
       "file": "app/src/main/java/com/mlmvpn/scanner/ui/BpbSettingsModal.kt",
       "line": 72,
-      "text": "Surface(",
+      "text": "Surface( // dusk-ok: root MlmVpnTheme supplies Soft Dusk surface roles; this surface intentionally inherits them",
       "checked_rows": [
         90,
         450,
         451
-      ]
-    },
-    {
-      "category": "material_default_colors_review",
-      "file": "app/src/main/java/com/mlmvpn/scanner/ui/BpbSettingsModal.kt",
-      "line": 162,
-      "text": "Button(",
-      "checked_rows": [
-        90,
-        450,
-        451
-      ]
+      ],
+      "rationale": "root MlmVpnTheme supplies Soft Dusk surface roles; this surface intentionally inherits them"
     },
     {
       "category": "material_default_colors_review",
       "file": "app/src/main/java/com/mlmvpn/scanner/ui/CloudTab.kt",
       "line": 2066,
-      "text": "TextButton(onClick = onTroubleshoot) {",
+      "text": "TextButton( // dusk-ok: transparent text action intentionally inherits Soft Dusk primary; nested label may set its own token",
       "checked_rows": [
         100,
         466,
@@ -181,13 +152,14 @@
         1299,
         1401,
         1456
-      ]
+      ],
+      "rationale": "transparent text action intentionally inherits Soft Dusk primary; nested label may set its own token"
     },
     {
       "category": "material_default_colors_review",
       "file": "app/src/main/java/com/mlmvpn/scanner/ui/GameTab.kt",
       "line": 825,
-      "text": "Surface(",
+      "text": "Surface( // dusk-ok: root MlmVpnTheme supplies Soft Dusk surface roles; this surface intentionally inherits them",
       "checked_rows": [
         119,
         120,
@@ -202,13 +174,14 @@
         495,
         1301,
         1459
-      ]
+      ],
+      "rationale": "root MlmVpnTheme supplies Soft Dusk surface roles; this surface intentionally inherits them"
     },
     {
       "category": "material_default_colors_review",
       "file": "app/src/main/java/com/mlmvpn/scanner/ui/GameTab.kt",
-      "line": 874,
-      "text": "Surface(",
+      "line": 875,
+      "text": "Surface( // dusk-ok: root MlmVpnTheme supplies Soft Dusk surface roles; this surface intentionally inherits them",
       "checked_rows": [
         119,
         120,
@@ -223,13 +196,14 @@
         495,
         1301,
         1459
-      ]
+      ],
+      "rationale": "root MlmVpnTheme supplies Soft Dusk surface roles; this surface intentionally inherits them"
     },
     {
       "category": "material_default_colors_review",
       "file": "app/src/main/java/com/mlmvpn/scanner/ui/GameTab.kt",
-      "line": 942,
-      "text": "Surface(",
+      "line": 944,
+      "text": "Surface( // dusk-ok: root MlmVpnTheme supplies Soft Dusk surface roles; this surface intentionally inherits them",
       "checked_rows": [
         119,
         120,
@@ -244,13 +218,14 @@
         495,
         1301,
         1459
-      ]
+      ],
+      "rationale": "root MlmVpnTheme supplies Soft Dusk surface roles; this surface intentionally inherits them"
     },
     {
       "category": "material_default_colors_review",
       "file": "app/src/main/java/com/mlmvpn/scanner/ui/GameTab.kt",
-      "line": 1210,
-      "text": "Surface(",
+      "line": 1213,
+      "text": "Surface( // dusk-ok: root MlmVpnTheme supplies Soft Dusk surface roles; this surface intentionally inherits them",
       "checked_rows": [
         119,
         120,
@@ -265,13 +240,14 @@
         495,
         1301,
         1459
-      ]
+      ],
+      "rationale": "root MlmVpnTheme supplies Soft Dusk surface roles; this surface intentionally inherits them"
     },
     {
       "category": "material_default_colors_review",
       "file": "app/src/main/java/com/mlmvpn/scanner/ui/GameTab.kt",
-      "line": 1289,
-      "text": "Surface(",
+      "line": 1293,
+      "text": "Surface( // dusk-ok: root MlmVpnTheme supplies Soft Dusk surface roles; this surface intentionally inherits them",
       "checked_rows": [
         119,
         120,
@@ -286,13 +262,14 @@
         495,
         1301,
         1459
-      ]
+      ],
+      "rationale": "root MlmVpnTheme supplies Soft Dusk surface roles; this surface intentionally inherits them"
     },
     {
       "category": "material_default_colors_review",
       "file": "app/src/main/java/com/mlmvpn/scanner/ui/ScannerTab.kt",
       "line": 1118,
-      "text": "TextButton(onClick = { com.mlmvpn.scanner.data.ScannerManager.reset() }, modifier = Modifier.padding(top = 8.dp)) {",
+      "text": "TextButton( // dusk-ok: transparent text action intentionally inherits Soft Dusk primary; nested label may set its own token",
       "checked_rows": [
         156,
         551,
@@ -302,13 +279,14 @@
         555,
         1304,
         1463
-      ]
+      ],
+      "rationale": "transparent text action intentionally inherits Soft Dusk primary; nested label may set its own token"
     },
     {
       "category": "material_default_colors_review",
       "file": "app/src/main/java/com/mlmvpn/scanner/ui/ScannerTab.kt",
-      "line": 1235,
-      "text": "Button(",
+      "line": 1923,
+      "text": "is ScanPreflight.Verdict.OwnVpn -> TextButton( // dusk-ok: transparent text action intentionally inherits Soft Dusk primary; nested label may set its own token",
       "checked_rows": [
         156,
         551,
@@ -318,13 +296,14 @@
         555,
         1304,
         1463
-      ]
+      ],
+      "rationale": "transparent text action intentionally inherits Soft Dusk primary; nested label may set its own token"
     },
     {
       "category": "material_default_colors_review",
       "file": "app/src/main/java/com/mlmvpn/scanner/ui/ScannerTab.kt",
-      "line": 1289,
-      "text": "Button(",
+      "line": 1933,
+      "text": "is ScanPreflight.Verdict.ForeignVpn -> TextButton( // dusk-ok: transparent text action intentionally inherits Soft Dusk primary; nested label may set its own token",
       "checked_rows": [
         156,
         551,
@@ -334,13 +313,14 @@
         555,
         1304,
         1463
-      ]
+      ],
+      "rationale": "transparent text action intentionally inherits Soft Dusk primary; nested label may set its own token"
     },
     {
       "category": "material_default_colors_review",
       "file": "app/src/main/java/com/mlmvpn/scanner/ui/ScannerTab.kt",
-      "line": 1595,
-      "text": "Button(",
+      "line": 1942,
+      "text": "else -> TextButton( // dusk-ok: transparent text action intentionally inherits Soft Dusk primary; nested label may set its own token",
       "checked_rows": [
         156,
         551,
@@ -350,13 +330,14 @@
         555,
         1304,
         1463
-      ]
+      ],
+      "rationale": "transparent text action intentionally inherits Soft Dusk primary; nested label may set its own token"
     },
     {
       "category": "material_default_colors_review",
       "file": "app/src/main/java/com/mlmvpn/scanner/ui/ScannerTab.kt",
-      "line": 1919,
-      "text": "is ScanPreflight.Verdict.OwnVpn -> TextButton(onClick = {",
+      "line": 2044,
+      "text": "TextButton( // dusk-ok: transparent dialog dismiss action; child label explicitly uses DuskTheme.muted",
       "checked_rows": [
         156,
         551,
@@ -366,13 +347,14 @@
         555,
         1304,
         1463
-      ]
+      ],
+      "rationale": "transparent dialog dismiss action; child label explicitly uses DuskTheme.muted"
     },
     {
       "category": "material_default_colors_review",
       "file": "app/src/main/java/com/mlmvpn/scanner/ui/ScannerTab.kt",
-      "line": 1928,
-      "text": "is ScanPreflight.Verdict.ForeignVpn -> TextButton(onClick = {",
+      "line": 2076,
+      "text": "TextButton( // dusk-ok: transparent dialog dismiss action; child label explicitly uses DuskTheme.muted",
       "checked_rows": [
         156,
         551,
@@ -382,13 +364,14 @@
         555,
         1304,
         1463
-      ]
+      ],
+      "rationale": "transparent dialog dismiss action; child label explicitly uses DuskTheme.muted"
     },
     {
       "category": "material_default_colors_review",
       "file": "app/src/main/java/com/mlmvpn/scanner/ui/ScannerTab.kt",
-      "line": 1936,
-      "text": "else -> TextButton(onClick = { preflight = null }) {",
+      "line": 2112,
+      "text": "TextButton( // dusk-ok: transparent dialog dismiss action; child label explicitly uses DuskTheme.muted",
       "checked_rows": [
         156,
         551,
@@ -398,13 +381,14 @@
         555,
         1304,
         1463
-      ]
+      ],
+      "rationale": "transparent dialog dismiss action; child label explicitly uses DuskTheme.muted"
     },
     {
       "category": "material_default_colors_review",
       "file": "app/src/main/java/com/mlmvpn/scanner/ui/ScannerTab.kt",
-      "line": 2136,
-      "text": "TextButton(onClick = { com.mlmvpn.scanner.data.ScannerManager.dismissHealthTestCleanup() }) {",
+      "line": 2149,
+      "text": "TextButton( // dusk-ok: transparent text action intentionally inherits Soft Dusk primary; nested label may set its own token",
       "checked_rows": [
         156,
         551,
@@ -414,13 +398,14 @@
         555,
         1304,
         1463
-      ]
+      ],
+      "rationale": "transparent text action intentionally inherits Soft Dusk primary; nested label may set its own token"
     },
     {
       "category": "material_default_colors_review",
       "file": "app/src/main/java/com/mlmvpn/scanner/ui/aether/AetherScreen.kt",
       "line": 882,
-      "text": "Switch(checked = retry, onCheckedChange = onRetry)",
+      "text": "Switch( // dusk-ok: checked and unchecked states intentionally use the Soft Dusk Material semantic roles",
       "checked_rows": [
         185,
         186,
@@ -453,13 +438,14 @@
         628,
         1306,
         1464
-      ]
+      ],
+      "rationale": "checked and unchecked states intentionally use the Soft Dusk Material semantic roles"
     },
     {
       "category": "material_default_colors_review",
       "file": "app/src/main/java/com/mlmvpn/scanner/ui/aether/AetherScreen.kt",
-      "line": 968,
-      "text": "Switch(checked = quick, onCheckedChange = onQuick)",
+      "line": 969,
+      "text": "Switch( // dusk-ok: checked and unchecked states intentionally use the Soft Dusk Material semantic roles",
       "checked_rows": [
         185,
         186,
@@ -492,13 +478,14 @@
         628,
         1306,
         1464
-      ]
+      ],
+      "rationale": "checked and unchecked states intentionally use the Soft Dusk Material semantic roles"
     },
     {
       "category": "material_default_colors_review",
       "file": "app/src/main/java/com/mlmvpn/scanner/ui/aether/AetherScreen.kt",
-      "line": 976,
-      "text": "Switch(checked = noDataCheck, onCheckedChange = onNoDataCheck)",
+      "line": 978,
+      "text": "Switch( // dusk-ok: checked and unchecked states intentionally use the Soft Dusk Material semantic roles",
       "checked_rows": [
         185,
         186,
@@ -531,13 +518,14 @@
         628,
         1306,
         1464
-      ]
+      ],
+      "rationale": "checked and unchecked states intentionally use the Soft Dusk Material semantic roles"
     },
     {
       "category": "material_default_colors_review",
       "file": "app/src/main/java/com/mlmvpn/scanner/ui/aether/AetherScreen.kt",
-      "line": 990,
-      "text": "Switch(checked = verbose, onCheckedChange = onVerbose)",
+      "line": 993,
+      "text": "Switch( // dusk-ok: checked and unchecked states intentionally use the Soft Dusk Material semantic roles",
       "checked_rows": [
         185,
         186,
@@ -570,13 +558,14 @@
         628,
         1306,
         1464
-      ]
+      ],
+      "rationale": "checked and unchecked states intentionally use the Soft Dusk Material semantic roles"
     },
     {
       "category": "material_default_colors_review",
       "file": "app/src/main/java/com/mlmvpn/scanner/ui/aether/AetherScreen.kt",
-      "line": 1020,
-      "text": "Switch(checked = quick, onCheckedChange = onQuick)",
+      "line": 1024,
+      "text": "Switch( // dusk-ok: checked and unchecked states intentionally use the Soft Dusk Material semantic roles",
       "checked_rows": [
         185,
         186,
@@ -609,13 +598,14 @@
         628,
         1306,
         1464
-      ]
+      ],
+      "rationale": "checked and unchecked states intentionally use the Soft Dusk Material semantic roles"
     },
     {
       "category": "material_default_colors_review",
       "file": "app/src/main/java/com/mlmvpn/scanner/ui/aether/AetherScreen.kt",
-      "line": 1028,
-      "text": "Switch(checked = noDataCheck, onCheckedChange = onNoDataCheck)",
+      "line": 1033,
+      "text": "Switch( // dusk-ok: checked and unchecked states intentionally use the Soft Dusk Material semantic roles",
       "checked_rows": [
         185,
         186,
@@ -648,13 +638,14 @@
         628,
         1306,
         1464
-      ]
+      ],
+      "rationale": "checked and unchecked states intentionally use the Soft Dusk Material semantic roles"
     },
     {
       "category": "material_default_colors_review",
       "file": "app/src/main/java/com/mlmvpn/scanner/ui/aether/AetherScreen.kt",
-      "line": 1042,
-      "text": "Switch(checked = verbose, onCheckedChange = onVerbose)",
+      "line": 1048,
+      "text": "Switch( // dusk-ok: checked and unchecked states intentionally use the Soft Dusk Material semantic roles",
       "checked_rows": [
         185,
         186,
@@ -687,33 +678,36 @@
         628,
         1306,
         1464
-      ]
+      ],
+      "rationale": "checked and unchecked states intentionally use the Soft Dusk Material semantic roles"
     },
     {
       "category": "material_default_colors_review",
       "file": "app/src/main/java/com/mlmvpn/scanner/ui/mitm/MitmSetupCard.kt",
       "line": 559,
-      "text": "OutlinedButton(",
+      "text": "OutlinedButton( // dusk-ok: primary or outlined action intentionally inherits Soft Dusk Material action roles",
       "checked_rows": [
         1017,
         1018,
         1019,
         1020,
         1021
-      ]
+      ],
+      "rationale": "primary or outlined action intentionally inherits Soft Dusk Material action roles"
     },
     {
       "category": "material_default_colors_review",
       "file": "app/src/main/java/com/mlmvpn/scanner/ui/mitm/MitmSetupCard.kt",
-      "line": 583,
-      "text": "OutlinedButton(",
+      "line": 584,
+      "text": "OutlinedButton( // dusk-ok: primary or outlined action intentionally inherits Soft Dusk Material action roles",
       "checked_rows": [
         1017,
         1018,
         1019,
         1020,
         1021
-      ]
+      ],
+      "rationale": "primary or outlined action intentionally inherits Soft Dusk Material action roles"
     },
     {
       "category": "reviewed_toast_deferral",
@@ -731,7 +725,7 @@
       "category": "material_default_colors_review",
       "file": "app/src/main/java/com/mlmvpn/scanner/ui/npv/NpvScreen.kt",
       "line": 576,
-      "text": "TextButton(onClick = { NpvEngine.stopMeasure() }) { Text(tr(\"توقف\", \"Stop\"), color = DuskTheme.accent) }",
+      "text": "TextButton( // dusk-ok: transparent text action intentionally inherits Soft Dusk primary; nested label may set its own token",
       "checked_rows": [
         315,
         316,
@@ -744,13 +738,14 @@
         1030,
         1314,
         1487
-      ]
+      ],
+      "rationale": "transparent text action intentionally inherits Soft Dusk primary; nested label may set its own token"
     },
     {
       "category": "material_default_colors_review",
       "file": "app/src/main/java/com/mlmvpn/scanner/ui/npv/NpvSourcesPage.kt",
       "line": 410,
-      "text": "TextButton(onClick = { NpvEngine.cancelRefresh() }) { Text(tr(\"توقف\", \"Stop\"), color = DuskTheme.accent) }",
+      "text": "TextButton( // dusk-ok: transparent text action intentionally inherits Soft Dusk primary; nested label may set its own token",
       "checked_rows": [
         317,
         1031,
@@ -761,13 +756,14 @@
         1036,
         1315,
         1488
-      ]
+      ],
+      "rationale": "transparent text action intentionally inherits Soft Dusk primary; nested label may set its own token"
     },
     {
       "category": "material_default_colors_review",
       "file": "app/src/main/java/com/mlmvpn/scanner/ui/npv/NpvSourcesPage.kt",
-      "line": 476,
-      "text": "TextButton(onClick = { if (onAdd(text)) text = \"\" }, enabled = text.isNotBlank()) { Text(tr(\"افزودن\", \"Add\")) }",
+      "line": 477,
+      "text": "TextButton( // dusk-ok: transparent text action intentionally inherits Soft Dusk primary; nested label may set its own token",
       "checked_rows": [
         317,
         1031,
@@ -778,62 +774,68 @@
         1036,
         1315,
         1488
-      ]
+      ],
+      "rationale": "transparent text action intentionally inherits Soft Dusk primary; nested label may set its own token"
     },
     {
       "category": "material_default_colors_review",
       "file": "app/src/main/java/com/mlmvpn/scanner/ui/scout/ScoutScreen.kt",
       "line": 80,
-      "text": "TextButton(onClick = { coverage = true }) { Text(tr(\"پوشش\", \"Coverage\"), color = DuskTheme.primary) }",
+      "text": "TextButton( // dusk-ok: transparent text action intentionally inherits Soft Dusk primary; nested label may set its own token",
       "checked_rows": [
         334,
         335,
         1317
-      ]
+      ],
+      "rationale": "transparent text action intentionally inherits Soft Dusk primary; nested label may set its own token"
     },
     {
       "category": "material_default_colors_review",
       "file": "app/src/main/java/com/mlmvpn/scanner/ui/scout/ScoutScreen.kt",
-      "line": 127,
-      "text": "if (history.isNotEmpty()) TextButton(onClick = { showHistory = true }) { Text(tr(\"سابقهٔ بررسی‌ها\", \"History\"), color = DuskTheme.primary) }",
+      "line": 128,
+      "text": "if (history.isNotEmpty()) TextButton( // dusk-ok: label explicitly uses DuskTheme.primary; text button surface is transparent",
       "checked_rows": [
         334,
         335,
         1317
-      ]
+      ],
+      "rationale": "label explicitly uses DuskTheme.primary; text button surface is transparent"
     },
     {
       "category": "material_default_colors_review",
       "file": "app/src/main/java/com/mlmvpn/scanner/ui/scout/ScoutScreen.kt",
-      "line": 196,
-      "text": "history.forEach { previous -> TextButton(enabled = !ui.running, onClick = { ScoutEngine.show(previous); showHistory = false }) {",
+      "line": 199,
+      "text": "history.forEach { previous -> TextButton( // dusk-ok: transparent text action intentionally inherits Soft Dusk primary; nested label may set its own token",
       "checked_rows": [
         334,
         335,
         1317
-      ]
+      ],
+      "rationale": "transparent text action intentionally inherits Soft Dusk primary; nested label may set its own token"
     },
     {
       "category": "material_default_colors_review",
       "file": "app/src/main/java/com/mlmvpn/scanner/ui/scout/ScoutScreen.kt",
-      "line": 256,
-      "text": "if (adapter != null) TextButton(onClick = { details = null; onOpen(if (method.status == ScoutStatus.NOT_INSTALLED) \"store\" else adapter.homeId) }) {",
+      "line": 260,
+      "text": "if (adapter != null) TextButton( // dusk-ok: transparent action inherits the Soft Dusk primary role",
       "checked_rows": [
         334,
         335,
         1317
-      ]
+      ],
+      "rationale": "transparent action inherits the Soft Dusk primary role"
     },
     {
       "category": "material_default_colors_review",
       "file": "app/src/main/java/com/mlmvpn/scanner/ui/scout/ScoutScreen.kt",
-      "line": 259,
-      "text": "if (!ui.running && adapter?.built == true) TextButton(onClick = { details = null; checked { ScoutEngine.retest(context, id, pauseApproved = it) } }) {",
+      "line": 265,
+      "text": "if (!ui.running && adapter?.built == true) TextButton( // dusk-ok: transparent action inherits the Soft Dusk primary role",
       "checked_rows": [
         334,
         335,
         1317
-      ]
+      ],
+      "rationale": "transparent action inherits the Soft Dusk primary role"
     },
     {
       "category": "reviewed_toast_deferral",

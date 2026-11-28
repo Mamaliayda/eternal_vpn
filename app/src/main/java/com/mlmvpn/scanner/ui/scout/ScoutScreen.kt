@@ -77,7 +77,8 @@ fun ScoutScreen(onBack: () -> Unit, onOpen: (String) -> Unit, visible: Boolean =
     val run = ui.run
     val openDetails: (String) -> Unit = { details = it }
     IosScreen(largeTitle = "Eternal VPN Scout", onBack = onBack, trailing = {
-        TextButton(onClick = { coverage = true }) { Text(tr("پوشش", "Coverage"), color = DuskTheme.primary) }
+        TextButton( // dusk-ok: transparent text action intentionally inherits Soft Dusk primary; nested label may set its own token
+            onClick = { coverage = true }) { Text(tr("پوشش", "Coverage"), color = DuskTheme.primary) }
     }) {
         Column(Modifier.fillMaxWidth().padding(20.dp), horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(12.dp)) {
@@ -124,7 +125,9 @@ fun ScoutScreen(onBack: () -> Unit, onOpen: (String) -> Unit, visible: Boolean =
                     }
                 } else Text(tr("آماده‌سازی…", "Preparing…"), color = DuskTheme.muted)
             }
-            if (history.isNotEmpty()) TextButton(onClick = { showHistory = true }) { Text(tr("سابقهٔ بررسی‌ها", "History"), color = DuskTheme.primary) }
+            if (history.isNotEmpty()) TextButton( // dusk-ok: label explicitly uses DuskTheme.primary; text button surface is transparent
+                onClick = { showHistory = true },
+            ) { Text(tr("سابقهٔ بررسی‌ها", "History"), color = DuskTheme.primary) }
         }
         if (ready && run != null) {
             Text(buildList {
@@ -193,7 +196,8 @@ fun ScoutScreen(onBack: () -> Unit, onOpen: (String) -> Unit, visible: Boolean =
     message?.let { value -> ScoutDialog(tr("Eternal VPN Scout", "Eternal VPN Scout"), { message = null }) { Text(value) } }
     if (showHistory) ScoutDialog(tr("سابقهٔ بررسی‌ها", "History"), { showHistory = false }) {
         if (ui.running) Text(tr("برای مشاهدهٔ بررسی قبلی، ابتدا بررسی جاری را متوقف کنید.", "Stop the current check before viewing history."))
-        history.forEach { previous -> TextButton(enabled = !ui.running, onClick = { ScoutEngine.show(previous); showHistory = false }) {
+        history.forEach { previous -> TextButton( // dusk-ok: transparent text action intentionally inherits Soft Dusk primary; nested label may set its own token
+            enabled = !ui.running, onClick = { ScoutEngine.show(previous); showHistory = false }) {
             Text("${previous.netLabel} · ${ago(previous.startedAt)} · " + if (previous.netKey == netKey) tr("همین شبکه", "This network") else tr("شبکهٔ دیگر", "Other network"))
         } }
     }
@@ -253,10 +257,14 @@ fun ScoutScreen(onBack: () -> Unit, onOpen: (String) -> Unit, visible: Boolean =
                 countryLabel(n.exitCountry)?.let { Text(it) }
                 Spacer(Modifier.height(12.dp))
             }
-            if (adapter != null) TextButton(onClick = { details = null; onOpen(if (method.status == ScoutStatus.NOT_INSTALLED) "store" else adapter.homeId) }) {
+            if (adapter != null) TextButton( // dusk-ok: transparent action inherits the Soft Dusk primary role
+                onClick = { details = null; onOpen(if (method.status == ScoutStatus.NOT_INSTALLED) "store" else adapter.homeId) },
+            ) {
                 Text(tr("رفتن به این روش / راه‌اندازی", "Open method / setup"))
             }
-            if (!ui.running && adapter?.built == true) TextButton(onClick = { details = null; checked { ScoutEngine.retest(context, id, pauseApproved = it) } }) {
+            if (!ui.running && adapter?.built == true) TextButton( // dusk-ok: transparent action inherits the Soft Dusk primary role
+                onClick = { details = null; checked { ScoutEngine.retest(context, id, pauseApproved = it) } },
+            ) {
                 Text(tr("دوباره تست کن", "Test again"))
             }
         }

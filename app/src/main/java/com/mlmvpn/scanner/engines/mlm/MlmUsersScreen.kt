@@ -46,7 +46,7 @@ fun MlmUsersScreen(
     val notify = rememberDuskSnackbarAction()
     val scope = rememberCoroutineScope()
     val apiManager = remember { MlmApiManager(context) }
-    
+
     var users by remember { mutableStateOf<List<MlmUser>>(emptyList()) }
     var isLoading by remember { mutableStateOf(true) }
     var showAddUserDialog by remember { mutableStateOf(false) }
@@ -82,7 +82,8 @@ fun MlmUsersScreen(
         loadUsers()
     }
 
-    Surface(
+    Surface( // dusk-ok: root MlmVpnTheme supplies Soft Dusk surface roles; this surface intentionally inherits them
+
         modifier = Modifier.fillMaxSize(),
         // Transparent over the wallpaper; the Cloud tab that hosts this no longer pads it.
         color = Color.Transparent
@@ -330,7 +331,7 @@ fun MlmUserCard(
             }
         }
     }
-    
+
     if (showDeleteConfirm) {
         com.mlmvpn.scanner.ui.settings.IosAlert(
             title = S(R.string.delete_user),
@@ -407,7 +408,7 @@ fun AddMlmUserDialog(
     val securePorts = listOf("443", "8443", "2053", "2083", "2087", "2096")
     val normalPorts = listOf("80", "8080", "8880", "2052", "2082", "2086", "2095")
     val currentPorts = if (isSecure) securePorts else normalPorts
-    
+
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
     val notify = rememberDuskSnackbarAction()
@@ -458,41 +459,41 @@ fun AddMlmUserDialog(
                 ,
         shape = DuskTheme.controlShape,)
                 Spacer(modifier = Modifier.height(16.dp))
-                
+
                 Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
                     Text(S(R.string.port_type), color = DuskTheme.muted, modifier = Modifier.weight(1f), style = MaterialTheme.typography.bodyMedium)
-                    Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.clickable { 
+                    Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.clickable {
                         isSecure = true
                         selectedPorts = selectedPorts.filter { it in securePorts }.toSet().ifEmpty { setOf("443") }
                     }) {
                         RadioButton(
                             selected = isSecure,
-                            onClick = { 
+                            onClick = {
                                 isSecure = true
                                 selectedPorts = selectedPorts.filter { it in securePorts }.toSet().ifEmpty { setOf("443") }
-                            }, 
+                            },
                             colors = RadioButtonDefaults.colors(selectedColor = DuskTheme.primary)
                         )
                         Text(S(R.string.secure_tls), color = DuskTheme.onSurface, style = MaterialTheme.typography.bodySmall)
                     }
                     Spacer(modifier = Modifier.width(8.dp))
-                    Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.clickable { 
+                    Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.clickable {
                         isSecure = false
                         selectedPorts = selectedPorts.filter { it in normalPorts }.toSet().ifEmpty { setOf("80") }
                     }) {
                         RadioButton(
-                            selected = !isSecure, 
-                            onClick = { 
+                            selected = !isSecure,
+                            onClick = {
                                 isSecure = false
                                 selectedPorts = selectedPorts.filter { it in normalPorts }.toSet().ifEmpty { setOf("80") }
-                            }, 
+                            },
                             colors = RadioButtonDefaults.colors(selectedColor = DuskTheme.primary)
                         )
                         Text(S(R.string.plain), color = DuskTheme.onSurface, style = MaterialTheme.typography.bodySmall)
                     }
                 }
                 Spacer(modifier = Modifier.height(8.dp))
-                
+
                 ExposedDropdownMenuBox(
                     expanded = portExpanded,
                     onExpandedChange = { portExpanded = !portExpanded }
@@ -514,7 +515,7 @@ fun AddMlmUserDialog(
                     ) {
                         currentPorts.forEach { p ->
                             DropdownMenuItem(
-                                text = { 
+                                text = {
                                     Row(verticalAlignment = Alignment.CenterVertically) {
                                         Checkbox(
                                             checked = selectedPorts.contains(p),
@@ -536,7 +537,7 @@ fun AddMlmUserDialog(
                         }
                     }
                 }
-                
+
                 Spacer(modifier = Modifier.height(8.dp))
                 OutlinedTextField(
                     value = fingerprint,

@@ -84,6 +84,12 @@ object DuskTheme {
     val nightErrorText = Color(0xFF690005)
     val nightTertiary = Color(0xFFD8B5E2)
     val nightOnPrimaryContainer = Color(0xFFFFE0DB)
+    val nightMedalGold = Color(0xFFFFD166)
+    val lightMedalGold = Color(0xFF8A5A00)
+    val nightMedalSilver = Color(0xFFD6D7E0)
+    val lightMedalSilver = Color(0xFF5A6170)
+    val nightMedalBronze = Color(0xFFE8B08A)
+    val lightMedalBronze = Color(0xFF8E4F2C)
 
     val background: Color @Composable get() = if (Appearance.isDark()) navyNight else blush
     val surface: Color @Composable get() = if (Appearance.isDark()) nightCard else cream
@@ -103,6 +109,9 @@ object DuskTheme {
     val error: Color @Composable get() = if (Appearance.isDark()) nightError else lightError
     val indigo: Color @Composable get() = if (Appearance.isDark()) Color(0xFFB3A9E5) else Color(0xFF6E69A8)
     val purple: Color @Composable get() = if (Appearance.isDark()) Color(0xFFD4B6E6) else Color(0xFF8F659F)
+    val medalGold: Color @Composable get() = if (Appearance.isDark()) nightMedalGold else lightMedalGold
+    val medalSilver: Color @Composable get() = if (Appearance.isDark()) nightMedalSilver else lightMedalSilver
+    val medalBronze: Color @Composable get() = if (Appearance.isDark()) nightMedalBronze else lightMedalBronze
 
     val space1 = 4.dp
     val space2 = 8.dp
@@ -151,6 +160,8 @@ object DuskTheme {
     val textSize30 = 30.sp
     val textSize32 = 32.sp
     val textSize34 = 34.sp
+    val textSize36 = 36.sp
+    val textSize68 = 68.sp
     val textSize38 = 38.sp
     val textSize40 = 40.sp
     val textSize42 = 42.sp

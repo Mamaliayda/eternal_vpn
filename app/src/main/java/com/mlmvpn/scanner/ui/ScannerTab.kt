@@ -1115,7 +1115,8 @@ fun ScannerTab(onBack: () -> Unit = {}, onOpenNodes: () -> Unit = {}) {
                                 }
                             }
 
-                            TextButton(onClick = { com.mlmvpn.scanner.data.ScannerManager.reset() }, modifier = Modifier.padding(top = 8.dp)) {
+                            TextButton( // dusk-ok: transparent text action intentionally inherits Soft Dusk primary; nested label may set its own token
+                                onClick = { com.mlmvpn.scanner.data.ScannerManager.reset() }, modifier = Modifier.padding(top = 8.dp)) {
                                 Text(stringResource(R.string.scanner_cancel_and_rescan), color = DuskTheme.muted, style = MaterialTheme.typography.bodyMedium)
                             }
                         } else if (!scanning && scannedIPs.isEmpty()) {
@@ -1233,6 +1234,7 @@ fun ScannerTab(onBack: () -> Unit = {}, onOpenNodes: () -> Unit = {}) {
 
                                             if (healthyNodes == null) {
                                                 Button(
+
                                                     onClick = {
                                                         // ScanGuard first: this is the same core
                                                         // and the same link a running scan uses, so
@@ -1287,6 +1289,7 @@ fun ScannerTab(onBack: () -> Unit = {}, onOpenNodes: () -> Unit = {}) {
                                                         val mlmUsername = mlmParts[2]
                                                         var isUpdatingSub by remember { mutableStateOf(false) }
                                                         Button(
+
                                                             onClick = {
                                                                 isUpdatingSub = true
                                                                 scope.launch {
@@ -1593,6 +1596,7 @@ fun ScannerTab(onBack: () -> Unit = {}, onOpenNodes: () -> Unit = {}) {
                 },
                 confirmButton = {
                     Button(
+
                         onClick = {
                             if (selectedCloudGroup == null) {
                                 showDuskNotice(snackbarScope, duskSnackbarHost, context.getString(R.string.scanner_please_select_group))
@@ -1916,7 +1920,8 @@ fun ScannerTab(onBack: () -> Unit = {}, onOpenNodes: () -> Unit = {}) {
                     // tunnel it is not even different, since this app sits outside it. So the
                     // second button is "scan anyway", not "cancel".
                     when (verdict) {
-                        is ScanPreflight.Verdict.OwnVpn -> TextButton(onClick = {
+                        is ScanPreflight.Verdict.OwnVpn -> TextButton( // dusk-ok: transparent text action intentionally inherits Soft Dusk primary; nested label may set its own token
+                            onClick = {
                             preflight = null
                             afterVerdict(false)
                         }) {
@@ -1925,7 +1930,8 @@ fun ScannerTab(onBack: () -> Unit = {}, onOpenNodes: () -> Unit = {}) {
                                 color = DuskTheme.muted,
                             )
                         }
-                        is ScanPreflight.Verdict.ForeignVpn -> TextButton(onClick = {
+                        is ScanPreflight.Verdict.ForeignVpn -> TextButton( // dusk-ok: transparent text action intentionally inherits Soft Dusk primary; nested label may set its own token
+                            onClick = {
                             preflight = null
                             // Pinned when it can be, so the sweep sees the real link and not
                             // theirs. The dialog's text has already said which half that covers.
@@ -1933,7 +1939,8 @@ fun ScannerTab(onBack: () -> Unit = {}, onOpenNodes: () -> Unit = {}) {
                         }) {
                             Text(stringResource(R.string.preflight_scan_anyway), color = DuskTheme.muted)
                         }
-                        else -> TextButton(onClick = { preflight = null }) {
+                        else -> TextButton( // dusk-ok: transparent text action intentionally inherits Soft Dusk primary; nested label may set its own token
+                            onClick = { preflight = null }) {
                             Text(stringResource(R.string.scanner_cancel), color = DuskTheme.muted)
                         }
                     }
@@ -2034,7 +2041,9 @@ fun ScannerTab(onBack: () -> Unit = {}, onOpenNodes: () -> Unit = {}) {
                     }
                 },
                 dismissButton = {
-                    TextButton(onClick = { showRetestDialog = null }) {
+                    TextButton( // dusk-ok: transparent dialog dismiss action; child label explicitly uses DuskTheme.muted
+                        onClick = { showRetestDialog = null },
+                    ) {
                         Text(stringResource(R.string.scanner_cancel), color = DuskTheme.muted)
                     }
                 }
@@ -2064,7 +2073,9 @@ fun ScannerTab(onBack: () -> Unit = {}, onOpenNodes: () -> Unit = {}) {
                     }
                 },
                 dismissButton = {
-                    TextButton(onClick = { mixToDelete = null }) {
+                    TextButton( // dusk-ok: transparent dialog dismiss action; child label explicitly uses DuskTheme.muted
+                        onClick = { mixToDelete = null },
+                    ) {
                         Text(stringResource(R.string.scanner_cancel), color = DuskTheme.muted)
                     }
                 }
@@ -2098,7 +2109,9 @@ fun ScannerTab(onBack: () -> Unit = {}, onOpenNodes: () -> Unit = {}) {
                     }
                 },
                 dismissButton = {
-                    TextButton(onClick = { archiveToDelete = null }) {
+                    TextButton( // dusk-ok: transparent dialog dismiss action; child label explicitly uses DuskTheme.muted
+                        onClick = { archiveToDelete = null },
+                    ) {
                         Text(stringResource(R.string.scanner_cancel), color = DuskTheme.muted)
                     }
                 }
@@ -2133,7 +2146,8 @@ fun ScannerTab(onBack: () -> Unit = {}, onOpenNodes: () -> Unit = {}) {
                     }
                 },
                 dismissButton = {
-                    TextButton(onClick = { com.mlmvpn.scanner.data.ScannerManager.dismissHealthTestCleanup() }) {
+                    TextButton( // dusk-ok: transparent text action intentionally inherits Soft Dusk primary; nested label may set its own token
+                        onClick = { com.mlmvpn.scanner.data.ScannerManager.dismissHealthTestCleanup() }) {
                         Text(stringResource(R.string.scanner_cancel), color = DuskTheme.muted)
                     }
                 }

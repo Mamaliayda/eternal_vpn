@@ -556,7 +556,8 @@ fun MitmSetupCard() {
 
                 Spacer(Modifier.height(12.dp))
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    OutlinedButton(
+                    OutlinedButton( // dusk-ok: primary or outlined action intentionally inherits Soft Dusk Material action roles
+
                         onClick = {
                             busy = true
                             error = null
@@ -580,7 +581,8 @@ fun MitmSetupCard() {
                         Spacer(Modifier.width(6.dp))
                         Text(S(R.string.build_a_new_certificate), color = DuskTheme.muted, style = MaterialTheme.typography.bodySmall)
                     }
-                    OutlinedButton(
+                    OutlinedButton( // dusk-ok: primary or outlined action intentionally inherits Soft Dusk Material action roles
+
                         onClick = { runCatching { context.startActivity(MitmCertManager.securitySettingsIntent()) } },
                         shape = DuskTheme.controlShape,
                         border = androidx.compose.foundation.BorderStroke(DuskTheme.hairlineSpace, DuskTheme.outline),

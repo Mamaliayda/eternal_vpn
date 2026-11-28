@@ -407,7 +407,8 @@ private fun Steps(r: NpvEngine.Refresh) {
             else -> Unit
         }
         if (r.running && r.ask == NpvEngine.Ask.NONE) {
-            TextButton(onClick = { NpvEngine.cancelRefresh() }) { Text(tr("توقف", "Stop"), color = DuskTheme.accent) }
+            TextButton( // dusk-ok: transparent text action intentionally inherits Soft Dusk primary; nested label may set its own token
+                onClick = { NpvEngine.cancelRefresh() }) { Text(tr("توقف", "Stop"), color = DuskTheme.accent) }
         }
     }
 }
@@ -473,7 +474,8 @@ private fun AddChannel(onAdd: (String) -> Boolean) {
                         modifier = Modifier.fillMaxWidth(),
                     )
                 }
-                TextButton(onClick = { if (onAdd(text)) text = "" }, enabled = text.isNotBlank()) { Text(tr("افزودن", "Add")) }
+                TextButton( // dusk-ok: transparent text action intentionally inherits Soft Dusk primary; nested label may set its own token
+                    onClick = { if (onAdd(text)) text = "" }, enabled = text.isNotBlank()) { Text(tr("افزودن", "Add")) }
             }
         }
         SettingsFooter(tr(

@@ -32,7 +32,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -125,7 +124,7 @@ internal fun IdentityBlockedCard(onRetry: () -> Unit, modifier: Modifier = Modif
         Spacer(Modifier.height(12.dp))
         Row(
             Modifier
-                .clip(RoundedCornerShape(50))
+                .clip(DuskTheme.controlShape)
                 .background(DuskTheme.primary)
                 .clickable(enabled = step == null) {
                     if (ready) onRetry() else setUpRelay(context, scope, { step = it }, onRetry, showNotice)
@@ -134,12 +133,12 @@ internal fun IdentityBlockedCard(onRetry: () -> Unit, modifier: Modifier = Modif
             verticalAlignment = Alignment.CenterVertically,
         ) {
             if (step != null) {
-                CircularProgressIndicator(Modifier.size(16.dp), color = Color.White, strokeWidth = 2.dp)
+                CircularProgressIndicator(Modifier.size(16.dp), color = DuskTheme.white, strokeWidth = 2.dp)
                 Spacer(Modifier.width(8.dp))
             }
             Text(
                 step ?: if (ready) tr("دوباره وصل شو", "Connect again") else tr("ساخت هویت از راه ورکر و اتصال", "Make it through a worker and connect"),
-                color = Color.White, fontSize = DuskTheme.textSize14, fontWeight = FontWeight.Bold,
+                color = DuskTheme.white, fontSize = DuskTheme.textSize14, fontWeight = FontWeight.Bold,
             )
         }
     }

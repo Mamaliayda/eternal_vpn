@@ -102,7 +102,8 @@ fun NahanSettingsScreen(
         }
     }
 
-    Surface(
+    Surface( // dusk-ok: root MlmVpnTheme supplies Soft Dusk surface roles; this surface intentionally inherits them
+
         // Transparent over the wallpaper; the Cloud tab that hosts this no longer pads it.
         color = Color.Transparent,
         modifier = Modifier
@@ -218,7 +219,7 @@ fun NahanSettingsScreen(
                                 Text(androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.nhn_basic_settings), color = DuskTheme.onSurface, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
                             }
                             Spacer(modifier = Modifier.height(DuskTheme.space4))
-                            
+
                             // Protocol Dropdown
                             ExposedDropdownMenuBox(
                                 expanded = protocolExpanded,
@@ -508,6 +509,7 @@ fun NahanSettingsScreen(
                             .padding(DuskTheme.space4)
                     ) {
                         Button(
+
                             onClick = {
                                 isSaving = true
                                 scope.launch {
@@ -647,7 +649,7 @@ private fun NahanUserCard(
     var editName by remember(user) { mutableStateOf(user.name) }
     var editLimit by remember(user) { mutableStateOf(if (user.limit > 0) (user.limit / 6000L).toString() else "0") }
     var editDailyLimit by remember(user) { mutableStateOf(if (user.limitDailyReq > 0) (user.limitDailyReq / 6000L).toString() else "0") }
-    
+
     val currentDays = remember(user.expiryMs) {
         if (user.expiryMs > 0) {
             val remaining = user.expiryMs - System.currentTimeMillis()
@@ -711,7 +713,7 @@ private fun NahanUserCard(
                         modifier = Modifier.padding(top = 2.dp)
                     )
                 }
-                
+
                 if (user.expiryMs > 0) {
                     val remaining = user.expiryMs - System.currentTimeMillis()
                     val days = remaining / (1000 * 60 * 60 * 24)
@@ -721,13 +723,13 @@ private fun NahanUserCard(
                         Text(androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.nhn_expired), color = DuskTheme.error, style = MaterialTheme.typography.labelSmall, modifier = Modifier.padding(top = 2.dp))
                     }
                 }
-                
+
                 if (user.limit > 0 || user.limitDailyReq > 0) {
                     val usedGB = user.used.toFloat() / 6000f
                     val limitGB = user.limit.toFloat() / 6000f
                     val dailyStr = if (user.limitDailyReq > 0) context.getString(com.mlmvpn.scanner.R.string.nhn_daily_suffix, user.limitDailyReq / 6000L) else ""
                     val limitStr = if (user.limit > 0) "%.0f GB".format(limitGB) else context.getString(com.mlmvpn.scanner.R.string.nhn_unlimited)
-                    
+
                     Text(
                         androidx.compose.ui.res.stringResource(com.mlmvpn.scanner.R.string.nhn_usage_format, "%.1f / $limitStr$dailyStr".format(usedGB)),
                         color = if (user.limit > 0 && usedGB > limitGB * 0.9f) DuskTheme.error else DuskTheme.success,

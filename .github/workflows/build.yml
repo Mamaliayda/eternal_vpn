@@ -97,6 +97,16 @@ jobs:
           set -o pipefail
           ./gradlew assembleDebug --stacktrace --console=plain 2>&1 | tee "$GITHUB_WORKSPACE/build.log"
 
+      - name: List debug APK names and sizes
+        shell: bash
+        run: |
+          set -euo pipefail
+          output_dir="app/build/outputs/apk/debug"
+          echo "### Debug APK files (name and size in bytes)" >> "$GITHUB_STEP_SUMMARY"
+          ls -l "$output_dir"
+          find "$output_dir" -maxdepth 1 -type f -name '*.apk' -printf '%f\t%s bytes\n' | sort | tee -a "$GITHUB_STEP_SUMMARY"
+          test -n "$(find "$output_dir" -maxdepth 1 -type f -name '*.apk' -print -quit)"
+
       - name: Upload build log
         if: always()
         uses: actions/upload-artifact@v4

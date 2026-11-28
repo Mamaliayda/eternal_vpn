@@ -18,7 +18,6 @@ PALETTE_FILES = {
     "app/src/main/java/com/mlmvpn/scanner/ui/theme/SoftDusk.kt",
     "app/src/main/java/com/mlmvpn/scanner/ui/home/Wallpapers.kt",
     "app/src/main/java/com/mlmvpn/scanner/ui/home/HomeDestinations.kt",
-    "app/src/main/java/com/mlmvpn/scanner/ui/arena/ArenaRace.kt",
     "app/src/main/java/com/mlmvpn/scanner/store/StoreCatalog.kt",
     "app/src/main/res/values/colors.xml",
 }
@@ -46,6 +45,7 @@ LITERAL_FONT_RE = re.compile(
 TOAST_RE = re.compile(r"\b(?:android\.widget\.)?Toast\.makeText\s*\(|\bToast\s*\(")
 MATERIAL_SCHEME_RE = re.compile(r"\bMaterialTheme\.colorScheme\.[A-Za-z_]")
 MATERIAL_CALL_RE = re.compile(r"\b(Button|TextButton|OutlinedButton|ElevatedButton|Switch|Card|Surface|TextField|OutlinedTextField)\s*\(")
+DUSK_OK_RE = re.compile(r"//\s*dusk-ok:\s*(\S.*)$")
 # Explicitly reviewed platform/background fallback cases; new Toast locations fail by default.
 TOAST_DEFERRALS = {
     "app/src/main/java/com/mlmvpn/core/aether/AetherScanService.kt": "service-start failure fallback",
@@ -137,6 +137,40 @@ def record(category,path,n,line,rows):
             "text":line.strip()[:240],"checked_rows":sorted({rn for rn,_ in rows})}
 
 
+def call_arguments(lines: list[str], line_index: int, open_paren: int) -> str:
+    """Return one component call's balanced argument text, ignoring comments and quoted strings."""
+    source = "\n".join(lines[line_index:])
+    depth = 0
+    state = "code"
+    quote = ""
+    escaped = False
+    start = None
+    i = open_paren
+    while i < len(source):
+        ch = source[i]
+        nxt = source[i + 1] if i + 1 < len(source) else ""
+        if state == "line_comment":
+            if ch == "\n": state = "code"
+        elif state == "block_comment":
+            if ch == "*" and nxt == "/": state = "code"; i += 1
+        elif state == "string":
+            if escaped: escaped = False
+            elif ch == "\\": escaped = True
+            elif ch == quote: state = "code"
+        else:
+            if ch == "/" and nxt == "/": state = "line_comment"; i += 1
+            elif ch == "/" and nxt == "*": state = "block_comment"; i += 1
+            elif ch in ("\"", "'"): state = "string"; quote = ch; escaped = False
+            elif ch == "(":
+                depth += 1
+                if depth == 1: start = i + 1
+            elif ch == ")":
+                depth -= 1
+                if depth == 0: return source[start:i]
+        i += 1
+    return source[start:] if start is not None else ""
+
+
 def audit_file(path, rows):
     rel=path.relative_to(ROOT).as_posix();lines=path.read_text(errors="replace").splitlines();out=[]
     documented_palette=(rel in PALETTE_FILES or (rel.startswith("app/src/main/res/drawable/ic_app_") and rel.endswith(".xml")))
@@ -158,13 +192,25 @@ def audit_file(path, rows):
             if category == "reviewed_toast_deferral": item["rationale"] = TOAST_DEFERRALS[rel]
             out.append(item)
         if MATERIAL_SCHEME_RE.search(line): out.append(record("material_color_scheme",path,n,line,rows))
-        if MATERIAL_CALL_RE.search(line):
-            # Review calls whose colors parameter is omitted. App Compose content is hosted beneath
-            # MlmVpnTheme, which supplies Soft Dusk's ColorScheme; this category is surfaced for
-            # manual confirmation and counted as reviewed, not as an unresolved hard-coded color.
-            window="\n".join(lines[n-1:min(len(lines),n+30)])
-            if "colors =" not in window and not any(token in window for token in ("iosButtonColors(","DuskCard(","DuskPill(")):
-                out.append(record("material_default_colors_review",path,n,line,rows))
+        material_call = MATERIAL_CALL_RE.search(line)
+        if material_call:
+            # A default Material color is accepted only with a non-empty inline rationale.
+            # Determine explicit colors from this call's own balanced argument list, not nearby code.
+            component = material_call.group(1)
+            args = call_arguments(lines, n - 1, material_call.end() - 1)
+            explicit_colors = bool(re.search(r"\bcolors\s*=", args))
+            if component == "Surface":
+                explicit_colors = explicit_colors or (
+                    bool(re.search(r"\bcolor\s*=", args)) and bool(re.search(r"\bcontentColor\s*=", args))
+                )
+            if not explicit_colors:
+                marker = DUSK_OK_RE.search(line)
+                if marker:
+                    item = record("material_default_colors_review",path,n,line,rows)
+                    item["rationale"] = marker.group(1).strip()
+                    out.append(item)
+                else:
+                    out.append(record("material_default_colors_unreviewed",path,n,line,rows))
     return out
 
 

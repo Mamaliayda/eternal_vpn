@@ -72,7 +72,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.mlmvpn.scanner.engines.arena.ArenaEngine
 import com.mlmvpn.scanner.engines.arena.ArenaMode
 import com.mlmvpn.scanner.engines.arena.ArenaPanels
@@ -83,32 +82,31 @@ import kotlinx.coroutines.delay
 import kotlin.random.Random
 
 /**
- * The race itself: grid reveal, start lights, the live track, the podium. The feeling of a race,
- * in the system's own dark palette -- neutral greys for the field, one neutral tile per car, and
- * colour only where it means something: red lights, the green GO, a red retirement, gold, silver
- * and bronze on the podium, the blue of progress.
+ * The race itself: grid reveal, start lights, the live track, the podium. The visual language uses
+ * Soft Dusk's adaptive surface, text, progress and status roles; podium medals retain dedicated
+ * semantic gold, silver and bronze tokens in both appearances.
  */
 object RaceColors {
-    val Top = Color(0xFF1C1C1E)
-    val Bottom = Color(0xFF000000)
-    val Lane = Color(0xFF2C2C2E)
-    val LaneLine = Color(0x26FFFFFF)
-    val Label = Color.White
-    val Secondary = Color(0x99EBEBF5)
-    val LightHousing = Color(0xFF0A0A0A)
-    val LightOff = Color(0xFF3A1414)
-    val LightOn = Color(0xFFFF3B30)
-    val Go = Color(0xFF30D158)
-    val Out = Color(0xFFFF453A)
-    val Progress = Color(0xFF0A84FF)
-    val Gold = Color(0xFFFFD60A)
-    val Silver = Color(0xFFC7C7CC)
-    val Bronze = Color(0xFFC08B5C)
+    val Top: Color @Composable get() = DuskTheme.background
+    val Bottom: Color @Composable get() = DuskTheme.surface
+    val Lane: Color @Composable get() = DuskTheme.raisedSurface
+    val LaneLine: Color @Composable get() = DuskTheme.outline.copy(alpha = 0.28f)
+    val Label: Color @Composable get() = DuskTheme.onSurface
+    val Secondary: Color @Composable get() = DuskTheme.muted
+    val LightHousing: Color @Composable get() = DuskTheme.raisedSurface
+    val LightOff: Color @Composable get() = DuskTheme.error.copy(alpha = 0.24f)
+    val LightOn: Color @Composable get() = DuskTheme.error
+    val Go: Color @Composable get() = DuskTheme.success
+    val Out: Color @Composable get() = DuskTheme.error
+    val Progress: Color @Composable get() = DuskTheme.primary
+    val Gold: Color @Composable get() = DuskTheme.medalGold
+    val Silver: Color @Composable get() = DuskTheme.medalSilver
+    val Bronze: Color @Composable get() = DuskTheme.medalBronze
 }
 
 private fun nameOf(id: String) = ArenaPanels.byId(id)?.name ?: id
 
-/** The dark stage every race scene stands on. */
+/** The adaptive Soft Dusk stage every race scene stands on. */
 @Composable
 fun RaceStage(content: @Composable () -> Unit) {
     Box(Modifier.fillMaxSize().background(Brush.verticalGradient(listOf(RaceColors.Top, RaceColors.Bottom)))) {
@@ -122,10 +120,10 @@ private fun RaceBar(title: String, sound: Boolean, setSound: (Boolean) -> Unit, 
         Row(Modifier.clickable(onClick = onCancel), verticalAlignment = Alignment.CenterVertically) {
             val rtl = LocalLayoutDirection.current == LayoutDirection.Rtl
             Icon(Icons.Default.ChevronLeft, null, tint = RaceColors.Progress, modifier = Modifier.size(26.dp).scale(if (rtl) -1f else 1f, 1f))
-            Text(tr("لغو", "Cancel"), color = RaceColors.Progress, fontSize = 17.sp)
+            Text(tr("لغو", "Cancel"), color = RaceColors.Progress, fontSize = DuskTheme.textSize17)
         }
         Spacer(Modifier.weight(1f))
-        Text(title, color = RaceColors.Label, fontSize = 17.sp, fontWeight = FontWeight.SemiBold)
+        Text(title, color = RaceColors.Label, fontSize = DuskTheme.textSize17, fontWeight = FontWeight.SemiBold)
         Spacer(Modifier.weight(1f))
         Icon(if (sound) Icons.Default.VolumeUp else Icons.Default.VolumeOff, tr("صدا", "Sound"), tint = RaceColors.Progress,
             modifier = Modifier.size(24.dp).clickable { setSound(!sound) })
@@ -166,8 +164,8 @@ fun GridReveal(st: ArenaEngine.State, onDone: () -> Unit) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.scale(s.value)) {
                         TeamTile(l.panelId, 132.dp)
                         Spacer(Modifier.height(18.dp))
-                        Text(l.name, color = RaceColors.Label, fontSize = 36.sp, fontWeight = FontWeight.Bold)
-                        Text(tr("شرکت‌کنندهٔ ${i + 1} از ${teams.size}", "Competitor ${i + 1} of ${teams.size}"), color = RaceColors.Secondary, fontSize = 14.sp)
+                        Text(l.name, color = RaceColors.Label, fontSize = DuskTheme.textSize36, fontWeight = FontWeight.Bold)
+                        Text(tr("شرکت‌کنندهٔ ${i + 1} از ${teams.size}", "Competitor ${i + 1} of ${teams.size}"), color = RaceColors.Secondary, fontSize = DuskTheme.textSize14)
                     }
                 }
             } else {
@@ -179,9 +177,9 @@ fun GridReveal(st: ArenaEngine.State, onDone: () -> Unit) {
                             row.forEachIndexed { k, l ->
                                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                                     TeamTile(l.panelId, 60.dp)
-                                    Text(l.name, color = RaceColors.Secondary, fontSize = 12.sp, modifier = Modifier.padding(top = 4.dp))
+                                    Text(l.name, color = RaceColors.Secondary, fontSize = DuskTheme.textSize12, modifier = Modifier.padding(top = 4.dp))
                                 }
-                                if (k < row.size - 1) Text("VS", color = RaceColors.Secondary, fontSize = 14.sp, fontWeight = FontWeight.Bold,
+                                if (k < row.size - 1) Text("VS", color = RaceColors.Secondary, fontSize = DuskTheme.textSize14, fontWeight = FontWeight.Bold,
                                     modifier = Modifier.padding(horizontal = 12.dp, vertical = 0.dp).offset(y = (-10).dp))
                             }
                         }
@@ -220,15 +218,15 @@ fun StartLights(onGo: () -> Unit) {
     RaceStage {
         Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
             Row(
-                Modifier.clip(RoundedCornerShape(20.dp)).background(RaceColors.LightHousing)
-                    .border(1.dp, Color.White.copy(alpha = 0.08f), RoundedCornerShape(20.dp)).padding(16.dp),
+                Modifier.clip(RoundedCornerShape(DuskTheme.corner20)).background(RaceColors.LightHousing)
+                    .border(1.dp, DuskTheme.outline.copy(alpha = 0.28f), RoundedCornerShape(DuskTheme.corner20)).padding(16.dp),
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
             ) {
                 repeat(5) { i ->
                     val glow by animateFloatAsState(if (i < lit) 1f else 0f, tween(110), label = "l$i")
                     Box(Modifier.size(40.dp).clip(CircleShape).background(
                         Brush.radialGradient(listOf(
-                            Color.White.copy(alpha = 0.55f * glow),
+                            DuskTheme.onSurface.copy(alpha = 0.55f * glow),
                             RaceColors.LightOn.copy(alpha = 0.25f + 0.75f * glow),
                             RaceColors.LightOff,
                         ))
@@ -237,7 +235,7 @@ fun StartLights(onGo: () -> Unit) {
             }
             Spacer(Modifier.height(36.dp))
             val s by animateFloatAsState(if (go) 1f else 0f, spring(dampingRatio = 0.45f, stiffness = Spring.StiffnessMedium), label = "go")
-            Text(tr("برو!", "GO!"), color = RaceColors.Go, fontSize = 68.sp, fontWeight = FontWeight.Black,
+            Text(tr("برو!", "GO!"), color = RaceColors.Go, fontSize = DuskTheme.textSize68, fontWeight = FontWeight.Black,
                 modifier = Modifier.scale(0.4f + 0.6f * s).alpha(s))
         }
     }
@@ -295,11 +293,11 @@ fun Track(st: ArenaEngine.State, sound: Boolean, setSound: (Boolean) -> Unit, on
             Column(Modifier.fillMaxWidth().padding(horizontal = 20.dp)) {
                 Text(tr("مرحلهٔ ${idx + 1} از ${phases.size}", "Stage ${idx + 1} of ${phases.size}") +
                     (st.cleanIp?.let { tr(" · همه روی آی‌پی ", " · all on IP ") + "⁦${it.ip}⁩" } ?: ""),
-                    color = RaceColors.Secondary, fontSize = 13.sp)
+                    color = RaceColors.Secondary, fontSize = DuskTheme.textSize13)
                 AnimatedContent(targetState = st.phase, transitionSpec = {
                     (slideInHorizontally(tween(380)) { -it / 3 } + fadeIn(tween(260))) togetherWith fadeOut(tween(160))
                 }, label = "phase") { p ->
-                    Text(raceTitle(p), color = RaceColors.Label, fontSize = 30.sp, fontWeight = FontWeight.Bold)
+                    Text(raceTitle(p), color = RaceColors.Label, fontSize = DuskTheme.textSize30, fontWeight = FontWeight.Bold)
                 }
                 Spacer(Modifier.height(10.dp))
                 val w by animateFloatAsState(progress, tween(500), label = "progress")
@@ -331,22 +329,24 @@ private fun Lane(l: ArenaEngine.LaneState, score: Int?, position: Float, mood: A
     val spin by animateFloatAsState(if (out) 1f else 0f, tween(800), label = "spin")
     Column(Modifier.fillMaxWidth().padding(vertical = 7.dp)) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Text(l.name, color = if (out) RaceColors.Secondary else RaceColors.Label, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
+            Text(l.name, color = if (out) RaceColors.Secondary else RaceColors.Label, fontSize = DuskTheme.textSize14, fontWeight = FontWeight.SemiBold)
             Spacer(Modifier.width(8.dp))
-            Text(raceMetrics(l.entry), color = RaceColors.Secondary, fontSize = 11.sp, modifier = Modifier.weight(1f))
+            Text(raceMetrics(l.entry), color = RaceColors.Secondary, fontSize = DuskTheme.textSize11, modifier = Modifier.weight(1f))
             val measured = l.entry.latencyMedian != null || l.entry.reachTried
-            if (!out) Text(if (measured && score != null) "$score" else "—", color = RaceColors.Label, fontSize = 14.sp, fontWeight = FontWeight.Bold)
+            if (!out) Text(if (measured && score != null) "$score" else "—", color = RaceColors.Label, fontSize = DuskTheme.textSize14, fontWeight = FontWeight.Bold)
         }
         Spacer(Modifier.height(5.dp))
-        BoxWithConstraints(Modifier.fillMaxWidth().height(40.dp).background(RaceColors.Lane, RoundedCornerShape(12.dp))) {
+        BoxWithConstraints(Modifier.fillMaxWidth().height(40.dp).background(RaceColors.Lane, RoundedCornerShape(DuskTheme.corner12))) {
             val car = 30.dp
+            val laneLineColor = RaceColors.LaneLine
+            val finishStripeColor = DuskTheme.onSurface.copy(alpha = 0.28f)
             Canvas(Modifier.fillMaxSize()) {
-                drawLine(RaceColors.LaneLine, Offset(0f, size.height / 2), Offset(size.width, size.height / 2), strokeWidth = 2f,
+                drawLine(laneLineColor, Offset(0f, size.height / 2), Offset(size.width, size.height / 2), strokeWidth = 2f,
                     pathEffect = PathEffect.dashPathEffect(floatArrayOf(16f, 14f)))
                 // A quiet finish line: a narrow checkered strip.
                 val cell = size.height / 5
                 for (r in 0 until 5) for (c in 0 until 2) if ((r + c) % 2 == 0)
-                    drawRect(Color.White.copy(alpha = 0.28f), Offset(size.width - cell * (c + 1) - 6f, r * cell), Size(cell, cell))
+                    drawRect(finishStripeColor, Offset(size.width - cell * (c + 1) - 6f, r * cell), Size(cell, cell))
             }
             val x = (maxWidth - car - 20.dp) * pos
             TeamTile(l.panelId, car, dim = out,
@@ -359,12 +359,12 @@ private fun Lane(l: ArenaEngine.LaneState, score: Int?, position: Float, mood: A
                     delay(1_150)
                     pop.animateTo(0f, tween(300))
                 }
-                Text(mood.emoji, fontSize = 22.sp,
+                Text(mood.emoji, fontSize = DuskTheme.textSize22,
                     modifier = Modifier.align(Alignment.CenterStart).offset(x = x + 5.dp + car - 8.dp, y = (-16).dp)
                         .scale(0.4f + 0.6f * pop.value).alpha(pop.value.coerceIn(0f, 1f)))
             }
         }
-        if (out) Text(l.note ?: "", color = RaceColors.Out, fontSize = 11.sp, modifier = Modifier.padding(top = 3.dp))
+        if (out) Text(l.note ?: "", color = RaceColors.Out, fontSize = DuskTheme.textSize11, modifier = Modifier.padding(top = 3.dp))
     }
 }
 
@@ -389,15 +389,15 @@ private fun PodiumSteps(top3: List<com.mlmvpn.scanner.engines.arena.Standing>, r
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 TeamTile(s.panelId, if (place == 1) 64.dp else 50.dp,
                     modifier = Modifier.graphicsLayer { translationY = (1 - rise) * -160f; alpha = rise.coerceIn(0f, 1f) })
-                if (showScores) Text(nameOf(s.panelId), color = RaceColors.Label, fontSize = 13.sp, fontWeight = FontWeight.SemiBold,
+                if (showScores) Text(nameOf(s.panelId), color = RaceColors.Label, fontSize = DuskTheme.textSize13, fontWeight = FontWeight.SemiBold,
                     modifier = Modifier.padding(top = 5.dp))
                 Spacer(Modifier.height(6.dp))
-                Box(Modifier.width(86.dp).height(h * rise).clip(RoundedCornerShape(topStart = 12.dp, topEnd = 12.dp))
+                Box(Modifier.width(86.dp).height(h * rise).clip(RoundedCornerShape(topStart = DuskTheme.corner12, topEnd = DuskTheme.corner12))
                     .background(Brush.verticalGradient(listOf(tint.copy(alpha = 0.9f), tint.copy(alpha = 0.35f)))),
                     contentAlignment = Alignment.TopCenter) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.padding(top = 6.dp)) {
-                        Text("$place", color = Color.Black.copy(alpha = 0.65f), fontSize = 26.sp, fontWeight = FontWeight.Bold)
-                        if (showScores) Text("⁦${s.total.toInt()}⁩", color = Color.Black.copy(alpha = 0.55f), fontSize = 12.sp, fontWeight = FontWeight.SemiBold)
+                        Text("$place", color = DuskTheme.onAccent.copy(alpha = 0.65f), fontSize = DuskTheme.textSize26, fontWeight = FontWeight.Bold)
+                        if (showScores) Text("⁦${s.total.toInt()}⁩", color = DuskTheme.onAccent.copy(alpha = 0.55f), fontSize = DuskTheme.textSize12, fontWeight = FontWeight.SemiBold)
                     }
                 }
             }
@@ -412,15 +412,15 @@ fun ResultPodium(board: com.mlmvpn.scanner.engines.arena.Scoreboard, animate: Bo
     val rise = remember { Animatable(if (animate) 0f else 1f) }
     LaunchedEffect(Unit) { if (animate) rise.animateTo(1f, spring(dampingRatio = 0.65f, stiffness = Spring.StiffnessLow)) }
     Column(
-        modifier.fillMaxWidth().clip(RoundedCornerShape(22.dp))
+        modifier.fillMaxWidth().clip(RoundedCornerShape(DuskTheme.corner22))
             .background(Brush.verticalGradient(listOf(RaceColors.Top, RaceColors.Bottom)))
             .padding(top = 20.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Icon(Icons.Default.EmojiEvents, null, tint = RaceColors.Gold, modifier = Modifier.size(34.dp))
-        Text(tr("برنده", "Winner"), color = RaceColors.Secondary, fontSize = 12.sp, modifier = Modifier.padding(top = 4.dp))
-        Text(nameOf(top3.first().panelId), color = RaceColors.Label, fontSize = 28.sp, fontWeight = FontWeight.Bold)
-        Text(tr("⁦${top3.first().total.toInt()}⁩ از ۱۰۰", "${top3.first().total.toInt()} of 100"), color = RaceColors.Secondary, fontSize = 13.sp)
+        Text(tr("برنده", "Winner"), color = RaceColors.Secondary, fontSize = DuskTheme.textSize12, modifier = Modifier.padding(top = 4.dp))
+        Text(nameOf(top3.first().panelId), color = RaceColors.Label, fontSize = DuskTheme.textSize28, fontWeight = FontWeight.Bold)
+        Text(tr("⁦${top3.first().total.toInt()}⁩ از ۱۰۰", "${top3.first().total.toInt()} of 100"), color = RaceColors.Secondary, fontSize = DuskTheme.textSize13)
         Spacer(Modifier.height(18.dp))
         PodiumStand(top3, rise.value, showScores = true)
     }
@@ -450,46 +450,52 @@ fun Podium(st: ArenaEngine.State, onDone: () -> Unit) {
         Box(Modifier.fillMaxSize()) {
             Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
                 if (top3.isEmpty()) {
-                    Text(tr("هیچ پنلی به خط پایان نرسید", "No panel reached the finish"), color = RaceColors.Label, fontSize = 18.sp)
+                    Text(tr("هیچ پنلی به خط پایان نرسید", "No panel reached the finish"), color = RaceColors.Label, fontSize = DuskTheme.textSize18)
                 } else {
                     Icon(Icons.Default.EmojiEvents, null, tint = RaceColors.Gold, modifier = Modifier.size(50.dp).scale(rise.value))
-                    Text(nameOf(top3.first().panelId), color = RaceColors.Label, fontSize = 34.sp, fontWeight = FontWeight.Bold,
+                    Text(nameOf(top3.first().panelId), color = RaceColors.Label, fontSize = DuskTheme.textSize34, fontWeight = FontWeight.Bold,
                         modifier = Modifier.alpha(rise.value))
                     Spacer(Modifier.height(26.dp))
                     PodiumStand(top3, rise.value)
                 }
             }
-            // Light confetti: 70 pieces in white, silver and gold, one fall.
-            if (top3.isNotEmpty()) Canvas(Modifier.fillMaxSize()) {
-                val p = confetti.value
-                if (p <= 0f || p >= 1f) return@Canvas
-                val rnd = Random(11)
-                val colors = listOf(RaceColors.Gold, Color.White, RaceColors.Silver)
-                repeat(70) {
-                    val x0 = rnd.nextFloat() * size.width
-                    val drift = (rnd.nextFloat() - 0.5f) * 160f
-                    val speed = 0.6f + rnd.nextFloat() * 0.7f
-                    val y = -30f + (size.height + 60f) * (p * speed).coerceAtMost(1f)
-                    val rot = rnd.nextFloat() * 360f + p * 600f
-                    val w = 7f + rnd.nextFloat() * 6f
-                    val c = colors[rnd.nextInt(colors.size)]
-                    val cx = x0 + drift * p
-                    drawContext.transform.rotate(rot, Offset(cx, y))
-                    drawRoundRect(c.copy(alpha = 0.9f - p * 0.6f), Offset(cx - w / 2, y - w / 4), Size(w, w / 2), CornerRadius(2f))
-                    drawContext.transform.rotate(-rot, Offset(cx, y))
+            // Light confetti: 70 pieces in Dusk text, silver and gold, one fall.
+            if (top3.isNotEmpty()) {
+                val confettiColors = listOf(RaceColors.Gold, DuskTheme.onSurface, RaceColors.Silver)
+                Canvas(Modifier.fillMaxSize()) {
+                    val p = confetti.value
+                    if (p <= 0f || p >= 1f) return@Canvas
+                    val rnd = Random(11)
+                    repeat(70) {
+                        val x0 = rnd.nextFloat() * size.width
+                        val drift = (rnd.nextFloat() - 0.5f) * 160f
+                        val speed = 0.6f + rnd.nextFloat() * 0.7f
+                        val y = -30f + (size.height + 60f) * (p * speed).coerceAtMost(1f)
+                        val rot = rnd.nextFloat() * 360f + p * 600f
+                        val w = 7f + rnd.nextFloat() * 6f
+                        val c = confettiColors[rnd.nextInt(confettiColors.size)]
+                        val cx = x0 + drift * p
+                        drawContext.transform.rotate(rot, Offset(cx, y))
+                        drawRoundRect(c.copy(alpha = 0.9f - p * 0.6f), Offset(cx - w / 2, y - w / 4), Size(w, w / 2), CornerRadius(2f))
+                        drawContext.transform.rotate(-rot, Offset(cx, y))
+                    }
                 }
             }
             // The checkered flag, once across.
-            if (wipe.value < 1f) Canvas(Modifier.fillMaxSize()) {
-                val x = size.width * (wipe.value * 1.4f - 0.2f)
-                val cell = 26f
-                var r = 0
-                while (r * cell < size.height) {
-                    for (c in 0 until 6) {
-                        drawRect(if ((r + c) % 2 == 0) Color.White.copy(alpha = 0.8f) else Color.Black.copy(alpha = 0.8f),
-                            Offset(x + c * cell - 3 * cell, r * cell), Size(cell, cell))
+            if (wipe.value < 1f) {
+                val flagLight = DuskTheme.onSurface.copy(alpha = 0.8f)
+                val flagDark = DuskTheme.background.copy(alpha = 0.8f)
+                Canvas(Modifier.fillMaxSize()) {
+                    val x = size.width * (wipe.value * 1.4f - 0.2f)
+                    val cell = 26f
+                    var r = 0
+                    while (r * cell < size.height) {
+                        for (c in 0 until 6) {
+                            drawRect(if ((r + c) % 2 == 0) flagLight else flagDark,
+                                Offset(x + c * cell - 3 * cell, r * cell), Size(cell, cell))
+                        }
+                        r++
                     }
-                    r++
                 }
             }
         }

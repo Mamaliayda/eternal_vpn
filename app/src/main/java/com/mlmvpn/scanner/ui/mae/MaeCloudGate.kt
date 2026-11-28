@@ -25,13 +25,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.mlmvpn.scanner.R
 import com.mlmvpn.scanner.data.CloudManager
 import com.mlmvpn.scanner.ui.CloudAddAccountForm
@@ -74,21 +72,21 @@ internal fun MaeCloudGate(onBack: () -> Unit) {
         ) {
             // The glyph iOS would put here: one large symbol on a soft tile.
             Box(
-                Modifier.size(76.dp).clip(RoundedCornerShape(20.dp))
+                Modifier.size(76.dp).clip(RoundedCornerShape(DuskTheme.corner20))
                     .background(Brush.verticalGradient(listOf(DuskTheme.cloudflareOrangeLight, DuskTheme.cloudflareOrange))),
                 contentAlignment = Alignment.Center,
             ) {
-                Icon(Icons.Default.Cloud, contentDescription = null, tint = Color.White, modifier = Modifier.size(42.dp))
+                Icon(Icons.Default.Cloud, contentDescription = null, tint = DuskTheme.white, modifier = Modifier.size(42.dp))
             }
             Spacer(Modifier.height(16.dp))
             Text(
                 stringResource(R.string.mae_gate_title),
-                color = DuskTheme.onSurface, fontSize = 22.sp, fontWeight = FontWeight.Bold, textAlign = TextAlign.Center,
+                color = DuskTheme.onSurface, fontSize = DuskTheme.textSize22, fontWeight = FontWeight.Bold, textAlign = TextAlign.Center,
             )
             Spacer(Modifier.height(8.dp))
             Text(
                 stringResource(R.string.mae_gate_body),
-                color = DuskTheme.muted, fontSize = 14.sp, lineHeight = 21.sp, textAlign = TextAlign.Center,
+                color = DuskTheme.muted, fontSize = DuskTheme.textSize14, lineHeight = DuskTheme.textSize21, textAlign = TextAlign.Center,
             )
         }
         CloudAddAccountForm(

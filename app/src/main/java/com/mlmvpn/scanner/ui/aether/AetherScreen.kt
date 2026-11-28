@@ -255,7 +255,7 @@ fun AetherScreen() {
         // down, and its ACTION_STOP calls engine.stop() on the shared singleton concurrently
         // with the one AetherTunEngine.stop() is already running — two threads through the
         // same process teardown, for no gain.
-        com.mlmvpn.scanner.utils.SafeStart.service(context, 
+        com.mlmvpn.scanner.utils.SafeStart.service(context,
             android.content.Intent(context, com.mlmvpn.scanner.MyVpnService::class.java)
                 .apply { action = "STOP" }
         )
@@ -879,7 +879,8 @@ private fun WgPane(
         Spacer(modifier = Modifier.height(10.dp))
         SectionTitle(S(R.string.try_the_other_profiles_automatically))
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Switch(checked = retry, onCheckedChange = onRetry)
+            Switch( // dusk-ok: checked and unchecked states intentionally use the Soft Dusk Material semantic roles
+                checked = retry, onCheckedChange = onRetry)
             Spacer(modifier = Modifier.width(6.dp))
             Text(S(R.string.if_the_first_profile_does_not_work), style = MaterialTheme.typography.bodySmall)
         }
@@ -965,7 +966,8 @@ private fun SharedAdvancedPane(
         Spacer(modifier = Modifier.height(10.dp))
         SectionTitle(S(R.string.reconnect_quickly_to_the_previous_server))
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Switch(checked = quick, onCheckedChange = onQuick)
+            Switch( // dusk-ok: checked and unchecked states intentionally use the Soft Dusk Material semantic roles
+                checked = quick, onCheckedChange = onQuick)
             Spacer(modifier = Modifier.width(6.dp))
             Text(S(R.string.if_the_previous_server_was_healthy_skip), style = MaterialTheme.typography.bodySmall)
         }
@@ -973,7 +975,8 @@ private fun SharedAdvancedPane(
         Spacer(modifier = Modifier.height(10.dp))
         SectionTitle(S(R.string.accept_a_server_without_a_data_pass))
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Switch(checked = noDataCheck, onCheckedChange = onNoDataCheck)
+            Switch( // dusk-ok: checked and unchecked states intentionally use the Soft Dusk Material semantic roles
+                checked = noDataCheck, onCheckedChange = onNoDataCheck)
             Spacer(modifier = Modifier.width(6.dp))
             Text(S(R.string.accept_a_server_on_a_successful_handshake), style = MaterialTheme.typography.bodySmall)
         }
@@ -987,7 +990,8 @@ private fun SharedAdvancedPane(
         Spacer(modifier = Modifier.height(10.dp))
         SectionTitle(S(R.string.full_log_debug))
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Switch(checked = verbose, onCheckedChange = onVerbose)
+            Switch( // dusk-ok: checked and unchecked states intentionally use the Soft Dusk Material semantic roles
+                checked = verbose, onCheckedChange = onVerbose)
             Spacer(modifier = Modifier.width(6.dp))
             Text(S(R.string.more_detail_in_the_core_log_and), style = MaterialTheme.typography.bodySmall)
         }
@@ -1017,7 +1021,8 @@ private fun SharedPane(
         Spacer(modifier = Modifier.height(10.dp))
         SectionTitle(S(R.string.reconnect_quickly_to_the_previous_server))
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Switch(checked = quick, onCheckedChange = onQuick)
+            Switch( // dusk-ok: checked and unchecked states intentionally use the Soft Dusk Material semantic roles
+                checked = quick, onCheckedChange = onQuick)
             Spacer(modifier = Modifier.width(6.dp))
             Text(S(R.string.if_the_previous_server_was_healthy_skip), style = MaterialTheme.typography.bodySmall)
         }
@@ -1025,7 +1030,8 @@ private fun SharedPane(
         Spacer(modifier = Modifier.height(10.dp))
         SectionTitle(S(R.string.accept_a_server_without_a_data_pass))
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Switch(checked = noDataCheck, onCheckedChange = onNoDataCheck)
+            Switch( // dusk-ok: checked and unchecked states intentionally use the Soft Dusk Material semantic roles
+                checked = noDataCheck, onCheckedChange = onNoDataCheck)
             Spacer(modifier = Modifier.width(6.dp))
             Text(S(R.string.accept_a_server_on_a_successful_handshake), style = MaterialTheme.typography.bodySmall)
         }
@@ -1039,7 +1045,8 @@ private fun SharedPane(
         Spacer(modifier = Modifier.height(10.dp))
         SectionTitle(S(R.string.full_log_debug))
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Switch(checked = verbose, onCheckedChange = onVerbose)
+            Switch( // dusk-ok: checked and unchecked states intentionally use the Soft Dusk Material semantic roles
+                checked = verbose, onCheckedChange = onVerbose)
             Spacer(modifier = Modifier.width(6.dp))
             Text(S(R.string.more_detail_in_the_core_log_and), style = MaterialTheme.typography.bodySmall)
         }
