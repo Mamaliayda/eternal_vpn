@@ -984,3 +984,10 @@ app/src/main/java/com/mlmvpn/core/aether/AetherScanService.kt:246:              
 - The 2 left/right Compose matches are MAE swipe actions deliberately positioned on the physical side revealed by a left/right swipe. `TextAlign.Left/Right` was replaced by `TextAlign.Start`; XML left/right APIs are absent. The two explicit LTR layouts are wallpaper drawing coordinates. Twelve `absoluteOffset` matches are drag/motion/overlay geometry; the home edit badge was changed to logical `offset` for RTL.
 - All 18 Material component color-default calls were inspected: shared Dusk helper wrappers or explicit Dusk/theme color arguments. There are zero `MaterialTheme.colorScheme` references after migration.
 - All 8 remaining Toast calls are the already-documented non-Compose/platform callback deferrals in `SCREENS_CHECKLIST.md` (two import/widget trampolines, plus background engine/restore/notification/tile/platform error callbacks); none is an unchecked ordinary Compose-screen Toast.
+
+
+## Post-push CI validation
+
+- Initial audit-fix commit `1f2da999094da1ec632a3c50104f1915eabc2249`: debug run [46105391645](https://github.com/Mamaliayda/eternal_vpn/actions/runs/46105391645) and APK run [46105391694](https://github.com/Mamaliayda/eternal_vpn/actions/runs/46105391694) both failed compiling `SafeWebView.kt`: its non-composable AndroidView factory helper attempted to read `DuskTheme`'s composable color token. The APK workflow exposed compiler diagnostics `SafeWebView.kt:21:14` and `:29:65`.
+- Corrected by resolving `DuskTheme.muted` at the composable call sites and passing the plain Compose `Color` to `webViewOrNotice`; helper no longer reads theme state outside composition. This fix is commit `cc5d35a`.
+- New CI for `cc5d35a` is pending at the time this note was written; do not treat the release build or artifacts as verified until both workflows pass.
