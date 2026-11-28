@@ -1333,7 +1333,7 @@ Source inventory of Compose overlay hosts/call sites. Review each listed occurre
 - [ ] Dark palette uses the corresponding night tokens. (deferred: device visual verification required)
 - [ ] RTL checked in Persian for layout direction, icon direction, text alignment and number/address spans. (deferred: device visual verification required; source-level directional grep is recorded)
 - [x] Source grep/review found no legacy hardcoded UI colors, radii, typography or default Material surfaces outside documented brand/data visualizations; centralized theme, wallpaper presets and brand/art palettes remain.
-- [ ] Release build and visual smoke test completed. (deferred: CI must verify the post-audit-fix push; device visual smoke test unavailable here)
+- [ ] Release build and visual smoke test completed. (release CI passed on pushed code; emulator/device visual smoke test deferred because no device is available here)
 
 
 ## Manifest-registered native entry points

@@ -997,3 +997,17 @@ app/src/main/java/com/mlmvpn/core/aether/AetherScanService.kt:246:              
 - On `986d8e2`, Android release CI run [46107630913](https://github.com/Mamaliayda/eternal_vpn/actions/runs/46107630913) (and matching debug run [46107630916](https://github.com/Mamaliayda/eternal_vpn/actions/runs/46107630916)) reported three factory-lambda composable access errors at ProtonScreen.kt:714 and FenixScreen.kt:375/459. The Compose `DuskTheme.muted` reads were moved into the enclosing composable scopes and passed as captured plain color values.
 - On `b74695d`, release CI run [46109737181](https://github.com/Mamaliayda/eternal_vpn/actions/runs/46109737181) reported `FenixScreen.kt:460:79 Unresolved reference 'webViewNoticeColor'`: the second WebView factory belongs to the separate `MozillaCheckPage` composable, not `MozillaSignInPage`. Added a separately scoped theme color in `MozillaCheckPage` (`3c02631`).
 - Validation for `3c02631` is running: debug [46111603138](https://github.com/Mamaliayda/eternal_vpn/actions/runs/46111603138); APK/release [46111603135](https://github.com/Mamaliayda/eternal_vpn/actions/runs/46111603135). Build/release status and artifact names are not yet verified.
+
+## Checklist delta and final pushed validation
+
+The checklist was 1,203 rows at `a31bea0` and became 1,205 at `fa77188` (+2). The two net-new inventory rows are the native themed launcher icon resource (`app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml`) and centralized native shape dimensions (`app/src/main/res/values/dimens.xml`). Other checklist row wording/coverage changed in that same commit, but those are the two new row identities accounting for the net increase. This pass verified the source grep criterion, taking completion to **981 / 1205**; 224 remain unchecked, including device-only visual audits and intentionally deferred helper/data-only/system-owned UI items.
+
+Both workflows passed on latest tested source commit `3c02631` and again on pushed documentation tip `1489de0`:
+
+- Debug: [46111619145](https://github.com/Mamaliayda/eternal_vpn/actions/runs/46111619145) — success; uploaded artifact bundle `eternal-vpn-debug-apk`.
+- Release/APK: [46111619161](https://github.com/Mamaliayda/eternal_vpn/actions/runs/46111619161) — success; uploaded artifact bundle `eternal-vpn-android-apks`.
+- The app version in `app/build.gradle` is 1.2.45, and its variant naming rule emits these exact APKs in each bundle:
+  - Debug: `mlmvpn-1.2.45-arm64-v8a-debug.apk`, `mlmvpn-1.2.45-armeabi-v7a-debug.apk`, `mlmvpn-1.2.45-universal-debug.apk`.
+  - Release: `mlmvpn-1.2.45-arm64-v8a-release.apk`, `mlmvpn-1.2.45-armeabi-v7a-release.apk`, `mlmvpn-1.2.45-universal-release.apk`.
+
+The checklist's notification/quick-settings, widget, native XML/layout, activity-owned UI, `windowBackground`/bars, and themed-icon system surfaces are marked complete from source/resource audits. Android-owned VPN permission chrome and device/emulator runtime state / light-dark-RTL visual reviews remain deferred; no device smoke test was performed. Exact grep totals/hits and disposition are above in this file. Remaining strict-color grep hits are centralized brand/system art, not app-body style literals; raw `Color(0x...)` hits are the five documented palettes/presets; `gs_*` and `Ios.*` references are zero; physical left/right occurs only for the intentional MAE swipe sides; `MaterialTheme.colorScheme` is zero; and the remaining Toast sites are documented platform/background deferrals.
