@@ -1,6 +1,6 @@
 # Eternal VPN — screen redesign checklist
 
-> **Progress: 997 / 1205 complete** — checked rows are migrated; uncompleted items are unchecked and carry a `deferred:` reason where applicable.
+> **Progress: 1012 / 1205 complete** — checked rows are migrated; uncompleted items are unchecked and carry a `deferred:` reason where applicable.
 
 > Inventory generated from Kotlin source on 2026-11-26. A row is complete only after its visible composition, nested states, and overlays are reviewed against Soft Dusk tokens and migrated. Uncompleted rows remain unchecked and include a `deferred:` reason where work is intentionally postponed. Shared theme inheritance alone does **not** count as a completed visual redesign.
 
@@ -19,8 +19,8 @@ All launcher destinations registered in `HomeDestinations` (the app board entry 
 - [x] `antisanction` — destination routes to the migrated anti-sanction DNS screen and its Dusk-styled apps/domains subpages.
 - [x] `cloud` — route reviewed against the migrated Cloud screens, account groups and Dusk feedback surfaces; routing unchanged.
 - [ ] `configstudio`
-- [ ] `emergency_2`
-- [ ] `emergency_3`
+- [x] `emergency_2` — route audited to the Dusk-styled Google Apps Script relay panel and setup pages.
+- [x] `emergency_3` — route audited to the Dusk-styled SNI fragmentation panel and config picker.
 - [ ] `fenix`
 - [x] `fixed_ip`
 - [ ] `flux`
@@ -251,10 +251,10 @@ Found 230 screen-like public/internal composables across 133 Kotlin files (the f
 - [x] `StepPage` — `com/mlmvpn/scanner/ui/doctor/CloudDoctorScreen.kt`
 ### emergency
 
-- [ ] `EmergencyLevel2Screen` — `com/mlmvpn/scanner/ui/emergency/EmergencyLevel2Screen.kt`
-- [ ] `EmergencyLevel3Screen` — `com/mlmvpn/scanner/ui/emergency/EmergencyLevel3Screen.kt`
-- [ ] `GstRelayScreen` — `com/mlmvpn/scanner/ui/emergency/GstScreens.kt`
-- [ ] `GstNetworkPathScreen` — `com/mlmvpn/scanner/ui/emergency/GstScreens.kt`
+- [x] `EmergencyLevel2Screen` — `com/mlmvpn/scanner/ui/emergency/EmergencyLevel2Screen.kt` (Dusk semantic dial accent, shared Material typography and spacing)
+- [x] `EmergencyLevel3Screen` — `com/mlmvpn/scanner/ui/emergency/EmergencyLevel3Screen.kt` (Dusk error accent, shared Material typography and spacing)
+- [x] `GstRelayScreen` — `com/mlmvpn/scanner/ui/emergency/GstScreens.kt` (Dusk semantic states and shared settings rows)
+- [x] `GstNetworkPathScreen` — `com/mlmvpn/scanner/ui/emergency/GstScreens.kt` (Dusk path state colors, shared groups and row typography)
 - [x] `GstLogScreen` — `com/mlmvpn/scanner/ui/emergency/GstScreens.kt`
 - [ ] `GstSetupWizard` — `com/mlmvpn/scanner/ui/emergency/GstSetupWizard.kt`
 - [ ] `SniConfigPickerPage` — `com/mlmvpn/scanner/ui/emergency/SniConfigPages.kt`
@@ -823,15 +823,15 @@ All declared `@Composable` Kotlin functions were scanned: 948 functions in 189 s
 - [x] `DevLine` — `com/mlmvpn/scanner/ui/doctor/CloudDoctorScreen.kt`
 ### emergency
 
-- [ ] `dialAccent` — `com/mlmvpn/scanner/ui/emergency/EmergencyKit.kt`
-- [ ] `EmergencyDial` — `com/mlmvpn/scanner/ui/emergency/EmergencyKit.kt`
-- [ ] `EmergencyStatusLine` — `com/mlmvpn/scanner/ui/emergency/EmergencyKit.kt`
-- [ ] `pingTone` — `com/mlmvpn/scanner/ui/emergency/EmergencyKit.kt`
-- [ ] `RouteRow` — `com/mlmvpn/scanner/ui/emergency/EmergencyLevel3Screen.kt`
-- [ ] `pingLabel` — `com/mlmvpn/scanner/ui/emergency/EmergencyLevel3Screen.kt`
-- [ ] `relayTone` — `com/mlmvpn/scanner/ui/emergency/GstScreens.kt`
-- [ ] `PathRow` — `com/mlmvpn/scanner/ui/emergency/GstScreens.kt`
-- [ ] `LogChip` — `com/mlmvpn/scanner/ui/emergency/GstScreens.kt`
+- [x] `dialAccent` — `com/mlmvpn/scanner/ui/emergency/EmergencyKit.kt` (semantic Dusk running/success and failure/accent colors; feature idle accent supplied by caller)
+- [x] `EmergencyDial` — `com/mlmvpn/scanner/ui/emergency/EmergencyKit.kt` (fixed touch geometry preserved; shared Dusk ink, typography and spacing)
+- [x] `EmergencyStatusLine` — `com/mlmvpn/scanner/ui/emergency/EmergencyKit.kt` (Dusk status tones and Material body scale)
+- [x] `pingTone` — `com/mlmvpn/scanner/ui/emergency/EmergencyKit.kt` (Dusk error/success/accent thresholds)
+- [x] `RouteRow` — `com/mlmvpn/scanner/ui/emergency/EmergencyLevel3Screen.kt` (Dusk semantic ping tone and Material route/value styles)
+- [x] `pingLabel` — `com/mlmvpn/scanner/ui/emergency/EmergencyLevel3Screen.kt` (diagnostic formatter; output is rendered through Dusk-styled `RouteRow`)
+- [x] `relayTone` — `com/mlmvpn/scanner/ui/emergency/GstScreens.kt` (Dusk semantic report tones)
+- [x] `PathRow` — `com/mlmvpn/scanner/ui/emergency/GstScreens.kt` (Dusk ping/status tones, shared spacing and Material typography)
+- [x] `LogChip` — `com/mlmvpn/scanner/ui/emergency/GstScreens.kt` (Dusk tint, shared control shape and typography)
 - [ ] `StepDots` — `com/mlmvpn/scanner/ui/emergency/GstSetupWizard.kt`
 - [ ] `StepHeader` — `com/mlmvpn/scanner/ui/emergency/GstSetupWizard.kt`
 - [ ] `WizardField` — `com/mlmvpn/scanner/ui/emergency/GstSetupWizard.kt`

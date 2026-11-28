@@ -31,6 +31,7 @@ import androidx.compose.material.icons.filled.Storage
 import androidx.compose.material.icons.filled.VpnLock
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -48,7 +49,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.mlmvpn.scanner.MyVpnService
 import com.mlmvpn.scanner.R
 import com.mlmvpn.scanner.data.CombineEngine
@@ -57,7 +57,6 @@ import com.mlmvpn.scanner.engines.rstaspoof.RstaSpoofManager
 import com.mlmvpn.scanner.engines.rstaspoof.SniSession
 import com.mlmvpn.scanner.engines.rstaspoof.SniEch
 import com.mlmvpn.scanner.models.VpnNode
-import com.mlmvpn.scanner.ui.home.HomeDestinations
 import com.mlmvpn.scanner.ui.settings.IosScreen
 import com.mlmvpn.scanner.ui.settings.SettingsActionRow
 import com.mlmvpn.scanner.ui.settings.SettingsFooter
@@ -689,29 +688,28 @@ fun EmergencyLevel3Screen(onBack: () -> Unit) {
         onBack = onBack,
         backLabel = stringResource(R.string.emergency_3_back),
     ) {
-        Spacer(Modifier.height(18.dp))
+        Spacer(Modifier.height(DuskTheme.space4))
 
         Text(
             "SNI Fragmentation",
             color = DuskTheme.muted,
-            fontSize = 13.sp,
+            style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier.align(Alignment.CenterHorizontally),
         )
-        Spacer(Modifier.height(4.dp))
+        Spacer(Modifier.height(DuskTheme.space1))
         Text(
             stringResource(R.string.emergency_3_tagline),
             color = DuskTheme.muted,
-            fontSize = 13.sp,
-            lineHeight = 20.sp,
+            style = MaterialTheme.typography.bodyMedium,
             textAlign = TextAlign.Center,
             modifier = Modifier.padding(horizontal = 34.dp),
         )
 
-        Spacer(Modifier.height(26.dp))
+        Spacer(Modifier.height(DuskTheme.space6))
 
         EmergencyDial(
             state = stage,
-            idleAccent = HomeDestinations.Red,
+            idleAccent = DuskTheme.error,
             idleIcon = Icons.Default.VpnLock,
             idleLabel = stringResource(R.string.emergency_3_action_on),
             runningLabel = stringResource(R.string.emergency_3_action_off),
@@ -725,13 +723,13 @@ fun EmergencyLevel3Screen(onBack: () -> Unit) {
             modifier = Modifier.align(Alignment.CenterHorizontally),
         )
 
-        Spacer(Modifier.height(18.dp))
+        Spacer(Modifier.height(DuskTheme.space4))
 
         // Three things happen behind one button, and they fail in three different places. The
         // status line names which one is running so a failure is diagnosable rather than just red.
         EmergencyStatusLine(
             state = stage,
-            idleAccent = HomeDestinations.Red,
+            idleAccent = DuskTheme.error,
             headline = stringResource(
                 when {
                     stage == DialState.RUNNING -> R.string.emergency_3_state_on
@@ -750,7 +748,7 @@ fun EmergencyLevel3Screen(onBack: () -> Unit) {
             modifier = Modifier.align(Alignment.CenterHorizontally),
         )
 
-        Spacer(Modifier.height(24.dp))
+        Spacer(Modifier.height(DuskTheme.space5))
 
         // Only while connected: every field in it answers "what is carrying my traffic right
         // now", which is not a question an idle screen has an answer to.
@@ -790,7 +788,7 @@ fun EmergencyLevel3Screen(onBack: () -> Unit) {
                         showChevron = false,
                     )
                 }
-                Spacer(Modifier.height(4.dp))
+                Spacer(Modifier.height(DuskTheme.space1))
             }
         }
 
@@ -865,10 +863,10 @@ fun EmergencyLevel3Screen(onBack: () -> Unit) {
         }
         SettingsFooter(stringResource(R.string.emergency_3_routes_footer))
 
-        Spacer(Modifier.height(6.dp))
+        Spacer(Modifier.height(DuskTheme.space1_5))
         SettingsFooter(stringResource(R.string.emergency_3_footer))
 
-        Spacer(Modifier.height(28.dp))
+        Spacer(Modifier.height(DuskTheme.space6))
     }
 }
 
@@ -902,7 +900,7 @@ private fun RouteRow(
             Text(
                 route.fakeSni,
                 color = DuskTheme.onSurface,
-                fontSize = 16.sp,
+                style = MaterialTheme.typography.bodyLarge,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
@@ -910,7 +908,7 @@ private fun RouteRow(
                 if (route.method > 0) "${route.connectIp}:${route.connectPort}  ·  روش ${route.method}"
                 else "${route.connectIp}:${route.connectPort}",
                 color = DuskTheme.muted,
-                fontSize = 12.sp,
+                style = MaterialTheme.typography.bodySmall,
             )
         }
 
@@ -918,7 +916,7 @@ private fun RouteRow(
             Text(
                 pingLabel(ping),
                 color = pingTone(ping).copy(alpha = if (dimmed) 0.4f else 1f),
-                fontSize = 14.sp,
+                style = MaterialTheme.typography.labelLarge,
                 fontWeight = FontWeight.Medium,
             )
             Spacer(Modifier.width(10.dp))

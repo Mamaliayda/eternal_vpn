@@ -30,6 +30,7 @@ import androidx.compose.material.icons.filled.OpenInNew
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.collectAsState
@@ -53,7 +54,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.mlmvpn.scanner.engines.gst.GstConfigManager
 import com.mlmvpn.scanner.engines.gst.GstDiagnostics
 import com.mlmvpn.scanner.engines.gst.GstLog
@@ -375,20 +375,20 @@ private fun PathRow(
             .fillMaxWidth()
             .clickable(onClick = onClick)
             .heightIn(min = 44.dp)
-            .padding(horizontal = 16.dp, vertical = 9.dp),
+            .padding(horizontal = DuskTheme.space4, vertical = DuskTheme.space2_5),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Column(modifier = Modifier.weight(1f)) {
-            Text(label, color = DuskTheme.onSurface, fontSize = 15.sp)
+            Text(label, color = DuskTheme.onSurface, style = MaterialTheme.typography.bodyLarge)
             if (detail != null) {
-                Text(detail, color = DuskTheme.muted, fontSize = 12.sp)
+                Text(detail, color = DuskTheme.muted, style = MaterialTheme.typography.bodySmall)
             }
         }
         if (ping != null) {
             Text(
                 gstPingLabel(ping),
                 color = pingTone(ping).copy(alpha = if (dimmed) 0.4f else 1f),
-                fontSize = 14.sp,
+                style = MaterialTheme.typography.labelLarge,
                 fontWeight = FontWeight.Medium,
             )
             Spacer(Modifier.width(10.dp))
@@ -437,7 +437,7 @@ fun GstLogScreen(onBack: () -> Unit) {
     IosScreen(title = S(R.string.live_report), onBack = onBack, backLabel = GST_BACK, scrollable = false) {
         Row(
             modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp),
-            horizontalArrangement = Arrangement.spacedBy(10.dp),
+            horizontalArrangement = Arrangement.spacedBy(DuskTheme.space2_5),
         ) {
             LogChip(
                 label = S(R.string.copy),
@@ -542,12 +542,12 @@ private fun LogChip(
         modifier = modifier
             .background(tint.copy(alpha = 0.14f), DuskTheme.controlShape)
             .clickable(onClick = onClick)
-            .padding(vertical = 10.dp),
+            .padding(vertical = DuskTheme.space2_5),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Icon(icon, contentDescription = null, tint = tint, modifier = Modifier.size(17.dp))
-        Spacer(Modifier.width(6.dp))
+        Spacer(Modifier.width(DuskTheme.space1_5))
         Text(label, color = tint, style = androidx.compose.material3.MaterialTheme.typography.bodyMedium)
     }
 }

@@ -23,6 +23,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Power
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -38,7 +39,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.mlmvpn.scanner.R
 import com.mlmvpn.scanner.utils.S
 
@@ -162,14 +162,14 @@ internal fun EmergencyDial(
                 Icon(
                     if (state == DialState.RUNNING) runningIcon else idleIcon,
                     contentDescription = null,
-                    tint = Color.White,
+                    tint = DuskTheme.white,
                     modifier = Modifier.size(38.dp),
                 )
-                Spacer(Modifier.height(6.dp))
+                Spacer(Modifier.height(DuskTheme.space1_5))
                 Text(
                     if (state == DialState.RUNNING) runningLabel else idleLabel,
-                    color = Color.White,
-                    fontSize = 15.sp,
+                    color = DuskTheme.white,
+                    style = MaterialTheme.typography.bodyLarge,
                     fontWeight = FontWeight.SemiBold,
                 )
             }
@@ -198,16 +198,15 @@ internal fun EmergencyStatusLine(
         Text(
             headline,
             color = if (state == DialState.IDLE) DuskTheme.muted else dialAccent(state, idleAccent),
-            fontSize = 16.sp,
+            style = MaterialTheme.typography.bodyLarge,
             fontWeight = FontWeight.SemiBold,
         )
         if (sub != null) {
-            Spacer(Modifier.height(6.dp))
+            Spacer(Modifier.height(DuskTheme.space1_5))
             Text(
                 sub,
                 color = DuskTheme.muted,
-                fontSize = 13.sp,
-                lineHeight = 20.sp,
+                style = MaterialTheme.typography.bodyMedium,
                 textAlign = TextAlign.Center,
             )
         }

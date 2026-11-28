@@ -25,6 +25,7 @@ import androidx.compose.material.icons.filled.Route
 import androidx.compose.material.icons.filled.Security
 import androidx.compose.material.icons.filled.VerifiedUser
 import androidx.compose.material3.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -41,14 +42,12 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.mlmvpn.scanner.MyVpnService
 import com.mlmvpn.scanner.R
 import com.mlmvpn.scanner.engines.gst.GstConfigManager
 import com.mlmvpn.scanner.engines.gst.GstDiagnostics
 import com.mlmvpn.scanner.engines.gst.GstLog
 import com.mlmvpn.scanner.engines.gst.GstRelay
-import com.mlmvpn.scanner.ui.home.HomeDestinations
 import com.mlmvpn.scanner.ui.settings.IosScreen
 import com.mlmvpn.scanner.ui.settings.SettingsActionRow
 import com.mlmvpn.scanner.ui.settings.SettingsFooter
@@ -319,30 +318,29 @@ fun EmergencyLevel2Screen(onBack: () -> Unit) {
         onBack = onBack,
         backLabel = S(R.string.home_2),
     ) {
-        Spacer(Modifier.height(18.dp))
+        Spacer(Modifier.height(DuskTheme.space4))
 
         Text(
             "Google Apps Script",
             color = DuskTheme.muted,
-            fontSize = 13.sp,
+            style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier.align(Alignment.CenterHorizontally),
         )
-        Spacer(Modifier.height(4.dp))
+        Spacer(Modifier.height(DuskTheme.space1))
         Text(
             S(R.string.traffic_goes_through_a_script_on_google) +
                 S(R.string.without_blocking_google_itself),
             color = DuskTheme.muted,
-            fontSize = 13.sp,
-            lineHeight = 20.sp,
+            style = MaterialTheme.typography.bodyMedium,
             textAlign = TextAlign.Center,
             modifier = Modifier.padding(horizontal = 34.dp),
         )
 
-        Spacer(Modifier.height(26.dp))
+        Spacer(Modifier.height(DuskTheme.space6))
 
         EmergencyDial(
             state = stage,
-            idleAccent = HomeDestinations.Blue,
+            idleAccent = DuskTheme.primary,
             idleIcon = Icons.Default.FlashOn,
             idleLabel = S(R.string.connect_2),
             runningLabel = S(R.string.disconnect_3),
@@ -356,11 +354,11 @@ fun EmergencyLevel2Screen(onBack: () -> Unit) {
             modifier = Modifier.align(Alignment.CenterHorizontally),
         )
 
-        Spacer(Modifier.height(18.dp))
+        Spacer(Modifier.height(DuskTheme.space4))
 
         EmergencyStatusLine(
             state = stage,
-            idleAccent = HomeDestinations.Blue,
+            idleAccent = DuskTheme.primary,
             headline = when {
                 takenByOther -> S(R.string.another_connection_is_active)
                 stage == DialState.RUNNING -> S(R.string.connected_3)
@@ -380,7 +378,7 @@ fun EmergencyLevel2Screen(onBack: () -> Unit) {
             modifier = Modifier.align(Alignment.CenterHorizontally),
         )
 
-        Spacer(Modifier.height(24.dp))
+        Spacer(Modifier.height(DuskTheme.space5))
 
         // The certificate comes first, and not because it is the most interesting thing here.
         // The tunnel terminates TLS itself, so without this installed every HTTPS site fails --
@@ -486,7 +484,7 @@ fun EmergencyLevel2Screen(onBack: () -> Unit) {
             visible = reports.values.any { it.result == GstDiagnostics.Result.REDIRECT_BLOCKED }
         ) {
             Column {
-                Spacer(Modifier.height(6.dp))
+                Spacer(Modifier.height(DuskTheme.space1_5))
                 SettingsFooter(
                     S(R.string.one_or_more_relays_exist_but_have) +
                         S(R.string.and_tap_verify_in_the_browser_sign) +
@@ -519,7 +517,7 @@ fun EmergencyLevel2Screen(onBack: () -> Unit) {
                 S(R.string.the_deploy_or_authorize_step_in_the)
         )
 
-        Spacer(Modifier.height(28.dp))
+        Spacer(Modifier.height(DuskTheme.space6))
     }
 }
 
