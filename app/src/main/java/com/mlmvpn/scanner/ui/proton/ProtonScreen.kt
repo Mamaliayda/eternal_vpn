@@ -526,6 +526,7 @@ private enum class Check { TESTING, READY, BLOCKED }
 @SuppressLint("SetJavaScriptEnabled", "AddJavascriptInterface")
 @Composable
 private fun ProtonWebPage(url: String, notify: (String) -> Unit, onBack: () -> Unit, onDone: (switch: Boolean) -> Unit) {
+    val webViewNoticeColor = DuskTheme.muted
     val context = LocalContext.current
     val running by MyVpnService.isRunningFlow.collectAsState()
     val phase by MyVpnService.connectionPhaseFlow.collectAsState()
@@ -711,7 +712,7 @@ private fun ProtonWebPage(url: String, notify: (String) -> Unit, onBack: () -> U
                         Box(Modifier.fillMaxWidth().weight(1f)) {
                             AndroidView(
                                 modifier = Modifier.fillMaxSize(),
-                                factory = { ctx -> com.mlmvpn.scanner.ui.webViewOrNotice(ctx, DuskTheme.muted) { ctx ->
+                                factory = { ctx -> com.mlmvpn.scanner.ui.webViewOrNotice(ctx, webViewNoticeColor) { ctx ->
                                     WebView(ctx).apply {
                                         web[0] = this
                                         // AndroidView leaves a view WRAP_CONTENT, and a WebView that

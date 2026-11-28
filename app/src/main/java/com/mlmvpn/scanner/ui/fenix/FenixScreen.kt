@@ -359,6 +359,7 @@ private fun agoText(at: Long): String {
 @SuppressLint("SetJavaScriptEnabled")
 @Composable
 private fun MozillaSignInPage(onBack: () -> Unit) {
+    val webViewNoticeColor = DuskTheme.muted
     val signIn by FenixEngine.signIn.collectAsState()
     val error by FenixEngine.signInError.collectAsState()
     val busy = signIn is SignIn.Busy
@@ -372,7 +373,7 @@ private fun MozillaSignInPage(onBack: () -> Unit) {
         Box(Modifier.fillMaxWidth().weight(1f)) {
             AndroidView(
                 modifier = Modifier.fillMaxSize(),
-                factory = { ctx -> com.mlmvpn.scanner.ui.webViewOrNotice(ctx, DuskTheme.muted) { ctx ->
+                factory = { ctx -> com.mlmvpn.scanner.ui.webViewOrNotice(ctx, webViewNoticeColor) { ctx ->
                     WebStorage.getInstance().deleteAllData()
                     CookieManager.getInstance().removeSessionCookies(null)
                     WebView(ctx).apply {
@@ -456,7 +457,7 @@ private fun MozillaCheckPage(host: String, onDone: (Map<String, String?>, String
         Box(Modifier.fillMaxWidth().weight(1f)) {
             AndroidView(
                 modifier = Modifier.fillMaxSize(),
-                factory = { ctx -> com.mlmvpn.scanner.ui.webViewOrNotice(ctx, DuskTheme.muted) { ctx ->
+                factory = { ctx -> com.mlmvpn.scanner.ui.webViewOrNotice(ctx, webViewNoticeColor) { ctx ->
                     WebView(ctx).apply {
                         // MATCH_PARENT, not AndroidView's WRAP_CONTENT: a WebView that is WRAP_CONTENT
                         // high gives the page a 0 px viewport height (`100vh` = 0), which left
